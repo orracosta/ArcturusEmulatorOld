@@ -2,6 +2,16 @@
 
 Arcturus Emulator is a Habbo emulator written in Java aiming to be an exact clone of the offical server.
 
+Targeting PRODUCTION-201601012205-226667486
+
+SWF: http://arcturus.wf/mirrors/PRODUCTION-201601012205-226667486.swf
+
+SCRIPTS: http://arcturus.wf/mirrors/PRODUCTION-201601012205-226667486_scripts.txt
+
+Compiled version: http://arcturus.wf/mirrors/ArcturusEmulator.zip
+
+Database: http://arcturus.wf/mirrors/habbo.sql
+
 ### Contributing ###
 
 Anyone is allowed to contribute to the project. Reporting bugs and issues goes via the issue tracker.
