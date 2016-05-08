@@ -6,7 +6,7 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class RoomRelativeMapComposer extends MessageComposer {
+public class RoomRelativeMapComposer extends MessageComposer{
 
     private final Room room;
 
@@ -16,7 +16,7 @@ public class RoomRelativeMapComposer extends MessageComposer {
     }
     
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()    {
         this.response.init(Outgoing.RoomRelativeMapComposer);
         this.response.appendInt32(this.room.getLayout().getMapSize() / this.room.getLayout().getMapSizeY());
         this.response.appendInt32(this.room.getLayout().getMapSize());

@@ -5,7 +5,7 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class MeMenuSettingsComposer extends MessageComposer {
+public class MeMenuSettingsComposer extends MessageComposer{
 
     private Habbo habbo;
 
@@ -15,7 +15,7 @@ public class MeMenuSettingsComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()    {
         this.response.init(Outgoing.MeMenuSettingsComposer);
 
         this.response.appendInt32(this.habbo.getHabboStats().volumeSystem);

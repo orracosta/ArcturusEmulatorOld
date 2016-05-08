@@ -15,7 +15,7 @@ public class FriendRequestComposer extends MessageComposer
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()    {
         this.response.init(Outgoing.FriendRequestComposer);
 
         this.response.appendInt32(this.habbo.getHabboInfo().getId());

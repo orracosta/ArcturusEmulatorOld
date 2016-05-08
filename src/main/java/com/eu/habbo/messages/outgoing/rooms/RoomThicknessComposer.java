@@ -5,7 +5,7 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class RoomThicknessComposer extends MessageComposer {
+public class RoomThicknessComposer extends MessageComposer{
 
     private final Room room;
 
@@ -15,7 +15,7 @@ public class RoomThicknessComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()    {
         this.response.init(Outgoing.RoomThicknessComposer);
         this.response.appendBoolean(this.room.isHideWall());
         this.response.appendInt32(this.room.getWallSize());

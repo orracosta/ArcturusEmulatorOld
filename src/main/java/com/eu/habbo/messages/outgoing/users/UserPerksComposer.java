@@ -4,10 +4,10 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class UserPerksComposer extends MessageComposer {
+public class UserPerksComposer extends MessageComposer{
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()    {
         this.response.init(Outgoing.UserPerksComposer);
 
         this.response.appendInt32(15);

@@ -4,7 +4,7 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class UserCitizinShipComposer extends MessageComposer {
+public class UserCitizinShipComposer extends MessageComposer{
 
     private final String name;
 
@@ -14,7 +14,7 @@ public class UserCitizinShipComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()    {
         this.response.init(Outgoing.UserCitizinShipComposer);
         this.response.appendString(this.name);
         this.response.appendInt32(0);

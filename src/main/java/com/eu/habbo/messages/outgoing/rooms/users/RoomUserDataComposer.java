@@ -5,7 +5,7 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class RoomUserDataComposer extends MessageComposer {
+public class RoomUserDataComposer extends MessageComposer{
 
     private final Habbo habbo;
 
@@ -15,7 +15,7 @@ public class RoomUserDataComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()    {
         this.response.init(Outgoing.RoomUserDataComposer);
         this.response.appendInt32(this.habbo.getRoomUnit() == null ? -1 : this.habbo.getRoomUnit().getId());
         this.response.appendString(this.habbo.getHabboInfo().getLook());

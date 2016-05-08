@@ -5,7 +5,7 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class UserDataComposer extends MessageComposer {
+public class UserDataComposer extends MessageComposer{
 
     private final Habbo habbo;
     

@@ -5,7 +5,7 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class RoomRightsComposer extends MessageComposer {
+public class RoomRightsComposer extends MessageComposer{
 
     private final RoomRightLevels type;
 

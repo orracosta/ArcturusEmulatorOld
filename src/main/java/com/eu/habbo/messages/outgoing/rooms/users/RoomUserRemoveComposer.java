@@ -5,7 +5,7 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class RoomUserRemoveComposer extends MessageComposer {
+public class RoomUserRemoveComposer extends MessageComposer{
 
     private final RoomUnit roomUnit;
 
@@ -15,7 +15,7 @@ public class RoomUserRemoveComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()    {
         this.response.init(Outgoing.RoomUserRemoveComposer);
         this.response.appendString(this.roomUnit.getId() + "");
         return this.response;

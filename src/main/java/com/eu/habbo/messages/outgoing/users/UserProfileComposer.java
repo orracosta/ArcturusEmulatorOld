@@ -13,7 +13,7 @@ import gnu.trove.set.hash.THashSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class UserProfileComposer extends MessageComposer {
+public class UserProfileComposer extends MessageComposer{
 
     private final HabboInfo habboInfo;
     private Habbo habbo;
@@ -30,7 +30,7 @@ public class UserProfileComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()    {
 
         if(this.habboInfo == null)
             return null;

@@ -10,7 +10,7 @@ import gnu.trove.set.hash.THashSet;
 
 import java.util.Map;
 
-public class RoomUserStatusComposer extends MessageComposer {
+public class RoomUserStatusComposer extends MessageComposer{
 
     private TIntObjectMap<Habbo> habbos;
     private THashSet<RoomUnit> roomUnits;
@@ -32,7 +32,7 @@ public class RoomUserStatusComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()    {
         this.response.init(Outgoing.RoomUserStatusComposer);
         if(this.roomUnits != null)
         {

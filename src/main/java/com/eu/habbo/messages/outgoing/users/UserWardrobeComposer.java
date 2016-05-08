@@ -5,7 +5,7 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class UserWardrobeComposer extends MessageComposer {
+public class UserWardrobeComposer extends MessageComposer{
 
     private WardrobeComponent wardrobeComponent;
 
@@ -15,7 +15,7 @@ public class UserWardrobeComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()    {
         this.response.init(Outgoing.UserWardrobeComposer);
         this.response.appendInt32(1);
         this.response.appendInt32(this.wardrobeComponent.getLooks().size());

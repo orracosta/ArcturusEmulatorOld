@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class ProfileFriendsComposer extends MessageComposer {
+public class ProfileFriendsComposer extends MessageComposer{
 
     private Habbo habbo;
     private final List<MessengerBuddy> lovers = new ArrayList<MessengerBuddy>();
@@ -67,7 +67,7 @@ public class ProfileFriendsComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()    {
 
         try {
 

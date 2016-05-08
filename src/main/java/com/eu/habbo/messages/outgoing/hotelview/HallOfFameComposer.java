@@ -15,7 +15,7 @@ public class HallOfFameComposer extends MessageComposer
 {
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()    {
         this.response.init(Outgoing.HallOfFameComposer);
         HallOfFame hallOfFame = Emulator.getGameEnvironment().getHotelViewManager().getHallOfFame();
 

@@ -6,7 +6,7 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 public class testcomposer extends MessageComposer
 {
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()    {
         this.response.init(3019);
         this.response.appendInt32(3);
 
