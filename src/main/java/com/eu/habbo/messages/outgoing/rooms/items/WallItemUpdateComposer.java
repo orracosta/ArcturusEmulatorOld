@@ -1,0 +1,27 @@
+package com.eu.habbo.messages.outgoing.rooms.items;
+
+import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.messages.ServerMessage;
+import com.eu.habbo.messages.outgoing.MessageComposer;
+import com.eu.habbo.messages.outgoing.Outgoing;
+
+/**
+ * Created on 11-10-2014 14:06.
+ */
+public class WallItemUpdateComposer extends MessageComposer
+{
+    private final HabboItem item;
+
+    public WallItemUpdateComposer(HabboItem item)
+    {
+        this.item = item;
+    }
+    @Override
+    public ServerMessage compose()
+    {
+        this.response.init(Outgoing.WallItemUpdateComposer);
+        this.item.serializeWallData(this.response);
+        this.response.appendString(this.item.getUserId() + "");
+        return this.response;
+    }
+}

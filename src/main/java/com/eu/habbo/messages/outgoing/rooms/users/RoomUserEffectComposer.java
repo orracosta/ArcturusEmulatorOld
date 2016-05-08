@@ -1,0 +1,29 @@
+package com.eu.habbo.messages.outgoing.rooms.users;
+
+import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.messages.ServerMessage;
+import com.eu.habbo.messages.outgoing.MessageComposer;
+import com.eu.habbo.messages.outgoing.Outgoing;
+
+/**
+ * Created on 2-11-2014 16:01.
+ */
+public class RoomUserEffectComposer extends MessageComposer
+{
+    private final RoomUnit roomUnit;
+
+    public RoomUserEffectComposer(RoomUnit roomUnit)
+    {
+        this.roomUnit = roomUnit;
+    }
+
+    @Override
+    public ServerMessage compose()
+    {
+        this.response.init(Outgoing.RoomUserEffectComposer);
+        this.response.appendInt32(this.roomUnit.getId());
+        this.response.appendInt32(this.roomUnit.getEffectId());
+        this.response.appendInt32(0);
+        return this.response;
+    }
+}

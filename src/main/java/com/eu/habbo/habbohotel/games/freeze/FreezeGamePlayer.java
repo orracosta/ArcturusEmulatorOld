@@ -1,0 +1,266 @@
+package com.eu.habbo.habbohotel.games.freeze;
+
+import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.achievements.AchievementManager;
+import com.eu.habbo.habbohotel.games.GamePlayer;
+import com.eu.habbo.habbohotel.games.GameTeamColors;
+import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.messages.outgoing.rooms.FreezeLivesComposer;
+
+/**
+ * Created on 10-4-2015 20:32.
+ */
+public class FreezeGamePlayer extends GamePlayer
+{
+    /*
+        Freeze
+     */
+    private int lives;
+    private int snowBalls;
+    private int explosionBoost;
+    private int protectionTime;
+    private int frozenTime;
+    public boolean nextDiagonal;
+    public boolean nextHorizontal;
+    public boolean tempMassiveExplosion;
+    public boolean dead;
+
+    public FreezeGamePlayer(Habbo habbo, GameTeamColors teamColor)
+    {
+        super(habbo, teamColor);
+    }
+
+    @Override
+    public void reset()
+    {
+        this.lives = 3;
+        this.snowBalls = 1;
+        this.explosionBoost = 0;
+        this.protectionTime = 0;
+        this.frozenTime = 0;
+        this.nextDiagonal = false;
+        this.nextHorizontal = true;
+        this.tempMassiveExplosion = false;
+        this.dead = false;
+
+        super.reset();
+    }
+
+    @Override
+    public synchronized void addScore(int amount)
+    {
+        super.addScore(amount);
+
+        if(amount > 0)
+        {
+            AchievementManager.progressAchievement(this.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("FreezePlayer"), amount);
+        }
+    }
+
+    /*
+        Freeze
+    */
+    public synchronized void addLife()
+    {
+        if(this.lives < FreezeGame.MAX_LIVES)
+        {
+            ++this.lives;
+            super.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new FreezeLivesComposer(this).compose());
+        }
+    }
+
+    public synchronized void takeLife()
+    {
+        this.lives--;
+        if(this.lives == 0)
+        {
+            this.dead = true;
+
+            FreezeGame game = (FreezeGame) super.getHabbo().getHabboInfo().getCurrentRoom().getGame(FreezeGame.class);
+
+            if(game != null)
+            {
+                game.playerDies(this);
+            }
+            return;
+        }
+        else
+        {
+            super.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new FreezeLivesComposer(this).compose());
+        }
+    }
+
+    public synchronized int getLives()
+    {
+        return this.lives;
+    }
+
+    public boolean canPickupLife()
+    {
+        return this.lives < 3;
+    }
+
+    public synchronized void addSnowball()
+    {
+        if(this.snowBalls < FreezeGame.MAX_SNOWBALLS)
+            ++this.snowBalls;
+    }
+
+    public synchronized void addSnowball(int amount)
+    {
+        this.snowBalls += amount;
+
+        if(this.snowBalls < 1)
+            this.snowBalls = 1;
+    }
+
+    public synchronized void takeSnowball()
+    {
+        if(this.snowBalls > 0)
+            --this.snowBalls;
+    }
+
+    public synchronized boolean canThrowSnowball()
+    {
+        if(this.snowBalls > 0)
+        {
+            if(!this.isFrozen())
+                return true;
+        }
+
+        return false;
+    }
+
+    public synchronized void freeze()
+    {
+        if(this.protectionTime > 0 || this.frozenTime > 0)
+            return;
+
+        this.takeLife();
+
+        this.frozenTime = FreezeGame.FREEZE_TIME;
+        this.addSnowball(-FreezeGame.FREEZE_LOOSE_SNOWBALL);
+        this.addExplosion(-FreezeGame.FREEZE_LOOSE_BOOST);
+        super.getHabbo().getRoomUnit().setCanWalk(false);
+        this.updateEffect();
+    }
+
+    public synchronized boolean isFrozen()
+    {
+        return this.frozenTime > 0;
+    }
+
+    public synchronized boolean canGetFrozen()
+    {
+        if(this.isFrozen() || this.isProtected())
+            return false;
+
+        return true;
+    }
+
+    public synchronized void addProtection()
+    {
+        this.updateEffect();
+
+        if(this.isProtected() && !FreezeGame.POWERUP_STACK)
+            return;
+
+        this.protectionTime += FreezeGame.POWER_UP_PROTECT_TIME;
+    }
+
+    public synchronized boolean isProtected()
+    {
+        return this.protectionTime > 0;
+    }
+
+    public synchronized int getExplosionBoost()
+    {
+        if(this.tempMassiveExplosion)
+        {
+            this.tempMassiveExplosion = false;
+            return 5;
+        }
+
+        return this.explosionBoost;
+    }
+
+    public synchronized void increaseExplosion()
+    {
+        if(this.explosionBoost < 5)
+            ++this.explosionBoost;
+    }
+
+    public synchronized void addExplosion(int radius)
+    {
+        this.explosionBoost += radius;
+
+        if(this.explosionBoost < 0)
+        {
+            this.explosionBoost = 0;
+        }
+
+        if(this.explosionBoost > 5)
+        {
+            this.explosionBoost = 5;
+        }
+    }
+
+    public synchronized void cycle()
+    {
+        boolean needsEffectUpdate = false;
+
+        if(this.isProtected())
+        {
+            --this.protectionTime;
+
+            if(!this.isProtected())
+                needsEffectUpdate = true;
+        }
+
+        if(this.frozenTime > 0)
+        {
+            --this.frozenTime;
+
+            if(frozenTime <= 0)
+            {
+                super.getHabbo().getRoomUnit().setCanWalk(true);
+                needsEffectUpdate = true;
+            }
+        }
+
+        if(needsEffectUpdate)
+            this.updateEffect();
+    }
+
+    public int correctEffectId()
+    {
+        if(this.dead)
+            return 0;
+
+        if(!this.isFrozen())
+        {
+            int effectId = 40;
+
+            effectId += super.getTeamColor().type;
+
+            if (this.isProtected())
+            {
+                effectId += 9;
+            }
+
+            return effectId;
+        }
+        else
+        {
+            return 12;
+        }
+    }
+
+    public void updateEffect()
+    {
+        if(this.dead)
+            return;
+
+        super.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(super.getHabbo(), this.correctEffectId());
+    }
+}

@@ -1,0 +1,31 @@
+package com.eu.habbo.messages.outgoing.guides;
+
+import com.eu.habbo.Emulator;
+import com.eu.habbo.messages.ServerMessage;
+import com.eu.habbo.messages.outgoing.MessageComposer;
+import com.eu.habbo.messages.outgoing.Outgoing;
+
+/**
+ * Created on 10-10-2015 21:26.
+ */
+public class GuideToolsComposer extends MessageComposer
+{
+    private final boolean onDuty;
+
+    public GuideToolsComposer(boolean onDuty)
+    {
+        this.onDuty = onDuty;
+    }
+
+    @Override
+    public ServerMessage compose()
+    {
+        //:test 117 b:1 i:1 i:1 i:1
+        this.response.init(Outgoing.GuideToolsComposer);
+        this.response.appendBoolean(this.onDuty); //OnDuty
+        this.response.appendInt32(0); //Guides On Duty
+        this.response.appendInt32(Emulator.getGameEnvironment().getGuideManager().getGuidesCount()); //Helpers On Duty
+        this.response.appendInt32(Emulator.getGameEnvironment().getGuideManager().getGuardiansCount()); //Guardians On Duty
+        return this.response;
+    }
+}

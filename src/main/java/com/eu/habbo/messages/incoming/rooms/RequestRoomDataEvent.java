@@ -1,0 +1,32 @@
+package com.eu.habbo.messages.incoming.rooms;
+
+import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.messages.incoming.MessageHandler;
+import com.eu.habbo.messages.outgoing.rooms.RoomDataComposer;
+
+/**
+ * Created on 6-9-2014 14:21.
+ */
+public class RequestRoomDataEvent extends MessageHandler
+{
+    @Override
+    public void handle() throws Exception
+    {
+        Room room = Emulator.getGameEnvironment().getRoomManager().loadRoom(this.packet.readInt());
+
+        int something = packet.readInt();
+        int something2 = packet.readInt();
+        if(room != null)
+        {
+            boolean unknown = true;
+
+            if(something == 0 && something2 == 1)
+            {
+                unknown = false;
+            }
+
+            this.client.sendResponse(new RoomDataComposer(room, this.client.getHabbo(), this.client.getHabbo().getHabboInfo().getCurrentRoom() != room, unknown));
+        }
+    }
+}

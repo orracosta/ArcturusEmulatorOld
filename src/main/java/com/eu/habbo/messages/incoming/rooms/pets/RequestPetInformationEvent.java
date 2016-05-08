@@ -1,0 +1,30 @@
+package com.eu.habbo.messages.incoming.rooms.pets;
+
+import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.messages.incoming.MessageHandler;
+import com.eu.habbo.messages.outgoing.rooms.pets.PetInformationComposer;
+
+/**
+ * Created on 30-11-2014 13:07.
+ */
+public class RequestPetInformationEvent extends MessageHandler
+{
+    @Override
+    public void handle() throws Exception
+    {
+        int petId = this.packet.readInt();
+
+        Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
+
+        if(room == null)
+            return;
+
+        AbstractPet pet = room.getPet(petId);
+
+        if(pet != null)
+        {
+            this.client.sendResponse(new PetInformationComposer(pet));
+        }
+    }
+}

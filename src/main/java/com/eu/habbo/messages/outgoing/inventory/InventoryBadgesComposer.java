@@ -1,0 +1,52 @@
+package com.eu.habbo.messages.outgoing.inventory;
+
+import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.habbohotel.users.HabboBadge;
+import com.eu.habbo.messages.ServerMessage;
+import com.eu.habbo.messages.outgoing.MessageComposer;
+import com.eu.habbo.messages.outgoing.Outgoing;
+import gnu.trove.set.hash.THashSet;
+
+/**
+ * Created on 29-8-2014 11:32.
+ */
+public class InventoryBadgesComposer extends MessageComposer {
+
+    private final Habbo habbo;
+
+    public InventoryBadgesComposer(Habbo habbo)
+    {
+        this.habbo = habbo;
+    }
+
+    @Override
+    public ServerMessage compose() {
+
+        if(this.habbo == null)
+            return null;
+
+        THashSet<HabboBadge> equippedBadges = new THashSet<HabboBadge>();
+
+        this.response.init(Outgoing.InventoryBadgesComposer);
+
+        this.response.appendInt32(this.habbo.getHabboInventory().getBadgesComponent().getBadges().size());
+        for(HabboBadge badge : this.habbo.getHabboInventory().getBadgesComponent().getBadges())
+        {
+            this.response.appendInt32(badge.getId());
+            this.response.appendString(badge.getCode());
+
+            if(badge.getSlot() > 0)
+                equippedBadges.add(badge);
+        }
+
+        this.response.appendInt32(equippedBadges.size());
+
+        for(HabboBadge badge : equippedBadges)
+        {
+            this.response.appendInt32(badge.getSlot());
+            this.response.appendString(badge.getCode());
+        }
+
+        return this.response;
+    }
+}

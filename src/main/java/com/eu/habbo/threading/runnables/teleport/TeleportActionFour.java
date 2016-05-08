@@ -1,0 +1,33 @@
+package com.eu.habbo.threading.runnables.teleport;
+
+import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
+
+/**
+ * Created on 7-3-2015 22:29.
+ */
+class TeleportActionFour implements Runnable
+{
+    private final HabboItem currentTeleport;
+    private final Room room;
+    private final GameClient client;
+
+    public TeleportActionFour(HabboItem currentTeleport, Room room, GameClient client)
+    {
+        this.currentTeleport = currentTeleport;
+        this.client = client;
+        this.room = room;
+    }
+
+    @Override
+    public void run()
+    {
+        this.currentTeleport.setExtradata("1");
+        this.room.updateItem(this.currentTeleport);
+
+        Emulator.getThreading().run(new TeleportActionFive(this.currentTeleport, this.room, this.client), 500);
+    }
+}

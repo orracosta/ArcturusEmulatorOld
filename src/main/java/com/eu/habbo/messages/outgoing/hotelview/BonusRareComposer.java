@@ -1,0 +1,34 @@
+package com.eu.habbo.messages.outgoing.hotelview;
+
+import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.messages.ServerMessage;
+import com.eu.habbo.messages.outgoing.MessageComposer;
+import com.eu.habbo.messages.outgoing.Outgoing;
+
+/**
+ * Created on 26-8-2014 17:14.
+ */
+public class BonusRareComposer extends MessageComposer
+{
+    private final Habbo habbo;
+
+    public BonusRareComposer(Habbo habbo)
+    {
+        this.habbo = habbo;
+    }
+
+    @Override
+    public ServerMessage compose()
+    {
+        this.response.init(Outgoing.BonusRareComposer);
+        this.response.appendString(Emulator.getConfig().getValue("hotelview.promotional.reward.name", "prizetrophy_breed_gold")); //Furniture Name. Note: Image is in external_variables.txt
+        this.response.appendInt32(Emulator.getConfig().getInt("hotelview.promotional.reward.id", 0)); //Furniture ID
+        this.response.appendInt32(Emulator.getConfig().getInt("hotelview.promotional.points", 120)); //Total Required
+        //this.response.appendInt32(this.habbo.getHabboInfo().getBonusRarePoints() >= Emulator.getConfig().getInt("hotelview.promotinal.points", 120) ? Emulator.getConfig().getInt("hotelview.promotinal.points", 120) : this.habbo.getHabboInfo().getBonusRarePoints() ); //Total To Gain
+        int points = Emulator.getConfig().getInt("hotelview.promotional.points", 120) - this.habbo.getHabboInfo().getBonusRarePoints();
+        this.response.appendInt32(points < 0 ? 0 : points);
+
+        return this.response;
+    }
+}

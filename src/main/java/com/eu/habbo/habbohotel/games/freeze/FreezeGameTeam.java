@@ -1,0 +1,40 @@
+package com.eu.habbo.habbohotel.games.freeze;
+
+import com.eu.habbo.habbohotel.games.Game;
+import com.eu.habbo.habbohotel.games.GamePlayer;
+import com.eu.habbo.habbohotel.games.GameTeam;
+import com.eu.habbo.habbohotel.games.GameTeamColors;
+
+/**
+ * Created on 10-4-2015 20:40.
+ */
+public class FreezeGameTeam extends GameTeam
+{
+    public FreezeGameTeam(GameTeamColors teamColor)
+    {
+        super(teamColor);
+    }
+
+    @Override
+    public void removeMember(GamePlayer gamePlayer)
+    {
+        Game game = gamePlayer.getHabbo().getHabboInfo().getCurrentRoom().getGame(gamePlayer.getHabbo().getHabboInfo().getCurrentGame());
+        if(game != null && game instanceof FreezeGame)
+        {
+            ((FreezeGame) game).placebackHelmet(gamePlayer.getTeamColor());
+        }
+
+        gamePlayer.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(gamePlayer.getHabbo(), 0);
+        gamePlayer.getHabbo().getRoomUnit().setCanWalk(true);
+
+        super.removeMember(gamePlayer);
+    }
+
+    @Override
+    public void addMember(GamePlayer gamePlayer)
+    {
+        super.addMember(gamePlayer);
+
+        gamePlayer.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(gamePlayer.getHabbo(), FreezeGame.effectId + this.teamColor.type);
+    }
+}

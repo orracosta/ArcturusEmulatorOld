@@ -1,0 +1,36 @@
+package com.eu.habbo.messages.incoming.navigator;
+
+import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.messages.incoming.MessageHandler;
+import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
+import com.eu.habbo.messages.outgoing.users.UserHomeRoomComposer;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+/**
+ * Created on 7-7-2015 11:26.
+ */
+public class NewNavigatorActionEvent extends MessageHandler
+{
+    @Override
+    public void handle() throws Exception
+    {
+        String data = this.packet.readString();
+
+        if(data.equals("random_friending_room"))
+        {
+            ArrayList<Room> rooms = Emulator.getGameEnvironment().getRoomManager().getActiveRooms();
+            if(!rooms.isEmpty())
+            {
+                Collections.shuffle(rooms);
+                this.client.sendResponse(new ForwardToRoomComposer(rooms.get(0).getId()));
+            }
+        }
+        else
+        {
+            this.client.sendResponse(new UserHomeRoomComposer(this.client.getHabbo().getHabboInfo().getHomeRoom(), this.client.getHabbo().getHabboInfo().getHomeRoom()));
+        }
+    }
+}

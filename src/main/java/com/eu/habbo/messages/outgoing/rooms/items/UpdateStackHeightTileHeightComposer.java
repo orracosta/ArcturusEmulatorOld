@@ -1,0 +1,34 @@
+package com.eu.habbo.messages.outgoing.rooms.items;
+
+import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.messages.ServerMessage;
+import com.eu.habbo.messages.outgoing.MessageComposer;
+import com.eu.habbo.messages.outgoing.Outgoing;
+
+/**
+ * Created on 10-10-2015 20:34.
+ */
+public class UpdateStackHeightTileHeightComposer extends MessageComposer
+{
+    private final HabboItem item;
+    private final int height;
+
+    public UpdateStackHeightTileHeightComposer(HabboItem item, double height)
+    {
+        this.item = item;
+
+        if(height * 100 < 999)
+            this.height = (int) height * 100;
+        else
+            this.height = 999;
+    }
+
+    @Override
+    public ServerMessage compose()
+    {
+        this.response.init(Outgoing.UpdateStackHeightTileHeightComposer);
+        this.response.appendInt32(this.item.getId());
+        this.response.appendInt32(this.height);
+        return this.response;
+    }
+}

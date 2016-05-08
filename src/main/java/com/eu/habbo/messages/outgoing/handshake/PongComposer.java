@@ -1,0 +1,26 @@
+package com.eu.habbo.messages.outgoing.handshake;
+
+import com.eu.habbo.messages.ServerMessage;
+import com.eu.habbo.messages.outgoing.MessageComposer;
+import com.eu.habbo.messages.outgoing.Outgoing;
+
+/**
+ * Created on 27-7-2015 13:15.
+ */
+public class PongComposer extends MessageComposer
+{
+    private int id;
+
+    public PongComposer(int id)
+    {
+        this.id = id;
+    }
+
+    @Override
+    public ServerMessage compose()
+    {
+        this.response.init(Outgoing.PongComposer);
+        this.response.appendInt32(this.id);
+        return this.response;
+    }
+}

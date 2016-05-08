@@ -1,0 +1,82 @@
+#fix
+IP checking on RCON port.
+
+#add
+sticky pole
+room queues
+Wired Condition: Within coordinates: x=10&y=20&x>20;x=4&y=4
+Tents
+tradelock
+verification of user looks
+Block multi login (Possibly auto ban?)
+push pull without being near (Staff only)
+
+#commands
+:globalgift/present [furni-id] // Gives a present to all users in the db. (if its possible with the performance)
+:spush [username] // Push a user, let it walk till it walks against something.
+:lay // You know what is does
+:ipban
+:permban
+:copyroom command
+
+#cool shit
+
+//DONE
+:massgift/present [furni-id] // Gives a present to all online users.
+:roomitem [handitemid] // Gives a handitem to all users in the room.
+:badge <badgecode> <username> command. //DONE
+:masscredits/points/diamonds [amount] // Gives credits/points/diamonds to all online users. //DONE
+:pull [username] //Pull a user who is 2 tiles away from you. //DONE
+:push [username] //Push a user who is stading in front of you 1 tile away. //DONE
+:freeze [username] //Freezes a users, so the user can't walk. //DONE
+:spull [username] //Pulls a user, doesnt matter how far away the user is. //DONE
+:control [username] // Control a user. //DONE
+:sitdown //Let all users in the room sit. //DONE
+:dance [danceid 1/2/3/4] //Let all users dance in the room. //DONE
+:sit // you know what it does //DONE
+:sayall [message] // Every user in the room says what you want. //DONE
+:userinfo [username] //You know what it does. //DONE
+:mute [username] [time in seconds] //Mutes a users for x seconds. //DONE
+
+navigator ook offline kamers / users. //DONE
+Verkeerd persoon steekt duim omhoog bij respect. //DONE
+Fix rotation bij user binnenkomen. //DONE
+
+Redeemable diamonds items
+Redeemable pixel items
+spam countdown
+Incorrect relationship packet structure.
+:globalcredits/points/diamonds [amoun] // Gives credits/points/diamonds to all users in the db.
+
+
+one way gates.
+Chatlogs kamer werkt niet.
+Chatlogs user niet goed gesorteerd.
+Report user werkt niet.
+User ignoring.
+
+Deurbel.
+sticky notes
+Habbo Club
+apply wordfilter to wired make say
+
+Unwalkable tile when exchanging furniture (Client side)
+Whisper not passing on bubble type.
+apply wordfilter to bot speech
+:roommute
+Pickup water remove water effect on water_item
+Multiple seasonal points type support.
+wired forward to room
+Wired Effect: Give hotelscore points. Adds points to the Hall of Fame.
+Wired Effect: Give hotelbonusrare points. Adds points to the bonusrare.
+Add staff support for guild editing.
+Update user upon item rotation. (Sit, lay)
+Update user upon item removed. (Sit, lay)
+:longcommand -> Opens sticky which allows the user to imput an longer command or multiple commands seperated by a new line.
+
+Floorplan editor greyed out tiles.
+Delete custom room layout upon room deletion.
+Wired effect move furni up.
+Wired effect move furni down.
+Wired condition motto contains.
+spaces cata page.

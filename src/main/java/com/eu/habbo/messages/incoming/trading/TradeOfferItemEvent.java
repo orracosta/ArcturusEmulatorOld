@@ -1,0 +1,27 @@
+package com.eu.habbo.messages.incoming.trading;
+
+import com.eu.habbo.habbohotel.rooms.RoomTrade;
+import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.messages.incoming.MessageHandler;
+
+/**
+ * Created on 8-11-2014 14:02.
+ */
+public class TradeOfferItemEvent extends MessageHandler
+{
+    @Override
+    public void handle() throws Exception
+    {
+        RoomTrade trade = this.client.getHabbo().getHabboInfo().getCurrentRoom().getActiveTradeForHabbo(this.client.getHabbo());
+
+        if(trade == null)
+            return;
+
+        HabboItem item = this.client.getHabbo().getHabboInventory().getItemsComponent().getHabboItem(this.packet.readInt());
+
+        if(item == null)
+            return;
+
+        trade.offerItem(this.client.getHabbo(), item);
+    }
+}

@@ -1,0 +1,35 @@
+package com.eu.habbo.habbohotel.commands;
+
+import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.habbohotel.rooms.Room;
+
+/**
+ * Created on 28-1-2016 20:54.
+ */
+public class PickallCommand extends Command
+{
+    public PickallCommand()
+    {
+        super.permission = "cmd_pickall";
+        super.keys       = Emulator.getTexts().getValue("commands.keys.cmd_pickall").split(";");
+    }
+
+    @Override
+    public boolean handle(GameClient gameClient, String[] params) throws Exception
+    {
+        Room room = gameClient.getHabbo().getHabboInfo().getCurrentRoom();
+
+        if(room != null)
+        {
+            room.ejectUserFurni(gameClient.getHabbo().getHabboInfo().getId());
+
+            if(room.isOwner(gameClient.getHabbo()))
+            {
+                room.ejectAll();
+            }
+        }
+
+        return true;
+    }
+}

@@ -1,0 +1,12 @@
+package com.eu.habbo.messages.incoming;
+
+import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.messages.ClientMessage;
+
+public abstract class MessageHandler
+{
+    public GameClient client;
+    public ClientMessage packet;
+
+    public abstract void handle() throws Exception;
+}

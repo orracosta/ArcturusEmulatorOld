@@ -1,0 +1,30 @@
+package com.eu.habbo.messages.outgoing.unknown;
+
+import com.eu.habbo.messages.ServerMessage;
+import com.eu.habbo.messages.outgoing.MessageComposer;
+
+/**
+ * Created on 29-12-2014 18:57.
+ */
+public class SnowWarsAddUserComposer extends MessageComposer
+{
+    /*
+        Adds the user to the "Waiting for more players" screen.
+        //Works
+     */
+    @Override
+    public ServerMessage compose()
+    {
+        this.response.init(1880);
+        this.response.appendInt32(3);
+        this.response.appendString("Derpface");
+        this.response.appendString("ca-1807-64.lg-275-78.hd-3093-1.hr-802-42.ch-3110-65-62.fa-1211-63");
+        this.response.appendString("m");
+        this.response.appendInt32(-1); //Team Id
+        this.response.appendInt32(0); //Stars
+        this.response.appendInt32(0); //Points
+        this.response.appendInt32(10); //Points for next lvl
+        this.response.appendBoolean(false);
+        return this.response;
+    }
+}
