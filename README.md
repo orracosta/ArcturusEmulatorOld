@@ -8,6 +8,8 @@ SWF: http://arcturus.wf/mirrors/PRODUCTION-201601012205-226667486.swf
 
 SCRIPTS: http://arcturus.wf/mirrors/PRODUCTION-201601012205-226667486_scripts.txt
 
+Compiled version: http://arcturus.wf/mirrors/ArcturusEmulator.zip
+
 ### Contributing ###
 
 Anyone is allowed to contribute to the project. Reporting bugs and issues goes via the issue tracker.
