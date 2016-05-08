@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="trading3">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/target/classes/com/eu/habbo/messages/incoming/trading.zip!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
