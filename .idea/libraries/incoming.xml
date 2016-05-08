@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="incoming">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/target/classes/com/eu/habbo/messages/incoming.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
