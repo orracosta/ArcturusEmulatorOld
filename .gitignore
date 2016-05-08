@@ -1,6 +1,6 @@
 *.iml
 .idea/
+logging/
 target/
 /TODO.txt
 /packet.pkt
-# Created by .ignore support plugin (hsz.mobi)
