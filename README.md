@@ -10,6 +10,8 @@ SCRIPTS: http://arcturus.wf/mirrors/PRODUCTION-201601012205-226667486_scripts.tx
 
 Compiled version: http://arcturus.wf/mirrors/ArcturusEmulator.zip
 
+Database: http://arcturus.wf/mirrors/habbo.sql
+
 ### Contributing ###
 
 Anyone is allowed to contribute to the project. Reporting bugs and issues goes via the issue tracker.
