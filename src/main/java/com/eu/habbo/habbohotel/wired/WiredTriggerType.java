@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.wired;
 
-/**
- * Created on 13-12-2014 22:49.
- */
 public enum WiredTriggerType
 {
     SAY_SOMETHING(0),

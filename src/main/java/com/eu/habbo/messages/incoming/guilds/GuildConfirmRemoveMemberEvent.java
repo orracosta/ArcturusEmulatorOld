@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.guilds.GuildConfirmRemoveMemberComposer;
 
-/**
- * Created on 27-7-2015 18:58.
- */
 public class GuildConfirmRemoveMemberEvent extends MessageHandler
 {
     @Override

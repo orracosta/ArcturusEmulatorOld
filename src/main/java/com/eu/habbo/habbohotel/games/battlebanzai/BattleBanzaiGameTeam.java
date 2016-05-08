@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.games.GameTeam;
 import com.eu.habbo.habbohotel.games.GameTeamColors;
 import com.eu.habbo.habbohotel.games.freeze.FreezeGame;
 
-/**
- * Created on 22-5-2015 21:38.
- */
 public class BattleBanzaiGameTeam extends GameTeam
 {
     public BattleBanzaiGameTeam(GameTeamColors teamColor)

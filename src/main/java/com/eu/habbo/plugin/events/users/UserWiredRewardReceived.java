@@ -3,9 +3,6 @@ package com.eu.habbo.plugin.events.users;
 import com.eu.habbo.habbohotel.items.interactions.wired.effects.WiredEffectGiveReward;
 import com.eu.habbo.habbohotel.users.Habbo;
 
-/**
- * Created on 9-11-2015 21:19.
- */
 public class UserWiredRewardReceived extends UserEvent
 {
     /**

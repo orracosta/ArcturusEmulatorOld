@@ -12,9 +12,6 @@ import com.eu.habbo.messages.outgoing.trading.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created on 8-11-2014 13:25.
- */
 public class RoomTrade
 {
     private final List<RoomTradeUser> users;

@@ -22,10 +22,8 @@ import gnu.trove.set.hash.THashSet;
 
 import java.awt.*;
 
-/**
- * Created on 20-9-2014 21:06.
- */
-public class RotateMoveItemEvent extends MessageHandler {
+public class RotateMoveItemEvent extends MessageHandler
+{
     @Override
     public void handle() throws Exception
     {

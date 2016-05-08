@@ -11,9 +11,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-/**
- * Created on 23-11-2014 10:02.
- */
 public class GuildMembersComposer extends MessageComposer
 {
     private final ArrayList<GuildMember> members;

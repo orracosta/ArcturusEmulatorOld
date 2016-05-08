@@ -7,9 +7,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 23-1-2015 19:24.
- */
 public abstract class InteractionGameScoreboard extends InteractionGameTeamItem
 {
     protected InteractionGameScoreboard(ResultSet set, Item baseItem, GameTeamColors teamColor) throws SQLException

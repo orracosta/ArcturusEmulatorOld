@@ -3,9 +3,6 @@ package com.eu.habbo.habbohotel.achievements;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 30-1-2015 14:32.
- */
 public class AchievementLevel
 {
     public final int level;

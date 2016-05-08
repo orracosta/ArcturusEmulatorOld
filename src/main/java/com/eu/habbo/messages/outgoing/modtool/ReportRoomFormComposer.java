@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 3-3-2015 13:17.
- */
 public class ReportRoomFormComposer extends MessageComposer
 {
     @Override

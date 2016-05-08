@@ -9,20 +9,18 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.friends.FriendChatMessageComposer;
 import com.eu.habbo.plugin.events.users.friends.UserFriendChatEvent;
 
-/**
- * Created on 26-8-2014 10:45.
- */
-public class FriendPrivateMessageEvent extends MessageHandler {
-
+public class FriendPrivateMessageEvent extends MessageHandler
+{
     @Override
-    public void handle() throws Exception {
+    public void handle() throws Exception
+    {
         int userId = this.packet.readInt();
         String message = this.packet.readString();
 
         MessengerBuddy buddy = this.client.getHabbo().getMessenger().getFriend(userId);
 
-        //TODO Incorrect behaviour (Really low chance)
-        if(buddy == null) {
+        if(buddy == null)
+        {
             if(message.startsWith(":"))
             {
                 CommandHandler.handleCommand(this.client, message);

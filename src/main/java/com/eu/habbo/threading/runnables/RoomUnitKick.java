@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 
-/**
- * Created on 20-12-2014 13:37.
- */
 public class RoomUnitKick implements Runnable
 {
     private final Habbo habbo;

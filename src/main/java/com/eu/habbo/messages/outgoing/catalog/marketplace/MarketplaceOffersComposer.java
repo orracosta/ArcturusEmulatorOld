@@ -6,9 +6,6 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 1-11-2014 15:57.
- */
 public class MarketplaceOffersComposer extends MessageComposer
 {
     private final THashSet<MarketPlaceOffer> offers;

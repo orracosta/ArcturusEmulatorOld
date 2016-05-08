@@ -13,9 +13,6 @@ import gnu.trove.map.TIntObjectMap;
 
 import java.util.NoSuchElementException;
 
-/**
- * Created on 18-10-2015 13:52.
- */
 public class RoomItemCommand extends Command
 {
     public RoomItemCommand()

@@ -14,9 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created on 18-9-2015 22:04.
- */
 public class ButlerBot extends Bot
 {
     public static THashMap<THashSet<String>, Integer> serveItems = new THashMap<THashSet<String>, Integer>();

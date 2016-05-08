@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 3-9-2014 12:06.
- */
 public class RoomThicknessComposer extends MessageComposer {
 
     private final Room room;

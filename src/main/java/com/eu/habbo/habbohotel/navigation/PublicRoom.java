@@ -3,9 +3,6 @@ package com.eu.habbo.habbohotel.navigation;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 26-8-2014 18:51.
- */
 public class PublicRoom {
 
     public final int id;

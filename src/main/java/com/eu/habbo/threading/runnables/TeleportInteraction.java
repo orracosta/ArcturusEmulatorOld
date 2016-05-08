@@ -12,9 +12,6 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUsersComposer;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 7-11-2014 14:28.
- */
 class TeleportInteraction extends Thread
 {
     private int state;

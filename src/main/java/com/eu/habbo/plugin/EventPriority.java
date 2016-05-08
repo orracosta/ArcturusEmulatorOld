@@ -1,8 +1,5 @@
 package com.eu.habbo.plugin;
 
-/**
- * Created on 28-2-2015 18:46.
- */
 public enum EventPriority
 {
     /**
@@ -44,6 +41,6 @@ public enum EventPriority
 
     public int getSlot()
     {
-        return slot;
+        return this.slot;
     }
 }

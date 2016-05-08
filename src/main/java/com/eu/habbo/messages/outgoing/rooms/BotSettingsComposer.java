@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 21-10-2014 13:01.
- */
 public class BotSettingsComposer extends MessageComposer
 {
     private final Bot bot;

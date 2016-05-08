@@ -11,9 +11,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 28-6-2015 13:06.
- */
 public class WiredConditionDateRangeActive extends InteractionWiredCondition
 {
     public static final WiredConditionType type = WiredConditionType.DATE_RANGE;

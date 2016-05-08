@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.bots.Bot;
 
 import java.util.ArrayList;
 
-/**
- * Created on 24-10-2015 13:16.
- */
 public class BotSavedChatEvent extends BotEvent
 {
     /**

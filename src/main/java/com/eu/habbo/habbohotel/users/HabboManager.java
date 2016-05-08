@@ -15,11 +15,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created on 25-8-2014 13:40.
- */
-public class HabboManager {
-
+public class HabboManager
+{
     private final ConcurrentHashMap<Integer, Habbo> onlineHabbos;
 
     public HabboManager()

@@ -4,13 +4,17 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 25-7-2015 15:02.
- */
 public class MysticBoxPrizeComposer extends MessageComposer
 {
-    private String type;
-    private int itemId;
+    private final String type;
+    private final int itemId;
+
+    public MysticBoxPrizeComposer(String type, int itemId)
+    {
+        this.type = type;
+        this.itemId = itemId;
+    }
+
     @Override
     public ServerMessage compose()
     {

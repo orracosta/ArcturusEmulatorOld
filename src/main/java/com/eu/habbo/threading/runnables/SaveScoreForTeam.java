@@ -8,9 +8,6 @@ import com.eu.habbo.habbohotel.games.GameTeam;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- * Created on 1-7-2015 13:54.
- */
 public class SaveScoreForTeam implements Runnable
 {
     public final GameTeam team;

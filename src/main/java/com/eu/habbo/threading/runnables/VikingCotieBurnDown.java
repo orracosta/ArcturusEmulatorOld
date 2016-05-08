@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionVikingCotie;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 
-/**
- * Created on 16-10-2015 22:38.
- */
 public class VikingCotieBurnDown implements Runnable
 {
     private int state;

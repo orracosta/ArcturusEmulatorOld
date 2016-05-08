@@ -5,11 +5,8 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 25-8-2014 18:25.
- */
-public class FriendRequestComposer extends MessageComposer {
-
+public class FriendRequestComposer extends MessageComposer
+{
     private final Habbo habbo;
 
     public FriendRequestComposer(Habbo habbo)

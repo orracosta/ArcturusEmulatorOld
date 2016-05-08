@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 2-11-2014 21:10.
- */
 public class TriggerColorWheelEvent extends MessageHandler
 {
     @Override

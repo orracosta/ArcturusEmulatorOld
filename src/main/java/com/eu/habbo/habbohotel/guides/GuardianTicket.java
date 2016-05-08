@@ -14,9 +14,6 @@ import gnu.trove.map.hash.THashMap;
 
 import java.util.*;
 
-/**
- * Created on 11-10-2015 16:46.
- */
 public class GuardianTicket
 {
     private ArrayList<ModToolChatLog> chatLogs;

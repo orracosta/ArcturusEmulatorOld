@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.RoomSettingsComposer;
 
-/**
- * Created on 22-10-2014 15:54.
- */
 public class RequestRoomSettingsEvent extends MessageHandler
 {
     @Override

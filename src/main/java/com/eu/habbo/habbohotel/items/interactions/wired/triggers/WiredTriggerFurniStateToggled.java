@@ -15,9 +15,6 @@ import gnu.trove.set.hash.THashSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 19:59.
- */
 public class WiredTriggerFurniStateToggled extends InteractionWiredTrigger
 {
     private static final WiredTriggerType type = WiredTriggerType.STATE_CHANGED;

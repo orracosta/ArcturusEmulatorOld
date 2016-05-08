@@ -5,12 +5,8 @@ import com.eu.habbo.habbohotel.modtool.ModToolIssue;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 5-3-2015 09:06.
- */
 public class ModToolCloseTicketEvent extends MessageHandler
 {
-
     @Override
     public void handle() throws Exception
     {

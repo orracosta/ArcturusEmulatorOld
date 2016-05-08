@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserEffectComposer;
 
-/**
- * Created on 21-11-2015 20:40.
- */
 public class MoonwalkCommand extends Command
 {
     public MoonwalkCommand()

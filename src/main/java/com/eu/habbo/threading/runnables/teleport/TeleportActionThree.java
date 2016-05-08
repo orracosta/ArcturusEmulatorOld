@@ -11,9 +11,6 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserRemoveComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.threading.runnables.HabboItemNewState;
 
-/**
- * Created on 7-3-2015 22:21.
- */
 class TeleportActionThree implements Runnable
 {
     private final HabboItem currentTeleport;

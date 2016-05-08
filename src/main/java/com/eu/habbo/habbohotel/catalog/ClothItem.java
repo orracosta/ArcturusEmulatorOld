@@ -3,9 +3,6 @@ package com.eu.habbo.habbohotel.catalog;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 15-2-2015 11:27.
- */
 class ClothItem
 {
     /**

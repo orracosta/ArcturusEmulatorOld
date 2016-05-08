@@ -7,9 +7,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 8-11-2014 13:34.
- */
 public class TradeUpdateComposer extends MessageComposer
 {
     private RoomTrade roomTrade;

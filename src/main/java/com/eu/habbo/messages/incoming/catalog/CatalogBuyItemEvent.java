@@ -12,9 +12,6 @@ import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.users.*;
 import gnu.trove.procedure.TObjectProcedure;
 
-/**
- * Created on 29-8-2014 15:11.
- */
 public class CatalogBuyItemEvent extends MessageHandler
 {
     @Override

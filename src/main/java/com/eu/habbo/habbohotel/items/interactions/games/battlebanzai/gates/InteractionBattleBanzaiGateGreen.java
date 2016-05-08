@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.items.Item;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 25-5-2015 10:33.
- */
 public class InteractionBattleBanzaiGateGreen extends InteractionBattleBanzaiGate
 {
     public static final GameTeamColors TEAM_COLOR = GameTeamColors.GREEN;

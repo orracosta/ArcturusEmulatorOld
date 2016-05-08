@@ -13,9 +13,6 @@ import com.eu.habbo.util.pathfinding.Tile;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 7-3-2015 10:10.
- */
 public class InteractionPuzzleBox extends HabboItem
 {
     public InteractionPuzzleBox(ResultSet set, Item baseItem) throws SQLException

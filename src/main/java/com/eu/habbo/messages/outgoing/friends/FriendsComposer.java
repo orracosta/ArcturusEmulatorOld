@@ -9,11 +9,8 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 import java.util.Map;
 
-/**
- * Created on 25-8-2014 11:50.
- */
-public class FriendsComposer extends MessageComposer {
-
+public class FriendsComposer extends MessageComposer
+{
     private final Habbo habbo;
 
     public FriendsComposer(Habbo habbo)
@@ -22,8 +19,8 @@ public class FriendsComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
-
+    public ServerMessage compose()
+    {
         try
         {
             this.response.init(Outgoing.FriendsComposer);

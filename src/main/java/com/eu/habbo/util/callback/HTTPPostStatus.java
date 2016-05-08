@@ -6,9 +6,6 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created on 24-12-2015 13:03.
- */
 public class HTTPPostStatus implements Runnable
 {
     private void sendPost() throws Exception {

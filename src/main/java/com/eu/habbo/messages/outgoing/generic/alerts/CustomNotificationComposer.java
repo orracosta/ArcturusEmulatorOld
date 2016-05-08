@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 2-8-2015 16:40.
- */
 public class CustomNotificationComposer extends MessageComposer
 {
     public static final int HOPPER_NO_COSTUME = 1;

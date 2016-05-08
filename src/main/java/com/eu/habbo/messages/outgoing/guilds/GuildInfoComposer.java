@@ -13,9 +13,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created on 22-11-2014 22:07.
- */
 public class GuildInfoComposer extends MessageComposer
 {
     private final Guild guild;

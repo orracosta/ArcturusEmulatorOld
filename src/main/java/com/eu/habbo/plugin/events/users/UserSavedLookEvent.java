@@ -3,9 +3,6 @@ package com.eu.habbo.plugin.events.users;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboGender;
 
-/**
- * Created on 24-10-2015 13:00.
- */
 public class UserSavedLookEvent extends UserEvent
 {
     public HabboGender gender;

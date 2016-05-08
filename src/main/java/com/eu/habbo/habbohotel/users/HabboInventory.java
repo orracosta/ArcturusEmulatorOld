@@ -6,18 +6,14 @@ import com.eu.habbo.habbohotel.catalog.marketplace.MarketPlaceState;
 import com.eu.habbo.habbohotel.users.inventory.*;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 28-8-2014 18:45.
- */
-public class HabboInventory {
-
+public class HabboInventory
+{
     private WardrobeComponent wardrobeComponent;
     private BadgesComponent badgesComponent;
     private BotsComponent botsComponent;
     private EffectsComponent effectsComponent;
     private ItemsComponent itemsComponent;
     private PetsComponent petsComponent;
-
     private final THashSet<MarketPlaceOffer> items;
 
     public HabboInventory(Habbo habbo)

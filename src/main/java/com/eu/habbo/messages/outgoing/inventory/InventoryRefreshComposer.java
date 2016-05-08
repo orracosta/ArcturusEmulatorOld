@@ -4,12 +4,11 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 29-8-2014 16:19.
- */
-public class InventoryRefreshComposer extends MessageComposer {
+public class InventoryRefreshComposer extends MessageComposer
+{
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.InventoryRefreshComposer);
         return this.response;
     }

@@ -16,9 +16,6 @@ import gnu.trove.map.hash.TIntIntHashMap;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 20:18.
- */
 public class WiredEffectGiveScoreToTeam extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.GIVE_SCORE_TEAM;

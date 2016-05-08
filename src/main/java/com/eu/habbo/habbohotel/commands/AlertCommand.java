@@ -8,9 +8,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
-/**
- * Created on 4-10-2014 21:41.
- */
 public class AlertCommand extends Command {
 
     public AlertCommand()

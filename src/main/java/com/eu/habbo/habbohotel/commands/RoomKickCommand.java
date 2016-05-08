@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 
-/**
- * Created on 11-10-2014 15:20.
- */
 public class RoomKickCommand extends Command
 {
     public RoomKickCommand()

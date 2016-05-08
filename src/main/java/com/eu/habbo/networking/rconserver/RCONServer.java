@@ -12,9 +12,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-/**
- * Created on 18-7-2015 10:00.
- */
 public class RCONServer
 {
     public static String[] allowedAdresses;

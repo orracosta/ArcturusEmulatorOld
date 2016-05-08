@@ -7,9 +7,6 @@ import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 
-/**
- * Created on 8-3-2015 10:52.
- */
 public class HopperActionOne implements Runnable
 {
     private final HabboItem teleportOne;

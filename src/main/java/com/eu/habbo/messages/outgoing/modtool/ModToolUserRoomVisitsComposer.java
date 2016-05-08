@@ -9,9 +9,6 @@ import gnu.trove.set.hash.THashSet;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-/**
- * Created on 22-11-2014 11:10.
- */
 public class ModToolUserRoomVisitsComposer extends MessageComposer
 {
     private final Habbo habbo;

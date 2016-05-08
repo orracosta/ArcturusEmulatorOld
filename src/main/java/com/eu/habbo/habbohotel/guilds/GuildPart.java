@@ -3,9 +3,6 @@ package com.eu.habbo.habbohotel.guilds;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 22-11-2014 16:42.
- */
 public class GuildPart
 {
     /**

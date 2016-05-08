@@ -10,9 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 8-3-2015 10:55.
- */
 class HopperActionTwo implements Runnable
 {
     private final HabboItem teleportOne;

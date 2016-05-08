@@ -9,9 +9,6 @@ import gnu.trove.map.hash.TIntIntHashMap;
 
 import java.util.Calendar;
 
-/**
- * Created on 11-10-2015 16:43.
- */
 public class GuardianVotingRequestedComposer extends MessageComposer
 {
     private final GuardianTicket ticket;

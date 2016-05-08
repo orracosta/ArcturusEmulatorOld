@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.guides.GuideToolsComposer;
 
-/**
- * Created on 11-10-2015 00:33.
- */
 public class RequestGuideToolEvent extends MessageHandler
 {
     @Override

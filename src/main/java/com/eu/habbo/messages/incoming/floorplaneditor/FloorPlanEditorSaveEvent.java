@@ -11,16 +11,11 @@ import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 3-4-2015 21:39.
- */
 public class FloorPlanEditorSaveEvent extends MessageHandler
 {
     @Override
     public void handle() throws Exception
     {
-        //this.client.sendResponse(new GenericAlertComposer("Saving Floorplan..."));
-
         Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
 
         if(room == null)
@@ -29,8 +24,6 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
         if(room.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || this.client.getHabbo().hasPermission("acc_anyroomowner"))
         {
             String map = this.packet.readString();
-
-            //Emulator.getLogging().logErrorLine(map);
 
             if(map.isEmpty() || map.length() == 0)
                 return;

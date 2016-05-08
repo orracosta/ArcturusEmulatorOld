@@ -6,9 +6,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 20-9-2014 16:15.
- */
 public class SpacesLayout extends CatalogPage {
 
     public SpacesLayout(ResultSet set) throws SQLException

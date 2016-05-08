@@ -12,9 +12,6 @@ import com.eu.habbo.messages.outgoing.generic.alerts.PetErrorComposer;
 import com.eu.habbo.messages.outgoing.inventory.RemovePetComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetComposer;
 
-/**
- * Created on 30-11-2014 10:46.
- */
 public class PetPlaceEvent extends MessageHandler
 {
     @Override

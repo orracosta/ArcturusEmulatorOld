@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 3-11-2014 18:34.
- */
 public class PollStartComposer extends MessageComposer
 {
     private final Poll poll;
@@ -20,7 +17,6 @@ public class PollStartComposer extends MessageComposer
     @Override
     public ServerMessage compose()
     {
-        //OK
         this.response.init(Outgoing.PollStartComposer);
         this.response.appendInt32(this.poll.getId());
         this.response.appendString(this.poll.getTitle());

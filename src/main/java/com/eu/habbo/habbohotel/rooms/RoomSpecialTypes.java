@@ -24,9 +24,6 @@ import gnu.trove.set.hash.THashSet;
 
 import java.util.Map;
 
-/**
- * Created on 2-11-2014 22:21.
- */
 public class RoomSpecialTypes
 {
     private final THashMap<Integer, InteractionBattleBanzaiTeleporter> banzaiTeleporters;

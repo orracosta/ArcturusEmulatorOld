@@ -13,9 +13,6 @@ import com.eu.habbo.messages.outgoing.users.UserPointsComposer;
 import java.util.Collection;
 import java.util.Map;
 
-/**
- * Created on 21-2-2015 10:29.
- */
 public class MassPointsCommand extends Command
 {
     public MassPointsCommand()

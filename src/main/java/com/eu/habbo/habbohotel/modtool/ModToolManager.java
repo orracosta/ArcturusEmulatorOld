@@ -18,9 +18,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 
-/**
- * Created on 4-11-2014 13:06.
- */
 public class ModToolManager
 {
     private final TIntObjectMap<ModToolCategory> category;

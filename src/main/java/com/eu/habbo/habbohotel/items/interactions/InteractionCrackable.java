@@ -15,9 +15,6 @@ import com.eu.habbo.threading.runnables.CrackableExplode;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 7-11-2014 22:22.
- */
 public class InteractionCrackable extends HabboItem
 {
     public InteractionCrackable(ResultSet set, Item baseItem) throws SQLException

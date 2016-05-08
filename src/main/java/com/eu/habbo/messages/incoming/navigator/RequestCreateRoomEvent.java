@@ -9,9 +9,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.navigator.CanCreateRoomComposer;
 import com.eu.habbo.messages.outgoing.navigator.RoomCreatedComposer;
 
-/**
- * Created on 31-8-2014 15:05.
- */
 public class RequestCreateRoomEvent extends MessageHandler {
 
     @Override

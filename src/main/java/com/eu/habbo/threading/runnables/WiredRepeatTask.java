@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 
-/**
- * Created on 14-12-2014 15:04.
- */
 public class WiredRepeatTask implements Runnable
 {
     private final InteractionWiredTrigger repeater;

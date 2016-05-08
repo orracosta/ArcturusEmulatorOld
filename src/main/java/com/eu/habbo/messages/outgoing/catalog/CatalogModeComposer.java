@@ -4,11 +4,8 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 27-8-2014 15:53.
- */
-public class CatalogModeComposer extends MessageComposer {
-
+public class CatalogModeComposer extends MessageComposer
+{
     private int mode = 0;
 
     public CatalogModeComposer(int mode)
@@ -17,7 +14,8 @@ public class CatalogModeComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.CatalogModeComposer);
         this.response.appendInt32(this.mode);
         return this.response;

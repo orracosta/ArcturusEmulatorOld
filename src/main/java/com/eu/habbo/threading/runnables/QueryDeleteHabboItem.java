@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- * Created on 22-10-2014 11:23.
- */
 public class QueryDeleteHabboItem implements Runnable
 {
     private final HabboItem item;

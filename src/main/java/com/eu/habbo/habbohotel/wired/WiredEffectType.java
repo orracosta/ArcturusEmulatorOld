@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.wired;
 
-/**
- * Created on 13-12-2014 22:57.
- */
 public enum WiredEffectType
 {
     TOGGLE_STATE(0),

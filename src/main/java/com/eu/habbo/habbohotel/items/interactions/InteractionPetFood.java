@@ -17,9 +17,6 @@ import com.eu.habbo.threading.runnables.PetEatAction;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 7-12-2014 11:07.
- */
 public class InteractionPetFood extends HabboItem
 {
     public InteractionPetFood(ResultSet set, Item baseItem) throws SQLException

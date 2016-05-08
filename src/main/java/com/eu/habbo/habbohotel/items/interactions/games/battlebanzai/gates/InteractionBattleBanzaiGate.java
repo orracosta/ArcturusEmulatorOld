@@ -14,9 +14,6 @@ import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 25-5-2015 10:33.
- */
 public class InteractionBattleBanzaiGate extends InteractionGameGate
 {
     public InteractionBattleBanzaiGate(ResultSet set, Item baseItem, GameTeamColors teamColor) throws SQLException

@@ -12,9 +12,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 19:58.
- */
 public class WiredTriggerHabboEntersRoom extends InteractionWiredTrigger
 {
     public static final WiredTriggerType type = WiredTriggerType.ENTER_ROOM;

@@ -8,9 +8,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUnitOnRollerComposer;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 14-9-2014 13:29.
- */
 public class RoomUserWalkEvent extends MessageHandler
 {
     @Override

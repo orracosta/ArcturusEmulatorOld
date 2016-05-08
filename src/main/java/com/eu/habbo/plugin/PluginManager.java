@@ -17,9 +17,6 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-/**
- * Created on 28-2-2015 11:12.
- */
 public class PluginManager
 {
     private final THashSet<HabboPlugin> plugins = new THashSet<HabboPlugin>();

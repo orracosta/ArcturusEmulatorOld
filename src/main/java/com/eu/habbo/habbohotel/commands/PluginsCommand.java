@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.plugin.HabboPlugin;
 
-/**
- * Created on 17-4-2016 14:02.
- */
 public class PluginsCommand extends Command
 {
     public PluginsCommand()

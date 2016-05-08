@@ -3,9 +3,6 @@ package com.eu.habbo.habbohotel.modtool;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 4-11-2014 16:15.
- */
 public class ModToolPreset
 {
     public final int id;

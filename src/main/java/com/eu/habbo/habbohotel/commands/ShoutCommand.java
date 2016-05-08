@@ -8,9 +8,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserShoutComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
-/**
- * Created on 19-1-2015 16:48.
- */
 public class ShoutCommand extends Command
 {
     private static String idea = "Kudo's To Droppy for this idea!";

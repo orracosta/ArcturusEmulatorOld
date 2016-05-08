@@ -10,12 +10,8 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- * Created on 13-9-2014 14:34.
- */
 public class RoomChatMessage implements Runnable, ISerialize
 {
-
     private String message;
     private RoomChatMessageBubbles bubbleId;
     private final Habbo habbo;

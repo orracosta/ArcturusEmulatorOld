@@ -6,9 +6,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 6-10-2014 21:20.
- */
 public class BadgeDisplayLayout extends CatalogPage {
 
     public BadgeDisplayLayout(ResultSet set) throws SQLException

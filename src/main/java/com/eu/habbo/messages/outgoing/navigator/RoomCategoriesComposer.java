@@ -7,11 +7,8 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 import java.util.List;
 
-/**
- * Created on 25-8-2014 12:04.
- */
-public class RoomCategoriesComposer extends MessageComposer {
-
+public class RoomCategoriesComposer extends MessageComposer
+{
     private List<RoomCategory> categories;
 
     public RoomCategoriesComposer(List<RoomCategory> categories)
@@ -20,7 +17,8 @@ public class RoomCategoriesComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.RoomCategoriesComposer);
 
         this.response.appendInt32(this.categories.size());

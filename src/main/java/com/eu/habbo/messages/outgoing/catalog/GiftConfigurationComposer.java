@@ -7,13 +7,11 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 import java.util.Map;
 
-/**
- * Created on 27-8-2014 15:19.
- */
-public class GiftConfigurationComposer extends MessageComposer {
-
+public class GiftConfigurationComposer extends MessageComposer
+{
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.GiftConfigurationComposer);
 
         this.response.appendBoolean(true);

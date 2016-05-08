@@ -7,9 +7,6 @@ import gnu.trove.map.TIntObjectMap;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- * Created on 7-8-2015 16:03.
- */
 public class QueryDeleteHabboItems implements Runnable
 {
     private TIntObjectMap<HabboItem> items;

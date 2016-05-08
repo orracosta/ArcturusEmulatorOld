@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.rooms;
 
-/**
- * Created on 4-4-2015 11:36.
- */
 public enum RoomRightLevels
 {
     /**

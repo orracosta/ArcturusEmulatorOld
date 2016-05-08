@@ -6,9 +6,6 @@ import com.eu.habbo.util.callback.HTTPPostStatus;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- * Created on 26-8-2014 11:48.
- */
 public class CleanerThread implements Runnable {
 
     /**

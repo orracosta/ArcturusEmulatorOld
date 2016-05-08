@@ -9,9 +9,6 @@ import gnu.trove.list.array.TIntArrayList;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 28-8-2014 12:23.
- */
 public class Item {
 
     private int id;

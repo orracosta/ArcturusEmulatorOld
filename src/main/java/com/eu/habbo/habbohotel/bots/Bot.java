@@ -29,9 +29,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * Created on 15-10-2014 11:05.
- */
 public class Bot implements Runnable
 {
     /**

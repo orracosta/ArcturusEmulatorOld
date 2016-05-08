@@ -6,9 +6,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 22-11-2014 16:35.
- */
 public class GuildPartsComposer extends MessageComposer
 {
     @Override

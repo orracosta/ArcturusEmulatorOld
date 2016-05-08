@@ -10,9 +10,6 @@ import com.eu.habbo.messages.outgoing.friends.FriendChatMessageComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
-/**
- * Created on 30-1-2016 17:51.
- */
 public class StaffAlertCommand extends Command
 {
     public StaffAlertCommand()

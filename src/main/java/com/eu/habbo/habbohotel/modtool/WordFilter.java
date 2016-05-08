@@ -16,9 +16,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.Normalizer;
 
-/**
- * Created on 4-8-2015 11:19.
- */
 public class WordFilter
 {
     THashSet<WordFilterWord> autoReportWords = new THashSet<WordFilterWord>();

@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 31-7-2015 11:13.
- */
 public class FriendNotificationComposer extends MessageComposer
 {
     public final static int INSTANT_MESSAGE = -1;

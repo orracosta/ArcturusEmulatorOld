@@ -8,9 +8,6 @@ import gnu.trove.iterator.TIntObjectIterator;
 
 import java.util.Map;
 
-/**
- * Created on 15-7-2015 19:57.
- */
 public class AchievementUpdater implements Runnable
 {
     @Override

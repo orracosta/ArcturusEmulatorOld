@@ -7,11 +7,8 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 20-9-2014 21:16.
- */
-public class FloorItemUpdateComposer extends MessageComposer {
-
+public class FloorItemUpdateComposer extends MessageComposer
+{
     private final HabboItem item;
 
     public FloorItemUpdateComposer(HabboItem item)
@@ -20,7 +17,8 @@ public class FloorItemUpdateComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.FloorItemUpdateComposer);
         this.item.serializeFloorData(this.response);
         this.response.appendInt32(this.item instanceof InteractionGift ? ((((InteractionGift) this.item).getColorId() * 1000) + ((InteractionGift) this.item).getRibbonId()) : (this.item instanceof InteractionMusicDisc ? ((InteractionMusicDisc)this.item).getSongId() : 1));

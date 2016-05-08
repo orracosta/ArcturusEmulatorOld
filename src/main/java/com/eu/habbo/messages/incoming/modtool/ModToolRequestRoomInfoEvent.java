@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.modtool.ModToolRoomInfoComposer;
 
-/**
- * Created on 4-11-2014 13:17.
- */
 public class ModToolRequestRoomInfoEvent extends MessageHandler
 {
     @Override

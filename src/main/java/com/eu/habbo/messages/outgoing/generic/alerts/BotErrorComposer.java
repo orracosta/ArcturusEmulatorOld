@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 30-11-2014 11:21.
- */
 public class BotErrorComposer extends MessageComposer
 {
     public static final int ROOM_ERROR_BOTS_FORBIDDEN_IN_HOTEL = 0;

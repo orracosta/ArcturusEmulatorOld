@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 17-11-2015 20:42.
- */
 public class BullyReportedMessageComposer extends MessageComposer
 {
     public static final int RECEIVED = 0;

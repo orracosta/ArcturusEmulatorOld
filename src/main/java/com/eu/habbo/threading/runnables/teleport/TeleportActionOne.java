@@ -8,9 +8,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.threading.runnables.HabboItemNewState;
 
-/**
- * Created on 7-3-2015 22:01.
- */
 public class TeleportActionOne implements Runnable
 {
     private final HabboItem currentTeleport;

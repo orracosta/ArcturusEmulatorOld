@@ -34,9 +34,6 @@ import java.util.Calendar;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-/**
- * Created on 28-8-2014 12:20.
- */
 public class ItemManager {
 
     private final TIntObjectMap<Item> items;

@@ -9,9 +9,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 30-1-2015 13:55.
- */
 public class AchievementListComposer extends MessageComposer
 {
     private final Habbo habbo;

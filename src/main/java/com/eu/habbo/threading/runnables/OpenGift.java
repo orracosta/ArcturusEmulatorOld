@@ -9,9 +9,6 @@ import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.PresentItemOpenedComposer;
 
-/**
- * Created on 23-1-2015 12:34.
- */
 public class OpenGift implements Runnable
 {
     private final HabboItem item;

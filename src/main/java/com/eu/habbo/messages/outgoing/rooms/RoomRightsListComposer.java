@@ -8,9 +8,6 @@ import gnu.trove.map.hash.THashMap;
 
 import java.util.Map;
 
-/**
- * Created on 13-12-2014 16:47.
- */
 public class RoomRightsListComposer extends MessageComposer
 {
     private final Room room;

@@ -9,9 +9,6 @@ import com.eu.habbo.messages.outgoing.catalog.AlertPurchaseFailedComposer;
 import com.eu.habbo.messages.outgoing.catalog.PurchaseOKComposer;
 import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
 
-/**
- * Created on 15-11-2015 14:37.
- */
 public class BuyRoomPromotionEvent extends MessageHandler
 {
     @Override

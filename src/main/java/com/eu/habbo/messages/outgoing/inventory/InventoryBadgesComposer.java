@@ -7,11 +7,8 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 29-8-2014 11:32.
- */
-public class InventoryBadgesComposer extends MessageComposer {
-
+public class InventoryBadgesComposer extends MessageComposer
+{
     private final Habbo habbo;
 
     public InventoryBadgesComposer(Habbo habbo)
@@ -20,8 +17,8 @@ public class InventoryBadgesComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
-
+    public ServerMessage compose()
+    {
         if(this.habbo == null)
             return null;
 

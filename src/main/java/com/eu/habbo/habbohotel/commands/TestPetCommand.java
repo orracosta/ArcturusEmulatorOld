@@ -7,9 +7,6 @@ import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetComposer;
 
-/**
- * Created on 23-7-2015 14:48.
- */
 public class TestPetCommand extends Command
 {
     public TestPetCommand()

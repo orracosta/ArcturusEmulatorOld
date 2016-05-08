@@ -14,9 +14,6 @@ import com.eu.habbo.util.pathfinding.Tile;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 8-3-2015 10:49.
- */
 public class InteractionHopper extends HabboItem
 {
     public InteractionHopper(ResultSet set, Item baseItem) throws SQLException

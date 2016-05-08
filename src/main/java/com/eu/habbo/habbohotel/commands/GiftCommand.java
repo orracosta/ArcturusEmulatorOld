@@ -10,9 +10,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
-/**
- * Created on 21-11-2015 22:05.
- */
 public class GiftCommand extends Command
 {
     public GiftCommand()

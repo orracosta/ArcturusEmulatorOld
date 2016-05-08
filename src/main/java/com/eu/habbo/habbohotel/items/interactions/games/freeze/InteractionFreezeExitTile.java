@@ -9,9 +9,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 24-1-2015 09:58.
- */
 public class InteractionFreezeExitTile extends HabboItem
 {
     public InteractionFreezeExitTile(ResultSet set, Item baseItem) throws SQLException

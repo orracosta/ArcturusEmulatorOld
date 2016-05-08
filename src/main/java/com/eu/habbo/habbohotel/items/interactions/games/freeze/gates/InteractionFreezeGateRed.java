@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.items.Item;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 23-1-2015 19:19.
- */
 public class InteractionFreezeGateRed extends InteractionFreezeGate
 {
     public static final GameTeamColors TEAM_COLOR = GameTeamColors.RED;

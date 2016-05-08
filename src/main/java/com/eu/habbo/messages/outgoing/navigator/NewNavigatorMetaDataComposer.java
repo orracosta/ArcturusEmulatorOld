@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 19-6-2015 13:16.
- */
 public class NewNavigatorMetaDataComposer extends MessageComposer
 {
     @Override

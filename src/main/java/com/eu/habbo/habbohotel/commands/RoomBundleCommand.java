@@ -14,9 +14,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 24-10-2015 15:54.
- */
 public class RoomBundleCommand extends Command
 {
     public RoomBundleCommand()

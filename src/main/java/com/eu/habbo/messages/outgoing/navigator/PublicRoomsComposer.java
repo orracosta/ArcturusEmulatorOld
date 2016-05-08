@@ -9,13 +9,11 @@ import gnu.trove.set.hash.THashSet;
 
 import java.util.Map;
 
-/**
- * Created on 26-8-2014 19:08.
- */
-public class PublicRoomsComposer extends MessageComposer {
-
+public class PublicRoomsComposer extends MessageComposer
+{
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.PublicRoomsComposer);
 
         synchronized (Emulator.getGameEnvironment().getNavigatorManager().getPublicRooms())

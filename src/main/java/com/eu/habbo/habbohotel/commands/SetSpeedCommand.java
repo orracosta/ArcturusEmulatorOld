@@ -7,9 +7,6 @@ import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
-/**
- * Created on 19-1-2015 17:43.
- */
 public class SetSpeedCommand extends Command
 {
     public SetSpeedCommand()

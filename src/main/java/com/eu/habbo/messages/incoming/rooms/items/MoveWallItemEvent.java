@@ -7,9 +7,6 @@ import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 
-/**
- * Created on 11-10-2014 13:59.
- */
 public class MoveWallItemEvent extends MessageHandler
 {
     @Override

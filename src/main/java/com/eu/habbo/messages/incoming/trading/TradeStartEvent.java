@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.trading.TradeStartFailComposer;
 
-/**
- * Created on 8-11-2014 13:17.
- */
 public class TradeStartEvent extends MessageHandler
 {
     @Override

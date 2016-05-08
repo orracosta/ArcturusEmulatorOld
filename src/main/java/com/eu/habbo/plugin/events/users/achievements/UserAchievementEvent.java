@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.achievements.Achievement;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.plugin.events.users.UserEvent;
 
-/**
- * Created on 27-8-2015 22:40.
- */
 public abstract class UserAchievementEvent extends UserEvent
 {
     /**

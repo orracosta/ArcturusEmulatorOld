@@ -5,11 +5,8 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 24-8-2014 18:01.
- */
-public class GenericAlertComposer extends MessageComposer {
-
+public class GenericAlertComposer extends MessageComposer
+{
     private final String message;
 
     public GenericAlertComposer(String message)
@@ -23,7 +20,8 @@ public class GenericAlertComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.GenericAlertComposer);
 
         this.response.appendString(this.message);

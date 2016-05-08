@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created on 30-11-2014 22:12.
- */
 public class PetTrainingPanelComposer extends MessageComposer
 {
     private final Pet pet;

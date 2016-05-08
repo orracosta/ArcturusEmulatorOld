@@ -15,9 +15,6 @@ import gnu.trove.set.hash.THashSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 2-11-2014 16:50.
- */
 public class InteractionMultiHeight extends HabboItem
 {
     public InteractionMultiHeight(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)

@@ -9,9 +9,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.threading.runnables.HabboItemNewState;
 
-/**
- * Created on 24-1-2015 15:58.
- */
 public class FreezeThrowSnowball implements Runnable
 {
     public final Habbo habbo;

@@ -11,9 +11,6 @@ import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- * Created on 3-11-2014 20:02.
- */
 public class AnswerPollEvent extends MessageHandler
 {
     @Override

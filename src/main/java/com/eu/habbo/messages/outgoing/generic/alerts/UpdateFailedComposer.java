@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 27-3-2015 20:29.
- */
 public class UpdateFailedComposer extends MessageComposer
 {
     private final String message;

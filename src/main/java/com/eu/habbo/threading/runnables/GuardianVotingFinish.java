@@ -2,9 +2,6 @@ package com.eu.habbo.threading.runnables;
 
 import com.eu.habbo.habbohotel.guides.GuardianTicket;
 
-/**
- * Created on 11-10-2015 17:46.
- */
 public class GuardianVotingFinish implements Runnable
 {
     private final GuardianTicket ticket;

@@ -9,9 +9,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 11-4-2015 16:10.
- */
 public class InteractionIceTagPole extends HabboItem
 {
     public InteractionIceTagPole(ResultSet set, Item baseItem) throws SQLException

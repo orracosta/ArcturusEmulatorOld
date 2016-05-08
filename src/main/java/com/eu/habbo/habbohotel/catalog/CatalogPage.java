@@ -12,9 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
 
-/**
- * Created on 26-8-2014 21:25.
- */
 public abstract class CatalogPage implements Comparable<CatalogPage>, ISerialize
 {
     protected int id;

@@ -24,9 +24,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-/**
- * Created on 15-10-2014 11:05.
- */
 public class BotManager
 {
     final private static THashMap<String, Class<? extends Bot>> botDefenitions = new THashMap<String, Class<? extends Bot>>();

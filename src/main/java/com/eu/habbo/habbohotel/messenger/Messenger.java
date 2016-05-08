@@ -18,11 +18,8 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created on 25-8-2014 14:52.
- */
-public class Messenger {
-
+public class Messenger
+{
     private final ConcurrentHashMap<Integer, MessengerBuddy> friends;
     private final THashSet<FriendRequest> friendRequests;
 
@@ -94,9 +91,6 @@ public class Messenger {
         this.friends.remove(habbo.getHabboInfo().getId());
     }
 
-    /*
-        TODO: Runnable task to threadpool?
-     */
     public static void unfriend(int userOne, int userTwo)
     {
         try

@@ -2,9 +2,6 @@ package com.eu.habbo.messages.incoming.crafting;
 
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 16-1-2016 15:52.
- */
 public class CraftingCraftSecretEvent extends MessageHandler
 {
     @Override

@@ -11,9 +11,6 @@ import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import gnu.trove.procedure.TIntObjectProcedure;
 
-/**
- * Created on 7-12-2014 12:33.
- */
 public class PetInfoCommand extends Command implements TIntObjectProcedure<AbstractPet>
 {
     private String name;

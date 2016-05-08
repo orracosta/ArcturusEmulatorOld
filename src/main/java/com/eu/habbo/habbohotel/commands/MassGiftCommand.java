@@ -12,9 +12,6 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
 import java.util.Map;
 
-/**
- * Created on 22-11-2015 19:32.
- */
 public class MassGiftCommand extends Command
 {
     public MassGiftCommand()

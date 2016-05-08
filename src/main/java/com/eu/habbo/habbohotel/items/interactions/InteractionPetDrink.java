@@ -18,9 +18,6 @@ import com.eu.habbo.threading.runnables.PetClearPosture;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 7-12-2014 10:53.
- */
 public class InteractionPetDrink extends HabboItem
 {
     public InteractionPetDrink(ResultSet set, Item baseItem) throws SQLException

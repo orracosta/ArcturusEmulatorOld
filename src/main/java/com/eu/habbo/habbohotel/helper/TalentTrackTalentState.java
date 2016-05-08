@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.helper;
 
-/**
- * Created on 29-12-2014 11:18.
- */
 public enum TalentTrackTalentState
 {
     CLOSED(0),

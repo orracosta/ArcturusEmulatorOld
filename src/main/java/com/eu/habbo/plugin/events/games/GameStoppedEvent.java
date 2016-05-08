@@ -2,9 +2,6 @@ package com.eu.habbo.plugin.events.games;
 
 import com.eu.habbo.habbohotel.games.Game;
 
-/**
- * Created on 28-8-2015 11:06.
- */
 public class GameStoppedEvent extends GameEvent
 {
     /**

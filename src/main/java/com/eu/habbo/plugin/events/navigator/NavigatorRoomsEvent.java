@@ -6,9 +6,6 @@ import com.eu.habbo.plugin.events.users.UserEvent;
 
 import java.util.ArrayList;
 
-/**
- * Created on 9-11-2015 21:03.
- */
 public abstract class NavigatorRoomsEvent extends UserEvent
 {
     /**

@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 10-10-2015 21:30.
- */
 public class GuideSessionEndedComposer extends MessageComposer
 {
     public static final int SOMETHING_WRONG = 0;

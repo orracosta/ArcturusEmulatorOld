@@ -7,9 +7,6 @@ import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
-/**
- * Created on 21-2-2015 12:10.
- */
 public class FreezeCommand extends Command
 {
     public FreezeCommand()

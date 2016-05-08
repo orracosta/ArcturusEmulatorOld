@@ -10,9 +10,6 @@ import com.eu.habbo.util.pathfinding.Tile;
 
 import java.util.List;
 
-/**
- * Created on 24-6-2015 14:34.
- */
 public class RoomUnitWalkToRoomUnit implements Runnable
 {
     private RoomUnit walker;

@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetRespectComposer;
 
-/**
- * Created on 30-11-2014 16:03.
- */
 public class ScratchPetEvent extends MessageHandler
 {
     @Override

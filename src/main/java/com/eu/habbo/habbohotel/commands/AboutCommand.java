@@ -7,9 +7,6 @@ import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created on 4-10-2014 11:05.
- */
 public class AboutCommand extends Command
 {
     public AboutCommand()

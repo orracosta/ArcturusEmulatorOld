@@ -3,9 +3,6 @@ package com.eu.habbo.messages.incoming.rooms.users;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 13-9-2014 17:54.
- */
 public class RoomUserSignEvent extends MessageHandler {
     @Override
     public void handle() throws Exception {

@@ -14,9 +14,6 @@ import com.eu.habbo.threading.runnables.WiredExecuteTask;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 20:48.
- */
 public class WiredTriggerAtTimeLong extends InteractionWiredTrigger implements WiredTriggerReset
 {
     private static final WiredTriggerType type = WiredTriggerType.AT_GIVEN_TIME;

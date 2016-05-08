@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 2-11-2014 10:51.
- */
 public class MarketplaceBuyErrorComposer extends MessageComposer
 {
     public static final int REFRESH = 1;

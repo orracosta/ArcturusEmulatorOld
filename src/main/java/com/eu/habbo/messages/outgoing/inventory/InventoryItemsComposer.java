@@ -9,9 +9,6 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.procedure.TIntObjectProcedure;
 
-/**
- * Created on 28-8-2014 19:11.
- */
 public class InventoryItemsComposer extends MessageComposer implements TIntObjectProcedure<HabboItem>
 {
 
@@ -23,7 +20,8 @@ public class InventoryItemsComposer extends MessageComposer implements TIntObjec
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()
+    {
         try
         {
             this.response.init(Outgoing.InventoryItemsComposer);

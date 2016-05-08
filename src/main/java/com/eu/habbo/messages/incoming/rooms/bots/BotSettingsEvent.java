@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.BotSettingsComposer;
 
-/**
- * Created on 21-10-2014 12:58.
- */
 public class BotSettingsEvent extends MessageHandler
 {
     @Override

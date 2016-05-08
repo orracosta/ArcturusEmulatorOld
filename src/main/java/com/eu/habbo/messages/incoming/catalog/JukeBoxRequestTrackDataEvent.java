@@ -8,9 +8,6 @@ import com.eu.habbo.messages.outgoing.rooms.JukeBoxTrackDataComposer;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created on 25-8-2015 16:19.
- */
 public class JukeBoxRequestTrackDataEvent extends MessageHandler
 {
     @Override

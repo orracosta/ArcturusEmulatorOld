@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 6-8-2015 22:39.
- */
 public class RoomUserMuteEvent extends MessageHandler
 {
     @Override

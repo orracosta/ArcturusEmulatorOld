@@ -9,9 +9,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 21-9-2015 21:03.
- */
 public class InteractionBattleBanzaiSphere extends HabboItem
 {
     public InteractionBattleBanzaiSphere(ResultSet set, Item baseItem) throws SQLException

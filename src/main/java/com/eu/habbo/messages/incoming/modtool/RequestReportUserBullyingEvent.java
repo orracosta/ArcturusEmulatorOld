@@ -9,9 +9,6 @@ import com.eu.habbo.messages.outgoing.modtool.BullyReportRequestComposer;
 
 import java.util.Calendar;
 
-/**
- * Created on 17-10-2015 15:15.
- */
 public class RequestReportUserBullyingEvent extends MessageHandler
 {
     @Override

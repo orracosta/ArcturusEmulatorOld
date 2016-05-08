@@ -7,9 +7,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 4-11-2014 14:14.
- */
 public class ModToolUserInfoComposer extends MessageComposer
 {
     private ResultSet set;

@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 
 import java.net.SocketAddress;
 
-/**
- * Created on 28-2-2015 19:51.
- */
 public class UserLoginEvent extends UserEvent
 {
     /**

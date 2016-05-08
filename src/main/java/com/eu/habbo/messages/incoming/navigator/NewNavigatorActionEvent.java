@@ -9,9 +9,6 @@ import com.eu.habbo.messages.outgoing.users.UserHomeRoomComposer;
 import java.util.ArrayList;
 import java.util.Collections;
 
-/**
- * Created on 7-7-2015 11:26.
- */
 public class NewNavigatorActionEvent extends MessageHandler
 {
     @Override

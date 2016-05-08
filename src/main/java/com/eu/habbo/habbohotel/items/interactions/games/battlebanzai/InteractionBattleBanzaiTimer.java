@@ -1,6 +1,5 @@
 package com.eu.habbo.habbohotel.items.interactions.games.battlebanzai;
 
-import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.games.Game;
 import com.eu.habbo.habbohotel.games.battlebanzai.BattleBanzaiGame;
 import com.eu.habbo.habbohotel.items.Item;
@@ -11,9 +10,6 @@ import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 25-5-2015 10:32.
- */
 public class InteractionBattleBanzaiTimer extends InteractionGameTimer
 {
     public InteractionBattleBanzaiTimer(ResultSet set, Item baseItem) throws SQLException

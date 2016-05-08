@@ -14,9 +14,6 @@ import com.eu.habbo.util.pathfinding.Tile;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 7-11-2014 13:48.
- */
 public class InteractionTeleport extends HabboItem
 {
     private int targetId;

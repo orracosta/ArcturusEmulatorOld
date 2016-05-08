@@ -6,9 +6,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 22-11-2014 16:13.
- */
 public class GuildFrontpageLayout extends CatalogPage
 {
     public GuildFrontpageLayout(ResultSet set) throws SQLException

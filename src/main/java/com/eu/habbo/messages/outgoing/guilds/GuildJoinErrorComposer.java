@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 23-11-2014 14:49.
- */
 public class GuildJoinErrorComposer extends MessageComposer
 {
     public static final int GROUP_FULL = 0;

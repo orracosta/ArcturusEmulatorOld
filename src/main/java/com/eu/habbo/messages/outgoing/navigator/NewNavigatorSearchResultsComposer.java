@@ -7,9 +7,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 import java.util.List;
 
-/**
- * Created on 19-6-2015 13:51.
- */
 public class NewNavigatorSearchResultsComposer extends MessageComposer
 {
     private String searchCode;

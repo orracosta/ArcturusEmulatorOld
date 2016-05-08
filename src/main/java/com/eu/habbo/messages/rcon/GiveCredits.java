@@ -7,9 +7,6 @@ import com.google.gson.Gson;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- * Created on 18-7-2015 10:17.
- */
 public class GiveCredits extends RCONMessage<GiveCredits.JSONGiveCredits>
 {
     public GiveCredits()

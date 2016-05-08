@@ -8,9 +8,6 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 24-11-2014 19:33.
- */
 public class GuildListComposer extends MessageComposer
 {
     private final THashSet<Guild> guilds;

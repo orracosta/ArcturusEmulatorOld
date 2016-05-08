@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 8-11-2014 14:09.
- */
 public class TradeCompleteComposer extends MessageComposer
 {
     @Override

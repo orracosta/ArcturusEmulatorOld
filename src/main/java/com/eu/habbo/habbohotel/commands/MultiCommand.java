@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.messages.outgoing.rooms.items.PostItStickyPoleOpenComposer;
 
-/**
- * Created on 24-10-2015 14:31.
- */
 public class MultiCommand extends Command
 {
     public MultiCommand()

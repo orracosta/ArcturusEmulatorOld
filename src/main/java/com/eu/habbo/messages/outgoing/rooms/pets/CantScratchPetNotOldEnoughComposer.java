@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 16-11-2015 22:27.
- */
 public class CantScratchPetNotOldEnoughComposer extends MessageComposer
 {
     private final int currentAge;

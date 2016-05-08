@@ -11,9 +11,6 @@ import com.eu.habbo.messages.outgoing.inventory.RemoveHabboItemComposer;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 22-10-2014 11:03.
- */
 public class RecycleEvent extends MessageHandler
 {
     @Override

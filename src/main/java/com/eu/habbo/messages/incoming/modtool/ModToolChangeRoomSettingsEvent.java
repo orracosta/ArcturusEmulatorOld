@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomState;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 4-11-2014 17:33.
- */
 public class ModToolChangeRoomSettingsEvent extends MessageHandler
 {
     @Override

@@ -3,9 +3,6 @@ package com.eu.habbo.habbohotel.catalog;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 30-8-2014 13:23.
- */
 public class Voucher
 {
     /**

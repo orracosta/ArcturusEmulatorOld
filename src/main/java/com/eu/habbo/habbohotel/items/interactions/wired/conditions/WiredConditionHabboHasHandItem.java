@@ -12,9 +12,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 20-6-2015 12:17.
- */
 public class WiredConditionHabboHasHandItem extends InteractionWiredCondition
 {
     public static final WiredConditionType type = WiredConditionType.ACTOR_HAS_HANDITEM;

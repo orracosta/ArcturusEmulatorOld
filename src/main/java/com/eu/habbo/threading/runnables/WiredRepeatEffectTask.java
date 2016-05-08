@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.rooms.Room;
 
-/**
- * Created on 20-12-2014 14:49.
- */
 class WiredRepeatEffectTask implements Runnable
 {
     private final InteractionWiredEffect effect;

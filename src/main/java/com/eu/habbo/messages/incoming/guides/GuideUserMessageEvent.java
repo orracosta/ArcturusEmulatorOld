@@ -7,9 +7,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.guides.GuideSessionMessageComposer;
 
-/**
- * Created on 10-10-2015 22:30.
- */
 public class GuideUserMessageEvent extends MessageHandler
 {
     @Override

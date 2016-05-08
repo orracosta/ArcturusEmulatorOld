@@ -7,10 +7,8 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.friends.RemoveFriendComposer;
 import gnu.trove.list.array.TIntArrayList;
 
-/**
- * Created on 25-8-2014 16:26.
- */
-public class RemoveFriendEvent extends MessageHandler {
+public class RemoveFriendEvent extends MessageHandler
+{
 
     private final TIntArrayList removedFriends;
 
@@ -20,7 +18,8 @@ public class RemoveFriendEvent extends MessageHandler {
     }
 
     @Override
-    public void handle() throws Exception {
+    public void handle() throws Exception
+    {
         int count = this.packet.readInt();
         for(int i = 0; i < count; i++)
         {

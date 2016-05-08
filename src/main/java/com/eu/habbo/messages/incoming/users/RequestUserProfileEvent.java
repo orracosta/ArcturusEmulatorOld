@@ -6,15 +6,12 @@ import com.eu.habbo.habbohotel.users.HabboManager;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.users.UserProfileComposer;
 
-/**
- * Created on 26-8-2014 12:22.
- */
-public class RequestUserProfileEvent extends MessageHandler {
-
+public class RequestUserProfileEvent extends MessageHandler
+{
     @Override
-    public void handle() throws Exception {
+    public void handle() throws Exception
+    {
         int habboId = this.packet.readInt();
-
         Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(habboId);
 
         if(habbo != null)

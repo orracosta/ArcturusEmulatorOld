@@ -10,9 +10,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 9-10-2014 17:14.
- */
 public class InteractionTrophy extends HabboItem
 {
     public InteractionTrophy(ResultSet set, Item baseItem) throws SQLException

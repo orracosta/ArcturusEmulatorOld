@@ -12,9 +12,6 @@ import gnu.trove.map.TIntObjectMap;
 
 import java.util.NoSuchElementException;
 
-/**
- * Created on 18-10-2015 11:58.
- */
 public class RoomEffectCommand extends Command
 {
     public RoomEffectCommand()

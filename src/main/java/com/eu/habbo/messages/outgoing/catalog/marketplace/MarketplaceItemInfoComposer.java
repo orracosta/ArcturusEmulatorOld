@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 2-11-2014 10:36.
- */
 public class MarketplaceItemInfoComposer extends MessageComposer
 {
     private final int itemId;

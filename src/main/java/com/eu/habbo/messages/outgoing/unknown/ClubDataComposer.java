@@ -10,9 +10,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created on 30-12-2014 14:13.
- */
 public class ClubDataComposer extends MessageComposer
 {
     private final int windowId;

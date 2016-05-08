@@ -12,9 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 19:51.
- */
 public abstract class InteractionWired extends HabboItem implements IWired
 {
     InteractionWired(ResultSet set, Item baseItem) throws SQLException

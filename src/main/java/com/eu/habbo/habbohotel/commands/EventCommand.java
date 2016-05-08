@@ -11,9 +11,6 @@ import gnu.trove.map.hash.THashMap;
 import java.util.ArrayList;
 import java.util.Map;
 
-/**
- * Created on 19-11-2015 20:04.
- */
 public class EventCommand extends Command
 {
     public EventCommand()

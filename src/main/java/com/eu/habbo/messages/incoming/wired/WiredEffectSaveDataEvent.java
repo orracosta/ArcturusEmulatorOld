@@ -10,9 +10,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.messages.outgoing.wired.WiredSavedComposer;
 
-/**
- * Created on 14-12-2014 13:10.
- */
 public class WiredEffectSaveDataEvent extends MessageHandler
 {
     @Override

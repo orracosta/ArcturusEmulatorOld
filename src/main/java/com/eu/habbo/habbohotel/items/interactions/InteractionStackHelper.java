@@ -9,9 +9,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 1-2-2015 20:43.
- */
 public class InteractionStackHelper extends HabboItem
 {
     public InteractionStackHelper(ResultSet set, Item baseItem) throws SQLException

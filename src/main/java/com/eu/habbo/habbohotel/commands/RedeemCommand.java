@@ -15,9 +15,6 @@ import gnu.trove.procedure.TIntIntProcedure;
 
 import java.util.ArrayList;
 
-/**
- * Created on 21-11-2015 21:10.
- */
 public class RedeemCommand extends Command
 {
     public RedeemCommand()

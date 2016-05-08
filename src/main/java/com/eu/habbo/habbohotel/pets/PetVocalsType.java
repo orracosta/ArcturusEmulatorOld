@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.pets;
 
-/**
- * Created on 7-12-2014 14:46.
- */
 public enum PetVocalsType
 {
     DISOBEY,

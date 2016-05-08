@@ -15,9 +15,6 @@ import java.awt.image.WritableRaster;
 import java.io.File;
 import java.util.Map;
 
-/**
- * Created on 25-1-2016 14:02.
- */
 public class BadgeImager
 {
     THashMap<String, BufferedImage> cachedImages = new THashMap<String, BufferedImage>();

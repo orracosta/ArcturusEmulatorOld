@@ -13,9 +13,6 @@ import gnu.trove.set.hash.THashSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created on 26-8-2014 12:24.
- */
 public class UserProfileComposer extends MessageComposer {
 
     private final HabboInfo habboInfo;

@@ -1,8 +1,5 @@
 package com.eu.habbo.plugin;
 
-/**
- * Created on 28-2-2015 18:46.
- */
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

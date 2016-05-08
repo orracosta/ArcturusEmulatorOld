@@ -11,9 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 7-3-2015 22:03.
- */
 class TeleportActionTwo implements Runnable
 {
     private final HabboItem currentTeleport;

@@ -18,9 +18,6 @@ import com.eu.habbo.messages.outgoing.users.*;
 
 import java.util.ArrayList;
 
-/**
- * Created on 24-8-2014 17:36.
- */
 public class RequestUserDataEvent extends MessageHandler
 {
     @Override

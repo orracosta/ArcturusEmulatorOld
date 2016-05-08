@@ -11,9 +11,6 @@ import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.threading.runnables.HabboItemNewState;
 
-/**
- * Created on 8-3-2015 11:01.
- */
 class HopperActionThree implements Runnable
 {
     private final HabboItem teleportOne;

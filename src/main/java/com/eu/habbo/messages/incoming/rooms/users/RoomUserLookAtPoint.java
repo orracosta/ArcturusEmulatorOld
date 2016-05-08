@@ -6,9 +6,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 11-10-2014 16:51.
- */
 public class RoomUserLookAtPoint extends MessageHandler
 {
     @Override

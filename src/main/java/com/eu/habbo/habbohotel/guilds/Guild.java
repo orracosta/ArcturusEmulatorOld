@@ -6,9 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 22-11-2014 19:20.
- */
 public class Guild implements Runnable
 {
     private int id;

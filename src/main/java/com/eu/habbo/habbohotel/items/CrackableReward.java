@@ -5,9 +5,6 @@ import com.eu.habbo.Emulator;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 16-10-2015 21:00.
- */
 public class CrackableReward
 {
     public final int itemId;

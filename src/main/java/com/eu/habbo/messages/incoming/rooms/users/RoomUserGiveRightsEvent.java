@@ -8,9 +8,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.RoomAddRightsListComposer;
 import com.eu.habbo.plugin.events.users.UserRightsGivenEvent;
 
-/**
- * Created on 13-12-2014 16:10.
- */
 public class RoomUserGiveRightsEvent extends MessageHandler
 {
     @Override

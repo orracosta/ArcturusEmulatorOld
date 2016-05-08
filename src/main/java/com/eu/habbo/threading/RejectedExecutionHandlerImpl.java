@@ -5,9 +5,6 @@ import com.eu.habbo.Emulator;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 
-/**
- * Created on 17-5-2015 13:16.
- */
 public class RejectedExecutionHandlerImpl implements RejectedExecutionHandler
 {
 

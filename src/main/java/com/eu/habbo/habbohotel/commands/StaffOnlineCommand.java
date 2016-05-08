@@ -13,9 +13,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
 
-/**
- * Created on 18-10-2015 12:09.
- */
 public class StaffOnlineCommand extends Command
 {
     public StaffOnlineCommand()

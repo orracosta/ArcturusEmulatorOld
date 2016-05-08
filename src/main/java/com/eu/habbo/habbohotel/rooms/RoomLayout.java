@@ -7,9 +7,6 @@ import com.eu.habbo.util.pathfinding.Tile;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 31-8-2014 12:36.
- */
 public class RoomLayout {
 
     private String name;
@@ -19,7 +16,6 @@ public class RoomLayout {
     private int doorDirection;
     private String heightmap;
     private String map;
-
     private int mapSize;
     private int mapSizeX;
     private int mapSizeY;

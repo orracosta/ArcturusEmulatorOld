@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 3-11-2014 21:29.
- */
 public class AddUserBadgeComposer extends MessageComposer
 {
     private final HabboBadge badge;

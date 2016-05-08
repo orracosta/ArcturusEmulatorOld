@@ -9,9 +9,6 @@ import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import java.util.Collection;
 import java.util.Map;
 
-/**
- * Created on 16-10-2015 21:57.
- */
 public class HappyHourCommand extends Command
 {
     public HappyHourCommand()

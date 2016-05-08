@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 10-12-2014 10:20.
- */
 public class RoomPetHorseFigureComposer extends MessageComposer
 {
     private final HorsePet pet;

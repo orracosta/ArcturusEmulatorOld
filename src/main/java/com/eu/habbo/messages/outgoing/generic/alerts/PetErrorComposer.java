@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 30-11-2014 11:12.
- */
 public class PetErrorComposer extends MessageComposer
 {
     public static final int ROOM_ERROR_PETS_FORBIDDEN_IN_HOTEL = 0;
@@ -22,6 +19,7 @@ public class PetErrorComposer extends MessageComposer
     {
         this.errorCode = errorCode;
     }
+
     @Override
     public ServerMessage compose()
     {

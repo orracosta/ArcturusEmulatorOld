@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.items.interactions.wired.triggers.WiredTriggerAtT
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 
-/**
- * Created on 14-12-2014 16:06.
- */
 public class WiredExecuteTask implements Runnable
 {
     private final InteractionWiredTrigger task;

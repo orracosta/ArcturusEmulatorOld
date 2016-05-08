@@ -9,9 +9,6 @@ import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 
-/**
- * Created on 7-12-2014 11:10.
- */
 public class PetEatAction implements Runnable
 {
     private final Pet pet;

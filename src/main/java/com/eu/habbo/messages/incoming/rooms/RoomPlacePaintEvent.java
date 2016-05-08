@@ -8,12 +8,11 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.inventory.RemoveHabboItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.RoomPaintComposer;
 
-/**
- * Created on 5-10-2014 14:55.
- */
-public class RoomPlacePaintEvent extends MessageHandler {
+public class RoomPlacePaintEvent extends MessageHandler
+{
     @Override
-    public void handle() throws Exception {
+    public void handle() throws Exception
+    {
         if(this.client.getHabbo().getHabboInfo().getCurrentRoom() == null)
             return;
 

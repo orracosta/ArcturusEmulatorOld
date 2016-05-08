@@ -7,9 +7,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericErrorMessagesComposer;
 import com.eu.habbo.plugin.events.users.UserKickEvent;
 
-/**
- * Created on 26-1-2015 11:19.
- */
 public class RoomUserKickEvent extends MessageHandler
 {
     @Override

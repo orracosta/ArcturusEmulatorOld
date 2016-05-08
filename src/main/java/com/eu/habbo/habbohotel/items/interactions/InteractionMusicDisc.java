@@ -9,9 +9,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 26-8-2015 12:18.
- */
 public class InteractionMusicDisc extends HabboItem
 {
     private int songId;

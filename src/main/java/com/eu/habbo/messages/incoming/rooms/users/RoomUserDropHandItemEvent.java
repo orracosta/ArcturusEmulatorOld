@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserHandItemComposer;
 
-/**
- * Created on 12-10-2014 14:51.
- */
 public class RoomUserDropHandItemEvent extends MessageHandler
 {
     @Override

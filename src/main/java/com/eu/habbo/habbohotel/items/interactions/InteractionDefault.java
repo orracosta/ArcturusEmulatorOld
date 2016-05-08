@@ -16,9 +16,6 @@ import com.eu.habbo.messages.outgoing.rooms.items.WallItemUpdateComposer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 9-10-2014 17:26.
- */
 public class InteractionDefault extends HabboItem
 {
     public InteractionDefault(ResultSet set, Item baseItem) throws SQLException

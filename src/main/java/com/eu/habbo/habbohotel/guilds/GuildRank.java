@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.guilds;
 
-/**
- * Created on 23-11-2014 09:31.
- */
 public enum GuildRank
 {
     ADMIN(0),
@@ -20,11 +17,13 @@ public enum GuildRank
 
     public static GuildRank getRank(int type)
     {
-        for(GuildRank rank : GuildRank.values())
+        try
         {
-            if(rank.type == type)
-                return rank;
+            return values()[type];
         }
-        return MEMBER;
+        catch (Exception e)
+        {
+            return MEMBER;
+        }
     }
 }

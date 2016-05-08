@@ -3,9 +3,6 @@ package com.eu.habbo.messages.outgoing.unknown;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 
-/**
- * Created on 8-11-2014 12:44.
- */
 public class MysteryPrizeComposer extends MessageComposer
 {
     @Override

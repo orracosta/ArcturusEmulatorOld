@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 29-11-2014 16:00.
- */
 public class PetNameErrorComposer extends MessageComposer
 {
     public static final int NAME_OK = 0;

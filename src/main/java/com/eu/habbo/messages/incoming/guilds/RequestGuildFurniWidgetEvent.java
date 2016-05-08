@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.guilds.GuildFurniWidgetComposer;
 
-/**
- * Created on 1-2-2015 15:51.
- */
 public class RequestGuildFurniWidgetEvent extends MessageHandler
 {
     @Override

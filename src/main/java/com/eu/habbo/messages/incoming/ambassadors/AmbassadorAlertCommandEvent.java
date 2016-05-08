@@ -1,14 +1,9 @@
 package com.eu.habbo.messages.incoming.ambassadors;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
-import com.eu.habbo.messages.outgoing.generic.alerts.CustomNotificationComposer;
 
-/**
- * Created on 6-8-2015 22:27.
- */
 public class AmbassadorAlertCommandEvent extends MessageHandler
 {
     @Override

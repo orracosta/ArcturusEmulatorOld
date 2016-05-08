@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.RoomRightsListComposer;
 
-/**
- * Created on 13-12-2014 16:29.
- */
 public class RequestRoomRightsEvent extends MessageHandler
 {
     @Override

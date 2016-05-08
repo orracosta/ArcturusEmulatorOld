@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 
-/**
- * Created on 20-6-2015 21:32.
- */
 public class BotsCommand extends Command
 {
     public BotsCommand()

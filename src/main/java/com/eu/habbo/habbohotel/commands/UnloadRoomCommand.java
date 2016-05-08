@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.rooms.Room;
 
-/**
- * Created on 4-10-2014 22:17.
- */
 public class UnloadRoomCommand extends Command {
 
     public UnloadRoomCommand()

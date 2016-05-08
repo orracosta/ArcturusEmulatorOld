@@ -10,16 +10,12 @@ import com.eu.habbo.messages.outgoing.users.UpdateUserLookComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDataComposer;
 import com.eu.habbo.plugin.events.users.UserSavedLookEvent;
 
-/**
- * Created on 13-9-2014 19:47.
- */
 public class UserSaveLookEvent extends MessageHandler
 {
     @Override
     public void handle() throws Exception
     {
         String genderCode = this.packet.readString();
-
         HabboGender gender;
 
         try

@@ -10,9 +10,6 @@ import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.procedure.TIntObjectProcedure;
 
-/**
- * Created on 30-11-2014 12:32.
- */
 public class RoomPetComposer extends MessageComposer implements TIntObjectProcedure<AbstractPet>
 {
     private final TIntObjectMap<AbstractPet> pets;

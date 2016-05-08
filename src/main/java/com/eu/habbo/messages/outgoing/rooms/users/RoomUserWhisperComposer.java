@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 11-10-2014 16:36.
- */
 public class RoomUserWhisperComposer extends MessageComposer
 {
     private final RoomChatMessage roomChatMessage;

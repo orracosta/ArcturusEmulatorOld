@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 2-8-2015 15:48.
- */
 public class GuildEditFailComposer extends MessageComposer
 {
     public static final int ROOM_ALREADY_IN_USE = 0;

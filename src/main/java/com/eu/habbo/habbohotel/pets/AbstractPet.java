@@ -12,9 +12,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-/**
- * Created on 29-11-2014 17:17.
- */
 public abstract class AbstractPet implements ISerialize, Runnable
 {
     int id;

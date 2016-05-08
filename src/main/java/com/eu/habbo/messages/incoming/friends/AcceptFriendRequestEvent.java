@@ -2,18 +2,14 @@ package com.eu.habbo.messages.incoming.friends;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.Achievement;
-import com.eu.habbo.habbohotel.achievements.AchievementLevel;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 25-8-2014 19:23.
- */
-public class AcceptFriendRequestEvent extends MessageHandler {
-
+public class AcceptFriendRequestEvent extends MessageHandler
+{
     @Override
-    public void handle() throws Exception {
-
+    public void handle() throws Exception
+    {
         int count = this.packet.readInt();
         int userId;
 

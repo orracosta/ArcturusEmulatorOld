@@ -17,9 +17,6 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.threading.runnables.OpenGift;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 22-10-2014 12:03.
- */
 public class OpenRecycleBoxEvent extends MessageHandler
 {
     @Override

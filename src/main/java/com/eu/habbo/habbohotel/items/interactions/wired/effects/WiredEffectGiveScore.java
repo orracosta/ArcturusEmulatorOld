@@ -18,9 +18,6 @@ import java.sql.SQLException;
 import java.util.AbstractMap;
 import java.util.Map;
 
-/**
- * Created on 13-12-2014 20:14.
- */
 public class WiredEffectGiveScore extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.GIVE_SCORE;

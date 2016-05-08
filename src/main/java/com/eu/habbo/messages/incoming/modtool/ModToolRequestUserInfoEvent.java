@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.modtool.ModToolManager;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 4-11-2014 14:04.
- */
 public class ModToolRequestUserInfoEvent extends MessageHandler
 {
     @Override

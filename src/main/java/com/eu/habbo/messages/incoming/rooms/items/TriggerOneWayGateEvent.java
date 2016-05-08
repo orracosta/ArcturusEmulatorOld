@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionOneWayGate;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 10-3-2015 10:10.
- */
 public class TriggerOneWayGateEvent extends MessageHandler
 {
     @Override

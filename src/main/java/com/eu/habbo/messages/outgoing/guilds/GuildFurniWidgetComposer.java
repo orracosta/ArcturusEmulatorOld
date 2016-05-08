@@ -8,9 +8,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 1-2-2015 15:40.
- */
 public class GuildFurniWidgetComposer extends MessageComposer
 {
     private final HabboItem item;

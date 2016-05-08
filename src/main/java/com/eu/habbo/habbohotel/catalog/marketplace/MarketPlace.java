@@ -18,8 +18,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created on 1-11-2014 13:06.
- *
  * Note: A lot of data in here is not cached in the emulator but rather loaded from the database.
  * If you have a big hotel and the marketplace is used frequently this may cause some lagg.
  * If you have issues with that please let us know so we can see if we need to modify the Marketplace so

@@ -9,9 +9,6 @@ import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserTalkComposer;
 
-/**
- * Created on 13-9-2014 14:03.
- */
 public class RoomUserTalkEvent extends MessageHandler {
 
     @Override

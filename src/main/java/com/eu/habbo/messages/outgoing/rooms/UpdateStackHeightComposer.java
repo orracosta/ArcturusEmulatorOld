@@ -6,9 +6,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 21-9-2014 10:27.
- */
 public class UpdateStackHeightComposer extends MessageComposer {
 
     private int x;

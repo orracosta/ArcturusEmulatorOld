@@ -15,11 +15,8 @@ import gnu.trove.set.hash.THashSet;
 
 import java.util.*;
 
-/**
- * Created on 4-10-2014 10:57.
- */
-public class CommandHandler {
-
+public class CommandHandler
+{
     private final static THashSet<Command> commands = new THashSet<Command>();
 
     public CommandHandler()

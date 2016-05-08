@@ -7,9 +7,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 21-7-2015 16:17.
- */
 public class BattleBanzaiTilesFlicker implements Runnable
 {
     private THashSet<HabboItem> items;

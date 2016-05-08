@@ -10,9 +10,6 @@ import com.eu.habbo.messages.outgoing.guides.GuideSessionDetachedComposer;
 import com.eu.habbo.messages.outgoing.guides.GuideSessionEndedComposer;
 import com.eu.habbo.messages.outgoing.modtool.ModToolReportReceivedAlertComposer;
 
-/**
- * Created on 10-10-2015 21:57.
- */
 public class GuideReportHelperEvent extends MessageHandler
 {
     @Override

@@ -37,9 +37,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-/**
- * Created on 26-8-2014 21:21.
- */
 public class CatalogManager
 {
     /**

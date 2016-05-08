@@ -3,11 +3,8 @@ package com.eu.habbo.messages.outgoing.generic;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 
-/**
- * Created on 26-8-2014 16:35.
- */
-public class testcomposer extends MessageComposer {
-
+public class testcomposer extends MessageComposer
+{
     @Override
     public ServerMessage compose() {
         this.response.init(3019);

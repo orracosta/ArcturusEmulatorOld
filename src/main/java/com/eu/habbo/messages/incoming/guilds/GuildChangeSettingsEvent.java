@@ -7,9 +7,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.plugin.events.guilds.GuildChangedSettingsEvent;
 
-/**
- * Created on 23-11-2014 14:39.
- */
 public class GuildChangeSettingsEvent extends MessageHandler
 {
     @Override

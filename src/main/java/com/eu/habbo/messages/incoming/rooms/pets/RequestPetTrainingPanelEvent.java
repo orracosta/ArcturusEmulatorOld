@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.pets.PetTrainingPanelComposer;
 
-/**
- * Created on 30-11-2014 22:09.
- */
 public class RequestPetTrainingPanelEvent extends MessageHandler
 {
     @Override

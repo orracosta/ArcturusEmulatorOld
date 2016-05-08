@@ -21,11 +21,8 @@ import com.eu.habbo.habbohotel.pets.PetManager;
 import com.eu.habbo.habbohotel.rooms.RoomManager;
 import com.eu.habbo.habbohotel.users.HabboManager;
 
-/**
- * Created on 25-8-2014 13:41.
- */
-public class GameEnvironment {
-
+public class GameEnvironment
+{
     private HabboManager habboManager;
     private NavigatorManager navigatorManager;
     private GuildManager guildManager;

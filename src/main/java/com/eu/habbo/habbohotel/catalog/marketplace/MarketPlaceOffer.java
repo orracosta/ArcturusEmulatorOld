@@ -9,9 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 1-11-2014 13:07.
- */
 public class MarketPlaceOffer implements Runnable
 {
     private int offerId;
@@ -24,7 +21,6 @@ public class MarketPlaceOffer implements Runnable
     private int timestamp = Emulator.getIntUnixTimestamp();
     private MarketPlaceState state = MarketPlaceState.OPEN;
     private boolean needsUpdate = false;
-    private boolean privateOffer;
 
     public int avarage;
     public int count;

@@ -10,9 +10,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 import java.util.ArrayList;
 import java.util.Collections;
 
-/**
- * Created on 14-7-2015 14:12.
- */
 public class ModToolIssueChatlogComposer extends MessageComposer
 {
     private ModToolIssue issue;

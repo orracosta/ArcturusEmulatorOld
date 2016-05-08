@@ -12,9 +12,6 @@ import com.eu.habbo.util.pathfinding.Tile;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 11-10-2014 11:14.
- */
 public class InteractionGate extends HabboItem
 {
     public InteractionGate(ResultSet set, Item baseItem) throws SQLException

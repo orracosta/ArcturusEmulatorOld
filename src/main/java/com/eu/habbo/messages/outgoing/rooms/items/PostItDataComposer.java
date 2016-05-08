@@ -6,9 +6,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 9-7-2015 17:26.
- */
 public class PostItDataComposer extends MessageComposer
 {
     private InteractionPostIt postIt;

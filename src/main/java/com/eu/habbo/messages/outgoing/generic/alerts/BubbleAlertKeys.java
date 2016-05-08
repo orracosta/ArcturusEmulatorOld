@@ -1,8 +1,5 @@
 package com.eu.habbo.messages.outgoing.generic.alerts;
 
-/**
- * Created on 30-11-2014 11:56.
- */
 public enum BubbleAlertKeys
 {
     ADMIN_PERSISTENT("admin.persistent"),

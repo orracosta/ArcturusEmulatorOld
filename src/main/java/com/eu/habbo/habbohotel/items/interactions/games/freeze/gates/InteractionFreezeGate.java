@@ -16,9 +16,6 @@ import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 23-1-2015 19:17.
- */
 public class InteractionFreezeGate extends InteractionGameGate
 {
     public InteractionFreezeGate(ResultSet set, Item baseItem, GameTeamColors teamColor) throws SQLException

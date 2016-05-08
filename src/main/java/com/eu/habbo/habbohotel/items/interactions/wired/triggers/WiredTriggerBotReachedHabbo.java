@@ -13,9 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * Created on 20-6-2015 12:01.
- */
 public class WiredTriggerBotReachedHabbo extends InteractionWiredTrigger
 {
     public final static WiredTriggerType type = WiredTriggerType.BOT_REACHED_AVTR;

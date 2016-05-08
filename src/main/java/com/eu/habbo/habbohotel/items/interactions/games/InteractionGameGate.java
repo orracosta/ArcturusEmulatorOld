@@ -9,9 +9,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 23-1-2015 19:10.
- */
 public abstract class InteractionGameGate extends InteractionGameTeamItem
 {
     public InteractionGameGate(ResultSet set, Item baseItem, GameTeamColors teamColor) throws SQLException

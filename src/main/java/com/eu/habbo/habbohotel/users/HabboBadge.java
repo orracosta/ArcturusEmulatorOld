@@ -6,12 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 29-8-2014 11:36.
- */
 public class HabboBadge implements Runnable
 {
-
     private int id;
     private String code;
     private int slot;

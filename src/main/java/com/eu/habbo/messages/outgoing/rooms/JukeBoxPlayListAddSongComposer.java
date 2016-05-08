@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 5-9-2015 10:52.
- */
 public class JukeBoxPlayListAddSongComposer extends MessageComposer
 {
     private final SoundTrack track;

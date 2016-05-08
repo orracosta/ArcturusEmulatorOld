@@ -12,9 +12,6 @@ import com.eu.habbo.messages.outgoing.guilds.GuildMemberUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.RoomRightsComposer;
 import com.eu.habbo.plugin.events.guilds.GuildGivenAdminEvent;
 
-/**
- * Created on 23-11-2014 16:00.
- */
 public class GuildSetAdminEvent extends MessageHandler
 {
     @Override

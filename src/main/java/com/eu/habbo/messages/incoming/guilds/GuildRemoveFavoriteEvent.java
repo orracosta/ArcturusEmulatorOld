@@ -6,9 +6,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.users.UserProfileComposer;
 import com.eu.habbo.plugin.events.guilds.GuildRemovedFavoriteEvent;
 
-/**
- * Created on 2-8-2015 14:37.
- */
 public class GuildRemoveFavoriteEvent extends MessageHandler
 {
     @Override

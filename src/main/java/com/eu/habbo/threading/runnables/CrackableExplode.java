@@ -7,9 +7,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.items.AddFloorItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
 
-/**
- * Created on 8-11-2014 10:20.
- */
 public class CrackableExplode implements Runnable
 {
     private final Room room;

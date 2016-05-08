@@ -16,9 +16,6 @@ import gnu.trove.set.hash.THashSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 24-1-2015 09:48.
- */
 public class InteractionFreezeBlock extends HabboItem
 {
     public InteractionFreezeBlock(ResultSet set, Item baseItem) throws SQLException

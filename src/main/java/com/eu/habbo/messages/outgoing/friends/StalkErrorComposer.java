@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 4-11-2014 09:27.
- */
 public class StalkErrorComposer extends MessageComposer
 {
     public static final int NOT_IN_FRIEND_LIST = 0;

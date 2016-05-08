@@ -5,11 +5,8 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.list.array.TIntArrayList;
 
-/**
- * Created on 25-8-2014 16:44.
- */
-public class RemoveFriendComposer extends MessageComposer {
-
+public class RemoveFriendComposer extends MessageComposer
+{
     private TIntArrayList unfriendIds;
 
     public RemoveFriendComposer(TIntArrayList unfriendIds)
@@ -24,7 +21,8 @@ public class RemoveFriendComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.UpdateFriendComposer);
 
         this.response.appendInt32(0);

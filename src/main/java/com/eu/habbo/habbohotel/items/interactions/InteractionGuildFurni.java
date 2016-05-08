@@ -13,9 +13,6 @@ import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 24-11-2014 19:09.
- */
 public class InteractionGuildFurni extends HabboItem
 {
     private int guildId;

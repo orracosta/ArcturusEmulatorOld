@@ -10,9 +10,6 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
 import java.util.Map;
 
-/**
- * Created on 24-10-2015 15:33.
- */
 public class SummonRankCommand extends Command
 {
     public SummonRankCommand()

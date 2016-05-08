@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 3-9-2014 09:07.
- */
 public class RoomEnterErrorComposer extends MessageComposer {
 
     public static final int ROOM_ERROR_GUESTROOM_FULL   = 1;

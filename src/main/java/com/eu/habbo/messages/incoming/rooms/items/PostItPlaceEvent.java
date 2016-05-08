@@ -8,9 +8,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.inventory.RemoveHabboItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.AddWallItemComposer;
 
-/**
- * Created on 9-7-2015 17:05.
- */
 public class PostItPlaceEvent extends MessageHandler
 {
     @Override

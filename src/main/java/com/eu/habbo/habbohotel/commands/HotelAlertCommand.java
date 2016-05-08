@@ -11,9 +11,6 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
 import java.util.Map;
 
-/**
- * Created on 4-10-2014 21:47.
- */
 public class HotelAlertCommand extends Command {
 
     public HotelAlertCommand()

@@ -7,9 +7,6 @@ import com.eu.habbo.messages.outgoing.guilds.GuildFavoriteRoomUserUpdateComposer
 import com.eu.habbo.messages.outgoing.users.UserProfileComposer;
 import com.eu.habbo.plugin.events.guilds.GuildFavoriteSetEvent;
 
-/**
- * Created on 29-11-2014 13:18.
- */
 public class GuildSetFavoriteEvent extends MessageHandler
 {
     @Override

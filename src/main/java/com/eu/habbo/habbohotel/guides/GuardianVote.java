@@ -2,9 +2,6 @@ package com.eu.habbo.habbohotel.guides;
 
 import com.eu.habbo.habbohotel.users.Habbo;
 
-/**
- * Created on 11-10-2015 17:05.
- */
 public class GuardianVote implements Comparable<GuardianVote>
 {
     public int id;

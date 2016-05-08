@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.modtool;
 
-/**
- * Created on 4-3-2015 10:47.
- */
 public enum ModToolTicketType
 {
     NORMAL(1),

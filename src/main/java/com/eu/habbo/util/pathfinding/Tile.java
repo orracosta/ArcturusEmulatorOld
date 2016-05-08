@@ -4,9 +4,6 @@ import gnu.trove.set.hash.THashSet;
 
 import java.awt.*;
 
-/**
- * Created on 14-9-2014 13:56.
- */
 public class Tile extends Point
 {
     public int X;

@@ -7,9 +7,6 @@ import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.threading.runnables.RoomTrashing;
 
-/**
- * Created on 7-8-2015 14:22.
- */
 public class TrashCommand extends Command
 {
     public TrashCommand()

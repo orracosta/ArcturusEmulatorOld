@@ -13,9 +13,6 @@ import com.eu.habbo.util.pathfinding.Tile;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 7-2-2016 15:36.
- */
 public abstract class InteractionPushable extends InteractionDefault
 {
     public int velocity;

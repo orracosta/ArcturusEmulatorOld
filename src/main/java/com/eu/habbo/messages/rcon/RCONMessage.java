@@ -1,10 +1,5 @@
 package com.eu.habbo.messages.rcon;
 
-import com.google.gson.JsonObject;
-
-/**
- * Created on 29-8-2015 10:01.
- */
 public abstract class RCONMessage<T>
 {
     /**

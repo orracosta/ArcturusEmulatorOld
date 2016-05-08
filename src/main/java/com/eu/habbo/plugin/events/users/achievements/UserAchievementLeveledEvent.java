@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.achievements.Achievement;
 import com.eu.habbo.habbohotel.achievements.AchievementLevel;
 import com.eu.habbo.habbohotel.users.Habbo;
 
-/**
- * Created on 27-8-2015 22:42.
- */
 public class UserAchievementLeveledEvent extends UserAchievementEvent
 {
     /**

@@ -1,8 +1,5 @@
 package com.eu.habbo.util.pathfinding;
 
-/**
- * Created on 14-9-2014 13:51.
- */
 public class Node extends AbstractNode {
 
     public Node(int xPosition, int yPosition)

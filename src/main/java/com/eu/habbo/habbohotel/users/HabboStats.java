@@ -14,9 +14,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 3-11-2014 16:27.
- */
 public class HabboStats implements Runnable
 {
     private final int timeLoggedIn = Emulator.getIntUnixTimestamp();

@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 27-3-2015 15:48.
- */
 public class RoomUnitSetGoalEvent extends RoomUnitEvent
 {
     /**

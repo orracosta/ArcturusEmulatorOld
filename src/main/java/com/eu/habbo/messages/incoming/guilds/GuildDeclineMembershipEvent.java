@@ -10,9 +10,6 @@ import com.eu.habbo.messages.outgoing.guilds.GuildMembersComposer;
 import com.eu.habbo.messages.outgoing.guilds.GuildRefreshMembersListComposer;
 import com.eu.habbo.plugin.events.guilds.GuildDeclinedMembershipEvent;
 
-/**
- * Created on 23-11-2014 15:46.
- */
 public class GuildDeclineMembershipEvent extends MessageHandler
 {
     @Override

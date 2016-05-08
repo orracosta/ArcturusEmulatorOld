@@ -11,9 +11,6 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created on 20-10-2015 19:58.
- */
 public class VisitorBot extends Bot
 {
     private static SimpleDateFormat formatDate;

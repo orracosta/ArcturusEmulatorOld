@@ -3,11 +3,8 @@ package com.eu.habbo.habbohotel.messenger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 27-8-2014 12:11.
- */
-public class FriendRequest {
-
+public class FriendRequest
+{
     private int id;
     private String username;
     private String look;

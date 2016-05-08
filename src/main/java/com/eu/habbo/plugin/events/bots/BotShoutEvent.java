@@ -2,9 +2,6 @@ package com.eu.habbo.plugin.events.bots;
 
 import com.eu.habbo.habbohotel.bots.Bot;
 
-/**
- * Created on 9-11-2015 21:33.
- */
 public class BotShoutEvent extends BotChatEvent
 {
     /**

@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.wired;
 
-/**
- * Created on 13-12-2014 23:03.
- */
 public enum WiredConditionType
 {
     MATCH_SSHOT(0),

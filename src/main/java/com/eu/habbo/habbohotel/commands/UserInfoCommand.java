@@ -17,9 +17,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
-/**
- * Created on 20-2-2015 16:34.
- */
 public class UserInfoCommand extends Command
 {
     public UserInfoCommand()

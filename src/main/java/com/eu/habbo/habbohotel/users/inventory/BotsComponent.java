@@ -10,9 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-/**
- * Created on 28-8-2014 18:44.
- */
 public class BotsComponent {
 
     private final THashMap<Integer, Bot> userBots = new THashMap<Integer, Bot>();

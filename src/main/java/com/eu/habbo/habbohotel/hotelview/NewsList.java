@@ -7,11 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 27-8-2014 10:17.
- */
-public class NewsList {
-
+public class NewsList
+{
     private final THashSet<NewsWidget> newsWidgets;
 
     public NewsList()

@@ -3,9 +3,6 @@ package com.eu.habbo.plugin.events.guilds;
 import com.eu.habbo.habbohotel.guilds.Guild;
 import com.eu.habbo.habbohotel.users.Habbo;
 
-/**
- * Created on 24-10-2015 14:00.
- */
 public class GuildDeletedEvent extends GuildEvent
 {
     /**

@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.users.inventory.BadgesComponent;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.users.UserBadgesComposer;
 
-/**
- * Created on 12-10-2014 15:50.
- */
 public class RequestWearingBadgesEvent extends MessageHandler
 {
     @Override

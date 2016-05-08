@@ -12,9 +12,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 16-10-2015 21:19.
- */
 public class InteractionFireworks extends HabboItem
 {
     public InteractionFireworks(ResultSet set, Item baseItem) throws SQLException

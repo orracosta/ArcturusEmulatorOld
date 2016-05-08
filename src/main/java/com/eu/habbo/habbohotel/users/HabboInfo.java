@@ -14,9 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-/**
- * Created on 26-8-2014 15:01.
- */
 public class HabboInfo implements Runnable
 {
     private String username;

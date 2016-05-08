@@ -8,9 +8,6 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.URLClassLoader;
 
-/**
- * Created on 28-2-2015 11:11.
- */
 public abstract class HabboPlugin
 {
     public final THashMap<Class<? extends Event>, THashSet<Method>> registeredEvents = new THashMap<Class <? extends Event>, THashSet<Method>>();

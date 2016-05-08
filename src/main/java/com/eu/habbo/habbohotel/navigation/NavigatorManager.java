@@ -9,9 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-/**
- * Created on 26-8-2014 18:45.
- */
 public class NavigatorManager
 {
     private final THashMap<PublicRoom, THashSet<PublicRoom>> publicRooms;

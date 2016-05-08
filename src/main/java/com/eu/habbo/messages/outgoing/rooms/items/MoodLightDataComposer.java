@@ -6,9 +6,6 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.map.TIntObjectMap;
 
-/**
- * Created on 14-11-2014 21:11.
- */
 public class MoodLightDataComposer extends MessageComposer
 {
     private TIntObjectMap<RoomMoodlightData> moodLightData;

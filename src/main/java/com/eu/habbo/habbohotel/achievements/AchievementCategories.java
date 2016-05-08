@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.achievements;
 
-/**
- * Created on 30-1-2015 14:36.
- */
 public enum AchievementCategories
 {
     /**

@@ -6,9 +6,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 19-9-2015 22:19.
- */
 public class ColorGroupingLayout extends CatalogPage
 {
     public ColorGroupingLayout(ResultSet set) throws SQLException

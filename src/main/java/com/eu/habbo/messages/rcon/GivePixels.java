@@ -6,9 +6,6 @@ import com.google.gson.Gson;
 
 import java.sql.PreparedStatement;
 
-/**
- * Created on 29-8-2015 12:28.
- */
 public class GivePixels extends RCONMessage<GivePixels.JSONGivePixels>
 {
     public GivePixels()

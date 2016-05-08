@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.pets;
 
-/**
- * Created on 30-11-2014 20:37.
- */
 public enum PetGestures
 {
     THIRSTY("thr"),

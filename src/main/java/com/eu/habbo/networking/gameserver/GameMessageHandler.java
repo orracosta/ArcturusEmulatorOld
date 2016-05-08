@@ -8,9 +8,6 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
-/**
- * Created on 15-11-2015 11:25.
- */
 public class GameMessageHandler extends ChannelInboundHandlerAdapter
 {
     @Override
@@ -32,8 +29,7 @@ public class GameMessageHandler extends ChannelInboundHandlerAdapter
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg)
     {
-        ByteBuf m = (ByteBuf) msg; // (1)
-        //((ByteBuf) msg).readerIndex(0);
+        ByteBuf m = (ByteBuf) msg;
         int length = m.readInt();
         short header = m.readShort();
         ByteBuf body = Unpooled.wrappedBuffer(m.readBytes(m.readableBytes()));

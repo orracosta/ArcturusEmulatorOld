@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUnitOnRollerComposer;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 20-12-2014 13:44.
- */
 public class RoomUnitTeleport implements Runnable
 {
     private RoomUnit roomUnit;

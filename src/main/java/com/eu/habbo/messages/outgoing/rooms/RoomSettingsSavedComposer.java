@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 3-4-2015 23:11.
- */
 public class RoomSettingsSavedComposer extends MessageComposer
 {
     private final Room room;

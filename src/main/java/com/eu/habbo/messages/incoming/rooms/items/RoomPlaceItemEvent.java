@@ -19,9 +19,6 @@ import com.eu.habbo.util.pathfinding.PathFinder;
 import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 20-9-2014 19:35.
- */
 public class RoomPlaceItemEvent extends MessageHandler
 {
     @Override

@@ -14,11 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created on 28-8-2014 11:58.
- */
-public class CatalogPageComposer extends MessageComposer {
-
+public class CatalogPageComposer extends MessageComposer
+{
     private final CatalogPage page;
     private final Habbo habbo;
 
@@ -29,7 +26,8 @@ public class CatalogPageComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.CatalogPageComposer);
         this.response.appendInt32(this.page.getId());
         this.response.appendString(CatalogPageType.NORMAL.name().toUpperCase());

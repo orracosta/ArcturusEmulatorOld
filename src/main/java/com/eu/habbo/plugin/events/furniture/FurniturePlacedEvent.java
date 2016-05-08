@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 12-6-2015 17:50.
- */
 public class FurniturePlacedEvent extends FurnitureUserEvent
 {
     /**

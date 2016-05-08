@@ -9,9 +9,6 @@ import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 26-7-2015 16:43.
- */
 public class ClearRentedSpace implements Runnable
 {
     private InteractionRentableSpace item;

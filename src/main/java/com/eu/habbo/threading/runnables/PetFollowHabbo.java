@@ -7,9 +7,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.util.pathfinding.PathFinder;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 6-12-2014 14:07.
- */
 public class PetFollowHabbo implements Runnable
 {
     private final int directionOffset;

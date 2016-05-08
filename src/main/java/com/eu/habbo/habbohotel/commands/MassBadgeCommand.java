@@ -14,9 +14,6 @@ import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
 import java.util.Collection;
 import java.util.Map;
 
-/**
- * Created on 11-1-2016 19:16.
- */
 public class MassBadgeCommand extends Command
 {
     public MassBadgeCommand()

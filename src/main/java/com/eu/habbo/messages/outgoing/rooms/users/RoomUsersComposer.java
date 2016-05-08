@@ -10,11 +10,8 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 3-9-2014 11:55.
- */
-public class RoomUsersComposer extends MessageComposer {
-
+public class RoomUsersComposer extends MessageComposer
+{
     private Habbo habbo;
     private TIntObjectMap<Habbo> habbos;
     private Bot bot;

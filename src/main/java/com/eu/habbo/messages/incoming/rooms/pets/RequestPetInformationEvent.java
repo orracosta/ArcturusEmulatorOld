@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.pets.PetInformationComposer;
 
-/**
- * Created on 30-11-2014 13:07.
- */
 public class RequestPetInformationEvent extends MessageHandler
 {
     @Override

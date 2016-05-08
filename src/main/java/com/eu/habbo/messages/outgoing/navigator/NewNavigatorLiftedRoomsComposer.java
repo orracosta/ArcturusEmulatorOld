@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 17-6-2015 15:15.
- */
 public class NewNavigatorLiftedRoomsComposer extends MessageComposer
 {
     @Override

@@ -13,9 +13,6 @@ import com.eu.habbo.plugin.events.guilds.GuildPurchasedEvent;
 
 import java.util.List;
 
-/**
- * Created on 22-11-2014 18:27.
- */
 public class RequestGuildBuyEvent extends MessageHandler
 {
     @Override

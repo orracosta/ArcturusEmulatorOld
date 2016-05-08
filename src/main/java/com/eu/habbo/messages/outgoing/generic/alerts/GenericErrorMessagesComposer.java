@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 26-1-2015 11:47.
- */
 public class GenericErrorMessagesComposer extends MessageComposer
 {
     public static final int AUTHENTICATION_FAILED = -3;
@@ -22,6 +19,7 @@ public class GenericErrorMessagesComposer extends MessageComposer
     {
         this.errorCode = errorCode;
     }
+
     @Override
     public ServerMessage compose()
     {

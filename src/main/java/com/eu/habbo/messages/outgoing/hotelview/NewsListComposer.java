@@ -7,13 +7,11 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 26-8-2014 18:18.
- */
-public class NewsListComposer extends MessageComposer {
-
+public class NewsListComposer extends MessageComposer
+{
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.NewsWidgetsComposer);
         NewsList newsList = Emulator.getGameEnvironment().getHotelViewManager().getNewsList();
 

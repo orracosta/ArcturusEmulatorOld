@@ -6,9 +6,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.hotelview.HotelViewComposer;
 import com.eu.habbo.messages.outgoing.rooms.KnockKnockUnknownComposer2;
 
-/**
- * Created on 23-10-2014 13:49.
- */
 public class KnockKnockResponseEvent extends MessageHandler
 {
     @Override

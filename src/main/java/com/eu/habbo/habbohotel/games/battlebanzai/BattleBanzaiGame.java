@@ -28,9 +28,6 @@ import gnu.trove.set.hash.THashSet;
 
 import java.util.Map;
 
-/**
- * Created on 22-5-2015 21:37.
- */
 public class BattleBanzaiGame extends Game
 {
     /**

@@ -32,9 +32,6 @@ import gnu.trove.set.hash.THashSet;
 
 import java.util.Map;
 
-/**
- * Created on 23-1-2015 18:59.
- */
 public class FreezeGame extends Game
 {
     public static final int effectId = 40;

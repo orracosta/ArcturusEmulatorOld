@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 8-11-2014 13:56.
- */
 public class TradeStartFailComposer extends MessageComposer
 {
     public static final int HOTEL_TRADING_NOT_ALLOWED = 1;

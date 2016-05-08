@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 24-8-2014 17:07.
- */
 public class BannerTokenComposer extends MessageComposer {
 
     private final String token;

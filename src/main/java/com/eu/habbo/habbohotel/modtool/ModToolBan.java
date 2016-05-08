@@ -6,9 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 22-11-2014 11:54.
- */
 public class ModToolBan implements Runnable
 {
     private int userId;

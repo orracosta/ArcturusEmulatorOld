@@ -9,9 +9,6 @@ import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
 
-/**
- * Created on 2-11-2014 14:49.
- */
 public class CreditsCommand extends Command
 {
     public CreditsCommand()

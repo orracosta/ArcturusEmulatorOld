@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.marketplace.MarketplaceSellItemComposer;
 
-/**
- * Created on 2-11-2014 11:38.
- */
 public class RequestSellItemEvent extends MessageHandler
 {
     @Override

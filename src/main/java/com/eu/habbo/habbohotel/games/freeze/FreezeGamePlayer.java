@@ -7,14 +7,8 @@ import com.eu.habbo.habbohotel.games.GameTeamColors;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.rooms.FreezeLivesComposer;
 
-/**
- * Created on 10-4-2015 20:32.
- */
 public class FreezeGamePlayer extends GamePlayer
 {
-    /*
-        Freeze
-     */
     private int lives;
     private int snowBalls;
     private int explosionBoost;

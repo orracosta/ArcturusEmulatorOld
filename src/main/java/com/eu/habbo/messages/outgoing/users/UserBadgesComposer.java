@@ -6,9 +6,6 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 12-10-2014 15:39.
- */
 public class UserBadgesComposer extends MessageComposer
 {
     private final THashSet<HabboBadge> badges;

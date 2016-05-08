@@ -14,9 +14,6 @@ import com.eu.habbo.plugin.events.furniture.FurnitureRedeemedEvent;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 16-11-2014 16:13.
- */
 public class RedeemItemEvent extends MessageHandler
 {
     @Override

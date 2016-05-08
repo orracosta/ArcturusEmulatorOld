@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 
 import java.util.ArrayList;
 
-/**
- * Created on 9-11-2015 20:52.
- */
 public class NavigatorSearchResultEvent extends NavigatorRoomsEvent
 {
     /**

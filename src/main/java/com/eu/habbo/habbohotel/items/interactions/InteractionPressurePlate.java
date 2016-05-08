@@ -12,9 +12,6 @@ import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 2-11-2014 15:05.
- */
 public class InteractionPressurePlate extends HabboItem
 {
     public InteractionPressurePlate(ResultSet set, Item baseItem) throws SQLException

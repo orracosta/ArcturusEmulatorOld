@@ -11,9 +11,6 @@ import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;
 import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 9-10-2014 17:01.
- */
 public class ToggleFloorItemEvent extends MessageHandler
 {
     @Override

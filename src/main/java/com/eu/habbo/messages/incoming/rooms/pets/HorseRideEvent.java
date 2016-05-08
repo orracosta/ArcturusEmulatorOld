@@ -10,9 +10,6 @@ import com.eu.habbo.threading.runnables.RoomUnitRideHorse;
 import com.eu.habbo.util.pathfinding.PathFinder;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 10-12-2014 12:00.
- */
 public class HorseRideEvent extends MessageHandler
 {
     @Override

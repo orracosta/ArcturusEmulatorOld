@@ -6,11 +6,8 @@ import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
 import com.eu.habbo.messages.outgoing.users.UserCurrencyComposer;
 import com.eu.habbo.messages.outgoing.users.UserPointsComposer;
 
-/**
- * Created on 25-8-2014 11:01.
- */
-public class RequestUserCreditsEvent extends MessageHandler {
-
+public class RequestUserCreditsEvent extends MessageHandler
+{
     @Override
     public void handle()
     {

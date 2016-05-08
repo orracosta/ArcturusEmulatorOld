@@ -8,9 +8,6 @@ import com.eu.habbo.plugin.events.navigator.NavigatorSearchResultEvent;
 
 import java.util.ArrayList;
 
-/**
- * Created on 22-11-2014 10:08.
- */
 public class SearchRoomsEvent extends MessageHandler
 {
     @Override

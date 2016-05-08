@@ -15,8 +15,8 @@ import java.sql.SQLException;
 /**
  * Created on 25-8-2014 18:11.
  */
-public class FriendRequestEvent extends MessageHandler {
-
+public class FriendRequestEvent extends MessageHandler
+{
     @Override
     public void handle() throws Exception
     {

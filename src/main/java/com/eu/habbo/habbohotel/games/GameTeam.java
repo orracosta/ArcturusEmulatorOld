@@ -3,9 +3,6 @@ package com.eu.habbo.habbohotel.games;
 import com.eu.habbo.habbohotel.users.Habbo;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 23-1-2015 18:54.
- */
 public class GameTeam
 {
     /**

@@ -3,9 +3,6 @@ package com.eu.habbo.messages.incoming.navigator;
 import com.eu.habbo.habbohotel.users.HabboNavigatorWindowSettings;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 20-11-2015 20:33.
- */
 public class SaveWindowSettingsEvent extends MessageHandler
 {
     @Override

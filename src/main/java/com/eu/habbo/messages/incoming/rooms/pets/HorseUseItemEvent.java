@@ -10,9 +10,6 @@ import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetHorseFigureComposer;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;
 
-/**
- * Created on 10-12-2014 09:40.
- */
 public class HorseUseItemEvent extends MessageHandler
 {
     @Override

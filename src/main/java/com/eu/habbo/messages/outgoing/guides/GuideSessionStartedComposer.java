@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 10-10-2015 21:29.
- */
 public class GuideSessionStartedComposer extends MessageComposer
 {
     private final GuideTour tour;

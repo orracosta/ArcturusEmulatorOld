@@ -12,9 +12,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 20:01.
- */
 public class WiredTriggerCollision extends InteractionWiredTrigger
 {
     private static final WiredTriggerType type = WiredTriggerType.COLLISION;

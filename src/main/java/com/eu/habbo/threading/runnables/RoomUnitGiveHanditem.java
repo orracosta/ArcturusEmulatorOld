@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserHandItemComposer;
 
-/**
- * Created on 12-10-2014 13:11.
- */
 public class RoomUnitGiveHanditem implements Runnable
 {
     private final RoomUnit roomUnit;

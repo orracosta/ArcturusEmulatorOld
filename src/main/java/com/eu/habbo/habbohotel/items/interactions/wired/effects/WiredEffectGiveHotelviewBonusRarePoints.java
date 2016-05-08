@@ -14,9 +14,6 @@ import com.eu.habbo.messages.outgoing.hotelview.BonusRareComposer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 24-10-2015 12:28.
- */
 public class WiredEffectGiveHotelviewBonusRarePoints extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.SHOW_MESSAGE;

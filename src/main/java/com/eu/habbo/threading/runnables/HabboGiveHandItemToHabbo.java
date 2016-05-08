@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserHandItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserReceivedHandItemComposer;
 
-/**
- * Created on 2-8-2015 16:09.
- */
 public class HabboGiveHandItemToHabbo implements Runnable
 {
     private Habbo target;

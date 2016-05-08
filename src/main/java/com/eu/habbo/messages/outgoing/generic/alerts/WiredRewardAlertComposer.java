@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 3-11-2014 21:39.
- */
 public class WiredRewardAlertComposer extends MessageComposer
 {
     public static final int LIMITED_NO_MORE_AVAILABLE = 0;

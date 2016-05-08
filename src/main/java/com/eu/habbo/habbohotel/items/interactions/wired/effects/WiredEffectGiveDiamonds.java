@@ -14,9 +14,6 @@ import com.eu.habbo.messages.outgoing.users.UserPointsComposer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 20-10-2015 21:37.
- */
 public class WiredEffectGiveDiamonds extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.SHOW_MESSAGE;

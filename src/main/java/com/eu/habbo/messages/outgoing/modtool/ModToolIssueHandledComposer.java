@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 5-3-2015 09:49.
- */
 public class ModToolIssueHandledComposer extends MessageComposer
 {
     public static final int HANDLED = 0;

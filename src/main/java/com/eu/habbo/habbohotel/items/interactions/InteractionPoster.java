@@ -9,9 +9,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 11-7-2015 14:21.
- */
 public class InteractionPoster extends HabboItem
 {
     public InteractionPoster(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)

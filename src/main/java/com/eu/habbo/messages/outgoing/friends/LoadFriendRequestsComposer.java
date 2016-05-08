@@ -6,11 +6,8 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 27-8-2014 12:18.
- */
-public class LoadFriendRequestsComposer extends MessageComposer {
-
+public class LoadFriendRequestsComposer extends MessageComposer
+{
     private final Habbo habbo;
 
     public LoadFriendRequestsComposer(Habbo habbo)
@@ -19,7 +16,8 @@ public class LoadFriendRequestsComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.LoadFriendRequestsComposer);
 
         synchronized (this.habbo.getMessenger().getFriendRequests())

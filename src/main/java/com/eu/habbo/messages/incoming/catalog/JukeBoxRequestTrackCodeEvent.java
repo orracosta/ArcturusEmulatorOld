@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.items.SoundTrack;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.JukeBoxTrackCodeComposer;
 
-/**
- * Created on 25-8-2015 15:09.
- */
 public class JukeBoxRequestTrackCodeEvent extends MessageHandler
 {
     @Override

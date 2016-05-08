@@ -9,9 +9,6 @@ import com.eu.habbo.messages.outgoing.rooms.UpdateStackHeightComposer;
 import com.eu.habbo.util.pathfinding.PathFinder;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 13-12-2014 10:50.
- */
 public class FloorItemOnRollerComposer extends MessageComposer
 {
     private final HabboItem item;

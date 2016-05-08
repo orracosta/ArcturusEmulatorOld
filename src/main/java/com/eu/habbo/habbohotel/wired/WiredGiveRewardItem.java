@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.wired;
 
-/**
- * Created on 21-12-2014 14:06.
- */
 public class WiredGiveRewardItem
 {
     public final int id;

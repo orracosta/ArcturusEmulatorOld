@@ -1,13 +1,9 @@
 package com.eu.habbo.database;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.core.ConfigurationManager;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-/**
- * Dont mess with this class!
- */
 class DatabasePool
 {
     private HikariDataSource database;
@@ -19,7 +15,6 @@ class DatabasePool
             HikariConfig databaseConfiguration = new HikariConfig();
             databaseConfiguration.setMaximumPoolSize(20);
             databaseConfiguration.setInitializationFailFast(true);
-            //databaseConfiguration.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
             databaseConfiguration.setJdbcUrl("jdbc:mysql://" + config.getValue("db.hostname", "localhost") + ":" + config.getValue("db.port", "3306")+ "/" + config.getValue("db.database", "habbo"));
             databaseConfiguration.addDataSourceProperty("serverName", config.getValue("db.hostname", "localhost"));
             databaseConfiguration.addDataSourceProperty("port", config.getValue("db.port", "3306"));

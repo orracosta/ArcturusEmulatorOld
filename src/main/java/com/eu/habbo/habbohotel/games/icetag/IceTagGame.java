@@ -5,11 +5,6 @@ import com.eu.habbo.habbohotel.games.GameTeamColors;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 
-/**
- * Created on 11-4-2015 16:03.
- *
- * Needs more work. Bug when you walk onto another ice tile.
- */
 public class IceTagGame extends Game
 {
     private static final int MALE_SKATES = 38;

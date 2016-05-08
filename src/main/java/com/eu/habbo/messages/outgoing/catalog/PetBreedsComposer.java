@@ -6,9 +6,6 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 29-11-2014 15:46.
- */
 public class PetBreedsComposer extends MessageComposer
 {
     private final String petName;

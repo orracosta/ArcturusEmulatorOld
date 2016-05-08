@@ -9,9 +9,6 @@ import com.eu.habbo.messages.outgoing.friends.StalkErrorComposer;
 import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
-/**
- * Created on 4-11-2014 08:28.
- */
 public class StalkFriendEvent extends MessageHandler
 {
     @Override

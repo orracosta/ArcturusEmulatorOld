@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.commands.CommandHandler;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 24-10-2015 14:39.
- */
 public class SavePostItStickyPoleEvent extends MessageHandler
 {
     @Override

@@ -16,9 +16,6 @@ import gnu.trove.set.hash.THashSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 30-5-2015 14:35.
- */
 public class InteractionWiredHighscore extends HabboItem
 {
     public WiredHighscoreScoreType scoreType;

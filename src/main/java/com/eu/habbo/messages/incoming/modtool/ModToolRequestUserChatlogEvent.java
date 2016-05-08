@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.users.HabboManager;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.modtool.ModToolUserChatlogComposer;
 
-/**
- * Created on 4-11-2014 16:49.
- */
 public class ModToolRequestUserChatlogEvent extends MessageHandler
 {
     @Override

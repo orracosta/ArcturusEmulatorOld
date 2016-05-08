@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.guides;
 
-/**
- * Created on 11-10-2015 00:21.
- */
 public class GuideChatMessage
 {
     public final int userId;

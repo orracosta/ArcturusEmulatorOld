@@ -2,9 +2,6 @@ package com.eu.habbo.plugin.events.users;
 
 import com.eu.habbo.habbohotel.users.Habbo;
 
-/**
- * Created on 25-12-2015 16:53.
- */
 public class UserRightsGivenEvent extends UserEvent
 {
     public final Habbo receiver;

@@ -11,9 +11,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-7-2015 14:17.
- */
 public class InteractionMoodLight extends HabboItem
 {
     public InteractionMoodLight(ResultSet set, Item baseItem) throws SQLException

@@ -3,9 +3,6 @@ package com.eu.habbo.plugin.events.bots;
 import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.users.Habbo;
 
-/**
- * Created on 24-10-2015 13:39.
- */
 public class BotPickedUpEvent extends BotEvent
 {
     /**

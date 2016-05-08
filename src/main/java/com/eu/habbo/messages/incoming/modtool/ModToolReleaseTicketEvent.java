@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.modtool.ModToolIssue;
 import com.eu.habbo.habbohotel.modtool.ModToolTicketState;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 5-3-2015 09:02.
- */
 public class ModToolReleaseTicketEvent extends MessageHandler
 {
     @Override

@@ -11,9 +11,6 @@ import gnu.trove.set.hash.THashSet;
 
 import java.util.ArrayList;
 
-/**
- * Created on 3-4-2015 22:46.
- */
 public class FloorPlanEditorBlockedTilesComposer extends MessageComposer
 {
     private final Room room;

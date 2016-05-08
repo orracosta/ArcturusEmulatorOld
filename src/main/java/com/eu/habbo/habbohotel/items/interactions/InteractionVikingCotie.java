@@ -9,9 +9,6 @@ import com.eu.habbo.threading.runnables.VikingCotieBurnDown;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 16-10-2015 22:27.
- */
 public class InteractionVikingCotie extends InteractionDefault
 {
     public InteractionVikingCotie(ResultSet set, Item baseItem) throws SQLException

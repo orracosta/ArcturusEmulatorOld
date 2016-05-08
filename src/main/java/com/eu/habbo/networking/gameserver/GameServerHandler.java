@@ -7,9 +7,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.CharsetUtil;
 
-/**
- * Created on 3-4-2015 16:53.
- */
 public class GameServerHandler extends SimpleChannelInboundHandler<byte[]>
 {
     @Override

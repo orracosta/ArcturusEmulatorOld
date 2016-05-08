@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 23-11-2014 16:17.
- */
 public class GuildRefreshMembersListComposer extends MessageComposer
 {
     private final Guild guild;

@@ -16,9 +16,6 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 20:15.
- */
 public class WiredEffectWhisper extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.SHOW_MESSAGE;

@@ -5,9 +5,6 @@ import gnu.trove.map.hash.THashMap;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 3-11-2014 18:46.
- */
 public class Poll
 {
     private int id;

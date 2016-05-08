@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.guides.GuideTour;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.guides.GuideSessionRequesterRoomComposer;
 
-/**
- * Created on 10-10-2015 23:30.
- */
 public class GuideVisitUserEvent extends MessageHandler
 {
     @Override

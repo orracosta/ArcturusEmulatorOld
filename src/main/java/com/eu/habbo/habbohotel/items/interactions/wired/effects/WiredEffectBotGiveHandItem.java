@@ -18,9 +18,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created on 20-6-2015 11:51.
- */
 public class WiredEffectBotGiveHandItem extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.BOT_GIVE_HANDITEM;

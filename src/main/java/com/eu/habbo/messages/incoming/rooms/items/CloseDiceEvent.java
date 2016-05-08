@@ -7,9 +7,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.util.pathfinding.PathFinder;
 
-/**
- * Created on 2-11-2014 20:50.
- */
 public class CloseDiceEvent extends MessageHandler
 {
     @Override

@@ -16,9 +16,6 @@ import gnu.trove.set.hash.THashSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 20:31.
- */
 public class WiredEffectGiveReward extends InteractionWiredEffect
 {
     public final static WiredEffectType type = WiredEffectType.GIVE_REWARD;

@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.guilds;
 
-/**
- * Created on 22-11-2014 16:41.
- */
 public enum GuildPartType
 {
     /**

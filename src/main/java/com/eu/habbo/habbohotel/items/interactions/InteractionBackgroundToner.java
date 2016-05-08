@@ -13,9 +13,6 @@ import com.eu.habbo.threading.runnables.BackgroundAnimation;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 11-10-2014 21:46.
- */
 public class InteractionBackgroundToner extends HabboItem
 {
     public InteractionBackgroundToner(ResultSet set, Item baseItem) throws SQLException

@@ -7,9 +7,6 @@ import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.plugin.events.roomunit.RoomUnitEvent;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 25-12-2015 17:13.
- */
 public class WiredStackExecutedEvent extends RoomUnitEvent
 {
     /**

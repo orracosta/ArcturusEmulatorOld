@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.pets.HorsePet;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetHorseFigureComposer;
 
-/**
- * Created on 10-12-2014 11:23.
- */
 public class HorseRideSettingsEvent extends MessageHandler
 {
     @Override

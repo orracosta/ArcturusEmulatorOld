@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.plugin.events.guilds.GuildChangedBadgeEvent;
 
-/**
- * Created on 23-11-2014 14:07.
- */
 public class GuildChangeBadgeEvent extends MessageHandler
 {
     @Override

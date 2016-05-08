@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 24-1-2015 16:33.
- */
 class FreezeResetExplosionTiles implements Runnable
 {
     private final THashSet<InteractionFreezeTile> tiles;

@@ -8,9 +8,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.WallItemUpdateComposer;
 
-/**
- * Created on 2-11-2014 20:51.
- */
 public class RandomDiceNumber implements Runnable
 {
     private final HabboItem item;

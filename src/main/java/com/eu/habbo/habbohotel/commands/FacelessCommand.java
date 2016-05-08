@@ -6,8 +6,6 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDataComposer;
 import com.eu.habbo.messages.outgoing.users.UpdateUserLookComposer;
 
 /**
- * Created on 21-11-2015 20:01.
- *
  * Kudos to Wouto on RaGEZONE
  */
 public class FacelessCommand extends Command

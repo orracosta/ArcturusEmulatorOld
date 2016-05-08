@@ -6,9 +6,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.RoomHeightMapComposer;
 import com.eu.habbo.messages.outgoing.rooms.RoomRelativeMapComposer;
 
-/**
- * Created on 29-3-2015 13:25.
- */
 public class RequestRoomHeightmapEvent extends MessageHandler
 {
     @Override

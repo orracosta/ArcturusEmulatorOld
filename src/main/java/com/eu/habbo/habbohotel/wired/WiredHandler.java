@@ -31,9 +31,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 14-12-2014 10:42.
- */
 public class WiredHandler
 {
     public static boolean handle(WiredTriggerType triggerType, RoomUnit roomUnit, Room room, Object[] stuff)

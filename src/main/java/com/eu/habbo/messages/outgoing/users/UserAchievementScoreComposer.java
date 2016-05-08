@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 14-2-2015 12:03.
- */
 public class UserAchievementScoreComposer extends MessageComposer
 {
     private final Habbo habbo;

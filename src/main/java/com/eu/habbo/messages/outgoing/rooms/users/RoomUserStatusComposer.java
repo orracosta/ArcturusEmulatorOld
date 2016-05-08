@@ -10,9 +10,6 @@ import gnu.trove.set.hash.THashSet;
 
 import java.util.Map;
 
-/**
- * Created on 14-9-2014 14:34.
- */
 public class RoomUserStatusComposer extends MessageComposer {
 
     private TIntObjectMap<Habbo> habbos;

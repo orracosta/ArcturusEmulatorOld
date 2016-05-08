@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 23-10-2014 13:38.
- */
 public class KnockKnockComposer extends MessageComposer
 {
     private final Habbo habbo;

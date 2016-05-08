@@ -8,9 +8,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.util.pathfinding.PathFinder;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 22-6-2015 13:47.
- */
 public class BotFollowHabbo implements Runnable
 {
     private Bot bot;

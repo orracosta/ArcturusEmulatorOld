@@ -6,9 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 21-1-2015 12:57.
- */
 public class MonsterplantPet extends Pet
 {
     private int type;

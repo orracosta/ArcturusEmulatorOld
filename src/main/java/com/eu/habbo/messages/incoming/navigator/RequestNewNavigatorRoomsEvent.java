@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created on 19-6-2015 13:46.
- */
 public class RequestNewNavigatorRoomsEvent extends MessageHandler
 {
     @Override

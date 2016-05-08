@@ -5,11 +5,8 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 31-8-2014 15:49.
- */
-public class RoomCreatedComposer extends MessageComposer {
-
+public class RoomCreatedComposer extends MessageComposer
+{
     private final Room room;
 
     public RoomCreatedComposer(Room room)
@@ -18,7 +15,8 @@ public class RoomCreatedComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.RoomCreatedComposer);
         this.response.appendInt32(this.room.getId());
         this.response.appendString(this.room.getName());

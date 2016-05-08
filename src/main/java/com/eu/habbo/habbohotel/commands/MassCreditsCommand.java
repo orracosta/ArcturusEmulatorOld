@@ -11,9 +11,6 @@ import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
 import java.util.Collection;
 import java.util.Map;
 
-/**
- * Created on 20-2-2015 17:39.
- */
 public class MassCreditsCommand extends Command
 {
     public MassCreditsCommand()

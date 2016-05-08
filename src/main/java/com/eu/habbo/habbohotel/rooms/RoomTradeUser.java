@@ -4,11 +4,8 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 8-11-2014 13:25.
- */
-public class RoomTradeUser {
-
+public class RoomTradeUser
+{
     private final Habbo habbo;
     private boolean accepted;
     private boolean confirmed;

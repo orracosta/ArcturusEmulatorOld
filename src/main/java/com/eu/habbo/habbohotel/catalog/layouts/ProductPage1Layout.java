@@ -6,9 +6,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 12-12-2014 22:16.
- */
 public class ProductPage1Layout extends CatalogPage
 {
     public ProductPage1Layout(ResultSet set) throws SQLException

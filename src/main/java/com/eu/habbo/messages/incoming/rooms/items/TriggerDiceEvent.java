@@ -1,15 +1,11 @@
 package com.eu.habbo.messages.incoming.rooms.items;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionDice;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.util.pathfinding.PathFinder;
 
-/**
- * Created on 2-11-2014 17:32.
- */
 public class TriggerDiceEvent extends MessageHandler
 {
     @Override

@@ -3,9 +3,6 @@ package com.eu.habbo.messages.incoming.rooms.users;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserTypingComposer;
 
-/**
- * Created on 6-10-2014 20:12.
- */
 public class RoomUserStartTypingEvent extends MessageHandler
 {
     @Override

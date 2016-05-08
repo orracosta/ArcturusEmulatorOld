@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 13-3-2015 16:20.
- */
 public class FloodCounterComposer extends MessageComposer
 {
     private final int time;

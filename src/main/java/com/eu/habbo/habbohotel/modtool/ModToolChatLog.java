@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.modtool;
 
-/**
- * Created on 22-11-2014 14:28.
- */
 public class ModToolChatLog implements Comparable<ModToolChatLog>
 {
     public final int timestamp;

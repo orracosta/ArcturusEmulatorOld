@@ -7,9 +7,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.CatalogSearchResultComposer;
 import gnu.trove.iterator.TIntObjectIterator;
 
-/**
- * Created on 25-8-2015 11:11.
- */
 public class CatalogSearchedItemEvent extends MessageHandler
 {
     @Override

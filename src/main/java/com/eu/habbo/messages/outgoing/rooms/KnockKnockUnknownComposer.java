@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 
-/**
- * Created on 27-3-2015 19:14.
- */
 public class KnockKnockUnknownComposer extends MessageComposer
 {
     private final Habbo habbo;

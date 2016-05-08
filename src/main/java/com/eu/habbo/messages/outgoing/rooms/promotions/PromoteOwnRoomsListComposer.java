@@ -8,9 +8,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created on 15-11-2015 13:59.
- */
 public class PromoteOwnRoomsListComposer extends MessageComposer
 {
     private final List<Room> rooms = new ArrayList<Room>();

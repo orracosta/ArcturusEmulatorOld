@@ -7,11 +7,8 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 25-8-2014 17:14.
- */
-public class UserSearchResultComposer extends MessageComposer {
-
+public class UserSearchResultComposer extends MessageComposer
+{
     private final THashSet<MessengerBuddy> users;
     private final THashSet<MessengerBuddy> friends;
     private final Habbo habbo;
@@ -24,7 +21,8 @@ public class UserSearchResultComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.UserSearchResultComposer);
         THashSet<MessengerBuddy> u = new THashSet<MessengerBuddy>();
 

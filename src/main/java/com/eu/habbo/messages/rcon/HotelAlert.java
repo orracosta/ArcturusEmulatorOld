@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.google.gson.Gson;
 
-/**
- * Created on 29-8-2015 12:36.
- */
 public class HotelAlert extends RCONMessage<HotelAlert.JSONHotelAlert>
 {
     public HotelAlert()

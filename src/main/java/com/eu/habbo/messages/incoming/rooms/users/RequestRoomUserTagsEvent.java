@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserTagsComposer;
 
-/**
- * Created on 11-10-2015 10:22.
- */
 public class RequestRoomUserTagsEvent extends MessageHandler
 {
     @Override

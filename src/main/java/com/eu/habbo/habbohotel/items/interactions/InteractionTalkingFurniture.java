@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.items.Item;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 18-10-2015 14:32.
- */
 public class InteractionTalkingFurniture extends InteractionDefault
 {
     public InteractionTalkingFurniture(ResultSet set, Item baseItem) throws SQLException

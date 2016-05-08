@@ -3,9 +3,6 @@ package com.eu.habbo.threading.runnables;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.PetTask;
 
-/**
- * Created on 6-12-2014 13:27.
- */
 public class PetClearPosture implements Runnable
 {
     private final Pet pet;

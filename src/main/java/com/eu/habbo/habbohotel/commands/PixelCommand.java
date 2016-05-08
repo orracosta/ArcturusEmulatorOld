@@ -9,9 +9,6 @@ import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.messages.outgoing.users.UserCurrencyComposer;
 
-/**
- * Created on 2-11-2014 15:01.
- */
 public class PixelCommand extends Command
 {
     public PixelCommand()

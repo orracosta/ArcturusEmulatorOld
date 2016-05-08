@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserRemoveComposer;
 
-/**
- * Created on 3-9-2014 08:53.
- */
 public class RequestRoomLoadEvent extends MessageHandler {
 
     @Override

@@ -7,9 +7,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.users.UserBadgesComposer;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 12-10-2014 15:19.
- */
 public class UserWearBadgeEvent extends MessageHandler
 {
     @Override

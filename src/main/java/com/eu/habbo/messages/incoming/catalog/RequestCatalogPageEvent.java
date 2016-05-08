@@ -7,10 +7,8 @@ import com.eu.habbo.habbohotel.modtool.ModToolTicketType;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.CatalogPageComposer;
 
-/**
- * Created on 28-8-2014 11:51.
- */
-public class RequestCatalogPageEvent extends MessageHandler {
+public class RequestCatalogPageEvent extends MessageHandler
+{
 
     @Override
     public void handle() throws Exception

@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 2-8-2015 15:38.
- */
 public class PickMonthlyClubGiftNotificationComposer extends MessageComposer
 {
     private int count;

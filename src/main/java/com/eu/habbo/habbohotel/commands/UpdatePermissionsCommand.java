@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
-/**
- * Created on 11-10-2014 15:18.
- */
 public class UpdatePermissionsCommand extends Command
 {
     public UpdatePermissionsCommand()

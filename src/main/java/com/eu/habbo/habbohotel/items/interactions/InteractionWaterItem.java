@@ -12,9 +12,6 @@ import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 18-10-2015 15:23.
- */
 public class InteractionWaterItem extends InteractionDefault
 {
     public InteractionWaterItem(ResultSet set, Item baseItem) throws SQLException

@@ -1,14 +1,8 @@
 package com.eu.habbo.messages.incoming.hotelview;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.hotelview.HallOfFameComposer;
-import com.eu.habbo.messages.outgoing.hotelview.HotelViewComposer;
 import com.eu.habbo.messages.outgoing.hotelview.HotelViewDataComposer;
 
-/**
- * Created on 27-8-2014 12:56.
- */
 public class HotelViewDataEvent extends MessageHandler {
 
     @Override

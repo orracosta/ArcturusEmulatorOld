@@ -12,9 +12,6 @@ import io.netty.handler.codec.bytes.ByteArrayDecoder;
 import java.nio.charset.Charset;
 import java.util.List;
 
-/**
- * Created on 12-7-2015 17:07.
- */
 public class GameServerDecoder extends ByteArrayDecoder
 {
     @Override

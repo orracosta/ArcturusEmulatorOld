@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.crafting.CraftingRecipeComposer;
 
-/**
- * Created on 10-1-2016 16:25.
- */
 public class RequestCraftingRecipesEvent extends MessageHandler
 {
     @Override

@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.plugin.events.users.UserEvent;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 27-8-2015 22:20.
- */
 public class UserRolledEvent extends UserEvent
 {
     /**

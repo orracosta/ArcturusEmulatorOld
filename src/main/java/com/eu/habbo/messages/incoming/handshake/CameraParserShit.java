@@ -6,9 +6,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import java.io.ByteArrayOutputStream;
 import java.util.zip.Inflater;
 
-/**
- * Created on 17-10-2015 22:01.
- */
 public class CameraParserShit extends MessageHandler
 {
     @Override

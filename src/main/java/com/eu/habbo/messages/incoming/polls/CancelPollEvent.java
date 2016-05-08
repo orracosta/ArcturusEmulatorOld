@@ -8,9 +8,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- * Created on 3-11-2014 18:39.
- */
 public class CancelPollEvent extends MessageHandler
 {
     @Override

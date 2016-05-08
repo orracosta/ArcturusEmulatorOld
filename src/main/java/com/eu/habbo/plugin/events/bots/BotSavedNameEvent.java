@@ -2,9 +2,6 @@ package com.eu.habbo.plugin.events.bots;
 
 import com.eu.habbo.habbohotel.bots.Bot;
 
-/**
- * Created on 24-10-2015 13:26.
- */
 public class BotSavedNameEvent extends BotEvent
 {
     /**

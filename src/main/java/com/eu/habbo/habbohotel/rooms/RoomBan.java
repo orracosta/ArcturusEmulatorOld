@@ -6,9 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 30-8-2015 10:46.
- */
 public class RoomBan
 {
     public final int roomId;

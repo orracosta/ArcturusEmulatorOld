@@ -8,9 +8,6 @@ import com.eu.habbo.threading.runnables.UpdateModToolIssue;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 3-3-2015 16:12.
- */
 public class ModToolIssue implements ISerialize
 {
     public int id;

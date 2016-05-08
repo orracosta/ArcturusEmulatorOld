@@ -3,9 +3,6 @@ package com.eu.habbo.habbohotel.commands;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 
-/**
- * Created on 28-1-2016 21:14.
- */
 public class UpdateBotsCommand extends Command
 {
     public UpdateBotsCommand()

@@ -7,9 +7,6 @@ import com.eu.habbo.messages.outgoing.friends.MessengerInitComposer;
 
 import java.util.ArrayList;
 
-/**
- * Created on 27-7-2015 12:47.
- */
 public class RequestInitFriendsEvent extends MessageHandler
 {
     @Override

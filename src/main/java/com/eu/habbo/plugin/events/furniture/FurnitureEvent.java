@@ -3,9 +3,6 @@ package com.eu.habbo.plugin.events.furniture;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.plugin.Event;
 
-/**
- * Created on 12-6-2015 17:48.
- */
 public abstract class FurnitureEvent extends Event
 {
     /**

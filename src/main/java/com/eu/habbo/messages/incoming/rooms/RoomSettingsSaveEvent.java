@@ -9,9 +9,6 @@ import com.eu.habbo.habbohotel.rooms.RoomState;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.*;
 
-/**
- * Created on 22-10-2014 16:38.
- */
 public class RoomSettingsSaveEvent extends MessageHandler
 {
     @Override

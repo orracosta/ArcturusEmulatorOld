@@ -10,9 +10,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 10:17.
- */
 public class InteractionRoller extends HabboItem
 {
     public InteractionRoller(ResultSet set, Item baseItem) throws SQLException

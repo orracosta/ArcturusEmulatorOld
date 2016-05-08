@@ -10,9 +10,6 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
-/**
- * Created on 18-7-2015 10:07.
- */
 public class RCONServerHandler extends ChannelInboundHandlerAdapter
 {
     @Override

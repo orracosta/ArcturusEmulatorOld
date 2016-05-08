@@ -2,9 +2,6 @@ package com.eu.habbo.messages.incoming.rooms.users;
 
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 21-1-2015 10:13.
- */
 public class RoomUserSitEvent extends MessageHandler
 {
     @Override

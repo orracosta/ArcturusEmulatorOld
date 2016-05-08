@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 6-10-2014 20:32.
- */
 public class RoomUserTypingComposer extends MessageComposer
 {
     private final RoomUnit roomUnit;

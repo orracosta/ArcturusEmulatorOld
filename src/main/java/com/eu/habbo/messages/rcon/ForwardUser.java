@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.google.gson.Gson;
 
-/**
- * Created on 5-9-2015 10:39.
- */
 public class ForwardUser extends RCONMessage<ForwardUser.ForwardUserJSON>
 {
     public ForwardUser()

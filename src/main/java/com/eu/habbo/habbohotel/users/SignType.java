@@ -1,9 +1,7 @@
 package com.eu.habbo.habbohotel.users;
 
-/**
- * Created on 13-9-2014 17:48.
- */
-public enum SignType {
+public enum SignType
+{
     ZERO(0),
     ONE(1),
     TWO(2),
@@ -25,6 +23,7 @@ public enum SignType {
     NONE(100);
 
     private final int id;
+
     SignType(int id)
     {
         this.id = id;
@@ -34,7 +33,4 @@ public enum SignType {
     {
         return this.id;
     }
-
-
-
 }

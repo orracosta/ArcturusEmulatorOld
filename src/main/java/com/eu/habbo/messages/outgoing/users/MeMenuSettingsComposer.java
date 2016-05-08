@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 25-8-2014 12:07.
- */
 public class MeMenuSettingsComposer extends MessageComposer {
 
     private Habbo habbo;

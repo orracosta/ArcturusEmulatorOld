@@ -19,9 +19,6 @@ import com.eu.habbo.threading.runnables.HabboItemNewState;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 10-12-2014 16:38.
- */
 public class InteractionObstacle extends HabboItem
 {
     public InteractionObstacle(ResultSet set, Item baseItem) throws SQLException

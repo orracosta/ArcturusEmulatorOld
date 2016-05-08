@@ -9,9 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-/**
- * Created on 19-1-2015 12:16.
- */
 public class TextsManager
 {
     /**

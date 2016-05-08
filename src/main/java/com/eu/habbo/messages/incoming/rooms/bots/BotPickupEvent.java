@@ -7,9 +7,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.inventory.AddBotComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserRemoveComposer;
 
-/**
- * Created on 15-10-2014 15:32.
- */
 public class BotPickupEvent extends MessageHandler
 {
     @Override

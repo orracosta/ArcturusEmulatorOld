@@ -18,9 +18,6 @@ import com.eu.habbo.plugin.events.users.UserLoginEvent;
 
 import java.util.ArrayList;
 
-/**
- * Created on 24-8-2014 17:14.
- */
 public class SecureLoginEvent_BACKUP extends MessageHandler
 {
     /*************************************************************************************************

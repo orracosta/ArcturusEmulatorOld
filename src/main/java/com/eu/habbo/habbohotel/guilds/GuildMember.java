@@ -3,9 +3,6 @@ package com.eu.habbo.habbohotel.guilds;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 23-11-2014 09:31.
- */
 public class GuildMember implements Comparable
 {
     private int userId;

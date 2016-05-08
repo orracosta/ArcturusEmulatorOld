@@ -6,9 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 23-7-2015 18:18.
- */
 public class CustomRoomLayout extends RoomLayout implements Runnable
 {
     private boolean needsUpdate;

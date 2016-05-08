@@ -10,9 +10,6 @@ import gnu.trove.iterator.TIntObjectIterator;
 
 import java.util.NoSuchElementException;
 
-/**
- * Created on 25-7-2015 13:47.
- */
 public class ClubGiftsComposer extends MessageComposer
 {
     @Override

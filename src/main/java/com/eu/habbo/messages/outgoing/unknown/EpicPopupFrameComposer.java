@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 22-7-2015 16:50.
- */
 public class EpicPopupFrameComposer extends MessageComposer
 {
     public static final String LIBRARY_URL = "${image.library.url}";

@@ -10,9 +10,6 @@ import io.netty.util.CharsetUtil;
 
 import java.util.List;
 
-/**
- * Created on 15-11-2015 11:24.
- */
 public class GameByteDecoder extends ByteToMessageDecoder
 {
     @Override

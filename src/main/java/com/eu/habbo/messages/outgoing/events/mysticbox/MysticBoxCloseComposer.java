@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 25-7-2015 14:59.
- */
 public class MysticBoxCloseComposer extends MessageComposer
 {
     @Override

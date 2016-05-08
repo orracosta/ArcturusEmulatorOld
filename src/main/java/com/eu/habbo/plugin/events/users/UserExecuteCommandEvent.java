@@ -3,9 +3,6 @@ package com.eu.habbo.plugin.events.users;
 import com.eu.habbo.habbohotel.commands.Command;
 import com.eu.habbo.habbohotel.users.Habbo;
 
-/**
- * Created on 27-3-2015 15:43.
- */
 public class UserExecuteCommandEvent extends UserEvent
 {
     /**

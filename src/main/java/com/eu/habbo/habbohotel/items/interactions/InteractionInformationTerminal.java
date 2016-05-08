@@ -6,9 +6,6 @@ import gnu.trove.map.hash.THashMap;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 24-1-2016 11:49.
- */
 public class InteractionInformationTerminal extends InteractionCustomValues
 {
     public static THashMap<String, String> defaultValues = new THashMap<String, String>()

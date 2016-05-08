@@ -11,9 +11,6 @@ import com.eu.habbo.messages.outgoing.modtool.HelperRequestDisabledComposer;
 
 import java.util.ArrayList;
 
-/**
- * Created on 17-10-2015 15:45.
- */
 public class ReportBullyEvent extends MessageHandler
 {
     @Override

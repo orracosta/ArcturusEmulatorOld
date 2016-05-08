@@ -1,9 +1,5 @@
 package com.eu.habbo.util.pathfinding;
 
-/**
- * Created on 14-9-2014 13:51.
- */
-
 public abstract class AbstractNode
 {
     protected static final int BASICMOVEMENTCOST = 10;
@@ -98,18 +94,23 @@ public abstract class AbstractNode
 
     public void setgCosts(AbstractNode previousAbstractNode)
     {
-        if (this.diagonally) {
+        if (this.diagonally)
+        {
             setgCosts(previousAbstractNode, 14);
-        } else {
+        }
+        else
+        {
             setgCosts(previousAbstractNode, 10);
         }
     }
 
     public int calculategCosts(AbstractNode previousAbstractNode)
     {
-        if (this.diagonally) {
+        if (this.diagonally)
+        {
             return previousAbstractNode.getgCosts() + 14 + this.movementPanelty;
         }
+
         return previousAbstractNode.getgCosts() + 10 + this.movementPanelty;
     }
 
@@ -137,12 +138,16 @@ public abstract class AbstractNode
 
     public boolean equals(Object obj)
     {
-        if (obj == null) {
+        if (obj == null)
+        {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+
+        if (getClass() != obj.getClass())
+        {
             return false;
         }
+
         AbstractNode other = (AbstractNode)obj;
 
         return this.xPosition == other.xPosition && this.yPosition == other.yPosition;

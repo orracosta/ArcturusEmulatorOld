@@ -12,9 +12,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 22-11-2015 21:22.
- */
 public class WiredConditionMottoContains extends InteractionWiredCondition
 {
     public static final WiredConditionType type = WiredConditionType.ACTOR_WEARS_BADGE;

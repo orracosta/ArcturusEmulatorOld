@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.rooms;
 
-/**
- * Created on 13-7-2015 14:55.
- */
 public class RoomMoodlightData
 {
     private int id;

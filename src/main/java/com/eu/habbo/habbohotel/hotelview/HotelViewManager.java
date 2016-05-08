@@ -2,11 +2,8 @@ package com.eu.habbo.habbohotel.hotelview;
 
 import com.eu.habbo.Emulator;
 
-/**
- * Created on 27-8-2014 09:45.
- */
-public class HotelViewManager {
-
+public class HotelViewManager
+{
     private final HallOfFame hallOfFame;
     private final NewsList newsList;
 

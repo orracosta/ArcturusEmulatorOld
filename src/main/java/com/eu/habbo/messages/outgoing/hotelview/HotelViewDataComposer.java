@@ -4,11 +4,8 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 27-8-2014 12:56.
- */
-public class HotelViewDataComposer extends MessageComposer {
-
+public class HotelViewDataComposer extends MessageComposer
+{
     private final String data;
     private final String key;
 

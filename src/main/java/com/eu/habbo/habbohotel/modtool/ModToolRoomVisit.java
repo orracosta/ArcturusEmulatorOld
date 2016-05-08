@@ -5,9 +5,6 @@ import gnu.trove.set.hash.THashSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 22-11-2014 11:13.
- */
 public class ModToolRoomVisit implements Comparable<ModToolRoomVisit>
 {
     public int roomId;

@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
-/**
- * Created on 14-2-2015 13:50.
- */
 public class UpdateTextsCommand extends Command
 {
     public UpdateTextsCommand()

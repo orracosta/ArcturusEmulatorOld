@@ -20,9 +20,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 29-11-2014 17:18.
- */
 public class Pet extends AbstractPet
 {
     public int levelThirst;

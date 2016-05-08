@@ -9,9 +9,6 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.util.pathfinding.PathFinder;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 10-3-2015 09:57.
- */
 public class OneWayGateActionOne implements Runnable
 {
     private HabboItem oneWayGate;

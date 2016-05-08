@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 4-11-2014 13:20.
- */
 public class ModToolRoomInfoComposer extends MessageComposer
 {
     private Room room;

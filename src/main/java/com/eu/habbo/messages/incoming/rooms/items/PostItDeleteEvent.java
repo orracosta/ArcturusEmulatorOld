@@ -7,9 +7,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.items.RemoveWallItemComposer;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;
 
-/**
- * Created on 9-7-2015 23:14.
- */
 public class PostItDeleteEvent extends MessageHandler
 {
     @Override

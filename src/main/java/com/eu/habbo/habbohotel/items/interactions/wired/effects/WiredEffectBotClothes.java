@@ -13,9 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * Created on 20-6-2015 11:49.
- */
 public class WiredEffectBotClothes extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.BOT_CLOTHES;

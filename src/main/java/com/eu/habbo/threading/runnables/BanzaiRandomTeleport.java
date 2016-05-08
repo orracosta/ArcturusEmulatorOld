@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 
-/**
- * Created on 3-11-2014 06:23.
- */
 public class BanzaiRandomTeleport implements Runnable
 {
     private HabboItem item;

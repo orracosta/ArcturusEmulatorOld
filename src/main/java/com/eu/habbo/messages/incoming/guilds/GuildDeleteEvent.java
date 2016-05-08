@@ -6,9 +6,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.guilds.RemoveGuildFromRoomComposer;
 import com.eu.habbo.plugin.events.guilds.GuildDeletedEvent;
 
-/**
- * Created on 2-8-2015 15:09.
- */
 public class GuildDeleteEvent extends MessageHandler
 {
     @Override

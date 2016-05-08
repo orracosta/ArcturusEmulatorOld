@@ -12,9 +12,6 @@ import com.eu.habbo.messages.outgoing.guilds.GuildRefreshMembersListComposer;
 import com.eu.habbo.messages.outgoing.rooms.RoomRightsComposer;
 import com.eu.habbo.plugin.events.guilds.GuildRemovedMemberEvent;
 
-/**
- * Created on 23-11-2014 14:24.
- */
 public class GuildRemoveMemberEvent extends MessageHandler
 {
     @Override

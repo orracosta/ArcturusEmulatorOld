@@ -7,9 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 25-8-2014 14:53.
- */
 public class MessengerBuddy implements Runnable {
 
     private int id;

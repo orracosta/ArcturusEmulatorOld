@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 23-1-2015 12:27.
- */
 public class PresentItemOpenedComposer extends MessageComposer
 {
     private final HabboItem item;

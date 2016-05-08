@@ -10,9 +10,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 11-10-2014 21:24.
- */
 public class InteractionBadgeDisplay extends HabboItem
 {
     public InteractionBadgeDisplay(ResultSet set, Item baseItem) throws SQLException

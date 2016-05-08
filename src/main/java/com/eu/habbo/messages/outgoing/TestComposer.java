@@ -2,11 +2,8 @@ package com.eu.habbo.messages.outgoing;
 
 import com.eu.habbo.messages.ServerMessage;
 
-/**
- * Created on 21-9-2014 10:01.
- */
-public class TestComposer extends MessageComposer {
-
+public class TestComposer extends MessageComposer
+{
     @Override
     public ServerMessage compose() {
 

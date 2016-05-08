@@ -9,11 +9,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-/**
- * Created on 14-9-2014 13:49.
- */
-public class PathFinder {
-
+public class PathFinder
+{
     private Room room;
     private RoomUnit roomUnit;
     private Queue<Node> path;

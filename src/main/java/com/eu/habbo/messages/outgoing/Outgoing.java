@@ -1,8 +1,5 @@
 package com.eu.habbo.messages.outgoing;
 
-/**
- * Created on 24-8-2014 17:08.
- */
 public class Outgoing
 {
     public static final int PetStatusUpdateComposer = 3566; 
@@ -362,7 +359,7 @@ public class Outgoing
     public final static int HelperRequestDisabledComposer = 570; //:test 1125 s:derp //Updated
     public final static int RoomUnitIdleComposer = 3852; //:test 2462 i:2 b:0 //Updated
     public final static int QuestCompletedComposer = 3692; //Updated
-    public final static int UnkownPetPackegeComposer = 817; //:test 2417 i:2 s:a s:b s:c s:d //Updated
+    public final static int UnkownPetPackageComposer = 817; //:test 2417 i:2 s:a s:b s:c s:d //Updated
     public final static int ForwardToRoomComposer = 1963; //Updated
     public final static int EffectsListEffectEnableComposer = 1710; //:test 2381 i:20 i:1000 b:1 //Updated
     public final static int CompetitionEntrySubmitResultComposer = 3074; //Updated

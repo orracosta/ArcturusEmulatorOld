@@ -13,9 +13,6 @@ import com.eu.habbo.messages.outgoing.wired.WiredEffectDataComposer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 19:51.
- */
 public abstract class InteractionWiredEffect extends InteractionWired implements IWired
 {
     private int delay;

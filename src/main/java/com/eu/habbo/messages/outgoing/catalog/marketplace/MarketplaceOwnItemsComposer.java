@@ -8,9 +8,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 1-11-2014 12:14.
- */
 public class MarketplaceOwnItemsComposer extends MessageComposer
 {
     private Habbo habbo;

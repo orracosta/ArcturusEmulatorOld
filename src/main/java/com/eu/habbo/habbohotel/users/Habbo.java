@@ -18,13 +18,6 @@ import com.eu.habbo.plugin.events.users.UserDisconnectEvent;
 
 import java.sql.ResultSet;
 
-/**
- *
- * Note that user functions like talking, moving, trading and so on are moved to different classes in which they happen (Mostly the room class cos thats whats Habbo is all about).
- * This decision was made to keep this class as simple as possible on providing methods that work in all scenarios.
- *
- * Created on 24-8-2014 16:47.
- */
 public class Habbo implements Runnable
 {
     private GameClient client;

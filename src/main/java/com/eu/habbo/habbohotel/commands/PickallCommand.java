@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.rooms.Room;
 
-/**
- * Created on 28-1-2016 20:54.
- */
 public class PickallCommand extends Command
 {
     public PickallCommand()

@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.wired;
 
-/**
- * Created on 22-10-2015 20:33.
- */
 public enum WiredHighscoreClearType
 {
     ALLTIME(0),

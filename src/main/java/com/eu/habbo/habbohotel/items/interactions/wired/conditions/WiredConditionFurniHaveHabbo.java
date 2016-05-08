@@ -15,9 +15,6 @@ import gnu.trove.set.hash.THashSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 20:50.
- */
 public class WiredConditionFurniHaveHabbo extends InteractionWiredCondition
 {
     public static final WiredConditionType type = WiredConditionType.FURNI_HAVE_HABBO;

@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 17-11-2015 19:47.
- */
 public class RoomUserIgnoredComposer extends MessageComposer
 {
     public final static int IGNORED = 1;

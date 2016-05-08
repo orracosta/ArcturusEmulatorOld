@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.navigator.*;
 
-/**
- * Created on 19-6-2015 13:33.
- */
 public class RequestNewNavigatorDataEvent extends MessageHandler
 {
     @Override

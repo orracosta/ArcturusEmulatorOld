@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.PetNameErrorComposer;
 
-/**
- * Created on 29-11-2014 15:57.
- */
 public class CheckPetNameEvent extends MessageHandler
 {
     @Override

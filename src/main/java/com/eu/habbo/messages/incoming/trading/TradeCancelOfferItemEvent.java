@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.rooms.RoomTrade;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 8-11-2014 14:03.
- */
 public class TradeCancelOfferItemEvent extends MessageHandler
 {
     @Override

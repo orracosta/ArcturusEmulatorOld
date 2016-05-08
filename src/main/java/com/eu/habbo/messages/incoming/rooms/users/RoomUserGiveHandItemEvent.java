@@ -12,9 +12,6 @@ import com.eu.habbo.threading.runnables.RoomUnitWalkToRoomUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created on 2-8-2015 16:06.
- */
 public class RoomUserGiveHandItemEvent extends MessageHandler
 {
     @Override

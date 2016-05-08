@@ -3,9 +3,6 @@ package com.eu.habbo.habbohotel.users;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 19-11-2015 20:40.
- */
 public class HabboNavigatorWindowSettings
 {
     public int x = 100;

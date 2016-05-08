@@ -13,9 +13,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 20:54.
- */
 public class WiredConditionNotInTeam extends InteractionWiredCondition
 {
     public static final WiredConditionType type = WiredConditionType.NOT_ACTOR_IN_TEAM;

@@ -11,9 +11,6 @@ import com.eu.habbo.messages.outgoing.inventory.AddPetComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserRemoveComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
-/**
- * Created on 30-11-2014 14:54.
- */
 public class PetPickupEvent extends MessageHandler
 {
     @Override

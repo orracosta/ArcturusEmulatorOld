@@ -3,9 +3,6 @@ package com.eu.habbo.plugin.events.bots;
 import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.users.Habbo;
 
-/**
- * Created on 9-11-2015 21:34.
- */
 public class BotWhisperEvent extends BotChatEvent
 {
     /**

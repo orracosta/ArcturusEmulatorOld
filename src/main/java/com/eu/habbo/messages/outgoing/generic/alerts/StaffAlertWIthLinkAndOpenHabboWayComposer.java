@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 2-8-2015 15:34.
- */
 public class StaffAlertWIthLinkAndOpenHabboWayComposer extends MessageComposer
 {
     private String message;
@@ -17,6 +14,7 @@ public class StaffAlertWIthLinkAndOpenHabboWayComposer extends MessageComposer
         this.message = message;
         this.link = link;
     }
+
     @Override
     public ServerMessage compose()
     {

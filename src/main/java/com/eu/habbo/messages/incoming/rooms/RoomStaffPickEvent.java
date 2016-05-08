@@ -8,9 +8,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.RoomDataComposer;
 import com.eu.habbo.messages.outgoing.rooms.RoomPaneComposer;
 
-/**
- * Created on 28-8-2015 13:02.
- */
 public class RoomStaffPickEvent extends MessageHandler
 {
     @Override

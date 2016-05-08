@@ -1,8 +1,5 @@
 package com.eu.habbo.messages.outgoing;
 
-/**
- * Created on 24-8-2014 17:08.
- */
 public class Outgoing_Back
 {
 

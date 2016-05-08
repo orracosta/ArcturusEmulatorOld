@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 14-7-2015 12:54.
- */
 public class ModToolReportReceivedAlertComposer extends MessageComposer
 {
     public static final int REPORT_RECEIVED = 0;

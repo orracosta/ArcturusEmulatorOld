@@ -10,9 +10,6 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.messages.outgoing.users.UserDataComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDataComposer;
 
-/**
- * Created on 21-2-2015 12:23.
- */
 public class MimicCommand extends Command
 {
     public MimicCommand()

@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 21-9-2014 12:21.
- */
 public class RoomPickupItemEvent extends MessageHandler
 {
     @Override

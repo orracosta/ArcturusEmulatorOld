@@ -10,9 +10,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 5-8-2015 16:46.
- */
 public class InteractionPyramid extends InteractionGate
 {
     private int nextChange;

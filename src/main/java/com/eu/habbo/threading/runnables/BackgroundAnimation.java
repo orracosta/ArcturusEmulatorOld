@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 
-/**
- * Created on 8-3-2015 16:07.
- */
 public class BackgroundAnimation implements Runnable
 {
     private int length = 1000;

@@ -8,9 +8,6 @@ import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
 
 import java.util.List;
 
-/**
- * Created on 2-8-2015 13:39.
- */
 public class FindNewFriendsEvent extends MessageHandler
 {
     @Override

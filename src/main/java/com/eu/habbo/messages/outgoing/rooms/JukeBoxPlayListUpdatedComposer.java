@@ -6,9 +6,6 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 5-9-2015 10:55.
- */
 public class JukeBoxPlayListUpdatedComposer extends MessageComposer
 {
     private final THashSet<SoundTrack> tracks;

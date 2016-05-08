@@ -11,9 +11,6 @@ import com.eu.habbo.messages.outgoing.users.UserCurrencyComposer;
 import java.util.Collection;
 import java.util.Map;
 
-/**
- * Created on 20-2-2015 17:50.
- */
 public class MassPixelsCommand extends Command
 {
     public MassPixelsCommand()

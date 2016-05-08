@@ -11,9 +11,6 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.util.pathfinding.PathFinder;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 21-2-2015 10:49.
- */
 public class PushCommand extends Command
 {
     public PushCommand()

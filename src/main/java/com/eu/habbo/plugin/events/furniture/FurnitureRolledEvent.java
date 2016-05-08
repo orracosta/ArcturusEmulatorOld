@@ -3,9 +3,6 @@ package com.eu.habbo.plugin.events.furniture;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 12-6-2015 17:52.
- */
 public class FurnitureRolledEvent extends FurnitureEvent
 {
     /**

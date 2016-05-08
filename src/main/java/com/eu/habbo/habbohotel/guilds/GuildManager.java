@@ -20,9 +20,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 
-/**
- * Created on 22-11-2014 16:40.
- */
 public class GuildManager
 {
     /**

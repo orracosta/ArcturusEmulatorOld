@@ -3,9 +3,6 @@ package com.eu.habbo.messages.incoming.rooms;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.users.UserHomeRoomComposer;
 
-/**
- * Created on 2-8-2015 15:45.
- */
 public class SetHomeRoomEvent extends MessageHandler
 {
     @Override

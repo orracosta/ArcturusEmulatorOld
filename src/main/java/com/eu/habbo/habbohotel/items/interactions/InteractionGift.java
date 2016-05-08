@@ -12,9 +12,6 @@ import gnu.trove.set.hash.THashSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 22-1-2015 18:40.
- */
 public class InteractionGift extends HabboItem
 {
     private int[] itemId;

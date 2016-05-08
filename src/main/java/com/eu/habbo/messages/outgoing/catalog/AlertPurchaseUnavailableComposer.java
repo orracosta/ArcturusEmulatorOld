@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 5-8-2015 13:00.
- */
 public class AlertPurchaseUnavailableComposer extends MessageComposer
 {
     public final static int ILLEGAL = 0;

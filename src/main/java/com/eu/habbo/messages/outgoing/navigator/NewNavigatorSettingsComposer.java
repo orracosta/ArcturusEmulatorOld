@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 20-11-2015 20:37.
- */
 public class NewNavigatorSettingsComposer extends MessageComposer
 {
     private final HabboNavigatorWindowSettings windowSettings;

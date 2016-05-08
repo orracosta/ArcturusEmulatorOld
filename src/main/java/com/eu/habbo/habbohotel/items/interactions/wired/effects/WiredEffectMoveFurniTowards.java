@@ -20,9 +20,6 @@ import gnu.trove.set.hash.THashSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 20:17.
- */
 public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.CHASE;

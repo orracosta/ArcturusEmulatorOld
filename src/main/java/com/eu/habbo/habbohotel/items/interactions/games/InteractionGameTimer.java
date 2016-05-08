@@ -12,9 +12,6 @@ import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 24-1-2015 10:00.
- */
 public abstract class InteractionGameTimer extends HabboItem
 {
     protected InteractionGameTimer(ResultSet set, Item baseItem) throws SQLException

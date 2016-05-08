@@ -18,9 +18,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 25-7-2015 16:10.
- */
 public class InteractionRentableSpace extends HabboItem
 {
     private int renterId;

@@ -3,9 +3,6 @@ package com.eu.habbo.habbohotel.pets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 29-11-2014 15:34.
- */
 public class PetRace
 {
     public final int race;

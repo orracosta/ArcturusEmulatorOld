@@ -7,9 +7,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 25-5-2015 10:54.
- */
 public abstract class InteractionGameTeamItem extends HabboItem
 {
     public final GameTeamColors teamColor;

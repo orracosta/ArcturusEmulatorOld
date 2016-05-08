@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.items.Item;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 23-1-2015 19:23.
- */
 public class InteractionFreezeScoreboardBlue extends InteractionFreezeScoreboard
 {
     public static final GameTeamColors TEAM_COLOR = GameTeamColors.BLUE;

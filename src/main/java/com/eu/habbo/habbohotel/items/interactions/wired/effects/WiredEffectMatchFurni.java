@@ -17,9 +17,6 @@ import gnu.trove.set.hash.THashSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 20:15.
- */
 public class WiredEffectMatchFurni extends InteractionWiredEffect
 {
     private static final WiredEffectType type = WiredEffectType.MATCH_SSHOT;

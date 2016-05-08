@@ -13,9 +13,6 @@ import com.eu.habbo.messages.outgoing.guilds.GuildMemberUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.RoomRightsComposer;
 import com.eu.habbo.plugin.events.guilds.GuildRemovedAdminEvent;
 
-/**
- * Created on 23-11-2014 14:19.
- */
 public class GuildRemoveAdminEvent extends MessageHandler
 {
     @Override

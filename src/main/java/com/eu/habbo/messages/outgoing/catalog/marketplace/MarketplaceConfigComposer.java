@@ -4,13 +4,11 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 27-8-2014 15:31.
- */
-public class MarketplaceConfigComposer extends MessageComposer {
-
+public class MarketplaceConfigComposer extends MessageComposer
+{
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.MarketplaceConfigComposer);
 
         this.response.appendBoolean(true);

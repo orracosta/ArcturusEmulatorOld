@@ -3,9 +3,6 @@ package com.eu.habbo.threading.runnables;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 
-/**
- * Created on 4-4-2015 15:02.
- */
 public class LoadCustomHeightMap implements Runnable
 {
     private final Room room;

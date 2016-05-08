@@ -10,9 +10,6 @@ import com.eu.habbo.plugin.events.navigator.NavigatorRoomDeletedEvent;
 
 import java.sql.PreparedStatement;
 
-/**
- * Created on 15-11-2015 13:16.
- */
 public class RequestDeleteRoomEvent extends MessageHandler
 {
     @Override

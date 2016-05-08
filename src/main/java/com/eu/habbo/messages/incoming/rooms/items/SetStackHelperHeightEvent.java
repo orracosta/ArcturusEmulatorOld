@@ -9,9 +9,6 @@ import com.eu.habbo.messages.outgoing.rooms.items.UpdateStackHeightTileHeightCom
 import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 1-2-2015 21:19.
- */
 public class SetStackHelperHeightEvent extends MessageHandler
 {
     @Override

@@ -11,9 +11,6 @@ import com.eu.habbo.messages.outgoing.guilds.GuildRefreshMembersListComposer;
 import com.eu.habbo.messages.outgoing.rooms.RoomRightsComposer;
 import com.eu.habbo.plugin.events.guilds.GuildAcceptedMembershipEvent;
 
-/**
- * Created on 23-11-2014 15:42.
- */
 public class GuildAcceptMembershipEvent extends MessageHandler
 {
     @Override

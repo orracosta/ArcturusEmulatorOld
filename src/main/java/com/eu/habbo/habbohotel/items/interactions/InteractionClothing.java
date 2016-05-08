@@ -9,9 +9,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 3-7-2015 14:30.
- */
 public class InteractionClothing extends HabboItem
 {
     public InteractionClothing(ResultSet set, Item baseItem) throws SQLException

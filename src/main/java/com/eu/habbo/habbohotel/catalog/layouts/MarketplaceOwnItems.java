@@ -6,9 +6,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 1-11-2014 12:03.
- */
 public class MarketplaceOwnItems extends CatalogPage
 {
     public MarketplaceOwnItems(ResultSet set) throws SQLException

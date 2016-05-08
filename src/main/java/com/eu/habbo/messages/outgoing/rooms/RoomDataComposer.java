@@ -8,9 +8,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 3-9-2014 09:30.
- */
 public class RoomDataComposer extends MessageComposer {
 
     private final Room room;

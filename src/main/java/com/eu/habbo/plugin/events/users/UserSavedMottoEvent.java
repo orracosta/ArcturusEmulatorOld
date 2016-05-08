@@ -2,9 +2,6 @@ package com.eu.habbo.plugin.events.users;
 
 import com.eu.habbo.habbohotel.users.Habbo;
 
-/**
- * Created on 24-10-2015 12:50.
- */
 public class UserSavedMottoEvent extends UserEvent
 {
     public final String oldMotto;

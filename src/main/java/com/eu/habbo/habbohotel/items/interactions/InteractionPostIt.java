@@ -9,9 +9,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 9-7-2015 17:28.
- */
 public class InteractionPostIt extends HabboItem
 {
     public InteractionPostIt(ResultSet set, Item baseItem) throws SQLException

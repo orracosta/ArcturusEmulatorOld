@@ -7,9 +7,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 10-10-2015 22:06.
- */
 public class GuideTour
 {
     public int checkSum = 0;

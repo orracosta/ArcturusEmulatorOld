@@ -7,9 +7,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserActionComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserRespectComposer;
 
-/**
- * Created on 3-11-2014 16:56.
- */
 public class RoomUserGiveRespectEvent extends MessageHandler
 {
     @Override

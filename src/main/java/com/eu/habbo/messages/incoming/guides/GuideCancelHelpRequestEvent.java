@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.guides.GuideTour;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 10-10-2015 22:40.
- */
 public class GuideCancelHelpRequestEvent extends MessageHandler
 {
     @Override

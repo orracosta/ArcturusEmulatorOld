@@ -11,9 +11,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 24-1-2015 09:48.
- */
 public class InteractionFreezeTile extends HabboItem
 {
     public InteractionFreezeTile(ResultSet set, Item baseItem) throws SQLException

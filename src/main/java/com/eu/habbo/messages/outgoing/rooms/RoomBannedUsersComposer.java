@@ -11,9 +11,6 @@ import gnu.trove.set.hash.THashSet;
 
 import java.util.NoSuchElementException;
 
-/**
- * Created on 30-8-2015 11:08.
- */
 public class RoomBannedUsersComposer extends MessageComposer
 {
     private final Room room;

@@ -3,9 +3,6 @@ package com.eu.habbo.habbohotel.rooms;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 31-8-2014 14:56.
- */
 @SuppressWarnings("NullableProblems")
 public class RoomCategory implements Comparable<RoomCategory> {
 
@@ -23,19 +20,19 @@ public class RoomCategory implements Comparable<RoomCategory> {
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public int getMinRank() {
-        return minRank;
+        return this.minRank;
     }
 
     public String getCaption() {
-        return caption;
+        return this.caption;
     }
 
     public boolean isCanTrade() {
-        return canTrade;
+        return this.canTrade;
     }
 
     @Override

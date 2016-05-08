@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 24-10-2015 14:33.
- */
 public class PostItStickyPoleOpenComposer extends MessageComposer
 {
     private final HabboItem item;

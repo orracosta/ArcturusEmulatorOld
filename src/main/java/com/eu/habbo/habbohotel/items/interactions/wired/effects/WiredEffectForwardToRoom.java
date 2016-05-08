@@ -13,9 +13,6 @@ import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 24-10-2015 12:15.
- */
 public class WiredEffectForwardToRoom extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.SHOW_MESSAGE;

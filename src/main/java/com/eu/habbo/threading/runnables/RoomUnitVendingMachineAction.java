@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 12-10-2014 12:53.
- */
 public class RoomUnitVendingMachineAction implements Runnable
 {
     private final Habbo habbo;

@@ -14,9 +14,6 @@ import com.eu.habbo.plugin.events.bots.BotSavedNameEvent;
 
 import java.util.ArrayList;
 
-/**
- * Created on 15-10-2014 16:07.
- */
 public class BotSaveSettingsEvent extends MessageHandler
 {
     @Override

@@ -13,9 +13,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Map;
 
-/**
- * Created on 11-10-2014 14:10.
- */
 public class PermissionsManager
 {
     private final THashMap<Integer, THashSet<String>> permissions;

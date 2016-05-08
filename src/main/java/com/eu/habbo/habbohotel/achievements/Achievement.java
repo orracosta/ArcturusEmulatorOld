@@ -5,9 +5,6 @@ import gnu.trove.map.hash.THashMap;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 29-12-2014 16:09.
- */
 public class Achievement
 {
     /**

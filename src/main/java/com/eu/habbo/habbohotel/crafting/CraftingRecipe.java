@@ -5,9 +5,6 @@ import gnu.trove.map.hash.THashMap;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 10-1-2016 16:29.
- */
 public class CraftingRecipe
 {
     public final int id;

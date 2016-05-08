@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 
-/**
- * Created on 4-11-2014 17:31.
- */
 public class ModToolRoomAlertEvent extends MessageHandler
 {
     @Override

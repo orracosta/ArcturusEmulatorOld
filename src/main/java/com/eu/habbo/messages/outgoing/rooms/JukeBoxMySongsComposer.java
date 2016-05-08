@@ -7,9 +7,6 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 5-9-2015 11:16.
- */
 public class JukeBoxMySongsComposer extends MessageComposer
 {
     private final THashSet<HabboItem> items;

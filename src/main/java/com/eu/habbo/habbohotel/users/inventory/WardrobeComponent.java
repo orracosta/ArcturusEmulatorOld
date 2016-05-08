@@ -9,11 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-9-2014 19:06.
- */
-public class WardrobeComponent {
-
+public class WardrobeComponent
+{
     private final THashMap<Integer, WardrobeItem> looks;
 
     public WardrobeComponent(Habbo habbo)

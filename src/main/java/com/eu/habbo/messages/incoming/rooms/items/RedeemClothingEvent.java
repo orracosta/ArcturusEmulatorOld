@@ -7,9 +7,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;
 
-/**
- * Created on 3-7-2015 14:32.
- */
 public class RedeemClothingEvent extends MessageHandler
 {
     @Override

@@ -12,9 +12,6 @@ import gnu.trove.map.TIntObjectMap;
 
 import java.util.NoSuchElementException;
 
-/**
- * Created on 20-2-2015 16:12.
- */
 public class SayAllCommand extends Command
 {
     public SayAllCommand()

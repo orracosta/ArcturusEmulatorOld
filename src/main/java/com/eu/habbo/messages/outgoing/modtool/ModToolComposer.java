@@ -13,9 +13,6 @@ import gnu.trove.procedure.TObjectProcedure;
 
 import java.util.NoSuchElementException;
 
-/**
- * Created on 4-11-2014 13:07.
- */
 public class ModToolComposer extends MessageComposer implements TObjectProcedure<ModToolCategory>
 {
     private final Habbo habbo;

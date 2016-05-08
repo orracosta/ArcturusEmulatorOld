@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 2-8-2015 13:46.
- */
 public class FriendFindingRoomComposer extends MessageComposer
 {
     public static final int NO_ROOM_FOUND = 0;

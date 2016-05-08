@@ -7,10 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-/**
- * Created on 14-9-2014 13:56.
- */
-
 public class GameMap<T extends AbstractNode>
 {
     private static final boolean CANMOVEDIAGONALY = true;

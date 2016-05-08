@@ -62,9 +62,6 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.List;
 
-/**
- * Created on 31-8-2014 12:36.
- */
 public class Room implements Comparable<Room>, ISerialize, Runnable
 {
     private static final TIntObjectHashMap<RoomMoodlightData> defaultMoodData = new TIntObjectHashMap<RoomMoodlightData>();

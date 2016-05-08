@@ -8,9 +8,6 @@ import com.eu.habbo.messages.outgoing.generic.alerts.CustomNotificationComposer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 2-8-2015 16:29.
- */
 public class InteractionCostumeHopper extends InteractionHopper
 {
     public InteractionCostumeHopper(ResultSet set, Item baseItem) throws SQLException

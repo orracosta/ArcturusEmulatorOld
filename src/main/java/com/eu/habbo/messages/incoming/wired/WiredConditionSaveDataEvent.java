@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.wired.WiredSavedComposer;
 
-/**
- * Created on 14-12-2014 13:26.
- */
 public class WiredConditionSaveDataEvent extends MessageHandler
 {
     @Override

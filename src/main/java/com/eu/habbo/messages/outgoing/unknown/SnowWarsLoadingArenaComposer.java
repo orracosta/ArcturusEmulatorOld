@@ -3,9 +3,6 @@ package com.eu.habbo.messages.outgoing.unknown;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 
-/**
- * Created on 29-12-2014 20:12.
- */
 public class SnowWarsLoadingArenaComposer extends MessageComposer
 {
     private final int count;

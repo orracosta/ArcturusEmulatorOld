@@ -9,9 +9,6 @@ import com.eu.habbo.messages.outgoing.modtool.ModToolIssueChatlogComposer;
 
 import java.util.ArrayList;
 
-/**
- * Created on 14-7-2015 14:09.
- */
 public class ModToolRequestIssueChatlogEvent extends MessageHandler
 {
     @Override

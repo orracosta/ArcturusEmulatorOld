@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.rooms;
 
-/**
- * Created on 18-10-2015 14:38.
- */
 public enum RoomChatMessageBubbles
 {
     NORMAL(0),
@@ -41,7 +38,7 @@ public enum RoomChatMessageBubbles
     FRANK(33),
     WIRED(34),
     GOAT(35),
-    GRANNY(36);
+    SANTA(36);
 
     private int type;
 

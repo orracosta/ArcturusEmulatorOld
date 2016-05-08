@@ -7,9 +7,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 import java.util.List;
 
-/**
- * Created on 25-8-2015 15:41.
- */
 public class JukeBoxTrackDataComposer extends MessageComposer
 {
     private List<SoundTrack> tracks;

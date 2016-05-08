@@ -15,9 +15,6 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 6-12-2014 19:12.
- */
 public class InteractionNest extends HabboItem
 {
     public InteractionNest(ResultSet set, Item baseItem) throws SQLException

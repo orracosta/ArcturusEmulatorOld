@@ -3,9 +3,6 @@ package com.eu.habbo.threading.runnables.freeze;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserEffectComposer;
 
-/**
- * Created on 25-1-2015 10:22.
- */
 public class FreezeClearEffects implements Runnable
 {
     private final Habbo habbo;

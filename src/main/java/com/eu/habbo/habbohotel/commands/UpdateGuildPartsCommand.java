@@ -3,9 +3,6 @@ package com.eu.habbo.habbohotel.commands;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 
-/**
- * Created on 22-11-2014 17:36.
- */
 public class UpdateGuildPartsCommand extends Command
 {
     public UpdateGuildPartsCommand()

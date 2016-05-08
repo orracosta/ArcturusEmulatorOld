@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.modtool.ModToolRoomChatlogComposer;
 
-/**
- * Created on 4-11-2014 13:29.
- */
 public class ModToolRequestRoomChatlogEvent extends MessageHandler
 {
     @Override

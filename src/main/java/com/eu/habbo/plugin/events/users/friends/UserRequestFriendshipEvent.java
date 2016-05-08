@@ -3,9 +3,6 @@ package com.eu.habbo.plugin.events.users.friends;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.plugin.events.users.UserEvent;
 
-/**
- * Created on 9-11-2015 21:44.
- */
 public class UserRequestFriendshipEvent extends UserEvent
 {
     /**

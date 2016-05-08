@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- * Created on 30-1-2015 20:58.
- */
 class QueryDeleteHabboBadge implements Runnable
 {
     private final String name;

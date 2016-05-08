@@ -14,9 +14,6 @@ import gnu.trove.set.hash.THashSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 20:52.
- */
 public class WiredConditionFurniTypeMatch extends InteractionWiredCondition
 {
     public static final WiredConditionType type = WiredConditionType.STUFF_IS;

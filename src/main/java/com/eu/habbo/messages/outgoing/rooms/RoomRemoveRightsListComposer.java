@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 4-4-2015 12:20.
- */
 public class RoomRemoveRightsListComposer extends MessageComposer
 {
     private final Room room;

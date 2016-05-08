@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.pets;
 
-/**
- * Created on 1-12-2014 20:12.
- */
 public enum PetTask
 {
     FREE,

@@ -12,9 +12,6 @@ import com.eu.habbo.util.pathfinding.PathFinder;
 import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 7-8-2015 14:28.
- */
 public class RoomTrashing implements Runnable
 {
     public static RoomTrashing INSTANCE;

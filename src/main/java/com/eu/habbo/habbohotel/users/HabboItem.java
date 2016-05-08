@@ -17,12 +17,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 28-8-2014 18:30.
- */
 public abstract class HabboItem implements Runnable, IEventTriggers
 {
-
     private int id;
     private int userId;
     private int roomId;
@@ -35,7 +31,6 @@ public abstract class HabboItem implements Runnable, IEventTriggers
     private String extradata;
     private int limitedStack;
     private int limitedSells;
-
     private boolean needsUpdate = false;
     private boolean needsDelete = false;
 

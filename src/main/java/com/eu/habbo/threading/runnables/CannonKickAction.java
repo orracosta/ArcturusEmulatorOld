@@ -10,9 +10,6 @@ import com.eu.habbo.util.pathfinding.PathFinder;
 import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.map.hash.THashMap;
 
-/**
- * Created on 17-10-2015 21:39.
- */
 public class CannonKickAction implements Runnable
 {
     private final InteractionCannon cannon;

@@ -11,9 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-/**
- * Created on 23-1-2016 13:36.
- */
 public abstract class InteractionCustomValues extends HabboItem
 {
     public THashMap<String, String> values = new THashMap<String, String>();

@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.guides;
 
-/**
- * Created on 11-10-2015 16:46.
- */
 public enum GuardianVoteType
 {
     FORWARDED(-1),

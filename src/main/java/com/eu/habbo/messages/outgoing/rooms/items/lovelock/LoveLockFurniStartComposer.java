@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 3-8-2015 08:36.
- */
 public class LoveLockFurniStartComposer extends MessageComposer
 {
     private InteractionLoveLock loveLock;

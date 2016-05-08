@@ -10,9 +10,6 @@ import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.modtool.ModToolReportReceivedAlertComposer;
 import com.eu.habbo.threading.runnables.InsertModToolIssue;
 
-/**
- * Created on 3-3-2015 13:23.
- */
 public class ReportEvent extends MessageHandler
 {
     @Override

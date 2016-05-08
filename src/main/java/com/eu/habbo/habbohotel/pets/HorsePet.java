@@ -7,9 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 10-12-2014 09:48.
- */
 public class HorsePet extends Pet
 {
     private int hairColor;

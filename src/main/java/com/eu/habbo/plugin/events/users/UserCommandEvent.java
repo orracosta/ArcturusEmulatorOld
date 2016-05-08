@@ -2,9 +2,6 @@ package com.eu.habbo.plugin.events.users;
 
 import com.eu.habbo.habbohotel.users.Habbo;
 
-/**
- * Created on 9-11-2015 20:47.
- */
 public class UserCommandEvent extends UserEvent
 {
     /**

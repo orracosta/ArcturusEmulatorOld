@@ -11,9 +11,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 20:32.
- */
 public class WiredEffectMuteHabbo extends InteractionWiredEffect
 {
     private static final WiredEffectType type = WiredEffectType.MUTE_TRIGGER;

@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.plugin.events.roomunit.RoomUnitEvent;
 
-/**
- * Created on 25-12-2015 17:17.
- */
 public class WiredConditionFailedEvent extends RoomUnitEvent
 {
     /**

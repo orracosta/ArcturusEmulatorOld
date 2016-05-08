@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserIgnoredComposer;
 
-/**
- * Created on 17-11-2015 19:42.
- */
 public class IgnoreRoomUserEvent extends MessageHandler
 {
     @Override

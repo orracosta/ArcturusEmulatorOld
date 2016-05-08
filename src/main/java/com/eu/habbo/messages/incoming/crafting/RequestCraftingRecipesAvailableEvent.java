@@ -3,9 +3,6 @@ package com.eu.habbo.messages.incoming.crafting;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.crafting.CraftingComposerFour;
 
-/**
- * Created on 16-1-2016 15:41.
- */
 public class RequestCraftingRecipesAvailableEvent extends MessageHandler
 {
     @Override

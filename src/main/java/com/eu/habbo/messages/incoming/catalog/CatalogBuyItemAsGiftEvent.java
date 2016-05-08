@@ -24,9 +24,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 
-/**
- * Created on 22-1-2015 20:45.
- */
 public class CatalogBuyItemAsGiftEvent extends MessageHandler
 {
     @Override

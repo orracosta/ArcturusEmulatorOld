@@ -20,9 +20,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-/**
- * Created on 24-10-2015 15:58.
- */
 public class RoomBundleLayout extends SingleBundle
 {
     public Room room;
@@ -38,14 +35,12 @@ public class RoomBundleLayout extends SingleBundle
     {
         if(Emulator.getIntUnixTimestamp() - this.lastUpdate < 120)
         {
-            System.out.println("Bundle too early to update");
             this.lastUpdate = Emulator.getIntUnixTimestamp();
             return super.getCatalogItems();
         }
 
         if(this.room == null)
         {
-            System.out.println("Bundle room is null");
             this.room = Emulator.getGameEnvironment().getRoomManager().loadRoom(Integer.valueOf(this.getPageName().replace("room_bundle_", "")));
 
             if(this.room != null)
@@ -54,7 +49,6 @@ public class RoomBundleLayout extends SingleBundle
 
         if(this.room == null)
         {
-            System.out.println("Bundle room is still null");
             return super.getCatalogItems();
         }
 
@@ -75,8 +69,6 @@ public class RoomBundleLayout extends SingleBundle
 
         if(item[0] != null)
         {
-            //if(item[0].getBundle().size() <= 1)
-            //{
             item[0].getBundle().clear();
 
             THashMap<Item, Integer> items = new THashMap<Item, Integer>();
@@ -106,18 +98,10 @@ public class RoomBundleLayout extends SingleBundle
             for(Map.Entry<Item, Integer> set : items.entrySet())
             {
                 data += set.getKey().getId() + ":" + set.getValue() + ";";
-                //item[0].getBundle().put(set.getKey().getId(), set.getValue());
             }
-
 
             item[0].setItemId(data);
             item[0].loadBundle();
-
-            //}
-        }
-        else
-        {
-            System.out.println("Bundle items index 0 is null");
         }
 
         return super.getCatalogItems();
@@ -132,7 +116,6 @@ public class RoomBundleLayout extends SingleBundle
 
         this.room = room;
         this.room.preventUnloading = true;
-
         this.getCatalogItems();
     }
 
@@ -142,6 +125,7 @@ public class RoomBundleLayout extends SingleBundle
             return;
 
         this.room.save();
+
         for(HabboItem item : this.room.getFloorItems())
         {
             item.run();
@@ -153,8 +137,8 @@ public class RoomBundleLayout extends SingleBundle
         }
 
         this.getCatalogItems();
-
         int roomId = 0;
+
         try
         {
             PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO rooms (owner_id, owner_name, name, description, model, password, state, users_max, category, paper_floor, paper_wall, paper_landscape, thickness_wall, thickness_floor, moodlight_data, override_model)  (SELECT ?, ?, name, description, model, password, state, users_max, category, paper_floor, paper_wall, paper_landscape, thickness_wall, thickness_floor, moodlight_data, override_model FROM rooms WHERE id = ?)");
@@ -177,7 +161,6 @@ public class RoomBundleLayout extends SingleBundle
             Emulator.getLogging().logSQLException(e);
         }
 
-        System.out.println("Created room with ID: " + roomId);
         if(roomId == 0)
             return;
 

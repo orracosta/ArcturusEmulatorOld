@@ -7,9 +7,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.modtool.ModToolIssueInfoComposer;
 
-/**
- * Created on 4-11-2014 15:04.
- */
 public class ModToolPickTicketEvent extends MessageHandler
 {
     public static boolean send = false;

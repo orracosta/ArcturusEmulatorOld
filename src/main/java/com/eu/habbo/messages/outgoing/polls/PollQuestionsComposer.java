@@ -6,9 +6,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 3-11-2014 18:45.
- */
 public class PollQuestionsComposer extends MessageComposer
 {
     private Poll poll;

@@ -9,9 +9,6 @@ import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.messages.outgoing.users.UserPointsComposer;
 
-/**
- * Created on 14-2-2015 13:41.
- */
 public class PointsCommand extends Command
 {
     public PointsCommand()

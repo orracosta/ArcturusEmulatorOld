@@ -8,9 +8,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 25-7-2015 15:24.
- */
 public class RentableSpaceInfoComposer extends MessageComposer
 {
     public static final int SPACE_ALREADY_RENTED = 100;

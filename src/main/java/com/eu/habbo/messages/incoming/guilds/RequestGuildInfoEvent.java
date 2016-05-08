@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.guilds.Guild;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.guilds.GuildInfoComposer;
 
-/**
- * Created on 22-11-2014 22:05.
- */
 public class RequestGuildInfoEvent extends MessageHandler
 {
     @Override

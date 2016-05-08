@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 11-10-2014 14:06.
- */
 public class WallItemUpdateComposer extends MessageComposer
 {
     private final HabboItem item;

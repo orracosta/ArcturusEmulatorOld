@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.catalog.marketplace;
 
-/**
- * Created on 1-11-2014 13:21.
- */
 public enum MarketPlaceState
 {
     /**

@@ -7,9 +7,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.plugin.events.furniture.FurnitureRoomTonerEvent;
 
-/**
- * Created on 11-10-2014 22:11.
- */
 public class RoomBackgroundEvent extends MessageHandler
 {
     @Override

@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.guides.GuideTour;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.guides.GuideSessionDetachedComposer;
 
-/**
- * Created on 10-10-2015 21:59.
- */
 public class GuideRecommendHelperEvent extends MessageHandler
 {
     @Override

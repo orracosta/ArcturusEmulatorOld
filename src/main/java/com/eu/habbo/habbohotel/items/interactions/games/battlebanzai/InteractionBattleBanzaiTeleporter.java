@@ -13,9 +13,6 @@ import com.eu.habbo.threading.runnables.BanzaiRandomTeleport;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 2-11-2014 22:10.
- */
 public class InteractionBattleBanzaiTeleporter extends HabboItem
 {
     public InteractionBattleBanzaiTeleporter(ResultSet set, Item baseItem) throws SQLException

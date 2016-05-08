@@ -3,9 +3,6 @@ package com.eu.habbo.threading.runnables;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.guides.GuideTour;
 
-/**
- * Created on 10-10-2015 23:05.
- */
 public class GuideFindNewHelper implements Runnable
 {
     private final GuideTour tour;

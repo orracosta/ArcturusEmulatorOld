@@ -15,9 +15,6 @@ import com.eu.habbo.threading.runnables.RandomDiceNumber;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 2-11-2014 17:27.
- */
 public class InteractionDice extends HabboItem
 {
     private Runnable rollTaks = null;

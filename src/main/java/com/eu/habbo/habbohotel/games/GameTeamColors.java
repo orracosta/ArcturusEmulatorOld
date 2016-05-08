@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.games;
 
-/**
- * Created on 23-1-2015 18:52.
- */
 public enum GameTeamColors
 {
     /**

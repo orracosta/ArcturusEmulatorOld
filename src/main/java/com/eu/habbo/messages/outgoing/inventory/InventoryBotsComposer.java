@@ -7,11 +7,8 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.map.hash.THashMap;
 
-/**
- * Created on 29-8-2014 11:28.
- */
-public class InventoryBotsComposer extends MessageComposer {
-
+public class InventoryBotsComposer extends MessageComposer
+{
     private final Habbo habbo;
 
     public InventoryBotsComposer(Habbo habbo)
@@ -20,7 +17,8 @@ public class InventoryBotsComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.InventoryBotsComposer);
 
         THashMap<Integer, Bot> userBots = this.habbo.getHabboInventory().getBotsComponent().getUserBots();

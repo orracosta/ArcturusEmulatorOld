@@ -2,9 +2,6 @@ package com.eu.habbo.habbohotel.items;
 
 import com.eu.habbo.habbohotel.users.HabboItem;
 
-/**
- * Created on 11-4-2015 10:48.
- */
 public class ItemInteraction
 {
     private final String name;

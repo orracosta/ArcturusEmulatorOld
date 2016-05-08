@@ -19,9 +19,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 
-/**
- * Created on 3-7-2015 09:07.
- */
 public class InteractionLoveLock extends HabboItem
 {
     public int userOneId;

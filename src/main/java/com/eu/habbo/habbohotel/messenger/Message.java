@@ -5,14 +5,10 @@ import com.eu.habbo.Emulator;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- * Created on 26-8-2014 10:51.
- */
-public class Message implements Runnable {
-
+public class Message implements Runnable
+{
     private final int fromId;
     private final int toId;
-
     private final String message;
     private final int timestamp;
 
@@ -26,7 +22,8 @@ public class Message implements Runnable {
     }
 
     @Override
-    public void run() {
+    public void run()
+    {
         if(Emulator.getConfig().getBoolean("save.private.chats", false))
         {
             try
@@ -53,14 +50,14 @@ public class Message implements Runnable {
     }
 
     public int getFromId() {
-        return fromId;
+        return this.fromId;
     }
 
     public String getMessage() {
-        return message;
+        return this.message;
     }
 
     public int getTimestamp() {
-        return timestamp;
+        return this.timestamp;
     }
 }

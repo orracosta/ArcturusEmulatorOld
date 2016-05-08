@@ -13,9 +13,6 @@ import com.eu.habbo.threading.runnables.WiredRepeatTask;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 19:57.
- */
 public class WiredTriggerRepeater extends InteractionWiredTrigger
 {
     public static final WiredTriggerType type = WiredTriggerType.PERIODICALLY;

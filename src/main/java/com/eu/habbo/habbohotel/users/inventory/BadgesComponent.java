@@ -9,9 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 28-8-2014 18:45.
- */
 public class BadgesComponent
 {
     private final THashSet<HabboBadge> badges = new THashSet<HabboBadge>();

@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.util.pathfinding.AbstractNode;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 10-4-2015 19:41.
- */
 public class UserTakeStepEvent extends UserEvent
 {
     /**

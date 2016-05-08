@@ -13,9 +13,6 @@ import com.eu.habbo.threading.runnables.WiredResetTimers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 20:14.
- */
 public class WiredEffectResetTimers extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.RESET_TIMERS;

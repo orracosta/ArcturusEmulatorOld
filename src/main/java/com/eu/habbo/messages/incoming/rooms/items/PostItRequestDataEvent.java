@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.items.PostItDataComposer;
 
-/**
- * Created on 9-7-2015 17:12.
- */
 public class PostItRequestDataEvent extends MessageHandler
 {
     @Override

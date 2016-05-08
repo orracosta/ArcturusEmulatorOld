@@ -9,9 +9,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 import java.util.ArrayList;
 
-/**
- * Created on 11-10-2015 16:44.
- */
 public class GuardianVotingVotesComposer extends MessageComposer
 {
     private final GuardianTicket ticket;

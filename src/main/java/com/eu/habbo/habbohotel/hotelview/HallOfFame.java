@@ -7,9 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 27-8-2014 09:46.
- */
 public class HallOfFame
 {
     /**

@@ -13,9 +13,6 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDataComposer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 12-10-2014 10:24.
- */
 public class InteractionMannequin extends HabboItem
 {
     public InteractionMannequin(ResultSet set, Item baseItem) throws SQLException

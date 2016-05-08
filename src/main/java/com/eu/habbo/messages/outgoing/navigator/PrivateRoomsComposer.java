@@ -7,11 +7,8 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 import java.util.List;
 
-/**
- * Created on 31-8-2014 13:27.
- */
-public class PrivateRoomsComposer extends MessageComposer{
-
+public class PrivateRoomsComposer extends MessageComposer
+{
     private List<Room> rooms;
 
     public PrivateRoomsComposer(List<Room> rooms)
@@ -19,14 +16,14 @@ public class PrivateRoomsComposer extends MessageComposer{
         this.rooms = rooms;
     }
 
-
     @Override
-    public ServerMessage compose() {
-
+    public ServerMessage compose()
+    {
         if(true)
             return null;
 
-        try {
+        try
+        {
             this.response.init(Outgoing.PrivateRoomsComposer);
 
             this.response.appendInt32(2);

@@ -7,9 +7,6 @@ import com.eu.habbo.messages.outgoing.generic.alerts.MessagesForYouComposer;
 
 import java.util.List;
 
-/**
- * Created on 11-10-2014 14:49.
- */
 public class CommandsCommand extends Command
 {
     public CommandsCommand()

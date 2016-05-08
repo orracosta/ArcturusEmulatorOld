@@ -5,59 +5,39 @@ import com.eu.habbo.core.Logging;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.messages.incoming.Incoming;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.incoming.achievements.RequestAchievementConfigurationEvent;
-import com.eu.habbo.messages.incoming.achievements.RequestAchievementsEvent;
-import com.eu.habbo.messages.incoming.ambassadors.AmbassadorAlertCommandEvent;
-import com.eu.habbo.messages.incoming.ambassadors.AmbassadorVisitCommandEvent;
+import com.eu.habbo.messages.incoming.achievements.*;
+import com.eu.habbo.messages.incoming.ambassadors.*;
 import com.eu.habbo.messages.incoming.catalog.*;
 import com.eu.habbo.messages.incoming.catalog.marketplace.*;
-import com.eu.habbo.messages.incoming.catalog.recycler.OpenRecycleBoxEvent;
-import com.eu.habbo.messages.incoming.catalog.recycler.RecycleEvent;
-import com.eu.habbo.messages.incoming.catalog.recycler.ReloadRecyclerEvent;
-import com.eu.habbo.messages.incoming.catalog.recycler.RequestRecyclerLogicEvent;
+import com.eu.habbo.messages.incoming.catalog.recycler.*;
 import com.eu.habbo.messages.incoming.crafting.*;
-import com.eu.habbo.messages.incoming.floorplaneditor.FloorPlanEditorRequestBlockedTilesEvent;
-import com.eu.habbo.messages.incoming.floorplaneditor.FloorPlanEditorRequestDoorSettingsEvent;
-import com.eu.habbo.messages.incoming.floorplaneditor.FloorPlanEditorSaveEvent;
+import com.eu.habbo.messages.incoming.floorplaneditor.*;
 import com.eu.habbo.messages.incoming.friends.*;
-import com.eu.habbo.messages.incoming.guardians.GuardianAcceptRequestEvent;
-import com.eu.habbo.messages.incoming.guardians.GuardianNoUpdatesWantedEvent;
-import com.eu.habbo.messages.incoming.guardians.GuardianVoteEvent;
+import com.eu.habbo.messages.incoming.guardians.*;
 import com.eu.habbo.messages.incoming.guides.*;
 import com.eu.habbo.messages.incoming.guilds.*;
 import com.eu.habbo.messages.incoming.handshake.*;
-import com.eu.habbo.messages.incoming.helper.RequestTalentTrackEvent;
+import com.eu.habbo.messages.incoming.helper.*;
 import com.eu.habbo.messages.incoming.hotelview.*;
 import com.eu.habbo.messages.incoming.inventory.*;
 import com.eu.habbo.messages.incoming.modtool.*;
 import com.eu.habbo.messages.incoming.navigator.*;
-import com.eu.habbo.messages.incoming.polls.AnswerPollEvent;
-import com.eu.habbo.messages.incoming.polls.CancelPollEvent;
-import com.eu.habbo.messages.incoming.polls.GetPollDataEvent;
+import com.eu.habbo.messages.incoming.polls.*;
 import com.eu.habbo.messages.incoming.rooms.*;
-import com.eu.habbo.messages.incoming.rooms.bots.BotPickupEvent;
-import com.eu.habbo.messages.incoming.rooms.bots.BotPlaceEvent;
-import com.eu.habbo.messages.incoming.rooms.bots.BotSaveSettingsEvent;
-import com.eu.habbo.messages.incoming.rooms.bots.BotSettingsEvent;
+import com.eu.habbo.messages.incoming.rooms.bots.*;
 import com.eu.habbo.messages.incoming.rooms.items.*;
-import com.eu.habbo.messages.incoming.rooms.items.rentablespace.RentSpaceCancelEvent;
-import com.eu.habbo.messages.incoming.rooms.items.rentablespace.RentSpaceEvent;
+import com.eu.habbo.messages.incoming.rooms.items.rentablespace.*;
 import com.eu.habbo.messages.incoming.rooms.pets.*;
-import com.eu.habbo.messages.incoming.rooms.promotions.BuyRoomPromotionEvent;
-import com.eu.habbo.messages.incoming.rooms.promotions.RequestPromotionRoomsEvent;
+import com.eu.habbo.messages.incoming.rooms.promotions.*;
 import com.eu.habbo.messages.incoming.rooms.users.*;
 import com.eu.habbo.messages.incoming.trading.*;
-import com.eu.habbo.messages.incoming.unknown.RequestResolutionEvent;
-import com.eu.habbo.messages.incoming.unknown.UnknownEvent1;
+import com.eu.habbo.messages.incoming.unknown.*;
 import com.eu.habbo.messages.incoming.users.*;
-import com.eu.habbo.messages.incoming.wired.WiredConditionSaveDataEvent;
-import com.eu.habbo.messages.incoming.wired.WiredEffectSaveDataEvent;
-import com.eu.habbo.messages.incoming.wired.WiredTriggerSaveDataEvent;
-import com.eu.habbo.messages.incoming.guilds.GuildDeleteEvent;
+import com.eu.habbo.messages.incoming.wired.*;
 import gnu.trove.map.hash.THashMap;
 
-public class PacketManager {
-
+public class PacketManager
+{
     private final THashMap<Integer, Class<? extends MessageHandler>> incoming;
 
     public PacketManager()

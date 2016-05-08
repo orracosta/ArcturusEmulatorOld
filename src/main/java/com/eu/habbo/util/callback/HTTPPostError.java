@@ -6,9 +6,6 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created on 19-2-2015 14:49.
- */
 public class HTTPPostError implements Runnable
 {
     public Throwable stackTrace;

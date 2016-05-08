@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
-/**
- * Created on 19-2-2015 11:11.
- */
 public class ArcturusCommand extends Command
 {
     public ArcturusCommand()

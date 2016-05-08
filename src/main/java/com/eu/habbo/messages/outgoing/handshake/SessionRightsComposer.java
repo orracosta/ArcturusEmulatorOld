@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 24-8-2014 17:39.
- */
 public class SessionRightsComposer extends MessageComposer {
 
     private static final boolean unknownBooleanOne = true; //true

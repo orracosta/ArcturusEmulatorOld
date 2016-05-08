@@ -4,13 +4,11 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.navigator.PrivateRoomsComposer;
 
-/**
- * Created on 31-8-2014 14:39.
- */
-public class RequestMyRoomsEvent extends MessageHandler {
-
+public class RequestMyRoomsEvent extends MessageHandler
+{
     @Override
-    public void handle() throws Exception {
+    public void handle() throws Exception
+    {
         this.client.sendResponse(new PrivateRoomsComposer(Emulator.getGameEnvironment().getRoomManager().getRoomsForHabbo(this.client.getHabbo())));
     }
 }

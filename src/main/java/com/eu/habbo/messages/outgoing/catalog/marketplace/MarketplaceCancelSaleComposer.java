@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 1-11-2014 15:13.
- */
 public class MarketplaceCancelSaleComposer extends MessageComposer
 {
     private final MarketPlaceOffer offer;

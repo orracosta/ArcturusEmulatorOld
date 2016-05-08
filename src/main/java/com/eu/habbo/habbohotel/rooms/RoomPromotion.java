@@ -3,9 +3,6 @@ package com.eu.habbo.habbohotel.rooms;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 15-11-2015 14:05.
- */
 public class RoomPromotion
 {
     private final Room room;

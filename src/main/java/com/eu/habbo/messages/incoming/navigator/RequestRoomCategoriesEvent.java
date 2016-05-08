@@ -5,9 +5,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.navigator.NewNavigatorEventCategoriesComposer;
 import com.eu.habbo.messages.outgoing.navigator.RoomCategoriesComposer;
 
-/**
- * Created on 25-8-2014 12:03.
- */
 public class RequestRoomCategoriesEvent extends MessageHandler {
 
     @Override

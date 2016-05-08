@@ -2,9 +2,6 @@ package com.eu.habbo.plugin.events.users;
 
 import com.eu.habbo.habbohotel.users.Habbo;
 
-/**
- * Created on 13-11-2015 21:53.
- */
 public class UserDisconnectEvent extends UserEvent
 {
     /**

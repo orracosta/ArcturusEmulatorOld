@@ -8,9 +8,6 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
 import java.sql.SQLException;
 
-/**
- * Created on 17-7-2015 13:09.
- */
 public class UnbanCommand extends Command
 {
     public UnbanCommand()

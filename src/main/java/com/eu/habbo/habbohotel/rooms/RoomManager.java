@@ -33,9 +33,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-/**
- * Created on 31-8-2014 12:36.
- */
 public class RoomManager {
 
     private final THashSet<RoomCategory> roomCategories;
@@ -48,7 +45,6 @@ public class RoomManager {
         this.roomCategories = new THashSet<RoomCategory>();
         this.roomLayouts = new THashSet<RoomLayout>();
         this.activeRooms = new THashMap<Integer, Room>();
-
         this.loadRoomCategories();
         this.loadRoomModels();
 

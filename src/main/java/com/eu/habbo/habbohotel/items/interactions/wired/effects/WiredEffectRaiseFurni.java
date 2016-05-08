@@ -16,9 +16,6 @@ import gnu.trove.set.hash.THashSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 22-11-2015 20:02.
- */
 public class WiredEffectRaiseFurni extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.TELEPORT;

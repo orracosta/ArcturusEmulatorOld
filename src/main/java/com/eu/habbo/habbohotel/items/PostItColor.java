@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.items;
 
-/**
- * Created on 12-7-2015 23:26.
- */
 public enum PostItColor
 {
     /**

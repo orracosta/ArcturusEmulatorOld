@@ -1,9 +1,5 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
-/**
- * Created on 20-10-2015 22:05.
- */
-
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.rooms.Room;
@@ -16,9 +12,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 20-10-2015 21:37.
- */
 public class WiredEffectGiveCredits extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.SHOW_MESSAGE;

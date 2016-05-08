@@ -15,9 +15,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * Created on 20-6-2015 11:49.
- */
 public class WiredEffectBotTalkToHabbo extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.BOT_TALK_TO_AVATAR;

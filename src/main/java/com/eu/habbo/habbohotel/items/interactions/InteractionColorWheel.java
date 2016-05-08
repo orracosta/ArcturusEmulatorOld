@@ -13,9 +13,6 @@ import com.eu.habbo.threading.runnables.RandomDiceNumber;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 2-11-2014 21:05.
- */
 public class InteractionColorWheel extends HabboItem
 {
     private Runnable rollTaks;

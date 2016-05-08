@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 14-12-2014 13:42.
- */
 public class WiredEffectDataComposer extends MessageComposer
 {
     private final InteractionWiredEffect effect;

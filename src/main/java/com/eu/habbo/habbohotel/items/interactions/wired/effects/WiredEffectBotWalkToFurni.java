@@ -16,9 +16,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * Created on 20-6-2015 11:50.
- */
 public class WiredEffectBotWalkToFurni extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.BOT_MOVE;

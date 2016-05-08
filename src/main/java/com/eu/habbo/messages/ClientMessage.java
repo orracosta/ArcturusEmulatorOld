@@ -1,6 +1,5 @@
 package com.eu.habbo.messages;
 
-import com.eu.habbo.Emulator;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 

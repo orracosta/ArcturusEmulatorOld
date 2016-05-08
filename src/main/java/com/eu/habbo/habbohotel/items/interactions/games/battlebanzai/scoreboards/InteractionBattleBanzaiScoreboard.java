@@ -9,9 +9,6 @@ import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 25-5-2015 10:33.
- */
 public class InteractionBattleBanzaiScoreboard extends InteractionGameScoreboard
 {
     public InteractionBattleBanzaiScoreboard(ResultSet set, Item baseItem, GameTeamColors teamColor) throws SQLException

@@ -7,9 +7,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.threading.runnables.HabboItemNewState;
 import com.eu.habbo.util.pathfinding.PathFinder;
 
-/**
- * Created on 7-3-2015 22:31.
- */
 class TeleportActionFive implements Runnable
 {
     private final HabboItem currentTeleport;

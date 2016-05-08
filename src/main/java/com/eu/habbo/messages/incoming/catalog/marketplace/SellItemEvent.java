@@ -8,9 +8,6 @@ import com.eu.habbo.messages.outgoing.catalog.AlertPurchaseFailedComposer;
 import com.eu.habbo.messages.outgoing.catalog.marketplace.MarketplaceItemPostedComposer;
 import com.eu.habbo.messages.outgoing.catalog.marketplace.MarketplaceSellItemComposer;
 
-/**
- * Created on 2-11-2014 13:01.
- */
 public class SellItemEvent extends MessageHandler
 {
     @Override

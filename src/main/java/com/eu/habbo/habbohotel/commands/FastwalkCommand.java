@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.users.Habbo;
 
-/**
- * Created on 21-11-2015 20:53.
- */
 public class FastwalkCommand extends Command
 {
     public FastwalkCommand()

@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 24-10-2015 13:34.
- */
 public class BotPlacedEvent extends BotEvent
 {
     /**

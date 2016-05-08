@@ -6,9 +6,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.guilds.GuildListComposer;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 24-11-2014 19:27.
- */
 public class RequestOwnGuildsEvent extends MessageHandler
 {
     @Override

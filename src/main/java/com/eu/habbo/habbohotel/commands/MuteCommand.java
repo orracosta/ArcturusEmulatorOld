@@ -8,9 +8,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserIgnoredComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
-/**
- * Created on 7-3-2015 13:35.
- */
 public class MuteCommand extends Command
 {
     public MuteCommand()

@@ -15,9 +15,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
-/**
- * Created on 10-10-2015 22:06.
- */
 public class GuideManager
 {
     private final THashSet<GuideTour> activeTours;

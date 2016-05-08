@@ -4,15 +4,10 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.core.ConfigurationManager;
 import com.zaxxer.hikari.HikariDataSource;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- * Dont mess with this class!
- */
 public class Database
 {
     private HikariDataSource dataSource;
@@ -29,8 +24,6 @@ public class Database
 
         try
         {
-           // Class.forName("com.mysql.jdbc.Driver");
-
             this.databasePool = new DatabasePool();
             if (!this.databasePool.getStoragePooling(config))
             {
@@ -40,11 +33,6 @@ public class Database
             }
             this.dataSource = this.databasePool.getDatabase();
         }
-//        catch (ClassNotFoundException e)
-//        {
-//            Emulator.getLogging().logErrorLine(e);
-//            SQLException = true;
-//        }
         catch (Exception e)
         {
             Emulator.getLogging().logErrorLine(e);
@@ -80,10 +68,8 @@ public class Database
         {
             Emulator.getLogging().logSQLException(e);
         }
-        finally
-        {
-            return statement;
-        }
+
+        return statement;
     }
 }
 

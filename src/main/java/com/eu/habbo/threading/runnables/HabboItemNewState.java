@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 
-/**
- * Created on 10-12-2014 19:55.
- */
 public class HabboItemNewState implements Runnable
 {
     private final HabboItem item;

@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 2-8-2015 15:30.
- */
 public class StaffAlertAndOpenHabboWayComposer extends MessageComposer
 {
     private String message;

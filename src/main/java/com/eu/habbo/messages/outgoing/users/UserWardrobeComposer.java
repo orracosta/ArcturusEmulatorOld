@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 13-9-2014 19:36.
- */
 public class UserWardrobeComposer extends MessageComposer {
 
     private WardrobeComponent wardrobeComponent;

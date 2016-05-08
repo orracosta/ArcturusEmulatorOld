@@ -1,10 +1,7 @@
 package com.eu.habbo.util.pathfinding;
 
-/**
- * Created on 14-9-2014 13:56.
- */
-public class Rotation {
-
+public class Rotation
+{
     public static int Calculate(int X1, int Y1, int X2, int Y2)
     {
         int Rotation = 0;

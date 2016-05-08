@@ -8,9 +8,6 @@ import com.eu.habbo.messages.outgoing.catalog.*;
 import com.eu.habbo.messages.outgoing.catalog.marketplace.MarketplaceConfigComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
-/**
- * Created on 4-10-2014 22:08.
- */
 public class UpdateCatalogCommand extends Command {
 
     public UpdateCatalogCommand()

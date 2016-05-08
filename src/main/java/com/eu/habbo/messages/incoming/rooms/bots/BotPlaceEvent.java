@@ -7,9 +7,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.plugin.events.bots.BotPlacedEvent;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 15-10-2014 12:23.
- */
 public class BotPlaceEvent extends MessageHandler
 {
     @Override

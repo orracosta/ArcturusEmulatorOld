@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.rooms.RoomTrade;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 8-11-2014 14:13.
- */
 public class TradeCloseEvent extends MessageHandler
 {
     @Override

@@ -17,9 +17,6 @@ import com.eu.habbo.util.pathfinding.Tile;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 12-10-2014 12:23.
- */
 public class InteractionVendingMachine extends HabboItem
 {
     public InteractionVendingMachine(ResultSet set, Item baseItem) throws SQLException

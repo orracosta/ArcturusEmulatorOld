@@ -5,11 +5,11 @@ import com.eu.habbo.core.Logging;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 public class GameClient

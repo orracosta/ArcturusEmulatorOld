@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.wired;
 
-/**
- * Created on 20-12-2014 12:13.
- */
 public class WiredMatchFurniSetting
 {
     public final int itemId;

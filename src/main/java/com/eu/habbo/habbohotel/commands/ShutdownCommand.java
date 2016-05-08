@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 
-/**
- * Created on 19-2-2015 10:43.
- */
 public class ShutdownCommand extends Command
 {
     public ShutdownCommand()

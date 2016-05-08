@@ -6,9 +6,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.guides.GuideSessionInvitedToGuideRoomComposer;
 
-/**
- * Created on 10-10-2015 23:33.
- */
 public class GuideInviteUserEvent extends MessageHandler
 {
     @Override

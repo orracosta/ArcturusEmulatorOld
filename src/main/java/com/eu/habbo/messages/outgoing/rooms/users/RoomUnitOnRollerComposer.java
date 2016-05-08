@@ -9,9 +9,6 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 13-12-2014 10:35.
- */
 public class RoomUnitOnRollerComposer extends MessageComposer
 {
     private final RoomUnit roomUnit;

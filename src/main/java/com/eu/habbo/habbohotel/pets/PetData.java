@@ -15,9 +15,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created on 30-11-2014 20:34.
- */
 public class PetData
 {
     private int type;

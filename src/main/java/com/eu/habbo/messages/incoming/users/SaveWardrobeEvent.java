@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.users.inventory.WardrobeComponent;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.plugin.events.users.UserSavedWardrobeEvent;
 
-/**
- * Created on 13-9-2014 19:04.
- */
 public class SaveWardrobeEvent extends MessageHandler
 {
     @Override

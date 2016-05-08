@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.modtool.ModToolIssue;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- * Created on 5-3-2015 10:13.
- */
 public class UpdateModToolIssue implements Runnable
 {
     private final ModToolIssue issue;

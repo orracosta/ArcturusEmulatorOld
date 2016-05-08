@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.plugin.events.users.UserEvent;
 
-/**
- * Created on 9-11-2015 21:06.
- */
 public class NavigatorRoomCreatedEvent extends UserEvent
 {
     /**

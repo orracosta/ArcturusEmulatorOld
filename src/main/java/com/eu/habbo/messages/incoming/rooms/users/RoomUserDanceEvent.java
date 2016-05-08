@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDanceComposer;
 
-/**
- * Created on 13-9-2014 17:34.
- */
 public class RoomUserDanceEvent extends MessageHandler {
     @Override
     public void handle() throws Exception

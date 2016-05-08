@@ -11,9 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-/**
- * Created on 28-8-2014 11:34.
- */
 public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem>
 {
     protected int id;

@@ -13,9 +13,6 @@ import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.plugin.events.guilds.GuildChangedColorsEvent;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 23-11-2014 14:10.
- */
 public class GuildChangeColorsEvent extends MessageHandler
 {
     @Override

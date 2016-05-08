@@ -5,11 +5,8 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 31-8-2014 14:46.
- */
-public class CanCreateRoomComposer extends MessageComposer {
-
+public class CanCreateRoomComposer extends MessageComposer
+{
     private final int count;
 
     public CanCreateRoomComposer(int count)
@@ -18,7 +15,8 @@ public class CanCreateRoomComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.CanCreateRoomComposer);
 
         int maxRooms = Emulator.getConfig().getInt("hotel.max.rooms.per.user");

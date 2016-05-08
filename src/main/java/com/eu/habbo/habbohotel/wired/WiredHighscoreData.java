@@ -1,10 +1,5 @@
 package com.eu.habbo.habbohotel.wired;
 
-import gnu.trove.set.hash.THashSet;
-
-/**
- * Created on 22-10-2015 20:37.
- */
 public class WiredHighscoreData
 {
     public String[] usernames;

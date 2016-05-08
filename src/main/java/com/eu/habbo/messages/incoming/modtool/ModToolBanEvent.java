@@ -3,9 +3,6 @@ package com.eu.habbo.messages.incoming.modtool;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 22-11-2014 12:34.
- */
 public class ModToolBanEvent extends MessageHandler
 {
     @Override

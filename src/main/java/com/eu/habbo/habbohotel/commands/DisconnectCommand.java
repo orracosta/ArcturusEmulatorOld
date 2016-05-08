@@ -7,9 +7,6 @@ import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
-/**
- * Created on 22-11-2014 13:10.
- */
 public class DisconnectCommand extends Command
 {
     public DisconnectCommand()

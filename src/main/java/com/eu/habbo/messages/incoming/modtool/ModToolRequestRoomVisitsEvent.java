@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.modtool.ModToolUserRoomVisitsComposer;
 
-/**
- * Created on 22-11-2014 11:08.
- */
 public class ModToolRequestRoomVisitsEvent extends MessageHandler
 {
     @Override

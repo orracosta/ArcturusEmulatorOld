@@ -7,9 +7,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.items.lovelock.LoveLockFurniFinishedComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.lovelock.LoveLockFurniFriendConfirmedComposer;
 
-/**
- * Created on 3-8-2015 08:56.
- */
 public class LoveLockStartConfirmEvent extends MessageHandler
 {
     @Override

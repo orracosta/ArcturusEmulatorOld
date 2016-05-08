@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 
-/**
- * Created on 12-10-2014 10:34.
- */
 public class MannequinSaveLookEvent extends MessageHandler
 {
     @Override

@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.catalog;
 
-/**
- * Created on 26-8-2014 21:31.
- */
 public enum CatalogPageLayouts
 {
     /**

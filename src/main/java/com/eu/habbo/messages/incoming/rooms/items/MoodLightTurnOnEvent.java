@@ -7,9 +7,6 @@ import com.eu.habbo.habbohotel.rooms.RoomMoodlightData;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 14-11-2014 20:31.
- */
 public class MoodLightTurnOnEvent extends MessageHandler
 {
     @Override

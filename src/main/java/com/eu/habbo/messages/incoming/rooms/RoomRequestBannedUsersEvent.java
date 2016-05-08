@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.RoomBannedUsersComposer;
 
-/**
- * Created on 30-8-2015 10:42.
- */
 public class RoomRequestBannedUsersEvent extends MessageHandler
 {
     @Override

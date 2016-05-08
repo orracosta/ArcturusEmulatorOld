@@ -11,9 +11,6 @@ import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 21-1-2015 12:30.
- */
 public class InteractionMonsterPlantSeed extends HabboItem
 {
     public InteractionMonsterPlantSeed(ResultSet set, Item baseItem) throws SQLException

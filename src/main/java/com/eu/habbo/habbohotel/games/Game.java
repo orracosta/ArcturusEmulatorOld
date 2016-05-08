@@ -16,9 +16,6 @@ import gnu.trove.map.hash.THashMap;
 
 import java.util.Map;
 
-/**
- * Created on 23-1-2015 18:53.
- */
 public abstract class Game implements Runnable
 {
     /**

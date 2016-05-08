@@ -7,9 +7,6 @@ import gnu.trove.map.hash.THashMap;
 
 import java.util.Map;
 
-/**
- * Created on 30-11-2014 11:49.
- */
 public class BubbleAlertComposer extends MessageComposer
 {
     private final String errorKey;

@@ -3,9 +3,6 @@ package com.eu.habbo.plugin.events.users;
 import com.eu.habbo.habbohotel.modtool.WordFilterWord;
 import com.eu.habbo.habbohotel.users.Habbo;
 
-/**
- * Created on 25-12-2015 16:48.
- */
 public class UserTriggerWordFilterEvent extends UserEvent
 {
     /**

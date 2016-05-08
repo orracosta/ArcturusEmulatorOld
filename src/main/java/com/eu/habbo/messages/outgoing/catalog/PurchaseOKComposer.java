@@ -6,11 +6,8 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 29-8-2014 15:54.
- */
-public class PurchaseOKComposer extends MessageComposer {
-
+public class PurchaseOKComposer extends MessageComposer
+{
     private final CatalogItem catalogItem;
     private final Item item;
 
@@ -27,8 +24,8 @@ public class PurchaseOKComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
-
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.PurchaseOKComposer);
         if(catalogItem != null && item != null)
         {

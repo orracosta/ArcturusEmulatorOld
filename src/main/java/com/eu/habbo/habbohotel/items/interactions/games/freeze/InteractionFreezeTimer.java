@@ -12,9 +12,6 @@ import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 24-1-2015 10:00.
- */
 public class InteractionFreezeTimer extends InteractionGameTimer
 {
     public InteractionFreezeTimer(ResultSet set, Item baseItem) throws SQLException

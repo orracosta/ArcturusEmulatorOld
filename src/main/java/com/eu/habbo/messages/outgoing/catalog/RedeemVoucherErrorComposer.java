@@ -4,11 +4,8 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 30-8-2014 13:47.
- */
-public class RedeemVoucherErrorComposer extends MessageComposer {
-
+public class RedeemVoucherErrorComposer extends MessageComposer
+{
     public static final int INVALID_CODE = 0;
     public static final int TECHNICAL_ERROR = 1;
 
@@ -20,7 +17,8 @@ public class RedeemVoucherErrorComposer extends MessageComposer {
     }
 
     @Override
-    public ServerMessage compose() {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.RedeemVoucherErrorComposer);
         this.response.appendInt32(this.code);
         return this.response;

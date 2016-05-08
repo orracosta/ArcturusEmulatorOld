@@ -2,8 +2,6 @@ package com.eu.habbo.networking.gameserver;
 
 import com.eu.habbo.habbohotel.gameclients.GameClientManager;
 import com.eu.habbo.messages.PacketManager;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.util.AsciiString;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.*;
@@ -11,16 +9,10 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-import java.nio.ByteOrder;
-
-
-/**
- * Created on 3-4-2015 10:24.
- */
 public class GameServer
 {
-    private PacketManager packetManager;
-    private GameClientManager gameClientManager;
+    private final PacketManager packetManager;
+    private final GameClientManager gameClientManager;
     private final ServerBootstrap serverBootstrap;
     private final EventLoopGroup bossGroup;
     private final EventLoopGroup workerGroup;
@@ -38,9 +30,6 @@ public class GameServer
 
         this.serverBootstrap = new ServerBootstrap();
 
-        this.packetManager = new PacketManager();
-        this.gameClientManager = new GameClientManager();
-
         this.host = host;
         this.port = port;
     }
@@ -56,8 +45,6 @@ public class GameServer
             {
                 ch.pipeline().addLast("bytesDecoder", new GameByteDecoder());
                 ch.pipeline().addLast(new GameMessageHandler());
-//                ch.pipeline().addLast("bytesDecoder", new GameServerDecoder());
-//                ch.pipeline().addLast(new GameServerHandler());
             }
         });
         this.serverBootstrap.childOption(ChannelOption.TCP_NODELAY, true);

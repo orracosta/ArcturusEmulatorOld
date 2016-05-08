@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 20-9-2015 12:23.
- */
 public class RentSpaceCancelEvent extends MessageHandler
 {
     @Override

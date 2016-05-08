@@ -3,9 +3,6 @@ package com.eu.habbo.habbohotel.hotelview;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 27-8-2014 10:11.
- */
 public class NewsWidget
 {
     /**

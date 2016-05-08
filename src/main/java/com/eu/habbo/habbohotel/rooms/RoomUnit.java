@@ -22,11 +22,8 @@ import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 
-/**
- * Created on 13-9-2014 14:06.
- */
-public class RoomUnit {
-
+public class RoomUnit
+{
     private int id;
     private int x;
     private int y;

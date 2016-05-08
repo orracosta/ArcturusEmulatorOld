@@ -10,9 +10,6 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserTalkComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.util.pathfinding.PathFinder;
 
-/**
- * Created on 21-2-2015 11:10.
- */
 public class SuperPullCommand extends Command
 {
     public SuperPullCommand()

@@ -15,9 +15,6 @@ import com.eu.habbo.threading.runnables.QueryDeleteHabboItems;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
-/**
- * Created on 6-8-2015 20:24.
- */
 public class EmptyInventoryCommand extends Command
 {
     public EmptyInventoryCommand()

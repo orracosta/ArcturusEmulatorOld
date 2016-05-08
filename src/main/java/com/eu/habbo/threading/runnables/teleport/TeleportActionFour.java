@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 
-/**
- * Created on 7-3-2015 22:29.
- */
 class TeleportActionFour implements Runnable
 {
     private final HabboItem currentTeleport;

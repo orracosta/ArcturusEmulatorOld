@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserHandItemComposer;
 
-/**
- * Created on 4-11-2014 09:43.
- */
 public class HandItemCommand extends Command
 {
     public HandItemCommand()

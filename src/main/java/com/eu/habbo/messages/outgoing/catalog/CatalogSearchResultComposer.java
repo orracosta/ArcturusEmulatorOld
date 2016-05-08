@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 25-8-2015 11:08.
- */
 public class CatalogSearchResultComposer extends MessageComposer
 {
     private CatalogItem item;

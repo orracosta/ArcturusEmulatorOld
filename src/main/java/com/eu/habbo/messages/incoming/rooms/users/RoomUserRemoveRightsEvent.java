@@ -3,9 +3,6 @@ package com.eu.habbo.messages.incoming.rooms.users;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 13-12-2014 17:00.
- */
 public class RoomUserRemoveRightsEvent extends MessageHandler
 {
     @Override

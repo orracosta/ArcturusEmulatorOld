@@ -7,9 +7,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.util.pathfinding.PathFinder;
 import com.eu.habbo.util.pathfinding.Tile;
 
-/**
- * Created on 10-12-2014 12:16.
- */
 public class RoomUnitRideHorse implements Runnable
 {
     private HorsePet pet;

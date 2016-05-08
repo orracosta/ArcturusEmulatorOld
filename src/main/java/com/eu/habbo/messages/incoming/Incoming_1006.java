@@ -1,8 +1,5 @@
 package com.eu.habbo.messages.incoming;
 
-/**
- * Created on 24-8-2014 16:56.
- */
 public class Incoming_1006
 {
 

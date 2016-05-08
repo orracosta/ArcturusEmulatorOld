@@ -2,9 +2,6 @@ package com.eu.habbo.plugin.events.guilds;
 
 import com.eu.habbo.habbohotel.guilds.Guild;
 
-/**
- * Created on 24-10-2015 13:55.
- */
 public class GuildChangedSettingsEvent extends GuildEvent
 {
     /**

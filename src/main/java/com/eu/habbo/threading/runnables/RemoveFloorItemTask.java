@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.UpdateStackHeightComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
 
-/**
- * Created on 23-1-2015 12:44.
- */
 class RemoveFloorItemTask implements Runnable
 {
     private final Room room;

@@ -9,11 +9,8 @@ import gnu.trove.iterator.TIntObjectIterator;
 
 import java.util.NoSuchElementException;
 
-/**
- * Created on 29-8-2014 11:25.
- */
-public class InventoryPetsComposer extends MessageComposer {
-
+public class InventoryPetsComposer extends MessageComposer
+{
     private final Habbo habbo;
 
     public InventoryPetsComposer(Habbo habbo)

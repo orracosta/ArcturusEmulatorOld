@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.google.gson.Gson;
 
-/**
- * Created on 3-1-2016 14:32.
- */
 public class AlertUser extends RCONMessage<AlertUser.JSONAlertUser>
 {
     public AlertUser()

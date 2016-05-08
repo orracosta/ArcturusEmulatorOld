@@ -13,9 +13,6 @@ import com.eu.habbo.util.pathfinding.Tile;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 18-10-2015 15:28.
- */
 public class InteractionWater extends InteractionDefault
 {
     public InteractionWater(ResultSet set, Item baseItem) throws SQLException

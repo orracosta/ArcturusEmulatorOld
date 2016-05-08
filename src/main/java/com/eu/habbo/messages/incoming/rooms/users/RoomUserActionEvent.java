@@ -4,10 +4,8 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserActionComposer;
 
-/**
- * Created on 13-9-2014 17:27.
- */
-public class RoomUserActionEvent extends MessageHandler {
+public class RoomUserActionEvent extends MessageHandler
+{
     @Override
     public void handle() throws Exception
     {

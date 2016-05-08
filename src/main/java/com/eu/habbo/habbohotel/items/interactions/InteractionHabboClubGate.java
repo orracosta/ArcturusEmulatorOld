@@ -13,9 +13,6 @@ import com.eu.habbo.threading.runnables.CloseGate;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 2-8-2015 16:44.
- */
 public class InteractionHabboClubGate extends InteractionGate
 {
     public InteractionHabboClubGate(ResultSet set, Item baseItem) throws SQLException

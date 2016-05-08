@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.guides.GuardianTicket;
 import com.eu.habbo.habbohotel.guides.GuardianVoteType;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 11-10-2015 17:53.
- */
 public class GuardianVoteEvent extends MessageHandler
 {
     @Override

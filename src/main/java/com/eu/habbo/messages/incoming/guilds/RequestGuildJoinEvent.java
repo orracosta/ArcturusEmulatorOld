@@ -10,9 +10,6 @@ import com.eu.habbo.messages.outgoing.guilds.GuildInfoComposer;
 import com.eu.habbo.messages.outgoing.guilds.GuildJoinErrorComposer;
 import com.eu.habbo.messages.outgoing.rooms.RoomRightsComposer;
 
-/**
- * Created on 23-11-2014 14:45.
- */
 public class RequestGuildJoinEvent extends MessageHandler
 {
     @Override

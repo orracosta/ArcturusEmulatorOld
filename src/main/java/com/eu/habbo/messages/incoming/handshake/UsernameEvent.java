@@ -7,9 +7,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Created on 17-7-2015 16:29.
- */
 public class UsernameEvent extends MessageHandler
 {
     @Override

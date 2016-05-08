@@ -11,9 +11,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created on 27-8-2014 09:43.
- */
 public class HallOfFameComposer extends MessageComposer
 {
 

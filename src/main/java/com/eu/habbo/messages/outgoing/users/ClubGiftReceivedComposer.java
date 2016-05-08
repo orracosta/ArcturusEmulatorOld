@@ -6,9 +6,6 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 16-11-2015 21:05.
- */
 public class ClubGiftReceivedComposer extends MessageComposer
 {
     //:test 735 s:t i:1 s:s i:230 s:throne i:1 b:1 i:1 i:10;

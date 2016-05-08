@@ -5,9 +5,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 15-10-2014 16:03.
- */
 public class RemoveBotComposer extends MessageComposer
 {
     private final Bot bot;
@@ -16,6 +13,7 @@ public class RemoveBotComposer extends MessageComposer
     {
         this.bot = bot;
     }
+
     @Override
     public ServerMessage compose()
     {

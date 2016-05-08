@@ -11,9 +11,6 @@ import com.eu.habbo.threading.runnables.CloseGate;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 14:04.
- */
 public class InteractionGuildGate extends InteractionGuildFurni
 {
     public InteractionGuildGate(ResultSet set, Item baseItem) throws SQLException

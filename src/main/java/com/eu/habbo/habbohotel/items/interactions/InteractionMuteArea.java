@@ -7,9 +7,6 @@ import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 23-1-2016 13:52.
- */
 public class InteractionMuteArea extends InteractionCustomValues
 {
     public static THashMap<String, String> defaultValues = new THashMap<String, String>()

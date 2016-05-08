@@ -9,11 +9,8 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 import java.util.List;
 
-/**
- * Created on 27-8-2014 15:58.
- */
-public class CatalogPagesListComposer extends MessageComposer {
-
+public class CatalogPagesListComposer extends MessageComposer
+{
     private final Habbo habbo;
 
     public CatalogPagesListComposer(Habbo habbo)

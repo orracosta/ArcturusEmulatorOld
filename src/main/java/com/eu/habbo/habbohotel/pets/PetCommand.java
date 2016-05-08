@@ -3,9 +3,6 @@ package com.eu.habbo.habbohotel.pets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 1-12-2014 19:13.
- */
 public class PetCommand implements Comparable<PetCommand>
 {
     public final int id;

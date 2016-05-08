@@ -8,9 +8,6 @@ import gnu.trove.map.TIntObjectMap;
 
 import java.util.NoSuchElementException;
 
-/**
- * Created on 21-2-2015 11:23.
- */
 public class SitDownCommand extends Command
 {
     public SitDownCommand()

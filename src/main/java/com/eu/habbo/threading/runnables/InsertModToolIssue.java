@@ -7,9 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 7-3-2015 16:03.
- */
 public class InsertModToolIssue implements Runnable
 {
     private final ModToolIssue issue;

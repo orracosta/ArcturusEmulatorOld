@@ -3,9 +3,6 @@ package com.eu.habbo.plugin.events.furniture;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 
-/**
- * Created on 25-12-2015 17:24.
- */
 public class FurnitureRoomTonerEvent extends FurnitureUserEvent
 {
     public int hue;

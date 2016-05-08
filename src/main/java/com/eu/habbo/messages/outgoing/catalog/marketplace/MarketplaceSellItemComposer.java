@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 2-11-2014 12:57.
- */
 public class MarketplaceSellItemComposer extends MessageComposer
 {
     public static final int NOT_ALLOWED = 2;

@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.plugin.events.users.UserEvent;
 
-/**
- * Created on 25-12-2015 16:56.
- */
 public class NavigatorRoomDeletedEvent extends UserEvent
 {
     public final Room room;

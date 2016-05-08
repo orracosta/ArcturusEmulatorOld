@@ -9,9 +9,6 @@ import gnu.trove.set.hash.THashSet;
 
 import java.util.Map;
 
-/**
- * Created on 21-10-2014 14:03.
- */
 public class RecyclerLogicComposer extends MessageComposer
 {
     @Override

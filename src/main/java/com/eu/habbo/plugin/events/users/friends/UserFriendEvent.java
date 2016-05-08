@@ -4,9 +4,6 @@ import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.plugin.events.users.UserEvent;
 
-/**
- * Created on 9-11-2015 21:43.
- */
 public abstract class UserFriendEvent extends UserEvent
 {
     public final MessengerBuddy friend;

@@ -8,9 +8,6 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.plugin.EventHandler;
 import com.eu.habbo.plugin.events.users.UserSavedMottoEvent;
 
-/**
- * Created on 24-10-2015 20:40.
- */
 public class Easter
 {
     @EventHandler

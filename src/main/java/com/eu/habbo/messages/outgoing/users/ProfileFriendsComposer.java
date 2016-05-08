@@ -13,9 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-/**
- * Created on 26-8-2014 13:54.
- */
 public class ProfileFriendsComposer extends MessageComposer {
 
     private Habbo habbo;

@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
-/**
- * Created on 21-8-2015 12:35.
- */
 public class RoomWordFilterModifyEvent extends MessageHandler
 {
     @Override

@@ -8,9 +8,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 import java.util.ArrayList;
 
-/**
- * Created on 15-7-2015 13:51.
- */
 public class ModToolRoomChatlogComposer extends MessageComposer
 {
     private Room room;

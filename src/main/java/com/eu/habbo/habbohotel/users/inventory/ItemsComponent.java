@@ -15,12 +15,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.NoSuchElementException;
 
-/**
- * Created on 28-8-2014 18:45.
- */
-public class ItemsComponent {
-
-    //private final TIntObjectHashMap<TIntObjectHashMap>
+public class ItemsComponent
+{
     private final TIntObjectMap<HabboItem> items = TCollections.synchronizedMap(new TIntObjectHashMap<HabboItem>());
 
     public ItemsComponent(Habbo habbo)

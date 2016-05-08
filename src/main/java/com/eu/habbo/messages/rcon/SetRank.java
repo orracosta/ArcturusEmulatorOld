@@ -9,9 +9,6 @@ import com.google.gson.Gson;
 
 import java.sql.PreparedStatement;
 
-/**
- * Created on 3-1-2016 13:21.
- */
 public class SetRank extends RCONMessage<SetRank.JSONSetRank>
 {
     public SetRank()

@@ -2,9 +2,6 @@ package com.eu.habbo.habbohotel.commands;
 
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 
-/**
- * Created on 4-10-2014 11:04.
- */
 public abstract class Command
 {
     /**

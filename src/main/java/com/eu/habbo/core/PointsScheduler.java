@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 
 import java.util.Map;
 
-/**
- * Created on 9-7-2015 15:08.
- */
 public class PointsScheduler implements Runnable
 {
     private static boolean IGNORE_HOTEL_VIEW;

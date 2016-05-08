@@ -7,9 +7,6 @@ import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserEffectComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
-/**
- * Created on 4-11-2014 09:37.
- */
 public class EnableCommand extends Command
 {
     public EnableCommand()

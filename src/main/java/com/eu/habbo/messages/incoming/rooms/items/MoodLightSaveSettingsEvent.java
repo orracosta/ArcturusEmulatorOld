@@ -8,9 +8,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.items.MoodLightDataComposer;
 
-/**
- * Created on 13-7-2015 15:16.
- */
 public class MoodLightSaveSettingsEvent extends MessageHandler
 {
     @Override

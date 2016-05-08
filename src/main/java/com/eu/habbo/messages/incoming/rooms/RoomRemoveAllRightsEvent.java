@@ -8,9 +8,6 @@ import com.eu.habbo.messages.outgoing.rooms.RoomRightsComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserRemoveRightsComposer;
 import gnu.trove.procedure.TIntProcedure;
 
-/**
- * Created on 13-12-2014 16:29.
- */
 public class RoomRemoveAllRightsEvent extends MessageHandler
 {
     @Override

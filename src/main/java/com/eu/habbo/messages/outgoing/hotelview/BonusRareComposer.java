@@ -6,9 +6,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 26-8-2014 17:14.
- */
 public class BonusRareComposer extends MessageComposer
 {
     private final Habbo habbo;

@@ -5,10 +5,8 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.hotelview.HallOfFameComposer;
 import com.eu.habbo.messages.outgoing.hotelview.HotelViewComposer;
 
-/**
- * Created on 20-9-2014 15:30.
- */
-public class HotelViewEvent extends MessageHandler {
+public class HotelViewEvent extends MessageHandler
+{
     @Override
     public void handle() throws Exception
     {

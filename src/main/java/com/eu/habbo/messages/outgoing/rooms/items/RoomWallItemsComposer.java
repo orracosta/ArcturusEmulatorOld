@@ -13,9 +13,6 @@ import gnu.trove.set.hash.THashSet;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-/**
- * Created on 6-9-2014 14:27.
- */
 public class RoomWallItemsComposer extends MessageComposer {
 
     private final Room room;

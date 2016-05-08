@@ -6,9 +6,6 @@ import com.eu.habbo.habbohotel.guides.GuardianVote;
 import com.eu.habbo.habbohotel.guides.GuardianVoteType;
 import com.eu.habbo.habbohotel.users.Habbo;
 
-/**
- * Created on 17-10-2015 14:10.
- */
 public class GuardianNotAccepted implements Runnable
 {
     private final GuardianTicket ticket;

@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 17-11-2015 20:34.
- */
 public class BullyReportClosedComposer extends MessageComposer
 {
     public final static int CLOSED = 1;

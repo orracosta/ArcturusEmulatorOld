@@ -1,8 +1,5 @@
 package com.eu.habbo.habbohotel.guilds;
 
-/**
- * Created on 28-1-2016 20:35.
- */
 public enum GuildState
 {
     OPEN(0),

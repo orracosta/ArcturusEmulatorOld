@@ -11,9 +11,6 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 20:55.
- */
 public class WiredConditionNotHabboHasEffect extends InteractionWiredCondition
 {
     private static final WiredConditionType type = WiredConditionType.NOT_ACTOR_WEARS_EFFECT;

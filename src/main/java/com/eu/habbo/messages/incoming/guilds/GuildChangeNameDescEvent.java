@@ -10,9 +10,6 @@ import com.eu.habbo.messages.outgoing.guilds.GuildInfoComposer;
 import com.eu.habbo.plugin.events.guilds.GuildChangedNameEvent;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 23-11-2014 12:19.
- */
 public class GuildChangeNameDescEvent extends MessageHandler
 {
     @Override

@@ -5,9 +5,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.RoomFilterWordsComposer;
 
-/**
- * Created on 21-8-2015 12:33.
- */
 public class RequestRoomWordFilterEvent extends MessageHandler
 {
     @Override

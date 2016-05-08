@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 22-10-2014 11:46.
- */
 public class RecyclerCompleteComposer extends MessageComposer
 {
     public static final int RECYCLING_COMPLETE = 1;

@@ -13,9 +13,6 @@ import com.eu.habbo.messages.outgoing.wired.WiredConditionDataComposer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 13-12-2014 19:53.
- */
 public abstract class InteractionWiredCondition extends InteractionWired implements IWired
 {
     public InteractionWiredCondition(ResultSet set, Item baseItem) throws SQLException

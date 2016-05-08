@@ -12,9 +12,6 @@ import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
-/**
- * Created on 24-1-2015 16:15.
- */
 class FreezeHandleSnowballExplosion implements Runnable
 {
     private final FreezeThrowSnowball thrownData;

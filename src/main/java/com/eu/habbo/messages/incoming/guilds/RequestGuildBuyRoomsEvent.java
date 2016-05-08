@@ -8,9 +8,6 @@ import gnu.trove.set.hash.THashSet;
 
 import java.util.List;
 
-/**
- * Created on 22-11-2014 16:21.
- */
 public class RequestGuildBuyRoomsEvent extends MessageHandler
 {
     @Override

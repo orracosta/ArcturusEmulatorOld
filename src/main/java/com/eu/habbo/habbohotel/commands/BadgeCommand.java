@@ -13,9 +13,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 8-3-2015 15:43.
- */
 public class BadgeCommand extends Command
 {
     public BadgeCommand()

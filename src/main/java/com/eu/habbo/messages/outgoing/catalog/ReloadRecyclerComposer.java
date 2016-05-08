@@ -4,9 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-/**
- * Created on 22-10-2014 10:36.
- */
 public class ReloadRecyclerComposer extends MessageComposer
 {
     @Override

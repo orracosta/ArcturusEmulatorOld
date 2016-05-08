@@ -3,9 +3,6 @@ package com.eu.habbo.habbohotel.items;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created on 25-8-2015 15:10.
- */
 public class SoundTrack
 {
     private int id;

@@ -3,9 +3,6 @@ package com.eu.habbo.plugin.events.users.achievements;
 import com.eu.habbo.habbohotel.achievements.Achievement;
 import com.eu.habbo.habbohotel.users.Habbo;
 
-/**
- * Created on 27-8-2015 22:40.
- */
 public class UserAchievementProgressEvent extends UserAchievementEvent
 {
     /**
