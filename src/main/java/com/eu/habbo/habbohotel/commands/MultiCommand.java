@@ -8,8 +8,7 @@ public class MultiCommand extends Command
 {
     public MultiCommand()
     {
-        super.permission = "cmd_multi";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_multi").split(";");
+        super("cmd_multi", Emulator.getTexts().getValue("commands.keys.cmd_multi").split(";"));
     }
 
     @Override

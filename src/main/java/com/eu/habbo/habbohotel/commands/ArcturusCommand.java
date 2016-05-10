@@ -9,8 +9,7 @@ public class ArcturusCommand extends Command
 {
     public ArcturusCommand()
     {
-        super.permission = null;
-        super.keys = new String[]{ "arcturus", "emulator" };
+        super(null, new String[]{ "arcturus", "emulator" });
     }
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception

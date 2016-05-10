@@ -14,8 +14,7 @@ public class GiftCommand extends Command
 {
     public GiftCommand()
     {
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_gift").split(";");
-        super.permission = "cmd_gift";
+        super("cmd_gift", Emulator.getTexts().getValue("commands.keys.cmd_gift").split(";"));
     }
 
     @Override

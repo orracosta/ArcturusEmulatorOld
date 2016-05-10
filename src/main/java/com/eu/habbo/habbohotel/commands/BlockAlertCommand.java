@@ -10,8 +10,7 @@ public class BlockAlertCommand extends Command
 {
     public BlockAlertCommand()
     {
-        super.permission = "cmd_blockalert";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_blockalert").split(";");
+        super("cmd_blockalert", Emulator.getTexts().getValue("commands.keys.cmd_blockalert").split(";"));
     }
 
     @Override

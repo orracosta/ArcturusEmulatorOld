@@ -12,8 +12,7 @@ public class MuteCommand extends Command
 {
     public MuteCommand()
     {
-        super.permission = "cmd_mute";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_mute").split(";");
+        super("cmd_mute", Emulator.getTexts().getValue("commands.keys.cmd_mute").split(";"));
     }
 
     @Override

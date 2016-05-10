@@ -9,8 +9,7 @@ public class PluginsCommand extends Command
 {
     public PluginsCommand()
     {
-        super.permission = "cmd_plugins";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_plugins").split(";");
+        super("cmd_plugins", Emulator.getTexts().getValue("commands.keys.cmd_plugins").split(";"));
     }
 
     @Override

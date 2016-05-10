@@ -18,8 +18,7 @@ public class PetInfoCommand extends Command implements TIntObjectProcedure<Abstr
 
     public PetInfoCommand()
     {
-        super.permission = "cmd_pet_info";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_pet_info").split(";");
+        super("cmd_pet_info", Emulator.getTexts().getValue("commands.keys.cmd_pet_info").split(";"));
     }
 
     @Override

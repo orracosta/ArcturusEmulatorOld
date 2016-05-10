@@ -19,8 +19,7 @@ public class RedeemCommand extends Command
 {
     public RedeemCommand()
     {
-        super.permission = "cmd_redeem";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_redeem").split(";");
+        super("cmd_redeem", Emulator.getTexts().getValue("commands.keys.cmd_redeem").split(";"));
     }
 
     @Override

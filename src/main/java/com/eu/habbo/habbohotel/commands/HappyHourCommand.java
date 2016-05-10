@@ -13,8 +13,7 @@ public class HappyHourCommand extends Command
 {
     public HappyHourCommand()
     {
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_happyhour").split(";");
-        super.permission = "cmd_happyhour";
+        super("cmd_happyhour", Emulator.getTexts().getValue("commands.keys.cmd_happyhour").split(";"));
     }
 
     @Override

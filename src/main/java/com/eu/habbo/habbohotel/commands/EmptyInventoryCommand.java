@@ -19,8 +19,7 @@ public class EmptyInventoryCommand extends Command
 {
     public EmptyInventoryCommand()
     {
-        super.permission = "cmd_empty";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_empty").split(";");
+        super("cmd_empty", Emulator.getTexts().getValue("commands.keys.cmd_empty").split(";"));
     }
 
     @Override

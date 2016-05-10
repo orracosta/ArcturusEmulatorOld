@@ -10,8 +10,7 @@ public class UpdateWordFilterCommand extends Command
 {
     public UpdateWordFilterCommand()
     {
-        super.permission = "cmd_update_wordfilter";
-        super.keys = Emulator.getTexts().getValue("commands.keys.update_wordfilter").split(";");
+        super("cmd_update_wordfilter", Emulator.getTexts().getValue("commands.keys.update_wordfilter").split(";"));
     }
 
     @Override

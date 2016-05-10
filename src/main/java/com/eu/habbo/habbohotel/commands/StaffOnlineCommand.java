@@ -17,8 +17,7 @@ public class StaffOnlineCommand extends Command
 {
     public StaffOnlineCommand()
     {
-        super.permission = "cmd_staffonline";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_staffonline").split(";");
+        super("cmd_staffonline", Emulator.getTexts().getValue("commands.keys.cmd_staffonline").split(";"));
     }
 
     @Override

@@ -15,8 +15,7 @@ public class EventCommand extends Command
 {
     public EventCommand()
     {
-        super.permission = "cmd_event";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_event").split(";");
+        super("cmd_event", Emulator.getTexts().getValue("commands.keys.cmd_event").split(";"));
     }
 
     @Override

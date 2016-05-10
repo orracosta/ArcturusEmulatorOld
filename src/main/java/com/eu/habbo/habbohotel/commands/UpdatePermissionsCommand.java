@@ -10,8 +10,7 @@ public class UpdatePermissionsCommand extends Command
 {
     public UpdatePermissionsCommand()
     {
-        super.permission = "cmd_update_permissions";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_update_permissions").split(";");
+        super("cmd_update_permissions", Emulator.getTexts().getValue("commands.keys.cmd_update_permissions").split(";"));
     }
 
     @Override

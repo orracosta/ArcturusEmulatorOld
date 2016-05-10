@@ -7,8 +7,7 @@ public class SitCommand extends Command
 {
     public SitCommand()
     {
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_sit").split(";");
-        super.permission = null;
+        super(null, Emulator.getTexts().getValue("commands.keys.cmd_sit").split(";"));
     }
 
     @Override

@@ -11,8 +11,7 @@ public class ControlCommand extends Command
 {
     public ControlCommand()
     {
-        super.permission = "cmd_control";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_control").split(";");
+        super("cmd_control", Emulator.getTexts().getValue("commands.keys.cmd_control").split(";"));
     }
 
     @Override

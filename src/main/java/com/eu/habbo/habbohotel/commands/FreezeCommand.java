@@ -11,8 +11,7 @@ public class FreezeCommand extends Command
 {
     public FreezeCommand()
     {
-        super.permission = "cmd_freeze";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_freeze").split(";");
+        super("cmd_freeze", Emulator.getTexts().getValue("commands.keys.cmd_freeze").split(";"));
     }
 
     @Override

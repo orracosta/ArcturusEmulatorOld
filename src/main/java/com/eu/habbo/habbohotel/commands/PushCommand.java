@@ -15,8 +15,7 @@ public class PushCommand extends Command
 {
     public PushCommand()
     {
-        super.permission = "cmd_push";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_push").split(";");
+        super("cmd_push", Emulator.getTexts().getValue("commands.keys.cmd_push").split(";"));
     }
 
     @Override

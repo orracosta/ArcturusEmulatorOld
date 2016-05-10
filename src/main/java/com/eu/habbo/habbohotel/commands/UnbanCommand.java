@@ -12,8 +12,7 @@ public class UnbanCommand extends Command
 {
     public UnbanCommand()
     {
-        super.permission = "cmd_unban";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_unban").split(";");
+        super("cmd_unban", Emulator.getTexts().getValue("commands.keys.cmd_unban").split(";"));
     }
 
     @Override

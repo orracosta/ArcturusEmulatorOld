@@ -104,8 +104,11 @@ public class CommandHandler
         addCommand(new UpdateTextsCommand());
         addCommand(new UpdateWordFilterCommand());
         addCommand(new UserInfoCommand());
-        addCommand(new TestCommand());
-        addCommand(new TestPetCommand());
+
+        if (Emulator.debugging)
+        {
+            addCommand(new TestCommand());
+        }
     }
 
     /**

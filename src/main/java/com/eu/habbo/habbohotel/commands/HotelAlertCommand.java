@@ -15,8 +15,7 @@ public class HotelAlertCommand extends Command {
 
     public HotelAlertCommand()
     {
-        super.permission = "cmd_ha";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_ha").split(";");
+        super("cmd_ha", Emulator.getTexts().getValue("commands.keys.cmd_ha").split(";"));
     }
 
     @Override

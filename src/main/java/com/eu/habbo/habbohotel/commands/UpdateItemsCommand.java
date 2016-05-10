@@ -10,8 +10,7 @@ public class UpdateItemsCommand extends Command
 {
     public UpdateItemsCommand()
     {
-        super.permission = "cmd_update_items";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_update_items").split(";");
+        super("cmd_update_items", Emulator.getTexts().getValue("commands.keys.cmd_update_items").split(";"));
     }
 
     @Override

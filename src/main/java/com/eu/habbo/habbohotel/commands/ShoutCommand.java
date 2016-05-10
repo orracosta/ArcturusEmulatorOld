@@ -14,8 +14,7 @@ public class ShoutCommand extends Command
 
     public ShoutCommand()
     {
-        super.permission = "cmd_shout";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_shout").split(";");
+        super("cmd_shout", Emulator.getTexts().getValue("commands.keys.cmd_shout").split(";"));
     }
 
     @Override

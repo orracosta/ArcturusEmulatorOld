@@ -16,8 +16,7 @@ public class RoomEffectCommand extends Command
 {
     public RoomEffectCommand()
     {
-        super.permission = "cmd_roomeffect";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_roomeffect").split(";");
+        super("cmd_roomeffect", Emulator.getTexts().getValue("commands.keys.cmd_roomeffect").split(";"));
     }
 
     @Override

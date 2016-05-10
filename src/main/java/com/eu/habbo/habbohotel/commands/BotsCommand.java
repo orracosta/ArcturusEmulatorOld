@@ -9,8 +9,7 @@ public class BotsCommand extends Command
 {
     public BotsCommand()
     {
-        super.permission = "cmd_bots";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_bots").split(";");
+        super("cmd_bots", Emulator.getTexts().getValue("commands.keys.cmd_bots").split(";"));
     }
 
     @Override

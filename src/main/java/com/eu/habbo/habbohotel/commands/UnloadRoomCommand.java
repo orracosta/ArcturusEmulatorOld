@@ -8,8 +8,7 @@ public class UnloadRoomCommand extends Command {
 
     public UnloadRoomCommand()
     {
-        super.permission = "cmd_unload";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_unload").split(";");
+        super("cmd_unload", Emulator.getTexts().getValue("commands.keys.cmd_unload").split(";"));
     }
 
     @Override

@@ -14,8 +14,7 @@ public class SuperPullCommand extends Command
 {
     public SuperPullCommand()
     {
-        super.permission = "cmd_superpull";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_superpull").split(";");
+        super("cmd_superpull", Emulator.getTexts().getValue("commands.keys.cmd_superpull").split(";"));
     }
 
     @Override

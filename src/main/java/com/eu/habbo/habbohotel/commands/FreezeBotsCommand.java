@@ -10,8 +10,7 @@ public class FreezeBotsCommand extends Command
 {
     public FreezeBotsCommand()
     {
-        super.permission = "cmd_freeze_bots";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_freeze_bots").split(";");
+        super("cmd_freeze_bots", Emulator.getTexts().getValue("commands.keys.cmd_freeze_bots").split(";"));
     }
 
     @Override

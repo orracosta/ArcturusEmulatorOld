@@ -14,8 +14,7 @@ public class StaffAlertCommand extends Command
 {
     public StaffAlertCommand()
     {
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_staffalert").split(";");
-        super.permission = "cmd_staffalert";
+        super("cmd_staffalert", Emulator.getTexts().getValue("commands.keys.cmd_staffalert").split(";"));
     }
 
     @Override

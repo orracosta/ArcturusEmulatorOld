@@ -12,8 +12,7 @@ public class BanCommand extends Command
 {
     public BanCommand()
     {
-        super.permission = "cmd_ban";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_ban").split(";");
+        super("cmd_ban", Emulator.getTexts().getValue("commands.keys.cmd_ban").split(";"));
     }
 
     @Override

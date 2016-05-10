@@ -8,8 +8,7 @@ public class EjectAllCommand extends Command
 {
     public EjectAllCommand()
     {
-        super.permission = "cmd_ejectall";
-        super.keys       = Emulator.getTexts().getValue("commands.keys.cmd_ejectall").split(";");
+        super("cmd_ejectall", Emulator.getTexts().getValue("commands.keys.cmd_ejectall").split(";"));
     }
 
     @Override

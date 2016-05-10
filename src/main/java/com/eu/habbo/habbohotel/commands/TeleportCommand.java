@@ -10,8 +10,7 @@ public class TeleportCommand extends Command
 {
     public TeleportCommand()
     {
-        super.permission = "cmd_teleport";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_teleport").split(";");
+        super("cmd_teleport", Emulator.getTexts().getValue("commands.keys.cmd_teleport").split(";"));
     }
 
     @Override

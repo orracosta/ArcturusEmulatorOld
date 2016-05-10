@@ -21,8 +21,7 @@ public class UserInfoCommand extends Command
 {
     public UserInfoCommand()
     {
-        super.permission = "cmd_userinfo";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_userinfo").split(";");
+        super("cmd_userinfo", Emulator.getTexts().getValue("commands.keys.cmd_userinfo").split(";"));
     }
 
     @Override

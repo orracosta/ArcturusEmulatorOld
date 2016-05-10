@@ -10,8 +10,7 @@ public class ChatTypeCommand extends Command
 {
     public ChatTypeCommand()
     {
-        super.permission = "cmd_chatcolor";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_chatcolor").split(";");
+        super("cmd_chatcolor", Emulator.getTexts().getValue("commands.keys.cmd_chatcolor").split(";"));
     }
 
     @Override

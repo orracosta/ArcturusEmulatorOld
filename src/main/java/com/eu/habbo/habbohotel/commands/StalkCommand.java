@@ -12,8 +12,7 @@ public class StalkCommand extends Command
 {
     public StalkCommand()
     {
-        super.permission = "cmd_stalk";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_stalk").split(";");
+        super("cmd_stalk", Emulator.getTexts().getValue("commands.keys.cmd_stalk").split(";"));
     }
 
     @Override

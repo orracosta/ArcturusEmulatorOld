@@ -10,8 +10,7 @@ public class UpdatePetDataCommand extends Command
 {
     public UpdatePetDataCommand()
     {
-        super.permission = "cmd_update_pet_data";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_update_pet_data").split(";");
+        super("cmd_update_pet_data", Emulator.getTexts().getValue("commands.keys.cmd_update_pet_data").split(";"));
     }
 
     @Override

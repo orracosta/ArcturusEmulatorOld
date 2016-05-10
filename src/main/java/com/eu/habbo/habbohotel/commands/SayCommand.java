@@ -12,8 +12,7 @@ public class SayCommand extends Command
 {
     public SayCommand()
     {
-        super.permission = "cmd_say";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_say").split(";");
+        super("cmd_say", Emulator.getTexts().getValue("commands.keys.cmd_say").split(";"));
     }
 
     @Override

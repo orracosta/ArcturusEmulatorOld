@@ -16,8 +16,7 @@ public class MassGiftCommand extends Command
 {
     public MassGiftCommand()
     {
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_massgift").split(";");
-        super.permission = "cmd_massgift";
+        super("cmd_massgift", Emulator.getTexts().getValue("commands.keys.cmd_massgift").split(";"));
     }
 
     @Override

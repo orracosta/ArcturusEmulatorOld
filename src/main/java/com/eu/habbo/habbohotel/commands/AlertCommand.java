@@ -12,8 +12,7 @@ public class AlertCommand extends Command {
 
     public AlertCommand()
     {
-        super.permission = "cmd_alert";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_alert").split(";");
+        super("cmd_alert", Emulator.getTexts().getValue("commands.keys.cmd_alert").split(";"));
     }
 
     @Override

@@ -13,8 +13,7 @@ public class CreditsCommand extends Command
 {
     public CreditsCommand()
     {
-        super.permission = "cmd_credits";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_credits").split(";");
+        super("cmd_credits", Emulator.getTexts().getValue("commands.keys.cmd_credits").split(";"));
     }
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception

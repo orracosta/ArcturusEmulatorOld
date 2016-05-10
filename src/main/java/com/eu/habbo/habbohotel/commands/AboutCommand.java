@@ -11,8 +11,7 @@ public class AboutCommand extends Command
 {
     public AboutCommand()
     {
-        super.permission = null;
-        super.keys = new String[]{ "about" };
+        super(null, new String[]{ "about" });
     }
 
     @Override

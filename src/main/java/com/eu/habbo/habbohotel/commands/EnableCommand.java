@@ -11,8 +11,7 @@ public class EnableCommand extends Command
 {
     public EnableCommand()
     {
-        super.permission = "cmd_enable";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_enable").split(";");
+        super("cmd_enable", Emulator.getTexts().getValue("commands.keys.cmd_enable").split(";"));
     }
 
     @Override

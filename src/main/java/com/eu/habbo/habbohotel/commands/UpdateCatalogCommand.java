@@ -12,8 +12,7 @@ public class UpdateCatalogCommand extends Command {
 
     public UpdateCatalogCommand()
     {
-        super.permission = "cmd_update_catalogue";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_update_catalogue").split(";");
+        super("cmd_update_catalogue", Emulator.getTexts().getValue("commands.keys.cmd_update_catalogue").split(";"));
     }
     @Override
     public boolean handle(GameClient gameClient, String[] params)

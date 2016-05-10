@@ -18,8 +18,7 @@ public class RoomBundleCommand extends Command
 {
     public RoomBundleCommand()
     {
-        super.permission = "cmd_bundle";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_bundle").split(";");
+        super("cmd_bundle", Emulator.getTexts().getValue("commands.keys.cmd_bundle").split(";"));
     }
 
     @Override

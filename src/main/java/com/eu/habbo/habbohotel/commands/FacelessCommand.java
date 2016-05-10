@@ -12,8 +12,7 @@ public class FacelessCommand extends Command
 {
     public FacelessCommand()
     {
-        super.permission = "cmd_faceless";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_faceless").split(";");
+        super("cmd_faceless", Emulator.getTexts().getValue("commands.keys.cmd_faceless").split(";"));
     }
 
     @Override

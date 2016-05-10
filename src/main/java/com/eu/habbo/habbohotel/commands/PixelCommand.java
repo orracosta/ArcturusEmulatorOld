@@ -13,8 +13,7 @@ public class PixelCommand extends Command
 {
     public PixelCommand()
     {
-        super.permission = "cmd_duckets";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_duckets").split(";");
+        super("cmd_duckets", Emulator.getTexts().getValue("commands.keys.cmd_duckets").split(";"));
     }
 
     @Override

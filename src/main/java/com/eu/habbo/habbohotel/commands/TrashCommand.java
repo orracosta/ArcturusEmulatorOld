@@ -11,8 +11,7 @@ public class TrashCommand extends Command
 {
     public TrashCommand()
     {
-        super.permission = "cmd_trash";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_trash").split(";");
+        super("cmd_trash", Emulator.getTexts().getValue("commands.keys.cmd_trash").split(";"));
     }
 
     @Override

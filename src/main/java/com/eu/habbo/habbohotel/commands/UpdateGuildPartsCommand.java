@@ -7,8 +7,7 @@ public class UpdateGuildPartsCommand extends Command
 {
     public UpdateGuildPartsCommand()
     {
-        super.permission = "cmd_update_guildparts";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_update_guildparts").split(";");
+        super("cmd_update_guildparts", Emulator.getTexts().getValue("commands.keys.cmd_update_guildparts").split(";"));
     }
 
     @Override

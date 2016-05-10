@@ -8,8 +8,7 @@ public class FastwalkCommand extends Command
 {
     public FastwalkCommand()
     {
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_fastwalk").split(";");
-        super.permission = "cmd_fastwalk";
+        super("cmd_fastwalk", Emulator.getTexts().getValue("commands.keys.cmd_fastwalk").split(";"));
     }
 
     @Override

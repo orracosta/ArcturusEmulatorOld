@@ -15,8 +15,7 @@ public class SummonCommand extends Command
 {
     public SummonCommand()
     {
-        super.permission = "cmd_summon";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_summon").split(";");
+        super("cmd_summon", Emulator.getTexts().getValue("commands.keys.cmd_summon").split(";"));
     }
 
     @Override

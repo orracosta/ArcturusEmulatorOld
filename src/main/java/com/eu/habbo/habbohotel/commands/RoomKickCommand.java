@@ -10,8 +10,7 @@ public class RoomKickCommand extends Command
 {
     public RoomKickCommand()
     {
-        super.permission = "cmd_kickall";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_kickall").split(";");
+        super("cmd_kickall", Emulator.getTexts().getValue("commands.keys.cmd_kickall").split(";"));
     }
 
     @Override

@@ -11,8 +11,7 @@ public class DisconnectCommand extends Command
 {
     public DisconnectCommand()
     {
-        super.permission = "cmd_disconnect";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_disconnect").split(";");
+        super("cmd_disconnect", Emulator.getTexts().getValue("commands.keys.cmd_disconnect").split(";"));
     }
 
     @Override

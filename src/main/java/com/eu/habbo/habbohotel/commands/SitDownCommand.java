@@ -12,8 +12,7 @@ public class SitDownCommand extends Command
 {
     public SitDownCommand()
     {
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_sitdown").split(";");
-        super.permission = "cmd_sitdown";
+        super("cmd_sitdown", Emulator.getTexts().getValue("commands.keys.cmd_sitdown").split(";"));
     }
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception

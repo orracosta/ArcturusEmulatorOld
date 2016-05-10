@@ -7,7 +7,7 @@ public abstract class Command
     /**
      * Permission string the executor must have in order to access the command.
      */
-    public String permission;
+    public final String permission;
 
     /**
      * All keys the command can be exectuted from.
@@ -16,7 +16,13 @@ public abstract class Command
      *     :<b>userinfo</b> TheGeneral
      * </p>
      */
-    public String[] keys;
+    public final String[] keys;
+
+    protected Command(String permission, String[] keys)
+    {
+        this.permission = permission;
+        this.keys = keys;
+    }
 
     /**
      * Executes an command for a given gameClient.

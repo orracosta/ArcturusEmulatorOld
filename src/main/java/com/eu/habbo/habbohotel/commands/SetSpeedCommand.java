@@ -11,8 +11,7 @@ public class SetSpeedCommand extends Command
 {
     public SetSpeedCommand()
     {
-        super.permission = "cmd_setspeed";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_setspeed").split(";");
+        super("cmd_setspeed", Emulator.getTexts().getValue("commands.keys.cmd_setspeed").split(";"));
     }
 
     @Override

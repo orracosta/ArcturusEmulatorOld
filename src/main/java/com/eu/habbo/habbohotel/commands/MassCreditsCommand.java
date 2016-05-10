@@ -15,8 +15,7 @@ public class MassCreditsCommand extends Command
 {
     public MassCreditsCommand()
     {
-        super.permission = "cmd_masscredits";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_masscredits").split(";");
+        super("cmd_masscredits", Emulator.getTexts().getValue("commands.keys.cmd_masscredits").split(";"));
     }
 
     @Override

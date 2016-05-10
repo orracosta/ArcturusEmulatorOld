@@ -17,8 +17,7 @@ public class MassPointsCommand extends Command
 {
     public MassPointsCommand()
     {
-        super.permission = "cmd_masspoints";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_masspoints").split(";");
+        super("cmd_masspoints", Emulator.getTexts().getValue("commands.keys.cmd_masspoints").split(";"));
     }
 
     @Override

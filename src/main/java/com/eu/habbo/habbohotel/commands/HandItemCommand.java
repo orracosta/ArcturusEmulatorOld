@@ -8,8 +8,7 @@ public class HandItemCommand extends Command
 {
     public HandItemCommand()
     {
-        super.permission = "cmd_hand_item";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_hand_item").split(";");
+        super("cmd_hand_item", Emulator.getTexts().getValue("commands.keys.cmd_hand_item").split(";"));
     }
 
     @Override

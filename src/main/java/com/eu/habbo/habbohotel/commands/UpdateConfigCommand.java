@@ -10,8 +10,7 @@ public class UpdateConfigCommand extends Command
 {
     public UpdateConfigCommand()
     {
-        super.permission = "cmd_update_config";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_update_config").split(";");
+        super("cmd_update_config", Emulator.getTexts().getValue("commands.keys.cmd_update_config").split(";"));
     }
 
     @Override

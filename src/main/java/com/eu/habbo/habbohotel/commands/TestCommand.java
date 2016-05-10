@@ -15,16 +15,17 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
 public class TestCommand extends Command
 {
-
     public TestCommand()
     {
-        super.permission = "acc_debug";
-        super.keys = new String[]{ "test" };
+        super("acc_debug", new String[]{ "test" });
     }
 
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
+        if (true)
+            return false;
+
         //Emulator.getGameEnvironment().getRoomManager().clearInactiveRooms();
         //gameClient.sendResponse(new RoomDataComposer(gameClient.getHabbo().getHabboInfo().getCurrentRoom(), gameClient.getHabbo(), true, false));
 

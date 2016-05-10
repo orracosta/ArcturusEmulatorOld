@@ -8,8 +8,7 @@ public class PickallCommand extends Command
 {
     public PickallCommand()
     {
-        super.permission = "cmd_pickall";
-        super.keys       = Emulator.getTexts().getValue("commands.keys.cmd_pickall").split(";");
+        super("cmd_pickall", Emulator.getTexts().getValue("commands.keys.cmd_pickall").split(";"));
     }
 
     @Override

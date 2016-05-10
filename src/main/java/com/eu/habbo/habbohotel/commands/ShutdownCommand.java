@@ -8,8 +8,7 @@ public class ShutdownCommand extends Command
 {
     public ShutdownCommand()
     {
-        super.permission = "cmd_shutdown";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_shutdown").split(";");
+        super("cmd_shutdown", Emulator.getTexts().getValue("commands.keys.cmd_shutdown").split(";"));
     }
 
     @Override

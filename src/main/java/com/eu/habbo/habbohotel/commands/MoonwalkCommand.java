@@ -8,8 +8,7 @@ public class MoonwalkCommand extends Command
 {
     public MoonwalkCommand()
     {
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_moonwalk").split(";");
-        super.permission = "cmd_moonwalk";
+        super("cmd_moonwalk", Emulator.getTexts().getValue("commands.keys.cmd_moonwalk").split(";"));
     }
 
     @Override

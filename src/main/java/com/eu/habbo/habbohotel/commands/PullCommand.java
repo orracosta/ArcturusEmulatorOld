@@ -14,8 +14,7 @@ public class PullCommand extends Command
 {
     public PullCommand()
     {
-        super.permission = "cmd_pull";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_pull").split(";");
+        super("cmd_pull", Emulator.getTexts().getValue("commands.keys.cmd_pull").split(";"));
     }
 
     @Override

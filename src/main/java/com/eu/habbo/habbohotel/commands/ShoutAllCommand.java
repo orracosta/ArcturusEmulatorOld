@@ -16,8 +16,7 @@ public class ShoutAllCommand extends Command
 {
     public ShoutAllCommand()
     {
-        super.permission = "cmd_shout_all";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_shout_all").split(";");
+        super("cmd_shout_all", Emulator.getTexts().getValue("commands.keys.cmd_shout_all").split(";"));
     }
 
     @Override

@@ -17,8 +17,7 @@ public class RoomItemCommand extends Command
 {
     public RoomItemCommand()
     {
-        super.permission = "cmd_roomitem";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_roomitem").split(";");
+        super("cmd_roomitem", Emulator.getTexts().getValue("commands.keys.cmd_roomitem").split(";"));
     }
 
     @Override

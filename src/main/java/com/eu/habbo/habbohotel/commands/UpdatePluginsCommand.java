@@ -10,8 +10,7 @@ public class UpdatePluginsCommand extends Command
 {
     public UpdatePluginsCommand()
     {
-        super.permission = "cmd_update_plugins";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_update_plugins").split(";");
+        super("cmd_update_plugins", Emulator.getTexts().getValue("commands.keys.cmd_update_plugins").split(";"));
     }
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception

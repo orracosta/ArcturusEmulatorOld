@@ -17,8 +17,7 @@ public class RoomDanceCommand extends Command
 {
     public RoomDanceCommand()
     {
-        super.permission = "cmd_danceall";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_danceall").split(";");
+        super("cmd_danceall", Emulator.getTexts().getValue("commands.keys.cmd_danceall").split(";"));
     }
 
     @Override

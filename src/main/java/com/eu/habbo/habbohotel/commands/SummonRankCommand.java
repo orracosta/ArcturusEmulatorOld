@@ -14,8 +14,7 @@ public class SummonRankCommand extends Command
 {
     public SummonRankCommand()
     {
-        super.permission = "cmd_summonrank";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_summonrank").split(";");
+        super("cmd_summonrank", Emulator.getTexts().getValue("commands.keys.cmd_summonrank").split(";"));
     }
 
     @Override

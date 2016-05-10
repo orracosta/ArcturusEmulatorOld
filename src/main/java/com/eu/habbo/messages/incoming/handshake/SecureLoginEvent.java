@@ -95,9 +95,6 @@ public class SecureLoginEvent extends MessageHandler
             }
             else
             {
-                System.out.println("LOGIN FAILED");
-                this.client.sendResponse(new GenericAlertComposer("Can't connect *sadpanda*"));
-
                 this.client.getChannel().close();
             }
         }

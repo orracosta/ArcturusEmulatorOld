@@ -17,8 +17,7 @@ public class BadgeCommand extends Command
 {
     public BadgeCommand()
     {
-        super.permission = "cmd_badge";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_badge").split(";");
+        super("cmd_badge", Emulator.getTexts().getValue("commands.keys.cmd_badge").split(";"));
     }
 
     @Override

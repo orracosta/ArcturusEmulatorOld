@@ -14,8 +14,7 @@ public class MimicCommand extends Command
 {
     public MimicCommand()
     {
-        super.permission = "cmd_mimic";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_mimic").split(";");
+        super("cmd_mimic", Emulator.getTexts().getValue("commands.keys.cmd_mimic").split(";"));
     }
 
     @Override

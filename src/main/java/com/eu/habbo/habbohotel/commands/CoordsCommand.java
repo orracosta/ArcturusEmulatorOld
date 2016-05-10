@@ -8,8 +8,7 @@ public class CoordsCommand extends Command {
 
     public CoordsCommand()
     {
-        super.permission = "cmd_coords";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_coords").split(";");
+        super("cmd_coords", Emulator.getTexts().getValue("commands.keys.cmd_coords").split(";"));
     }
 
     @Override

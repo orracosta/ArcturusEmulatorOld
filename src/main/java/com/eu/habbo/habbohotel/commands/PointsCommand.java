@@ -13,8 +13,7 @@ public class PointsCommand extends Command
 {
     public PointsCommand()
     {
-        super.permission = "cmd_points";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_points").split(";");
+        super("cmd_points", Emulator.getTexts().getValue("commands.keys.cmd_points").split(";"));
     }
 
     @Override

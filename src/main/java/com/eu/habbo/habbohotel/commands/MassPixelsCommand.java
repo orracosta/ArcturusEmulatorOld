@@ -15,8 +15,7 @@ public class MassPixelsCommand extends Command
 {
     public MassPixelsCommand()
     {
-        super.permission = "cmd_massduckets";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_massduckets").split(";");
+        super("cmd_massduckets", Emulator.getTexts().getValue("commands.keys.cmd_massduckets").split(";"));
     }
 
     @Override

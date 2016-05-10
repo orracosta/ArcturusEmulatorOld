@@ -10,8 +10,7 @@ public class UpdateTextsCommand extends Command
 {
     public UpdateTextsCommand()
     {
-        super.permission = "cmd_update_texts";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_update_texts").split(";");
+        super("cmd_update_texts", Emulator.getTexts().getValue("commands.keys.cmd_update_texts").split(";"));
     }
 
     @Override

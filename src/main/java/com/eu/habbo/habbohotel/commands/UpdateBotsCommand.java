@@ -7,8 +7,7 @@ public class UpdateBotsCommand extends Command
 {
     public UpdateBotsCommand()
     {
-        super.permission = "cmd_update_bots";
-        super.keys       = Emulator.getTexts().getValue("commands.keys.cmd_update_bots").split(";");
+        super("cmd_update_bots", Emulator.getTexts().getValue("commands.keys.cmd_update_bots").split(";"));
     }
 
     @Override

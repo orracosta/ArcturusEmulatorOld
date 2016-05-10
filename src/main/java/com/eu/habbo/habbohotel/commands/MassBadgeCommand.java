@@ -18,8 +18,7 @@ public class MassBadgeCommand extends Command
 {
     public MassBadgeCommand()
     {
-        super.permission = "cmd_massbadge";
-        super.keys = Emulator.getTexts().getValue("commands.keys.cmd_massbadge").split(";");
+        super("cmd_massbadge", Emulator.getTexts().getValue("commands.keys.cmd_massbadge").split(";"));
     }
 
     @Override
