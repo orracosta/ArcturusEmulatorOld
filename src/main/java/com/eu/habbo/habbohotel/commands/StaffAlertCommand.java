@@ -32,8 +32,6 @@ public class StaffAlertCommand extends Command
             ServerMessage msg = new GenericAlertComposer(message + "\r\n-" + gameClient.getHabbo().getHabboInfo().getUsername()).compose();
 
             Emulator.getGameEnvironment().getHabboManager().sendPacketToHabbosWithPermission(msg, "cmd_staffalert");
-
-            Emulator.getGameEnvironment().getHabboManager().sendPacketToHabbosWithPermission(new FriendChatMessageComposer(new Message(0, 0, gameClient.getHabbo().getHabboInfo().getUsername() + ": " + message)).compose(), "acc_staff_chat");
         }
         else
         {
