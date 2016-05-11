@@ -17,6 +17,13 @@ public class Logging
     private static File errorsRuntime;
     private static File debugFile;
 
+    private static PrintWriter packetsWriter;
+    private static PrintWriter packetsUndefinedWriter;
+    private static PrintWriter errorsPacketsWriter;
+    private static PrintWriter errorsSQLWriter;
+    private static PrintWriter errorsRuntimeWriter;
+    private static PrintWriter debugFileWriter;
+
     public static final String ANSI_BRIGHT = "\u001B[1m";
     public static final String ANSI_ITALICS = "\u001B[3m";
     public static final String ANSI_UNDERLINE = "\u001B[4m";
@@ -37,7 +44,6 @@ public class Logging
     {
         packets = new File("logging//packets//packets.txt");
         packetsUndefined = new File("logging//packets//undefined.txt");
-
         errorsPackets = new File("logging//errors/packets.txt");
         errorsSQL = new File("logging//errors/sql.txt");
         errorsRuntime = new File("logging//errors//runtime.txt");
@@ -63,13 +69,25 @@ public class Logging
 
             if (!debugFile.exists())
                 debugFile.createNewFile();
-
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
 
+        try
+        {
+            packetsWriter = new PrintWriter(new FileWriter(packets));
+            packetsUndefinedWriter = new PrintWriter(new FileWriter(packetsUndefined));
+            errorsPacketsWriter = new PrintWriter(new FileWriter(errorsPackets));
+            errorsSQLWriter = new PrintWriter(new FileWriter(errorsSQL));
+            errorsRuntimeWriter = new PrintWriter(new FileWriter(errorsRuntime));
+            debugFileWriter = new PrintWriter(new FileWriter(debugFile));
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
     public void logStart(Object line)
     {
@@ -80,7 +98,7 @@ public class Logging
     {
         if(Emulator.getConfig().getBoolean("logging.debug"))
         {
-            write(debugFile, line.toString());
+            write(debugFileWriter, line.toString());
         }
         System.out.println("[" + Logging.ANSI_BRIGHT + Logging.ANSI_GREEN + "SHUTDOWN" + Logging.ANSI_RESET + "] " + line.toString());
     }
@@ -89,7 +107,7 @@ public class Logging
     {
         if(Emulator.getConfig().getBoolean("logging.debug"))
         {
-            write(debugFile, line.toString());
+            write(debugFileWriter, line.toString());
         }
         System.out.println("[USER] " + line.toString());
     }
@@ -102,7 +120,7 @@ public class Logging
 
         if(Emulator.getConfig().getBoolean("logging.debug"))
         {
-            write(debugFile, line.toString());
+            write(debugFileWriter, line.toString());
         }
     }
     
@@ -114,7 +132,7 @@ public class Logging
 
         if(Emulator.getConfig().getBoolean("logging.packets"))
         {
-            write(packets, line.toString());
+            write(packetsWriter, line.toString());
         }
     }
     
@@ -126,7 +144,7 @@ public class Logging
 
         if (Emulator.getConfig().getBoolean("logging.packets.undefined"))
         {
-            write(packetsUndefined, line.toString());
+            write(packetsUndefinedWriter, line.toString());
         }
     }
     
@@ -136,7 +154,7 @@ public class Logging
 
         if (Emulator.isReady && Emulator.getConfig().getBoolean("logging.errors.runtime"))
         {
-            write(errorsRuntime, line);
+            write(errorsRuntimeWriter, line);
 
             if(line instanceof Throwable)
             {
@@ -162,7 +180,7 @@ public class Logging
         if(Emulator.getConfig().getBoolean("logging.errors.sql"))
         {
             e.printStackTrace();
-            write(errorsSQL, e);
+            write(errorsSQLWriter, e);
 
             Emulator.getThreading().run(new HTTPPostError(e));
         }
@@ -175,7 +193,7 @@ public class Logging
             if(e instanceof Exception)
                 ((Exception) e).printStackTrace();
 
-            write(errorsPackets, e);
+            write(errorsPacketsWriter, e);
         }
     }
     
@@ -184,27 +202,17 @@ public class Logging
         e.printStackTrace();
     }
 
-    private synchronized void write(File file, Object message)
+    private synchronized void write(PrintWriter printWriter, Object message)
     {
-        if(file != null && message != null)
+        if(printWriter != null && message != null)
         {
-            try
+            if(message instanceof Exception)
             {
-                PrintWriter printWriter = new PrintWriter(new FileWriter(file, true));
-
-                if(message instanceof Exception)
-                {
-                    ((Exception) message).printStackTrace(printWriter);
-                }
-                else
-                {
-                    printWriter.write(message.toString() + "\r\n");
-                }
-                printWriter.close();
+                ((Exception) message).printStackTrace(printWriter);
             }
-            catch(IOException e)
+            else
             {
-                e.printStackTrace();
+                printWriter.write(message.toString() + "\r\n");
             }
         }
     }
