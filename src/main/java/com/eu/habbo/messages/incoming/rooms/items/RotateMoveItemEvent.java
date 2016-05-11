@@ -68,7 +68,7 @@ public class RotateMoveItemEvent extends MessageHandler
         int oldRotation = item.getRotation();
 
         Tile oldLocation = new Tile(oldX, oldY, item.getZ());
-        Tile newLocation = new Tile(oldX, oldY, 0.0);
+
         if(rentSpace != null)
         {
             if(!PathFinder.squareInSquare(PathFinder.getSquare(rentSpace.getX(), rentSpace.getY(), rentSpace.getBaseItem().getWidth(), rentSpace.getBaseItem().getLength(), rentSpace.getRotation()), PathFinder.getSquare(x, y, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), rotation)))
@@ -180,6 +180,7 @@ public class RotateMoveItemEvent extends MessageHandler
             }
         }
 
+        Tile newLocation = new Tile(item.getX(), item.getY(), item.getZ());
         item.onMove(oldLocation, newLocation);
 
         if(Emulator.getPluginManager().isRegistered(FurnitureMovedEvent.class, true))
