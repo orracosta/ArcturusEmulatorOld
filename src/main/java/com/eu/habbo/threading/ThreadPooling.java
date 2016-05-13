@@ -8,8 +8,7 @@ public class ThreadPooling
 {
     private final ThreadPoolExecutor threadPool;
     private final ScheduledExecutorService scheduledPool;
-
-    private static volatile boolean canAdd;
+    private volatile boolean canAdd;
 
     public ThreadPooling(Integer threads)
     {
@@ -17,7 +16,7 @@ public class ThreadPooling
         ThreadFactory threadFactory = Executors.defaultThreadFactory();
         this.threadPool = new ThreadPoolExecutor(3, 10, 10L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(), threadFactory, rejectionHandler);
         this.scheduledPool = Executors.newScheduledThreadPool(2);
-        canAdd = true;
+        this.canAdd = true;
         Emulator.getLogging().logStart("Thread Pool -> Loaded!");
     }
 
@@ -25,7 +24,7 @@ public class ThreadPooling
     {
         try
         {
-            if (canAdd)
+            if (this.canAdd)
             {
                 this.threadPool.execute(run);
             }
@@ -40,7 +39,7 @@ public class ThreadPooling
     {
         try
         {
-            if (canAdd)
+            if (this.canAdd)
             {
                 this.scheduledPool.schedule(run, delay, TimeUnit.MILLISECONDS);
             }
@@ -54,8 +53,9 @@ public class ThreadPooling
 
     public void shutDown()
     {
-        canAdd = false;
+        this.canAdd = false;
         this.threadPool.shutdownNow();
+
         while (!this.threadPool.isTerminated()) {
         }
 
