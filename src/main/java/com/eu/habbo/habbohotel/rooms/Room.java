@@ -3895,13 +3895,14 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     if (iterator.value().getUserId() != this.ownerId)
                         continue;
 
-                    if(habbo != null && iterator.value().getUserId() == habbo.getHabboInfo().getId())
+                    if (habbo != null && iterator.value().getUserId() == habbo.getHabboInfo().getId())
                         continue;
 
                     if (userItemsMap.get(iterator.value().getUserId()) == null)
                     {
                         userItemsMap.put(iterator.value().getUserId(), new THashSet<HabboItem>());
                     }
+
                     userItemsMap.get(iterator.value().getUserId()).add(iterator.value());
                 }
                 catch (NoSuchElementException e)
@@ -3910,21 +3911,21 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     break;
                 }
             }
+        }
 
-            for (Map.Entry<Integer, THashSet<HabboItem>> entrySet : userItemsMap.entrySet())
+        for (Map.Entry<Integer, THashSet<HabboItem>> entrySet : userItemsMap.entrySet())
+        {
+            for (HabboItem i : entrySet.getValue())
             {
-                for (HabboItem i : entrySet.getValue())
-                {
-                    this.pickUpItem(i, null);
-                }
+                this.pickUpItem(i, null);
+            }
 
-                Habbo user = Emulator.getGameEnvironment().getHabboManager().getHabbo(entrySet.getKey());
+            Habbo user = Emulator.getGameEnvironment().getHabboManager().getHabbo(entrySet.getKey());
 
-                if (user != null)
-                {
-                    user.getHabboInventory().getItemsComponent().addItems(entrySet.getValue());
-                    user.getClient().sendResponse(new AddHabboItemComposer(entrySet.getValue()));
-                }
+            if (user != null)
+            {
+                user.getHabboInventory().getItemsComponent().addItems(entrySet.getValue());
+                user.getClient().sendResponse(new AddHabboItemComposer(entrySet.getValue()));
             }
         }
     }
