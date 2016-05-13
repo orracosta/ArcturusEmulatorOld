@@ -55,11 +55,11 @@ public class ThreadPooling
     public void shutDown()
     {
         canAdd = false;
-        this.threadPool.shutdown();
+        this.threadPool.shutdownNow();
         while (!this.threadPool.isTerminated()) {
         }
 
-        this.scheduledPool.shutdown();
+        this.scheduledPool.shutdownNow();
         while(!this.scheduledPool.isTerminated()) {
         }
     }
