@@ -1143,14 +1143,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         {
                             if (!habbo.getRoomUnit().cycle(this))
                             {
-                                if (habbo.getHabboInfo().getRiding() != null)
-                                {
-                                    if (habbo.getHabboInfo().getRiding().getRoomUnit().getX() != habbo.getRoomUnit().getX() || habbo.getHabboInfo().getRiding().getRoomUnit().getY() != habbo.getRoomUnit().getY())
-                                    {
-                                        habbo.getHabboInfo().getRiding().getRoomUnit().setGoalLocation(habbo.getRoomUnit().getX(), habbo.getRoomUnit().getY());
-                                        habbo.getHabboInfo().getRiding().getRoomUnit().cycle(this);
-                                    }
-                                }
                                 continue;
                             }
                         }
@@ -1161,12 +1153,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                 habbo.getRoomUnit().getStatus().remove("mv");
 
                                 updatedUnit.add(habbo.getRoomUnit());
-                            }
-
-                            if (habbo.getHabboInfo().getRiding() != null && habbo.getHabboInfo().getRiding().getRoomUnit().getStatus().containsKey("mv"))
-                            {
-                                habbo.getHabboInfo().getRiding().getRoomUnit().getStatus().clear();
-                                updatedUnit.add(habbo.getHabboInfo().getRiding().getRoomUnit());
                             }
 
                             if (!habbo.getRoomUnit().isWalking() && !habbo.getRoomUnit().cmdSit)
@@ -1364,18 +1350,35 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                 }
 
                                 AbstractPet pet = petIterator.value();
-                                if (pet instanceof Pet && ((Pet) pet).getTask() != PetTask.RIDE)
+                                if (pet instanceof Pet)
                                 {
                                     if (pet instanceof MonsterplantPet)
                                         return;
 
                                     if (pet.getRoomUnit().getStatus().containsKey("mv") && pet.getRoomUnit().isAtGoal())
                                     {
+                                        System.out.println("Clearing Pet Walking Animation...");
                                         pet.getRoomUnit().getStatus().remove("mv");
                                         updatedUnit.add(pet.getRoomUnit());
                                     }
 
                                     ((Pet) pet).cycle();
+
+                                    if (((Pet) pet).getTask() == PetTask.RIDE)
+                                    {
+                                        System.out.println("Riding...");
+                                        if (pet instanceof HorsePet)
+                                        {
+                                            HorsePet horse = ((HorsePet) pet);
+                                            if (horse.getRider() != null)
+                                            {
+                                                if (!horse.getRider().getRoomUnit().getLocation().equals(horse.getRoomUnit().getLocation()))
+                                                {
+                                                    horse.getRoomUnit().setGoalLocation(horse.getRider().getRoomUnit().getLocation());
+                                                }
+                                            }
+                                        }
+                                    }
 
                                     if (pet.getRoomUnit().isAtGoal())
                                     {
@@ -1385,9 +1388,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                             ((Pet) pet).packetUpdate = false;
                                         }
                                     }
-
-                                    if (((Pet) pet).getTask() != PetTask.NEST)
+                                    else
+                                    {
+                                        System.out.println("Pet not at goal, cycling...");
                                         pet.getRoomUnit().cycle(this);
+                                        updatedUnit.add(pet.getRoomUnit());
+                                    }
                                 }
                             }
                         }

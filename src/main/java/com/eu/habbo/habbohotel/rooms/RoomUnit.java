@@ -115,7 +115,10 @@ public class RoomUnit
     {
         try
         {
-            if(!this.getStatus().containsKey("mv") && !this.isWalking())
+            /**
+             * !this.getStatus().containsKey("mv") &&
+             */
+            if(!this.isWalking())
                 return false;
 
             if (this.getStatus().containsKey("mv"))
@@ -273,10 +276,14 @@ public class RoomUnit
             this.setY(next.getY());
             this.resetIdleTimer();
 
-            if(next.getX() == room.getLayout().getDoorX() && next.getY() == room.getLayout().getDoorY())
+            if (habbo != null)
             {
-                Emulator.getThreading().run(new RoomUnitKick(habbo, room, false), 500);
+                if (next.getX() == room.getLayout().getDoorX() && next.getY() == room.getLayout().getDoorY())
+                {
+                    Emulator.getThreading().run(new RoomUnitKick(habbo, room, false), 500);
+                }
             }
+
             return false;
 
         }

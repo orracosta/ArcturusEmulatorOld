@@ -798,7 +798,6 @@ public class RoomManager {
         }
     }
 
-    //TODO: Param room makes no sense.
     public void leaveRoom(Habbo habbo, Room room)
     {
         if(habbo.getHabboInfo().getCurrentRoom() != null && habbo.getHabboInfo().getCurrentRoom() == room)
@@ -812,7 +811,11 @@ public class RoomManager {
                 habbo.getHabboInfo().setRiding(null);
             }
 
-            room.pickupPetsForHabbo(habbo);
+            if (!room.isOwner(habbo) && !room.hasRights(habbo))
+            {
+                room.pickupPetsForHabbo(habbo);
+            }
+
             this.logExit(habbo);
             room.removeHabbo(habbo);
             room.sendComposer(new RoomUserRemoveComposer(habbo.getRoomUnit()).compose());

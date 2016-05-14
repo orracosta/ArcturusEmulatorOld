@@ -54,19 +54,19 @@ public class WiredConditionNotMatchStatePosition extends InteractionWiredConditi
                 if(this.state)
                 {
                     if(item.getExtradata().equals(setting.state))
-                        return true;
+                        return false;
                 }
 
                 if(this.position)
                 {
                     if((setting.x == item.getX() && setting.y == item.getY() && setting.z == item.getZ()))
-                        return true;
+                        return false;
                 }
 
                 if(this.direction)
                 {
-                    if((setting.rotation == this.getRotation()))
-                        return true;
+                    if((setting.rotation == item.getRotation()))
+                        return false;
                 }
             }
             else
@@ -79,7 +79,7 @@ public class WiredConditionNotMatchStatePosition extends InteractionWiredConditi
         {
             for(WiredMatchFurniSetting setting : s)
             {
-                this.settings.remove(s);
+                this.settings.remove(setting);
             }
         }
 

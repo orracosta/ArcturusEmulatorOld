@@ -130,7 +130,7 @@ public class WiredConditionMatchStatePosition extends InteractionWiredCondition
 
                 if(this.direction)
                 {
-                    if(!(setting.rotation == this.getRotation()))
+                    if(setting.rotation != item.getRotation())
                         return false;
                 }
             }
@@ -144,7 +144,7 @@ public class WiredConditionMatchStatePosition extends InteractionWiredCondition
         {
             for(WiredMatchFurniSetting setting : s)
             {
-                this.settings.remove(s);
+                this.settings.remove(setting);
             }
         }
 

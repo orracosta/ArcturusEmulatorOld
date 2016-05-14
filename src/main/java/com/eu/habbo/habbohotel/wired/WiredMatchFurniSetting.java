@@ -12,7 +12,7 @@ public class WiredMatchFurniSetting
     public WiredMatchFurniSetting(int itemId, String state, int rotation, int x, int y, double z)
     {
         this.itemId = itemId;
-        this.state = state.isEmpty() ? "\t" : state;
+        this.state = state;
         this.rotation = rotation;
         this.x = x;
         this.y = y;
