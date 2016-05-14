@@ -28,7 +28,7 @@ public class RoomUnitRideHorse implements Runnable
 
         if(PathFinder.getSquareInFront(this.habbo.getRoomUnit().getX(), this.habbo.getRoomUnit().getY(), this.habbo.getRoomUnit().getBodyRotation().getValue()).equals(this.goalTile))
         {
-            if(goalTile.equals(new Tile(this.pet.getRoomUnit().getX(), this.pet.getRoomUnit().getY(), 0)))
+            if(this.goalTile.X == this.pet.getRoomUnit().getX() && this.goalTile.Y == this.pet.getRoomUnit().getY())
             {
                 this.habbo.getRoomUnit().setGoalLocation(pet.getRoomUnit().getX(), pet.getRoomUnit().getY());
                 this.habbo.getHabboInfo().getCurrentRoom().giveEffect(this.habbo, 77);

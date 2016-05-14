@@ -37,7 +37,7 @@ public class FriendsComposer extends MessageComposer
                 this.response.appendString(row.getValue().getUsername());
                 this.response.appendInt32(row.getValue().getGender().equals("M") ? 0 : 1);
                 this.response.appendBoolean(row.getValue().getOnline() == 1);
-                this.response.appendBoolean(false); //IN ROOM
+                this.response.appendBoolean(row.getValue().inRoom()); //IN ROOM
                 this.response.appendString(row.getValue().getLook());
                 this.response.appendInt32(0);
                 this.response.appendString(row.getValue().getMotto());

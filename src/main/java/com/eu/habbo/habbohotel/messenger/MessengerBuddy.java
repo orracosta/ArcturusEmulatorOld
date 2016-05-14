@@ -26,7 +26,7 @@ public class MessengerBuddy implements Runnable {
             this.id = set.getInt("id");
             this.username = set.getString("username");
             this.gender = set.getString("gender");
-            this.online = set.getInt("online");
+            this.online = Integer.valueOf(set.getString("online"));
             this.motto = set.getString("motto");
             this.look = set.getString("look");
             this.relation = (short) set.getInt("relation");
@@ -55,7 +55,7 @@ public class MessengerBuddy implements Runnable {
             this.id = set.getInt("id");
             this.username = set.getString("username");
             this.gender = set.getString("gender");
-            this.online = set.getInt("online");
+            this.online = Integer.valueOf(set.getString("online"));
             this.motto = set.getString("motto");
             this.look = set.getString("look");
             this.relation = 0;
@@ -89,6 +89,7 @@ public class MessengerBuddy implements Runnable {
         this.look = habbo.getHabboInfo().getLook();
         this.relation = 0;
         this.userOne = userOne;
+        this.inRoom = habbo.getHabboInfo().getCurrentRoom() != null;
     }
 
     public void setRelation(int relation)

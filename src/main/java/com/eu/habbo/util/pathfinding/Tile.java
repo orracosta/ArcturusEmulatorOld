@@ -119,4 +119,10 @@ public class Tile extends Point
     {
         return new Tile(this.X, this.Y, this.Z);
     }
+
+    @Override
+    public String toString()
+    {
+        return "X: " + this.x + ", Y:" + this.y + ", Z: " + this.Z;
+    }
 }
