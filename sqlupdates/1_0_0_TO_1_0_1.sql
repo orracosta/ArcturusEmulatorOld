@@ -1,4 +1,7 @@
 #DATABASE UPDATE: 1.0.0 -> 1.0.1
+
+#IF YOU GET ERRORS ON THIS PROCEDURE, JUST DROP THE acc_kickwars COLUMN FROM THE permissions TABLE!!
+
 drop procedure if exists drop_acc_kickwars;
 delimiter ';;'
 create procedure drop_acc_kickwars() begin
@@ -10,7 +13,7 @@ create procedure drop_acc_kickwars() begin
 end;;
 
 delimiter ';'
-call schema_change();
+call drop_acc_kickwars();
 
 drop procedure if exists drop_acc_kickwars;
 
