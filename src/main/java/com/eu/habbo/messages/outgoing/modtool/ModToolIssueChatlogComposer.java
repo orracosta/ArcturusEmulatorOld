@@ -2,6 +2,7 @@ package com.eu.habbo.messages.outgoing.modtool;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.modtool.ModToolChatLog;
+import com.eu.habbo.habbohotel.modtool.ModToolChatRecordDataContext;
 import com.eu.habbo.habbohotel.modtool.ModToolIssue;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
@@ -37,22 +38,27 @@ public class ModToolIssueChatlogComposer extends MessageComposer
         if(chatlog.isEmpty())
             return null;
 
+        //ChatRecordData
         //for(ModToolRoomVisit visit : chatlog)
         //{
-            this.response.appendByte(1);
-            this.response.appendShort(2);
-            this.response.appendString("roomName");
-            this.response.appendByte(2);
-            this.response.appendString(this.roomName);
-            this.response.appendString("roomId");
-            this.response.appendByte(1);
-            this.response.appendInt32(this.issue.roomId);
+            this.response.appendByte(1); //Report Type
+
+            this.response.appendShort(3); //Context Count
+
+        ModToolChatRecordDataContext.ROOM_NAME.append(this.response);
+        this.response.appendString(this.roomName); //Value
+
+        ModToolChatRecordDataContext.ROOM_ID.append(this.response);
+        this.response.appendInt32(this.issue.roomId); //Value
+
+        ModToolChatRecordDataContext.GROUP_ID.append(this.response);
+        this.response.appendInt32(12); //Value
 
             this.response.appendShort(this.chatlog.size());
             for(ModToolChatLog chatLog : this.chatlog)
             {
                 this.response.appendInt32(Emulator.getIntUnixTimestamp() - chatLog.timestamp);
-                this.response.appendInt32(0);
+                this.response.appendInt32(chatLog.habboId);
                 this.response.appendString(chatLog.username);
                 this.response.appendString(chatLog.message);
                 this.response.appendBoolean(false);
