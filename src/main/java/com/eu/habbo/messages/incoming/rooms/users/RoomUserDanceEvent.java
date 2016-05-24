@@ -1,9 +1,11 @@
 package com.eu.habbo.messages.incoming.rooms.users;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.DanceType;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDanceComposer;
+import com.eu.habbo.plugin.events.users.UserIdleEvent;
 
 public class RoomUserDanceEvent extends MessageHandler {
     @Override
@@ -30,7 +32,18 @@ public class RoomUserDanceEvent extends MessageHandler {
                 }
 
                 habbo.getRoomUnit().setDanceType(DanceType.values()[danceId]);
-                this.client.getHabbo().getHabboInfo().getCurrentRoom().unIdle(habbo);
+
+                UserIdleEvent event = new UserIdleEvent(this.client.getHabbo(), UserIdleEvent.IdleReason.DANCE, false);
+                Emulator.getPluginManager().fireEvent(event);
+
+                if (!event.isCancelled())
+                {
+                    if (!event.idle)
+                    {
+                        this.client.getHabbo().getHabboInfo().getCurrentRoom().unIdle(habbo);
+                    }
+                }
+
                 this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserDanceComposer(habbo.getRoomUnit()).compose());
             }
         }

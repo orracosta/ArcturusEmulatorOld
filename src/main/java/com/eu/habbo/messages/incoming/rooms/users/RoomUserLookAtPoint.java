@@ -1,9 +1,11 @@
 package com.eu.habbo.messages.incoming.rooms.users;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
+import com.eu.habbo.plugin.events.users.UserIdleEvent;
 import com.eu.habbo.util.pathfinding.Tile;
 
 public class RoomUserLookAtPoint extends MessageHandler
@@ -47,7 +49,17 @@ public class RoomUserLookAtPoint extends MessageHandler
             roomUnit.lookAtPoint(new Tile(x, y, 0.0));
         }
 
-        this.client.getHabbo().getHabboInfo().getCurrentRoom().unIdle(this.client.getHabbo());
+        UserIdleEvent event = new UserIdleEvent(this.client.getHabbo(), UserIdleEvent.IdleReason.WALKED, false);
+        Emulator.getPluginManager().fireEvent(event);
+
+        if (!event.isCancelled())
+        {
+            if (!event.idle)
+            {
+                this.client.getHabbo().getHabboInfo().getCurrentRoom().unIdle(habbo);
+            }
+        }
+
         this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserStatusComposer(roomUnit).compose());
     }
 }

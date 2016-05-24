@@ -13,6 +13,7 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.plugin.Event;
 import com.eu.habbo.plugin.events.roomunit.RoomUnitLookAtPointEvent;
 import com.eu.habbo.plugin.events.roomunit.RoomUnitSetGoalEvent;
+import com.eu.habbo.plugin.events.users.UserIdleEvent;
 import com.eu.habbo.plugin.events.users.UserTakeStepEvent;
 import com.eu.habbo.threading.runnables.RoomUnitKick;
 import com.eu.habbo.util.pathfinding.Node;
@@ -159,8 +160,17 @@ public class RoomUnit
             {
                 if(this.isIdle())
                 {
-                    room.unIdle(habbo);
-                    this.idleTimer = 0;
+                    UserIdleEvent event = new UserIdleEvent(habbo, UserIdleEvent.IdleReason.WALKED, false);
+                    Emulator.getPluginManager().fireEvent(event);
+
+                    if (!event.isCancelled())
+                    {
+                        if (!event.idle)
+                        {
+                            room.unIdle(habbo);
+                            this.idleTimer = 0;
+                        }
+                    }
                 }
 
                 if (Emulator.getPluginManager().isRegistered(UserTakeStepEvent.class, false))

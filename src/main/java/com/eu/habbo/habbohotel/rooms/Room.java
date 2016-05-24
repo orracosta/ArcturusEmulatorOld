@@ -36,6 +36,8 @@ import com.eu.habbo.messages.outgoing.users.MutedWhisperComposer;
 import com.eu.habbo.plugin.Event;
 import com.eu.habbo.plugin.events.furniture.FurniturePickedUpEvent;
 import com.eu.habbo.plugin.events.furniture.FurnitureRolledEvent;
+import com.eu.habbo.plugin.events.users.UserExitRoomEvent;
+import com.eu.habbo.plugin.events.users.UserIdleEvent;
 import com.eu.habbo.plugin.events.users.UserRightsTakenEvent;
 import com.eu.habbo.plugin.events.users.UserRolledEvent;
 import com.eu.habbo.threading.runnables.LoadCustomHeightMap;
@@ -1086,21 +1088,31 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 {
                     for (Habbo habbo : this.currentHabbos.valueCollection())
                     {
-                        if (!habbo.getRoomUnit().isIdle())
+                        if (Emulator.getConfig().getBoolean("hotel.rooms.auto.idle"))
                         {
-                            habbo.getRoomUnit().increaseIdleTimer();
-
-                            if (habbo.getRoomUnit().isIdle())
+                            if (!habbo.getRoomUnit().isIdle())
                             {
-                                this.sendComposer(new RoomUnitIdleComposer(habbo.getRoomUnit()).compose());
+                                habbo.getRoomUnit().increaseIdleTimer();
+
+                                if (habbo.getRoomUnit().isIdle())
+                                {
+                                    this.sendComposer(new RoomUnitIdleComposer(habbo.getRoomUnit()).compose());
+                                }
                             }
-                        } else
-                        {
-                            habbo.getRoomUnit().increaseIdleTimer();
-
-                            if (habbo.getRoomUnit().getIdleTimer() >= Emulator.getConfig().getInt("hotel.roomuser.idle.cycles.kick", 480))
+                            else
                             {
-                                toKick.add(habbo);
+                                habbo.getRoomUnit().increaseIdleTimer();
+
+                                if (habbo.getRoomUnit().getIdleTimer() >= Emulator.getConfig().getInt("hotel.roomuser.idle.cycles.kick", 480))
+                                {
+                                    UserExitRoomEvent event = new UserExitRoomEvent(habbo, UserExitRoomEvent.UserExitRoomReason.KICKED_HABBO);
+                                    Emulator.getPluginManager().fireEvent(event);
+
+                                    if (!event.isCancelled())
+                                    {
+                                        toKick.add(habbo);
+                                    }
+                                }
                             }
                         }
 
@@ -2705,7 +2717,17 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             return;
         }
 
-        this.unIdle(habbo);
+        UserIdleEvent event = new UserIdleEvent(habbo, UserIdleEvent.IdleReason.TALKED, false);
+        Emulator.getPluginManager().fireEvent(event);
+
+        if (!event.isCancelled())
+        {
+            if (!event.idle)
+            {
+                this.unIdle(habbo);
+            }
+        }
+
         this.sendComposer(new RoomUserTypingComposer(habbo.getRoomUnit(), false).compose());
 
         if(roomChatMessage == null || roomChatMessage.getMessage() == null || roomChatMessage.getMessage().equals(""))
