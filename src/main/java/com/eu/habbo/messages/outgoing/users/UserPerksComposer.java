@@ -1,13 +1,16 @@
 package com.eu.habbo.messages.outgoing.users;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class UserPerksComposer extends MessageComposer{
+public class UserPerksComposer extends MessageComposer
+{
 
     @Override
-    public ServerMessage compose()    {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.UserPerksComposer);
 
         this.response.appendInt32(15);
@@ -66,7 +69,7 @@ public class UserPerksComposer extends MessageComposer{
 
         this.response.appendString("NAVIGATOR_ROOM_THUMBNAIL_CAMERA");
         this.response.appendString("");
-        this.response.appendBoolean(true);
+        this.response.appendBoolean(Emulator.getConfig().getBoolean("hotel.navigator.camera", false));
 
         this.response.appendString("HABBO_CLUB_OFFER_BETA");
         this.response.appendString("");
