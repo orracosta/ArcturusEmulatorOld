@@ -1,92 +1,159 @@
 package com.eu.habbo.habbohotel.navigation;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.rooms.Room;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.AbstractMap;
+import java.util.List;
 import java.util.Map;
 
 public class NavigatorManager
 {
-    private final THashMap<PublicRoom, THashSet<PublicRoom>> publicRooms;
+    public final THashMap<Integer, NavigatorPublicCategory> publicCategories = new THashMap<Integer, NavigatorPublicCategory>();
+    public final THashMap<String, Map.Entry<Method, NavigatorFilterComparator>> filterSettings = new THashMap<String, Map.Entry<Method, NavigatorFilterComparator>>();
+    public final THashMap<String, NavigatorFilter> filters = new THashMap<String, NavigatorFilter>();
 
     public NavigatorManager()
     {
         long millis = System.currentTimeMillis();
-        this.publicRooms = new THashMap<PublicRoom, THashSet<PublicRoom>>();
-
         loadNavigator();
+
+        filters.put(NavigatorPublicFilter.name, new NavigatorPublicFilter());
+        filters.put(NavigatorHotelFilter.name, new NavigatorHotelFilter());
+        filters.put(NavigatorRoomAdsFilter.name, new NavigatorRoomAdsFilter());
+        filters.put(NavigatorUserFilter.name, new NavigatorUserFilter());
 
         Emulator.getLogging().logStart("Navigator Manager -> Loaded! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
 
     public void loadNavigator()
     {
-        synchronized (this.publicRooms)
+        synchronized (this.publicCategories)
         {
-            this.publicRooms.clear();
+            this.publicCategories.clear();
 
             try
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM navigator_publics ORDER BY parent_id DESC");
+                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM navigator_publiccats WHERE visible = '1'");
+                ResultSet set = statement.executeQuery();
+
+                while(set.next())
+                {
+                    this.publicCategories.put(set.getInt("id"), new NavigatorPublicCategory(set));
+                }
+
+                set.close();
+                statement.getConnection().close();
+                statement.close();
+            }
+            catch (SQLException e)
+            {
+                Emulator.getLogging().logSQLException(e);
+            }
+
+            try
+            {
+                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM navigator_publics WHERE visible = '1'");
                 ResultSet set = statement.executeQuery();
 
                 while (set.next())
                 {
-                    PublicRoom room = new PublicRoom(set);
+                    NavigatorPublicCategory category = this.publicCategories.get(set.getInt("public_cat_id"));
 
-                    if (set.getInt("parent_id") == -1)
+                    if (category != null)
                     {
-                        this.publicRooms.put(room, new THashSet<PublicRoom>());
+                        category.addRoom(Emulator.getGameEnvironment().getRoomManager().loadRoom(set.getInt("room_id")));
+                    }
+                }
+
+                set.close();
+                statement.getConnection().close();
+                statement.close();
+            }
+            catch (SQLException e)
+            {
+                Emulator.getLogging().logSQLException(e);
+            }
+        }
+
+        synchronized (this.filterSettings)
+        {
+            try
+            {
+                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM navigator_filter");
+                ResultSet set = statement.executeQuery();
+
+                while(set.next())
+                {
+                    Method field = null;
+                    Class clazz = Room.class;
+
+                    if (set.getString("field").contains("."))
+                    {
+                        for (String s : (set.getString("field")).split("."))
+                        {
+                            System.out.println("2");
+                            try
+                            {
+                                field = clazz.getDeclaredMethod(s);
+                                clazz = field.getReturnType();
+                            }
+                            catch (Exception e)
+                            {
+                                break;
+                            }
+                        }
                     }
                     else
                     {
-                        PublicRoom parent = this.getParent(set.getInt("parent_id"));
-
-                        if (parent != null)
+                        try
                         {
-                            this.publicRooms.get(parent).add(room);
+                            field = clazz.getDeclaredMethod(set.getString("field"));
+                            clazz = field.getReturnType();
+                        }
+                        catch (Exception e)
+                        {
+                            continue;
                         }
                     }
+
+                    if (field != null)
+                    {
+                        this.filterSettings.put(set.getString("key"), new AbstractMap.SimpleEntry<Method, NavigatorFilterComparator>(field, NavigatorFilterComparator.valueOf(set.getString("compare").toUpperCase())));
+                    }
                 }
+
                 set.close();
-                statement.close();
                 statement.getConnection().close();
-            } catch (SQLException e)
+                statement.close();
+            }
+            catch (SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
             }
         }
     }
 
-    public PublicRoom getParent(int parentId)
+    public NavigatorFilterComparator comperatorForField(Method field)
     {
-        synchronized (this.publicRooms)
+        synchronized (this.filterSettings)
         {
-            for (Map.Entry<PublicRoom, THashSet<PublicRoom>> map : this.publicRooms.entrySet())
+            for (Map.Entry<String, Map.Entry<Method, NavigatorFilterComparator>> set : this.filterSettings.entrySet())
             {
-                if (map.getKey().parentId == parentId)
-                    return map.getKey();
+                if (set.getValue().getKey() == field)
+                {
+                    return set.getValue().getValue();
+                }
             }
         }
 
         return null;
-    }
-
-    public THashMap<PublicRoom, THashSet<PublicRoom>> getPublicRooms() {
-        return publicRooms;
-    }
-
-    public void dispose()
-    {
-        synchronized (this.publicRooms)
-        {
-            this.publicRooms.clear();
-        }
-
-        Emulator.getLogging().logShutdownLine("NavigatorManager -> Disposed!");
     }
 }

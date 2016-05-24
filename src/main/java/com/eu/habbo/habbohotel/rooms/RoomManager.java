@@ -7,7 +7,6 @@ import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
 import com.eu.habbo.habbohotel.polls.PollManager;
 import com.eu.habbo.habbohotel.users.DanceType;
 import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericErrorMessagesComposer;
@@ -18,8 +17,6 @@ import com.eu.habbo.messages.outgoing.rooms.items.RoomFloorItemsComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.RoomWallItemsComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.*;
-import com.eu.habbo.messages.outgoing.users.UserClubComposer;
-import com.eu.habbo.messages.outgoing.users.UserPermissionsComposer;
 import com.eu.habbo.plugin.events.navigator.NavigatorRoomCreatedEvent;
 import com.eu.habbo.plugin.events.users.UserEnterRoomEvent;
 import com.eu.habbo.util.pathfinding.PathFinder;
@@ -35,14 +32,14 @@ import java.util.*;
 
 public class RoomManager {
 
-    private final THashSet<RoomCategory> roomCategories;
+    private final THashMap<Integer, RoomCategory> roomCategories;
     private final THashSet<RoomLayout> roomLayouts;
     private final THashMap<Integer, Room> activeRooms;
 
     public RoomManager()
     {
         long millis = System.currentTimeMillis();
-        this.roomCategories = new THashSet<RoomCategory>();
+        this.roomCategories = new THashMap<Integer, RoomCategory>();
         this.roomLayouts = new THashSet<RoomLayout>();
         this.activeRooms = new THashMap<Integer, Room>();
         this.loadRoomCategories();
@@ -111,7 +108,7 @@ public class RoomManager {
 
             while(set.next())
             {
-                this.roomCategories.add(new RoomCategory(set));
+                this.roomCategories.put(set.getInt("id"), new RoomCategory(set));
             }
             set.close();
             statement.close();
@@ -149,10 +146,23 @@ public class RoomManager {
 
     public RoomCategory getCategory(int id)
     {
-        for(RoomCategory category : this.roomCategories)
+        for (RoomCategory category : this.roomCategories.values())
         {
-            if(category.getId() == id)
+            if (category.getId() == id)
                 return category;
+        }
+
+        return null;
+    }
+
+    public RoomCategory getCategory(String name)
+    {
+        for (RoomCategory category : this.roomCategories.values())
+        {
+            if (category.getCaption().equalsIgnoreCase(name))
+            {
+                return category;
+            }
         }
 
         return null;
@@ -161,7 +171,7 @@ public class RoomManager {
     public List<RoomCategory> roomCategoriesForHabbo(Habbo habbo)
     {
         List<RoomCategory> categories = new ArrayList<RoomCategory>();
-        for(RoomCategory category : this.roomCategories)
+        for(RoomCategory category : this.roomCategories.values())
         {
             if(category.getMinRank() <= habbo.getHabboInfo().getRank())
                 categories.add(category);
@@ -176,7 +186,7 @@ public class RoomManager {
     {
         synchronized (this.roomCategories)
         {
-            for(RoomCategory category : this.roomCategories)
+            for(RoomCategory category : this.roomCategories.values())
             {
                 if(category.getId() == categoryId)
                 {
@@ -189,6 +199,11 @@ public class RoomManager {
         }
 
         return false;
+    }
+
+    public THashMap<Integer, RoomCategory> getRoomCategories()
+    {
+        return this.roomCategories;
     }
 
     public List<Room> getRoomsByScore()
@@ -398,7 +413,7 @@ public class RoomManager {
         {
             if(room.getUserCount() == 0)
                 this.activeRooms.remove(room.getId());
-                room.dispose();
+            room.dispose();
         }
     }
 
@@ -659,7 +674,7 @@ public class RoomManager {
 
         if(!room.getCurrentHabbos().isEmpty())
         {
-           // ServerMessage m = new RoomUsersComposer(habbo).compose().appendResponse(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
+            // ServerMessage m = new RoomUsersComposer(habbo).compose().appendResponse(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
             room.sendComposer(new RoomUsersComposer(habbo).compose());
             room.sendComposer(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
             //room.sendComposer();
@@ -798,6 +813,7 @@ public class RoomManager {
         }
     }
 
+    //TODO: Param room makes no sense.
     public void leaveRoom(Habbo habbo, Room room)
     {
         if(habbo.getHabboInfo().getCurrentRoom() != null && habbo.getHabboInfo().getCurrentRoom() == room)
@@ -811,11 +827,7 @@ public class RoomManager {
                 habbo.getHabboInfo().setRiding(null);
             }
 
-            if (!room.isOwner(habbo) && !room.hasRights(habbo))
-            {
-                room.pickupPetsForHabbo(habbo);
-            }
-
+            room.pickupPetsForHabbo(habbo);
             this.logExit(habbo);
             room.removeHabbo(habbo);
             room.sendComposer(new RoomUserRemoveComposer(habbo.getRoomUnit()).compose());
@@ -874,13 +886,89 @@ public class RoomManager {
 
         for(Room room : this.activeRooms.values())
         {
-            if(room.isPublicRoom() || room.isStaffPromotedRoom())
+            if(room.isPublicRoom() || room.isStaffPromotedRoom() || this.roomCategories.get(room.getCategory()).isPublic())
             {
                 rooms.add(room);
             }
         }
 
         return rooms;
+    }
+
+    public ArrayList<Room> getPopularRooms(int count)
+    {
+        ArrayList<Room> rooms = new ArrayList<Room>();
+
+        for(Room room : this.activeRooms.values())
+        {
+            if(!room.isPublicRoom() && room.getUserCount() > 0)
+            {
+                rooms.add(room);
+            }
+        }
+
+        if (rooms.isEmpty())
+        {
+            return rooms;
+        }
+
+        Collections.sort(rooms);
+
+        return new ArrayList<Room>(rooms.subList(0, (rooms.size() < count ? rooms.size() : count)));
+    }
+
+    public ArrayList<Room> getPopularRooms(int count, int category)
+    {
+        ArrayList<Room> rooms = new ArrayList<Room>();
+
+        for(Room room : this.activeRooms.values())
+        {
+            if(!room.isPublicRoom() && room.getCategory() == category)
+            {
+                rooms.add(room);
+            }
+        }
+
+        if (rooms.isEmpty())
+        {
+            return rooms;
+        }
+
+        Collections.sort(rooms);
+
+        return new ArrayList<Room>(rooms.subList(0, (rooms.size() < count ? rooms.size() : count)));
+    }
+
+    public Map<Integer, List<Room>> getPopularRoomsByCategory(int count)
+    {
+        Map<Integer, List<Room>> rooms = new HashMap<Integer, List<Room>>();
+
+        for (Room room : this.activeRooms.values())
+        {
+            if (!room.isPublicRoom())
+            {
+                if (!rooms.containsKey(room.getCategory()))
+                {
+                    rooms.put(room.getCategory(), new ArrayList<Room>());
+                }
+
+                rooms.get(room.getCategory()).add(room);
+            }
+        }
+
+        Map<Integer, List<Room>> result = new HashMap<Integer, List<Room>>();
+
+        for (Map.Entry<Integer, List<Room>> set : rooms.entrySet())
+        {
+            if (set.getValue().isEmpty())
+                continue;
+
+            Collections.sort(set.getValue());
+
+            result.put(set.getKey(), new ArrayList<Room>(set.getValue().subList(0, (set.getValue().size() < count ? set.getValue().size() : count))));
+        }
+
+        return result;
     }
 
     public ArrayList<Room> getRoomsWithName(String name)
@@ -1276,5 +1364,4 @@ public class RoomManager {
 
         return this.loadCustomLayout(room);
     }
-
 }

@@ -1,25 +1,26 @@
 package com.eu.habbo.messages.outgoing.navigator;
 
+import com.eu.habbo.habbohotel.navigation.SearchResultList;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class NewNavigatorSearchResultsComposer extends MessageComposer
 {
     private String searchCode;
     private String searchQuery;
-    private String parentName;
-    private List<Room> rooms;
+    private final List<SearchResultList> resultList;
 
-    public NewNavigatorSearchResultsComposer(String searchCode, String searchQuery, String parentName, List<Room> rooms)
+    public NewNavigatorSearchResultsComposer(String searchCode, String searchQuery, List<SearchResultList> resultList)
     {
-        this.searchCode = searchCode;
+        this.searchCode  = searchCode;
         this.searchQuery = searchQuery;
-        this.parentName = parentName;
-        this.rooms = rooms;
+        this.resultList  = resultList;
     }
 
     @Override
@@ -29,21 +30,24 @@ public class NewNavigatorSearchResultsComposer extends MessageComposer
         this.response.appendString(this.searchCode);
         this.response.appendString(this.searchQuery);
 
-        this.response.appendInt32(1); //Count something idk.
-        this.response.appendString(this.parentName);
-        this.response.appendString(this.searchQuery);
-        this.response.appendInt32(0);
-        this.response.appendBoolean(false);
-        this.response.appendInt32(2);
-        this.response.appendInt32(this.rooms.size());
-
-        for(Room room : this.rooms)
+        Collections.sort(this.resultList, new Comparator<SearchResultList>()
         {
-            room.serialize(this.response);
+            @Override
+            public int compare(SearchResultList o1, SearchResultList o2)
+            {
+                return o1.order - o2.order;
+            }
+        });
+
+        this.response.appendInt32(this.resultList.size()); //Count
+
+        for (SearchResultList item : resultList)
+        {
+            item.serialize(this.response);
         }
-
-
 
         return this.response;
     }
+
+
 }

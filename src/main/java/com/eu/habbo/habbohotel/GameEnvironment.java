@@ -50,12 +50,12 @@ public class GameEnvironment
 
         this.habboManager       = new HabboManager();
         this.hotelViewManager   = new HotelViewManager();
-        //this.navigatorManager = new NavigatorManager();
         this.guildManager       = new GuildManager();
         this.itemManager        = new ItemManager();
         this.itemManager.load();
         this.catalogManager     = new CatalogManager();
         this.roomManager        = new RoomManager();
+        this.navigatorManager   = new NavigatorManager();
         this.commandHandler     = new CommandHandler();
         this.permissionsManager = new PermissionsManager();
         this.botManager         = new BotManager();

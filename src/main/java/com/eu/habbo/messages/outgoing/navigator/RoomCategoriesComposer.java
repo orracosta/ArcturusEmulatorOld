@@ -26,11 +26,20 @@ public class RoomCategoriesComposer extends MessageComposer
         {
             this.response.appendInt32(category.getId());
             this.response.appendString(category.getCaption());
+            this.response.appendBoolean(true); //Visible
+            this.response.appendBoolean(false); //True = Disconnect?
+            this.response.appendString(category.getCaption());
+
+            if (category.getCaption().startsWith("${"))
+            {
+                this.response.appendString("");
+            }
+            else
+            {
+                this.response.appendString(category.getCaption());
+            }
+
             this.response.appendBoolean(true);
-            this.response.appendBoolean(false);
-            this.response.appendString("");
-            this.response.appendString("");
-            this.response.appendBoolean(false);
         }
 
         return this.response;

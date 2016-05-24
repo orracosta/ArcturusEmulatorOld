@@ -151,6 +151,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     //Use appropriately. Could potentially cause memory leaks when used incorrectly.
     public volatile boolean preventUnloading = false;
+    public volatile boolean preventUncaching = false;
 
     public Room(ResultSet set) throws SQLException
     {
@@ -995,8 +996,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     };
 
     @Override
-    public void run() {
-
+    public void run()
+    {
         if(this.loaded)
         {
             Emulator.getThreading().run(this, 500);
@@ -1668,6 +1669,21 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.guild = guild;
     }
 
+    public String getGuildName()
+    {
+        if (this.hasGuild())
+        {
+            Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(this.guild);
+
+            if (guild != null)
+            {
+                return guild.getName();
+            }
+        }
+
+        return "";
+    }
+
     public boolean isPublicRoom() {
         return this.publicRoom;
     }
@@ -1869,6 +1885,16 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public RoomPromotion getPromotion()
     {
         return this.promotion;
+    }
+
+    public String getPromotionDesc()
+    {
+        if (this.promotion != null)
+        {
+            return this.promotion.getDescription();
+        }
+
+        return "";
     }
 
     public void createPromotion(String title, String description)

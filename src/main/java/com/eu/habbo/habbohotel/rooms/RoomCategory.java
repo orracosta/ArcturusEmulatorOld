@@ -10,6 +10,8 @@ public class RoomCategory implements Comparable<RoomCategory> {
     private int minRank;
     private String caption;
     private boolean canTrade;
+    private int maxUserCount;
+    private boolean official;
 
     public RoomCategory(ResultSet set) throws SQLException
     {
@@ -17,6 +19,8 @@ public class RoomCategory implements Comparable<RoomCategory> {
         this.minRank = set.getInt("min_rank");
         this.caption = set.getString("caption");
         this.canTrade = set.getBoolean("can_trade");
+        this.maxUserCount = set.getInt("max_user_count");
+        this.official = set.getString("public").equals("1");
     }
 
     public int getId() {
@@ -33,6 +37,16 @@ public class RoomCategory implements Comparable<RoomCategory> {
 
     public boolean isCanTrade() {
         return this.canTrade;
+    }
+
+    public int getMaxUserCount()
+    {
+        return this.maxUserCount;
+    }
+
+    public boolean isPublic()
+    {
+        return this.official;
     }
 
     @Override
