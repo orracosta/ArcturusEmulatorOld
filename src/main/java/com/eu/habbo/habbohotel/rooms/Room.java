@@ -2810,7 +2810,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
         else if (chatType == RoomChatType.TALK)
         {
-            if( this.chatDistance < 50 || habbo.hasPermission("acc_chat_no_limit"))
+            if( this.chatDistance >= 50 || habbo.hasPermission("acc_chat_no_limit") || this.hasRights(habbo))
             {
                 this.sendComposer(new RoomUserTalkComposer(roomChatMessage).compose());
             }
@@ -2822,7 +2822,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 {
                     for (Habbo h : this.getCurrentHabbos().valueCollection())
                     {
-                        if (h.hasPermission("acc_chat_no_limit") || h.equals(habbo) || h.getRoomUnit().getLocation().distance(habbo.getRoomUnit().getLocation()) <= this.chatDistance)
+                        if (h.getRoomUnit().getLocation().distance(habbo.getRoomUnit().getLocation()) <= this.chatDistance || h.hasPermission("acc_chat_no_limit") || h.equals(habbo) || this.hasRights(h))
                         {
                             if (!h.getHabboStats().ignoredUsers.contains(habbo.getHabboInfo().getId()))
                                 h.getClient().sendResponse(message);
