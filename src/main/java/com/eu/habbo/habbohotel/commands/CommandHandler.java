@@ -92,11 +92,12 @@ public class CommandHandler
         addCommand(new TeleportCommand());
         addCommand(new TrashCommand());
         addCommand(new UnbanCommand());
-        addCommand(new UpdateGuildPartsCommand());
         addCommand(new UnloadRoomCommand());
         addCommand(new UpdateBotsCommand());
         addCommand(new UpdateCatalogCommand());
         addCommand(new UpdateConfigCommand());
+        addCommand(new UpdateGuildPartsCommand());
+        addCommand(new UpdateHotelViewCommand());
         addCommand(new UpdateItemsCommand());
         addCommand(new UpdatePermissionsCommand());
         addCommand(new UpdatePetDataCommand());
