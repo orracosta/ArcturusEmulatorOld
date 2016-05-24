@@ -258,7 +258,7 @@ public class Messenger
 
         try
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM messenger_friendrequests WHERE (user_to_id = ? AND user_from_id) OR (user_to_id = ? AND user_from_id = ?) LIMIT 1");
+            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM messenger_friendrequests WHERE (user_to_id = ? AND user_from_id = ?) OR (user_to_id = ? AND user_from_id = ?) LIMIT 1");
             statement.setInt(1, habbo.getHabboInfo().getId());
             statement.setInt(2, habboInfo.getId());
             statement.setInt(3, habboInfo.getId());
