@@ -46,10 +46,11 @@ public class HorseRideEvent extends MessageHandler
 
                 Tile goalTile = PathFinder.getSquareInFront(this.client.getHabbo().getRoomUnit().getX(), this.client.getHabbo().getRoomUnit().getY(), this.client.getHabbo().getRoomUnit().getBodyRotation().getValue());
 
-                if (goalTile.equals(new Tile(this.client.getHabbo().getRoomUnit().getX(), this.client.getHabbo().getRoomUnit().getY(), 0)))
+                if (goalTile.X == this.client.getHabbo().getRoomUnit().getX() && goalTile.Y == this.client.getHabbo().getRoomUnit().getY())
                 {
                     this.client.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(this.client.getHabbo(), 77);
                     this.client.getHabbo().getHabboInfo().setRiding((HorsePet) pet);
+                    ((HorsePet) pet).setRider(this.client.getHabbo());
                     this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserEffectComposer(this.client.getHabbo().getRoomUnit()).compose());
                     ((HorsePet) pet).setTask(PetTask.RIDE);
                 } else

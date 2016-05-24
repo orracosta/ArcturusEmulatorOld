@@ -35,7 +35,7 @@ public class RoomPetHorseFigureComposer extends MessageComposer
 
             this.response.appendInt32(this.pet.getHairStyle());
             this.response.appendInt32(this.pet.getHairColor());
-            this.response.appendInt32(3);
+            this.response.appendInt32(3); //Saddle type?
             this.response.appendInt32(this.pet.getHairStyle());
             this.response.appendInt32(this.pet.getHairColor());
         }

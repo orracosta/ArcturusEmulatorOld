@@ -70,7 +70,6 @@ public class RoomPetComposer extends MessageComposer implements TIntObjectProced
         this.response.appendBoolean(true); //Can breed
         this.response.appendInt32(pet.getLevel());
         this.response.appendString("");
-        pet.getRoomUnit().getStatus().put("grw", "0");
 
         return true;
     }

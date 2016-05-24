@@ -196,7 +196,6 @@ public class PacketManager
     private void registerNavigator()
     {
         this.registerHandler(Incoming.RequestRoomCategoriesEvent,               RequestRoomCategoriesEvent.class);
-        this.registerHandler(Incoming.RequestPublicRoomsEvent,                  RequestPublicRoomsEvent.class);
         this.registerHandler(Incoming.RequestPopularRoomsEvent,                 RequestPopularRoomsEvent.class);
         this.registerHandler(Incoming.RequestHighestScoreRoomsEvent,            RequestHighestScoreRoomsEvent.class);
         this.registerHandler(Incoming.RequestMyRoomsEvent,                      RequestMyRoomsEvent.class);
@@ -315,6 +314,7 @@ public class PacketManager
         this.registerHandler(Incoming.IgnoreRoomUserEvent,                      IgnoreRoomUserEvent.class);
         this.registerHandler(Incoming.UnIgnoreRoomUserEvent,                    UnIgnoreRoomUserEvent.class);
         this.registerHandler(Incoming.UnbanRoomUserEvent,                       UnbanRoomUserEvent.class);
+        this.registerHandler(Incoming.RequestRoomUserTagsEvent,                 RequestRoomUserTagsEvent.class);
     }
 
     void registerPolls()

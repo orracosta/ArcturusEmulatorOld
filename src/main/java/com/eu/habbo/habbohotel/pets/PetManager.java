@@ -302,7 +302,13 @@ public class PetManager
     {
         int type = Integer.valueOf(item.getName().toLowerCase().replace("a0 pet", ""));
 
-        Pet pet = new Pet(type,
+        Pet pet;
+        if(type == 15)
+            pet = new HorsePet(type, Integer.valueOf(race), color, name, client.getHabbo().getHabboInfo().getId());
+        else if(type == 16)
+            pet = createMonsterplant(null, client.getHabbo(), false, null);
+        else
+            pet = new Pet(type,
                 Integer.valueOf(race),
                 color,
                 name,

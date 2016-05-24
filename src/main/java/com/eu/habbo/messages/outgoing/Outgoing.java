@@ -208,7 +208,7 @@ public class Outgoing
     public final static int ClubGiftsComposer = 1549; //Updated
     public final static int MachineIDComposer = 2935; //Updated
     public final static int PongComposer = 3014; //Updated
-    public final static int UnknownModToolComposer = 2541; //Updated
+    public final static int ModToolIssueHandlerDimensionsComposer = 2541; //Updated
 
     //Uknown but work
     public final static int UnknownComposer4 = 1709; //Updated
