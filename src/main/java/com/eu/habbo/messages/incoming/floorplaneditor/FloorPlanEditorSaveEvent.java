@@ -16,7 +16,7 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
+        final Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
 
         if(room == null)
             return;
@@ -83,7 +83,7 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
 
             if(layout != null)
             {
-                THashSet<Habbo> habbos = new THashSet<Habbo>(room.getCurrentHabbos().valueCollection());
+                final THashSet<Habbo> habbos = new THashSet<Habbo>(room.getCurrentHabbos().valueCollection());
 
                 room.setHasCustomLayout(true);
                 room.setNeedsUpdate(true);
@@ -91,13 +91,29 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
                 room.setWallSize(wallSize);
                 room.setFloorSize(floorSize);
                 room.setWallHeight(wallHeight);
-                room.dispose();
 
-                ServerMessage message = new ForwardToRoomComposer(room.getId()).compose();
-                for(Habbo habbo : habbos)
+                Emulator.getThreading().run(new Runnable()
                 {
-                    habbo.getClient().sendResponse(message);
-                }
+                    @Override
+                    public void run()
+                    {
+                        room.dispose();
+
+                        try
+                        {
+                            Thread.sleep(1000);
+                        }
+                        catch (InterruptedException e)
+                        {
+                        }
+
+                        ServerMessage message = new ForwardToRoomComposer(room.getId()).compose();
+                        for(Habbo habbo : habbos)
+                        {
+                            habbo.getClient().sendResponse(message);
+                        }
+                    }
+                });
             }
             else
             {
