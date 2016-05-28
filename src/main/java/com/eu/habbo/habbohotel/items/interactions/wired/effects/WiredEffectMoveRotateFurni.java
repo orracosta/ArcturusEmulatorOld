@@ -11,6 +11,7 @@ import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemOnRollerComposer;
+import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
@@ -55,6 +56,34 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
 
         for(HabboItem item : this.items)
         {
+            if(this.rotation > 0)
+            {
+                if(this.rotation == 1)
+                {
+                    item.setRotation(item.getRotation()+ 2);
+                }
+                else if(this.rotation == 2)
+                {
+                    item.setRotation(item.getRotation() + 6);
+                }
+                else if(this.rotation == 3)
+                {
+                    if(Emulator.getRandom().nextInt(2) == 1)
+                    {
+                        item.setRotation(item.getRotation() + 2);
+                    }
+                    else
+                    {
+                        item.setRotation(item.getRotation() + 6);
+                    }
+                }
+
+                if (this.direction == 0)
+                {
+                    room.sendComposer(new FloorItemUpdateComposer(item).compose());
+                }
+            }
+
             if(this.direction > 0)
             {
                 RoomUserRotation moveDirection = RoomUserRotation.NORTH;
@@ -87,7 +116,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
                 }
                 else if(this.direction == 4)
                 {
-                    moveDirection = RoomUserRotation.NORTH;
+                    moveDirection = RoomUserRotation.SOUTH;
                 }
                 else if(this.direction == 5)
                 {
@@ -95,7 +124,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
                 }
                 else if(this.direction == 6)
                 {
-                    moveDirection = RoomUserRotation.SOUTH;
+                    moveDirection = RoomUserRotation.NORTH;
                 }
                 else if(this.direction == 7)
                 {
@@ -122,29 +151,6 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
                                 room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, room).compose());
                             }
                         }
-                    }
-                }
-            }
-
-            if(this.rotation > 0)
-            {
-                if(this.rotation == 1)
-                {
-                    item.setRotation(item.getRotation()+ 2);
-                }
-                else if(this.rotation == 2)
-                {
-                    item.setRotation(item.getRotation() + 6);
-                }
-                else if(this.rotation == 3)
-                {
-                    if(Emulator.getRandom().nextInt(2) == 1)
-                    {
-                        item.setRotation(item.getRotation() + 2);
-                    }
-                    else
-                    {
-                        item.setRotation(item.getRotation() + 6);
                     }
                 }
             }
