@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboGender;
 import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,10 +13,11 @@ import java.sql.SQLException;
 public class WardrobeComponent
 {
     private final THashMap<Integer, WardrobeItem> looks;
+    private final THashSet<Integer> clothing;
 
     public WardrobeComponent(Habbo habbo)
     {
-        looks = new THashMap<Integer, WardrobeItem>();
+        this.looks = new THashMap<Integer, WardrobeItem>();
 
         try
         {
@@ -23,15 +25,38 @@ public class WardrobeComponent
             statement.setInt(1, habbo.getHabboInfo().getId());
             ResultSet set = statement.executeQuery();
 
-            while(set.next())
+            while (set.next())
             {
                 this.looks.put(set.getInt("slot_id"), new WardrobeItem(set, habbo));
             }
+
             set.close();
             statement.close();
             statement.getConnection().close();
         }
         catch(SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
+        this.clothing = new THashSet<Integer>();
+
+        try
+        {
+            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM users_clothing WHERE user_id = ?");
+            statement.setInt(1, habbo.getHabboInfo().getId());
+            ResultSet set = statement.executeQuery();
+
+            while (set.next())
+            {
+                this.clothing.add(set.getInt("clothing_id"));
+            }
+
+            set.close();
+            statement.close();
+            statement.getConnection().close();
+        }
+        catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
         }
@@ -47,6 +72,11 @@ public class WardrobeComponent
         return this.looks;
     }
 
+    public THashSet<Integer> getClothing()
+    {
+        return this.clothing;
+    }
+
     public void dispose()
     {
         for(WardrobeItem item : looks.values())
@@ -59,7 +89,6 @@ public class WardrobeComponent
 
         looks.clear();
     }
-
 
     public class WardrobeItem implements Runnable
     {

@@ -89,6 +89,7 @@ public class SecureLoginEvent extends MessageHandler
                 this.client.sendResponse(new NewNavigatorEventCategoriesComposer());
                 this.client.sendResponse(new DebugConsoleComposer());
                 this.client.sendResponse(new InventoryRefreshComposer());
+                this.client.sendResponse(new UserClothesComposer(this.client.getHabbo()));
 
                 Emulator.getPluginManager().fireEvent(new UserLoginEvent(habbo, this.client.getChannel().localAddress()));
 

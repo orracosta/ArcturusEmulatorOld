@@ -65,6 +65,11 @@ public class CatalogManager
     public final THashSet<CatalogItem> clubItems;
 
     /**
+     * All clothing definitions
+     */
+    public final THashMap<Integer, ClothItem> clothing;
+
+    /**
      * Offer definitions.
      */
     public final TIntIntHashMap offerDefs;
@@ -135,6 +140,7 @@ public class CatalogManager
         this.giftWrappers = new THashMap<Integer, Integer>();
         this.giftFurnis = new THashMap<Integer, Integer>();
         this.clubItems = new THashSet<CatalogItem>();
+        this.clothing = new THashMap<Integer, ClothItem>();
         this.offerDefs = new TIntIntHashMap();
         this.vouchers = new ArrayList<Voucher>();
         this.initialize();
@@ -154,6 +160,7 @@ public class CatalogManager
             loadCatalogPages();
             loadCatalogItems();
             loadVouchers();
+            loadClothing();
             loadRecycler();
             loadGiftWrappers();
         }
@@ -444,6 +451,47 @@ public class CatalogManager
                 }
             }
         }
+    }
+
+    public void loadClothing()
+    {
+        synchronized (this.clothing)
+        {
+            this.clothing.clear();
+
+            try
+            {
+                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM catalog_clothing");
+                ResultSet set = statement.executeQuery();
+
+                while (set.next())
+                {
+                    this.clothing.put(set.getInt("id"), new ClothItem(set));
+                }
+
+                set.close();
+                statement.close();
+                statement.getConnection().close();
+
+            }
+            catch (SQLException e)
+            {
+                Emulator.getLogging().logSQLException(e);
+            }
+        }
+    }
+
+    public ClothItem getClothing(String name)
+    {
+        for (ClothItem item : this.clothing.values())
+        {
+            if (item.name.equalsIgnoreCase(name))
+            {
+                return item;
+            }
+        }
+
+        return null;
     }
 
     /**

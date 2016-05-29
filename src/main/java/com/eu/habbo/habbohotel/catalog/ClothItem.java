@@ -3,27 +3,33 @@ package com.eu.habbo.habbohotel.catalog;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-class ClothItem
+public class ClothItem
 {
     /**
      * Identifier.
      */
-    private int id;
+    public int id;
 
     /**
      * Name
      */
-    private String name;
+    public String name;
 
     /**
      * Set
      */
-    private String setId;
+    public int[] setId;
 
     public ClothItem(ResultSet set) throws SQLException
     {
         this.id = set.getInt("id");
         this.name = set.getString("name");
-        this.setId = set.getString("setid");
+        String[] parts = set.getString("setid").split(",");
+
+        setId = new int[parts.length];
+        for (int i = 0; i < setId.length; i++)
+        {
+            setId[i] = Integer.valueOf(parts[i]);
+        }
     }
 }
