@@ -1,6 +1,9 @@
 package com.eu.habbo;
 
-import com.eu.habbo.core.*;
+import com.eu.habbo.core.CleanerThread;
+import com.eu.habbo.core.ConfigurationManager;
+import com.eu.habbo.core.Logging;
+import com.eu.habbo.core.TextsManager;
 import com.eu.habbo.database.Database;
 import com.eu.habbo.habbohotel.GameEnvironment;
 import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
@@ -137,14 +140,6 @@ public final class Emulator
 
         Emulator.getLogging().logShutdownLine("Disposed!");
         Emulator.stopped = true;
-    }
-
-    private static void initializeDatabase()
-    {
-        if(database == null)
-        {
-            database = new Database(Emulator.config);
-        }
     }
     
     public static ConfigurationManager getConfig()
