@@ -64,6 +64,7 @@ public class RoomUnit
     public boolean modMuted;
     public int modMuteTime;
     private int idleTimer;
+    private Room room;
 
     public RoomUnit()
     {
@@ -85,6 +86,7 @@ public class RoomUnit
         this.effectId = 0;
         this.wiredMuted = false;
         this.modMuted = false;
+        this.room = room;
     }
 
     public void clearWalking()

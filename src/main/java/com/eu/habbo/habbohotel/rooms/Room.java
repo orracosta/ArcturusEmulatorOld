@@ -600,22 +600,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     updatedTiles.add(new Tile(x, y, stackHeight * 250.0D));
 
                     updateHabbosAt(x, y);
-
-//                    double stackHeight = this.getStackHeight(item.getX(), item.getY(), false);
-//                    updatedTiles.add(new Tile(item.getX(), item.getY(), stackHeight * 250.0D));
-//
-//                    THashSet<Habbo> habbos = this.getHabbosAt(item.getX(), item.getY());
-//
-//                    THashSet<RoomUnit> roomUnits = new THashSet<RoomUnit>();
-//                    for (Habbo habbo : habbos)
-//                    {
-//                        if(item.getBaseItem().allowSit())
-//                            habbo.getRoomUnit().getStatus().remove("sit");
-//
-//                        habbo.getRoomUnit().setZ(stackHeight);
-//                        roomUnits.add(habbo.getRoomUnit());
-//
-//                    }
                 }
             }
             this.sendComposer(new UpdateStackHeightComposer(updatedTiles).compose());
@@ -883,8 +867,14 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     @SuppressWarnings("NullableProblems")
     @Override
-    public int compareTo(Room o) {
-        return  o.getCurrentHabbos().size() - this.getCurrentHabbos().size();
+    public int compareTo(Room o)
+    {
+        if (o.getUserCount() != this.getUserCount())
+        {
+            return  o.getCurrentHabbos().size() - this.getCurrentHabbos().size();
+        }
+
+        return this.id - o.id ;
     }
 
     @Override
@@ -2134,7 +2124,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         synchronized (this.furniOwnerNames)
         {
-            if (this.furniOwnerNames.get(item.getUserId()) == null)
+            if (!this.furniOwnerNames.containsKey(item.getUserId()))
             {
                 HabboInfo habbo = HabboManager.getOfflineHabboInfo(item.getUserId());
                 this.furniOwnerNames.put(item.getUserId(), habbo.getUsername());
@@ -3919,6 +3909,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 this.pickUpItem(i, null);
             }
         }
+    }
+
+    public void ejectUserItem(HabboItem item)
+    {
+        this.pickUpItem(item, null);
     }
 
     /**

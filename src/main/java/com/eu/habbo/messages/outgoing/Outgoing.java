@@ -378,7 +378,7 @@ public class Outgoing
     public final static int UnknownRoomVisitsComposer = 1229; //:test 155 i:2 i:1 s:a s:b i:2 s:c s:d //Updated
     public final static int CanCreateEventComposer = 852; //Updated
     public final static int UnknownGroupComposer = 3197; //Updated
-    public final static int YoutubeMessageComposer1 = 763; //Updated
+    public final static int YoutubeDisplayListComposer = 763; //Updated
     public final static int YoutubeMessageComposer2 = 2374; //Updated
     public final static int YoutubeMessageComposer3 = 1613; //Updated
     public final static int RoomCategoryUpdateMessageComposer = 315; //:test 1433 i:0 //Updated
@@ -396,6 +396,19 @@ public class Outgoing
     public final static int UnknownQuestComposer1 = 1477; //Updated
     public final static int ModToolSanctionDataComposer = 2254; //New In Production20160101
     public final static int CallForHelpTopicsComposer = 2067; //New In Production20160101
+    /**
+     * int << count
+     * {
+     *     string << ?
+     *     int << Count
+     *     {
+     *         string << Name
+     *         int << ID
+     *         string << Consequence
+     *     }
+     * }
+     */
+
 
 
     /**
@@ -416,7 +429,7 @@ public class Outgoing
     public final static int CraftableProductsComposer = 2428; //:test 2428 i:1 s:throne s:throne i:1 s:doorD
     public final static int CraftingRecipeComposer = 987; //:test 987 i:1 i:1 s:a
     public final static int CraftingResultComposer = 3543;
-    public final static int CraftingComposerFour = 880;
+    public final static int CraftingComposerFour = 880; //:test 880 i:1 b:0
 
 
 }

@@ -26,12 +26,19 @@ public class RoomPickupItemEvent extends MessageHandler
         if(item instanceof InteractionPostIt)
             return;
 
-        if(item.getUserId() == this.client.getHabbo().getHabboInfo().getId() || (room.getGuildId() > 0 && room.guildRightLevel(this.client.getHabbo()) >= 2) || this.client.getHabbo().hasPermission("acc_anyroomowner"))
+        if (room.hasRights(this.client.getHabbo()))
         {
-            if (room.getGuildId() == 0 && this.client.getHabbo().hasPermission("acc_anyroomowner"))
-                item.setUserId(this.client.getHabbo().getHabboInfo().getId());
+            if(item.getUserId() == this.client.getHabbo().getHabboInfo().getId() || (room.getGuildId() > 0 && room.guildRightLevel(this.client.getHabbo()) >= 2) || this.client.getHabbo().hasPermission("acc_anyroomowner"))
+            {
+                if (room.getGuildId() == 0 && this.client.getHabbo().hasPermission("acc_anyroomowner"))
+                    item.setUserId(this.client.getHabbo().getHabboInfo().getId());
 
-            room.pickUpItem(item, this.client.getHabbo());
+                room.pickUpItem(item, this.client.getHabbo());
+            }
+            else
+            {
+                room.ejectUserItem(item);
+            }
         }
     }
 }

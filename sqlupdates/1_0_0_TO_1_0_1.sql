@@ -18,8 +18,8 @@ call drop_acc_kickwars();
 drop procedure if exists drop_acc_kickwars;
 
 INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.navigator.camera', '1');
-ALTER TABLE  `navigator_flatcats` ADD  `max_user_count` INT( 11 ) NOT NULL DEFAULT  '100';
-ALTER TABLE  `navigator_flatcats` ADD  `public` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0';
+ALTER TABLE `navigator_flatcats` ADD  `max_user_count` INT( 11 ) NOT NULL DEFAULT  '100';
+ALTER TABLE `navigator_flatcats` ADD  `public` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0';
 DELETE FROM `navigator_flatcats`;
 ALTER TABLE `navigator_flatcats` AUTO_INCREMENT = 1;
 INSERT INTO `navigator_flatcats` (`id`, `min_rank`, `caption`, `can_trade`, `max_user_count`, `public`) VALUES

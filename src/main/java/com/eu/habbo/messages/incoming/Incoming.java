@@ -20,7 +20,7 @@ public class Incoming
     public static final int GuildDeclineMembershipEvent = 403;//1320
     public static final int AnswerPollEvent = 3757;//1847
     public static final int UserWearBadgeEvent = 2752;//2473
-    public static final int RoomVoteEvent = -1;//242
+    public static final int RoomVoteEvent = 336;//242
     public static final int RoomUserSignEvent = 2966;//2189
     public static final int RequestUserDataEvent = 186;//112 //Updated
     public static final int RoomUserShoutEvent = 2101;//936

@@ -13,7 +13,8 @@ import gnu.trove.set.hash.THashSet;
 
 import java.util.NoSuchElementException;
 
-public class RoomFloorItemsComposer extends MessageComposer{
+public class RoomFloorItemsComposer extends MessageComposer
+{
 
     private final Room room;
 
@@ -56,7 +57,7 @@ public class RoomFloorItemsComposer extends MessageComposer{
             item.serializeExtradata(this.response);
             this.response.appendInt32(-1);
             this.response.appendInt32(item.getBaseItem().getStateCount() > 1 ? 1 : 0);
-            this.response.appendInt32(this.room.getOwnerId());
+            this.response.appendInt32(item.getUserId());
         }
         return this.response;
     }

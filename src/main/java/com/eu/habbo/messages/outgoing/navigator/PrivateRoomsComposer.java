@@ -19,9 +19,6 @@ public class PrivateRoomsComposer extends MessageComposer
     @Override
     public ServerMessage compose()
     {
-        if(true)
-            return null;
-
         try
         {
             this.response.init(Outgoing.PrivateRoomsComposer);

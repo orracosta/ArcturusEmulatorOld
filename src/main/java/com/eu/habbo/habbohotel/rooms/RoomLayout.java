@@ -4,18 +4,18 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.util.pathfinding.PathFinder;
 import com.eu.habbo.util.pathfinding.Tile;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class RoomLayout {
-
+public class RoomLayout
+{
     private String name;
     private int doorX;
     private int doorY;
     private int doorZ;
     private int doorDirection;
     private String heightmap;
-    private String map;
     private int mapSize;
     private int mapSizeX;
     private int mapSizeY;
@@ -102,29 +102,47 @@ public class RoomLayout {
             }
         }
 
-        for (String MapLine : this.heightmap.split("\r\n"))
-        {
-            if ((MapLine != null) && (!MapLine.isEmpty()))
-            {
-                this.map = (this.map + MapLine + '\r');
-            }
-        }
-
         Tile doorFrontTile = PathFinder.getSquareInFront(this.doorX, this.doorY, this.doorDirection);
+
+        System.out.println(new Tile(this.doorX, this.doorY, this.doorZ));
 
         if(this.tileExists(doorFrontTile.x, doorFrontTile.y))
         {
             if(this.getSquareStates()[doorFrontTile.x][doorFrontTile.y] != RoomTileState.BLOCKED)
             {
-                if (this.doorZ != (int)this.squareHeights[doorFrontTile.x][doorFrontTile.y])
+                if (this.doorZ != this.squareHeights[doorFrontTile.x][doorFrontTile.y] || this.squareStates[this.doorX][this.doorY] != this.squareStates[doorFrontTile.x][doorFrontTile.y])
                 {
                     this.doorZ = (int) this.squareHeights[doorFrontTile.x][doorFrontTile.y];
                     this.squareStates[this.doorX][this.doorY] = this.squareStates[doorFrontTile.x][doorFrontTile.y];
                     this.squareHeights[this.doorX][this.doorY] = this.squareHeights[doorFrontTile.x][doorFrontTile.y];
 
                     StringBuilder stringBuilder = new StringBuilder(this.heightmap);
-                    stringBuilder.setCharAt((this.doorX * (this.getMapSizeX() + 2)) + this.doorY, this.squareHeights[doorFrontTile.x][doorFrontTile.y] > 10 ? "ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(this.squareHeights[doorFrontTile.x][doorFrontTile.y] - 10) : ("" + (int) (this.squareHeights[doorFrontTile.x][doorFrontTile.y])).charAt(0));
+                    stringBuilder.setCharAt((this.doorY * (this.getMapSizeX() + 2)) + this.doorX, this.squareHeights[doorFrontTile.x][doorFrontTile.y] >= 10 ? "ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(this.squareHeights[doorFrontTile.x][doorFrontTile.y] - 10) : ("" + (int) (this.squareHeights[doorFrontTile.x][doorFrontTile.y])).charAt(0));
                     this.heightmap = stringBuilder.toString();
+
+                    try
+                    {
+                        PreparedStatement statement;
+
+                        if (name.startsWith("custom_"))
+                        {
+                            statement = Emulator.getDatabase().prepare("UPDATE room_models_custom SET heightmap = ? WHERE name = ?");
+                        }
+                        else
+                        {
+                            statement = Emulator.getDatabase().prepare("UPDATE room_models SET heightmap = ? WHERE name = ?");
+                        }
+
+                        statement.setString(1, this.heightmap);
+                        statement.setString(2, this.name);
+                        statement.execute();
+                        statement.getConnection().close();
+                        statement.close();
+                    }
+                    catch (SQLException e)
+                    {
+                        Emulator.getLogging().logSQLException(e);
+                    }
                 }
             }
         }

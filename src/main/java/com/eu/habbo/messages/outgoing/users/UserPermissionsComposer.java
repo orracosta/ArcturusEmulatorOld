@@ -11,13 +11,10 @@ public class UserPermissionsComposer extends MessageComposer
 
     private final Habbo habbo;
 
-    private final int rank;
-
     public UserPermissionsComposer(Habbo habbo)
     {
         this.clubLevel = habbo.getHabboStats().hasActiveClub() ? 2 : 0;
         this.habbo = habbo;
-        this.rank = habbo.getHabboInfo().getRank();
     }
 
     @Override
@@ -26,7 +23,7 @@ public class UserPermissionsComposer extends MessageComposer
         this.response.init(Outgoing.UserPermissionsComposer);
 
         this.response.appendInt32(this.clubLevel);
-        this.response.appendInt32(this.rank);
+        this.response.appendInt32(this.habbo.getHabboInfo().getRank());
         this.response.appendBoolean(this.habbo.hasPermission("acc_ambassador"));
 
         return this.response;

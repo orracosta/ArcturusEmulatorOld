@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.messages.ISerialize;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserTalkComposer;
+import com.eu.habbo.plugin.events.pets.PetTalkEvent;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -36,7 +37,12 @@ public abstract class AbstractPet implements ISerialize, Runnable
     {
         if(this.roomUnit != null && this.room != null && !message.isEmpty())
         {
-            this.room.sendComposer(new RoomUserTalkComposer(new RoomChatMessage(message, this.roomUnit, RoomChatMessageBubbles.NORMAL)).compose());
+            RoomChatMessage chatMessage = new RoomChatMessage(message, this.roomUnit, RoomChatMessageBubbles.NORMAL);
+            PetTalkEvent talkEvent = new PetTalkEvent(this, chatMessage);
+            if (!Emulator.getPluginManager().fireEvent(talkEvent).isCancelled())
+            {
+                this.room.sendComposer(new RoomUserTalkComposer(chatMessage).compose());
+            }
         }
     }
 

@@ -39,7 +39,7 @@ public class RoomCategoriesComposer extends MessageComposer
                 this.response.appendString(category.getCaption());
             }
 
-            this.response.appendBoolean(true);
+            this.response.appendBoolean(false);
         }
 
         return this.response;
