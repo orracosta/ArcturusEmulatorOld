@@ -8,9 +8,11 @@ SWF: http://arcturus.wf/mirrors/PRODUCTION-201601012205-226667486.swf
 
 SCRIPTS: http://arcturus.wf/mirrors/PRODUCTION-201601012205-226667486_scripts.txt
 
-Compiled version: http://arcturus.wf/mirrors/ArcturusEmulator.zip
+Compiled version: http://arcturus.wf/mirrors/ArcturusEmulator_1.0.2.zip
 
 Database: http://arcturus.wf/mirrors/habbo.sql
+
+Older Files: http://arcturus.wf/mirrors/
 
 ### Contributing ###
 
