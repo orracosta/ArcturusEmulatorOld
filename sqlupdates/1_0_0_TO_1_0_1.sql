@@ -46,7 +46,7 @@ INSERT INTO `navigator_publiccats` (`id`, `name`) VALUES
                                    ('1', 'Staff Picks'),
                                    ('2', 'Official Games'),
                                    ('3', 'Official Fansites'),
-                                   ('4', 'BAW: Builders at Work')
+                                   ('4', 'BAW: Builders at Work'),
                                    ('5', 'Room Bundles'),
                                    ('6', 'Safety');
 
