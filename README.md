@@ -21,7 +21,8 @@ Anyone is allowed to contribute to the project. Reporting bugs and issues goes v
 You can request features in the issue tracker.
 
 ### Plugins ###
-An example plugin can be found here: https://bitbucket.org/Wesley12312/pluginexample 
+An example plugin can be found here: https://bitbucket.org/Wesley12312/pluginexample
+
 Here is a list of cool plugins you can download:
 
 * https://bitbucket.org/Wesley12312/kickwars-plugin
