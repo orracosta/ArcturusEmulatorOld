@@ -34,9 +34,9 @@ public class RoomBackgroundEvent extends MessageHandler
             if(event.isCancelled())
                 return;
 
-            hue        = event.hue        % 255;
-            saturation = event.saturation % 255;
-            brightness = event.brightness % 255;
+            hue        = event.hue        % 256;
+            saturation = event.saturation % 256;
+            brightness = event.brightness % 256;
 
             item.setExtradata(item.getExtradata().split(":")[0] + ":" + hue + ":" + saturation + ":" + brightness);
             item.needsUpdate(true);
