@@ -38,7 +38,8 @@ public class RoomUsersComposer extends MessageComposer
     }
 
     @Override
-    public ServerMessage compose()    {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.RoomUsersComposer);
         if(this.habbo != null) {
             this.response.appendInt32(1);
@@ -67,7 +68,7 @@ public class RoomUsersComposer extends MessageComposer
             this.response.appendString(name);
 
             this.response.appendString("");
-            this.response.appendInt32(this.habbo.getHabboInfo().getAchievementScore());
+            this.response.appendInt32(this.habbo.getHabboStats().getAchievementScore());
             this.response.appendBoolean(true);
         }
         else if(this.habbos != null)
@@ -90,7 +91,7 @@ public class RoomUsersComposer extends MessageComposer
                 this.response.appendInt32(habbo.getHabboStats().guild != 0 ? 1 : -1);
                 this.response.appendString(habbo.getHabboStats().guild != 0 ? Emulator.getGameEnvironment().getGuildManager().getGuild(habbo.getHabboStats().guild).getName() : "");
                 this.response.appendString("");
-                this.response.appendInt32(habbo.getHabboInfo().getAchievementScore());
+                this.response.appendInt32(habbo.getHabboStats().getAchievementScore());
                 this.response.appendBoolean(true);
             }
         }

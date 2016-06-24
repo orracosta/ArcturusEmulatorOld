@@ -172,7 +172,7 @@ public class AchievementManager
                 }
             }
 
-            habbo.getHabboInfo().addAchievementScore(newLevel.points);
+            habbo.getHabboStats().addAchievementScore(newLevel.points);
         }
     }
 

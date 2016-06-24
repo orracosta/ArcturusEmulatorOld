@@ -48,7 +48,7 @@ public class UserProfileComposer extends MessageComposer
         this.response.appendString(this.habboInfo.getLook());
         this.response.appendString(this.habboInfo.getMotto());
         this.response.appendString(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date(this.habboInfo.getAccountCreated() * 1000L)));
-        this.response.appendInt32(this.habboInfo.getAchievementScore());
+        this.response.appendInt32(this.habbo != null ? this.habbo.getHabboStats().getAchievementScore() : 0);
         this.response.appendInt32(Messenger.getFriendCount(this.habboInfo.getId()));
         this.response.appendBoolean(viewer.getHabbo().getMessenger().getFriends().containsKey(this.habboInfo.getId())); //Friend
         this.response.appendBoolean(Messenger.friendRequested(this.viewer.getHabbo().getHabboInfo().getId(), this.habboInfo.getId())); //Friend Request Send

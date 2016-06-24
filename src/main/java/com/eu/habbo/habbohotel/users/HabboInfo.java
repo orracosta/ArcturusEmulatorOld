@@ -240,16 +240,6 @@ public class HabboInfo implements Runnable
         this.accountCreated = accountCreated;
     }
 
-    public int getAchievementScore()
-    {
-        return this.achievementScore;
-    }
-
-    public void addAchievementScore(int achievementScore)
-    {
-        this.achievementScore += achievementScore;
-    }
-
     public boolean canBuy(CatalogItem item)
     {
         if(this.credits < item.getCredits())

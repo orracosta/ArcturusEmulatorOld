@@ -329,6 +329,16 @@ public class HabboStats implements Runnable
         return false;
     }
 
+    public int getAchievementScore()
+    {
+        return this.achievementScore;
+    }
+
+    public void addAchievementScore(int achievementScore)
+    {
+        this.achievementScore += achievementScore;
+    }
+
     public int getAchievementProgress(Achievement achievement)
     {
         if(this.achievementProgress.containsKey(achievement))
