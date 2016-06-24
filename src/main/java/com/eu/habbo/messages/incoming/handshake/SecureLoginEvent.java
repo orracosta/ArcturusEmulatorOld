@@ -21,6 +21,7 @@ import com.eu.habbo.messages.outgoing.inventory.InventoryItemsComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.modtool.ModToolComposer;
 import com.eu.habbo.messages.outgoing.navigator.*;
+import com.eu.habbo.messages.outgoing.unknown.BuildersClubExpiredComposer;
 import com.eu.habbo.messages.outgoing.unknown.NewUserIdentityComposer;
 import com.eu.habbo.messages.outgoing.users.*;
 import com.eu.habbo.plugin.events.users.UserLoginEvent;
@@ -90,6 +91,8 @@ public class SecureLoginEvent extends MessageHandler
                 this.client.sendResponse(new DebugConsoleComposer());
                 this.client.sendResponse(new InventoryRefreshComposer());
                 this.client.sendResponse(new UserClothesComposer(this.client.getHabbo()));
+
+                this.client.sendResponse(new BuildersClubExpiredComposer());
 
                 Emulator.getPluginManager().fireEvent(new UserLoginEvent(habbo, this.client.getChannel().localAddress()));
 
