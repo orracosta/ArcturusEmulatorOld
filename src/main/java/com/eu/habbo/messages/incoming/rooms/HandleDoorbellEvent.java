@@ -4,9 +4,10 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.hotelview.HotelViewComposer;
-import com.eu.habbo.messages.outgoing.rooms.KnockKnockUnknownComposer2;
+import com.eu.habbo.messages.outgoing.rooms.HideDoorbellComposer;
+import com.eu.habbo.messages.outgoing.rooms.RoomAccessDeniedComposer;
 
-public class KnockKnockResponseEvent extends MessageHandler
+public class HandleDoorbellEvent extends MessageHandler
 {
     @Override
     public void handle() throws Exception
@@ -22,14 +23,15 @@ public class KnockKnockResponseEvent extends MessageHandler
             {
                 if (accepted)
                 {
-                    Emulator.getGameEnvironment().getRoomManager().enterRoom(habbo, this.client.getHabbo().getHabboInfo().getCurrentRoom());
+                    Emulator.getGameEnvironment().getRoomManager().enterRoom(habbo, this.client.getHabbo().getHabboInfo().getCurrentRoom().getId(), "", true);
                 }
                 else
                 {
-                    habbo.getClient().sendResponse(new KnockKnockUnknownComposer2(habbo));
+                    habbo.getClient().sendResponse(new RoomAccessDeniedComposer(habbo));
                     habbo.getClient().sendResponse(new HotelViewComposer());
                 }
 
+                this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new HideDoorbellComposer(username).compose());
                 this.client.getHabbo().getHabboInfo().getCurrentRoom().removeFromQueue(habbo);
                 habbo.getHabboInfo().setRoomQueueId(0);
             }

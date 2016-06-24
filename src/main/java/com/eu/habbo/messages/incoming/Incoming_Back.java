@@ -402,7 +402,7 @@ public class Incoming_Back
     public static final int RequestCreditsEvent = 1623;//2138
     public static final int SearchRoomsInGroupEvent = 2066;//1160
     public static final int HorseRideSettingsEvent = 1731;//2448
-    public static final int KnockKnockResponseEvent = 91;
+    public static final int HandleDoorbellEvent = 91;
     public static final int RoomUserKickEvent = 1718;//1874
     public static final int RoomPlaceItemEvent = 2554;//474
     public static final int RequestInventoryBotsEvent = 3549;//1351

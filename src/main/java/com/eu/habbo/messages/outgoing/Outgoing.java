@@ -81,7 +81,7 @@ public class Outgoing
     public final static int PrivateRoomsComposer = 43;//2653 //Updated
     public final static int RoomModelComposer = 2029;//2297 //Updated
     public final static int RoomScoreComposer = 3464;//2805 //Updated
-    public final static int KnockKnockComposer = 162;//3198 //Updated
+    public final static int DoorbellAddUserComposer = 162;//3198 //Updated
     public final static int SecureLoginOKComposer = 1442;//2753 //Updated
     public final static int SessionRightsComposer = 2468;//1313 //Updated
     public final static int GuildMemberUpdateComposer = 2954;//862 //Updated
@@ -272,7 +272,7 @@ public class Outgoing
 
     public final static int RoomMutedComposer = 0x0101; //Updated
 
-    public final static int RoomUnknown1Composer = 1179; //Updated //Doorbell opened.
+    public final static int HideDoorbellComposer = 1179; //Updated //Doorbell opened.
     public final static int RoomUnknown2Composer = 2253; //Updated
     public final static int RoomUnknown3Composer = 3719; //Updated
 

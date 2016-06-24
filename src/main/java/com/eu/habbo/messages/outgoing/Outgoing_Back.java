@@ -219,7 +219,7 @@ public class Outgoing_Back
     public static final int BotSettingsComposer = 1522;
     public static final int RoomSettingsUpdatedComposer = 543;
     public static final int RoomChatSettingsComposer = 3710;
-    public static final int KnockKnockComposer = 3198;
+    public static final int DoorbellAddUserComposer = 3198;
     public static final int RoomAccessDeniedComposer = 3953;
     public static final int MoodLightDataComposer = 2033;
     public static final int ObjectOnRollerComposer = 1488;
@@ -336,7 +336,7 @@ public class Outgoing_Back
     public final static int PrivateRoomsComposer = 1251;//2653
     public final static int RoomModelComposer = 617;//2297
     public final static int RoomScoreComposer = 2925;//2805
-    public final static int KnockKnockComposer = 3556;//3198
+    public final static int DoorbellAddUserComposer = 3556;//3198
     public final static int SecureLoginOKComposer = 294;//2753
     public final static int SessionRightsComposer = 376;//1313
     public final static int GuildMemberUpdateComposer = 3609;//862

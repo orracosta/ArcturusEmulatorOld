@@ -156,7 +156,7 @@ public class Incoming
     public static final int RequestCreditsEvent = 1207;//2138
     public static final int SearchRoomsInGroupEvent = 2002;//1160
     public static final int HorseRideSettingsEvent = 1993;//2448
-    public static final int KnockKnockResponseEvent = 2356;
+    public static final int HandleDoorbellEvent = 2356;
     public static final int RoomUserKickEvent = 3929;//1874
     public static final int RoomPlaceItemEvent = 579;//474
     public static final int RequestInventoryBotsEvent = 363;//1351

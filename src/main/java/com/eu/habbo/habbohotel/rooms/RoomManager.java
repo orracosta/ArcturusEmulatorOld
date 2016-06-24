@@ -539,7 +539,7 @@ public class RoomManager {
             overrideChecks = true;
         }
 
-        if(overrideChecks || room.getState() == RoomState.OPEN || ((room.getState() == RoomState.LOCKED || room.getState() == RoomState.PASSWORD) && (habbo.hasPermission("acc_anyroomowner") || habbo.hasPermission("acc_enteranyroom"))))
+        if(overrideChecks || room.getState() == RoomState.OPEN || ((room.getState() == RoomState.LOCKED || room.getState() == RoomState.PASSWORD) && (habbo.hasPermission("acc_anyroomowner") || habbo.hasPermission("acc_enteranyroom") || room.hasRights(habbo) || (room.hasGuild() && habbo.getHabboStats().hasGuild(room.getGuildId())))))
         {
             this.openRoom(habbo, room, doorLocation);
         }
@@ -547,20 +547,20 @@ public class RoomManager {
         {
             if(room.getCurrentHabbos().isEmpty())
             {
-                habbo.getClient().sendResponse(new KnockKnockUnknownComposer2(habbo));
+                habbo.getClient().sendResponse(new HideDoorbellComposer(habbo.getHabboInfo().getUsername()));
                 habbo.getClient().sendResponse(new HotelViewComposer());
                 return;
             }
 
             for(Habbo current : room.getCurrentHabbos().valueCollection())
             {
-                if(room.hasRights(current) || current.getHabboInfo().getId() == room.getOwnerId())
+                if(room.hasRights(current) || current.getHabboInfo().getId() == room.getOwnerId() || (room.hasGuild() && room.guildRightLevel(current) >= 2))
                 {
-                    current.getClient().sendResponse(new KnockKnockComposer(habbo));
+                    current.getClient().sendResponse(new DoorbellAddUserComposer(habbo));
                 }
             }
+            habbo.getClient().sendResponse(new HideDoorbellComposer(habbo.getHabboInfo().getUsername()));
             room.addToQueue(habbo);
-            habbo.getClient().sendResponse(new KnockKnockUnknownComposer2(null));
         }
         else if(room.getState() == RoomState.PASSWORD)
         {
@@ -763,13 +763,13 @@ public class RoomManager {
             }
         }
 
-        if(room.hasRights(habbo))
+        if(room.hasRights(habbo) || (room.hasGuild() && room.guildRightLevel(habbo) >= 2))
         {
             if(!room.getHabboQueue().isEmpty())
             {
                 for(Habbo waiting : room.getHabboQueue().valueCollection())
                 {
-                    habbo.getClient().sendResponse(new KnockKnockComposer(waiting));
+                    habbo.getClient().sendResponse(new DoorbellAddUserComposer(waiting));
                 }
             }
         }

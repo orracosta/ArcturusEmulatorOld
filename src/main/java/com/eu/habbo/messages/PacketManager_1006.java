@@ -298,7 +298,7 @@ public class PacketManager_1006
         this.registerHandler(Incoming.RoomUserKickEvent, RoomUserKickEvent.class);
         this.registerHandler(Incoming.SetStackHelperHeightEvent, SetStackHelperHeightEvent.class);
         this.registerHandler(Incoming.TriggerOneWayGateEvent, TriggerOneWayGateEvent.class);
-        this.registerHandler(Incoming.KnockKnockResponseEvent, KnockKnockResponseEvent.class);
+        this.registerHandler(Incoming.HandleDoorbellEvent, HandleDoorbellEvent.class);
         this.registerHandler(Incoming.RedeemClothingEvent, RedeemClothingEvent.class);
         this.registerHandler(Incoming.PostItPlaceEvent, PostItPlaceEvent.class);
         this.registerHandler(Incoming.PostItRequestDataEvent, PostItRequestDataEvent.class);
