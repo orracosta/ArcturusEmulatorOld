@@ -170,7 +170,7 @@ public class Habbo implements Runnable
             this.messenger.connectionChanged(this, false, false);
             this.messenger.dispose();
             this.disconnected = true;
-            this.habboInfo.setLastLogin(Emulator.getIntUnixTimestamp());
+            this.habboInfo.setLastOnline(Emulator.getIntUnixTimestamp());
             AchievementManager.saveAchievements(this);
 
             this.habboStats.dispose();
