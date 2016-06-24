@@ -13,7 +13,7 @@ import java.sql.SQLException;
 public class RoomChatMessage implements Runnable, ISerialize
 {
     private String message;
-    private RoomChatMessageBubbles bubbleId;
+    private RoomChatMessageBubbles bubble;
     private final Habbo habbo;
     private Habbo targetHabbo;
     private final RoomUnit roomUnit;
@@ -33,11 +33,11 @@ public class RoomChatMessage implements Runnable, ISerialize
         }
         try
         {
-            this.bubbleId = RoomChatMessageBubbles.getBubble(message.packet.readInt());
+            this.bubble = RoomChatMessageBubbles.getBubble(message.packet.readInt());
         }
         catch (Exception e)
         {
-            this.bubbleId = RoomChatMessageBubbles.NORMAL;
+            this.bubble = RoomChatMessageBubbles.NORMAL;
         }
 
         this.habbo = message.client.getHabbo();
@@ -58,44 +58,44 @@ public class RoomChatMessage implements Runnable, ISerialize
         this.message = chatMessage.getMessage();
         this.habbo = chatMessage.getHabbo();
         this.targetHabbo = chatMessage.getTargetHabbo();
-        this.bubbleId = chatMessage.getBubble();
+        this.bubble = chatMessage.getBubble();
         this.roomUnit = chatMessage.roomUnit;
         this.emotion = (byte)chatMessage.getEmotion();
     }
 
-    public RoomChatMessage(String message, RoomUnit roomUnit, RoomChatMessageBubbles bubbleId)
+    public RoomChatMessage(String message, RoomUnit roomUnit, RoomChatMessageBubbles bubble)
     {
         this.message = message;
         this.habbo = null;
-        this.bubbleId = bubbleId;
+        this.bubble = bubble;
         this.roomUnit = roomUnit;
     }
 
-    public RoomChatMessage(String message, Habbo habbo, RoomChatMessageBubbles bubbleId)
+    public RoomChatMessage(String message, Habbo habbo, RoomChatMessageBubbles bubble)
     {
         this.message = message;
         this.habbo = habbo;
-        this.bubbleId = bubbleId;
+        this.bubble = bubble;
         this.checkEmotion();
         this.roomUnit = habbo.getRoomUnit();
         this.message = this.message.replace("\r", "").replace("\n", "");
 
         if(this.getHabbo().getHabboStats().chatColor != RoomChatMessageBubbles.NORMAL)
-            this.bubbleId = this.getHabbo().getHabboStats().chatColor;
+            this.bubble = this.getHabbo().getHabboStats().chatColor;
     }
 
-    public RoomChatMessage(String message, Habbo habbo, Habbo targetHabbo, RoomChatMessageBubbles bubbleId)
+    public RoomChatMessage(String message, Habbo habbo, Habbo targetHabbo, RoomChatMessageBubbles bubble)
     {
         this.message = message;
         this.habbo = habbo;
         this.targetHabbo = targetHabbo;
-        this.bubbleId = bubbleId;
+        this.bubble = bubble;
         this.checkEmotion();
         this.roomUnit = this.habbo.getRoomUnit();
         this.message = this.message.replace("\r", "").replace("\n", "");
 
         if(this.getHabbo().getHabboStats().chatColor != RoomChatMessageBubbles.NORMAL)
-            this.bubbleId = this.getHabbo().getHabboStats().chatColor;
+            this.bubble = this.getHabbo().getHabboStats().chatColor;
     }
 
     private void checkEmotion()
@@ -179,7 +179,7 @@ public class RoomChatMessage implements Runnable, ISerialize
 
     public RoomChatMessageBubbles getBubble()
     {
-        return this.bubbleId;
+        return this.bubble;
     }
 
     public Habbo getHabbo() {
@@ -205,12 +205,20 @@ public class RoomChatMessage implements Runnable, ISerialize
             {
                 for (String s : Emulator.getConfig().getValue("commands.cmd_chatcolor.banned_numbers").split(";"))
                 {
-                    if (Integer.valueOf(s) == this.bubbleId.getType())
+                    if (Integer.valueOf(s) == this.bubble.getType())
                     {
-                        this.bubbleId = RoomChatMessageBubbles.NORMAL;
+                        this.bubble = RoomChatMessageBubbles.NORMAL;
                         break;
                     }
                 }
+            }
+        }
+
+        if (!this.getBubble().getPermission().isEmpty())
+        {
+            if (!this.habbo.hasPermission(this.getBubble().getPermission()))
+            {
+                this.bubble = RoomChatMessageBubbles.NORMAL;
             }
         }
 
