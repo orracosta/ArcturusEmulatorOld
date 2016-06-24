@@ -59,6 +59,9 @@ public class InteractionCrackable extends HabboItem
     {
         super.onClick(client, room, objects);
 
+        if (!room.hasRights(client.getHabbo()))
+            return;
+
         if(client == null)
             return;
 

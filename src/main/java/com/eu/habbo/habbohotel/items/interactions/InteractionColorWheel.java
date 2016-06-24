@@ -52,6 +52,10 @@ public class InteractionColorWheel extends HabboItem
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
         super.onClick(client, room, objects);
+
+        if (!room.hasRights(client.getHabbo()))
+            return;
+
         if(this.rollTaks == null)
         {
             this.setExtradata("-1");

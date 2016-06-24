@@ -30,13 +30,16 @@ public class InteractionBackgroundToner extends HabboItem
     {
         serverMessage.appendInt32(5 + (this.isLimited() ? 256 : 0));
         serverMessage.appendInt32(4);
-        if (this.getExtradata().split(":").length == 4) {
+        if (this.getExtradata().split(":").length == 4)
+        {
             String[] colorData = this.getExtradata().split(":");
             serverMessage.appendInt32(Integer.valueOf(colorData[0]));
             serverMessage.appendInt32(Integer.valueOf(colorData[1]));
             serverMessage.appendInt32(Integer.valueOf(colorData[2]));
             serverMessage.appendInt32(Integer.valueOf(colorData[3]));
-        } else {
+        }
+        else
+        {
             serverMessage.appendInt32(0);
             serverMessage.appendInt32(126);
             serverMessage.appendInt32(126);
