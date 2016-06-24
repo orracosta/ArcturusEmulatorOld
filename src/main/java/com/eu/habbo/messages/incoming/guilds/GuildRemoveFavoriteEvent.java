@@ -23,7 +23,7 @@ public class GuildRemoveFavoriteEvent extends MessageHandler
 
             this.client.getHabbo().getHabboStats().guild = 0;
 
-            this.client.sendResponse(new UserProfileComposer(this.client.getHabbo()));
+            this.client.sendResponse(new UserProfileComposer(this.client.getHabbo(), this.client));
         }
     }
 }

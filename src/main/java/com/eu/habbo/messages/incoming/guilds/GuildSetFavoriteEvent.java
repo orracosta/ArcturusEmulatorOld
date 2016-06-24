@@ -35,7 +35,7 @@ public class GuildSetFavoriteEvent extends MessageHandler
                 }
             }
 
-            this.client.sendResponse(new UserProfileComposer(this.client.getHabbo()));
+            this.client.sendResponse(new UserProfileComposer(this.client.getHabbo(), this.client));
         }
     }
 }

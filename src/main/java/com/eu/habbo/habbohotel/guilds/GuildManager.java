@@ -18,6 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class GuildManager
@@ -662,6 +663,33 @@ public class GuildManager
                 this.guilds.put(guildId, g);
         }
         return g;
+    }
+
+    public List<Guild> getGuilds(int userId)
+    {
+        List<Guild> guilds = new ArrayList<Guild>();
+
+        try
+        {
+            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT guild_id FROM guilds_members WHERE user_id = ? ORDER BY member_since ASC");
+            statement.setInt(1, userId);
+            ResultSet set = statement.executeQuery();
+
+            while (set.next())
+            {
+                guilds.add(getGuild(set.getInt("guild_id")));
+            }
+
+            set.close();
+            statement.getConnection().close();
+            statement.close();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
+        return guilds;
     }
 
     public boolean symbolColor(int colorId)

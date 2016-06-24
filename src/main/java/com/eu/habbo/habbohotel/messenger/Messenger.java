@@ -274,7 +274,36 @@ public class Messenger
             statement.close();
             statement.getConnection().close();
         }
-    catch (SQLException e)
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
+        return found;
+    }
+
+    public static boolean friendRequested(int userFrom, int userTo)
+    {
+        boolean found = false;
+
+        try
+        {
+            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM messenger_friendrequests WHERE user_to_id = ? AND user_from_id = ? LIMIT 1");
+            statement.setInt(1, userFrom);
+            statement.setInt(2, userTo);
+
+            ResultSet set = statement.executeQuery();
+
+            if (set.next())
+            {
+                found = true;
+            }
+
+            set.close();
+            statement.getConnection().close();
+            statement.close();
+        }
+        catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
         }

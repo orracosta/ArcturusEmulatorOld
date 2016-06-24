@@ -15,8 +15,8 @@ public class RequestUserProfileEvent extends MessageHandler
         Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(habboId);
 
         if(habbo != null)
-            this.client.sendResponse(new UserProfileComposer(habbo));
+            this.client.sendResponse(new UserProfileComposer(habbo, this.client));
         else
-            this.client.sendResponse(new UserProfileComposer(HabboManager.getOfflineHabboInfo(habboId)));
+            this.client.sendResponse(new UserProfileComposer(HabboManager.getOfflineHabboInfo(habboId), this.client));
     }
 }
