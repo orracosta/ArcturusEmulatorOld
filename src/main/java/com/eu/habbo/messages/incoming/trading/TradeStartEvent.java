@@ -15,15 +15,21 @@ public class TradeStartEvent extends MessageHandler
         Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
         if (room != null)
         {
-            if (room.getTradeMode() == 0 || (room.getTradeMode() == 1 && this.client.getHabbo().getHabboInfo().getId() != room.getOwnerId()))
-            {
-                this.client.sendResponse(new TradeStartFailComposer(TradeStartFailComposer.ROOM_TRADING_NOT_ALLOWED));
-                return;
-            }
-
             if (userId >= 0 && userId != this.client.getHabbo().getRoomUnit().getId())
             {
                 Habbo targetUser = room.getHabboByRoomUnitId(userId);
+
+                if (this.client.getHabbo().hasPermission("acc_trade_anywhere"))
+                {
+                    room.startTrade(this.client.getHabbo(), targetUser);
+                    return;
+                }
+
+                if (room.getTradeMode() == 0 || (room.getTradeMode() == 1 && this.client.getHabbo().getHabboInfo().getId() != room.getOwnerId()))
+                {
+                    this.client.sendResponse(new TradeStartFailComposer(TradeStartFailComposer.ROOM_TRADING_NOT_ALLOWED));
+                    return;
+                }
 
                 if (targetUser != null)
                 {

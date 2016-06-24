@@ -2,3 +2,4 @@ INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.succes.cmd_bundl
 ALTER TABLE  `users_settings` CHANGE  `can_trade`  `can_trade` ENUM(  '0',  '1' ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT  '1';
 UPDATE `users_settings` SET `can_trade` = '1';
 ALTER TABLE  `rooms` ADD  `trade_mode` INT NOT NULL DEFAULT  '2';
+ALTER TABLE  `permissions` ADD  `acc_trade_anywhere` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0';
