@@ -1,0 +1,1 @@
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.succes.cmd_bundle', 'Roombundle succesfully created with page id %id%');

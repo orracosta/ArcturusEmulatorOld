@@ -85,6 +85,8 @@ public class RoomBundleCommand extends Command
                 Emulator.getLogging().logSQLException(e);
             }
             ((RoomBundleLayout)page).loadItems(gameClient.getHabbo().getHabboInfo().getCurrentRoom());
+
+            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_bundle").replace("%id%", page.getId() + ""), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
         }
 
         return true;

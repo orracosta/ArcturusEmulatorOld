@@ -737,13 +737,13 @@ public class CatalogManager
 
                 if(page.next())
                 {
-                    Class<? extends CatalogPage> pageClazz = pageDefinitions.get(set.getString("page_layout"));
+                    Class<? extends CatalogPage> pageClazz = pageDefinitions.get(page.getString("page_layout"));
 
                     if(pageClazz != null)
                     {
                         try
                         {
-                            catalogPage = pageClazz.getConstructor(ResultSet.class).newInstance(set);
+                            catalogPage = pageClazz.getConstructor(ResultSet.class).newInstance(page);
                         }
                         catch (Exception e)
                         {
@@ -752,7 +752,7 @@ public class CatalogManager
                     }
                     else
                     {
-                        Emulator.getLogging().logErrorLine("Unknown Page Layout: " + set.getString("page_layout"));
+                        Emulator.getLogging().logErrorLine("Unknown Page Layout: " + page.getString("page_layout"));
                     }
 
                     page.close();
