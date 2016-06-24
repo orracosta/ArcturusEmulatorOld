@@ -59,7 +59,7 @@ public class RoomSettingsSaveEvent extends MessageHandler
                 }
 
                 room.setTags(tags);
-                this.packet.readInt(); //Trade Mode
+                room.setTradeMode(this.packet.readInt());
                 room.setAllowPets(this.packet.readBoolean());
                 room.setAllowPetsEat(this.packet.readBoolean());
                 room.setAllowWalkthrough(this.packet.readBoolean());

@@ -539,7 +539,7 @@ public class RoomManager {
             overrideChecks = true;
         }
 
-        if(overrideChecks || room.getState() == RoomState.OPEN || ((room.getState() == RoomState.LOCKED || room.getState() == RoomState.PASSWORD) && (habbo.hasPermission("acc_anyroomowner") || habbo.hasPermission("acc_enteranyroom") || room.hasRights(habbo) || (room.hasGuild() && habbo.getHabboStats().hasGuild(room.getGuildId())))))
+        if(overrideChecks || room.getState() == RoomState.OPEN || ((room.getState() == RoomState.LOCKED || room.getState() == RoomState.PASSWORD) || (habbo.hasPermission("acc_anyroomowner") || habbo.hasPermission("acc_enteranyroom") || room.hasRights(habbo) || (room.hasGuild() && habbo.getHabboStats().hasGuild(room.getGuildId())))))
         {
             this.openRoom(habbo, room, doorLocation);
         }

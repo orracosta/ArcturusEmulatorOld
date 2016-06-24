@@ -117,6 +117,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     private volatile int banOption;
     private volatile int pollId;
     private volatile boolean promoted;
+    private volatile int tradeMode;
 
     private final TIntObjectMap<Habbo> currentHabbos;
     private final TIntObjectMap<Habbo> habboQueue;
@@ -217,6 +218,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             statement.close();
             statement.getConnection().close();
         }
+
+        this.tradeMode = set.getInt("trade_mode");
 
         this.preLoaded = true;
         this.allowBotsWalk = true;
@@ -1005,7 +1008,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         {
             try
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE rooms SET name = ?, description = ?, password = ?, state = ?, users_max = ?, category = ?, score = ?, paper_floor = ?, paper_wall = ?, paper_landscape = ?, thickness_wall = ?, wall_height = ?, thickness_floor = ?, moodlight_data = ?, tags = ?, allow_other_pets = ?, allow_other_pets_eat = ?, allow_walkthrough = ?, allow_hidewall = ?, chat_mode = ?, chat_weight = ?, chat_speed = ?, chat_hearing_distance = ?, chat_protection =?, who_can_mute = ?, who_can_kick = ?, who_can_ban = ?, poll_id = ?, guild_id = ?, roller_speed = ?, override_model = ?, is_staff_picked = ?, promoted = ? WHERE id = ?");
+                PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE rooms SET name = ?, description = ?, password = ?, state = ?, users_max = ?, category = ?, score = ?, paper_floor = ?, paper_wall = ?, paper_landscape = ?, thickness_wall = ?, wall_height = ?, thickness_floor = ?, moodlight_data = ?, tags = ?, allow_other_pets = ?, allow_other_pets_eat = ?, allow_walkthrough = ?, allow_hidewall = ?, chat_mode = ?, chat_weight = ?, chat_speed = ?, chat_hearing_distance = ?, chat_protection =?, who_can_mute = ?, who_can_kick = ?, who_can_ban = ?, poll_id = ?, guild_id = ?, roller_speed = ?, override_model = ?, is_staff_picked = ?, promoted = ?, trade_mode = ? WHERE id = ?");
                 statement.setString(1, this.name);
                 statement.setString(2, this.description);
                 statement.setString(3, this.password);
@@ -1049,7 +1052,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 statement.setString(31, this.overrideModel ? "1" : "0");
                 statement.setString(32, this.staffPromotedRoom ? "1" : "0");
                 statement.setString(33, this.promoted ? "1" : "0");
-                statement.setInt(34, this.id);
+                statement.setInt(34, this.tradeMode);
+                statement.setInt(35, this.id);
                 statement.execute();
                 statement.close();
                 statement.getConnection().close();
@@ -1656,6 +1660,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         return this.tags;
     }
 
+    public int getTradeMode()
+    {
+        return this.tradeMode;
+    }
+
     public int getGuildId()
     {
         return this.guild;
@@ -1781,12 +1790,19 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.wallSize = wallSize;
     }
 
-    public void setFloorSize(int floorSize) {
+    public void setFloorSize(int floorSize)
+    {
         this.floorSize = floorSize;
     }
 
-    public void setTags(String tags) {
+    public void setTags(String tags)
+    {
         this.tags = tags;
+    }
+
+    public void setTradeMode(int tradeMode)
+    {
+        this.tradeMode = tradeMode;
     }
 
     public void setAllowPets(boolean allowPets) {

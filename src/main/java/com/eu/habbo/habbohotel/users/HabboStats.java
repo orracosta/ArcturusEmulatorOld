@@ -82,7 +82,7 @@ public class HabboStats implements Runnable
         this.guild = set.getInt("guild_id");
         this.guilds = new int[100];
         this.tags = set.getString("tags").split(";");
-        this.allowTrade = true;
+        this.allowTrade = set.getString("can_trade").equals("1");
         this.votedRooms = new TIntArrayStack();
         this.clubExpireTimestamp = set.getInt("club_expire_timestamp");
         this.loginStreak = set.getInt("login_streak");

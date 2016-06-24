@@ -5,7 +5,8 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class RoomSettingsComposer extends MessageComposer{
+public class RoomSettingsComposer extends MessageComposer
+{
 
     private final Room room;
 
@@ -13,9 +14,11 @@ public class RoomSettingsComposer extends MessageComposer{
     {
         this.room = room;
     }
+
     @Override
-    public ServerMessage compose()    {
-        this.response.init(Outgoing.RoomSettingsComposer); //Updated
+    public ServerMessage compose()
+    {
+        this.response.init(Outgoing.RoomSettingsComposer);
         this.response.appendInt32(this.room.getId());
         this.response.appendString(this.room.getName());
         this.response.appendString(this.room.getDescription());
@@ -29,7 +32,7 @@ public class RoomSettingsComposer extends MessageComposer{
             this.response.appendString(tag);
         }
         //this.response.appendInt32(this.room.getRights().size());
-        this.response.appendInt32(2); //Trade Mode
+        this.response.appendInt32(this.room.getTradeMode()); //Trade Mode
         this.response.appendInt32(this.room.isAllowPets() ? 1 : 0);
         this.response.appendInt32(this.room.isAllowPetsEat() ? 1 : 0);
         this.response.appendInt32(this.room.isAllowWalkthrough() ? 1 : 0);
