@@ -32,7 +32,7 @@ public class TradeUpdateComposer extends MessageComposer
                 this.response.appendInt32(item.getId());
                 this.response.appendInt32(item.getBaseItem().getSpriteId());
                 this.response.appendInt32(0);
-                this.response.appendBoolean(true);
+                this.response.appendBoolean(item.getBaseItem().allowInventoryStack() && !item.isLimited());
                 item.serializeExtradata(this.response);
                 this.response.appendInt32(0);
                 this.response.appendInt32(0);
