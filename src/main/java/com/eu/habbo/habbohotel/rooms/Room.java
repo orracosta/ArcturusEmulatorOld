@@ -3579,6 +3579,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void giveRights(int userId)
     {
+        if (this.rights.contains(userId))
+            return;
+
         if(this.rights.add(userId))
         {
             try
@@ -3629,11 +3632,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         if(Emulator.getPluginManager().fireEvent(new UserRightsTakenEvent(this.getHabbo(this.getOwnerId()), userId, habbo)).isCancelled())
             return;
 
-        if(habbo != null)
-        {
-            this.refreshRightsForHabbo(habbo);
-        }
-
         if(this.rights.remove(userId))
         {
             try
@@ -3649,6 +3647,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             {
                 Emulator.getLogging().logSQLException(e);
             }
+        }
+
+        if(habbo != null)
+        {
+            this.refreshRightsForHabbo(habbo);
         }
     }
 

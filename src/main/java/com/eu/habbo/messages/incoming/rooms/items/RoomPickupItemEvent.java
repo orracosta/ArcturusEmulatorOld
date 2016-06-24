@@ -26,19 +26,37 @@ public class RoomPickupItemEvent extends MessageHandler
         if(item instanceof InteractionPostIt)
             return;
 
+        if (item.getUserId() == this.client.getHabbo().getHabboInfo().getId())
+        {
+            room.pickUpItem(item, this.client.getHabbo());
+            return;
+        }
+
+        if (item.getUserId() == room.getOwnerId() && room.getOwnerId() != this.client.getHabbo().getHabboInfo().getId())
+        {
+            return;
+        }
+
         if (room.hasRights(this.client.getHabbo()))
         {
-            if(item.getUserId() == this.client.getHabbo().getHabboInfo().getId() || (room.getGuildId() > 0 && room.guildRightLevel(this.client.getHabbo()) >= 2) || this.client.getHabbo().hasPermission("acc_anyroomowner"))
+            if (this.client.getHabbo().hasPermission("acc_anyroomowner"))
             {
-                if (room.getGuildId() == 0 && this.client.getHabbo().hasPermission("acc_anyroomowner"))
-                    item.setUserId(this.client.getHabbo().getHabboInfo().getId());
+                item.setUserId(this.client.getHabbo().getHabboInfo().getId());
+            }
 
-                room.pickUpItem(item, this.client.getHabbo());
-            }
-            else
-            {
-                room.ejectUserItem(item);
-            }
+            room.ejectUserItem(item);
         }
+
+//            if(item.getUserId() == this.client.getHabbo().getHabboInfo().getId() || (room.getGuildId() > 0 && room.guildRightLevel(this.client.getHabbo()) >= 2) || this.client.getHabbo().hasPermission("acc_anyroomowner"))
+//            {
+//                if (room.getGuildId() == 0 && this.client.getHabbo().hasPermission("acc_anyroomowner"))
+//                    item.setUserId(this.client.getHabbo().getHabboInfo().getId());
+//
+//                room.pickUpItem(item, this.client.getHabbo());
+//            }
+//            else
+//            {
+//                room.ejectUserItem(item);
+//            }
     }
 }
