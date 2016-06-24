@@ -231,8 +231,6 @@ public class RequestNewNavigatorRoomsEvent extends MessageHandler
 
         for (Map.Entry<Method, NavigatorFilterComparator> set : Emulator.getGameEnvironment().getNavigatorManager().filterSettings.values())
         {
-            System.out.println(set.getKey().getName());
-
             for (SearchResultList result : resultLists)
             {
                 if (result.filter)

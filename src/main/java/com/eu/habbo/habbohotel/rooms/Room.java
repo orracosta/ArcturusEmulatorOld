@@ -2960,7 +2960,26 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                     if(!found)
                     {
-                        lockedTiles.add(new Tile(iterator.value().getX(), iterator.value().getY(), 0));
+                        if(iterator.value().getRotation() == 0 || iterator.value().getRotation() == 4)
+                        {
+                            for(int y = 0; y < iterator.value().getBaseItem().getLength(); y++)
+                            {
+                                for(int x = 0; x < iterator.value().getBaseItem().getWidth(); x++)
+                                {
+                                    lockedTiles.add(new Tile(iterator.value().getX() + x, iterator.value().getY() + y, 0));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for(int y = 0; y < iterator.value().getBaseItem().getWidth(); y++)
+                            {
+                                for(int x = 0; x < iterator.value().getBaseItem().getLength(); x++)
+                                {
+                                    lockedTiles.add(new Tile(iterator.value().getX() + x, iterator.value().getY() + y, 0));
+                                }
+                            }
+                        }
                     }
                 }
                 catch (NoSuchElementException e)
