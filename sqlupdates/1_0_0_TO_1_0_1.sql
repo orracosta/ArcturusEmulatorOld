@@ -72,7 +72,7 @@ INSERT INTO `navigator_filter` (`field`, `compare`) VALUES
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES
                              ('commands.keys.cmd_update_hotel_view', 'update_view;update_hotel_view;update_hotelview'),
                              ('commands.description.cmd_update_hotel_view', ':update_hotel_view'),
-                             ('commands.succes.cmd_update_hotel_view', 'Hotelview reloaded!')
+                             ('commands.succes.cmd_update_hotel_view', 'Hotelview reloaded!');
 
 ALTER TABLE  `permissions` ADD  `cmd_update_hotel_view` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_update_guildparts`
 
