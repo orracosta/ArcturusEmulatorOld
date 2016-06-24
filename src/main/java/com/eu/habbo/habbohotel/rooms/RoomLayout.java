@@ -104,8 +104,6 @@ public class RoomLayout
 
         Tile doorFrontTile = PathFinder.getSquareInFront(this.doorX, this.doorY, this.doorDirection);
 
-        System.out.println(new Tile(this.doorX, this.doorY, this.doorZ));
-
         if(this.tileExists(doorFrontTile.x, doorFrontTile.y))
         {
             if(this.getSquareStates()[doorFrontTile.x][doorFrontTile.y] != RoomTileState.BLOCKED)
