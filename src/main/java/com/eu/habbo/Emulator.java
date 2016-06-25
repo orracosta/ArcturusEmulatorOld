@@ -54,7 +54,6 @@ public final class Emulator
             }
         });
         hook.setPriority(10);
-        
         Runtime.getRuntime().addShutdownHook(hook);
     }
     
