@@ -655,6 +655,7 @@ public class RoomManager {
 
         habbo.getHabboInfo().setCurrentRoom(room);
         habbo.getRoomUnit().setHandItem(0);
+        habbo.getRoomUnit().setEffectId(0);
         habbo.getRoomUnit().setPathFinder(new PathFinder(habbo.getRoomUnit()));
 
         if(!habbo.getRoomUnit().isTeleporting)
