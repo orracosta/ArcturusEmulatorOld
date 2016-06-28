@@ -16,7 +16,7 @@ public class UpdateHotelViewCommand extends Command
         Emulator.getGameEnvironment().getHotelViewManager().getNewsList().reload();
         Emulator.getGameEnvironment().getHotelViewManager().getHallOfFame().reload();
 
-        gameClient.getHabbo().whisper(Emulator.getTexts().getValue("cmd_update_hotel_view"));
+        gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_update_hotel_view"));
 
         return true;
     }
