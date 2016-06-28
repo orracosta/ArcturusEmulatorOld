@@ -31,20 +31,17 @@ public class RoomPickupItemEvent extends MessageHandler
             room.pickUpItem(item, this.client.getHabbo());
             return;
         }
-
-        if (item.getUserId() == room.getOwnerId() && room.getOwnerId() != this.client.getHabbo().getHabboInfo().getId())
+        else
         {
-            return;
-        }
-
-        if (room.hasRights(this.client.getHabbo()))
-        {
-            if (this.client.getHabbo().hasPermission("acc_anyroomowner"))
+            if (room.hasRights(this.client.getHabbo()))
             {
-                item.setUserId(this.client.getHabbo().getHabboInfo().getId());
-            }
+                if (this.client.getHabbo().hasPermission("acc_anyroomowner"))
+                {
+                    item.setUserId(this.client.getHabbo().getHabboInfo().getId());
+                }
 
-            room.ejectUserItem(item);
+                room.ejectUserItem(item);
+            }
         }
 
 //            if(item.getUserId() == this.client.getHabbo().getHabboInfo().getId() || (room.getGuildId() > 0 && room.guildRightLevel(this.client.getHabbo()) >= 2) || this.client.getHabbo().hasPermission("acc_anyroomowner"))
