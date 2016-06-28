@@ -26,7 +26,7 @@ public class NavigatorPublicFilter extends NavigatorFilter
         {
             if (!category.rooms.isEmpty())
             {
-                resultLists.add(new SearchResultList(i, "", category.name, SearchAction.NONE, SearchMode.LIST, false, category.rooms, true));
+                resultLists.add(new SearchResultList(i, "", category.name, SearchAction.NONE, category.image, false, category.rooms, true));
                 i++;
             }
         }
