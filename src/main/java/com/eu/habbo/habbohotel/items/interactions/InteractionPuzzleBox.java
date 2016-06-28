@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemOnRollerComposer;
+import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.util.pathfinding.PathFinder;
 import com.eu.habbo.util.pathfinding.Tile;
 
@@ -34,8 +35,26 @@ public class InteractionPuzzleBox extends HabboItem
         if(!PathFinder.tilesAdjecent(super.getX(), super.getY(), client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY()))
             return;
 
-        Tile tile = PathFinder.getSquareInFront(super.getX(), super.getY(), client.getHabbo().getRoomUnit().getBodyRotation().getValue());
+
         Tile boxLocation = new Tile(this.getX(), this.getY(), this.getZ());
+        client.getHabbo().getRoomUnit().lookAtPoint(boxLocation);
+        room.sendComposer(new RoomUserStatusComposer(client.getHabbo().getRoomUnit()).compose());
+
+        switch (client.getHabbo().getRoomUnit().getBodyRotation())
+        {
+            case NORTH_EAST:
+            case NORTH_WEST:
+            case SOUTH_EAST:
+            case SOUTH_WEST:
+                return;
+        }
+
+        Tile tile = PathFinder.getSquareInFront(super.getX(), super.getY(), client.getHabbo().getRoomUnit().getBodyRotation().getValue());
+
+        if (!room.tileWalkable(tile))
+        {
+            return;
+        }
 
         if(!boxLocation.equals(PathFinder.getSquareInFront(client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY(), client.getHabbo().getRoomUnit().getBodyRotation().getValue())))
             return;
