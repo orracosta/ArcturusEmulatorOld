@@ -8,6 +8,7 @@ import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
+import com.eu.habbo.util.pathfinding.Tile;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -73,6 +74,15 @@ public class InteractionPressurePlate extends HabboItem
     {
         super.onWalkOff(roomUnit, room, objects);
 
+        this.setExtradata("0");
+        this.needsUpdate(true);
+        Emulator.getThreading().run(this);
+        room.updateItem(this);
+    }
+
+    @Override
+    public void onMove(Room room, Tile oldLocation, Tile newLocation)
+    {
         this.setExtradata("0");
         this.needsUpdate(true);
         Emulator.getThreading().run(this);

@@ -2465,6 +2465,20 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void removeHabbo(Habbo habbo)
     {
+        HabboItem item = getTopItemAt(habbo.getRoomUnit().getX(), habbo.getRoomUnit().getY());
+
+        if (item != null)
+        {
+            try
+            {
+                item.onWalkOff(habbo.getRoomUnit(), this, new Object[]{});
+            }
+            catch (Exception e)
+            {
+                Emulator.getLogging().logErrorLine(e);
+            }
+        }
+
         synchronized (this.currentHabbos)
         {
             TIntObjectIterator<Habbo> iterator = this.currentHabbos.iterator();

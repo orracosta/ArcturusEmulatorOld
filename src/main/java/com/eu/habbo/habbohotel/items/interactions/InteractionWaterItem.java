@@ -38,7 +38,7 @@ public class InteractionWaterItem extends InteractionDefault
     }
 
     @Override
-    public void onMove(Tile oldLocation, Tile newLocation)
+    public void onMove(Room room, Tile oldLocation, Tile newLocation)
     {
         this.update();
     }

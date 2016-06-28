@@ -26,29 +26,29 @@ public class InteractionWater extends InteractionDefault
     }
 
     @Override
-    public void onMove(Tile oldLocation, Tile newLocation)
+    public void onMove(Room room, Tile oldLocation, Tile newLocation)
     {
-        this.refreshWaters();
+        this.refreshWaters(room);
     }
 
     @Override
     public void onPickUp()
     {
-        this.refreshWaters();
+        this.refreshWaters(null);
     }
 
     @Override
     public void onPlace()
     {
-        this.refreshWaters();
+        this.refreshWaters(null);
     }
 
-    private void refreshWaters()
+    private void refreshWaters(Room room)
     {
-        Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
-
         if(room == null)
-            return;
+        {
+            room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
+        }
 
         for(HabboItem item : room.getRoomSpecialTypes().getItemsOfType(InteractionWaterItem.class))
         {
