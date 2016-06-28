@@ -1214,8 +1214,15 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                         habbo.getRoomUnit().getStatus().put("lay", topItem.getBaseItem().getHeight() * 1.0D + "");
                                     }
                                     habbo.getRoomUnit().setRotation(RoomUserRotation.values()[topItem.getRotation()]);
-                                    habbo.getRoomUnit().setX(topItem.getX());
-                                    habbo.getRoomUnit().setY(topItem.getY());
+
+                                    if (topItem.getRotation() == 0 || topItem.getRotation() == 4)
+                                    {
+                                        habbo.getRoomUnit().setY(topItem.getY());
+                                    }
+                                    else
+                                    {
+                                        habbo.getRoomUnit().setX(topItem.getX());
+                                    }
                                     updatedUnit.add(habbo.getRoomUnit());
                                 }
                             }
