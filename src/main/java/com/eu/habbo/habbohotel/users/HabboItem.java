@@ -340,7 +340,7 @@ public abstract class HabboItem implements Runnable, IEventTriggers
 
     }
 
-    public void onMove(Tile oldLocation, Tile newLocation)
+    public void onMove(Room room, Tile oldLocation, Tile newLocation)
     {
 
     }

@@ -534,12 +534,14 @@ public class RoomManager {
             }
         }
 
-        if(room.isOwner(habbo))
-        {
-            overrideChecks = true;
-        }
-
-        if(overrideChecks || room.getState() == RoomState.OPEN || room.getState() == RoomState.INVISIBLE || ((room.getState() == RoomState.LOCKED || room.getState() == RoomState.PASSWORD) && (habbo.hasPermission("acc_anyroomowner") || habbo.hasPermission("acc_enteranyroom") || room.hasRights(habbo) || (room.hasGuild() && habbo.getHabboStats().hasGuild(room.getGuildId())))))
+        if(overrideChecks ||
+           room.isOwner(habbo) ||
+           room.getState() == RoomState.OPEN ||
+           room.getState() == RoomState.INVISIBLE ||
+           habbo.hasPermission("acc_anyroomowner") ||
+           habbo.hasPermission("acc_enteranyroom") ||
+           room.hasRights(habbo) ||
+           (room.hasGuild() && room.guildRightLevel(habbo) > 0))
         {
             this.openRoom(habbo, room, doorLocation);
         }
@@ -564,7 +566,7 @@ public class RoomManager {
         }
         else if(room.getState() == RoomState.PASSWORD)
         {
-            if(room.getPassword().equals(password))
+            if(room.getPassword().equalsIgnoreCase(password))
                 this.openRoom(habbo, room, doorLocation);
             else
             {
