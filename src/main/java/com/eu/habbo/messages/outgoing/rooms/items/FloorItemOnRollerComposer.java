@@ -44,6 +44,7 @@ public class FloorItemOnRollerComposer extends MessageComposer
         item.setX(this.newLocation.X);
         item.setY(this.newLocation.Y);
         item.setZ(this.newLocation.Z);
+        item.onMove(room, this.item.getLocation(), this.newLocation);
         item.needsUpdate(true);
 
         this.room.sendComposer(new UpdateStackHeightComposer(oldX, oldY, this.room.getStackHeight(oldX, oldY, true)).compose());

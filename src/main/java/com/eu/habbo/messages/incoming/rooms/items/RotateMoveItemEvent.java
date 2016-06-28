@@ -181,7 +181,7 @@ public class RotateMoveItemEvent extends MessageHandler
         }
 
         Tile newLocation = new Tile(item.getX(), item.getY(), item.getZ());
-        item.onMove(oldLocation, newLocation);
+        item.onMove(room, oldLocation, newLocation);
 
         if(Emulator.getPluginManager().isRegistered(FurnitureMovedEvent.class, true))
         {
