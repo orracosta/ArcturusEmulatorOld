@@ -80,7 +80,7 @@ public class RoomChatMessage implements Runnable, ISerialize
         this.roomUnit = habbo.getRoomUnit();
         this.message = this.message.replace("\r", "").replace("\n", "");
 
-        if(this.getHabbo().getHabboStats().chatColor != RoomChatMessageBubbles.NORMAL)
+        if(this.bubble.isOverridable() && this.getHabbo().getHabboStats().chatColor != RoomChatMessageBubbles.NORMAL)
             this.bubble = this.getHabbo().getHabboStats().chatColor;
     }
 
@@ -94,7 +94,7 @@ public class RoomChatMessage implements Runnable, ISerialize
         this.roomUnit = this.habbo.getRoomUnit();
         this.message = this.message.replace("\r", "").replace("\n", "");
 
-        if(this.getHabbo().getHabboStats().chatColor != RoomChatMessageBubbles.NORMAL)
+        if(this.bubble.isOverridable() && this.getHabbo().getHabboStats().chatColor != RoomChatMessageBubbles.NORMAL)
             this.bubble = this.getHabbo().getHabboStats().chatColor;
     }
 
@@ -199,7 +199,7 @@ public class RoomChatMessage implements Runnable, ISerialize
     @Override
     public void serialize(ServerMessage message)
     {
-        if(this.habbo != null)
+        if(this.habbo != null && this.bubble.isOverridable())
         {
             if (!this.habbo.hasPermission("acc_anychatcolor"))
             {
