@@ -4,8 +4,8 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionStackHelper;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.UpdateStackHeightComposer;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.UpdateStackHeightTileHeightComposer;
+import com.eu.habbo.util.pathfinding.PathFinder;
 import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
@@ -29,41 +29,42 @@ public class SetStackHelperHeightEvent extends MessageHandler
                 int stackerHeight = this.packet.readInt();
 
                 item.setExtradata(stackerHeight + "");
+
+                double height = 0;
+
+                THashSet<Tile> tiles = PathFinder.getTilesAt(item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
+
                 if(stackerHeight >= 0)
                 {
-                    double height = stackerHeight / 100.0D;
-
-                    //item.setExtradata(((height / 100.0D) + "").replace(",", "."));
-                    //item.setExtradata((height + "").replace(".0", "").replace(",0", ""));
-                    //item.setZ((height / 100.0D));
-
-                    THashSet<Tile> tiles = Tile.getTilesAt(item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
-
-                    for (Tile t : tiles)
-                    {
-                        t.Z = height * 256.0D;
-                    }
-
-                    item.setZ(height);
-                    this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTiles(tiles);
-                    this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new UpdateStackHeightComposer(tiles).compose());
-                    this.client.getHabbo().getHabboInfo().getCurrentRoom().updateItem(item);
-                    //this.client.getHabbo().getHabboInfo().getCurrentRoom().updateItem(item);
+                    height = stackerHeight / 100.0D;
                 }
                 else
                 {
-                    if(stackerHeight == -1)
+                    for (Tile tile : tiles)
                     {
-                        double height = this.client.getHabbo().getHabboInfo().getCurrentRoom().getTopHeightAt(item.getX(), item.getY());
-                        item.setZ(height);
-                        this.client.getHabbo().getHabboInfo().getCurrentRoom().updateItem(item);
-                        THashSet<Tile> tiles = new THashSet<Tile>();
-                        tiles.add(new Tile(item.getX(), item.getY(), height * 256.0D));
-                        this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTiles(tiles);
-                        this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new UpdateStackHeightComposer(tiles).compose());
-                        this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new UpdateStackHeightTileHeightComposer(item, height).compose());
+                        double tileHeight = this.client.getHabbo().getHabboInfo().getCurrentRoom().getTopHeightAt(tile.X, tile.Y);
+
+                        if (tileHeight > height)
+                        {
+                            height = tileHeight;
+                        }
                     }
                 }
+
+                for (Tile tile : tiles)
+                {
+                    tile.Z = height * 256.0D;
+                }
+
+                item.setZ(height);
+                item.setExtradata((int)(height * 100) + "");
+
+                System.out.println(height);
+                System.out.println(item.getZ());
+                System.out.println(item.getExtradata());
+                this.client.getHabbo().getHabboInfo().getCurrentRoom().updateItem(item);
+                this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTiles(tiles);
+                this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new UpdateStackHeightComposer(tiles).compose());
             }
         }
     }

@@ -3091,7 +3091,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                             continue;
                         }
 
-                        THashSet<Tile> tiles = Tile.getTilesAt(item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
+                        THashSet<Tile> tiles = PathFinder.getTilesAt(item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
                         for (Tile tile : tiles)
                         {
                             if ((tile.X == x) && (tile.Y == y) && (!items.contains(item)))
@@ -3131,7 +3131,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     continue;
                 }
 
-                THashSet<Tile> tiles = Tile.getTilesAt(item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
+                THashSet<Tile> tiles = PathFinder.getTilesAt(item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
                 for (Tile tile : tiles){
                     if ((tile.X == x) && (tile.Y == y) && (!items.contains(item))) {
                         items.add(item);
@@ -3161,7 +3161,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         continue;
                     }
 
-                    THashSet<Tile> tiles = Tile.getTilesAt(item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
+                    THashSet<Tile> tiles = PathFinder.getTilesAt(item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
                     for (Tile tile : tiles){
                         if ((tile.X == x) && (tile.Y == y) && (!items.contains(item))) {
                             items.add(item);
@@ -3217,7 +3217,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                             continue;
                         }
 
-                        THashSet<Tile> tiles = Tile.getTilesAt(habboItem.getX(), habboItem.getY(), habboItem.getBaseItem().getWidth(), habboItem.getBaseItem().getLength(), habboItem.getRotation());
+                        THashSet<Tile> tiles = PathFinder.getTilesAt(habboItem.getX(), habboItem.getY(), habboItem.getBaseItem().getWidth(), habboItem.getBaseItem().getLength(), habboItem.getRotation());
                         for (Tile tile : tiles)
                         {
                             if (((tile.X == x) && (tile.Y == y)))

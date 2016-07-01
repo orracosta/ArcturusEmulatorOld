@@ -87,33 +87,6 @@ public class Tile extends Point
 //        return PointList;
 //    }
 
-    public static THashSet<Tile> getTilesAt(int x, int y, int width, int length, int rotation)
-    {
-        THashSet<Tile> pointList = new THashSet<Tile>();
-
-        if(rotation == 0 || rotation == 4)
-        {
-            for (int i = x; i <= (x + (width - 1)); i++)
-            {
-                for (int j = y; j <= (y + (length - 1)); j++)
-                {
-                    pointList.add(new Tile(i, j, 0.0));
-                }
-            }
-        }
-        else if(rotation == 2 || rotation == 6)
-        {
-            for (int i = x; i <= (x + (length - 1)); i++)
-            {
-                for (int j = y; j <= (y + (width - 1)); j++)
-                {
-                    pointList.add(new Tile(i, j, 0.0));
-                }
-            }
-        }
-
-        return pointList;
-    }
 
     public Tile copy()
     {
