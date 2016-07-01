@@ -16,8 +16,16 @@ public class MoonwalkCommand extends Command
     {
         if(gameClient.getHabbo().getHabboInfo().getCurrentRoom() != null)
         {
-            gameClient.getHabbo().getRoomUnit().setEffectId(136);
-            gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserEffectComposer(gameClient.getHabbo().getRoomUnit()).compose());
+            if (gameClient.getHabbo().getRoomUnit().getEffectId() != 136)
+            {
+                gameClient.getHabbo().getRoomUnit().setEffectId(136);
+                gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserEffectComposer(gameClient.getHabbo().getRoomUnit()).compose());
+            }
+            else
+            {
+                gameClient.getHabbo().getRoomUnit().setEffectId(0);
+                gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserEffectComposer(gameClient.getHabbo().getRoomUnit()).compose());
+            }
 
             return true;
         }
