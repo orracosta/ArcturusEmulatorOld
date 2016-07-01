@@ -58,10 +58,7 @@ public class SetStackHelperHeightEvent extends MessageHandler
 
                 item.setZ(height);
                 item.setExtradata((int)(height * 100) + "");
-
-                System.out.println(height);
-                System.out.println(item.getZ());
-                System.out.println(item.getExtradata());
+                item.needsUpdate(true);
                 this.client.getHabbo().getHabboInfo().getCurrentRoom().updateItem(item);
                 this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTiles(tiles);
                 this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new UpdateStackHeightComposer(tiles).compose());
