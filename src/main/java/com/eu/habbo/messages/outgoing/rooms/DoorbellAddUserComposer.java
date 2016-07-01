@@ -7,9 +7,9 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class DoorbellAddUserComposer extends MessageComposer
 {
-    private final Habbo habbo;
+    private final String habbo;
 
-    public DoorbellAddUserComposer(Habbo habbo)
+    public DoorbellAddUserComposer(String habbo)
     {
         this.habbo = habbo;
     }
@@ -17,7 +17,7 @@ public class DoorbellAddUserComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.DoorbellAddUserComposer);
-        this.response.appendString(this.habbo.getHabboInfo().getUsername());
+        this.response.appendString(this.habbo);
         return this.response;
     }
 }

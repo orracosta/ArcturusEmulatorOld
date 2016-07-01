@@ -7,9 +7,9 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RoomAccessDeniedComposer extends MessageComposer
 {
-    private final Habbo habbo;
+    private final String habbo;
 
-    public RoomAccessDeniedComposer(Habbo habbo)
+    public RoomAccessDeniedComposer(String habbo)
     {
         this.habbo = habbo;
     }
@@ -18,7 +18,7 @@ public class RoomAccessDeniedComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomAccessDeniedComposer);
-        this.response.appendString(this.habbo.getHabboInfo().getUsername());
+        this.response.appendString(this.habbo);
         return this.response;
     }
 }

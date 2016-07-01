@@ -55,6 +55,7 @@ import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
+import gnu.trove.procedure.TIntObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
 import java.awt.*;
@@ -1070,6 +1071,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         int currentTimestamp = Emulator.getIntUnixTimestamp();
 
+        boolean foundRightHolder = false;
+
         if(this.loaded)
         {
             if (!this.currentHabbos.isEmpty())
@@ -1082,6 +1085,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 {
                     for (Habbo habbo : this.currentHabbos.valueCollection())
                     {
+                        if (!foundRightHolder)
+                        {
+                            foundRightHolder = hasRights(habbo) || guildRightLevel(habbo) > 2;
+                        }
+
                         if (Emulator.getConfig().getBoolean("hotel.rooms.auto.idle"))
                         {
                             if (!habbo.getRoomUnit().isIdle())
@@ -1566,10 +1574,36 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             }
             else
             {
+
                 if(this.idleCycles < 60)
                     ++this.idleCycles;
                 else
                     this.dispose();
+            }
+        }
+
+        synchronized (this.habboQueue)
+        {
+            if (!this.habboQueue.isEmpty() && !foundRightHolder)
+            {
+                this.habboQueue.forEachEntry(new TIntObjectProcedure<Habbo>()
+                {
+                    @Override
+                    public boolean execute(int a, Habbo b)
+                    {
+                        if (b.isOnline())
+                        {
+                            if (b.getHabboInfo().getRoomQueueId() == getId())
+                            {
+                                b.getClient().sendResponse(new RoomAccessDeniedComposer(""));
+                            }
+                        }
+
+                        return true;
+                    }
+                });
+
+                this.habboQueue.clear();
             }
         }
     }
@@ -2065,6 +2099,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public boolean removeFromQueue(Habbo habbo)
     {
+        this.sendComposer(new HideDoorbellComposer(habbo.getHabboInfo().getUsername()).compose());
+
         synchronized (this.habboQueue)
         {
             return this.habboQueue.remove(habbo.getHabboInfo().getId()) != null;

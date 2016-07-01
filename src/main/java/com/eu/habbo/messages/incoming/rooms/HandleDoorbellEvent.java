@@ -21,18 +21,18 @@ public class HandleDoorbellEvent extends MessageHandler
 
             if(habbo != null)
             {
+                this.client.getHabbo().getHabboInfo().getCurrentRoom().removeFromQueue(habbo);
+
                 if (accepted)
                 {
+                    habbo.getClient().sendResponse(new HideDoorbellComposer(""));
                     Emulator.getGameEnvironment().getRoomManager().enterRoom(habbo, this.client.getHabbo().getHabboInfo().getCurrentRoom().getId(), "", true);
                 }
                 else
                 {
-                    habbo.getClient().sendResponse(new RoomAccessDeniedComposer(habbo));
+                    habbo.getClient().sendResponse(new RoomAccessDeniedComposer(""));
                     habbo.getClient().sendResponse(new HotelViewComposer());
                 }
-
-                this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new HideDoorbellComposer(username).compose());
-                this.client.getHabbo().getHabboInfo().getCurrentRoom().removeFromQueue(habbo);
                 habbo.getHabboInfo().setRoomQueueId(0);
             }
 

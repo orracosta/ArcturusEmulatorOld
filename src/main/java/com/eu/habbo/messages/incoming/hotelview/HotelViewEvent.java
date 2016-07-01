@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.hotelview;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.hotelview.HallOfFameComposer;
 import com.eu.habbo.messages.outgoing.hotelview.HotelViewComposer;
@@ -15,6 +16,12 @@ public class HotelViewEvent extends MessageHandler
         if(this.client.getHabbo().getHabboInfo().getCurrentRoom() != null)
         {
             Emulator.getGameEnvironment().getRoomManager().leaveRoom(this.client.getHabbo(), this.client.getHabbo().getHabboInfo().getCurrentRoom());
+        }
+
+        if (this.client.getHabbo().getHabboInfo().getRoomQueueId() != 0)
+        {
+            Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.client.getHabbo().getHabboInfo().getRoomQueueId());
+            room.removeFromQueue(this.client.getHabbo());
         }
 
         if(this.client.getHabbo().getRoomUnit() != null)
