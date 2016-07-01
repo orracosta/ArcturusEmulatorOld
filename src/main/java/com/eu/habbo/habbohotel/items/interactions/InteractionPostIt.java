@@ -43,7 +43,7 @@ public class InteractionPostIt extends HabboItem
     public void serializeExtradata(ServerMessage serverMessage)
     {
         serverMessage.appendInt32((this.isLimited() ? 256 : 0));
-        serverMessage.appendString(this.getExtradata());
+        serverMessage.appendString(this.getExtradata().replace(((char)9 ) + "", ""));
 
         super.serializeExtradata(serverMessage);
     }

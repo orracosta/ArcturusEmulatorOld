@@ -25,17 +25,9 @@ public class PostItDataComposer extends MessageComposer
             this.postIt.setExtradata("FFFF33");
         }
 
-        String color = this.postIt.getExtradata().split(" ")[0];
-        String text = this.postIt.getExtradata().replace(this.postIt.getExtradata().split(" ")[0], "").replace((char) 9 + "", "");
-
-        if(hasRights && PostItColor.isCustomColor(color))
-        {
-            text = color + " " + text;
-        }
-
         this.response.init(Outgoing.PostItDataComposer);
         this.response.appendString(this.postIt.getId() + "");
-        this.response.appendString(color + "\t" + text);
+        this.response.appendString(this.postIt.getExtradata());
         return this.response;
     }
 }
