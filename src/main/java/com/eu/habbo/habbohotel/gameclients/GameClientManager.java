@@ -95,10 +95,7 @@ public class GameClientManager
         for(GameClient client : this.clients.values())
         {
             if(client.getHabbo() == null)
-            {
-                client.dispose();
                 continue;
-            }
 
             if(client.getHabbo().getHabboInfo().getId() == id)
                 return client.getHabbo();

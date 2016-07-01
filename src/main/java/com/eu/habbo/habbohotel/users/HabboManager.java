@@ -104,7 +104,7 @@ public class HabboManager
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Emulator.getLogging().logErrorLine(e);
         }
 
         return habbo;
