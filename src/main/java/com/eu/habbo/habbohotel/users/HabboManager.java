@@ -57,7 +57,7 @@ public class HabboManager
         return null;
     }
 
-    public Habbo loadHabbo(String sso, GameClient client)
+    public Habbo loadHabbo(String sso)
     {
         Habbo habbo = null;
         try
@@ -68,13 +68,12 @@ public class HabboManager
             ResultSet set = statement.executeQuery();
             if(set.next())
             {
-                Habbo h = cloneCheck(set.getInt("id"));
-                if(h != null)
+                habbo = cloneCheck(set.getInt("id"));
+                if(habbo != null)
                 {
-                    //Emulator.getGameServer().getGameClientManager().disposeClient(h.getClient().getChannel());
-                    h.getClient().sendResponse(new GenericAlertComposer("You logged in from somewhere else."));
-                    h.getClient().getChannel().close();
-                    h = null;
+                    habbo.getClient().sendResponse(new GenericAlertComposer("You logged in from somewhere else."));
+                    habbo.getClient().getChannel().close();
+                    habbo = null;
                 }
 
                 ModToolBan ban = Emulator.getGameEnvironment().getModToolManager().checkForBan(set.getInt("id"));
