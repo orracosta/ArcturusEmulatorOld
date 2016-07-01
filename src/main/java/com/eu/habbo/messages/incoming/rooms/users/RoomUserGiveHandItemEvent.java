@@ -23,7 +23,7 @@ public class RoomUserGiveHandItemEvent extends MessageHandler
 
         if(room != null)
         {
-            Habbo target = room.getHabboByRoomUnitId(userId);
+            Habbo target = room.getHabbo(userId);
 
             if(target != null)
             {

@@ -72,25 +72,30 @@ public class RoomUnitWalkToRoomUnit implements Runnable
 
     private void findNewLocation()
     {
-        List<Tile> tiles = PathFinder.getTilesAround(this.target.getX(), this.target.getY());
+        this.goalTile = PathFinder.getSquareInFront(this.target.getX(), this.target.getY(), this.target.getBodyRotation().getValue());
 
-        for(Tile t : tiles)
+        if (!this.room.tileWalkable(this.goalTile))
         {
-            if(this.room.tileWalkable(t))
+            List<Tile> tiles = PathFinder.getTilesAround(this.target.getX(), this.target.getY());
+
+            for (Tile t : tiles)
             {
-                this.goalTile = t;
-
-                walker.setGoalLocation(this.goalTile);
-
-                if(walker.getPathFinder().getPath() == null)
+                if (this.room.tileWalkable(t))
                 {
-                    for(Runnable r : this.failedReached)
-                    {
-                        Emulator.getThreading().run(r);
-                    }
-                }
+                    this.goalTile = t;
 
-                break;
+                    break;
+                }
+            }
+        }
+
+        walker.setGoalLocation(this.goalTile);
+
+        if(walker.getPathFinder().getPath() == null)
+        {
+            for(Runnable r : this.failedReached)
+            {
+                Emulator.getThreading().run(r);
             }
         }
     }

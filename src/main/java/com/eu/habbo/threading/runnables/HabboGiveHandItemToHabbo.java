@@ -8,7 +8,6 @@ public class HabboGiveHandItemToHabbo implements Runnable
 {
     private Habbo target;
     private Habbo from;
-    private int handItem;
 
     public HabboGiveHandItemToHabbo(Habbo from, Habbo target)
     {
@@ -29,11 +28,11 @@ public class HabboGiveHandItemToHabbo implements Runnable
 
         if(itemId > 0)
         {
-            this.target.getRoomUnit().setHandItem(itemId);
-            this.target.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserHandItemComposer(this.target.getRoomUnit()).compose());
             this.from.getRoomUnit().setHandItem(0);
             this.from.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserHandItemComposer(this.from.getRoomUnit()).compose());
-            this.target.getClient().sendResponse(new RoomUserReceivedHandItemComposer(this.from.getRoomUnit(), this.target.getRoomUnit().getHandItem()));
+            this.target.getClient().sendResponse(new RoomUserReceivedHandItemComposer(this.from.getRoomUnit(), itemId));
+            this.target.getRoomUnit().setHandItem(itemId);
+            this.target.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserHandItemComposer(this.target.getRoomUnit()).compose());
         }
     }
 }
