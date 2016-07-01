@@ -68,7 +68,7 @@ public class HabboManager
             ResultSet set = statement.executeQuery();
             if(set.next())
             {
-                Habbo h = cloneCheck(set.getString("username"));
+                Habbo h = cloneCheck(set.getInt("id"));
                 if(h != null)
                 {
                     //Emulator.getGameServer().getGameClientManager().disposeClient(h.getClient().getChannel());
@@ -170,9 +170,9 @@ public class HabboManager
         return this.onlineHabbos.size();
     }
 
-    public Habbo cloneCheck(String username)
+    public Habbo cloneCheck(int id)
     {
-        Habbo habbo = Emulator.getGameServer().getGameClientManager().getHabbo(username);
+        Habbo habbo = Emulator.getGameServer().getGameClientManager().getHabbo(id);
 
         return habbo;
     }
