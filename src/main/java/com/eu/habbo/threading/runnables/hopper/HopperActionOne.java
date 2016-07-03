@@ -23,15 +23,24 @@ public class HopperActionOne implements Runnable
     @Override
     public void run()
     {
-        this.client.getHabbo().getRoomUnit().setGoalLocation(this.teleportOne.getX(), this.teleportOne.getY());
+        //this.client.getHabbo().getRoomUnit().setGoalLocation(this.teleportOne.getX(), this.teleportOne.getY());
         this.client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[(this.teleportOne.getRotation() + 4) % 8]);
         this.client.getHabbo().getRoomUnit().getStatus().put("mv", this.teleportOne.getX() + "," + this.teleportOne.getY() + "," + this.teleportOne.getZ());
         this.room.sendComposer(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()).compose());
         this.client.getHabbo().getRoomUnit().setX(this.teleportOne.getX());
         this.client.getHabbo().getRoomUnit().setY(this.teleportOne.getY());
         this.client.getHabbo().getRoomUnit().setZ(this.teleportOne.getZ());
-        this.client.getHabbo().getRoomUnit().getStatus().remove("mv");
 
-        Emulator.getThreading().run(new HopperActionTwo(this.teleportOne, this.room, this.client), 500);
+        Emulator.getThreading().run(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                client.getHabbo().getRoomUnit().getStatus().remove("mv");
+                room.sendComposer(new RoomUserStatusComposer(client.getHabbo().getRoomUnit()).compose());
+            }
+        }, 750);
+
+        Emulator.getThreading().run(new HopperActionTwo(this.teleportOne, this.room, this.client), 1250);
     }
 }

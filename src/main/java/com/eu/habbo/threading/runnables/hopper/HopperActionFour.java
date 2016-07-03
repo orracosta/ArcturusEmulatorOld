@@ -22,7 +22,7 @@ class HopperActionFour implements Runnable
     @Override
     public void run()
     {
-        this.currentTeleport.setExtradata("3");
+        this.currentTeleport.setExtradata("1");
         this.room.updateItem(this.currentTeleport);
 
         Emulator.getThreading().run(new HopperActionFive(this.currentTeleport, this.room, this.client), 500);
