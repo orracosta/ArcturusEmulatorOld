@@ -188,7 +188,6 @@ public class CatalogManager
 
             while(set.next())
             {
-                CatalogPage page = null;
                 Class<? extends CatalogPage> pageClazz = pageDefinitions.get(set.getString("page_layout"));
 
                 if (pageClazz == null)
@@ -199,13 +198,12 @@ public class CatalogManager
 
                 try
                 {
-                    page = pageClazz.getConstructor(ResultSet.class).newInstance(set);
+                    CatalogPage page = pageClazz.getConstructor(ResultSet.class).newInstance(set);
                     this.catalogPages.put(page.getId(), page);
                 }
                 catch (Exception e)
                 {
                     Emulator.getLogging().logErrorLine("Failed to load layout: " + set.getString("page_layout"));
-                    continue;
                 }
             }
             set.close();
@@ -968,7 +966,7 @@ public class CatalogManager
                                             }
                                             else if(baseItem.getInteractionType().getType() == InteractionHopper.class)
                                             {
-                                                HabboItem hopper = Emulator.getGameEnvironment().getItemManager().createItem(0, baseItem, item.getLimitedSells(), item.getLimitedSells(), extradata);
+                                                HabboItem hopper = Emulator.getGameEnvironment().getItemManager().createItem(habbo.getClient().getHabbo().getHabboInfo().getId(), baseItem, item.getLimitedSells(), item.getLimitedSells(), extradata);
 
                                                 Emulator.getGameEnvironment().getItemManager().insertHopper(hopper);
 

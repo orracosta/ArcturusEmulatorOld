@@ -33,8 +33,7 @@ class HopperActionTwo implements Runnable
 
         try
         {
-            //PreparedStatement statement = Emulator.getDatabase().prepare("SELECT items.room_id, items_hoppers.* FROM items_hoppers INNER JOIN items ON items_hoppers.item_id = items.id WHERE base_item = ? AND items_hoppers.item_id != ? AND items.room_id > 0 ORDER BY RAND() LIMIT 1");
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT items.room_id, items.id FROM items INNER JOIN items_base ON items.item_id = items_base.id WHERE items_base.id = ? AND items.id != ? AND items.room_id > 0 ORDER BY RAND() LIMIT 1");
+            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT items.id, items.room_id FROM items_hoppers INNER JOIN items ON items_hoppers.item_id = items.id WHERE base_item = ? AND items.id != ? AND room_id > 0 ORDER BY RAND() LIMIT 1");
             statement.setInt(1, this.teleportOne.getBaseItem().getId());
             statement.setInt(2, this.teleportOne.getId());
 
