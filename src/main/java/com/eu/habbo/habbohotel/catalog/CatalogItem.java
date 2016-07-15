@@ -312,7 +312,7 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
                 message.appendBoolean(this.isLimited());
                 if(this.isLimited())
                 {
-                    message.appendInt32(this.getLimitedSells());
+                    message.appendInt32(this.getLimitedStack());
                     message.appendInt32(this.getLimitedStack() - this.getLimitedSells());
                 }
             }
