@@ -70,7 +70,7 @@ public class Incoming
     public static final int RequestBannerToken = -1;//2619
     public static final int RequestRecylerLogicEvent = 3258;//1077
     public static final int RequestGuildJoinEvent = 2615;//77
-    public static final int RequestCatalogIndexEvent = 1294;//81
+    public static final int RequestCatalogIndexEvent = 2511;//81
     public static final int RequestInventoryPetsEvent = 263;//1900
     public static final int ModToolRequestRoomVisitsEvent = 730;//2549
     public static final int ModToolWarnEvent = 2375;//3763
@@ -94,7 +94,7 @@ public class Incoming
     public static final int TriggerDiceEvent = 1182;//987
     public static final int GetPollDataEvent = 2580;//1960
     public static final int MachineIDEvent = -1;//512
-    public static final int RequestDiscountEvent = 2511;//3794
+    public static final int RequestDiscountEvent = 1294;//3794
     public static final int RequestFriendRequestEvent = 2485;//275
     public static final int RoomSettingsSaveEvent = 2074;//2384
     public static final int AcceptFriendRequest = 45;//333
@@ -278,4 +278,7 @@ public class Incoming
     public static final int CraftingAddItemEvent = 3654;
     public static final int CraftingCraftItemEvent = 2934;
     public static final int CraftingCraftSecretEvent = 1622;
+
+    public static final int AdventCalendarOpenDayEvent = 724;
+    public static final int AdventCalendarForceOpenEvent = 2879;
 }

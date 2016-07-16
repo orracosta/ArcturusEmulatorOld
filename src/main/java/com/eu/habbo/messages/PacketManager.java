@@ -11,6 +11,8 @@ import com.eu.habbo.messages.incoming.catalog.*;
 import com.eu.habbo.messages.incoming.catalog.marketplace.*;
 import com.eu.habbo.messages.incoming.catalog.recycler.*;
 import com.eu.habbo.messages.incoming.crafting.*;
+import com.eu.habbo.messages.incoming.events.calendar.AdventCalendarForceOpenEvent;
+import com.eu.habbo.messages.incoming.events.calendar.AdventCalendarOpenDayEvent;
 import com.eu.habbo.messages.incoming.floorplaneditor.*;
 import com.eu.habbo.messages.incoming.friends.*;
 import com.eu.habbo.messages.incoming.guardians.*;
@@ -46,6 +48,7 @@ public class PacketManager
 
         this.registerHandshake();
         this.registerCatalog();
+        this.registerEvent();
         this.registerFriends();
         this.registerNavigator();
         this.registerUsers();
@@ -142,6 +145,12 @@ public class PacketManager
         this.registerHandler(Incoming.GetClubDataEvent,                         RequestClubDataEvent.class);
         this.registerHandler(Incoming.RequestClubGiftsEvent,                    RequestClubGiftsEvent.class);
         this.registerHandler(Incoming.CatalogSearchedItemEvent,                 CatalogSearchedItemEvent.class);
+    }
+
+    private void registerEvent()
+    {
+        this.registerHandler(Incoming.AdventCalendarOpenDayEvent,               AdventCalendarOpenDayEvent.class);
+        this.registerHandler(Incoming.AdventCalendarForceOpenEvent,             AdventCalendarForceOpenEvent.class);
     }
 
     private void registerHandshake()

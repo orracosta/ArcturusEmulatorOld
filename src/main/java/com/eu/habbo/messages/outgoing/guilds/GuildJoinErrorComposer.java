@@ -20,11 +20,12 @@ public class GuildJoinErrorComposer extends MessageComposer
     {
         this.code = code;
     }
+
     @Override
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildJoinErrorComposer);
-        this.response.appendInt32(code);
+        this.response.appendInt32(this.code);
         return this.response;
     }
 }

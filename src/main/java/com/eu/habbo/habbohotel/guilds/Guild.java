@@ -247,4 +247,9 @@ public class Guild implements Runnable
     {
         this.requestCount--;
     }
+
+    public boolean hasGuild()
+    {
+        return true;
+    }
 }

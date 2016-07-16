@@ -14,6 +14,8 @@ public class RequestCatalogPageEvent extends MessageHandler
     public void handle() throws Exception
     {
         int catalogPageId = this.packet.readInt();
+        int unknown = this.packet.readInt();
+        String mode = this.packet.readString();
 
         CatalogPage page = Emulator.getGameEnvironment().getCatalogManager().catalogPages.get(catalogPageId);
 
@@ -21,7 +23,7 @@ public class RequestCatalogPageEvent extends MessageHandler
         {
             if (page.getRank() <= this.client.getHabbo().getHabboInfo().getRank() && page.isEnabled())
             {
-                this.client.sendResponse(new CatalogPageComposer(page, this.client.getHabbo()));
+                this.client.sendResponse(new CatalogPageComposer(page, this.client.getHabbo(), mode));
             }
             else
             {

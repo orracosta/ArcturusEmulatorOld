@@ -79,7 +79,7 @@ public class PetManager
     {
         try
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM pet_breeds ORDER BY race, color_one ASC");
+            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM pet_breeds ORDER BY race, color_one, color_two ASC");
             ResultSet set = statement.executeQuery();
 
             while(set.next())

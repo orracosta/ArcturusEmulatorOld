@@ -33,7 +33,7 @@ public class GuildListComposer extends MessageComposer
             this.response.appendString(Emulator.getGameEnvironment().getGuildManager().getBackgroundColor(guild.getColorTwo()).valueA);
             this.response.appendBoolean(this.habbo.getHabboStats().guild == guild.getId());
             this.response.appendInt32(0);
-            this.response.appendBoolean(false);
+            this.response.appendBoolean(guild.hasGuild());
         }
         return this.response;
     }

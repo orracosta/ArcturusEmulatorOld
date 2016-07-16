@@ -12,10 +12,12 @@ import java.util.List;
 public class CatalogPagesListComposer extends MessageComposer
 {
     private final Habbo habbo;
+    private final String mode;
 
-    public CatalogPagesListComposer(Habbo habbo)
+    public CatalogPagesListComposer(Habbo habbo, String mode)
     {
         this.habbo = habbo;
+        this.mode = mode;
     }
 
     @Override
@@ -74,7 +76,7 @@ public class CatalogPagesListComposer extends MessageComposer
             }
 
             this.response.appendBoolean(false);
-            this.response.appendString("NORMAL");
+            this.response.appendString(this.mode);
 
             return this.response;
         }

@@ -1,7 +1,7 @@
 package com.eu.habbo.messages.incoming.unknown;
 
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.unknown.NewYearResolutionComposer;
+import com.eu.habbo.messages.outgoing.events.resolution.NewYearResolutionComposer;
 
 public class RequestResolutionEvent extends MessageHandler
 {

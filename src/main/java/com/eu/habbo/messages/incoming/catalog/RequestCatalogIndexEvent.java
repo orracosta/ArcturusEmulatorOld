@@ -8,6 +8,6 @@ public class RequestCatalogIndexEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        this.client.sendResponse(new CatalogPagesListComposer(this.client.getHabbo()));
+        //this.client.sendResponse(new CatalogPagesListComposer(this.client.getHabbo(), "NORMAL"));
     }
 }

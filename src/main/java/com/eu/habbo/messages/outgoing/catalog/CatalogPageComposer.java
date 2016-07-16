@@ -18,11 +18,13 @@ public class CatalogPageComposer extends MessageComposer
 {
     private final CatalogPage page;
     private final Habbo habbo;
+    private final String mode;
 
-    public CatalogPageComposer(CatalogPage page, Habbo habbo)
+    public CatalogPageComposer(CatalogPage page, Habbo habbo, String mode)
     {
         this.page = page;
         this.habbo = habbo;
+        this.mode = mode;
     }
 
     @Override
@@ -30,7 +32,7 @@ public class CatalogPageComposer extends MessageComposer
     {
         this.response.init(Outgoing.CatalogPageComposer);
         this.response.appendInt32(this.page.getId());
-        this.response.appendString(CatalogPageType.NORMAL.name().toUpperCase());
+        this.response.appendString(this.mode);
         this.page.serialize(this.response);
 
         if(page instanceof RecentPurchasesLayout)

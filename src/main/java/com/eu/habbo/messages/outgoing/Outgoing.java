@@ -431,5 +431,92 @@ public class Outgoing
     public final static int CraftingResultComposer = 3543;
     public final static int CraftingComposerFour = 880; //:test 880 i:1 b:0
 
+    public final static int UnknownComposer_100 = 100; //Something pet breeding result related.
+    public final static int UnknownComposer_1031 = 1031; //Something trading related.
+    public final static int ConnectionErrorComposer = 1072;
+    public final static int UnknownComposer_111 = 111;
+    public final static int UnknownComposer_1111 = 1111; //Unused
+    public final static int Game2WeeklyLeaderboardComposer = 1127;
+    public final static int UnknownComposer_1165 = 1165; //Friend show current game?
+    public final static int EffectsListAddComposer = 1169; //Add effect to effectslist?
+    public final static int UnknownComposer_1188 = 1188; //int:item id //unused
+    public final static int UnknownComposer_1218 = 1218; //int: reason //unused
+    public final static int SubmitCompetitionRoomComposer = 1235; //bool: enabled, int: room_id
+    public final static int GameAchievementsListComposer = 1264;
+    public final static int UnknownComposer_1271 = 1271; //Unused
+    public final static int OtherTradingDisabledComposer = 1312;
+    public final static int BaseJumpUnloadGameComposer = 1321;
+    public final static int UnknownComposer_1322 = 1322;
+    public final static int UnknownComposer_137 = 137; //int room_id, int error_code //unused?
+    public final static int GameCenterSetPromotedGameComposer = 139;
+    public final static int UnknowComposer_1390 = 1390; //Unused
+    public final static int BaseJumpLoadGameComposer = 1403;
+    public final static int UnknowComposer_1427 = 1427; //Unused
+    public final static int AdventCalendarDataComposer = 1480; //:test 1480 s:jurassic15furni s:jurassic15furni i:0 i:3 i:2 i:0 i:1 i:1 i:1
+    public final static int UnknownComposer_152 = 152; //:test 152 i:0 i:0 i:0 //Something navigator related (Could be old navigator)
+    public final static int UnknownComposer_1529 = 1529; //Unused
+    public final static int UnknownComposer_1577 = 1577; //Empty handler. GameCenter related.
+    public final static int UnknownComposer_1712 = 1712; //Unused
+    public final static int NewYearResolutionCompletedComposer = 1720;
+    public final static int UnknownComposer_1741 = 1741; //Unused
+    public final static int UnknownComposer_1744 = 1744; //Unused
+    public final static int AdventCalendarProductComposer = 0x0707;
+    public final static int ModToolSanctionInfoComposer = 193;
+    public final static int UnknownComposer_1965 = 1965; //Unused
+    public final static int UnknownComposer_2053 = 2053; //Unused
+    public final static int GuideSessionPartnerIsPlayingComposer = 2057;
+    public final static int BaseJumpLeaveQueueComposer = 2164;
+    public final static int Game2WeeklySmallLeaderboardComposer = 2194;
+    public final static int CatalogBuyVIPSMSComposer = 2296; //:test 2296 s:a s:b i:10
+    public final static int GameListMessageComposer = 2481;
+    public final static int UnknownComposer_2487 = 2487; //Unknown. Something badges related?
+    public final static int UnknownComposer_2563 = 2563; //IDK
+    public final static int UnknownComposer_2601 = 2601; //Unused
+    public final static int UnknownComposer_2621 = 2621; //Unused
+    public final static int UnknownComposer_2698 = 2698; //Something related to name suggestions for name change.
+//    2699;
+//    2748;
+//    2773;
+//    2964;
+//    3020;
+//    3024;
+//    3046;
+//    3124;
+//    3179;
+//    3189;
+//    328;
+//    3291;
+//    3334;
+//    3379;
+//    3391;
+//    3427;
+//    347;
+//    3509;
+//    3519;
+//    3581;
+//    3684;
+    public final static int YouTradingDisabledComposer = 3697;
+//    3707;
+//    3745;
+//    3759;
+//    3782;
+//    3786;
+//    3822;
+//    3908;
+//    3953;
+//    3986;
+//    467;
+//    549;
+//    550;
+//    608;
+//    624;
+//    675;
+//    690;
+//    707;
+//    749;
+//    812;
+//    843;
+//    947;
+//    982;
 
 }
