@@ -53,6 +53,9 @@ public class InteractionMultiHeight extends HabboItem
     {
         super.onClick(client, room, objects);
 
+        if (!room.hasRights(client.getHabbo()))
+            return;
+
         if (objects.length > 0)
         {
             if (objects[0] instanceof Integer && room != null)
