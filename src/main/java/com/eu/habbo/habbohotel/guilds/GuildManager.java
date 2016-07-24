@@ -151,6 +151,20 @@ public class GuildManager
      */
     public void deleteGuild(Guild guild)
     {
+        PreparedStatement deleteFavourite = Emulator.getDatabase().prepare("UPDATE users_settings SET guild_id = ? WHERE guild_id = ?");
+
+        try
+        {
+            deleteFavourite.setInt(1, 0);
+            deleteFavourite.setInt(2, guild.getId());
+            deleteFavourite.execute();
+            deleteFavourite.getConnection().close();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
         THashSet<GuildMember> members = this.getGuildMembers(guild);
 
         for(GuildMember member : members)
@@ -175,6 +189,7 @@ public class GuildManager
             statement.setInt(1, guild.getId());
             statement.execute();
             statement.close();
+            statement.getConnection().close();
         }
         catch (SQLException e)
         {
