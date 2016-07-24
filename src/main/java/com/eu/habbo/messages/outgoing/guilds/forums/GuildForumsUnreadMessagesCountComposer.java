@@ -4,20 +4,20 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class UnknownGuildForumComposer1 extends MessageComposer
+public class GuildForumsUnreadMessagesCountComposer extends MessageComposer
 {
-    public final int guildId;
+    public final int count;
 
-    public UnknownGuildForumComposer1(int guildId)
+    public GuildForumsUnreadMessagesCountComposer(int count)
     {
-        this.guildId = guildId;
+        this.count = count;
     }
 
     @Override
     public ServerMessage compose()
     {
-        this.response.init(Outgoing.UnknownGuildForumComposer1);
-        this.response.appendInt32(this.guildId);
+        this.response.init(Outgoing.GuildForumsUnreadMessagesCountComposer);
+        this.response.appendInt32(this.count);
         return this.response;
     }
 }

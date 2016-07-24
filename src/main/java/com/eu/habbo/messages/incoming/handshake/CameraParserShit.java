@@ -27,6 +27,6 @@ public class CameraParserShit extends MessageHandler
         byte[] output = outputStream.toByteArray();
 
         inflater.end();
-        //Emulator.getLogging().logDebugLine(new String(output));
+        Emulator.getLogging().logDebugLine(new String(output));
     }
 }

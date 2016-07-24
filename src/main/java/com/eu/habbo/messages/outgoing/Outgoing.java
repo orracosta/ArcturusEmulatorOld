@@ -243,7 +243,7 @@ public class Outgoing
 
     public final static int UnknownGuildComposer = 423; //Could be related to forums. //Updated
 
-    public final static int UnknownGuildForumComposer1 = 3062; //Updated
+    public final static int GuildForumsUnreadMessagesCountComposer = 3062; //Updated
     public final static int UnknownGuildForumComposer2 = 3683; //Updated
     public final static int UnknownGuildForumComposer3 = 1936; //Updated
     public final static int UnknownGuildForumComposer4 = 254; //Updated
