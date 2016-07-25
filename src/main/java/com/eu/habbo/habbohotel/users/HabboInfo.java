@@ -32,6 +32,7 @@ public class HabboInfo implements Runnable
 
     private int credits;
     private int lastOnline;
+    private int lastLogin;
 
     private int homeRoom;
 
@@ -63,7 +64,8 @@ public class HabboInfo implements Runnable
             this.accountCreated = set.getInt("account_created");
             this.credits = set.getInt("credits");
             this.homeRoom = set.getInt("home_room");
-            this.lastOnline = Emulator.getIntUnixTimestamp();
+            this.lastOnline = set.getInt("last_online");
+            this.lastLogin = Emulator.getIntUnixTimestamp();
             this.online = false;
             this.currentRoom = null;
         }
@@ -389,8 +391,8 @@ public class HabboInfo implements Runnable
             statement.setString(3, this.look);
             statement.setString(4, this.gender.name());
             statement.setInt(5, this.credits);
-            statement.setInt(7, Emulator.getIntUnixTimestamp());
-            statement.setInt(6, this.lastOnline);
+            statement.setInt(7, this.lastOnline);
+            statement.setInt(6, Emulator.getIntUnixTimestamp());
             statement.setInt(8, this.homeRoom);
             statement.setInt(9, this.id);
             statement.execute();

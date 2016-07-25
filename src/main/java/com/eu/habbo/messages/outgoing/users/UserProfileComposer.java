@@ -78,9 +78,9 @@ public class UserProfileComposer extends MessageComposer
             this.response.appendString(guild.getBadge());
             this.response.appendString(Emulator.getGameEnvironment().getGuildManager().getSymbolColor(guild.getColorOne()).valueA);
             this.response.appendString(Emulator.getGameEnvironment().getGuildManager().getSymbolColor(guild.getColorTwo()).valueA);
-            this.response.appendBoolean(guild.getId() == this.habbo.getHabboStats().guild);
+            this.response.appendBoolean(habbo != null && guild.getId() == this.habbo.getHabboStats().guild);
             this.response.appendInt32(guild.getOwnerId());
-            this.response.appendBoolean(guild.getOwnerId() == this.habbo.getHabboInfo().getId());
+            this.response.appendBoolean(guild.getOwnerId() == this.habboInfo.getId());
         }
 
         this.response.appendInt32(Emulator.getIntUnixTimestamp() - this.habboInfo.getLastOnline()); //Secs ago.

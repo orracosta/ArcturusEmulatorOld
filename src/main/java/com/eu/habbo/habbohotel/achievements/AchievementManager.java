@@ -193,7 +193,12 @@ public class AchievementManager
 
         AchievementLevel level = achievement.getLevelForProgress(currentProgress);
 
-        return level.progress == currentProgress;
+        if (level == null)
+        {
+            return false;
+        }
+
+        return level.progress <= currentProgress;
     }
 
     /**
