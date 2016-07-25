@@ -56,6 +56,13 @@ public class InteractionPuzzleBox extends HabboItem
             return;
         }
 
+        tile.Z = room.getStackHeight(tile.X, tile.Y, false);
+
+        if (tile.Z != this.getZ())
+        {
+            return;
+        }
+
         if(!boxLocation.equals(PathFinder.getSquareInFront(client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY(), client.getHabbo().getRoomUnit().getBodyRotation().getValue())))
             return;
 
