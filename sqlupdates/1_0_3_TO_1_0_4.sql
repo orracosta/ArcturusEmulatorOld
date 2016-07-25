@@ -5,3 +5,4 @@ ADD UNIQUE INDEX idx_name (race, color_one, color_two, has_color_one, has_color_
 
 #Removing favourite guilds for deleted guilds:
 UPDATE users_settings SET guild_id = 0 WHERE guild_id NOT IN (SELECT id FROM guilds) and guild_id > 0;
+UPDATE achievements SET category = 'explore' WHERE name LIKE 'CameraPhotoCount';
