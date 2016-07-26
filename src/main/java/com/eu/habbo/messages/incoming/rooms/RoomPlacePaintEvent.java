@@ -50,6 +50,7 @@ public class RoomPlacePaintEvent extends MessageHandler
             else
                 return;
 
+            this.client.getHabbo().getHabboInventory().getItemsComponent().removeHabboItem(item);
             room.setNeedsUpdate(true);
             room.sendComposer(new RoomPaintComposer(item.getBaseItem().getName(), item.getExtradata()).compose());
             item.needsDelete(true);
