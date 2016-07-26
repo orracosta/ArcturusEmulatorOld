@@ -26,7 +26,7 @@ public class FriendPrivateMessageEvent extends MessageHandler
                 CommandHandler.handleCommand(this.client, message);
                 return;
             }
-            Emulator.getGameServer().getGameClientManager().sendBroadcastResponse(new FriendChatMessageComposer(new Message(0, 0, this.client.getHabbo().getHabboInfo().getUsername() + ": " + message)).compose(), "acc_staff_chat", this.client);
+            Emulator.getGameServer().getGameClientManager().sendBroadcastResponse(new FriendChatMessageComposer(new Message(this.client.getHabbo().getHabboInfo().getId(), 0, message)).compose(), "acc_staff_chat", this.client);
             return;
         }
 
