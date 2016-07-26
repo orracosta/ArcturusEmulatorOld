@@ -41,6 +41,10 @@ public class SummonRankCommand extends Command
                     if(set.getValue() == gameClient.getHabbo())
                         continue;
 
+                    if (set.getValue().getHabboInfo().getCurrentRoom() == gameClient.getHabbo().getHabboInfo().getCurrentRoom())
+                        continue;
+                    
+                    Emulator.getGameEnvironment().getRoomManager().leaveRoom(set.getValue(), set.getValue().getHabboInfo().getCurrentRoom());
                     set.getValue().getClient().sendResponse(new ForwardToRoomComposer(gameClient.getHabbo().getHabboInfo().getCurrentRoom().getId()));
                     Emulator.getGameEnvironment().getRoomManager().enterRoom(set.getValue(), gameClient.getHabbo().getHabboInfo().getCurrentRoom().getId(), "", true);
                 }
