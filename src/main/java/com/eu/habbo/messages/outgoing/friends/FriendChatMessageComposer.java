@@ -53,7 +53,6 @@ public class FriendChatMessageComposer extends MessageComposer
             this.response.appendString(name + "/" + look + "/" + this.message.getFromId());
         }
 
-        Emulator.getThreading().run(message);
         return this.response;
     }
 }

@@ -57,6 +57,11 @@ public class Message implements Runnable
         return this.message;
     }
 
+    public String setMessage(String message)
+    {
+        this.message = message;
+    }
+
     public int getTimestamp() {
         return this.timestamp;
     }

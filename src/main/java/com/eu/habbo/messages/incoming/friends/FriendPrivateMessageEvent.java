@@ -40,6 +40,13 @@ public class FriendPrivateMessageEvent extends MessageHandler
             return;
 
         Message chatMessage = new Message(this.client.getHabbo().getHabboInfo().getId(), userId, event.message);
+        Emulator.getThreading().run(chatMessage);
+
+        if (Emulator.getConfig().getBoolean("hotel.wordfilter.messenger"))
+        {
+            chatMessage.setMessage(Emulator.getGameEnvironment().getWordFilter().filter(chatMessage.getMessage(), this.client.getHabbo()));
+        }
+
         Emulator.getGameServer().getGameClientManager().getClient(habbo).sendResponse(new FriendChatMessageComposer(chatMessage));
     }
 }
