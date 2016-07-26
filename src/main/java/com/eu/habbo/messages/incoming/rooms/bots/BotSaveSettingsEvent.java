@@ -65,7 +65,7 @@ public class BotSaveSettingsEvent extends MessageHandler
                     {
                         for(String s : data[i].split("\r"))
                         {
-                            chat.add(Emulator.getGameEnvironment().getWordFilter().filter(s, this.client.getHabbo()));
+                            chat.add(Emulator.getGameEnvironment().getWordFilter().filter(s.replace("<", "&lt;").replace(">", "&rt;"), this.client.getHabbo()));
                         }
                     }
 
