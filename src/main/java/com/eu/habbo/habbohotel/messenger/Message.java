@@ -9,7 +9,7 @@ public class Message implements Runnable
 {
     private final int fromId;
     private final int toId;
-    private final String message;
+    private String message;
     private final int timestamp;
 
     public Message(int fromId, int toId, String message)
