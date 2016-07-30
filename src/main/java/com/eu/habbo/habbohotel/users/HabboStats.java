@@ -305,7 +305,10 @@ public class HabboStats implements Runnable
         for(int i = 0; i < this.guilds.length; i++)
         {
             if(this.guilds[i] == 0)
+            {
                 this.guilds[i] = guildId;
+                break;
+            }
         }
     }
 
@@ -314,7 +317,10 @@ public class HabboStats implements Runnable
         for(int i = 0; i < this.guilds.length; i++)
         {
             if(this.guilds[i] == guildId)
+            {
                 this.guilds[i] = 0;
+                break;
+            }
         }
     }
 
