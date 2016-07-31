@@ -2,9 +2,12 @@ package com.eu.habbo.messages.incoming.rooms.users;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
+import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericErrorMessagesComposer;
+import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.plugin.events.users.UserKickEvent;
 
 public class RoomUserKickEvent extends MessageHandler
@@ -23,6 +26,12 @@ public class RoomUserKickEvent extends MessageHandler
 
         if(target == null)
             return;
+
+        if (target.hasPermission("acc_unkickable"))
+        {
+            this.client.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_kick.unkickable").replace("%username%", target.getHabboInfo().getUsername()), this.client.getHabbo(), this.client.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            return;
+        }
 
         UserKickEvent event = new UserKickEvent(this.client.getHabbo(), target);
         Emulator.getPluginManager().fireEvent(event);
