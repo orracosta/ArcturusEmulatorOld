@@ -81,6 +81,8 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
 
                 int x = 0;
                 int y = 0;
+                boolean notFound = false;
+
                 if(target.getRoomUnit().getX() == item.getX())
                 {
                     if (item.getY() < target.getRoomUnit().getY())
@@ -90,19 +92,27 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
 
                     Tile newTile = new Tile(item.getX() + x, item.getY() + y, 0);
 
-                    HabboItem topItem = room.getTopItemAt(newTile.X, newTile.Y);
-
-                    if(topItem == null || topItem.getBaseItem().allowStack())
+                    if (room.getLayout().tileExists(newTile.X, newTile.Y))
                     {
-                        if(topItem != null)
-                            newTile.Z = topItem.getZ() + topItem.getBaseItem().getHeight();
+                        HabboItem topItem = room.getTopItemAt(newTile.X, newTile.Y);
 
-                        room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, room).compose());
-                        continue;
+                        if (topItem == null || topItem.getBaseItem().allowStack())
+                        {
+                            if (topItem != null)
+                                newTile.Z = topItem.getZ() + topItem.getBaseItem().getHeight();
+
+                            room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, room).compose());
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        y = 0;
+                        notFound = true;
                     }
                 }
 
-                if(target.getRoomUnit().getY() == item.getY())
+                if(target.getRoomUnit().getY() == item.getY() || notFound)
                 {
                     if (item.getX() < target.getRoomUnit().getX())
                         --x;
@@ -111,14 +121,17 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
 
                     Tile newTile = new Tile(item.getX() + x, item.getY() + y, 0);
 
-                    HabboItem topItem = room.getTopItemAt(newTile.X, newTile.Y);
-
-                    if(topItem == null || topItem.getBaseItem().allowStack())
+                    if (room.getLayout().tileExists(newTile.X, newTile.Y))
                     {
-                        if(topItem != null)
-                            newTile.Z = topItem.getZ() + topItem.getBaseItem().getHeight();
+                        HabboItem topItem = room.getTopItemAt(newTile.X, newTile.Y);
 
-                        room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, room).compose());
+                        if (topItem == null || topItem.getBaseItem().allowStack())
+                        {
+                            if (topItem != null)
+                                newTile.Z = topItem.getZ() + topItem.getBaseItem().getHeight();
+
+                            room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, room).compose());
+                        }
                     }
                 }
             }
