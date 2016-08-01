@@ -80,6 +80,6 @@ public class WiredConditionNotInGroup extends InteractionWiredCondition
     @Override
     public boolean saveData(ClientMessage packet)
     {
-        return false;
+        return true;
     }
 }
