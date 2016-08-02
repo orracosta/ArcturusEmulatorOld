@@ -90,11 +90,26 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
         Habbo habbo = room.getHabbo(roomUnit);
         THashSet<HabboItem> items = this.items;
 
+        HabboItem triggerItem = null;
+
+        if (stuff != null && stuff.length > 0)
+        {
+            if (stuff[0] instanceof HabboItem)
+            {
+                triggerItem = (HabboItem) stuff[0];
+            }
+        }
+
         for(HabboItem item : items)
         {
             if(item.getRoomId() == 0)
             {
                 this.items.remove(item);
+                continue;
+            }
+
+            if (triggerItem != null && triggerItem.getId() == item.getId())
+            {
                 continue;
             }
 
