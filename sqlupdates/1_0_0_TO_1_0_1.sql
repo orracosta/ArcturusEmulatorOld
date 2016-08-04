@@ -74,6 +74,6 @@ INSERT INTO `emulator_texts` (`key`, `value`) VALUES
                              ('commands.description.cmd_update_hotel_view', ':update_hotel_view'),
                              ('commands.succes.cmd_update_hotel_view', 'Hotelview reloaded!');
 
-ALTER TABLE  `permissions` ADD  `cmd_update_hotel_view` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_update_guildparts`
+ALTER TABLE  `permissions` ADD  `cmd_update_hotel_view` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_update_guildparts`;
 
 #END DATABASE UPDATE 1.0.0 -> 1.0.1
