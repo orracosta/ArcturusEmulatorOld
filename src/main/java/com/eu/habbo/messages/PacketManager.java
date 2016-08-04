@@ -328,6 +328,7 @@ public class PacketManager
         this.registerHandler(Incoming.UnIgnoreRoomUserEvent,                    UnIgnoreRoomUserEvent.class);
         this.registerHandler(Incoming.UnbanRoomUserEvent,                       UnbanRoomUserEvent.class);
         this.registerHandler(Incoming.RequestRoomUserTagsEvent,                 RequestRoomUserTagsEvent.class);
+        this.registerHandler(Incoming.RoomFavoriteEvent,                        RoomFavoriteEvent.class);
     }
 
     void registerPolls()

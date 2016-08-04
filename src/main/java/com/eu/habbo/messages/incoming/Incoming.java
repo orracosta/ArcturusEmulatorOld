@@ -283,4 +283,5 @@ public class Incoming
     public static final int AdventCalendarOpenDayEvent = 724;
     public static final int AdventCalendarForceOpenEvent = 2879;
     public static final int CameraPurchaseEvent = 1903;
+    public static final int RoomFavoriteEvent = 3092;
 }

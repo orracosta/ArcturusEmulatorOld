@@ -25,6 +25,7 @@ import com.eu.habbo.util.pathfinding.PathFinder;
 import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.hash.THashMap;
+import gnu.trove.procedure.TIntProcedure;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.PreparedStatement;
@@ -1246,7 +1247,24 @@ public class RoomManager {
 
     public ArrayList<Room> getRoomsFavourite(Habbo habbo)
     {
-        return new ArrayList<Room>();
+        final ArrayList<Room> rooms = new ArrayList<Room>();
+
+        habbo.getHabboStats().getFavoriteRooms().forEach(new TIntProcedure()
+        {
+            @Override
+            public boolean execute(int value)
+            {
+                Room room = loadRoom(value);
+
+                if (room != null)
+                {
+                    rooms.add(room);
+                }
+                return true;
+            }
+        });
+
+        return rooms;
     }
 
     public ArrayList<Room> getRoomsWithRights(Habbo habbo)

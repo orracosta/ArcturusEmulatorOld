@@ -20,10 +20,21 @@ public class NavigatorUserFilter extends NavigatorFilter
     @Override
     public List<SearchResultList> getResult(Habbo habbo)
     {
+        int i = 0;
         List<SearchResultList> resultLists = new ArrayList<SearchResultList>();
         List<Room> rooms = Emulator.getGameEnvironment().getRoomManager().getRoomsForHabbo(habbo);
         Collections.sort(rooms);
-        resultLists.add(new SearchResultList(0, "my", "", SearchAction.NONE, SearchMode.LIST, false, rooms, true));
+        resultLists.add(new SearchResultList(i, "my", "", SearchAction.NONE, SearchMode.LIST, false, rooms, true));
+        ++i;
+
+        List<Room> favoriteRooms = Emulator.getGameEnvironment().getRoomManager().getRoomsFavourite(habbo);
+
+        if (!favoriteRooms.isEmpty())
+        {
+            Collections.sort(favoriteRooms);
+            resultLists.add(new SearchResultList(1, "favorites", "", SearchAction.NONE, SearchMode.LIST, false, favoriteRooms, true));
+            ++i;
+        }
         return resultLists;
     }
 }

@@ -72,7 +72,7 @@ public class SecureLoginEvent extends MessageHandler
                 messages.add(new NewUserIdentityComposer().compose());
                 messages.add(new UserPerksComposer().compose());
                 messages.add(new SessionRightsComposer().compose());
-                messages.add(new FavoriteRoomsCountComposer().compose());
+                messages.add(new FavoriteRoomsCountComposer(this.client.getHabbo()).compose());
                 messages.add(new UserEffectsListComposer().compose());
 
                 if(this.client.getHabbo().hasPermission("acc_supporttool"))

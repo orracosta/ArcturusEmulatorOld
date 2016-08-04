@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.catalog.CatalogItem;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
 import gnu.trove.set.hash.TIntHashSet;
 import gnu.trove.stack.array.TIntArrayStack;
 
@@ -56,6 +57,7 @@ public class HabboStats implements Runnable
     private final THashMap<Achievement, Integer> achievementProgress; //TEMP PUBLIC
     private final THashMap<Achievement, Integer> achievementCache;
     private final THashMap<Integer, CatalogItem> recentPurchases;
+    private final TIntHashSet favoriteRooms;
     public final TIntHashSet ignoredUsers;
 
     public final HabboNavigatorWindowSettings navigatorWindowSettings;
@@ -65,6 +67,7 @@ public class HabboStats implements Runnable
         this.achievementProgress = new THashMap<Achievement, Integer>();
         this.achievementCache = new THashMap<Achievement, Integer>();
         this.recentPurchases = new THashMap<Integer, CatalogItem>();
+        this.favoriteRooms = new TIntHashSet();
         this.ignoredUsers = new TIntHashSet();
 
         this.habbo = habbo;
@@ -116,6 +119,25 @@ public class HabboStats implements Runnable
         nSet.close();
         statement.close();
         statement.getConnection().close();
+
+        PreparedStatement favoriteRoomsStatement = Emulator.getDatabase().prepare("SELECT * FROM users_favorite_rooms WHERE user_id = ?");
+
+        try
+        {
+            favoriteRoomsStatement.setInt(1, this.habbo.getHabboInfo().getId());
+            ResultSet favoriteSet = favoriteRoomsStatement.executeQuery();
+            while (favoriteSet.next())
+            {
+                this.favoriteRooms.add(favoriteSet.getInt("room_id"));
+            }
+            favoriteSet.close();
+            favoriteRoomsStatement.close();
+            favoriteRoomsStatement.getConnection().close();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
     }
 
     @Override
@@ -426,4 +448,61 @@ public class HabboStats implements Runnable
         this.recentPurchases.clear();
     }
 
+    public boolean addFavoriteRoom(int roomId)
+    {
+        if (this.favoriteRooms.contains(roomId))
+            return false;
+
+        if (Emulator.getConfig().getInt("hotel.rooms.max.favorite") <= this.favoriteRooms.size())
+            return false;
+
+        PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO users_favorite_rooms (user_id, room_id) VALUES (?, ?)");
+
+        try
+        {
+            statement.setInt(1, this.habbo.getHabboInfo().getId());
+            statement.setInt(2, roomId);
+            statement.execute();
+            statement.close();
+            statement.getConnection().close();
+        }
+        catch (SQLException e)
+        {
+
+        }
+
+        this.favoriteRooms.add(roomId);
+        return true;
+    }
+
+    public void removeFavoriteRoom(int roomId)
+    {
+        if (this.favoriteRooms.remove(roomId))
+        {
+            PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM users_favorite_rooms WHERE user_id = ? AND room_id = ? LIMIT 1");
+
+            try
+            {
+                statement.setInt(1, this.habbo.getHabboInfo().getId());
+                statement.setInt(2, roomId);
+                statement.execute();
+                statement.close();
+                statement.getConnection().close();
+            }
+            catch (SQLException e)
+            {
+
+            }
+        }
+    }
+
+    public boolean hasFavoriteRoom(int roomId)
+    {
+        return this.favoriteRooms.contains(roomId);
+    }
+
+    public TIntHashSet getFavoriteRooms()
+    {
+        return this.favoriteRooms;
+    }
 }

@@ -1,3 +1,5 @@
+#DATABASE UPDATE: 1.0.4 -> 1.0.5
+
 INSERT INTO emulator_settings (`key`, `value`) VALUES
         ('camera.enabled', '1'),
         ('camera.price.credits', '100'),
@@ -5,10 +7,12 @@ INSERT INTO emulator_settings (`key`, `value`) VALUES
         ('camera.price.points.publish', '1000'),
         ('camera.item_id', '23425'),
         ('camera.extradata', '{"t":%timestamp%, "u":"%id%", "s":%room_id%, "w":"%url%"}'),
-        ('hotel.navigator.search.maxresults', '35');
+        ('hotel.navigator.search.maxresults', '35'),
+        ('hotel.rooms.max.favorite', '30');
 
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES
-        ('commands.error.cmd_kick.unkickable', '%username% is unkickable!');
+        ('commands.error.cmd_kick.unkickable', '%username% is unkickable!'),
+        ('camera.disabled', 'Sorry! Camera is disabled :(');
 
 DROP TABLE navigator_filter;
 CREATE TABLE IF NOT EXISTS `navigator_filter` (
@@ -29,3 +33,22 @@ INSERT INTO `navigator_filter` (`key`, `field`, `compare`, `database_query`) VAL
 
 
 ALTER TABLE  `rooms` ADD  `users` INT NOT NULL DEFAULT  '0' AFTER  `state`
+
+CREATE TABLE  `users_favorite_rooms` (
+    `user_id` INT NOT NULL ,
+    `room_id` INT NOT NULL ,
+    UNIQUE (
+        `user_id` ,
+        `room_id`
+    )
+) ENGINE = MYISAM ;
+
+ALTER TABLE `catalog_pages` CHANGE `page_headline` `page_headline` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
+ALTER TABLE `catalog_pages` CHANGE `page_headline` `page_teaser` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
+ALTER TABLE `catalog_pages` CHANGE `page_headline` `page_special` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
+ALTER TABLE `catalog_pages` CHANGE `page_headline` `page_text1` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
+ALTER TABLE `catalog_pages` CHANGE `page_headline` `page_text2` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
+ALTER TABLE `catalog_pages` CHANGE `page_headline` `page_text_details` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
+ALTER TABLE `catalog_pages` CHANGE `page_headline` `page_text_teaser` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
+
+#DATABASE UPDATE: 1.0.4 -> 1.0.5

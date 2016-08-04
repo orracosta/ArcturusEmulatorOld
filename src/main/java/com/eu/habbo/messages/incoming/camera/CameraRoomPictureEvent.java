@@ -5,6 +5,8 @@ import com.eu.habbo.habbohotel.users.HabboInfo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.camera.CameraPublishWaitMessageComposer;
 import com.eu.habbo.messages.outgoing.camera.CameraURLComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
+import com.eu.habbo.networking.camera.CameraClient;
 import com.eu.habbo.networking.camera.messages.outgoing.CameraRenderImageComposer;
 import com.eu.habbo.util.crypto.ZIP;
 
@@ -16,15 +18,17 @@ public class CameraRoomPictureEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        int seconds = Emulator.getIntUnixTimestamp() - this.client.getHabbo().getHabboInfo().getPhotoTimestamp();
-        if (seconds < (60 * 2))
+        if (CameraClient.isLoggedIn)
         {
-            this.client.sendResponse(new CameraPublishWaitMessageComposer(false, seconds - (60 * 2), ""));
-        }
+            int seconds = Emulator.getIntUnixTimestamp() - this.client.getHabbo().getHabboInfo().getPhotoTimestamp();
+            if (seconds < (60 * 2))
+            {
+                this.client.sendResponse(new CameraPublishWaitMessageComposer(false, seconds - (60 * 2), ""));
+            }
 
-        System.out.println(this.packet.getBuffer().readFloat());
-        //byte[] buffer = new byte[4096*3];
-        byte[] data = this.packet.getBuffer().readBytes(this.packet.getBuffer().readableBytes()).array();
+            System.out.println(this.packet.getBuffer().readFloat());
+            //byte[] buffer = new byte[4096*3];
+            byte[] data = this.packet.getBuffer().readBytes(this.packet.getBuffer().readableBytes()).array();
 
         /*Inflater inflater = new Inflater();
         inflater.setInput(data);
@@ -38,17 +42,21 @@ public class CameraRoomPictureEvent extends MessageHandler
         byte[] output = outputStream.toByteArray();
 
         inflater.end();*/
-        String content = new String(ZIP.inflate(data));
+            String content = new String(ZIP.inflate(data));
 
-        CameraRenderImageComposer composer = new CameraRenderImageComposer(this.client.getHabbo().getHabboInfo().getId(), this.client.getHabbo().getHabboInfo().getCurrentRoom().getBackgroundTonerColor().getRGB(), 320, 320, content);
+            CameraRenderImageComposer composer = new CameraRenderImageComposer(this.client.getHabbo().getHabboInfo().getId(), this.client.getHabbo().getHabboInfo().getCurrentRoom().getBackgroundTonerColor().getRGB(), 320, 320, content);
 
-        this.client.getHabbo().getHabboInfo().setPhotoJSON(Emulator.getConfig().getValue("camera.extradata").replace("%timestamp%", composer.timestamp + ""));
-        this.client.getHabbo().getHabboInfo().setPhotoTimestamp(composer.timestamp);
+            this.client.getHabbo().getHabboInfo().setPhotoJSON(Emulator.getConfig().getValue("camera.extradata").replace("%timestamp%", composer.timestamp + ""));
+            this.client.getHabbo().getHabboInfo().setPhotoTimestamp(composer.timestamp);
 
-        Emulator.getCameraClient().sendMessage(composer);
+            Emulator.getCameraClient().sendMessage(composer);
 
-        //Emulator.getCameraClient().sendMessage(new CameraRenderImageComposer(this.client.getHabbo().getHabboInfo().getId(), this.client.getHabbo().getHabboInfo().getCurrentRoom().getBackgroundTonerColor().getRGB(), 320, 320, ""));
-
+            //Emulator.getCameraClient().sendMessage(new CameraRenderImageComposer(this.client.getHabbo().getHabboInfo().getId(), this.client.getHabbo().getHabboInfo().getCurrentRoom().getBackgroundTonerColor().getRGB(), 320, 320, ""));
+        }
+        else
+        {
+            this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("camera.disabled")));
+        }
 
     }
 }
