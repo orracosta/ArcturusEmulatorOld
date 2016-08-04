@@ -157,6 +157,19 @@ public class CleanerThread implements Runnable {
             Emulator.getLogging().logSQLException(e);
         }
 
+        try
+        {
+            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE rooms SET users = ?");
+            statement.setString(1, "0");
+            statement.execute();
+            statement.close();
+            statement.getConnection().close();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
         Emulator.getLogging().logStart("Database -> Cleaned! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
 }
