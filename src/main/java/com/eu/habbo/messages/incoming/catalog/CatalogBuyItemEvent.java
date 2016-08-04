@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.catalog.CatalogPage;
 import com.eu.habbo.habbohotel.catalog.layouts.ClubBuyLayout;
 import com.eu.habbo.habbohotel.catalog.layouts.RecentPurchasesLayout;
 import com.eu.habbo.habbohotel.catalog.layouts.RoomBundleLayout;
+import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.*;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
@@ -74,6 +75,21 @@ public class CatalogBuyItemEvent extends MessageHandler
                 this.client.getHabbo().getHabboInfo().addCredits(-item[0].getCredits());
                 this.client.getHabbo().getHabboInfo().addCurrencyAmount(item[0].getPointsType(), -item[0].getPoints());
                 this.client.sendResponse(new PurchaseOKComposer());
+
+                if(item[0].hasBadge())
+                {
+                    if(!this.client.getHabbo().getHabboInventory().getBadgesComponent().hasBadge(item[0].getBadge()))
+                    {
+                        HabboBadge badge = new HabboBadge(0, item[0].getBadge(), 0, this.client.getHabbo());
+                        Emulator.getThreading().run(badge);
+                        this.client.getHabbo().getHabboInventory().getBadgesComponent().addBadge(badge);
+                    }
+                    else
+                    {
+                        this.client.getHabbo().getClient().sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.ALREADY_HAVE_BADGE));
+                    }
+                }
+
                 return;
             }
         }

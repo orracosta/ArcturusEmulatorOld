@@ -1047,9 +1047,16 @@ public class CatalogManager
 
             if(item.hasBadge())
             {
-                HabboBadge badge = new HabboBadge(0, item.getBadge(), 0, habbo.getClient().getHabbo());
-                Emulator.getThreading().run(badge);
-                habbo.getClient().getHabbo().getHabboInventory().getBadgesComponent().addBadge(badge);
+                if(!habbo.getHabboInventory().getBadgesComponent().hasBadge(item.getBadge()))
+                {
+                    HabboBadge badge = new HabboBadge(0, item.getBadge(), 0, habbo);
+                    Emulator.getThreading().run(badge);
+                    habbo.getHabboInventory().getBadgesComponent().addBadge(badge);
+                }
+                else
+                {
+                    habbo.getClient().sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.ALREADY_HAVE_BADGE));
+                }
             }
 
             habbo.getClient().sendResponse(new AddHabboItemComposer(itemsList));

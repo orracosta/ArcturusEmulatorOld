@@ -4,24 +4,28 @@ INSERT INTO emulator_settings (`key`, `value`) VALUES
         ('camera.price.points', '100'),
         ('camera.price.points.publish', '1000'),
         ('camera.item_id', '23425'),
-        ('camera.extradata', '{"t":%timestamp%, "u":"%id%", "s":%room_id%, "w":"%url%"}');
+        ('camera.extradata', '{"t":%timestamp%, "u":"%id%", "s":%room_id%, "w":"%url%"}'),
+        ('hotel.navigator.search.maxresults', '35');
 
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES
         ('commands.error.cmd_kick.unkickable', '%username% is unkickable!');
-
 
 DROP TABLE navigator_filter;
 CREATE TABLE IF NOT EXISTS `navigator_filter` (
   `key` varchar(11) NOT NULL,
   `field` varchar(32) NOT NULL,
-  `compare` enum('equals','equals_ignore_case','contains') NOT NULL
+  `compare` enum('equals','equals_ignore_case','contains') NOT NULL,
+  `database_query` varchar(256) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-INSERT INTO `navigator_filter` (`key`, `field`, `compare`) VALUES
-        ('owner', 'getOwnerName', 'equals_ignore_case'),
-        ('anything', 'filterAnything', 'contains'),
-        ('roomname', 'getName', 'equals_ignore_case'),
-        ('tag', 'getTags', 'equals'),
-        ('group', 'getGuildName', 'contains'),
-        ('desc', 'getDescription', 'contains'),
-        ('promo', 'getPromotionDesc', 'contains');
+INSERT INTO `navigator_filter` (`key`, `field`, `compare`, `database_query`) VALUES
+    ('owner', 'getOwnerName', 'equals_ignore_case', 'SELECT * FROM rooms WHERE owner_name LIKE ?'),
+    ('anything', 'filterAnything', 'contains', 'SELECT rooms.* FROM rooms INNER JOIN guilds ON rooms.guild_id = guilds.id = WHERE CONCAT(rooms.owner_name, rooms.name, rooms.description, rooms.tags, guilds.name, guilds.description) LIKE ?'),
+    ('roomname', 'getName', 'equals_ignore_case', 'SELECT * FROM rooms WHERE name LIKE ?'),
+    ('tag', 'getTags', 'equals', 'SELECT * FROM rooms WHERE tags LIKE ?'),
+    ('group', 'getGuildName', 'contains', 'SELECT rooms.* FROM guilds INNER JOIN rooms ON guilds.room_id = rooms.id WHERE CONCAT(guilds.name, guilds.description) LIKE ?'),
+    ('desc', 'getDescription', 'contains', 'SELECT * FROM rooms WHERE description LIKE ?'),
+    ('promo', 'getPromotionDesc', 'contains', 'SELECT rooms.* FROM rooms INNER JOIN room_promotions ON rooms.id = room_promotions.id WHERE room_promotions.end_timestamp >= UNIX_TIMESTAMP() AND CONCAT (room_promotions.title, room_promotions.description) LIKE ?');
+
+
+ALTER TABLE  `rooms` ADD  `users` INT NOT NULL DEFAULT  '0' AFTER  `state`

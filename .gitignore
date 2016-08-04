@@ -6,7 +6,6 @@ target/**
 plugins/**
 src/main/resources/
 src/test/
-logging/**
+logging/
 /target/
-/logging/
 config.ini
