@@ -111,6 +111,7 @@ public class ItemManager {
         this.interactionsList.add(new ItemInteraction("tile_fxprovider_nfs",    InteractionTileEffect.class));
         this.interactionsList.add(new ItemInteraction("mutearea",               InteractionMuteArea.class));
         this.interactionsList.add(new ItemInteraction("information_terminal",   InteractionInformationTerminal.class));
+        this.interactionsList.add(new ItemInteraction("external_image",         InteractionExternalImage.class));
 
         /*
             Wireds

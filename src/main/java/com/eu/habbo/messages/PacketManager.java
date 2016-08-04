@@ -7,6 +7,10 @@ import com.eu.habbo.messages.incoming.Incoming;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.incoming.achievements.*;
 import com.eu.habbo.messages.incoming.ambassadors.*;
+import com.eu.habbo.messages.incoming.camera.CameraRoomPictureEvent;
+import com.eu.habbo.messages.incoming.camera.CameraPurchaseEvent;
+import com.eu.habbo.messages.incoming.camera.CameraRoomThumbnailEvent;
+import com.eu.habbo.messages.incoming.camera.RequestCameraConfigurationEvent;
 import com.eu.habbo.messages.incoming.catalog.*;
 import com.eu.habbo.messages.incoming.catalog.marketplace.*;
 import com.eu.habbo.messages.incoming.catalog.recycler.*;
@@ -67,6 +71,7 @@ public class PacketManager
         this.registerAmbassadors();
         this.registerGuides();
         this.registerCrafting();
+        this.registerCamera();
     }
 
     void registerHandler(Integer header, Class<? extends MessageHandler> handler)
@@ -162,7 +167,6 @@ public class PacketManager
         this.registerHandler(Incoming.MachineIDEvent,                           MachineIDEvent.class);
         this.registerHandler(Incoming.UsernameEvent,                            UsernameEvent.class);
         this.registerHandler(Incoming.PingEvent,                                PingEvent.class);
-        this.registerHandler(Incoming.CameraParserShit,                         CameraParserShit.class);
     }
 
     private void registerFriends()
@@ -460,5 +464,13 @@ public class PacketManager
         this.registerHandler(Incoming.CraftingCraftItemEvent,                   CraftingCraftItemEvent.class);
         this.registerHandler(Incoming.CraftingCraftSecretEvent,                 CraftingCraftSecretEvent.class);
         this.registerHandler(Incoming.RequestCraftingRecipesAvailableEvent,     RequestCraftingRecipesAvailableEvent.class);
+    }
+
+    void registerCamera()
+    {
+        this.registerHandler(Incoming.CameraRoomPictureEvent,                   CameraRoomPictureEvent.class);
+        this.registerHandler(Incoming.RequestCameraConfigurationEvent,          RequestCameraConfigurationEvent.class);
+        this.registerHandler(Incoming.CameraPurchaseEvent,                      CameraPurchaseEvent.class);
+        this.registerHandler(Incoming.CameraRoomThumbnailEvent,                 CameraRoomThumbnailEvent.class);
     }
 }

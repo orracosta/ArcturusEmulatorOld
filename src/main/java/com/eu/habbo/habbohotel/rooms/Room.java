@@ -56,6 +56,7 @@ import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.procedure.TIntObjectProcedure;
+import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
 import java.awt.*;
@@ -1769,6 +1770,35 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public boolean isHideWall() {
         return this.hideWall;
+    }
+
+    public synchronized Color getBackgroundTonerColor()
+    {
+        final Color[] color = {new Color(0, 0, 0)};
+        this.roomItems.forEachValue(new TObjectProcedure<HabboItem>()
+        {
+            @Override
+            public boolean execute(HabboItem object)
+            {
+                if (object instanceof InteractionBackgroundToner)
+                {
+                    String[] extraData = object.getExtradata().split(":");
+
+                    if (extraData.length == 4)
+                    {
+                        if (extraData[0].equalsIgnoreCase("1"))
+                        {
+                            color[0] = Color.getHSBColor(Integer.valueOf(extraData[1]), Integer.valueOf(extraData[2]), Integer.valueOf(extraData[3]));
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
+            }
+        });
+
+        return color[0];
     }
 
     public int getChatMode() {

@@ -47,6 +47,10 @@ public class HabboInfo implements Runnable
     private TIntIntHashMap currencies;
     private GamePlayer gamePlayer;
 
+    private int photoTimestamp;
+    private String photoURL;
+    private String photoJSON;
+
     public HabboInfo(ResultSet set)
     {
         try
@@ -376,6 +380,36 @@ public class HabboInfo implements Runnable
     public synchronized void setGamePlayer(GamePlayer gamePlayer)
     {
         this.gamePlayer = gamePlayer;
+    }
+
+    public int getPhotoTimestamp()
+    {
+        return this.photoTimestamp;
+    }
+
+    public void setPhotoTimestamp(int photoTimestamp)
+    {
+        this.photoTimestamp = photoTimestamp;
+    }
+
+    public String getPhotoURL()
+    {
+        return this.photoURL;
+    }
+
+    public void setPhotoURL(String photoURL)
+    {
+        this.photoURL = photoURL;
+    }
+
+    public String getPhotoJSON()
+    {
+        return this.photoJSON;
+    }
+
+    public void setPhotoJSON(String photoJSON)
+    {
+        this.photoJSON = photoJSON;
     }
 
     @Override

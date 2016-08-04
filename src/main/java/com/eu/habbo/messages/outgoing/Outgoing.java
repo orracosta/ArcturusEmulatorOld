@@ -336,7 +336,7 @@ public class Outgoing
     public final static int RentableItemBuyOutPriceComposer = 2137; //Updated
     public final static int VipTutorialsStartComposer = 3407; //Updated
     public final static int NewNavigatorCategoryUserCountComposer = 3191; //Updated
-    public final static int RoomThumbnailSavedComposer = 849; //:test 3117 //Updated
+    public final static int CameraRoomThumbnailSavedComposer = 849; //:test 3117 //Updated
     public final static int RoomEditSettingsErrorComposer = 468; //:test 3094 i:15 i:7 s:derp //Updated
     public final static int GuildAcceptMemberErrorComposer = 2241; //:test 305 i:12 i:1 //Updated
     public final static int MostUselessErrorAlertComposer = 3321; //Updated
@@ -502,12 +502,12 @@ public class Outgoing
 //    3782;
 //    3786;
 //    3822;
-//    3908;
-//    3953;
+    public final static int CameraPurchaseSuccesfullComposer = 3908;
+    public final static int CameraCompetitionStatusComposer = 3953;
 //    3986;
 //    467;
 //    549;
-//    550;
+    public final static int CameraURLComposer = 550;
 //    608;
 //    624;
 //    675;

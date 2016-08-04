@@ -7,6 +7,7 @@ import com.eu.habbo.core.TextsManager;
 import com.eu.habbo.database.Database;
 import com.eu.habbo.habbohotel.GameEnvironment;
 import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
+import com.eu.habbo.networking.camera.CameraClient;
 import com.eu.habbo.networking.gameserver.GameServer;
 import com.eu.habbo.networking.rconserver.RCONServer;
 import com.eu.habbo.plugin.PluginManager;
@@ -14,6 +15,7 @@ import com.eu.habbo.plugin.events.emulator.EmulatorLoadedEvent;
 import com.eu.habbo.plugin.events.emulator.EmulatorStartShutdownEvent;
 import com.eu.habbo.plugin.events.emulator.EmulatorStoppedEvent;
 import com.eu.habbo.threading.ThreadPooling;
+import com.eu.habbo.threading.runnables.CameraClientAutoReconnect;
 import com.eu.habbo.util.imager.badges.BadgeImager;
 
 import java.sql.Timestamp;
@@ -36,6 +38,7 @@ public final class Emulator
     private static TextsManager             texts;
     private static GameServer               gameServer;
     private static RCONServer               rconServer;
+    private static CameraClient             cameraClient;
     private static Database                 database;
     private static Logging                  logging;
     private static ThreadPooling            threading;
@@ -87,6 +90,10 @@ public final class Emulator
             Emulator.rconServer.initialise();
             Emulator.rconServer.connect();
             Emulator.badgeImager = new BadgeImager();
+            if (Emulator.getConfig().getBoolean("camera.enabled"))
+            {
+                Emulator.getThreading().run(new CameraClientAutoReconnect());
+            }
 
             Emulator.getLogging().logStart("Habbo Hotel Emulator has succesfully loaded.");
             Emulator.getLogging().logStart("You're running: " + Emulator.version);
@@ -116,26 +123,30 @@ public final class Emulator
         Emulator.getLogging().logShutdownLine("Preparing for shutting down..");
         Emulator.getLogging().logShutdownLine("Disposing..");
 
-        if(Emulator.getPluginManager() != null)
+        if (Emulator.getPluginManager() != null)
             Emulator.getPluginManager().fireEvent(new EmulatorStartShutdownEvent());
 
-        if(Emulator.gameEnvironment != null)
+        if (Emulator.cameraClient != null)
+            Emulator.cameraClient.disconnect();
+
+        if (Emulator.gameEnvironment != null)
             Emulator.gameEnvironment.dispose();
 
-        if(Emulator.rconServer != null)
+        if (Emulator.rconServer != null)
             Emulator.rconServer.stop();
 
-        if(Emulator.gameServer != null)
+        if (Emulator.gameServer != null)
             Emulator.gameServer.stop();
 
-        if(Emulator.threading != null)
+        if (Emulator.threading != null)
             Emulator.threading.shutDown();
 
-        if(Emulator.getPluginManager() != null)
+        if (Emulator.getPluginManager() != null)
             Emulator.getPluginManager().fireEvent(new EmulatorStoppedEvent());
 
-        if(Emulator.pluginManager != null)
+        if (Emulator.pluginManager != null)
             Emulator.pluginManager.dispose();
+
 
         Emulator.getLogging().logShutdownLine("Disposed!");
         Emulator.stopped = true;
@@ -193,6 +204,16 @@ public final class Emulator
     public static BadgeImager getBadgeImager()
     {
         return badgeImager;
+    }
+
+    public static CameraClient getCameraClient()
+    {
+        return cameraClient;
+    }
+
+    public static synchronized void setCameraClient(CameraClient client)
+    {
+        cameraClient = client;
     }
     
     public static int getTimeStarted()

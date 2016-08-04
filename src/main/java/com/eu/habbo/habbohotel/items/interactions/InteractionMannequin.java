@@ -30,15 +30,15 @@ public class InteractionMannequin extends HabboItem
     {
         serverMessage.appendInt32(1 + (this.isLimited() ? 256 : 0));
         serverMessage.appendInt32(3);
-        if(this.getExtradata().split(":").length == 3)
+        if(this.getExtradata().split(":").length >= 2)
         {
             String[] data = this.getExtradata().split(":");
             serverMessage.appendString("GENDER");
             serverMessage.appendString(data[0]);
             serverMessage.appendString("FIGURE");
-            serverMessage.appendString(data[1]);
+            serverMessage.appendString(data[1].replace(" ", ""));
             serverMessage.appendString("OUTFIT_NAME");
-            serverMessage.appendString(data[2]);
+            serverMessage.appendString((data.length >= 3 ?  data[2] : ""));
         }
         else
         {
@@ -48,7 +48,7 @@ public class InteractionMannequin extends HabboItem
             serverMessage.appendString("");
             serverMessage.appendString("OUTFIT_NAME");
             serverMessage.appendString("My Look");
-            this.setExtradata("M::My look");
+            this.setExtradata("M: :My look");
             this.needsUpdate(true);
             Emulator.getThreading().run(this);
         }

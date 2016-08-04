@@ -260,7 +260,8 @@ public class Incoming
     public static final int RequestAchievementConfigurationEvent = 751; //Updated
     public static final int RequestReportUserBullyingEvent = 2973;
     public static final int ReportBullyEvent = 1803;
-    public static final int CameraParserShit = 2274;
+    public static final int CameraRoomPictureEvent = 2274;
+    public static final int CameraRoomThumbnailEvent = 1366;
     public static final int SavePostItStickyPoleEvent = 3155;
     public static final int HotelViewClaimBadgeEvent = 2388;
     public static final int HotelViewRequestCommunityGoalEvent = 2059;
@@ -281,4 +282,5 @@ public class Incoming
 
     public static final int AdventCalendarOpenDayEvent = 724;
     public static final int AdventCalendarForceOpenEvent = 2879;
+    public static final int CameraPurchaseEvent = 1903;
 }
