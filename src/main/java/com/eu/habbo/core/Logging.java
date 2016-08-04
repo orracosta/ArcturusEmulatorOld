@@ -89,6 +89,7 @@ public class Logging
             e.printStackTrace();
         }
     }
+
     public void logStart(Object line)
     {
         System.out.println("[" + Logging.ANSI_BRIGHT + Logging.ANSI_GREEN + "LOADING" + Logging.ANSI_RESET + "] " + line.toString());

@@ -14,6 +14,7 @@ public class HTTPPostError implements Runnable
     {
         this.stackTrace = stackTrace;
     }
+
     private void sendPost() throws Exception
     {
         if (!Emulator.isReady)
@@ -32,7 +33,7 @@ public class HTTPPostError implements Runnable
         con.setRequestMethod("POST");
         con.setRequestProperty("User-Agent", "arcturus");
 
-        String urlParameters = "errors=1&stacktrace=" + sw.toString() + "&users=" + Emulator.getGameEnvironment().getHabboManager().getOnlineCount() + "&rooms=" + Emulator.getGameEnvironment().getRoomManager().getActiveRooms().size() + "&username=" + Emulator.getConfig().getValue("username");
+        String urlParameters = "errors=1&version=" + Emulator.version + "&stacktrace=" + sw.toString() + "&users=" + Emulator.getGameEnvironment().getHabboManager().getOnlineCount() + "&rooms=" + Emulator.getGameEnvironment().getRoomManager().getActiveRooms().size() + "&username=" + Emulator.getConfig().getValue("username");
 
         // Send post request
         con.setDoOutput(true);

@@ -122,7 +122,7 @@ public class TestCommand extends Command
                     {
                         if (data.length > 1)
                         {
-                            message.appendString(data[1]);
+                            message.appendString(data[1].replace("%http%", "http://"));
                         } else
                         {
                             message.appendString("");

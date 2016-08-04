@@ -715,11 +715,13 @@ public class RoomManager {
 
         habbo.getClient().sendResponse(new RoomPaneComposer(room, room.isOwner(habbo)));
 
+        habbo.getClient().sendResponse(new RoomThicknessComposer(room));
+
+        habbo.getClient().sendResponse(new RoomDataComposer(room, habbo.getClient().getHabbo(), false, true));
+
         habbo.getClient().sendResponse(new RoomWallItemsComposer(room));
 
         habbo.getClient().sendResponse(new RoomFloorItemsComposer(room));
-
-        habbo.getClient().sendResponse(new RoomThicknessComposer(room));
 
         if(!room.getCurrentPets().isEmpty())
         {
@@ -791,8 +793,6 @@ public class RoomManager {
         }
 
         WiredHandler.handle(WiredTriggerType.ENTER_ROOM, habbo.getRoomUnit(), room, null);
-
-        habbo.getClient().sendResponse(new RoomDataComposer(room, habbo.getClient().getHabbo(), false, true));
 
         habbo.getHabboInfo().setLoadingRoom(0);
 

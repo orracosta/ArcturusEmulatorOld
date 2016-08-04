@@ -57,7 +57,7 @@ public class Message implements Runnable
         return this.message;
     }
 
-    public String setMessage(String message)
+    public void setMessage(String message)
     {
         this.message = message;
     }

@@ -8,6 +8,8 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
+import java.io.IOException;
+
 public class GameMessageHandler extends ChannelInboundHandlerAdapter
 {
     @Override
@@ -47,6 +49,14 @@ public class GameMessageHandler extends ChannelInboundHandlerAdapter
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
     {
+        if (cause instanceof Exception)
+        {
+            if (!(cause instanceof IOException))
+            {
+                Emulator.getLogging().logErrorLine(cause);
+            }
+        }
+
         ctx.close();
     }
 }
