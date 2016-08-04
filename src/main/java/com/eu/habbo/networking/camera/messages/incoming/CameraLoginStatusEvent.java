@@ -6,7 +6,6 @@ import com.eu.habbo.networking.camera.CameraClient;
 import com.eu.habbo.networking.camera.CameraIncomingMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
-import javafx.scene.Camera;
 
 public class CameraLoginStatusEvent extends CameraIncomingMessage
 {
