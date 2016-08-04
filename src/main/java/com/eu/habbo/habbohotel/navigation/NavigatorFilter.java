@@ -119,6 +119,11 @@ public abstract class NavigatorFilter
 
     public abstract List<SearchResultList> getResult(Habbo habbo);
 
+    public List<SearchResultList> getResult(Habbo habbo, NavigatorFilterField filterField, String value)
+    {
+        return getResult(habbo);
+    }
+
     private boolean applies(NavigatorFilterComparator comparator, String o, String value)
     {
         switch (comparator)

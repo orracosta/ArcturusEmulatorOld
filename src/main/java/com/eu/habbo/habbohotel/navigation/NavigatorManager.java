@@ -3,21 +3,17 @@ package com.eu.habbo.habbohotel.navigation;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.AbstractMap;
-import java.util.List;
 import java.util.Map;
 
 public class NavigatorManager
 {
     public final THashMap<Integer, NavigatorPublicCategory> publicCategories = new THashMap<Integer, NavigatorPublicCategory>();
-    public final THashMap<String, Map.Entry<Method, NavigatorFilterComparator>> filterSettings = new THashMap<String, Map.Entry<Method, NavigatorFilterComparator>>();
+    public final THashMap<String, NavigatorFilterField> filterSettings = new THashMap<String, NavigatorFilterField>();
     public final THashMap<String, NavigatorFilter> filters = new THashMap<String, NavigatorFilter>();
 
     public NavigatorManager()
@@ -29,6 +25,7 @@ public class NavigatorManager
         filters.put(NavigatorHotelFilter.name, new NavigatorHotelFilter());
         filters.put(NavigatorRoomAdsFilter.name, new NavigatorRoomAdsFilter());
         filters.put(NavigatorUserFilter.name, new NavigatorUserFilter());
+        filters.put(NavigatorFavoriteFilter.name, new NavigatorFavoriteFilter());
 
         Emulator.getLogging().logStart("Navigator Manager -> Loaded! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
@@ -116,7 +113,6 @@ public class NavigatorManager
                         try
                         {
                             field = clazz.getDeclaredMethod(set.getString("field"));
-                            clazz = field.getReturnType();
                         }
                         catch (Exception e)
                         {
@@ -126,7 +122,7 @@ public class NavigatorManager
 
                     if (field != null)
                     {
-                        this.filterSettings.put(set.getString("key"), new AbstractMap.SimpleEntry<Method, NavigatorFilterComparator>(field, NavigatorFilterComparator.valueOf(set.getString("compare").toUpperCase())));
+                        this.filterSettings.put(set.getString("key"), new NavigatorFilterField(set.getString("key"), field, set.getString("database_query"), NavigatorFilterComparator.valueOf(set.getString("compare").toUpperCase())));
                     }
                 }
 
@@ -145,11 +141,11 @@ public class NavigatorManager
     {
         synchronized (this.filterSettings)
         {
-            for (Map.Entry<String, Map.Entry<Method, NavigatorFilterComparator>> set : this.filterSettings.entrySet())
+            for (Map.Entry<String, NavigatorFilterField> set : this.filterSettings.entrySet())
             {
-                if (set.getValue().getKey() == field)
+                if (set.getValue().field == field)
                 {
-                    return set.getValue().getValue();
+                    return set.getValue().comparator;
                 }
             }
         }

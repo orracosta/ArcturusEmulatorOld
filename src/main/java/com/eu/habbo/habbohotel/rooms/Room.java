@@ -867,6 +867,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         {
             Emulator.getLogging().logErrorLine(e);
         }
+
+        this.updateDatabaseUserCount();
         this.preLoaded = true;
     }
 
@@ -1068,6 +1070,23 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
     }
 
+    private synchronized void updateDatabaseUserCount()
+    {
+        PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE rooms SET users = ? WHERE id = ? LIMIT 1");
+
+        try
+        {
+            statement.setInt(1, this.currentHabbos.size());
+            statement.setInt(2, this.id);
+            statement.execute();
+            statement.close();
+            statement.getConnection().close();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+    }
     private synchronized void cycle()
     {
         int currentTimestamp = Emulator.getIntUnixTimestamp();
@@ -2517,6 +2536,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         this.currentHabbos.put(habbo.getHabboInfo().getId(), habbo);
         this.unitCounter++;
+        this.updateDatabaseUserCount();
     }
 
     public void kickHabbo(Habbo habbo)
@@ -2578,6 +2598,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 this.getGame(habbo.getHabboInfo().getCurrentGame()).removeHabbo(habbo);
             }
         }
+
+        this.updateDatabaseUserCount();
     }
 
     public void addBot(Bot bot)

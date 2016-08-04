@@ -162,9 +162,7 @@ public class RequestNewNavigatorRoomsEvent extends MessageHandler
 
         if (filter != null)
         {
-            List<SearchResultList> resultLists = filter.getResult(this.client.getHabbo());
-
-            Method field = null;
+            NavigatorFilterField field = null;
             String part = query;
             if (query.contains(":"))
             {
@@ -187,16 +185,19 @@ public class RequestNewNavigatorRoomsEvent extends MessageHandler
 
                 if (Emulator.getGameEnvironment().getNavigatorManager().filterSettings.get(filterField) != null)
                 {
-                    field = Emulator.getGameEnvironment().getNavigatorManager().filterSettings.get(filterField).getKey();
+                    field = Emulator.getGameEnvironment().getNavigatorManager().filterSettings.get(filterField);
                 }
             }
 
+            List<SearchResultList> resultLists;
             if (field != null)
             {
-                filter.filter(field, part, resultLists);
+                resultLists = filter.getResult(this.client.getHabbo(), field, part);
+                filter.filter(field.field, part, resultLists);
             }
             else
             {
+                resultLists = filter.getResult(this.client.getHabbo());
                 if (!part.isEmpty())
                 {
                     filter(resultLists, filter, part);
@@ -229,7 +230,7 @@ public class RequestNewNavigatorRoomsEvent extends MessageHandler
         List<SearchResultList> toRemove = new ArrayList<SearchResultList>();
         Map<Integer, HashMap<Integer, Room>> filteredRooms = new HashMap<Integer, HashMap<Integer, Room>>();
 
-        for (Map.Entry<Method, NavigatorFilterComparator> set : Emulator.getGameEnvironment().getNavigatorManager().filterSettings.values())
+        for (NavigatorFilterField field : Emulator.getGameEnvironment().getNavigatorManager().filterSettings.values())
         {
             for (SearchResultList result : resultLists)
             {
@@ -237,7 +238,7 @@ public class RequestNewNavigatorRoomsEvent extends MessageHandler
                 {
                     List<Room> rooms = new ArrayList<Room>();
                     rooms.addAll(result.rooms.subList(0, result.rooms.size()));
-                    filter.filterRooms(set.getKey(), part, rooms);
+                    filter.filterRooms(field.field, part, rooms);
 
                     if (!filteredRooms.containsKey(result.order))
                     {

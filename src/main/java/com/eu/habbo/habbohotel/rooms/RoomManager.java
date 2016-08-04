@@ -3,8 +3,9 @@ package com.eu.habbo.habbohotel.rooms;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.bots.Bot;
-import com.eu.habbo.habbohotel.guilds.GuildRank;
 import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
+import com.eu.habbo.habbohotel.navigation.NavigatorFilterComparator;
+import com.eu.habbo.habbohotel.navigation.NavigatorFilterField;
 import com.eu.habbo.habbohotel.polls.PollManager;
 import com.eu.habbo.habbohotel.users.DanceType;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -142,6 +143,50 @@ public class RoomManager {
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
+        }
+    }
+
+    public THashMap<Integer, List<Room>> findRooms(NavigatorFilterField filterField, String value)
+    {
+        synchronized (this.activeRooms)
+        {
+            THashMap<Integer, List<Room>> rooms = new THashMap<Integer, List<Room>>();
+            try
+            {
+                String query = filterField.databaseQuery + " AND rooms.state != 'invisible' ORDER BY rooms.users, rooms.id DESC LIMIT " + Emulator.getConfig().getValue("hotel.navigator.search.maxresults");
+                PreparedStatement statement = Emulator.getDatabase().prepare(query);
+                System.out.println(query);
+                statement.setString(1, (filterField.comparator == NavigatorFilterComparator.EQUALS ? value : "%" + value + "%"));
+                ResultSet set = statement.executeQuery();
+
+                while (set.next())
+                {
+                    Room room = this.activeRooms.get(set.getInt("id"));
+
+                    if (room == null)
+                    {
+                        room = new Room(set);
+                        this.activeRooms.put(set.getInt("id"), room);
+                    }
+
+                    if (!rooms.containsKey(set.getInt("category")))
+                    {
+                        rooms.put(set.getInt("category"), new ArrayList<Room>());
+                    }
+
+                    rooms.get(set.getInt("category")).add(room);
+                }
+
+                set.close();
+                statement.close();
+                statement.getConnection().close();
+            }
+            catch (SQLException e)
+            {
+                Emulator.getLogging().logSQLException(e);
+            }
+
+            return rooms;
         }
     }
 
