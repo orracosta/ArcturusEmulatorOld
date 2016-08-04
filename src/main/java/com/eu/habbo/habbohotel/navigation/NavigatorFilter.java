@@ -92,7 +92,7 @@ public abstract class NavigatorFilter
 
                             if (comparator != null)
                             {
-                                if (!applies(comparator, (String) o, (String) value))
+                                if (!applies(comparator, s, (String) value))
                                 {
                                     toRemove.add(room);
                                 }
@@ -124,7 +124,7 @@ public abstract class NavigatorFilter
         switch (comparator)
         {
             case CONTAINS:
-                if (((String) o).contains((String) value))
+                if (o.contains(value))
                 {
                     return true;
                 }
@@ -138,7 +138,7 @@ public abstract class NavigatorFilter
                 break;
 
             case EQUALS_IGNORE_CASE:
-                if (((String) o).equalsIgnoreCase((String) value))
+                if (o.equalsIgnoreCase(value))
                 {
                     return true;
                 }

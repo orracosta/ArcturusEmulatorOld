@@ -1963,6 +1963,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         return this.rollerSpeed;
     }
 
+    public String[] filterAnything()
+    {
+        return new String[]{ getOwnerName(), getGuildName(), getDescription(), getPromotionDesc()};
+    }
+
     public boolean isPromoted()
     {
         this.promoted = this.promotion != null && this.promotion.getEndTimestamp() > Emulator.getIntUnixTimestamp();

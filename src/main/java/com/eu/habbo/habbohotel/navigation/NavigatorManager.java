@@ -99,7 +99,6 @@ public class NavigatorManager
                     {
                         for (String s : (set.getString("field")).split("."))
                         {
-                            System.out.println("2");
                             try
                             {
                                 field = clazz.getDeclaredMethod(s);
@@ -107,6 +106,7 @@ public class NavigatorManager
                             }
                             catch (Exception e)
                             {
+                                e.printStackTrace();
                                 break;
                             }
                         }
