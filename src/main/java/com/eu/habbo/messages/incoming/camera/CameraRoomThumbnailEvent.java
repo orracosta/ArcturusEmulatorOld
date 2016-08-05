@@ -20,7 +20,7 @@ public class CameraRoomThumbnailEvent extends MessageHandler
             String content = new String(ZIP.inflate(data));
 
             Emulator.getLogging().logDebugLine(content);
-            
+
             CameraRenderImageComposer composer = new CameraRenderImageComposer(this.client.getHabbo().getHabboInfo().getId(), this.client.getHabbo().getHabboInfo().getCurrentRoom().getBackgroundTonerColor().getRGB(), 110, 110, content);
 
             this.client.getHabbo().getHabboInfo().setPhotoJSON(Emulator.getConfig().getValue("camera.extradata").replace("%timestamp%", composer.timestamp + ""));

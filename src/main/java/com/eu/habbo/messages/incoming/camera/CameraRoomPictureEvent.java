@@ -20,13 +20,13 @@ public class CameraRoomPictureEvent extends MessageHandler
     {
         if (CameraClient.isLoggedIn)
         {
-            int seconds = Emulator.getIntUnixTimestamp() - this.client.getHabbo().getHabboInfo().getPhotoTimestamp();
-            if (seconds < (60 * 2))
-            {
-                this.client.sendResponse(new CameraPublishWaitMessageComposer(false, seconds - (60 * 2), ""));
-            }
+//            int seconds = Emulator.getIntUnixTimestamp() - this.client.getHabbo().getHabboInfo().getPhotoTimestamp();
+//            if (seconds < (60 * 2))
+//            {
+//                this.client.sendResponse(new CameraPublishWaitMessageComposer(false, seconds - (60 * 2), ""));
+//            }
 
-            System.out.println(this.packet.getBuffer().readFloat());
+            this.packet.getBuffer().readFloat();
             //byte[] buffer = new byte[4096*3];
             byte[] data = this.packet.getBuffer().readBytes(this.packet.getBuffer().readableBytes()).array();
 
