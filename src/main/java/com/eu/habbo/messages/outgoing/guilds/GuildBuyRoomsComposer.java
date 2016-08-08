@@ -1,5 +1,6 @@
 package com.eu.habbo.messages.outgoing.guilds;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
@@ -19,7 +20,7 @@ public class GuildBuyRoomsComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildBuyRoomsComposer);
-        this.response.appendInt32(10);
+        this.response.appendInt32(Emulator.getConfig().getInt("catalog.guild.price"));
         this.response.appendInt32(this.rooms.size());
 
         for (Room room : this.rooms)
@@ -28,6 +29,7 @@ public class GuildBuyRoomsComposer extends MessageComposer
             this.response.appendString(room.getName());
             this.response.appendBoolean(false);
         }
+
         this.response.appendInt32(5);
 
         this.response.appendInt32(10);

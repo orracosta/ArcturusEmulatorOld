@@ -18,8 +18,11 @@ public class RequestGuildBuyEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        this.client.getHabbo().getHabboInfo().addCredits(-10);
-        this.client.sendResponse(new UserCreditsComposer(this.client.getHabbo()));
+        if (!this.client.getHabbo().hasPermission("acc_infinite_credits"))
+        {
+            this.client.getHabbo().getHabboInfo().addCredits(-10);
+            this.client.sendResponse(new UserCreditsComposer(this.client.getHabbo()));
+        }
 
         String name = this.packet.readString();
         String description = this.packet.readString();

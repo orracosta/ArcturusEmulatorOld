@@ -72,8 +72,16 @@ public class CatalogBuyItemEvent extends MessageHandler
 
                 ((RoomBundleLayout)page).buyRoom(this.client.getHabbo());
 
-                this.client.getHabbo().getHabboInfo().addCredits(-item[0].getCredits());
-                this.client.getHabbo().getHabboInfo().addCurrencyAmount(item[0].getPointsType(), -item[0].getPoints());
+                if (!this.client.getHabbo().hasPermission("acc_infinite_credits"))
+                {
+                    this.client.getHabbo().getHabboInfo().addCredits(-item[0].getCredits());
+                }
+
+                if (!this.client.getHabbo().hasPermission("acc_inifinte_points"))
+                {
+                    this.client.getHabbo().getHabboInfo().addCurrencyAmount(item[0].getPointsType(), -item[0].getPoints());
+                }
+
                 this.client.sendResponse(new PurchaseOKComposer());
 
                 if(item[0].hasBadge())

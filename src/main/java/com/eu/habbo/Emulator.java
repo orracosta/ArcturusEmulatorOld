@@ -29,6 +29,7 @@ public final class Emulator
     public static MessengerBuddy publicChatBuddy;
     public static final String version = "Version: 1.0.6";
     public static boolean isReady = false;
+    public static boolean isShuttingDown = false;
     public static boolean stopped = false;
     public static boolean debugging = true;
 
@@ -119,9 +120,9 @@ public final class Emulator
 
     public static void dispose()
     {
+        Emulator.isShuttingDown = true;
         Emulator.isReady = false;
-        Emulator.getLogging().logShutdownLine("Preparing for shutting down..");
-        Emulator.getLogging().logShutdownLine("Disposing..");
+        Emulator.getLogging().logShutdownLine("Stopping Arcturus Emulator " + version + "...");
 
         if (Emulator.getPluginManager() != null)
             Emulator.getPluginManager().fireEvent(new EmulatorStartShutdownEvent());
@@ -148,7 +149,7 @@ public final class Emulator
             Emulator.pluginManager.dispose();
 
 
-        Emulator.getLogging().logShutdownLine("Disposed!");
+        Emulator.getLogging().logShutdownLine("Stopped Arcturus Emulator " + version + "...");
         Emulator.stopped = true;
     }
     

@@ -1412,11 +1412,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                         return;
                                     }
 
-                                    if (!pet.getRoomUnit().cycle(this))
-                                    {
-                                        updatedUnit.add(pet.getRoomUnit());
-                                    }
-
                                     if (((Pet) pet).cycle())
                                     {
                                         updatedUnit.add(pet.getRoomUnit());
@@ -1446,6 +1441,16 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 //                                        }
 //                                    }
 
+                                    if (pet.getRoomUnit().isWalking() && pet.getRoomUnit().getPathFinder().getPath().size() == 1 && pet.getRoomUnit().getStatus().containsKey("gst"))
+                                    {
+                                        pet.getRoomUnit().getStatus().remove("gst");
+                                        updatedUnit.add(pet.getRoomUnit());
+                                    }
+
+                                    if (!pet.getRoomUnit().cycle(this))
+                                    {
+                                        updatedUnit.add(pet.getRoomUnit());
+                                    }
                                 }
                             }
                         }
