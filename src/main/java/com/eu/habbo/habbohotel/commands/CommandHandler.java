@@ -99,6 +99,7 @@ public class CommandHandler
         addCommand(new UpdateGuildPartsCommand());
         addCommand(new UpdateHotelViewCommand());
         addCommand(new UpdateItemsCommand());
+        addCommand(new UpdateNavigatorCommand());
         addCommand(new UpdatePermissionsCommand());
         addCommand(new UpdatePetDataCommand());
         addCommand(new UpdatePluginsCommand());
