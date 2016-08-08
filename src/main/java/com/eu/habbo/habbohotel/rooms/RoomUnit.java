@@ -30,6 +30,10 @@ public class RoomUnit
     private int y;
     private double z;
 
+    private int oldX;
+    private int oldY;
+    private double oldZ;
+
     private int startX;
     private int startY;
     private int tilesWalked;
@@ -116,13 +120,17 @@ public class RoomUnit
 
     public boolean cycle(Room room)
     {
+        this.oldX = this.x;
+        this.oldY = this.y;
+        this.oldZ = this.z;
+
         try
         {
             /**
              * !this.getStatus().containsKey("mv") &&
              */
             if(!this.isWalking())
-                return false;
+                return true;
 
             if (this.getStatus().containsKey("mv"))
             {
@@ -181,7 +189,7 @@ public class RoomUnit
                     Emulator.getPluginManager().fireEvent(e);
 
                     if (e.isCancelled())
-                        return false;
+                        return true;
                 }
             }
 
@@ -281,7 +289,7 @@ public class RoomUnit
             }
 
             this.getStatus().put("mv", next.getX() + "," + next.getY() + "," + zHeight);
-            room.sendComposer(new RoomUserStatusComposer(this).compose());
+            //room.sendComposer(new RoomUserStatusComposer(this).compose());
 
             this.setZ(zHeight);
             this.setX(next.getX());
@@ -337,6 +345,36 @@ public class RoomUnit
     public void setZ(double z)
     {
         this.z = z;
+    }
+
+    public int getOldX()
+    {
+        return this.oldX;
+    }
+
+    public void setOldX(int oldX)
+    {
+        this.oldX = oldX;
+    }
+
+    public int getOldY()
+    {
+        return this.oldY;
+    }
+
+    public void setOldY(int oldY)
+    {
+        this.oldY = oldY;
+    }
+
+    public double getOldZ()
+    {
+        return this.oldZ;
+    }
+
+    public void setOldZ(double oldZ)
+    {
+        this.oldZ = oldZ;
     }
 
     public Tile getLocation()
@@ -454,6 +492,9 @@ public class RoomUnit
                 return;
         }
 
+        this.oldX = this.x;
+        this.oldY = this.y;
+        this.oldZ = this.z;
         this.startX = this.x;
         this.startY = this.y;
         this.tilesWalked = 0;
@@ -461,6 +502,22 @@ public class RoomUnit
         this.goalY = y;
         this.pathFinder.findPath();
         this.cmdSit = false;
+    }
+
+    public void setLocation(int x, int y)
+    {
+        this.setLocation(x, y, this.z);
+    }
+
+    public void setLocation(int x, int y, double z)
+    {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+
+        this.oldX = this.x;
+        this.oldY = this.y;
+        this.oldZ = this.z;
     }
 
     public void setGoalLocation(Tile tile)

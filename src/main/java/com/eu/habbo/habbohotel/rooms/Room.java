@@ -1140,7 +1140,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                         if (!habbo.hasPermission("acc_chat_no_flood") && habbo.getRoomUnit().talkCounter > 0)
                         {
-                            if (habbo.getRoomUnit().talkTimeOut == 0 || currentTimestamp - habbo.getRoomUnit().talkTimeOut < 0)
+                            //if (habbo.getRoomUnit().talkTimeOut == 0 || currentTimestamp - habbo.getRoomUnit().talkTimeOut < 0)
                             {
                                 if (habbo.getRoomUnit().talkCounter > 2)
                                 {
@@ -1178,6 +1178,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         {
                             if (!habbo.getRoomUnit().cycle(this))
                             {
+                                updatedUnit.add(habbo.getRoomUnit());
                                 continue;
                             }
                         }
@@ -1360,7 +1361,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                     }
                                 }
 
-                                if (botIterator.value().getRoomUnit().cycle(this))
+                                if (!botIterator.value().getRoomUnit().cycle(this))
                                     updatedUnit.add(botIterator.value().getRoomUnit());
                             }
                             catch (NoSuchElementException e)
@@ -1397,18 +1398,32 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                     if (pet instanceof MonsterplantPet)
                                         return;
 
-                                    if (pet.getRoomUnit().getStatus().containsKey("mv") && pet.getRoomUnit().isAtGoal())
+//                                    if (pet.getRoomUnit().getStatus().containsKey("mv") && pet.getRoomUnit().isAtGoal())
+//                                    {
+//                                        System.out.println("Clearing Pet Walking Animation...");
+//                                        pet.getRoomUnit().getStatus().remove("mv");
+//                                        updatedUnit.add(pet.getRoomUnit());
+//                                    }
+
+                                    if (!pet.getRoomUnit().isWalking() && pet.getRoomUnit().getStatus().containsKey("mv"))
                                     {
-                                        System.out.println("Clearing Pet Walking Animation...");
                                         pet.getRoomUnit().getStatus().remove("mv");
+                                        updatedUnit.add(pet.getRoomUnit());
+                                        return;
+                                    }
+
+                                    if (!pet.getRoomUnit().cycle(this))
+                                    {
                                         updatedUnit.add(pet.getRoomUnit());
                                     }
 
-                                    ((Pet) pet).cycle();
+                                    if (((Pet) pet).cycle())
+                                    {
+                                        updatedUnit.add(pet.getRoomUnit());
+                                    }
 
                                     if (((Pet) pet).getTask() == PetTask.RIDE)
                                     {
-                                        System.out.println("Riding...");
                                         if (pet instanceof HorsePet)
                                         {
                                             HorsePet horse = ((HorsePet) pet);
@@ -1422,20 +1437,15 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                         }
                                     }
 
-                                    if (pet.getRoomUnit().isAtGoal())
-                                    {
-                                        if (!(pet.getRoomUnit().getStatus().isEmpty() || (pet.getRoomUnit().getStatus().size() >= 1 && (pet.getRoomUnit().getStatus().containsKey("lay") || pet.getRoomUnit().getStatus().containsKey("gst")))) || ((Pet) pet).packetUpdate)
-                                        {
-                                            //updatedUnit.add(pet.getRoomUnit());
-                                            ((Pet) pet).packetUpdate = false;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        System.out.println("Pet not at goal, cycling...");
-                                        pet.getRoomUnit().cycle(this);
-                                        updatedUnit.add(pet.getRoomUnit());
-                                    }
+//                                    if (pet.getRoomUnit().isAtGoal())
+//                                    {
+//                                        if (!(pet.getRoomUnit().getStatus().isEmpty() || (pet.getRoomUnit().getStatus().size() >= 1 && (pet.getRoomUnit().getStatus().containsKey("lay") || pet.getRoomUnit().getStatus().containsKey("gst")))) || ((Pet) pet).packetUpdate)
+//                                        {
+//                                            updatedUnit.add(pet.getRoomUnit());
+//                                            ((Pet) pet).packetUpdate = false;
+//                                        }
+//                                    }
+
                                 }
                             }
                         }
@@ -2770,10 +2780,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     void teleportHabboToLocation(Habbo habbo, int x, int y, double z)
     {
-        habbo.getRoomUnit().setX(x);
-        habbo.getRoomUnit().setY(y);
         habbo.getRoomUnit().setGoalLocation(x, y);
-        habbo.getRoomUnit().setZ(z);
+        habbo.getRoomUnit().setLocation(x, y, z);
         this.sendComposer(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
     }
 

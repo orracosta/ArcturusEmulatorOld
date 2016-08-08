@@ -42,9 +42,7 @@ public class RoomUnitOnRollerComposer extends MessageComposer
         this.response.appendString(this.roomUnit.getZ() + "");
         this.response.appendString(this.newLocation.Z + "");
 
-        this.roomUnit.setX(newLocation.X);
-        this.roomUnit.setY(newLocation.Y);
-        this.roomUnit.setZ(newLocation.Z);
+        this.roomUnit.setLocation(this.newLocation.X, this.newLocation.Y, this.newLocation.Z);
 
         try
         {

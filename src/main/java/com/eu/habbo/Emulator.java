@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 public final class Emulator
 {
     public static MessengerBuddy publicChatBuddy;
-    public static final String version = "Version: 1.0.5";
+    public static final String version = "Version: 1.0.6";
     public static boolean isReady = false;
     public static boolean stopped = false;
     public static boolean debugging = true;

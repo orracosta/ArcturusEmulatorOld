@@ -714,9 +714,7 @@ public class RoomManager {
         if(!habbo.getRoomUnit().isTeleporting)
         {
             habbo.getRoomUnit().setGoalLocation(room.getLayout().getDoorX(), room.getLayout().getDoorY());
-            habbo.getRoomUnit().setX(room.getLayout().getDoorX());
-            habbo.getRoomUnit().setY(room.getLayout().getDoorY());
-            habbo.getRoomUnit().setZ(room.getLayout().getDoorZ());
+            habbo.getRoomUnit().setLocation(room.getLayout().getDoorX(), room.getLayout().getDoorY(), room.getLayout().getDoorZ());
             habbo.getRoomUnit().setBodyRotation(RoomUserRotation.values()[room.getLayout().getDoorDirection()]);
             habbo.getRoomUnit().setHeadRotation(RoomUserRotation.values()[room.getLayout().getDoorDirection()]);
         }

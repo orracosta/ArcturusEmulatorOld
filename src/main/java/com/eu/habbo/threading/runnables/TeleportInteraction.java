@@ -81,9 +81,7 @@ class TeleportInteraction extends Thread
                 }
 
                 this.client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[this.teleportTwo.getRotation()]);
-                this.client.getHabbo().getRoomUnit().setX(this.teleportTwo.getX());
-                this.client.getHabbo().getRoomUnit().setY(this.teleportTwo.getY());
-                this.client.getHabbo().getRoomUnit().setZ(this.teleportTwo.getZ());
+                this.client.getHabbo().getRoomUnit().setLocation(this.teleportTwo.getX(), this.teleportTwo.getY(), this.teleportTwo.getZ());
 
                 this.room.sendComposer(new RoomUserRemoveComposer(this.client.getHabbo().getRoomUnit()).compose());
                 this.targetRoom.sendComposer(new RoomUserRemoveComposer(this.client.getHabbo().getRoomUnit()).compose());
