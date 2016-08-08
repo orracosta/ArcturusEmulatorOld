@@ -82,7 +82,7 @@ public class RedeemItemEvent extends MessageHandler
                         this.client.getHabbo().getHabboInfo().addPixels(pixels);
                         this.client.sendResponse(new UserCurrencyComposer(this.client.getHabbo()));
                     }
-                    else if (item.getBaseItem().getName().startsWith("PF_"))
+                    else if (item.getBaseItem().getName().startsWith("DF_"))
                     {
                         int pointsType;
                         int points;
