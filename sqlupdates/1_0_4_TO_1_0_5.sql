@@ -32,7 +32,7 @@ INSERT INTO `navigator_filter` (`key`, `field`, `compare`, `database_query`) VAL
     ('promo', 'getPromotionDesc', 'contains', 'SELECT rooms.* FROM rooms INNER JOIN room_promotions ON rooms.id = room_promotions.id WHERE room_promotions.end_timestamp >= UNIX_TIMESTAMP() AND CONCAT (room_promotions.title, room_promotions.description) LIKE ?');
 
 
-ALTER TABLE  `rooms` ADD  `users` INT NOT NULL DEFAULT  '0' AFTER  `state`
+ALTER TABLE  `rooms` ADD  `users` INT NOT NULL DEFAULT  '0' AFTER  `state`;
 
 CREATE TABLE  `users_favorite_rooms` (
     `user_id` INT NOT NULL ,
