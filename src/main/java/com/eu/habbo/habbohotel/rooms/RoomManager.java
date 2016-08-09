@@ -878,7 +878,10 @@ public class RoomManager {
                 habbo.getHabboInfo().setRiding(null);
             }
 
-            room.pickupPetsForHabbo(habbo);
+            if (!room.isOwner(habbo))
+            {
+                room.pickupPetsForHabbo(habbo);
+            }
             this.logExit(habbo);
             room.removeHabbo(habbo);
             room.sendComposer(new RoomUserRemoveComposer(habbo.getRoomUnit()).compose());
