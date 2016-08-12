@@ -61,9 +61,11 @@ public class HabboStats implements Runnable
     public final TIntHashSet ignoredUsers;
 
     public final HabboNavigatorWindowSettings navigatorWindowSettings;
+    public final THashMap<String, Object> cache;
 
     private HabboStats(ResultSet set, Habbo habbo) throws SQLException
     {
+        this.cache = new THashMap<String, Object>();
         this.achievementProgress = new THashMap<Achievement, Integer>();
         this.achievementCache = new THashMap<Achievement, Integer>();
         this.recentPurchases = new THashMap<Integer, CatalogItem>();

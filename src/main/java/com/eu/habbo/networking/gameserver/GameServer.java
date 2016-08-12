@@ -20,7 +20,7 @@ public class GameServer
     private final String host;
     private final int port;
 
-    public GameServer(String host, int port)
+    public GameServer(String host, int port) throws Exception
     {
         this.packetManager = new PacketManager();
         this.gameClientManager = new GameClientManager();

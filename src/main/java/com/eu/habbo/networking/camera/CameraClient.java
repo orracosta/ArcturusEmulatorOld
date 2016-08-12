@@ -31,7 +31,7 @@ public class CameraClient
         bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
         bootstrap.option(ChannelOption.SO_RCVBUF, 2000000);
         bootstrap.option(ChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(2000000));
-        bootstrap.option(ChannelOption.ALLOCATOR, new UnpooledByteBufAllocator(true));
+        bootstrap.option(ChannelOption.ALLOCATOR, new UnpooledByteBufAllocator(false));
         bootstrap.handler(new ChannelInitializer<SocketChannel>()
         {
             @Override

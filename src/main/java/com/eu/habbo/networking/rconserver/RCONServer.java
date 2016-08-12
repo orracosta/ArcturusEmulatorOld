@@ -1,6 +1,7 @@
 package com.eu.habbo.networking.rconserver;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.core.Logging;
 import com.eu.habbo.messages.rcon.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -25,6 +26,8 @@ public class RCONServer
 
     private final THashMap<String, Class<? extends RCONMessage>> messages;
 
+    private final GsonBuilder gsonBuilder;
+
     public RCONServer(String host, int port)
     {
         this.serverBootstrap = new ServerBootstrap();
@@ -35,13 +38,20 @@ public class RCONServer
         this.port = port;
         messages = new THashMap<String, Class<? extends RCONMessage>>();
 
-        this.addRCONMessage("alertuser",    AlertUser.class);
-        this.addRCONMessage("givecredits",  GiveCredits.class);
-        this.addRCONMessage("givepixels",   GivePixels.class);
-        this.addRCONMessage("givepoints",   GivePoints.class);
-        this.addRCONMessage("hotelalert",   HotelAlert.class);
-        this.addRCONMessage("forwarduser",  ForwardUser.class);
-        this.addRCONMessage("setrank",      SetRank.class);
+        this.gsonBuilder = new GsonBuilder();
+        this.gsonBuilder.registerTypeAdapter(RCONMessage.class, new RCONMessage.RCONMessageSerializer());
+
+        this.addRCONMessage("alertuser",        AlertUser.class);
+        this.addRCONMessage("disconnect",       DisconnectUser.class);
+        this.addRCONMessage("forwarduser",      ForwardUser.class);
+        this.addRCONMessage("givebadge",        GiveBadge.class);
+        this.addRCONMessage("givecredits",      GiveCredits.class);
+        this.addRCONMessage("givepixels",       GivePixels.class);
+        this.addRCONMessage("givepoints",       GivePoints.class);
+        this.addRCONMessage("hotelalert",       HotelAlert.class);
+        this.addRCONMessage("sendgift",         SendGift.class);
+        this.addRCONMessage("setrank",          SetRank.class);
+
     }
 
     public void initialise()
@@ -87,23 +97,25 @@ public class RCONServer
         this.messages.put(key, clazz);
     }
 
-    public String handle(ChannelHandlerContext ctx, String key, String body)
+    public String handle(ChannelHandlerContext ctx, String key, String body) throws Exception
     {
         Class<? extends RCONMessage> message = this.messages.get(key);
 
+        String result = "";
         if(message != null)
         {
             try
             {
                 RCONMessage rcon = message.getDeclaredConstructor().newInstance();
-                Gson gson = new GsonBuilder().create();
-                String response = rcon.handle(rcon.type.cast(gson.fromJson(body, rcon.type)));
-                Emulator.getLogging().logPacketLine("[RCON] Handled: " + message.getName());
-
-                return response;
+                Gson gson = this.gsonBuilder.create();
+                rcon.handle(rcon.type.cast(gson.fromJson(body, rcon.type)));
+                System.out.println("[" + Logging.ANSI_BLUE + "RCON" + Logging.ANSI_RESET + "] Handled RCON Message: " + message.getSimpleName());
+                result = gson.toJson(rcon, RCONMessage.class);
+                return result;
             }
             catch (Exception ex)
             {
+                ex.printStackTrace();
                 Emulator.getLogging().logPacketError("[RCON] Failed to handle RCONMessage: " + message.getName() + ex.getMessage() + " by: " + ctx.channel().remoteAddress());
             }
         }
@@ -112,6 +124,6 @@ public class RCONServer
             Emulator.getLogging().logPacketError("[RCON] Couldn't find: " + key);
         }
 
-        return new Gson().toJson("ERROR", String.class);
+        throw new ArrayIndexOutOfBoundsException("Unhandled RCON Message");
     }
 }

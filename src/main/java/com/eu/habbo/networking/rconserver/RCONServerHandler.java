@@ -2,6 +2,7 @@ package com.eu.habbo.networking.rconserver;
 
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.core.Logging;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.netty.buffer.ByteBuf;
@@ -38,14 +39,17 @@ public class RCONServerHandler extends ChannelInboundHandlerAdapter
         data.getBytes(0, d);
         String message = new String(d);
         Gson gson = new Gson();
-        String response = gson.toJson("ERROR", String.class);
-
-
+        String response = "ERROR";
+        String key = "";
         try
         {
             JsonObject object = gson.fromJson(message, JsonObject.class);
-            String key = object.get("key").getAsString();
+            key = object.get("key").getAsString();
             response = Emulator.getRconServer().handle(ctx, key, object.get("data").toString());
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
+            System.out.println("[" + Logging.ANSI_RED + "RCON" + Logging.ANSI_RESET + "] Unknown RCON Message: " + key);
         }
         catch (Exception e)
         {
@@ -57,7 +61,5 @@ public class RCONServerHandler extends ChannelInboundHandlerAdapter
         ctx.channel().flush();
         ctx.flush();
         f.channel().close();
-
-        //ctx.channel().close();
     }
 }
