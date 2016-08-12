@@ -161,7 +161,7 @@ public class BadgesComponent
     {
         HabboBadge badge = new HabboBadge(0, code, 0, habbo);
         badge.run();
-
+        habbo.getHabboInventory().getBadgesComponent().addBadge(badge);
         return badge;
     }
 }
