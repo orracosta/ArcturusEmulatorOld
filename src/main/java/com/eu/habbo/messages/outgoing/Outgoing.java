@@ -224,11 +224,11 @@ public class Outgoing
     public final static int RentableSpaceUnknown2Composer = 838; //Updated
     public final static int GuildConfirmRemoveMemberComposer = 2327; //Updated
 
-    public final static int LandingViewGetBadgeButtonConfig = 1548; //Updated
+    public final static int HotelViewBadgeButtonConfigComposer = 1548; //Updated
     public final static int EpicPopupFrameComposer = 3502; //Updated
     public final static int BaseJumpLoadGameURL = 436; //Updated
     public final static int RoomUserTagsComposer = 774; //Updated
-    public final static int RoomInviteErrorCodeComposer = 443; //Updated
+    public final static int RoomInviteErrorComposer = 443; //Updated
     public final static int PostItStickyPoleOpenComposer = 661; //Updated
     public final static int NewYearResolutionProgressComposer = 1568; //Updated
     public final static int ClubGiftReceivedComposer = 1619; //:test 735 s:t i:1 s:s i:230 s:throne i:1 b:1 i:1 i:10; //Updated

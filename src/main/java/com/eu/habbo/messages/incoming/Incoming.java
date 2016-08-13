@@ -73,7 +73,7 @@ public class Incoming
     public static final int RequestCatalogIndexEvent = 2511;//81
     public static final int RequestInventoryPetsEvent = 263;//1900
     public static final int ModToolRequestRoomVisitsEvent = 730;//2549
-    public static final int ModToolWarnEvent = 2375;//3763
+    public static final int ModToolWarnEvent = -1;//3763
     public static final int RequestItemInfoEvent = 1203;//36
     public static final int ModToolRequestRoomChatlogEvent = 2312;//1903
     public static final int UserSaveLookEvent = 0x0A00;//2404
@@ -86,7 +86,7 @@ public class Incoming
     public static final int GuildChangeNameDescEvent = 1062;//3232
     public static final int RequestSellItemEvent = 1647;//2087
     public static final int ModToolChangeRoomSettingsEvent = 3458;//2530
-    public static final int ModToolRequestUserChatlogEvent = 2312;//203
+    public static final int ModToolRequestUserChatlogEvent = -1;//203
     public static final int GuildChangeSettingsEvent = 3180;//2156
     public static final int RoomUserDropHandItemEvent = 1751;//157
     public static final int RequestProfileFriendsEvent = 866;//3925
@@ -135,7 +135,7 @@ public class Incoming
     public static final int ModToolReleaseTicketEvent = 3800;
     public static final int ModToolCloseTicketEvent = 50;
     public static final int TriggerColorWheelEvent = 2651;//2367
-    public static final int SearchRoomsByTagEvent = 898;//1956
+    public static final int SearchRoomsByTagEvent = -1;//1956
     public static final int RequestPublicRoomsEvent = 1336;//3735  OLD 3178
     public static final int RequestResolutionEvent = 542;//1854
     public static final int RequestInventoryItemsEvent = 352;//372

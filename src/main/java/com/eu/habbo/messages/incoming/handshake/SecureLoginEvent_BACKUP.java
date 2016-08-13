@@ -5,7 +5,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.friends.FriendsComposer;
-import com.eu.habbo.messages.outgoing.generic.FavoriteRoomsCountComposer;
+import com.eu.habbo.messages.outgoing.users.FavoriteRoomsCountComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.handshake.DebugConsoleComposer;
 import com.eu.habbo.messages.outgoing.handshake.SecureLoginOKComposer;

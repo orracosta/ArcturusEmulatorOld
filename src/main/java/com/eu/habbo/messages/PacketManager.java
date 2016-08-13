@@ -46,7 +46,7 @@ public class PacketManager
 {
     private final THashMap<Integer, Class<? extends MessageHandler>> incoming;
 
-    public PacketManager()
+    public PacketManager() throws Exception
     {
         this.incoming = new THashMap<Integer, Class<? extends MessageHandler>>();
 
@@ -74,8 +74,16 @@ public class PacketManager
         this.registerCamera();
     }
 
-    void registerHandler(Integer header, Class<? extends MessageHandler> handler)
+    public void registerHandler(Integer header, Class<? extends MessageHandler> handler) throws Exception
     {
+        if (header < 0)
+            return;
+
+        if (this.incoming.containsKey(header))
+        {
+            throw new Exception("Header already registered. Failed to register " + handler.getName() + " with header " + header);
+        }
+
         this.incoming.putIfAbsent(header, handler);
     }
 
@@ -116,13 +124,13 @@ public class PacketManager
         return this.incoming.containsKey(header);
     }
 
-    private void registerAmbassadors()
+    private void registerAmbassadors() throws Exception
     {
         this.registerHandler(Incoming.AmbassadorAlertCommandEvent,              AmbassadorAlertCommandEvent.class);
         this.registerHandler(Incoming.AmbassadorVisitCommandEvent,              AmbassadorVisitCommandEvent.class);
     }
 
-    private void registerCatalog()
+    private void registerCatalog() throws Exception
     {
         this.registerHandler(Incoming.RequestRecylerLogicEvent,                 RequestRecyclerLogicEvent.class);
         this.registerHandler(Incoming.RequestDiscountEvent,                     RequestDiscountEvent.class);
@@ -152,13 +160,13 @@ public class PacketManager
         this.registerHandler(Incoming.CatalogSearchedItemEvent,                 CatalogSearchedItemEvent.class);
     }
 
-    private void registerEvent()
+    private void registerEvent() throws Exception
     {
         this.registerHandler(Incoming.AdventCalendarOpenDayEvent,               AdventCalendarOpenDayEvent.class);
         this.registerHandler(Incoming.AdventCalendarForceOpenEvent,             AdventCalendarForceOpenEvent.class);
     }
 
-    private void registerHandshake()
+    private void registerHandshake() throws Exception
     {
         this.registerHandler(Incoming.ReleaseVersionEvent,                      ReleaseVersionEvent.class);
         this.registerHandler(Incoming.GenerateSecretKeyEvent,                   GenerateSecretKeyEvent.class);
@@ -169,7 +177,7 @@ public class PacketManager
         this.registerHandler(Incoming.PingEvent,                                PingEvent.class);
     }
 
-    private void registerFriends()
+    private void registerFriends() throws Exception
     {
         this.registerHandler(Incoming.RequestFriendsEvent,                      RequestFriendsEvent.class);
         this.registerHandler(Incoming.ChangeRelationEvent,                      ChangeRelationEvent.class);
@@ -185,7 +193,7 @@ public class PacketManager
         this.registerHandler(Incoming.InviteFriendsEvent,                       InviteFriendsEvent.class);
     }
 
-    private void registerUsers()
+    private void registerUsers() throws Exception
     {
         this.registerHandler(Incoming.RequestUserDataEvent,                     RequestUserDataEvent.class);
         this.registerHandler(Incoming.RequestUserCreditsEvent,                  RequestUserCreditsEvent.class);
@@ -206,7 +214,7 @@ public class PacketManager
         this.registerHandler(Incoming.SavePreferOldChatEvent,                   SavePreferOldChatEvent.class);
     }
 
-    private void registerNavigator()
+    private void registerNavigator() throws Exception
     {
         this.registerHandler(Incoming.RequestRoomCategoriesEvent,               RequestRoomCategoriesEvent.class);
         this.registerHandler(Incoming.RequestPopularRoomsEvent,                 RequestPopularRoomsEvent.class);
@@ -232,7 +240,7 @@ public class PacketManager
         this.registerHandler(Incoming.RequestDeleteRoomEvent,                   RequestDeleteRoomEvent.class);
     }
 
-    private void registerHotelview()
+    private void registerHotelview() throws Exception
     {
         this.registerHandler(Incoming.HotelViewEvent,                           HotelViewEvent.class);
         this.registerHandler(Incoming.HotelViewRequestBonusRareEvent,           HotelViewRequestBonusRareEvent.class);
@@ -240,7 +248,7 @@ public class PacketManager
         this.registerHandler(Incoming.HotelViewDataEvent,                       HotelViewDataEvent.class);
     }
 
-    private void registerInventory()
+    private void registerInventory() throws Exception
     {
         this.registerHandler(Incoming.TestInventoryEvent,                       TestInventoryEvent.class);
         this.registerHandler(Incoming.RequestInventoryBadgesEvent,              RequestInventoryBadgesEvent.class);
@@ -249,7 +257,7 @@ public class PacketManager
         this.registerHandler(Incoming.RequestInventoryPetsEvent,                RequestInventoryPetsEvent.class);
     }
 
-    void registerRooms()
+    void registerRooms() throws Exception
     {
         this.registerHandler(Incoming.RequestRoomLoadEvent,                     RequestRoomLoadEvent.class);
         this.registerHandler(Incoming.RequestHeightmapEvent,                    RequestRoomHeightmapEvent.class);
@@ -331,14 +339,14 @@ public class PacketManager
         this.registerHandler(Incoming.RoomFavoriteEvent,                        RoomFavoriteEvent.class);
     }
 
-    void registerPolls()
+    void registerPolls() throws Exception
     {
         this.registerHandler(Incoming.CancelPollEvent,                          CancelPollEvent.class);
         this.registerHandler(Incoming.GetPollDataEvent,                         GetPollDataEvent.class);
         this.registerHandler(Incoming.AnswerPollEvent,                          AnswerPollEvent.class);
     }
 
-    void registerModTool()
+    void registerModTool() throws Exception
     {
         this.registerHandler(Incoming.ModToolRequestRoomInfoEvent,              ModToolRequestRoomInfoEvent.class);
         this.registerHandler(Incoming.ModToolRequestRoomChatlogEvent,           ModToolRequestRoomChatlogEvent.class);
@@ -363,7 +371,7 @@ public class PacketManager
         this.registerHandler(Incoming.ReportEvent,                              ReportEvent.class);
     }
 
-    void registerTrading()
+    void registerTrading() throws Exception
     {
         this.registerHandler(Incoming.TradeStartEvent,                          TradeStartEvent.class);
         this.registerHandler(Incoming.TradeOfferItemEvent,                      TradeOfferItemEvent.class);
@@ -374,7 +382,7 @@ public class PacketManager
         this.registerHandler(Incoming.TradeCloseEvent,                          TradeCloseEvent.class);
     }
 
-    void registerGuilds()
+    void registerGuilds() throws Exception
     {
         this.registerHandler(Incoming.RequestGuildBuyRoomsEvent,                RequestGuildBuyRoomsEvent.class);
         this.registerHandler(Incoming.RequestGuildPartsEvent,                   RequestGuildPartsEvent.class);
@@ -401,7 +409,7 @@ public class PacketManager
         //this.registerHandler(Incoming.GetHabboGuildBadgesMessageEvent, GetHabboGuildBadgesMessageEvent.class);
     }
 
-    void registerPets()
+    void registerPets() throws Exception
     {
         this.registerHandler(Incoming.RequestPetInformationEvent,               RequestPetInformationEvent.class);
         this.registerHandler(Incoming.PetPickupEvent,                           PetPickupEvent.class);
@@ -412,34 +420,34 @@ public class PacketManager
         this.registerHandler(Incoming.HorseRideEvent,                           HorseRideEvent.class);
     }
 
-    void registerWired()
+    void registerWired() throws Exception
     {
         this.registerHandler(Incoming.WiredTriggerSaveDataEvent,                WiredTriggerSaveDataEvent.class);
         this.registerHandler(Incoming.WiredEffectSaveDataEvent,                 WiredEffectSaveDataEvent.class);
         this.registerHandler(Incoming.WiredConditionSaveDataEvent,              WiredConditionSaveDataEvent.class);
     }
 
-    void registerUnknown()
+    void registerUnknown() throws Exception
     {
         this.registerHandler(Incoming.RequestResolutionEvent,                   RequestResolutionEvent.class);
         this.registerHandler(Incoming.RequestTalenTrackEvent,                   RequestTalentTrackEvent.class); //TODO
         this.registerHandler(Incoming.UnknownEvent1,                            UnknownEvent1.class);
     }
 
-    void registerFloorPlanEditor()
+    void registerFloorPlanEditor() throws Exception
     {
         this.registerHandler(Incoming.FloorPlanEditorSaveEvent,                 FloorPlanEditorSaveEvent.class);
         this.registerHandler(Incoming.FloorPlanEditorRequestBlockedTilesEvent,  FloorPlanEditorRequestBlockedTilesEvent.class);
         this.registerHandler(Incoming.FloorPlanEditorRequestDoorSettingsEvent,  FloorPlanEditorRequestDoorSettingsEvent.class);
     }
 
-    void registerAchievements()
+    void registerAchievements() throws Exception
     {
         this.registerHandler(Incoming.RequestAchievementsEvent,                 RequestAchievementsEvent.class);
         this.registerHandler(Incoming.RequestAchievementConfigurationEvent,     RequestAchievementConfigurationEvent.class);
     }
 
-    void registerGuides()
+    void registerGuides() throws Exception
     {
         this.registerHandler(Incoming.RequestGuideToolEvent,                    RequestGuideToolEvent.class);
         this.registerHandler(Incoming.RequestGuideAssistanceEvent,              RequestGuideAssistanceEvent.class);
@@ -458,7 +466,7 @@ public class PacketManager
         this.registerHandler(Incoming.GuardianVoteEvent,                        GuardianVoteEvent.class);
     }
 
-    void registerCrafting()
+    void registerCrafting() throws Exception
     {
         this.registerHandler(Incoming.RequestCraftingRecipesEvent,              RequestCraftingRecipesEvent.class);
         this.registerHandler(Incoming.CraftingAddItemEvent,                     CraftingAddItemEvent.class);
@@ -467,7 +475,7 @@ public class PacketManager
         this.registerHandler(Incoming.RequestCraftingRecipesAvailableEvent,     RequestCraftingRecipesAvailableEvent.class);
     }
 
-    void registerCamera()
+    void registerCamera() throws Exception
     {
         this.registerHandler(Incoming.CameraRoomPictureEvent,                   CameraRoomPictureEvent.class);
         this.registerHandler(Incoming.RequestCameraConfigurationEvent,          RequestCameraConfigurationEvent.class);

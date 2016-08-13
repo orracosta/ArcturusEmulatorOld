@@ -3,17 +3,7 @@ package com.eu.habbo.messages.incoming.users;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.catalog.*;
-import com.eu.habbo.messages.outgoing.friends.FriendsComposer;
-import com.eu.habbo.messages.outgoing.friends.MessengerInitComposer;
-import com.eu.habbo.messages.outgoing.generic.FavoriteRoomsCountComposer;
-import com.eu.habbo.messages.outgoing.generic.MinimailCountComposer;
-import com.eu.habbo.messages.outgoing.handshake.DebugConsoleComposer;
-import com.eu.habbo.messages.outgoing.handshake.SessionRightsComposer;
-import com.eu.habbo.messages.outgoing.modtool.ModToolComposer;
-import com.eu.habbo.messages.outgoing.navigator.*;
 import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
-import com.eu.habbo.messages.outgoing.unknown.NewUserIdentityComposer;
 import com.eu.habbo.messages.outgoing.users.*;
 
 import java.util.ArrayList;

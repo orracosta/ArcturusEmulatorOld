@@ -1,4 +1,4 @@
-package com.eu.habbo.messages.outgoing.generic;
+package com.eu.habbo.messages.outgoing.users;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
