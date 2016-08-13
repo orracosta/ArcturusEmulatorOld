@@ -1,7 +1,7 @@
 # Arcturus Emulator #
 
 ## **To Get The Camera To Work Visit http://arcturus.wf and register.** ##
-
+## **TUTORIAL FOR PLUGINS http://arcturus.wf/thread-2415.html** ##
 Arcturus Emulator is a Habbo emulator written in Java aiming to be an exact clone of the offical server.
 
 Targeting PRODUCTION-201601012205-226667486
