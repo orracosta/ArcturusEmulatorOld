@@ -10,3 +10,4 @@ logging/
 /target/
 config.ini
 *.txt
+/logging/packets/packets.txt
