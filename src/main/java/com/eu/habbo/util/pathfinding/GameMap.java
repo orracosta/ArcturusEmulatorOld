@@ -86,13 +86,13 @@ public class GameMap<T extends AbstractNode>
             this.closedList.add(current);
             this.openList.remove(current);
 
-            if ((current.getX() == newX) && (current.getY() == newY) && !(Math.abs(room.getLayout().getHeightAtSquare(current.getX(), current.getY()) - room.getLayout().getHeightAtSquare(newX, newY)) > 1)) {
+            if ((current.getX() == newX) && (current.getY() == newY)) {
                 return calcPath(this.nodes[oldX][oldY], current, room);
             }
             List<T> adjacentNodes = getAdjacent(current, newX, newY, room);
             for (T currentAdj : adjacentNodes)
             {
-                if((Math.abs(room.getLayout().getHeightAtSquare(current.getX(), current.getY()) - room.getLayout().getHeightAtSquare(newX, newY)) > 1))
+                if((Math.abs(room.getLayout().getHeightAtSquare(current.getX(), current.getY()) - room.getLayout().getHeightAtSquare(currentAdj.getX(), currentAdj.getY())) > 1))
                     continue;
 
                 if (!this.openList.contains(currentAdj) || (currentAdj.getX() == newX && currentAdj.getY() == newY && (room.canSitOrLayAt(newX, newY))))
