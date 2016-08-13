@@ -2,10 +2,12 @@ package com.eu.habbo.messages.incoming.guilds;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.guilds.Guild;
+import com.eu.habbo.habbohotel.guilds.GuildManager;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomRightLevels;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
+import com.eu.habbo.messages.outgoing.guilds.GuildAcceptMemberErrorComposer;
 import com.eu.habbo.messages.outgoing.guilds.GuildInfoComposer;
 import com.eu.habbo.messages.outgoing.guilds.GuildRefreshMembersListComposer;
 import com.eu.habbo.messages.outgoing.rooms.RoomRightsComposer;
@@ -33,6 +35,12 @@ public class GuildAcceptMembershipEvent extends MessageHandler
 
         if(habbo != null)
         {
+            if (habbo.getHabboStats().hasGuild(guild.getId()))
+            {
+                this.client.sendResponse(new GuildAcceptMemberErrorComposer(guild.getId(), GuildAcceptMemberErrorComposer.ALREADY_ACCEPTED));
+                return;
+            }
+
             habbo.getHabboStats().addGuild(guild.getId());
             Room room = habbo.getHabboInfo().getCurrentRoom();
             if(room != null)
