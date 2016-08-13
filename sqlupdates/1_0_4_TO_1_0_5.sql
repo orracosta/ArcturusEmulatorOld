@@ -51,4 +51,4 @@ ALTER TABLE `catalog_pages` CHANGE `page_headline` `page_text2` TEXT CHARACTER S
 ALTER TABLE `catalog_pages` CHANGE `page_headline` `page_text_details` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
 ALTER TABLE `catalog_pages` CHANGE `page_headline` `page_text_teaser` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
 
-#DATABASE UPDATE: 1.0.4 -> 1.0.5
+#END DATABASE UPDATE: 1.0.4 -> 1.0.5
