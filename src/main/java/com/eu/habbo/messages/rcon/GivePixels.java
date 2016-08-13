@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.google.gson.Gson;
 
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class GivePixels extends RCONMessage<GivePixels.JSONGivePixels>
 {
@@ -14,15 +15,13 @@ public class GivePixels extends RCONMessage<GivePixels.JSONGivePixels>
     }
 
     @Override
-    public String handle(JSONGivePixels object)
+    public void handle(JSONGivePixels object)
     {
         Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.username);
 
         if(habbo != null)
         {
             habbo.givePixels(object.pixels);
-
-            return new Gson().toJson("OK", String.class);
         }
         else
         {
@@ -36,12 +35,12 @@ public class GivePixels extends RCONMessage<GivePixels.JSONGivePixels>
                 statement.close();
                 statement.getConnection().close();
             }
-            catch (Exception e)
+            catch (SQLException e)
             {
-                return new Gson().toJson("FAILED", String.class);
+                this.status = RCONMessage.SYSTEM_ERROR;
             }
 
-            return new Gson().toJson("OK", String.class);
+            this.message = "offline";
         }
     }
 

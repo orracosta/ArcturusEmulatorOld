@@ -13,17 +13,16 @@ public class AlertUser extends RCONMessage<AlertUser.JSONAlertUser>
     }
 
     @Override
-    public String handle(JSONAlertUser object)
+    public void handle(JSONAlertUser object)
     {
         Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.username);
 
         if(habbo != null)
         {
             habbo.getClient().sendResponse(new GenericAlertComposer(object.message));
-            return new Gson().toJson("OK", String.class);
         }
 
-        return new Gson().toJson("USER_NOT_FOUND", String.class);
+        this.status = RCONMessage.HABBO_NOT_FOUND;
     }
 
     protected class JSONAlertUser

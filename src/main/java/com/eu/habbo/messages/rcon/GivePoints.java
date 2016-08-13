@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.google.gson.Gson;
 
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class GivePoints extends RCONMessage<GivePoints.JSONGivePoints>
 {
@@ -14,14 +15,13 @@ public class GivePoints extends RCONMessage<GivePoints.JSONGivePoints>
     }
 
     @Override
-    public String handle(JSONGivePoints object)
+    public void handle(JSONGivePoints object)
     {
         Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.username);
 
         if (habbo != null)
         {
             habbo.givePoints(object.type, object.points);
-            return new Gson().toJson("OK", String.class);
         }
         else
         {
@@ -36,12 +36,12 @@ public class GivePoints extends RCONMessage<GivePoints.JSONGivePoints>
                 statement.close();
                 statement.getConnection().close();
             }
-            catch (Exception e)
+            catch (SQLException e)
             {
-                return new Gson().toJson("FAILED", String.class);
+                this.status = RCONMessage.SYSTEM_ERROR;
             }
 
-            return new Gson().toJson("OK", String.class);
+            this.message = "offline";
         }
     }
 

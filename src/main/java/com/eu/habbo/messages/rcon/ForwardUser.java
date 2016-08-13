@@ -13,7 +13,7 @@ public class ForwardUser extends RCONMessage<ForwardUser.ForwardUserJSON>
     }
 
     @Override
-    public String handle(ForwardUserJSON object)
+    public void handle(ForwardUserJSON object)
     {
         Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.user_id);
 
@@ -24,16 +24,14 @@ public class ForwardUser extends RCONMessage<ForwardUser.ForwardUserJSON>
             if(room != null)
             {
                 Emulator.getGameEnvironment().getRoomManager().enterRoom(habbo, room);
-
-                return new Gson().toJson("OK", String.class);
             }
             else
             {
-                return new Gson().toJson("ROOM_ERROR", String.class);
+                this.status = RCONMessage.ROOM_NOT_FOUND;
             }
         }
 
-        return new Gson().toJson("USER_ERROR", String.class);
+        this.status = RCONMessage.HABBO_NOT_FOUND;
     }
 
     public class ForwardUserJSON

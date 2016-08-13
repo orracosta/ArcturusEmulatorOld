@@ -17,13 +17,14 @@ public class SetRank extends RCONMessage<SetRank.JSONSetRank>
     }
 
     @Override
-    public String handle(JSONSetRank object)
+    public void handle(JSONSetRank object)
     {
         Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.username);
 
         if(Emulator.getGameEnvironment().getPermissionsManager().getPermissionsForRank(object.rank) == null)
         {
-            return new Gson().toJson("INVALID_RANK", String.class);
+            this.status = RCONMessage.SYSTEM_ERROR;
+            this.message = "invalid rank";
         }
 
         if(habbo != null)
@@ -45,11 +46,11 @@ public class SetRank extends RCONMessage<SetRank.JSONSetRank>
             }
             catch (Exception e)
             {
-                new Gson().toJson("FAILED", String.class);
+                this.status = RCONMessage.SYSTEM_ERROR;
             }
         }
 
-        return new Gson().toJson("OK", String.class);
+        this.message = "offline";
     }
 
     public class JSONSetRank

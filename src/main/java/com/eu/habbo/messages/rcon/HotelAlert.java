@@ -12,11 +12,9 @@ public class HotelAlert extends RCONMessage<HotelAlert.JSONHotelAlert>
     }
 
     @Override
-    public String handle(JSONHotelAlert object)
+    public void handle(JSONHotelAlert object)
     {
         Emulator.getGameServer().getGameClientManager().sendBroadcastResponse(new GenericAlertComposer(object.message));
-
-        return new Gson().toJson("OK", String.class);
     }
 
     public class JSONHotelAlert

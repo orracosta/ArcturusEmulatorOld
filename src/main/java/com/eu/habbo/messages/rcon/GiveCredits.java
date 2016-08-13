@@ -15,14 +15,13 @@ public class GiveCredits extends RCONMessage<GiveCredits.JSONGiveCredits>
     }
 
     @Override
-    public String handle(JSONGiveCredits object)
+    public void handle(JSONGiveCredits object)
     {
         Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.username);
 
         if (habbo != null)
         {
             habbo.giveCredits(object.credits);
-            return new Gson().toJson("OK", String.class);
         }
         else
         {
@@ -37,9 +36,10 @@ public class GiveCredits extends RCONMessage<GiveCredits.JSONGiveCredits>
             }
             catch (SQLException e)
             {
-                return new Gson().toJson("FAILED", String.class);
+                this.status = RCONMessage.SYSTEM_ERROR;
             }
-            return new Gson().toJson("OK", String.class);
+
+            this.message = "offline";
         }
     }
 
