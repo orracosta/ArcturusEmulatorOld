@@ -20,7 +20,15 @@ public class RoomUserTalkEvent extends MessageHandler {
         if(!this.client.getHabbo().getRoomUnit().canTalk())
             return;
 
-        this.client.getHabbo().getHabboInfo().getCurrentRoom().talk(this.client.getHabbo(), new RoomChatMessage(this), RoomChatType.TALK);
+        RoomChatMessage message = new RoomChatMessage(this);
+        this.client.getHabbo().getHabboInfo().getCurrentRoom().talk(this.client.getHabbo(), message, RoomChatType.TALK);
 
+        if (!message.isCommand)
+        {
+            if(Emulator.getConfig().getBoolean("save.room.chats", false))
+            {
+                Emulator.getThreading().run(message);
+            }
+        }
     }
 }

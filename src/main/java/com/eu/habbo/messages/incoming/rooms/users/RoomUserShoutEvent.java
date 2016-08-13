@@ -1,5 +1,6 @@
 package com.eu.habbo.messages.incoming.rooms.users;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.commands.CommandHandler;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatType;
@@ -20,6 +21,15 @@ public class RoomUserShoutEvent extends MessageHandler
             return;
 
 
-        this.client.getHabbo().getHabboInfo().getCurrentRoom().talk(this.client.getHabbo(), new RoomChatMessage(this), RoomChatType.SHOUT);
+        RoomChatMessage message = new RoomChatMessage(this);
+        this.client.getHabbo().getHabboInfo().getCurrentRoom().talk(this.client.getHabbo(), message, RoomChatType.SHOUT);
+
+        if (!message.isCommand)
+        {
+            if(Emulator.getConfig().getBoolean("save.room.chats", false))
+            {
+                Emulator.getThreading().run(message);
+            }
+        }
     }
 }
