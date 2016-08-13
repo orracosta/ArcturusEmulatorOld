@@ -62,19 +62,30 @@ public class WiredEffectKickHabbo extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        return this.message;
+        return this.getDelay() + "\t" + this.message;
     }
 
     @Override
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
-        this.message = set.getString("wired_data");
+        String[] data = set.getString("wired_data").split("\t");
+
+        if (data.length >= 1)
+        {
+            this.setDelay(Integer.valueOf(data[0]));
+
+            if (data.length >= 2)
+            {
+                this.message = data[1];
+            }
+        }
     }
 
     @Override
     public void onPickUp()
     {
         this.message = "";
+        this.setDelay(0);
     }
 
     @Override
@@ -95,7 +106,7 @@ public class WiredEffectKickHabbo extends InteractionWiredEffect
         message.appendInt32(0);
         message.appendInt32(0);
         message.appendInt32(this.getType().code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 
@@ -103,8 +114,9 @@ public class WiredEffectKickHabbo extends InteractionWiredEffect
     public boolean saveData(ClientMessage packet)
     {
         packet.readInt();
-
         this.message = packet.readString();
+        packet.readInt();
+        this.setDelay(packet.readInt());
 
         return true;
     }

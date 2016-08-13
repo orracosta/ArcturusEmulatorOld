@@ -13,11 +13,13 @@ import java.sql.SQLException;
 public class RoomChatMessage implements Runnable, ISerialize
 {
     private String message;
+    private String unfilteredMessage;
     private RoomChatMessageBubbles bubble;
     private final Habbo habbo;
     private Habbo targetHabbo;
     private final RoomUnit roomUnit;
     private byte emotion;
+    public boolean isCommand = false;
     public boolean filtered = false;
 
     public RoomChatMessage(MessageHandler message)
@@ -41,15 +43,11 @@ public class RoomChatMessage implements Runnable, ISerialize
             this.bubble = RoomChatMessageBubbles.NORMAL;
         }
 
+        this.unfilteredMessage = this.message;
         this.habbo = message.client.getHabbo();
         this.roomUnit = habbo.getRoomUnit();
 
         this.checkEmotion();
-
-        if(Emulator.getConfig().getBoolean("save.room.chats", false))
-        {
-            Emulator.getThreading().run(this);
-        }
 
         this.filter();
     }
@@ -147,7 +145,7 @@ public class RoomChatMessage implements Runnable, ISerialize
                     statement.setInt(2, this.targetHabbo.getHabboInfo().getId());
                 else
                     statement.setInt(2, 0);
-                statement.setString(3, this.message);
+                statement.setString(3, this.unfilteredMessage);
                 statement.setInt(4, Emulator.getIntUnixTimestamp());
                 if(habbo.getHabboInfo().getCurrentRoom() != null)
                 {

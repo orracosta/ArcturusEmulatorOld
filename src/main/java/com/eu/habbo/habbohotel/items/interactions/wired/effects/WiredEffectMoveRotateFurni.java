@@ -25,7 +25,6 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
 
     private int direction;
     private int rotation;
-    private int delay;
     private THashSet<HabboItem> items = new THashSet<HabboItem>();
 
     public WiredEffectMoveRotateFurni(ResultSet set, Item baseItem) throws SQLException
@@ -177,7 +176,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
 
         String data = this.direction + "\t" +
                 this.rotation + "\t" +
-                this.delay + "\t";
+                this.getDelay() + "\t";
 
         for(HabboItem item : this.items)
         {
@@ -194,19 +193,19 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
 
         String[] data = set.getString("wired_data").split("\t");
 
-        if(data.length == 4)
+        if(data.length == 5)
         {
             try
             {
                 this.direction = Integer.valueOf(data[0]);
                 this.rotation = Integer.valueOf(data[1]);
-                this.delay = Integer.valueOf(data[2]);
+                this.setDelay(Integer.valueOf(data[2]));
             }
-            catch (Exception e){
-
+            catch (Exception e)
+            {
             }
 
-            for(String s : data[3].split("\r"))
+            for(String s : data[4].split("\r"))
             {
                 HabboItem item = room.getHabboItem(Integer.valueOf(s));
 
@@ -221,8 +220,8 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
     {
         this.direction = 0;
         this.rotation = 0;
-        this.delay = 0;
         this.items.clear();
+        this.setDelay(0);
     }
 
     @Override
@@ -260,7 +259,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
             message.appendInt32(this.rotation);
         message.appendInt32(0);
         message.appendInt32(this.getType().code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 
@@ -286,7 +285,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
             this.items.add(room.getHabboItem(packet.readInt()));
         }
 
-        this.delay = packet.readInt();
+        this.setDelay(packet.readInt());
 
         return true;
     }

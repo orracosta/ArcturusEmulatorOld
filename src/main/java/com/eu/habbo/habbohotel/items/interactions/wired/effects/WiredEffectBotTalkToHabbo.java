@@ -46,7 +46,7 @@ public class WiredEffectBotTalkToHabbo extends InteractionWiredEffect
         message.appendInt32(this.mode);
         message.appendInt32(0);
         message.appendInt32(this.getType().code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 
@@ -62,11 +62,11 @@ public class WiredEffectBotTalkToHabbo extends InteractionWiredEffect
         {
             this.botName = data[0];
             this.message = data[1];
-
-            return true;
         }
 
-        return false;
+        this.setDelay(packet.readInt());
+
+        return true;
     }
 
     @Override
@@ -110,7 +110,7 @@ public class WiredEffectBotTalkToHabbo extends InteractionWiredEffect
     @Override
     protected String getWiredData()
     {
-        return this.mode + "" + ((char) 9) + "" + this.botName + "" + ((char) 9 ) + "" + this.message;
+        return this.getDelay() + ((char) 9) + this.mode + "" + ((char) 9) + "" + this.botName + "" + ((char) 9 ) + "" + this.message;
     }
 
     @Override
@@ -118,11 +118,12 @@ public class WiredEffectBotTalkToHabbo extends InteractionWiredEffect
     {
         String[] data = set.getString("wired_data").split(((char) 9) + "");
 
-        if(data.length == 3)
+        if(data.length == 4)
         {
-            this.mode = data[0].equalsIgnoreCase("1") ? 1 : 0;
-            this.botName = data[1];
-            this.message = data[2];
+            this.setDelay(Integer.valueOf(data[0]));
+            this.mode = data[1].equalsIgnoreCase("1") ? 1 : 0;
+            this.botName = data[2];
+            this.message = data[3];
         }
     }
 
@@ -132,5 +133,6 @@ public class WiredEffectBotTalkToHabbo extends InteractionWiredEffect
         this.botName = "";
         this.message = "";
         this.mode = 0;
+        this.setDelay(0);
     }
 }

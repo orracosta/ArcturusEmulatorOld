@@ -73,7 +73,7 @@ public abstract class InteractionWiredEffect extends InteractionWired implements
         this.delay = value;
     }
 
-    protected int getDelay()
+    public int getDelay()
     {
         return this.delay;
     }

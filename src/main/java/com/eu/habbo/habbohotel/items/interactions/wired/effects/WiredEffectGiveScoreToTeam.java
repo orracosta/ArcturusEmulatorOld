@@ -76,7 +76,7 @@ public class WiredEffectGiveScoreToTeam extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        return this.points + ";" + this.count + ";" + this.teamColor.type;
+        return this.points + ";" + this.count + ";" + this.teamColor.type + ";" + this.getDelay();
     }
 
     @Override
@@ -84,11 +84,12 @@ public class WiredEffectGiveScoreToTeam extends InteractionWiredEffect
     {
         String[] data = set.getString("wired_data").split(":");
 
-        if(data.length == 3)
+        if(data.length == 4)
         {
             this.points = Integer.valueOf(data[0]);
-            this.count = Integer.valueOf(data[0]);
-            this.teamColor = GameTeamColors.values()[Integer.valueOf(data[0])];
+            this.count = Integer.valueOf(data[1]);
+            this.teamColor = GameTeamColors.values()[Integer.valueOf(data[2])];
+            this.setDelay(Integer.valueOf(data[3]));
         }
     }
 
@@ -99,6 +100,7 @@ public class WiredEffectGiveScoreToTeam extends InteractionWiredEffect
         this.points = 0;
         this.count = 0;
         this.teamColor = GameTeamColors.RED;
+        this.setDelay(0);
     }
 
     @Override
@@ -122,7 +124,7 @@ public class WiredEffectGiveScoreToTeam extends InteractionWiredEffect
             message.appendInt32(this.teamColor.type + 1);
         message.appendInt32(0);
         message.appendInt32(this.getType().code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 
@@ -134,7 +136,9 @@ public class WiredEffectGiveScoreToTeam extends InteractionWiredEffect
         this.points = packet.readInt();
         this.count = packet.readInt();
         this.teamColor = GameTeamColors.values()[packet.readInt() - 1];
-
+        packet.readString();
+        packet.readInt();
+        this.setDelay(packet.readInt());
         return true;
     }
 }

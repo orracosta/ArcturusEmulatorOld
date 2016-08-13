@@ -39,7 +39,7 @@ public class WiredEffectRollerSpeed extends InteractionWiredEffect
         message.appendInt32(0);
         message.appendInt32(0);
         message.appendInt32(type.code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 
@@ -56,6 +56,8 @@ public class WiredEffectRollerSpeed extends InteractionWiredEffect
         {
             return false;
         }
+        packet.readInt();
+        this.setDelay(packet.readInt());
 
         return true;
     }
@@ -106,5 +108,6 @@ public class WiredEffectRollerSpeed extends InteractionWiredEffect
     public void onPickUp()
     {
         this.speed = 4;
+        this.setDelay(0);
     }
 }

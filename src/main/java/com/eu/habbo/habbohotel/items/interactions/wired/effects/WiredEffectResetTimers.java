@@ -39,10 +39,10 @@ public class WiredEffectResetTimers extends InteractionWiredEffect
         message.appendInt32(this.getId());
         message.appendString("");
         message.appendInt32(1);
-        message.appendInt32(this.delay * 2);
+        message.appendInt32(0);
         message.appendInt32(0);
         message.appendInt32(this.getType().code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 
@@ -52,7 +52,7 @@ public class WiredEffectResetTimers extends InteractionWiredEffect
         packet.readInt();
         packet.readString();
         packet.readInt();
-        this.delay = packet.readInt() / 2;
+        this.delay = packet.readInt();
 
         return true;
     }
@@ -91,6 +91,7 @@ public class WiredEffectResetTimers extends InteractionWiredEffect
     public void onPickUp()
     {
         this.delay = 0;
+        this.setDelay(0);
     }
 
     @Override

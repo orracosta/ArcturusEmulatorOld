@@ -48,7 +48,7 @@ public class WiredEffectBotGiveHandItem extends InteractionWiredEffect
         message.appendInt32(this.itemId);
         message.appendInt32(0);
         message.appendInt32(this.getType().code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 
@@ -59,7 +59,8 @@ public class WiredEffectBotGiveHandItem extends InteractionWiredEffect
 
         this.itemId = packet.readInt();
         this.botName = packet.readString();
-
+        packet.readInt();
+        this.setDelay(packet.readInt());
         return true;
     }
 
@@ -96,7 +97,7 @@ public class WiredEffectBotGiveHandItem extends InteractionWiredEffect
     @Override
     protected String getWiredData()
     {
-        return this.itemId + "" + ((char) 9) + "" + this.botName;
+        return this.getDelay() + ((char)9) + this.itemId + "" + ((char) 9) + "" + this.botName;
     }
 
     @Override
@@ -104,10 +105,11 @@ public class WiredEffectBotGiveHandItem extends InteractionWiredEffect
     {
         String[] data = set.getString("wired_data").split(((char) 9) + "");
 
-        if(data.length == 2)
+        if(data.length == 3)
         {
-            this.itemId = Integer.valueOf(data[0]);
-            this.botName = data[1];
+            this.setDelay(Integer.valueOf(data[0]));
+            this.itemId = Integer.valueOf(data[1]);
+            this.botName = data[2];
         }
     }
 
@@ -116,5 +118,6 @@ public class WiredEffectBotGiveHandItem extends InteractionWiredEffect
     {
         this.botName = "";
         this.itemId = 0;
+        this.setDelay(0);
     }
 }

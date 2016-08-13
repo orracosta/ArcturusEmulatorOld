@@ -61,7 +61,7 @@ public class WiredEffectTeleport extends InteractionWiredEffect
         message.appendInt32(0);
         message.appendInt32(0);
         message.appendInt32(this.getType().code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 
@@ -79,6 +79,8 @@ public class WiredEffectTeleport extends InteractionWiredEffect
         {
             this.items.add(Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(packet.readInt()));
         }
+
+        this.setDelay(packet.readInt());
 
         return true;
     }
@@ -121,7 +123,7 @@ public class WiredEffectTeleport extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        String wiredData = "";
+        String wiredData = this.getDelay() + "\t";
 
         if(items != null && !items.isEmpty())
         {
@@ -138,16 +140,23 @@ public class WiredEffectTeleport extends InteractionWiredEffect
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
         this.items = new THashSet<HabboItem>();
-        String wiredData = set.getString("wired_data");
+        String[] wiredData = set.getString("wired_data").split("\t");
 
-        if (wiredData.contains(";"))
+        if (wiredData.length >= 1)
         {
-            for (String s : wiredData.split(";"))
+            this.setDelay(Integer.valueOf(wiredData[0]));
+        }
+        if (wiredData.length == 2)
+        {
+            if (wiredData[1].contains(";"))
             {
-                HabboItem item = room.getHabboItem(Integer.valueOf(s));
+                for (String s : wiredData[1].split(";"))
+                {
+                    HabboItem item = room.getHabboItem(Integer.valueOf(s));
 
-                if (item != null)
-                    this.items.add(item);
+                    if (item != null)
+                        this.items.add(item);
+                }
             }
         }
     }
@@ -156,6 +165,7 @@ public class WiredEffectTeleport extends InteractionWiredEffect
     public void onPickUp()
     {
         this.items.clear();
+        this.setDelay(0);
     }
 
     @Override

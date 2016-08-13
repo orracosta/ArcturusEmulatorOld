@@ -37,14 +37,19 @@ public class WiredEffectMuteHabbo extends InteractionWiredEffect
         message.appendInt32(0);
         message.appendInt32(0);
         message.appendInt32(this.getType().code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 
     @Override
     public boolean saveData(ClientMessage packet)
     {
-        return false;
+        packet.readInt();
+        packet.readString();
+        packet.readInt();
+        this.setDelay(packet.readInt());
+
+        return true;
     }
 
     @Override
@@ -61,19 +66,19 @@ public class WiredEffectMuteHabbo extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        return "";
+        return getDelay() + "\t";
     }
 
     @Override
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
-
+        this.setDelay(Integer.valueOf(set.getString("wired_data").split("\t")[0]));
     }
 
     @Override
     public void onPickUp()
     {
-
+        this.setDelay(0);
     }
 
     @Override

@@ -42,7 +42,7 @@ public class WiredEffectBotClothes extends InteractionWiredEffect
         message.appendInt32(0);
         message.appendInt32(0);
         message.appendInt32(this.getType().code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 
@@ -57,9 +57,10 @@ public class WiredEffectBotClothes extends InteractionWiredEffect
         {
             this.botName = data[0];
             this.botLook = data[1];
-
-            return true;
         }
+
+        packet.readInt();
+        this.setDelay(packet.readInt());
 
         return false;
     }
@@ -85,18 +86,19 @@ public class WiredEffectBotClothes extends InteractionWiredEffect
     @Override
     protected String getWiredData()
     {
-        return this.botName + ":" + this.botLook;
+        return this.getDelay() + ((char) 9) + this.botName + ((char) 9) + this.botLook;
     }
 
     @Override
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
-        String[] data = set.getString("wired_data").split(":");
+        String[] data = set.getString("wired_data").split(((char) 9) + "");
 
-        if(data.length == 2)
+        if(data.length == 3)
         {
-            this.botName = data[0];
-            this.botLook = data[1];
+            this.setDelay(Integer.valueOf(data[0]));
+            this.botName = data[1];
+            this.botLook = data[2];
         }
     }
 
@@ -105,6 +107,7 @@ public class WiredEffectBotClothes extends InteractionWiredEffect
     {
         this.botLook = "";
         this.botName = "";
+        this.setDelay(0);
     }
 
     public String getBotName()

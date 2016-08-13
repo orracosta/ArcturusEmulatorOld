@@ -63,7 +63,7 @@ public class WiredEffectBotWalkToFurni extends InteractionWiredEffect
         message.appendInt32(0);
         message.appendInt32(0);
         message.appendInt32(this.getType().code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 
@@ -81,6 +81,8 @@ public class WiredEffectBotWalkToFurni extends InteractionWiredEffect
         {
             this.items.add(Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(packet.readInt()));
         }
+
+        this.setDelay(packet.readInt());
 
         return true;
     }
@@ -141,7 +143,7 @@ public class WiredEffectBotWalkToFurni extends InteractionWiredEffect
     @Override
     protected String getWiredData()
     {
-        String wiredData = this.botName + "" + ((char) 9);
+        String wiredData = this.getDelay() + "\t" + this.botName + "" + ((char) 9);
 
         if(items != null && !items.isEmpty())
         {
@@ -161,8 +163,9 @@ public class WiredEffectBotWalkToFurni extends InteractionWiredEffect
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
         this.items = new THashSet<HabboItem>();
-        String wiredData = set.getString("wired_data");
-        String[] data = wiredData.split(((char) 9) + "");
+        String[] wiredData = set.getString("wired_data").split("\t");
+        this.setDelay(Integer.valueOf(wiredData[0]));
+        String[] data = wiredData[1].split(((char) 9) + "");
 
         if(data.length > 1)
         {
@@ -183,5 +186,6 @@ public class WiredEffectBotWalkToFurni extends InteractionWiredEffect
     {
         this.items.clear();
         this.botName = "";
+        this.setDelay(0);
     }
 }

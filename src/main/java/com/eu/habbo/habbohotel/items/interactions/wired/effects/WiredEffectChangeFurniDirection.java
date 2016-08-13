@@ -46,7 +46,7 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
     @Override
     public void onPickUp()
     {
-
+        this.setDelay(0);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
         message.appendInt32(0);
         message.appendInt32(0);
         message.appendInt32(this.getType().code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 

@@ -44,7 +44,7 @@ public class WiredEffectBotFollowHabbo extends InteractionWiredEffect
         message.appendInt32(this.mode);
         message.appendInt32(1);
         message.appendInt32(this.getType().code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 
@@ -55,7 +55,8 @@ public class WiredEffectBotFollowHabbo extends InteractionWiredEffect
 
         this.mode = packet.readInt();
         this.botName = packet.readString();
-
+        packet.readInt();
+        this.setDelay(packet.readInt());
         return true;
     }
 
@@ -90,18 +91,19 @@ public class WiredEffectBotFollowHabbo extends InteractionWiredEffect
     @Override
     protected String getWiredData()
     {
-        return this.mode + ":" + this.botName;
+        return this.getDelay() + ((char) 9) + this.mode + ((char) 9) + this.botName;
     }
 
     @Override
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
-        String[] data = set.getString("wired_data").split(":");
+        String[] data = set.getString("wired_data").split(((char) 9) + "");
 
-        if(data.length == 2)
+        if(data.length == 3)
         {
-            this.mode = (data[0].equalsIgnoreCase("1") ? 1 : 0);
-            this.botName = data[1];
+            this.setDelay(Integer.valueOf(data[0]));
+            this.mode = (data[1].equalsIgnoreCase("1") ? 1 : 0);
+            this.botName = data[2];
         }
     }
 
@@ -110,5 +112,6 @@ public class WiredEffectBotFollowHabbo extends InteractionWiredEffect
     {
         this.botName = "";
         this.mode = 0;
+        this.setDelay(0);
     }
 }

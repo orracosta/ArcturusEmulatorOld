@@ -48,7 +48,7 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        String data = limit + ":" + given + ":"+ rewardTime + ":" + (uniqueRewards ? 1 : 0) + ":";
+        String data = limit + ":" + given + ":"+ rewardTime + ":" + (uniqueRewards ? 1 : 0) + ":" + getDelay() + ":";
 
         if(this.rewardItems.isEmpty())
         {
@@ -75,12 +75,13 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
             this.given = Integer.valueOf(data[1]);
             this.rewardTime = Integer.valueOf(data[2]);
             this.uniqueRewards = data[3].equals("1");
+            this.setDelay(Integer.valueOf(data[4]));
 
-            if(data.length > 4)
+            if(data.length > 5)
             {
-                if(!data[4].equalsIgnoreCase("\t"))
+                if(!data[5].equalsIgnoreCase("\t"))
                 {
-                    String[] items = data[4].split(";");
+                    String[] items = data[5].split(";");
 
                     this.rewardItems.clear();
 
@@ -101,6 +102,7 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
         this.rewardTime = 0;
         this.uniqueRewards = false;
         this.rewardItems.clear();
+        this.setDelay(0);
     }
 
     @Override
@@ -130,7 +132,7 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
             message.appendInt32(this.limit);
         message.appendInt32(this.limit > 0);
         message.appendInt32(this.getType().code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 
@@ -167,6 +169,9 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
 
         WiredHandler.dropRewards(this.getId());
 
+        packet.readString();
+        packet.readInt();
+        this.setDelay(packet.readInt());
         return true;
     }
 }

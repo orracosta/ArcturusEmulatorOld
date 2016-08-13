@@ -41,7 +41,7 @@ public class WiredEffectGiveDuckets extends InteractionWiredEffect
         message.appendInt32(0);
         message.appendInt32(0);
         message.appendInt32(type.code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 
@@ -58,6 +58,9 @@ public class WiredEffectGiveDuckets extends InteractionWiredEffect
         {
             return false;
         }
+
+        packet.readInt();
+        this.setDelay(packet.readInt());
 
         return true;
     }
@@ -114,6 +117,7 @@ public class WiredEffectGiveDuckets extends InteractionWiredEffect
     public void onPickUp()
     {
         this.pixels = 0;
+        this.setDelay(0);
     }
 }
 

@@ -44,7 +44,7 @@ public class WiredEffectWhisper extends InteractionWiredEffect
         message.appendInt32(0);
         message.appendInt32(0);
         message.appendInt32(type.code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 
@@ -54,7 +54,8 @@ public class WiredEffectWhisper extends InteractionWiredEffect
         packet.readInt();
 
         this.message = Emulator.getGameEnvironment().getWordFilter().filter(packet.readString(), null);
-
+        packet.readInt();
+        this.setDelay(packet.readInt());
         return true;
     }
 
@@ -107,6 +108,7 @@ public class WiredEffectWhisper extends InteractionWiredEffect
     public void onPickUp()
     {
         this.message = "";
+        this.setDelay(0);
     }
 
     @Override

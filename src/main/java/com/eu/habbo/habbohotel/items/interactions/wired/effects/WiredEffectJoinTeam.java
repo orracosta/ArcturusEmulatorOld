@@ -54,19 +54,30 @@ public class WiredEffectJoinTeam extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        return this.teamColor.type + "";
+        return this.getDelay() + "\t" + this.teamColor.type + "";
     }
 
     @Override
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
-        this.teamColor = GameTeamColors.values()[Integer.valueOf(set.getString("wired_data"))];
+        String[] data = set.getString("wired_data").split("\t");
+
+        if (data.length >= 1)
+        {
+            this.setDelay(Integer.valueOf(data[0]));
+
+            if (data.length >= 2)
+            {
+                this.teamColor = GameTeamColors.values()[Integer.valueOf(data[1])];
+            }
+        }
     }
 
     @Override
     public void onPickUp()
     {
         this.teamColor = GameTeamColors.RED;
+        this.setDelay(0);
     }
 
     @Override
@@ -88,7 +99,7 @@ public class WiredEffectJoinTeam extends InteractionWiredEffect
         message.appendInt32(this.teamColor.type + 1);
         message.appendInt32(0);
         message.appendInt32(this.getType().code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 
@@ -96,8 +107,9 @@ public class WiredEffectJoinTeam extends InteractionWiredEffect
     public boolean saveData(ClientMessage packet)
     {
         packet.readInt();
-
         this.teamColor = GameTeamColors.values()[packet.readInt() - 1];
+        packet.readInt();
+        this.setDelay(packet.readInt());
 
         return true;
     }

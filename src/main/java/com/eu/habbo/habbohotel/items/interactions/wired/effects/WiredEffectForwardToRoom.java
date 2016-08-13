@@ -40,7 +40,7 @@ public class WiredEffectForwardToRoom extends InteractionWiredEffect
         message.appendInt32(0);
         message.appendInt32(0);
         message.appendInt32(type.code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 
@@ -57,6 +57,9 @@ public class WiredEffectForwardToRoom extends InteractionWiredEffect
         {
             return false;
         }
+
+        packet.readInt();
+        this.setDelay(packet.readInt());
 
         return true;
     }
@@ -110,5 +113,6 @@ public class WiredEffectForwardToRoom extends InteractionWiredEffect
     public void onPickUp()
     {
         this.roomId = 0;
+        this.setDelay(0);
     }
 }

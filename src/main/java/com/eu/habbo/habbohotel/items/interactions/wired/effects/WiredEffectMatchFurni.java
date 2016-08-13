@@ -92,7 +92,7 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
                 data += item.toString() + ";";
         }
 
-        data += ":" + (this.state ? 1 : 0) + ":" + (this.direction ? 1 : 0) + ":" + (this.position ? 1 : 0);
+        data += ":" + (this.state ? 1 : 0) + ":" + (this.direction ? 1 : 0) + ":" + (this.position ? 1 : 0) + ":" + getDelay();
 
         return data;
     }
@@ -117,6 +117,7 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
         this.state = data[2].equals("1");
         this.direction = data[3].equals("1");
         this.position = data[4].equals("1");
+        this.setDelay(Integer.valueOf(data[5]));
     }
 
     @Override
@@ -126,6 +127,7 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
         this.state = false;
         this.direction = false;
         this.position = false;
+        this.setDelay(0);
     }
 
     @Override
@@ -156,7 +158,7 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
             message.appendInt32(10);
         message.appendInt32(0);
         message.appendInt32(this.getType().code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 

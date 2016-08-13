@@ -2897,6 +2897,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         {
             if (CommandHandler.handleCommand(habbo.getClient(), roomChatMessage.getMessage()))
             {
+                roomChatMessage.isCommand = true;
                 return;
             }
 

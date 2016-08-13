@@ -90,7 +90,7 @@ public class WiredEffectGiveScore extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        return this.score + ";" + this.count;
+        return this.score + ";" + this.count + ";" + this.getDelay();
     }
 
     @Override
@@ -98,10 +98,11 @@ public class WiredEffectGiveScore extends InteractionWiredEffect
     {
         String[] data = set.getString("wired_data").split(";");
 
-        if(data.length == 2)
+        if(data.length == 3)
         {
             this.score = Integer.valueOf(data[0]);
             this.count = Integer.valueOf(data[1]);
+            this.setDelay(Integer.valueOf(data[2]));
         }
     }
 
@@ -110,6 +111,7 @@ public class WiredEffectGiveScore extends InteractionWiredEffect
     {
         this.score = 0;
         this.count = 0;
+        this.setDelay(0);
     }
 
     @Override
@@ -132,7 +134,7 @@ public class WiredEffectGiveScore extends InteractionWiredEffect
         message.appendInt32(this.count);
         message.appendInt32(0);
         message.appendInt32(this.getType().code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 
@@ -143,6 +145,9 @@ public class WiredEffectGiveScore extends InteractionWiredEffect
 
         this.score = packet.readInt();
         this.count = packet.readInt();
+        packet.readString();
+        packet.readInt();
+        this.setDelay(packet.readInt());
 
         return true;
     }

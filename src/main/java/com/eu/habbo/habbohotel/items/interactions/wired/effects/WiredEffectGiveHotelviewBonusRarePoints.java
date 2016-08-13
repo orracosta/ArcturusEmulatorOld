@@ -42,7 +42,7 @@ public class WiredEffectGiveHotelviewBonusRarePoints extends InteractionWiredEff
         message.appendInt32(0);
         message.appendInt32(0);
         message.appendInt32(type.code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 
@@ -59,6 +59,9 @@ public class WiredEffectGiveHotelviewBonusRarePoints extends InteractionWiredEff
         {
             return false;
         }
+
+        packet.readInt();
+        this.setDelay(packet.readInt());
 
         return true;
     }
@@ -115,5 +118,6 @@ public class WiredEffectGiveHotelviewBonusRarePoints extends InteractionWiredEff
     public void onPickUp()
     {
         this.amount = 0;
+        this.setDelay(0);
     }
 }

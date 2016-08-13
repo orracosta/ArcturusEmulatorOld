@@ -44,19 +44,19 @@ public class WiredEffectLeaveTeam extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        return "";
+        return getDelay() + "";
     }
 
     @Override
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
-
+        this.setDelay(Integer.valueOf("wired_data"));
     }
 
     @Override
     public void onPickUp()
     {
-
+        this.setDelay(0);
     }
 
     @Override
@@ -77,13 +77,17 @@ public class WiredEffectLeaveTeam extends InteractionWiredEffect
         message.appendInt32(0);
         message.appendInt32(0);
         message.appendInt32(this.getType().code);
-        message.appendInt32(0);
+        message.appendInt32(this.getDelay());
         message.appendInt32(0);
     }
 
     @Override
     public boolean saveData(ClientMessage packet)
     {
+        packet.readInt();
+        packet.readString();
+        packet.readInt();
+        this.setDelay(packet.readInt());
         return true;
     }
 }
