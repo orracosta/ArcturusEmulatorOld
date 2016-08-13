@@ -1,6 +1,7 @@
 package com.eu.habbo.networking.camera.messages.incoming;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.camera.CameraURLComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
@@ -48,6 +49,7 @@ public class CameraResultURLEvent extends CameraIncomingMessage
             {
                 if (timestamp == habbo.getHabboInfo().getPhotoTimestamp())
                 {
+                    AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().achievements.get("CameraPhotoCount"), 1);
                     habbo.getClient().sendResponse(new CameraURLComposer(URL));
                     habbo.getHabboInfo().setPhotoJSON(habbo.getHabboInfo().getPhotoJSON().replace("%room_id%", roomId + "").replace("%url%", URL));
                 }
