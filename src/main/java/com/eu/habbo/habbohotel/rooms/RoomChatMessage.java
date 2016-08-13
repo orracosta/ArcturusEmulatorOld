@@ -18,6 +18,7 @@ public class RoomChatMessage implements Runnable, ISerialize
     private Habbo targetHabbo;
     private final RoomUnit roomUnit;
     private byte emotion;
+    public boolean filtered = false;
 
     public RoomChatMessage(MessageHandler message)
     {
@@ -247,7 +248,7 @@ public class RoomChatMessage implements Runnable, ISerialize
                 {
                     if (!Emulator.getGameEnvironment().getWordFilter().hideMessageCheck(this.message))
                     {
-                        this.message = Emulator.getGameEnvironment().getWordFilter().filter(this.message, this.habbo);
+                        Emulator.getGameEnvironment().getWordFilter().filter(this, this.habbo);
                         return;
                     }
                 }

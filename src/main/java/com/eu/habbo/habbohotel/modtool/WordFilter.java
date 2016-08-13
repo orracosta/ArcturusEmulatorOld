@@ -170,4 +170,38 @@ public class WordFilter
 
         return message;
     }
+
+    public void filter (RoomChatMessage roomChatMessage, Habbo habbo)
+    {
+        String message = roomChatMessage.getMessage();
+
+        if(Emulator.getConfig().getBoolean("hotel.wordfilter.normalise"))
+        {
+            message = this.normalise(message);
+        }
+
+        TObjectHashIterator iterator = this.words.iterator();
+
+        while(iterator.hasNext())
+        {
+            WordFilterWord word = (WordFilterWord) iterator.next();
+
+            if(message.contains(word.key))
+            {
+                if(habbo != null)
+                {
+                    if(Emulator.getPluginManager().fireEvent(new UserTriggerWordFilterEvent(habbo, word)).isCancelled())
+                        continue;
+                }
+
+                message = message.replace(word.key, word.replacement);
+                roomChatMessage.filtered = true;
+            }
+        }
+
+        if (roomChatMessage.filtered)
+        {
+            roomChatMessage.setMessage(message);
+        }
+    }
 }
