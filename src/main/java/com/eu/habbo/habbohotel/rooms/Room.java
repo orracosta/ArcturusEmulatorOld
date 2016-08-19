@@ -2255,7 +2255,15 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             if (!this.furniOwnerNames.containsKey(item.getUserId()))
             {
                 HabboInfo habbo = HabboManager.getOfflineHabboInfo(item.getUserId());
-                this.furniOwnerNames.put(item.getUserId(), habbo.getUsername());
+
+                if (habbo != null)
+                {
+                    this.furniOwnerNames.put(item.getUserId(), habbo.getUsername());
+                }
+                else
+                {
+                    Emulator.getLogging().logDebugLine("Failed to find username for item (ID:" + item.getId() + ", UserID: " + item.getUserId() + ")" );
+                }
             }
         }
 
