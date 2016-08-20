@@ -21,10 +21,13 @@ class DatabasePool
             databaseConfiguration.addDataSourceProperty("databaseName", config.getValue("db.database", "habbo"));
             databaseConfiguration.addDataSourceProperty("user", config.getValue("db.username"));
             databaseConfiguration.addDataSourceProperty("password", config.getValue("db.password"));
+            databaseConfiguration.addDataSourceProperty("dataSource.logger", "com.mysql.jdbc.log.StandardLogger");
+            databaseConfiguration.addDataSourceProperty("dataSource.logSlowQueries", "true");
+            databaseConfiguration.addDataSourceProperty("dataSource.dumpQueriesOnException", "true");
             databaseConfiguration.setAutoCommit(true);
             databaseConfiguration.setConnectionTimeout(3400L);
             databaseConfiguration.setValidationTimeout(3399L);
-            databaseConfiguration.setLeakDetectionThreshold(90000L);
+            databaseConfiguration.setLeakDetectionThreshold(5000L);
             databaseConfiguration.setMaxLifetime(2874000L);
             databaseConfiguration.setIdleTimeout(2874000L);
             //databaseConfiguration.setDriverClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");

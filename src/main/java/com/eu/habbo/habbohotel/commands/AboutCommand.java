@@ -42,7 +42,6 @@ public class AboutCommand extends Command
                 "- Jonas\r" +
                 "- CodeDragon \r" +
                 "- FlyHotel \r" +
-                "- AWA \r" +
 
                         "\r" +
 
