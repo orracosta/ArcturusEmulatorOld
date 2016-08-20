@@ -523,7 +523,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         {
             if(!this.allowWalkthrough)
             {
-                if (!getHabbosAt(x, y).isEmpty())
+                if (hasHabbosAt(x, y))
+                    return false;
+
+                if (hasBotsAt(x, y))
                     return false;
             }
 
@@ -1796,7 +1799,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         return this.allowPetsEat;
     }
 
-    public boolean isAllowWalkthrough() {
+    public boolean isAllowWalkthrough()
+    {
         return this.allowWalkthrough;
     }
 
@@ -2671,6 +2675,31 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
 
         return bots;
+    }
+
+    public boolean hasBotsAt(final int x, final int y)
+    {
+        final boolean[] result = {false};
+
+        synchronized (this.currentBots)
+        {
+            this.currentBots.forEachValue(new TObjectProcedure<Bot>()
+            {
+                @Override
+                public boolean execute(Bot object)
+                {
+                    if (object.getRoomUnit().getX() == x && object.getRoomUnit().getY() == y)
+                    {
+                        result[0] = true;
+                        return false;
+                    }
+
+                    return true;
+                }
+            });
+        }
+
+        return result[0];
     }
 
     public AbstractPet getPet(int petId)
