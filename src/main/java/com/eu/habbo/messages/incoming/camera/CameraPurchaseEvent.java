@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.camera.CameraPurchaseSuccesfullComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
+import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 
 public class CameraPurchaseEvent extends MessageHandler
 {
@@ -24,8 +25,9 @@ public class CameraPurchaseEvent extends MessageHandler
                         photoItem.setExtradata(photoItem.getExtradata().replace("%id%", photoItem.getId() + ""));
                         photoItem.needsUpdate(true);
                         this.client.getHabbo().getHabboInventory().getItemsComponent().addItem(photoItem);
-                        this.client.sendResponse(new AddHabboItemComposer(photoItem));
+                        this.client.sendResponse(new InventoryRefreshComposer());
                         this.client.sendResponse(new CameraPurchaseSuccesfullComposer());
+                        this.client.sendResponse(new AddHabboItemComposer(photoItem));
                         this.client.getHabbo().giveCredits(-Emulator.getConfig().getInt("camera.price.credits"));
                         this.client.getHabbo().givePixels(-Emulator.getConfig().getInt("camera.price.points"));
                     }
