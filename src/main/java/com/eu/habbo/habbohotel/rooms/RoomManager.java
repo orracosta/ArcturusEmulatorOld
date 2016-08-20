@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.rooms;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.bots.Bot;
+import com.eu.habbo.habbohotel.guilds.Guild;
 import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
 import com.eu.habbo.habbohotel.navigation.NavigatorFilterComparator;
 import com.eu.habbo.habbohotel.navigation.NavigatorFilterField;
@@ -727,8 +728,18 @@ public class RoomManager {
         {
             // ServerMessage m = new RoomUsersComposer(habbo).compose().appendResponse(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
             room.sendComposer(new RoomUsersComposer(habbo).compose());
+
+            if (habbo.getHabboStats().guild != 0)
+            {
+                Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(habbo.getHabboStats().guild);
+
+                if (guild != null)
+                {
+                    room.sendComposer(new RoomUsersAddGuildBadgeComposer(guild).compose());
+                }
+            }
+
             room.sendComposer(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
-            //room.sendComposer();
             habbo.getClient().sendResponse(new RoomUsersComposer(room.getCurrentHabbos()));
             habbo.getClient().sendResponse(new RoomUserStatusComposer(room.getCurrentHabbos()));
         }
@@ -779,6 +790,8 @@ public class RoomManager {
 
         synchronized (room.getCurrentHabbos())
         {
+            THashMap<Integer, String> guildBadges = new THashMap<Integer, String>();
+
             for (Habbo roomHabbo : room.getCurrentHabbos().valueCollection())
             {
                 if (roomHabbo.getRoomUnit().getDanceType().getType() > 0)
@@ -814,7 +827,19 @@ public class RoomManager {
                 {
                     habbo.getClient().sendResponse(new RoomUserIgnoredComposer(roomHabbo, RoomUserIgnoredComposer.IGNORED));
                 }
+
+                if (roomHabbo.getHabboStats().guild != 0 && !guildBadges.containsKey(roomHabbo.getHabboStats().guild))
+                {
+                    Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(roomHabbo.getHabboStats().guild);
+
+                    if (guild != null)
+                    {
+                        guildBadges.put(roomHabbo.getHabboStats().guild, guild.getBadge());
+                    }
+                }
             }
+
+            habbo.getClient().sendResponse(new RoomUsersGuildBadgesComposer(guildBadges));
         }
 
         if(room.hasRights(habbo) || (room.hasGuild() && room.guildRightLevel(habbo) >= 2))

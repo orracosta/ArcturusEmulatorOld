@@ -1313,7 +1313,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                                 bot.getRoomUnit().getStatus().remove("sit");
                                                 updatedUnit.add(bot.getRoomUnit());
                                             }
-                                        } else
+                                        }
+                                        else
                                         {
                                             if (!bot.getRoomUnit().getStatus().containsKey("sit"))
                                             {

@@ -469,7 +469,7 @@ public class Outgoing
     public final static int Game2WeeklySmallLeaderboardComposer = 2194;
     public final static int CatalogBuyVIPSMSComposer = 2296; //:test 2296 s:a s:b i:10
     public final static int GameListMessageComposer = 2481;
-    public final static int UnknownComposer_2487 = 2487; //Unknown. Something badges related?
+    public final static int RoomUsersGuildBadgesComposer = 2487; //Unknown. Something badges related?
     public final static int UnknownComposer_2563 = 2563; //IDK
     public final static int UnknownComposer_2601 = 2601; //Unused
     public final static int UnknownComposer_2621 = 2621; //Unused
