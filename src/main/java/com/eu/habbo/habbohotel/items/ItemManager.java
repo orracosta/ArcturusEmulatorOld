@@ -174,31 +174,36 @@ public class ItemManager {
             /*
                 Conditions
             */
-            this.interactionsList.add(new ItemInteraction("wf_cnd_has_furni_on",    WiredConditionFurniHaveFurni.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_furnis_hv_avtrs", WiredConditionFurniHaveHabbo.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_stuff_is",        WiredConditionFurniTypeMatch.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_actor_in_group",  WiredConditionGroupMember.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_user_count_in",   WiredConditionHabboCount.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_wearing_effect",  WiredConditionHabboHasEffect.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_wearing_badge",   WiredConditionHabboWearsBadge.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_time_less_than",  WiredConditionLessTimeElapsed.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_match_snapshot",  WiredConditionMatchStatePosition.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_time_more_than",  WiredConditionMoreTimeElapsed.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_not_furni_on",    WiredConditionNotFurniHaveFurni.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_not_hv_avtrs",    WiredConditionNotFurniHaveHabbo.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_not_stuff_is",    WiredConditionNotFurniTypeMatch.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_not_user_count",  WiredConditionNotHabboCount.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_not_wearing_fx",  WiredConditionNotHabboHasEffect.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_not_wearing_b",   WiredConditionNotHabboWearsBadge.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_not_in_group",    WiredConditionNotInGroup.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_not_in_team",     WiredConditionNotInTeam.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_not_match_snap",  WiredConditionNotMatchStatePosition.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_not_trggrer_on",  WiredConditionNotTriggerOnFurni.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_actor_in_team",   WiredConditionTeamMember.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_trggrer_on_frn",  WiredConditionTriggerOnFurni.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_has_handitem",    WiredConditionHabboHasHandItem.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_date_rng_active", WiredConditionDateRangeActive.class));
-            this.interactionsList.add(new ItemInteraction("wf_cnd_motto_contains",  WiredConditionMottoContains.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_has_furni_on",     WiredConditionFurniHaveFurni.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_furnis_hv_avtrs",  WiredConditionFurniHaveHabbo.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_stuff_is",         WiredConditionFurniTypeMatch.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_actor_in_group",   WiredConditionGroupMember.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_user_count_in",    WiredConditionHabboCount.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_wearing_effect",   WiredConditionHabboHasEffect.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_wearing_badge",    WiredConditionHabboWearsBadge.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_time_less_than",   WiredConditionLessTimeElapsed.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_match_snapshot",   WiredConditionMatchStatePosition.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_time_more_than",   WiredConditionMoreTimeElapsed.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_not_furni_on",     WiredConditionNotFurniHaveFurni.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_not_hv_avtrs",     WiredConditionNotFurniHaveHabbo.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_not_stuff_is",     WiredConditionNotFurniTypeMatch.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_not_user_count",   WiredConditionNotHabboCount.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_not_wearing_fx",   WiredConditionNotHabboHasEffect.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_not_wearing_b",    WiredConditionNotHabboWearsBadge.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_not_in_group",     WiredConditionNotInGroup.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_not_in_team",      WiredConditionNotInTeam.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_not_match_snap",   WiredConditionNotMatchStatePosition.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_not_trggrer_on",   WiredConditionNotTriggerOnFurni.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_actor_in_team",    WiredConditionTeamMember.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_trggrer_on_frn",   WiredConditionTriggerOnFurni.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_has_handitem",     WiredConditionHabboHasHandItem.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_date_rng_active",  WiredConditionDateRangeActive.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_motto_contains",   WiredConditionMottoContains.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_battlebanzai",     WiredConditionBattleBanzaiGameActive.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_not_battlebanzai", WiredConditionNotBattleBanzaiGameActive.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_freeze",           WiredConditionFreezeGameActive.class));
+            this.interactionsList.add(new ItemInteraction("wf_cnd_not_freeze",       WiredConditionNotFreezeGameActive.class));
+
 
             /*
                 Highscores

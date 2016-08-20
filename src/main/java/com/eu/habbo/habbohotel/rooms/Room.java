@@ -588,7 +588,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
             if(this.getGame(FreezeGame.class) != null)
             {
-                if(game.isRunning() && game.exitTile == item)
+                if(game.isRunning && game.exitTile == item)
                 {
                     return;
                 }
