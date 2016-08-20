@@ -12,16 +12,22 @@ public class CameraHandler extends ChannelInboundHandlerAdapter
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg)
     {
-        ByteBuf message = (ByteBuf) msg;
-        ((ByteBuf) msg).readerIndex(0);
-        int length = message.readInt();
+        try
+        {
+            ByteBuf message = (ByteBuf) msg;
+            ((ByteBuf) msg).readerIndex(0);
+            int length = message.readInt();
 
-        ByteBuf b = Unpooled.wrappedBuffer(message.readBytes(length));
+            ByteBuf b = Unpooled.wrappedBuffer(message.readBytes(length));
 
-        short header = b.readShort();
+            short header = b.readShort();
 
-        CameraPacketHandler.instance().handle(ctx.channel(), header, b);
-
+            CameraPacketHandler.instance().handle(ctx.channel(), header, b);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override

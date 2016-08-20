@@ -29,9 +29,6 @@ public class CameraClient
         bootstrap.channel(NioSocketChannel.class);
         bootstrap.option(ChannelOption.TCP_NODELAY, true);
         bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
-        bootstrap.option(ChannelOption.SO_RCVBUF, 2000000);
-        bootstrap.option(ChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(2000000));
-        bootstrap.option(ChannelOption.ALLOCATOR, new UnpooledByteBufAllocator(false));
         bootstrap.handler(new ChannelInitializer<SocketChannel>()
         {
             @Override
@@ -41,6 +38,9 @@ public class CameraClient
                 ch.pipeline().addLast(new CameraHandler());
             }
         });
+        bootstrap.option(ChannelOption.SO_RCVBUF, 2000000);
+        bootstrap.option(ChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(2000000));
+        bootstrap.option(ChannelOption.ALLOCATOR, new UnpooledByteBufAllocator(false));
     }
 
     public void connect()
@@ -77,11 +77,18 @@ public class CameraClient
 
     public void sendMessage(CameraOutgoingMessage outgoingMessage)
     {
-        if (isLoggedIn || outgoingMessage instanceof CameraLoginComposer)
+        try
         {
-            outgoingMessage.compose(channel);
-            channel.write(outgoingMessage.get().copy(), channel.voidPromise());
-            channel.flush();
+            if (isLoggedIn || outgoingMessage instanceof CameraLoginComposer)
+            {
+                outgoingMessage.compose(channel);
+                channel.write(outgoingMessage.get().copy(), channel.voidPromise());
+                channel.flush();
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 }

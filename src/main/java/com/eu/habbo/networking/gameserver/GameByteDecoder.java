@@ -17,39 +17,42 @@ public class GameByteDecoder extends ByteToMessageDecoder
     {
         in.markReaderIndex();
 
+        //4 bytes length + 2 bytes header
         if (in.readableBytes() < 6)
         {
+            in.resetReaderIndex();
             return;
         }
 
         int length = in.readInt();
 
-        if(length > 5120 && (length >> 24 != 60))
+        //if(length > 5120 && (length >> 24 != 60))
+        //{
+        //    ctx.close();
+        //}
+
+        if (length == 1014001516)
         {
-            ctx.close();
+            in.resetReaderIndex();
+            in.readBytes(in.readableBytes());
+
+            ChannelFuture f = ctx.writeAndFlush(Unpooled.copiedBuffer("<?xml version=\"1.0\"?>\n" +
+                    "  <!DOCTYPE cross-domain-policy SYSTEM \"/xml/dtds/cross-domain-policy.dtd\">\n" +
+                    "  <cross-domain-policy>\n" +
+                    "  <allow-access-from domain=\"*\" to-ports=\"1-31111\" />\n" +
+                    "  </cross-domain-policy>" + (char) 0, CharsetUtil.UTF_8));
+
+            if (!f.isSuccess())
+            {
+                Emulator.getLogging().logErrorLine(f.cause());
+            }
+
+            f.channel().close();
+            return;
         }
 
-        if (in.capacity() < length + 2)
+        if (in.readableBytes() < length)
         {
-            if (length == 1014001516)
-            {
-                in.resetReaderIndex();
-                in.readBytes(in.readableBytes());
-
-                ChannelFuture f = ctx.writeAndFlush(Unpooled.copiedBuffer("<?xml version=\"1.0\"?>\n" +
-                        "  <!DOCTYPE cross-domain-policy SYSTEM \"/xml/dtds/cross-domain-policy.dtd\">\n" +
-                        "  <cross-domain-policy>\n" +
-                        "  <allow-access-from domain=\"*\" to-ports=\"1-31111\" />\n" +
-                        "  </cross-domain-policy>" + (char) 0, CharsetUtil.UTF_8));
-
-                if (!f.isSuccess())
-                {
-                    Emulator.getLogging().logErrorLine(f.cause());
-                }
-
-                f.channel().close();
-                return;
-            }
             in.resetReaderIndex();
             return;
         }

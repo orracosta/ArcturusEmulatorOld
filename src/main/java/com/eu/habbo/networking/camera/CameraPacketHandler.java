@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.networking.camera.messages.incoming.CameraLoginStatusEvent;
 import com.eu.habbo.networking.camera.messages.incoming.CameraResultURLEvent;
 import com.eu.habbo.networking.camera.messages.incoming.CameraRoomThumbnailGeneratedEvent;
+import com.eu.habbo.networking.camera.messages.incoming.CameraUpdateNotification;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -32,6 +33,7 @@ public class CameraPacketHandler
         this.packetDefinitions.put((short) 1, CameraLoginStatusEvent.class);
         this.packetDefinitions.put((short) 2, CameraResultURLEvent.class);
         this.packetDefinitions.put((short) 3, CameraRoomThumbnailGeneratedEvent.class);
+        this.packetDefinitions.put((short) 4, CameraUpdateNotification.class);
     }
 
     public void handle(Channel channel, short i, ByteBuf ii)
