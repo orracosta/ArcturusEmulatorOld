@@ -31,13 +31,13 @@ public class InteractionFreezeGate extends InteractionGameGate
     @Override
     public boolean canWalkOn(RoomUnit roomUnit, Room room, Object[] objects)
     {
-        return room.getGame(FreezeGame.class) == null || !((FreezeGame)room.getGame(FreezeGame.class)).isRunning();
+        return room.getGame(FreezeGame.class) == null || !((FreezeGame)room.getGame(FreezeGame.class)).isRunning;
     }
 
     @Override
     public boolean isWalkable()
     {
-        return (this.getExtradata().isEmpty() || Integer.valueOf(this.getExtradata()) < 5) && ((Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getGame(FreezeGame.class))) == null || !((FreezeGame)(Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getGame(FreezeGame.class))).isRunning();
+        return (this.getExtradata().isEmpty() || Integer.valueOf(this.getExtradata()) < 5) && ((Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getGame(FreezeGame.class))) == null || !((FreezeGame)(Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getGame(FreezeGame.class))).isRunning;
     }
 
     @Override

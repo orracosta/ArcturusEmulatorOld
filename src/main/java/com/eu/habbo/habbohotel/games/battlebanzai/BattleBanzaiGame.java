@@ -50,8 +50,6 @@ public class BattleBanzaiGame extends Game
      */
     public static final int POINTS_LOCK_TILE = Emulator.getConfig().getInt("hotel.banzai.points.tile.lock");
 
-    private boolean running;
-
     private int timeLeft;
 
     private int tileCount;
@@ -73,7 +71,7 @@ public class BattleBanzaiGame extends Game
     @Override
     public void initialise()
     {
-        if(this.running)
+        if(this.isRunning)
             return;
 
         int highestTime = 0;
@@ -117,12 +115,10 @@ public class BattleBanzaiGame extends Game
     @Override
     public void start()
     {
-        super.start();
-
-        if(this.running)
+        if(this.isRunning)
             return;
 
-        this.running = true;
+        super.start();
 
         Emulator.getThreading().run(this, 0);
     }
@@ -132,7 +128,7 @@ public class BattleBanzaiGame extends Game
     {
         try
         {
-            if (!this.isRunning())
+            if (!this.isRunning)
                 return;
 
             if(this.countDown > 0)
@@ -141,8 +137,6 @@ public class BattleBanzaiGame extends Game
 
                 if(this.countDown == 0)
                 {
-                    WiredHandler.handle(WiredTriggerType.GAME_STARTS, null, this.room, null);
-
                     for(HabboItem item : this.room.getRoomSpecialTypes().getItemsOfType(InteractionBattleBanzaiSphere.class))
                     {
                         item.setExtradata("2");
@@ -195,14 +189,14 @@ public class BattleBanzaiGame extends Game
                     }
                 }
 
-                if(total >= this.tileCount)
+                if(total >= this.tileCount && this.tileCount != 0)
                 {
                     this.timeLeft = 0;
                 }
             }
             else
             {
-                Emulator.getThreading().run(new GameStop(this), 3500);
+                this.stop();
 
                 GameTeam winningTeam = null;
 
@@ -238,7 +232,7 @@ public class BattleBanzaiGame extends Game
                     Emulator.getThreading().run(new BattleBanzaiTilesFlicker(this.lockedTiles.get(winningTeam.teamColor), winningTeam.teamColor, this.room));
                 }
 
-                this.running = false;
+                this.isRunning = false;
             }
         }
         catch (Exception e)
@@ -264,8 +258,6 @@ public class BattleBanzaiGame extends Game
         }
 
         this.lockedTiles.clear();
-
-        this.running = false;
     }
 
     /**
@@ -290,11 +282,6 @@ public class BattleBanzaiGame extends Game
         }
     }
 
-    public boolean isRunning()
-    {
-        return this.running;
-    }
-
     public void addPositionToGate(GameTeamColors teamColor)
     {
         for (InteractionBattleBanzaiGate gate : this.room.getRoomSpecialTypes().getBattleBanzaiGates().values())
@@ -317,7 +304,7 @@ public class BattleBanzaiGame extends Game
         if(event.habbo.getHabboInfo().getCurrentGame() == BattleBanzaiGame.class)
         {
             BattleBanzaiGame game = (BattleBanzaiGame) event.habbo.getHabboInfo().getCurrentRoom().getGame(BattleBanzaiGame.class);
-            if (game != null && game.isRunning())
+            if (game != null && game.isRunning)
             {
                 if(!event.habbo.getHabboInfo().getCurrentRoom().hasObjectTypeAt(InteractionBattleBanzaiTile.class, event.toLocation.getX(), event.toLocation.getY()))
                 {

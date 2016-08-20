@@ -117,7 +117,7 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
 
             try
             {
-                item.onClick(habbo != null ? habbo.getClient() : null, room, new Object[]{item.getExtradata().length() == 0 ? 0 : Integer.valueOf(item.getExtradata())});
+                item.onClick(habbo != null ? habbo.getClient() : null, room, new Object[]{item.getExtradata().length() == 0 ? 0 : Integer.valueOf(item.getExtradata()), this.getType()});
             }
             catch (Exception e)
             {

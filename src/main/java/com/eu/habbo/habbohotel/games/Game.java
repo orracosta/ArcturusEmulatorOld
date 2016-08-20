@@ -48,6 +48,11 @@ public abstract class Game implements Runnable
      */
     protected int endTime;
 
+    /**
+     * Wether the game is running.
+     */
+    public boolean isRunning;
+
     public Game(Class<? extends GameTeam> gameTeamClazz, Class<? extends GamePlayer> gamePlayerClazz, Room room)
     {
         this.gameTeamClazz = gameTeamClazz;
@@ -143,6 +148,7 @@ public abstract class Game implements Runnable
      */
     public void start()
     {
+        this.isRunning = true;
         this.startTime = Emulator.getIntUnixTimestamp();
 
         if(Emulator.getPluginManager().isRegistered(GameStartedEvent.class, true))
@@ -151,7 +157,7 @@ public abstract class Game implements Runnable
             Emulator.getPluginManager().fireEvent(gameStartedEvent);
         }
 
-        WiredHandler.handle(WiredTriggerType.GAME_STARTS, null, this.room, new Object[0]);
+        WiredHandler.handle(WiredTriggerType.GAME_STARTS, null, this.room, new Object[]{this});
     }
 
     /**
@@ -168,6 +174,7 @@ public abstract class Game implements Runnable
      */
     public void stop()
     {
+        this.isRunning = false;
         this.endTime = Emulator.getIntUnixTimestamp();
 
         this.saveScores();
@@ -178,7 +185,7 @@ public abstract class Game implements Runnable
             Emulator.getPluginManager().fireEvent(gameStoppedEvent);
         }
 
-        WiredHandler.handle(WiredTriggerType.GAME_ENDS, null, this.room, null);
+        WiredHandler.handle(WiredTriggerType.GAME_ENDS, null, this.room, new Object[]{this});
     }
 
     /**

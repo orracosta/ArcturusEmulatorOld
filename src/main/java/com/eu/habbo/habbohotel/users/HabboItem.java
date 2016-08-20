@@ -252,7 +252,7 @@ public abstract class HabboItem implements Runnable, IEventTriggers
                 statement.setInt(5, this.y);
                 statement.setDouble(6, this.z);
                 statement.setInt(7, this.rotation);
-                statement.setString(8, this instanceof InteractionGuildGate ? "" : this.getExtradata());
+                statement.setString(8, this instanceof InteractionGuildGate ? "" : this.getDatabaseExtraData());
                 statement.setString(9, this.limitedStack + ":" + this.limitedSells);
                 statement.setInt(10, this.id);
                 statement.execute();
@@ -343,5 +343,10 @@ public abstract class HabboItem implements Runnable, IEventTriggers
     public void onMove(Room room, Tile oldLocation, Tile newLocation)
     {
 
+    }
+
+    public String getDatabaseExtraData()
+    {
+        return this.getExtradata();
     }
 }

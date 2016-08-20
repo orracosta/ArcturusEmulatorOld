@@ -73,13 +73,12 @@ public class InteractionBattleBanzaiTile extends HabboItem
 
         if(habbo.getHabboInfo().getCurrentGame() != null && habbo.getHabboInfo().getCurrentGame().equals(BattleBanzaiGame.class))
         {
-
             BattleBanzaiGame game = ((BattleBanzaiGame)room.getGame(BattleBanzaiGame.class));
 
             if(game == null)
                 return;
 
-            if(!game.isRunning())
+            if(!game.isRunning)
                 return;
 
 

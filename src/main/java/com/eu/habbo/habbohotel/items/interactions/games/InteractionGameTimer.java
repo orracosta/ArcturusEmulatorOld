@@ -1,11 +1,13 @@
 package com.eu.habbo.habbohotel.items.interactions.games;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.games.Game;
 import com.eu.habbo.habbohotel.games.GameTeamColors;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 
@@ -14,9 +16,33 @@ import java.sql.SQLException;
 
 public abstract class InteractionGameTimer extends HabboItem
 {
+    private int baseTime = 0;
+
     protected InteractionGameTimer(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
+
+        String[] data = set.getString("extra_data").split("\t");
+
+        if (data.length >= 2)
+        {
+            this.baseTime = Integer.valueOf(data[1]);
+        }
+
+        if (data.length == 3)
+        {
+            boolean gameRunning = data[2].equals("1");
+
+            if (gameRunning && this.getRoomId() > 0)
+            {
+                this.startGame(Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()));
+            }
+        }
+
+        if (data.length >= 1)
+        {
+            this.setExtradata(data[0]);
+        }
     }
 
     protected InteractionGameTimer(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
@@ -53,68 +79,122 @@ public abstract class InteractionGameTimer extends HabboItem
             this.setExtradata("0");
         }
 
-        if(objects.length >= 1)
+        if(objects.length >= 1 && objects[0] instanceof Integer && client != null && !(objects.length >= 2 && objects[1] instanceof WiredEffectType))
         {
-            if(objects[0] instanceof Integer)
+            int state = (Integer)objects[0];
+
+            switch (state)
             {
-                int state = (Integer)objects[0];
-                int newState = Integer.valueOf(this.getExtradata());
-
-                switch (state)
+                case 1:
                 {
-                    case 1:
-                    {
-
-                        Game game = (this.getGameType().cast(room.getGame(this.getGameType())));
-
-                        if(game == null)
-                        {
-                            game = this.getGameType().getDeclaredConstructor(Room.class).newInstance(room);
-                            room.addGame(game);
-                        }
-                        game.initialise();
-
-                        break;
-                    }
-
-                    case 2:
-                    {
-                        switch(newState)
-                        {
-                            case 0:     newState = 30; break;
-                            case 30:    newState = 60; break;
-                            case 60:    newState = 120; break;
-                            case 120:   newState = 180; break;
-                            case 180:   newState = 300; break;
-                            case 300:   newState = 600; break;
-                            case 600:   newState = 0; break;
-
-                            default:
-                                newState = 30;
-                        }
-                    }
+                    startGame(room);
                     break;
-
-                    case 3:
-                    {
-                        Game game = (this.getGameType().cast(room.getGame(this.getGameType())));
-
-                        if(game != null)
-                        {
-                            game.stop();
-                        }
-                    }
                 }
 
-                if(newState < 0)
-                    newState = 0;
+                case 2:
+                {
+                    stopGame(room);
+                    increaseTimer();
+                }
+                break;
 
-                this.setExtradata(newState + "");
-                room.updateItem(this);
+                case 3:
+                {
+                    stopGame(room);
+                }
+                break;
+            }
+
+            room.updateItem(this);
+        }
+        else
+        {
+            Game game = (this.getGameType().cast(room.getGame(this.getGameType())));
+
+            if (game != null && game.isRunning)
+            {
+                this.stopGame(room);
+            }
+            else
+            {
+                this.startGame(room);
             }
         }
 
         super.onClick(client, room, objects);
+    }
+
+    private void startGame(Room room)
+    {
+        try
+        {
+            this.setExtradata(this.baseTime + "");
+
+            Game game = (this.getGameType().cast(room.getGame(this.getGameType())));
+
+            if (game == null)
+            {
+                game = this.getGameType().getDeclaredConstructor(Room.class).newInstance(room);
+                room.addGame(game);
+            }
+
+            if (!game.isRunning)
+            {
+                game.initialise();
+            }
+        }
+        catch (Exception e)
+        {
+            Emulator.getLogging().logErrorLine(e);
+        }
+    }
+
+    private void stopGame(Room room)
+    {
+        Game game = (this.getGameType().cast(room.getGame(this.getGameType())));
+
+        if(game != null && game.isRunning)
+        {
+            game.stop();
+        }
+    }
+
+    private void increaseTimer()
+    {
+        switch(this.baseTime)
+        {
+            case 0:     this.baseTime = 30; break;
+            case 30:    this.baseTime = 60; break;
+            case 60:    this.baseTime = 120; break;
+            case 120:   this.baseTime = 180; break;
+            case 180:   this.baseTime = 300; break;
+            case 300:   this.baseTime = 600; break;
+            case 600:   this.baseTime = 0; break;
+
+            default:
+                this.baseTime = 30;
+        }
+
+        this.setExtradata(this.baseTime + "");
+    }
+
+    @Override
+    public String getDatabaseExtraData()
+    {
+        String running = "0";
+
+        if (this.getRoomId() != 0)
+        {
+            Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
+            Game game = (this.getGameType().cast(room.getGame(this.getGameType())));
+
+            if (game != null && game.isRunning)
+            {
+                running = "1";
+            }
+        }
+
+        return this.getExtradata() + "\t" + this.baseTime + "\t" + running;
     }
 
     protected abstract Class<? extends Game> getGameType();

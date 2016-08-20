@@ -49,7 +49,6 @@ public class FreezeGame extends Game
 
     public HabboItem exitTile;
     private int timeLeft;
-    private boolean running;
 
     public FreezeGame(Room room)
     {
@@ -59,7 +58,7 @@ public class FreezeGame extends Game
     @Override
     public synchronized void initialise()
     {
-        if(this.running)
+        if(this.isRunning)
             return;
 
         int highestTime = 0;
@@ -119,7 +118,7 @@ public class FreezeGame extends Game
 
     public void throwBall(Habbo habbo, InteractionFreezeTile item)
     {
-        if (!this.isRunning() || !habbo.getHabboInfo().isInGame())
+        if (!this.isRunning || !habbo.getHabboInfo().isInGame())
             return;
 
         if (!item.getExtradata().equalsIgnoreCase("0") && !item.getExtradata().isEmpty())
@@ -248,10 +247,12 @@ public class FreezeGame extends Game
     @Override
     public void start()
     {
-        if(this.running)
+        if (this.isRunning)
+        {
             return;
+        }
 
-        this.running = true;
+        super.start();
 
         WiredHandler.handle(WiredTriggerType.GAME_STARTS, null, this.room, null);
 
@@ -276,8 +277,7 @@ public class FreezeGame extends Game
     {
         try
         {
-
-            if (!this.isRunning())
+            if (!this.isRunning)
                 return;
 
             if (timeLeft > 0)
@@ -336,7 +336,6 @@ public class FreezeGame extends Game
         super.stop();
 
         this.timeLeft = 0;
-        this.running = false;
 
         if(this.exitTile != null)
         {
@@ -380,18 +379,13 @@ public class FreezeGame extends Game
         }
     }
 
-    public boolean isRunning()
-    {
-        return this.running;
-    }
-
     @EventHandler
     public static void onUserWalkEvent(UserTakeStepEvent event)
     {
         if(event.habbo.getHabboInfo().getCurrentGame() == FreezeGame.class)
         {
             FreezeGame game = (FreezeGame) event.habbo.getHabboInfo().getCurrentRoom().getGame(FreezeGame.class);
-            if (game != null && game.isRunning())
+            if (game != null && game.isRunning)
             {
                 if (!game.room.hasObjectTypeAt(InteractionFreezeTile.class, event.toLocation.getX(), event.toLocation.getY()))
                 {

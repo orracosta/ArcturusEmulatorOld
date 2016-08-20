@@ -10,7 +10,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.ResultSet;
@@ -97,7 +96,7 @@ public class InteractionFreezeBlock extends HabboItem
             return;
 
         FreezeGame game = (FreezeGame) room.getGame(FreezeGame.class);
-        if(game == null || !game.isRunning())
+        if(game == null || !game.isRunning)
             return;
 
         FreezeGamePlayer player = (FreezeGamePlayer)room.getHabbo(roomUnit).getHabboInfo().getGamePlayer();

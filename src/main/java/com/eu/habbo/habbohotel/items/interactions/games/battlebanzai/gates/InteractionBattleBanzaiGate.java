@@ -29,7 +29,7 @@ public class InteractionBattleBanzaiGate extends InteractionGameGate
     @Override
     public boolean canWalkOn(RoomUnit roomUnit, Room room, Object[] objects)
     {
-        return room.getGame(BattleBanzaiGame.class) == null || !((BattleBanzaiGame)room.getGame(BattleBanzaiGame.class)).isRunning();
+        return room.getGame(BattleBanzaiGame.class) == null || !((BattleBanzaiGame)room.getGame(BattleBanzaiGame.class)).isRunning;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class InteractionBattleBanzaiGate extends InteractionGameGate
         if(room == null)
             return false;
 
-        return (this.getExtradata().isEmpty() || Integer.valueOf(this.getExtradata()) < 5) && ((room.getGame(BattleBanzaiGame.class))) == null || !((BattleBanzaiGame)(room.getGame(BattleBanzaiGame.class))).isRunning();
+        return (this.getExtradata().isEmpty() || Integer.valueOf(this.getExtradata()) < 5) && ((room.getGame(BattleBanzaiGame.class))) == null || !((BattleBanzaiGame)(room.getGame(BattleBanzaiGame.class))).isRunning;
     }
 
     @Override
