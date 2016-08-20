@@ -4,6 +4,9 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.guilds.Guild;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.guilds.RemoveGuildFromRoomComposer;
+import com.eu.habbo.messages.outgoing.rooms.RoomDataComposer;
+import com.eu.habbo.messages.outgoing.rooms.RoomEntryInfoComposer;
+import com.eu.habbo.messages.outgoing.rooms.RoomSettingsComposer;
 import com.eu.habbo.plugin.events.guilds.GuildDeletedEvent;
 
 public class GuildDeleteEvent extends MessageHandler
@@ -23,9 +26,13 @@ public class GuildDeleteEvent extends MessageHandler
                 {
                     Emulator.getGameEnvironment().getGuildManager().deleteGuild(guild);
                     Emulator.getPluginManager().fireEvent(new GuildDeletedEvent(guild, this.client.getHabbo()));
-                }
+                    Emulator.getGameEnvironment().getRoomManager().getRoom(guild.getRoomId()).sendComposer(new RemoveGuildFromRoomComposer(guildId).compose());
 
-                Emulator.getGameEnvironment().getRoomManager().getRoom(guild.getRoomId()).sendComposer(new RemoveGuildFromRoomComposer(guildId).compose());
+                    if (guild.getRoomId() == this.client.getHabbo().getHabboInfo().getCurrentRoom().getId())
+                    {
+                        this.client.sendResponse(new RoomSettingsComposer(this.client.getHabbo().getHabboInfo().getCurrentRoom()));
+                    }
+                }
             }
         }
     }
