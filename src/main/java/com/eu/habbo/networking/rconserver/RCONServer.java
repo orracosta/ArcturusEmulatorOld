@@ -41,16 +41,17 @@ public class RCONServer
         this.gsonBuilder = new GsonBuilder();
         this.gsonBuilder.registerTypeAdapter(RCONMessage.class, new RCONMessage.RCONMessageSerializer());
 
-        this.addRCONMessage("alertuser",        AlertUser.class);
-        this.addRCONMessage("disconnect",       DisconnectUser.class);
-        this.addRCONMessage("forwarduser",      ForwardUser.class);
-        this.addRCONMessage("givebadge",        GiveBadge.class);
-        this.addRCONMessage("givecredits",      GiveCredits.class);
-        this.addRCONMessage("givepixels",       GivePixels.class);
-        this.addRCONMessage("givepoints",       GivePoints.class);
-        this.addRCONMessage("hotelalert",       HotelAlert.class);
-        this.addRCONMessage("sendgift",         SendGift.class);
-        this.addRCONMessage("setrank",          SetRank.class);
+        this.addRCONMessage("alertuser",            AlertUser.class);
+        this.addRCONMessage("disconnect",           DisconnectUser.class);
+        this.addRCONMessage("forwarduser",          ForwardUser.class);
+        this.addRCONMessage("givebadge",            GiveBadge.class);
+        this.addRCONMessage("givecredits",          GiveCredits.class);
+        this.addRCONMessage("givepixels",           GivePixels.class);
+        this.addRCONMessage("givepoints",           GivePoints.class);
+        this.addRCONMessage("hotelalert",           HotelAlert.class);
+        this.addRCONMessage("sendgift",             SendGift.class);
+        this.addRCONMessage("setrank",              SetRank.class);
+        this.addRCONMessage("update_wordfilter",    UpdateWordfilter.class);
 
     }
 
