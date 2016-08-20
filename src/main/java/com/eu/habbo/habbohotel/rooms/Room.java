@@ -353,10 +353,17 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     private synchronized void loadHeightmap()
     {
-        this.gameMap = new GameMap<Node>(this.layout.getMapSizeX(), this.layout.getMapSizeY());
-        for(Node node : this.gameMap.getNodes())
+        if (this.layout != null)
         {
-            this.gameMap.setWalkable(node.getX(), node.getY(), tileWalkable(node.getX(), node.getY()));
+            this.gameMap = new GameMap<Node>(this.layout.getMapSizeX(), this.layout.getMapSizeY());
+            for (Node node : this.gameMap.getNodes())
+            {
+                this.gameMap.setWalkable(node.getX(), node.getY(), tileWalkable(node.getX(), node.getY()));
+            }
+        }
+        else
+        {
+            Emulator.getLogging().logErrorLine("Unknown Room Layout for Room (ID: " + this.id + ")");
         }
     }
 
@@ -395,9 +402,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     {
                         ((InteractionWired) item).loadWiredData(set, this);
                     }
-                } catch (SQLException e)
+                }
+                catch (SQLException e)
                 {
-                    Emulator.getLogging().logSQLException(e);
                 }
             }
         }
@@ -1858,8 +1865,15 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         return this.chatDistance;
     }
 
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name = name;
+
+        if (this.hasGuild())
+        {
+            Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(this.guild);
+            guild.setRoomName(name);
+        }
     }
 
     public void setDescription(String description) {

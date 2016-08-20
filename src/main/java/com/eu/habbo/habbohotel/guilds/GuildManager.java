@@ -85,9 +85,9 @@ public class GuildManager
      * @param colorTwo
      * @return
      */
-    public Guild createGuild(Habbo habbo, int roomId, String name, String description, String badge, int colorOne, int colorTwo)
+    public Guild createGuild(Habbo habbo, int roomId, String roomName, String name, String description, String badge, int colorOne, int colorTwo)
     {
-        Guild guild = new Guild(habbo.getHabboInfo().getId(), roomId, name, description, colorOne, colorTwo, badge);
+        Guild guild = new Guild(habbo.getHabboInfo().getId(), habbo.getHabboInfo().getUsername(), roomId, roomName, name, description, colorOne, colorTwo, badge);
 
         try
         {
@@ -651,7 +651,7 @@ public class GuildManager
         {
             try
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM guilds WHERE id = ? LIMIT 1");
+                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT users.username, rooms.name as room_name, guilds.* FROM guilds INNER JOIN users ON guilds.user_id = users.id INNER JOIN rooms ON rooms.id = guilds.room_id WHERE id = ? LIMIT 1");
                 statement.setInt(1, guildId);
                 ResultSet set = statement.executeQuery();
 

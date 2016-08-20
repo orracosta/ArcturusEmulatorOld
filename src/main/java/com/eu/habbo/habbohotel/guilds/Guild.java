@@ -10,9 +10,11 @@ public class Guild implements Runnable
 {
     private int id;
     private int ownerId;
+    private String ownerName;
     private String name;
     private String description;
     private int roomId;
+    private String roomName;
     private GuildState state;
     private int rights;
     private int colorOne;
@@ -30,10 +32,12 @@ public class Guild implements Runnable
     {
         this.id = set.getInt("id");
         this.ownerId = set.getInt("user_id");
+        this.ownerName = set.getString("username");
         this.name = set.getString("name");
         this.description = set.getString("description");
         this.state = GuildState.values()[set.getInt("state")];
         this.roomId = set.getInt("room_id");
+        this.roomName = set.getString("room_name");
         this.rights = set.getString("rights").equalsIgnoreCase("1") ? 1 : 0;
         this.colorOne = set.getInt("color_one");
         this.colorTwo = set.getInt("color_two");
@@ -43,11 +47,13 @@ public class Guild implements Runnable
         this.requestCount = 0;
     }
 
-    public Guild(int ownerId, int roomId, String name, String description, int colorOne, int colorTwo, String badge)
+    public Guild(int ownerId, String ownerName, int roomId, String roomName, String name, String description, int colorOne, int colorTwo, String badge)
     {
         this.id = 0;
         this.ownerId = ownerId;
+        this.ownerName = ownerName;
         this.roomId = roomId;
+        this.roomName = roomName;
         this.name = name;
         this.description = description;
         this.state = GuildState.OPEN;
@@ -133,6 +139,11 @@ public class Guild implements Runnable
         this.id = id;
     }
 
+    public String getOwnerName()
+    {
+        return this.ownerName;
+    }
+
     public String getName()
     {
         return this.name;
@@ -156,6 +167,16 @@ public class Guild implements Runnable
     public int getRoomId()
     {
         return this.roomId;
+    }
+
+    public String getRoomName()
+    {
+        return this.roomName;
+    }
+
+    public void setRoomName(String roomName)
+    {
+        this.roomName = roomName;
     }
 
     public GuildState getState()

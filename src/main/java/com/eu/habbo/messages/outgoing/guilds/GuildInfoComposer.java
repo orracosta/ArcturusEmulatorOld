@@ -39,8 +39,7 @@ public class GuildInfoComposer extends MessageComposer
         this.response.appendString(this.guild.getDescription());
         this.response.appendString(this.guild.getBadge());
         this.response.appendInt32(this.guild.getRoomId());
-        Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.guild.getRoomId());
-        this.response.appendString(room == null ? "No room found." : room.getName());
+        this.response.appendString(this.guild.getRoomName());
         //this.response.appendInt32(this.guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() ? 3 : (this.member == null ? 0 : (this.member.getRank().equals(GuildRank.MEMBER) || this.member.getRank().equals(GuildRank.MOD) ? 1 : (this.member.getRank().equals(GuildRank.REQUESTED) ? 2 : 0))));
         this.response.appendInt32(this.member == null ? 0 : (this.member.getRank().equals(GuildRank.MEMBER) ? 1 : (this.member.getRank().equals(GuildRank.REQUESTED) ? 2 : (this.member.getRank().equals(GuildRank.MOD) ? 3 : (this.member.getRank().equals(GuildRank.ADMIN) ? 4 : 0)))));
         this.response.appendInt32(this.guild.getMemberCount()); //Member count.
@@ -50,7 +49,7 @@ public class GuildInfoComposer extends MessageComposer
         this.response.appendBoolean(this.member != null && (this.member.getRank().equals(GuildRank.ADMIN))); //Is admin. //this.member.getRank().equals(GuildRank.MOD) ||
         //Habbo owner = Emulator.getGameEnvironment().getHabboManager().getHabbo(this.guild.getOwnerId());
 
-        this.response.appendString(room != null ? room.getOwnerName() : "???");
+        this.response.appendString(this.guild.getOwnerName());
         this.response.appendBoolean(this.newWindow);
         this.response.appendBoolean(this.guild.getRights() == 1); //User can place furni.
         this.response.appendInt32(this.guild.getRequestCount()); //Guild invites count.
