@@ -19,7 +19,7 @@ public class ForwardUser extends RCONMessage<ForwardUser.ForwardUserJSON>
 
         if(habbo != null)
         {
-            Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(object.room_id);
+            Room room = Emulator.getGameEnvironment().getRoomManager().loadRoom(object.room_id);
 
             if(room != null)
             {
