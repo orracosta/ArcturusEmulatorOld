@@ -44,11 +44,11 @@ CREATE TABLE  `users_favorite_rooms` (
 ) ENGINE = MYISAM ;
 
 ALTER TABLE `catalog_pages` CHANGE `page_headline` `page_headline` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
-ALTER TABLE `catalog_pages` CHANGE `page_headline` `page_teaser` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
-ALTER TABLE `catalog_pages` CHANGE `page_headline` `page_special` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
-ALTER TABLE `catalog_pages` CHANGE `page_headline` `page_text1` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
-ALTER TABLE `catalog_pages` CHANGE `page_headline` `page_text2` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
-ALTER TABLE `catalog_pages` CHANGE `page_headline` `page_text_details` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
-ALTER TABLE `catalog_pages` CHANGE `page_headline` `page_text_teaser` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
+ALTER TABLE `catalog_pages` CHANGE `page_teaser` `page_teaser` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
+ALTER TABLE `catalog_pages` CHANGE `page_special` `page_special` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
+ALTER TABLE `catalog_pages` CHANGE `page_text1` `page_text1` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
+ALTER TABLE `catalog_pages` CHANGE `page_text2` `page_text2` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
+ALTER TABLE `catalog_pages` CHANGE `page_text_details` `page_text_details` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
+ALTER TABLE `catalog_pages` CHANGE `page_text_teaser` `page_text_teaser` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
 
 #END DATABASE UPDATE: 1.0.4 -> 1.0.5
