@@ -42,8 +42,11 @@ public abstract class InteractionGameTimer extends HabboItem
     @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
-        if(!(room.hasRights(client.getHabbo()) || client.getHabbo().hasPermission("acc_anyroomowner")))
-            return;
+        if (client != null)
+        {
+            if (!(room.hasRights(client.getHabbo()) || client.getHabbo().hasPermission("acc_anyroomowner")))
+                return;
+        }
 
         if(this.getExtradata().isEmpty())
         {
