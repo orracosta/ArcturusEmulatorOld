@@ -241,8 +241,13 @@ public class RoomBundleLayout extends SingleBundle
 
         Emulator.getLogging().logUserLine(habbo.getHabboInfo().getUsername() + " bought room bundle: " + this.room.getId());
 
-        Emulator.getGameEnvironment().getRoomManager().loadRoom(roomId);
-
+        Room r = Emulator.getGameEnvironment().getRoomManager().loadRoom(roomId);
+        r.setWallHeight(this.room.getWallHeight());
+        r.setFloorSize(this.room.getFloorSize());
+        r.setWallPaint(this.room.getWallPaint());
+        r.setFloorPaint(this.room.getFloorPaint());
+        r.setScore(0);
+        r.setNeedsUpdate(true);
         habbo.getClient().sendResponse(new ForwardToRoomComposer(roomId));
     }
 }
