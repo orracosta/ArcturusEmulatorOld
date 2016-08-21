@@ -36,6 +36,9 @@ public class EventCommand extends Command
                 THashMap<String, String> codes = new THashMap<String, String>();
                 codes.put("ROOMNAME", gameClient.getHabbo().getHabboInfo().getCurrentRoom().getName());
                 codes.put("ROOMID", gameClient.getHabbo().getHabboInfo().getCurrentRoom().getId() + "");
+                codes.put("USERNAME", gameClient.getHabbo().getHabboInfo().getUsername());
+                codes.put("LOOK", gameClient.getHabbo().getHabboInfo().getLook());
+                codes.put("TIME", Emulator.getDate().toString());
                 codes.put("MESSAGE", message);
 
                 ServerMessage msg = new BubbleAlertComposer("hotel.event", codes).compose();

@@ -253,17 +253,17 @@ public final class Emulator
         return res;
     }
     
-    private static Timestamp dateToTimeStamp(Date date)
+    public static Timestamp dateToTimeStamp(Date date)
     {
         return new Timestamp(date.getTime());
     }
-    
-    private static Date getDate()
+
+    public static Date getDate()
     {
         return new Date(System.currentTimeMillis());
     }
-    
-    private static String getUnixTimestamp()
+
+    public static String getUnixTimestamp()
     {
         return dateToUnixTimestamp(getDate());
     }
