@@ -5,14 +5,13 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
-import com.eu.habbo.habbohotel.wired.IWired;
 import com.eu.habbo.messages.ServerMessage;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class InteractionWired extends HabboItem implements IWired
+public abstract class InteractionWired extends HabboItem
 {
     InteractionWired(ResultSet set, Item baseItem) throws SQLException
     {
@@ -27,6 +26,8 @@ public abstract class InteractionWired extends HabboItem implements IWired
     public abstract boolean execute(RoomUnit roomUnit, Room room, Object[] stuff);
 
     protected abstract String getWiredData();
+
+    public abstract void serializeWiredData(ServerMessage message);
 
     public abstract void loadWiredData(ResultSet set, Room room) throws SQLException;
 

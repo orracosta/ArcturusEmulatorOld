@@ -4,16 +4,14 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.habbohotel.wired.IWired;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.ClientMessage;
-import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.wired.WiredTriggerDataComposer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class InteractionWiredTrigger extends InteractionWired implements IWired
+public abstract class InteractionWiredTrigger extends InteractionWired
 {
     private int delay;
 
@@ -65,8 +63,6 @@ public abstract class InteractionWiredTrigger extends InteractionWired implement
     }
 
     public abstract WiredTriggerType getType();
-
-    public abstract void serializeWiredData(ServerMessage message);
 
     public abstract boolean saveData(ClientMessage packet);
 

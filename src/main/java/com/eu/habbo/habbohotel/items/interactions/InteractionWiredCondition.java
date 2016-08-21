@@ -4,16 +4,14 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.habbohotel.wired.IWired;
 import com.eu.habbo.habbohotel.wired.WiredConditionType;
 import com.eu.habbo.messages.ClientMessage;
-import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.wired.WiredConditionDataComposer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class InteractionWiredCondition extends InteractionWired implements IWired
+public abstract class InteractionWiredCondition extends InteractionWired
 {
     public InteractionWiredCondition(ResultSet set, Item baseItem) throws SQLException
     {
@@ -63,8 +61,6 @@ public abstract class InteractionWiredCondition extends InteractionWired impleme
     }
 
     public abstract WiredConditionType getType();
-
-    public abstract void serializeWiredData(ServerMessage message);
 
     public abstract boolean saveData(ClientMessage packet);
 

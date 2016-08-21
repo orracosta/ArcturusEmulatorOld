@@ -18,7 +18,8 @@ public class WiredTriggerDataComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.WiredTriggerDataComposer);
-        trigger.serializeWiredData(this.response);
+        this.trigger.serializeWiredData(this.response);
+        this.trigger.needsUpdate(true);
         return this.response;
     }
 }
