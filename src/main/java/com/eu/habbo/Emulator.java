@@ -26,11 +26,49 @@ import java.util.regex.Pattern;
 
 public final class Emulator
 {
+    /**
+     * Major version of the emulator.
+     */
+    public final static int MAJOR = 1;
+
+    /**
+     * Minor version of the emulator.
+     */
+    public final static int MINOR = 0;
+
+    /**
+     * Stable build version of the emulator.
+     */
+    public final static int BUILD = 8;
+
+    /**
+     * Version as string.
+     */
+    public static final String version = "Version: " + MAJOR + "." + MINOR + "." + BUILD;
+
+    /**
+     * Public chat, used for staffchat for now.
+     */
     public static MessengerBuddy publicChatBuddy;
-    public static final String version = "Version: 1.0.8";
+
+    /**
+     * The emulator is fully loaded and ready to handle players.
+     */
     public static boolean isReady = false;
+
+    /**
+     * The emulator is shutting down.
+     */
     public static boolean isShuttingDown = false;
+
+    /**
+     * The emulator has fully shutdown.
+     */
     public static boolean stopped = false;
+
+    /**
+     * The emulator is in debugging mode.
+     */
     public static boolean debugging = true;
 
     private static int                      timeStarted = 0;
@@ -60,7 +98,12 @@ public final class Emulator
         hook.setPriority(10);
         Runtime.getRuntime().addShutdownHook(hook);
     }
-    
+
+    /**
+     * Entry point for Arcturus Emulator.
+     * @param args Unused
+     * @throws Exception Failed to start the emulator.
+     */
     public static void main(String[] args) throws Exception
     {
         try
@@ -118,7 +161,10 @@ public final class Emulator
         }
     }
 
-    public static void dispose()
+    /**
+     * Shutsdown the emulator.
+     */
+    private static void dispose()
     {
         Emulator.isShuttingDown = true;
         Emulator.isReady = false;
@@ -152,46 +198,83 @@ public final class Emulator
         Emulator.getLogging().logShutdownLine("Stopped Arcturus Emulator " + version + "...");
         Emulator.stopped = true;
     }
-    
+
+    /**
+     * @return The ConfigurationManager
+     */
     public static ConfigurationManager getConfig()
     {
         return config;
     }
 
+    /**
+     * @return The TextsManager
+     */
     public static TextsManager getTexts()
     {
         return texts;
     }
-    
+
+    /**
+     * @return The Database
+     */
     public static Database getDatabase()
     {
         return database;
     }
-    
+
+    /**
+     * @return Current Runtime
+     */
     public static Runtime getRuntime()
     {
         return runtime;
     }
-    
+
+    /**
+     * @return The GameServer
+     */
     public static GameServer getGameServer()
     {
         return gameServer;
     }
 
+    /**
+     * @return The RCONServer
+     */
     public static RCONServer getRconServer()
     {
         return rconServer;
     }
-    
+
+    /**
+     * @return Logging module
+     */
     public static Logging getLogging()
     {
         return logging;
     }
 
-    public static ThreadPooling getThreading() { return threading; }
+    /**
+     * @return The ThreadPooling
+     */
+    public static ThreadPooling getThreading()
+    {
+        return threading;
+    }
 
-    public static GameEnvironment getGameEnvironment() { return gameEnvironment; }
+    /**
+     * @return The GameEnvironment
+     */
+    public static GameEnvironment getGameEnvironment()
+    {
+        return gameEnvironment;
+    }
 
+    /**
+     *
+     * @return The PluginManager
+     */
     public static PluginManager getPluginManager()
     {
         return pluginManager;
@@ -226,25 +309,35 @@ public final class Emulator
     {
         System.exit(0);
     }
-    
-    private static String dateToUnixTimestamp(Date fecha)
+
+    /**
+     * Converts a date to an unix timestamp
+     * @param date The date to convert
+     * @return Return unix timestamp in seconds.
+     */
+    private static String dateToUnixTimestamp(Date date)
     {
         String res = "";
         Date aux = stringToDate("1970-01-01 00:00:00");
         Timestamp aux1 = dateToTimeStamp(aux);
-        Timestamp aux2 = dateToTimeStamp(fecha);
+        Timestamp aux2 = dateToTimeStamp(date);
         long difference = aux2.getTime() - aux1.getTime();
         long seconds = difference / 1000L;
         return res + seconds;
     }
-    
-    private static Date stringToDate(String fecha)
+
+    /**
+     * Converts a String to a Date object
+     * @param date The String to parse
+     * @return The Date of the string.
+     */
+    private static Date stringToDate(String date)
     {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date res = null;
         try
         {
-            res = format.parse(fecha);
+            res = format.parse(date);
         }
         catch (Exception e)
         {
@@ -270,7 +363,7 @@ public final class Emulator
     
     public static int getIntUnixTimestamp()
     {
-        return Integer.parseInt(getUnixTimestamp());
+        return (int) (System.currentTimeMillis() / 1000);
     }
     
     public static boolean isNumeric(String string)
