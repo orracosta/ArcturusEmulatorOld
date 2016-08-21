@@ -208,6 +208,7 @@ public class BotManager
                 if (!habbo.hasPermission("acc_unlimited_bots") && habbo.getHabboInventory().getBotsComponent().getUserBots().size() >= 15)
                     return;
 
+                bot.getRoomUnit().setPathFinderRoom(null);
                 bot.onPickUp(habbo, habbo.getHabboInfo().getCurrentRoom());
                 habbo.getHabboInfo().getCurrentRoom().removeBot(bot.getId());
                 habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserRemoveComposer(bot.getRoomUnit()).compose());
@@ -217,7 +218,6 @@ public class BotManager
                 bot.setOwnerId(habbo.getHabboInfo().getId());
                 bot.setOwnerName(habbo.getHabboInfo().getUsername());
                 bot.needsUpdate(true);
-                bot.getRoomUnit().setPathFinderRoom(null);
                 Emulator.getThreading().run(bot);
 
                 habbo.getHabboInventory().getBotsComponent().addBot(bot);
