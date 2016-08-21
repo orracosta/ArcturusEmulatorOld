@@ -16,6 +16,7 @@ Latest Compiled Version: http://arcturus.wf:8080
 
 Older Files: http://arcturus.wf/mirrors/
 
+JavaDoc: http://arcturus.wf/doc/
 ### Contributing ###
 
 Anyone is allowed to contribute to the project. Reporting bugs and issues goes via the issue tracker.
