@@ -193,7 +193,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
 
         String[] data = set.getString("wired_data").split("\t");
 
-        if(data.length == 5)
+        if(data.length == 4)
         {
             try
             {
@@ -205,7 +205,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
             {
             }
 
-            for(String s : data[4].split("\r"))
+            for(String s : data[3].split("\r"))
             {
                 HabboItem item = room.getHabboItem(Integer.valueOf(s));
 
