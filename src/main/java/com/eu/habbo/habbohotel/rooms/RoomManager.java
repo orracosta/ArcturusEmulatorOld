@@ -895,6 +895,7 @@ public class RoomManager {
         if(habbo.getHabboInfo().getCurrentRoom() != null && habbo.getHabboInfo().getCurrentRoom() == room)
         {
             habbo.getRoomUnit().wiredMuted = false;
+            habbo.getRoomUnit().setPathFinderRoom(null);
             if (habbo.getHabboInfo().getRiding() != null)
             {
                 habbo.getHabboInfo().getRiding().getRoomUnit().setGoalLocation(habbo.getHabboInfo().getRiding().getRoomUnit().getX(), habbo.getHabboInfo().getRiding().getRoomUnit().getY());

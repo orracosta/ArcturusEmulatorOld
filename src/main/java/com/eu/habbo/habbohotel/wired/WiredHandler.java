@@ -72,7 +72,7 @@ public class WiredHandler
 
             THashSet<InteractionWiredEffect> effects = room.getRoomSpecialTypes().getEffects(trigger.getX(), trigger.getY());
 
-            if(Emulator.getPluginManager().fireEvent(new WiredStackTriggeredEvent(roomUnit, trigger, effects, conditions)).isCancelled())
+            if(Emulator.getPluginManager().fireEvent(new WiredStackTriggeredEvent(room, roomUnit, trigger, effects, conditions)).isCancelled())
                 return false;
 
             for(InteractionWiredCondition condition : conditions)
@@ -85,7 +85,7 @@ public class WiredHandler
                 }
                 else
                 {
-                    if(!Emulator.getPluginManager().fireEvent(new WiredConditionFailedEvent(roomUnit, trigger, condition)).isCancelled())
+                    if(!Emulator.getPluginManager().fireEvent(new WiredConditionFailedEvent(room, roomUnit, trigger, condition)).isCancelled())
                         return false;
                 }
             }
@@ -111,7 +111,7 @@ public class WiredHandler
             room.updateItem(trigger);
             Emulator.getThreading().run(new HabboItemNewState(trigger, room, "0"), 500);
 
-            return !Emulator.getPluginManager().fireEvent(new WiredStackExecutedEvent(roomUnit, trigger, effects, conditions)).isCancelled();
+            return !Emulator.getPluginManager().fireEvent(new WiredStackExecutedEvent(room, roomUnit, trigger, effects, conditions)).isCancelled();
         }
 
         return false;

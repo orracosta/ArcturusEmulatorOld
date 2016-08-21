@@ -29,16 +29,6 @@ public abstract class InteractionGameTimer extends HabboItem
             this.baseTime = Integer.valueOf(data[1]);
         }
 
-        if (data.length == 3)
-        {
-            boolean gameRunning = data[2].equals("1");
-
-            if (gameRunning && this.getRoomId() > 0)
-            {
-                this.startGame(Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()));
-            }
-        }
-
         if (data.length >= 1)
         {
             this.setExtradata(data[0]);
@@ -51,9 +41,17 @@ public abstract class InteractionGameTimer extends HabboItem
     }
 
     @Override
-    public void onPickUp()
+    public void onPickUp(Room room)
     {
         this.setExtradata("0");
+    }
+
+    @Override
+    public void onPlace(Room room)
+    {
+        this.baseTime = 30;
+        this.setExtradata("30");
+        room.updateItem(this);
     }
 
     @Override
@@ -94,7 +92,7 @@ public abstract class InteractionGameTimer extends HabboItem
                 case 2:
                 {
                     stopGame(room);
-                    increaseTimer();
+                    increaseTimer(room);
                 }
                 break;
 
@@ -104,8 +102,6 @@ public abstract class InteractionGameTimer extends HabboItem
                 }
                 break;
             }
-
-            room.updateItem(this);
         }
         else
         {
@@ -126,9 +122,12 @@ public abstract class InteractionGameTimer extends HabboItem
 
     private void startGame(Room room)
     {
+        this.needsUpdate(true);
         try
         {
             this.setExtradata(this.baseTime + "");
+
+            room.updateItem(this);
 
             Game game = (this.getGameType().cast(room.getGame(this.getGameType())));
 
@@ -151,16 +150,20 @@ public abstract class InteractionGameTimer extends HabboItem
 
     private void stopGame(Room room)
     {
+        this.needsUpdate(true);
         Game game = (this.getGameType().cast(room.getGame(this.getGameType())));
 
         if(game != null && game.isRunning)
         {
             game.stop();
         }
+
+        room.updateItem(this);
     }
 
-    private void increaseTimer()
+    private void increaseTimer(Room room)
     {
+        this.needsUpdate(true);
         switch(this.baseTime)
         {
             case 0:     this.baseTime = 30; break;
@@ -176,25 +179,14 @@ public abstract class InteractionGameTimer extends HabboItem
         }
 
         this.setExtradata(this.baseTime + "");
+
+        room.updateItem(this);
     }
 
     @Override
     public String getDatabaseExtraData()
     {
-        String running = "0";
-
-        if (this.getRoomId() != 0)
-        {
-            Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
-            Game game = (this.getGameType().cast(room.getGame(this.getGameType())));
-
-            if (game != null && game.isRunning)
-            {
-                running = "1";
-            }
-        }
-
-        return this.getExtradata() + "\t" + this.baseTime + "\t" + running;
+        return this.getExtradata() + "\t" + this.baseTime;
     }
 
     protected abstract Class<? extends Game> getGameType();

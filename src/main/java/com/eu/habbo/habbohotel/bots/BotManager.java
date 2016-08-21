@@ -217,6 +217,7 @@ public class BotManager
                 bot.setOwnerId(habbo.getHabboInfo().getId());
                 bot.setOwnerName(habbo.getHabboInfo().getUsername());
                 bot.needsUpdate(true);
+                bot.getRoomUnit().setPathFinderRoom(null);
                 Emulator.getThreading().run(bot);
 
                 habbo.getHabboInventory().getBotsComponent().addBot(bot);

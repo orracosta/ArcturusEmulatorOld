@@ -36,7 +36,7 @@ public class RCONServer
 
         this.host = host;
         this.port = port;
-        messages = new THashMap<String, Class<? extends RCONMessage>>();
+        this.messages = new THashMap<String, Class<? extends RCONMessage>>();
 
         this.gsonBuilder = new GsonBuilder();
         this.gsonBuilder.registerTypeAdapter(RCONMessage.class, new RCONMessage.RCONMessageSerializer());
@@ -51,7 +51,7 @@ public class RCONServer
         this.addRCONMessage("hotelalert",           HotelAlert.class);
         this.addRCONMessage("sendgift",             SendGift.class);
         this.addRCONMessage("setrank",              SetRank.class);
-        this.addRCONMessage("update_wordfilter",    UpdateWordfilter.class);
+        this.addRCONMessage("updatewordfilter",     UpdateWordfilter.class);
 
     }
 
@@ -100,7 +100,7 @@ public class RCONServer
 
     public String handle(ChannelHandlerContext ctx, String key, String body) throws Exception
     {
-        Class<? extends RCONMessage> message = this.messages.get(key);
+        Class<? extends RCONMessage> message = this.messages.get(key.replace("_", ""));
 
         String result = "";
         if(message != null)

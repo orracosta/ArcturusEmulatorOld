@@ -90,7 +90,6 @@ public class RoomUnit
         this.effectId = 0;
         this.wiredMuted = false;
         this.modMuted = false;
-        this.room = room;
     }
 
     public void clearWalking()
@@ -485,7 +484,7 @@ public class RoomUnit
     {
         if(Emulator.getPluginManager().isRegistered(RoomUnitSetGoalEvent.class, false))
         {
-            Event event = new RoomUnitSetGoalEvent(this, new Tile(x, y, 0));
+            Event event = new RoomUnitSetGoalEvent(this.room, this, new Tile(x, y, 0));
             Emulator.getPluginManager().fireEvent(event);
 
             if(event.isCancelled())
@@ -531,8 +530,10 @@ public class RoomUnit
 
     public void setPathFinder(PathFinder pathFinder) { this.pathFinder = pathFinder; }
 
-    public void setPathFinderRoom(Room room) {
+    public void setPathFinderRoom(Room room)
+    {
         this.pathFinder.setRoom(room);
+        this.room = room;
     }
 
     public boolean isAtGoal()
@@ -644,9 +645,9 @@ public class RoomUnit
 
     public void lookAtPoint(Tile location)
     {
-        if(Emulator.getPluginManager().isRegistered(RoomUnitLookAtPointEvent.class, true))
+        if(Emulator.getPluginManager().isRegistered(RoomUnitLookAtPointEvent.class, false))
         {
-            Event lookAtPointEvent = new RoomUnitLookAtPointEvent(this, location);
+            Event lookAtPointEvent = new RoomUnitLookAtPointEvent(this.room, this, location);
             Emulator.getPluginManager().fireEvent(lookAtPointEvent);
 
             if(lookAtPointEvent.isCancelled())

@@ -22,7 +22,7 @@ public abstract class InteractionGameGate extends InteractionGameTeamItem
     }
 
     @Override
-    public void onPickUp()
+    public void onPickUp(Room room)
     {
         this.setExtradata("0");
     }

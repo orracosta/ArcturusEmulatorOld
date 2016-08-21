@@ -110,7 +110,7 @@ public class InteractionTeleport extends HabboItem
     }
 
     @Override
-    public void onPickUp()
+    public void onPickUp(Room room)
     {
         this.targetId = 0;
         this.targetRoomId = 0;

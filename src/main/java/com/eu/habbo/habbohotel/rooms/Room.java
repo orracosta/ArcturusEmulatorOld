@@ -17,6 +17,8 @@ import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.Interaction
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.InteractionBattleBanzaiTeleporter;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeBlock;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeExitTile;
+import com.eu.habbo.habbohotel.items.interactions.games.tag.InteractionTagField;
+import com.eu.habbo.habbohotel.items.interactions.games.tag.InteractionTagPole;
 import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
 import com.eu.habbo.habbohotel.pets.*;
 import com.eu.habbo.habbohotel.users.*;
@@ -596,7 +598,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
 
         this.removeHabboItem(item.getId());
-        item.onPickUp();
+        item.onPickUp(this);
         item.setRoomId(0);
         item.needsUpdate(true);
 
@@ -2347,8 +2349,13 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             } else if (item instanceof InteractionMuteArea)
             {
                 this.roomSpecialTypes.addUndefined(item);
+            } else if (item instanceof InteractionTagPole)
+            {
+                this.roomSpecialTypes.addUndefined(item);
+            } else if (item instanceof InteractionTagField)
+            {
+                this.roomSpecialTypes.addUndefined(item);
             }
-
         }
     }
 
@@ -2507,6 +2514,14 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 this.roomSpecialTypes.removeUndefined(item);
             }
             else if (item instanceof InteractionMuteArea)
+            {
+                this.roomSpecialTypes.removeUndefined(item);
+            }
+            else if (item instanceof InteractionTagPole)
+            {
+                this.roomSpecialTypes.removeUndefined(item);
+            }
+            else if (item instanceof InteractionTagField)
             {
                 this.roomSpecialTypes.removeUndefined(item);
             }

@@ -4,6 +4,9 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.core.Easter;
 import com.eu.habbo.habbohotel.games.battlebanzai.BattleBanzaiGame;
 import com.eu.habbo.habbohotel.games.freeze.FreezeGame;
+import com.eu.habbo.habbohotel.games.tag.TagGame;
+import com.eu.habbo.messages.incoming.rooms.users.RoomUserLookAtPoint;
+import com.eu.habbo.plugin.events.roomunit.RoomUnitLookAtPointEvent;
 import com.eu.habbo.plugin.events.users.UserSavedMottoEvent;
 import com.eu.habbo.plugin.events.users.UserTakeStepEvent;
 import com.eu.habbo.threading.runnables.RoomTrashing;
@@ -137,7 +140,7 @@ public class PluginManager
                 }
                 catch (Exception e)
                 {
-                    Emulator.getLogging().logErrorLine("Could not pass default event " + event.getClass().getName() + " to " + method.getName());
+                    Emulator.getLogging().logErrorLine("Could not pass default event " + event.getClass().getName() + " to " + method.getClass().getName() + ":" + method.getName());
                     Emulator.getLogging().logErrorLine(e);
                 }
             }
@@ -251,10 +254,11 @@ public class PluginManager
         try
         {
             this.methods.add(FreezeGame.class.getMethod("onUserWalkEvent", UserTakeStepEvent.class));
-            //this.methods.add(IceTagGame.class.getMethod("onUserLookAtPoint", RoomUnitLookAtPointEvent.class));
             this.methods.add(BattleBanzaiGame.class.getMethod("onUserWalkEvent", UserTakeStepEvent.class));
             this.methods.add(RoomTrashing.class.getMethod("onUserWalkEvent", UserTakeStepEvent.class));
             this.methods.add(Easter.class.getMethod("onUserChangeMotto", UserSavedMottoEvent.class));
+            this.methods.add(TagGame.class.getMethod("onUserLookAtPoint", RoomUnitLookAtPointEvent.class));
+            this.methods.add(TagGame.class.getMethod("onUserWalkEvent", UserTakeStepEvent.class));
         }
         catch (NoSuchMethodException e)
         {

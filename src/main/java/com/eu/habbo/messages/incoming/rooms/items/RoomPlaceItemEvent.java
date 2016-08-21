@@ -215,6 +215,6 @@ public class RoomPlaceItemEvent extends MessageHandler
             room.sendComposer(new UpdateStackHeightComposer(updatedTiles).compose());
         }
         Emulator.getThreading().run(item);
-        item.onPlace();
+        item.onPlace(room);
     }
 }

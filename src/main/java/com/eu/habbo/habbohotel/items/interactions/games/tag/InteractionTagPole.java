@@ -1,4 +1,4 @@
-package com.eu.habbo.habbohotel.items.interactions.games.icetag;
+package com.eu.habbo.habbohotel.items.interactions.games.tag;
 
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
@@ -9,14 +9,14 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class InteractionIceTagPole extends HabboItem
+public class InteractionTagPole extends HabboItem
 {
-    public InteractionIceTagPole(ResultSet set, Item baseItem) throws SQLException
+    public InteractionTagPole(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
     }
 
-    public InteractionIceTagPole(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
+    public InteractionTagPole(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
     {
         super(id, userId, item, extradata, limitedStack, limitedSells);
     }
@@ -49,7 +49,7 @@ public class InteractionIceTagPole extends HabboItem
     }
 
     @Override
-    public void onPickUp()
+    public void onPickUp(Room room)
     {
         this.setExtradata("0");
     }

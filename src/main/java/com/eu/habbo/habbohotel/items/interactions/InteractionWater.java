@@ -32,15 +32,15 @@ public class InteractionWater extends InteractionDefault
     }
 
     @Override
-    public void onPickUp()
+    public void onPickUp(Room room)
     {
-        this.refreshWaters(null);
+        this.refreshWaters(room);
     }
 
     @Override
-    public void onPlace()
+    public void onPlace(Room room)
     {
-        this.refreshWaters(null);
+        this.refreshWaters(room);
     }
 
     private void refreshWaters(Room room)

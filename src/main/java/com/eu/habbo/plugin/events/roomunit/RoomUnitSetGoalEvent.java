@@ -1,5 +1,6 @@
 package com.eu.habbo.plugin.events.roomunit;
 
+import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.util.pathfinding.Tile;
@@ -11,9 +12,9 @@ public class RoomUnitSetGoalEvent extends RoomUnitEvent
      */
     public final Tile goal;
 
-    public RoomUnitSetGoalEvent(RoomUnit roomUnit, Tile goal)
+    public RoomUnitSetGoalEvent(Room room, RoomUnit roomUnit, Tile goal)
     {
-        super(roomUnit);
+        super(room, roomUnit);
 
         this.goal = goal;
     }

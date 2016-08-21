@@ -88,5 +88,10 @@ public abstract class InteractionWired extends HabboItem implements IWired
     }
 
     @Override
+    public void onPickUp(Room room)
+    {
+        onPickUp();
+    }
+
     public abstract void onPickUp();
 }

@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.items.interactions.games;
 
 import com.eu.habbo.habbohotel.games.GameTeamColors;
 import com.eu.habbo.habbohotel.items.Item;
+import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.ServerMessage;
 
 import java.sql.ResultSet;
@@ -29,7 +30,7 @@ public abstract class InteractionGameScoreboard extends InteractionGameTeamItem
     }
 
     @Override
-    public void onPickUp()
+    public void onPickUp(Room room)
     {
         this.setExtradata("0");
     }

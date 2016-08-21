@@ -51,10 +51,8 @@ public class InteractionMoodLight extends HabboItem
     }
 
     @Override
-    public void onPlace()
+    public void onPlace(Room room)
     {
-        Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
-
         if(room != null)
         {
             for (RoomMoodlightData data : room.getMoodlightData().valueCollection())

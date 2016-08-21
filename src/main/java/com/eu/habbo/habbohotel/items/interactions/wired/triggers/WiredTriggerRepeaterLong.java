@@ -125,11 +125,11 @@ public class WiredTriggerRepeaterLong extends InteractionWiredTrigger
     }
 
     @Override
-    public void onPlace()
+    public void onPlace(Room room)
     {
         if(this.task == null)
         {
-            this.task = new WiredRepeatTask(this, Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()));
+            this.task = new WiredRepeatTask(this, room);
             Emulator.getThreading().run(this.task, this.repeatTime);
         }
     }

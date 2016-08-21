@@ -180,18 +180,13 @@ public class InteractionWiredHighscore extends HabboItem
     }
 
     @Override
-    public void onPlace()
+    public void onPlace(Room room)
     {
-        Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
-
-        if(room != null)
-        {
-            this.reloadData(room);
-        }
+        this.reloadData(room);
     }
 
     @Override
-    public void onPickUp()
+    public void onPickUp(Room room)
     {
         this.data.clear();
         this.lastUpdate = 0;

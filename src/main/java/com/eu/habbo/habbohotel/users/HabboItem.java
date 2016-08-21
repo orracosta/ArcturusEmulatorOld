@@ -331,11 +331,11 @@ public abstract class HabboItem implements Runnable, IEventTriggers
     public abstract void onWalk(RoomUnit roomUnit, Room room, Object[] objects) throws Exception;
 
 
-    public void onPlace()
+    public void onPlace(Room room)
     {
     }
 
-    public void onPickUp()
+    public void onPickUp(Room room)
     {
 
     }

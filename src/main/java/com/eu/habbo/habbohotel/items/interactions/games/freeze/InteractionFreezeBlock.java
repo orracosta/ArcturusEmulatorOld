@@ -122,7 +122,7 @@ public class InteractionFreezeBlock extends HabboItem
     }
 
     @Override
-    public void onPickUp()
+    public void onPickUp(Room room)
     {
         this.setExtradata("0");
     }

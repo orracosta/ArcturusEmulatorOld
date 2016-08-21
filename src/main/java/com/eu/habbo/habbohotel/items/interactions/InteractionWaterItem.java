@@ -25,13 +25,13 @@ public class InteractionWaterItem extends InteractionDefault
     }
 
     @Override
-    public void onPlace()
+    public void onPlace(Room room)
     {
         this.update();
     }
 
     @Override
-    public void onPickUp()
+    public void onPickUp(Room room)
     {
         this.setExtradata("0");
         this.needsUpdate(true);

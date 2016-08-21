@@ -10,7 +10,12 @@ import com.eu.habbo.habbohotel.items.interactions.games.football.InteractionFoot
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.*;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.gates.*;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.scoreboards.*;
-import com.eu.habbo.habbohotel.items.interactions.games.icetag.*;
+import com.eu.habbo.habbohotel.items.interactions.games.tag.*;
+import com.eu.habbo.habbohotel.items.interactions.games.tag.bunnyrun.InteractionBunnyrunField;
+import com.eu.habbo.habbohotel.items.interactions.games.tag.bunnyrun.InteractionBunnyrunPole;
+import com.eu.habbo.habbohotel.items.interactions.games.tag.icetag.InteractionIceTagField;
+import com.eu.habbo.habbohotel.items.interactions.games.tag.icetag.InteractionIceTagPole;
+import com.eu.habbo.habbohotel.items.interactions.games.tag.rollerskate.InteractionRollerskateField;
 import com.eu.habbo.habbohotel.items.interactions.wired.conditions.*;
 import com.eu.habbo.habbohotel.items.interactions.wired.effects.*;
 import com.eu.habbo.habbohotel.items.interactions.wired.triggers.*;
@@ -269,7 +274,19 @@ public class ItemManager {
         /*
             Ice Tag
          */
-            this.interactionsList.add(new ItemInteraction("icetag_pole", InteractionIceTagPole.class));
+            this.interactionsList.add(new ItemInteraction("icetag_pole",  InteractionIceTagPole.class));
+            this.interactionsList.add(new ItemInteraction("icetag_field", InteractionIceTagField.class));
+
+        /*
+            Bunnyrun
+         */
+            this.interactionsList.add(new ItemInteraction("bunnyrun_pole",  InteractionBunnyrunPole.class));
+            this.interactionsList.add(new ItemInteraction("bunnyrun_field", InteractionBunnyrunField.class));
+
+        /*
+            Rollerskate
+         */
+            this.interactionsList.add(new ItemInteraction("rollerskate_field", InteractionRollerskateField.class));
 
         /*
             Football
