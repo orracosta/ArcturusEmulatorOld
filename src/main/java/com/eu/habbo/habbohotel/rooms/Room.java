@@ -1137,9 +1137,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                             {
                                 habbo.getRoomUnit().increaseIdleTimer();
 
-                                if (habbo.getRoomUnit().getIdleTimer() >= Emulator.getConfig().getInt("hotel.roomuser.idle.cycles.kick", 480))
+                                if (!this.isOwner(habbo) && habbo.getRoomUnit().getIdleTimer() >= Emulator.getConfig().getInt("hotel.roomuser.idle.cycles.kick", 480))
                                 {
-                                    UserExitRoomEvent event = new UserExitRoomEvent(habbo, UserExitRoomEvent.UserExitRoomReason.KICKED_HABBO);
+                                    UserExitRoomEvent event = new UserExitRoomEvent(habbo, UserExitRoomEvent.UserExitRoomReason.KICKED_IDLE);
                                     Emulator.getPluginManager().fireEvent(event);
 
                                     if (!event.isCancelled())
