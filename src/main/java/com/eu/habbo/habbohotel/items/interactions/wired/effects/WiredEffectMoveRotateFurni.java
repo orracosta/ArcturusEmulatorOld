@@ -89,7 +89,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
 
                 if(this.direction == 1)
                 {
-                    moveDirection = RoomUserRotation.values()[Emulator.getRandom().nextInt(RoomUserRotation.values().length / 2) * 2];
+                    moveDirection = RoomUserRotation.values()[Emulator.getRandom().nextInt(RoomUserRotation.values().length)];
                 }
                 else if(this.direction == 2)
                 {
@@ -130,7 +130,10 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
                     moveDirection = RoomUserRotation.WEST;
                 }
 
-                Tile newTile = new Tile(item.getX() + (moveDirection == RoomUserRotation.WEST ? -1 : (moveDirection == RoomUserRotation.EAST ? 1 : 0)), item.getY() + (moveDirection == RoomUserRotation.NORTH ? 1 : (moveDirection == RoomUserRotation.SOUTH ? -1 : 0)), item.getZ());
+                Tile newTile = new Tile(
+                        item.getX() + ((moveDirection == RoomUserRotation.WEST || moveDirection == RoomUserRotation.NORTH_WEST || moveDirection == RoomUserRotation.SOUTH_WEST) ? -1 : (((moveDirection == RoomUserRotation.EAST || moveDirection == RoomUserRotation.SOUTH_EAST || moveDirection == RoomUserRotation.NORTH_EAST) ? 1 : 0))),
+                        item.getY() + ((moveDirection == RoomUserRotation.NORTH || moveDirection == RoomUserRotation.NORTH_EAST || moveDirection == RoomUserRotation.NORTH_WEST) ? 1 : ((moveDirection == RoomUserRotation.SOUTH || moveDirection == RoomUserRotation.SOUTH_EAST || moveDirection == RoomUserRotation.SOUTH_WEST) ? -1 : 0)),
+                        item.getZ());
 
                 if(room.tileWalkable(newTile))
                 {
