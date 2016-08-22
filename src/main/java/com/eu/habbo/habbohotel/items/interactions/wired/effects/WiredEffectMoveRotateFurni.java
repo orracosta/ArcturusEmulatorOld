@@ -150,6 +150,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
 
                             if (i == null || i.getBaseItem().allowStack())
                             {
+                                newTile.Z = room.getStackHeight(newTile.X, newTile.Y, false);
                                 room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, room).compose());
                             }
                         }
