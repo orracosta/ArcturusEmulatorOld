@@ -30,7 +30,7 @@ public class RoomStaffPickEvent extends MessageHandler
 
                     if(habbo != null)
                     {
-                        AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().achievements.get("Spr"));
+                        AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("Spr"));
                     }
                 }
             }

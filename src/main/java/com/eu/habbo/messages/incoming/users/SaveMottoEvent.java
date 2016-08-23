@@ -28,6 +28,6 @@ public class SaveMottoEvent extends MessageHandler
             this.client.sendResponse(new RoomUserDataComposer(this.client.getHabbo()));
         }
 
-        AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("Motto"));
+        AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("Motto"));
     }
 }

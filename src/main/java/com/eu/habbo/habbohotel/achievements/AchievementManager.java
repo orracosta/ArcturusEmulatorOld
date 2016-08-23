@@ -84,6 +84,11 @@ public class AchievementManager
         return this.achievements.get(name);
     }
 
+    public THashMap<String, Achievement> getAchievements()
+    {
+        return this.achievements;
+    }
+
     /**
      * Progresses an Habbo's achievement by 1.
      * @param habbo The Habbo whose achievement should be progressed.

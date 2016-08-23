@@ -34,7 +34,7 @@ public class PetEatAction implements Runnable
                 this.food.setExtradata(Integer.valueOf(this.food.getExtradata()) + 1 + "");
                 this.pet.getRoom().updateItem(this.food);
 
-                AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(this.pet.getUserId()), Emulator.getGameEnvironment().getAchievementManager().achievements.get("PetFeeding"), 20);
+                AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(this.pet.getUserId()), Emulator.getGameEnvironment().getAchievementManager().getAchievement("PetFeeding"), 20);
 
                 Emulator.getThreading().run(this, 1000);
             } else

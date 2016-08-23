@@ -62,7 +62,7 @@ class HopperActionThree implements Runnable
 
         if(targetTeleport instanceof InteractionCostumeHopper)
         {
-            AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("CostumeHopper"));
+            AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("CostumeHopper"));
         }
     }
 }

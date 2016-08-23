@@ -12,9 +12,9 @@ public class UsernameEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        if (!this.client.getHabbo().getHabboStats().getAchievementProgress().containsKey(Emulator.getGameEnvironment().getAchievementManager().achievements.get("Login")))
+        if (!this.client.getHabbo().getHabboStats().getAchievementProgress().containsKey(Emulator.getGameEnvironment().getAchievementManager().getAchievement("Login")))
         {
-            AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("Login"));
+            AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("Login"));
         }
         else
         {
@@ -27,9 +27,9 @@ public class UsernameEvent extends MessageHandler
 
             if (c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR) && c1.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR))
             {
-                if (this.client.getHabbo().getHabboStats().getAchievementProgress().get(Emulator.getGameEnvironment().getAchievementManager().achievements.get("Login")) == this.client.getHabbo().getHabboStats().loginStreak)
+                if (this.client.getHabbo().getHabboStats().getAchievementProgress().get(Emulator.getGameEnvironment().getAchievementManager().getAchievement("Login")) == this.client.getHabbo().getHabboStats().loginStreak)
                 {
-                    AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("Login"));
+                    AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("Login"));
                     this.client.getHabbo().getHabboStats().loginStreak++;
                 }
             } else
@@ -41,27 +41,27 @@ public class UsernameEvent extends MessageHandler
             }
         }
 
-        if (!this.client.getHabbo().getHabboStats().getAchievementProgress().containsKey(Emulator.getGameEnvironment().getAchievementManager().achievements.get("RegistrationDuration")))
+        if (!this.client.getHabbo().getHabboStats().getAchievementProgress().containsKey(Emulator.getGameEnvironment().getAchievementManager().getAchievement("RegistrationDuration")))
         {
-            AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("RegistrationDuration"), 0);
+            AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("RegistrationDuration"), 0);
         }
         else
         {
             int daysRegistered = ((this.client.getHabbo().getHabboInfo().getAccountCreated() - Emulator.getIntUnixTimestamp()) / 86400);
 
             int days = this.client.getHabbo().getHabboStats().getAchievementProgress(
-                    Emulator.getGameEnvironment().getAchievementManager().achievements.get("RegistrationDuration")
+                    Emulator.getGameEnvironment().getAchievementManager().getAchievement("RegistrationDuration")
             );
 
             if (daysRegistered - days > 0)
             {
-                AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("RegistrationDuration"), daysRegistered - days);
+                AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("RegistrationDuration"), daysRegistered - days);
             }
         }
 
-        if(!this.client.getHabbo().getHabboStats().getAchievementProgress().containsKey(Emulator.getGameEnvironment().getAchievementManager().achievements.get("TraderPass")))
+        if(!this.client.getHabbo().getHabboStats().getAchievementProgress().containsKey(Emulator.getGameEnvironment().getAchievementManager().getAchievement("TraderPass")))
         {
-            AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("TraderPass"));
+            AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("TraderPass"));
         }
     }
 }

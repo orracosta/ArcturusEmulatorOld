@@ -33,19 +33,19 @@ public class RoomPlacePaintEvent extends MessageHandler
             {
                 room.setFloorPaint(item.getExtradata());
 
-                AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("RoomDecoFloor"));
+                AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("RoomDecoFloor"));
             }
             else if(item.getBaseItem().getName().equals("wallpaper"))
             {
                 room.setWallPaint(item.getExtradata());
 
-                AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("RoomDecoWallpaper"));
+                AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("RoomDecoWallpaper"));
             }
             else if(item.getBaseItem().getName().equals("landscape"))
             {
                 room.setBackgroundPaint(item.getExtradata());
 
-                AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("RoomDecoLandscape"));
+                AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("RoomDecoLandscape"));
             }
             else
                 return;

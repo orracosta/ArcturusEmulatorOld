@@ -15,7 +15,7 @@ public class AchievementUpdater implements Runnable
     {
         Emulator.getThreading().run(this, 5 * 60);
 
-        Achievement onlineTime = Emulator.getGameEnvironment().getAchievementManager().achievements.get("AllTimeHotelPresence");
+        Achievement onlineTime = Emulator.getGameEnvironment().getAchievementManager().getAchievement("AllTimeHotelPresence");
 
         for(Map.Entry<Integer, Habbo> set : Emulator.getGameEnvironment().getHabboManager().getOnlineHabbos().entrySet())
         {

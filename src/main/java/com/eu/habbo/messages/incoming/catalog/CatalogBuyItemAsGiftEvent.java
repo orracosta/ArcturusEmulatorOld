@@ -280,13 +280,13 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                 return;
             }
 
-            AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("GiftGiver"));
+            AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("GiftGiver"));
             if(habbo != null)
             {
                 habbo.getClient().sendResponse(new AddHabboItemComposer(gift));
                 habbo.getClient().getHabbo().getHabboInventory().getItemsComponent().addItem(gift);
                 habbo.getClient().sendResponse(new InventoryRefreshComposer());
-                AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().achievements.get("GiftReceiver"));
+                AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("GiftReceiver"));
 
                 if(item.hasBadge())
                 {

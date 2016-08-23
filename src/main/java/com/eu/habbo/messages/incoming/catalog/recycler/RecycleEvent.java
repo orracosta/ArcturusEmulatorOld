@@ -54,7 +54,7 @@ public class RecycleEvent extends MessageHandler
             this.client.sendResponse(new RecyclerCompleteComposer(RecyclerCompleteComposer.RECYCLING_COMPLETE));
             this.client.sendResponse(new InventoryRefreshComposer());
 
-            AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("FurnimaticQuest"));
+            AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("FurnimaticQuest"));
         }
         else
         {

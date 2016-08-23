@@ -26,8 +26,8 @@ public class RoomUserGiveRespectEvent extends MessageHandler
                 this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserRespectComposer(target).compose());
                 this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserActionComposer(this.client.getHabbo().getRoomUnit(), 7).compose());
 
-                AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("RespectGiven"));
-                AchievementManager.progressAchievement(target, Emulator.getGameEnvironment().getAchievementManager().achievements.get("RespectEarned"));
+                AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("RespectGiven"));
+                AchievementManager.progressAchievement(target, Emulator.getGameEnvironment().getAchievementManager().getAchievement("RespectEarned"));
 
                 this.client.getHabbo().getHabboInfo().getCurrentRoom().unIdle(this.client.getHabbo());
             }

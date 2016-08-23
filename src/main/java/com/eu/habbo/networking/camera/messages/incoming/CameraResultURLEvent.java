@@ -49,7 +49,7 @@ public class CameraResultURLEvent extends CameraIncomingMessage
             {
                 if (timestamp == habbo.getHabboInfo().getPhotoTimestamp())
                 {
-                    AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().achievements.get("CameraPhotoCount"), 1);
+                    AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("CameraPhotoCount"), 1);
                     habbo.getClient().sendResponse(new CameraURLComposer(URL));
                     habbo.getHabboInfo().setPhotoJSON(habbo.getHabboInfo().getPhotoJSON().replace("%room_id%", roomId + "").replace("%url%", URL));
                 }

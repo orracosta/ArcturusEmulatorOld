@@ -28,7 +28,7 @@ public class VikingCotieBurnDown implements Runnable
         {
             if (this.vikingCotie.getExtradata().equalsIgnoreCase("4"))
             {
-                AchievementManager.progressAchievement(this.habbo, Emulator.getGameEnvironment().getAchievementManager().achievements.get("ViciousViking"));
+                AchievementManager.progressAchievement(this.habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("ViciousViking"));
             }
             else
             {

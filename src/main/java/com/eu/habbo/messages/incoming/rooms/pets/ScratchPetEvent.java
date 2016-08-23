@@ -26,8 +26,8 @@ public class ScratchPetEvent extends MessageHandler
                 pet.addExperience(10);
                 pet.addRespect();
                 this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomPetRespectComposer(pet).compose());
-                AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("PetRespectGiver"));
-                AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(pet.getUserId()), Emulator.getGameEnvironment().getAchievementManager().achievements.get("PetRespectReceiver"));
+                AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("PetRespectGiver"));
+                AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(pet.getUserId()), Emulator.getGameEnvironment().getAchievementManager().getAchievement("PetRespectReceiver"));
 
             }
         }

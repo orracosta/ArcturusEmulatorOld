@@ -21,15 +21,15 @@ public class AchievementListComposer extends MessageComposer
     @Override
     public ServerMessage compose()
     {
-        this.response.init(Outgoing.AchievementListComposer); //TODO
+        this.response.init(Outgoing.AchievementListComposer);
 
         try
         {
-            synchronized (Emulator.getGameEnvironment().getAchievementManager().achievements)
+            synchronized (Emulator.getGameEnvironment().getAchievementManager().getAchievements())
             {
-                this.response.appendInt32(Emulator.getGameEnvironment().getAchievementManager().achievements.size());
+                this.response.appendInt32(Emulator.getGameEnvironment().getAchievementManager().getAchievements().size());
 
-                for (Achievement achievement : Emulator.getGameEnvironment().getAchievementManager().achievements.values())
+                for (Achievement achievement : Emulator.getGameEnvironment().getAchievementManager().getAchievements().values())
                 {
                     int achievementProgress;
                     AchievementLevel level;

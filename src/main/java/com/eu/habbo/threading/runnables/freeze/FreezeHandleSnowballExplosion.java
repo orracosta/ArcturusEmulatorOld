@@ -79,7 +79,7 @@ class FreezeHandleSnowballExplosion implements Runnable
 
                                 ((FreezeGamePlayer)habbo.getHabboInfo().getGamePlayer()).freeze();
 
-                                AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().achievements.get("EsA"));
+                                AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("EsA"));
                             }
                         }
                     } else if (i instanceof InteractionFreezeBlock)

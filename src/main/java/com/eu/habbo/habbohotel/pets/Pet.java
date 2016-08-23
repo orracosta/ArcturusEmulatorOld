@@ -1003,7 +1003,7 @@ public class Pet extends AbstractPet
                 this.addHappyness(100);
                 this.getRoomUnit().getStatus().put("gst", "exp");
                 this.gestureTickTimeout = Emulator.getIntUnixTimestamp();
-                AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(this.userId), Emulator.getGameEnvironment().getAchievementManager().achievements.get("PetLevelUp"));
+                AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(this.userId), Emulator.getGameEnvironment().getAchievementManager().getAchievement("PetLevelUp"));
             }
         }
     }

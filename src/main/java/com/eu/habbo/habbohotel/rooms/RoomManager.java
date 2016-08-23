@@ -695,7 +695,7 @@ public class RoomManager {
 
         if(room.getOwnerId() != habbo.getHabboInfo().getId())
         {
-            AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().achievements.get("RoomEntry"));
+            AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("RoomEntry"));
         }
     }
 
