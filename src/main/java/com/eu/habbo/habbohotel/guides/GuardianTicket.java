@@ -102,7 +102,7 @@ public class GuardianTicket
 
         this.updateVotes();
 
-        AchievementManager.progressAchievement(guardian, Emulator.getGameEnvironment().getAchievementManager().achievements.get("GuideChatReviewer"));
+        AchievementManager.progressAchievement(guardian, Emulator.getGameEnvironment().getAchievementManager().getAchievement("GuideChatReviewer"));
 
         this.finish();
     }

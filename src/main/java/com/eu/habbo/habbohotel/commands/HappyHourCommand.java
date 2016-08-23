@@ -23,7 +23,7 @@ public class HappyHourCommand extends Command
 
         for(Map.Entry<Integer, Habbo> set : Emulator.getGameEnvironment().getHabboManager().getOnlineHabbos().entrySet())
         {
-            AchievementManager.progressAchievement(set.getValue(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("HappyHour"));
+            AchievementManager.progressAchievement(set.getValue(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("HappyHour"));
         }
 
         return true;

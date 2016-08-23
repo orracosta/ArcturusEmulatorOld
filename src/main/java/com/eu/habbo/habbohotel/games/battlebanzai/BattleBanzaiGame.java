@@ -205,8 +205,8 @@ public class BattleBanzaiGame extends Game
                     for(GamePlayer player : team.getMembers())
                     {
                         //player.getScore()
-                        AchievementManager.progressAchievement(player.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("BattleBallPlayer"));
-                        AchievementManager.progressAchievement(player.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("BattleBallQuestCompleted"));
+                        AchievementManager.progressAchievement(player.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("BattleBallPlayer"));
+                        AchievementManager.progressAchievement(player.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("BattleBallQuestCompleted"));
                     }
 
                     if (winningTeam == null || team.getTotalScore() > winningTeam.getTotalScore())
@@ -220,7 +220,7 @@ public class BattleBanzaiGame extends Game
                     for (GamePlayer player : winningTeam.getMembers())
                     {
                         this.room.sendComposer(new RoomUserActionComposer(player.getHabbo().getRoomUnit(), 1).compose());
-                        AchievementManager.progressAchievement(player.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("BattleBallWinner"));
+                        AchievementManager.progressAchievement(player.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("BattleBallWinner"));
                     }
 
                     for(HabboItem item : this.room.getRoomSpecialTypes().getItemsOfType(InteractionBattleBanzaiSphere.class))
@@ -336,7 +336,7 @@ public class BattleBanzaiGame extends Game
 
         if(habbo != null)
         {
-            AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().achievements.get("BattleBallTilesLocked"));
+            AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("BattleBallTilesLocked"));
         }
     }
 

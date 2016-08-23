@@ -361,10 +361,10 @@ public class FreezeGame extends Game
 
                     if(team.equals(winningTeam))
                     {
-                        AchievementManager.progressAchievement(p.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("FreezeWinner"), p.getScore());
+                        AchievementManager.progressAchievement(p.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("FreezeWinner"), p.getScore());
                     }
 
-                    AchievementManager.progressAchievement(p.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("FreezePlayer"));
+                    AchievementManager.progressAchievement(p.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("FreezePlayer"));
                 }
             }
 

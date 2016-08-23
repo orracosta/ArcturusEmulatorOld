@@ -47,7 +47,7 @@ public class FreezeGamePlayer extends GamePlayer
 
         if(amount > 0)
         {
-            AchievementManager.progressAchievement(this.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("FreezePlayer"), amount);
+            AchievementManager.progressAchievement(this.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("FreezePlayer"), amount);
         }
     }
 

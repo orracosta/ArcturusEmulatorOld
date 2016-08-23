@@ -102,8 +102,8 @@ public class InteractionObstacle extends HabboItem
                     this.setExtradata(state + "");
                     pet.getRoomUnit().getStatus().put("jmp", "0");
 
-                    AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().achievements.get("HorseConsecutiveJumpsCount"));
-                    AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().achievements.get("HorseJumping"));
+                    AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("HorseConsecutiveJumpsCount"));
+                    AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("HorseJumping"));
                 }
 
                 room.updateItem(this);

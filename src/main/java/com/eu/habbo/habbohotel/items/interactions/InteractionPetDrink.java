@@ -86,7 +86,7 @@ public class InteractionPetDrink extends HabboItem
                     room.sendComposer(new RoomUserStatusComposer(client).compose());
                     Emulator.getThreading().run(new PetClearPosture((Pet)pet, "eat", null, true), 500);
 
-                    AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(pet.getUserId()), Emulator.getGameEnvironment().getAchievementManager().achievements.get("PetFeeding"), 75);
+                    AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(pet.getUserId()), Emulator.getGameEnvironment().getAchievementManager().getAchievement("PetFeeding"), 75);
                 }
             }
         }

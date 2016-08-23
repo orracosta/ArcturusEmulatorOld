@@ -117,7 +117,7 @@ public class InteractionFreezeBlock extends HabboItem
 
             game.givePowerUp(player, powerUp);
 
-            AchievementManager.progressAchievement(player.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("FreezePowerUp"));
+            AchievementManager.progressAchievement(player.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("FreezePowerUp"));
         }
     }
 

@@ -57,7 +57,7 @@ public class InteractionFireworks extends HabboItem
 
         if(this.getExtradata().equalsIgnoreCase("2")) //2 explodes I think (0 = empty, 1 = charged, 2 = effect)
         {
-            AchievementManager.progressAchievement(client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("FireworksCharger"));
+            AchievementManager.progressAchievement(client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("FireworksCharger"));
         }
     }
 }

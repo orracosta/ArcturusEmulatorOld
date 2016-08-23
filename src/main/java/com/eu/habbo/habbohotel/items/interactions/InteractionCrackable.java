@@ -76,7 +76,7 @@ public class InteractionCrackable extends HabboItem
 
         if(rewardData != null && !rewardData.achievementTick.isEmpty())
         {
-            AchievementManager.progressAchievement(client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get(rewardData.achievementTick));
+            AchievementManager.progressAchievement(client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement(rewardData.achievementTick));
         }
         if(Integer.valueOf(this.getExtradata()) >= Emulator.getGameEnvironment().getItemManager().getCrackableCount(this.getBaseItem().getId()))
         {
@@ -84,7 +84,7 @@ public class InteractionCrackable extends HabboItem
 
             if(rewardData != null && !rewardData.achievementCracked.isEmpty())
             {
-                AchievementManager.progressAchievement(client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get(rewardData.achievementCracked));
+                AchievementManager.progressAchievement(client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement(rewardData.achievementCracked));
             }
         }
     }

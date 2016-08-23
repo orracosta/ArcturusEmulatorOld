@@ -27,7 +27,7 @@ public class GuideTour
         this.noob = noob;
         this.helpRequest = helpRequest;
 
-        AchievementManager.progressAchievement(this.noob, Emulator.getGameEnvironment().getAchievementManager().achievements.get("GuideAdvertisementReader"));
+        AchievementManager.progressAchievement(this.noob, Emulator.getGameEnvironment().getAchievementManager().getAchievement("GuideAdvertisementReader"));
     }
 
     public void finish()
@@ -72,7 +72,7 @@ public class GuideTour
 
         if(this.wouldRecommend == GuideRecommendStatus.YES)
         {
-            AchievementManager.progressAchievement(this.getHelper(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("GuideRecommendation"));
+            AchievementManager.progressAchievement(this.getHelper(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("GuideRecommendation"));
         }
     }
 
@@ -91,9 +91,9 @@ public class GuideTour
         this.ended = true;
         this.endTime = Emulator.getIntUnixTimestamp();
 
-        AchievementManager.progressAchievement(this.helper, Emulator.getGameEnvironment().getAchievementManager().achievements.get("GuideEnrollmentLifetime"));
-        AchievementManager.progressAchievement(this.helper, Emulator.getGameEnvironment().getAchievementManager().achievements.get("GuideRequestHandler"));
-        AchievementManager.progressAchievement(this.noob, Emulator.getGameEnvironment().getAchievementManager().achievements.get("GuideRequester"));
+        AchievementManager.progressAchievement(this.helper, Emulator.getGameEnvironment().getAchievementManager().getAchievement("GuideEnrollmentLifetime"));
+        AchievementManager.progressAchievement(this.helper, Emulator.getGameEnvironment().getAchievementManager().getAchievement("GuideRequestHandler"));
+        AchievementManager.progressAchievement(this.noob, Emulator.getGameEnvironment().getAchievementManager().getAchievement("GuideRequester"));
     }
 
     public boolean isEnded()

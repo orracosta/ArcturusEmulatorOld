@@ -940,7 +940,7 @@ public class CatalogManager
                                             habbo.getClient().sendResponse(new AddPetComposer(pet));
                                             habbo.getClient().sendResponse(new PetBoughtNotificationComposer(pet, false));
 
-                                            AchievementManager.progressAchievement(habbo.getClient().getHabbo(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("PetLover"));
+                                            AchievementManager.progressAchievement(habbo.getClient().getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("PetLover"));
                                         }
                                         else
                                         {

@@ -198,7 +198,7 @@ public class GuideManager
         {
             tour.setWouldRecommend(recommend ? GuideRecommendStatus.YES : GuideRecommendStatus.NO);
             tour.getNoob().getClient().sendResponse(new GuideSessionDetachedComposer());
-            AchievementManager.progressAchievement(tour.getNoob(), Emulator.getGameEnvironment().getAchievementManager().achievements.get("GuideFeedbackGiver"));
+            AchievementManager.progressAchievement(tour.getNoob(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("GuideFeedbackGiver"));
 
             this.activeTours.remove(tour);
         }

@@ -24,7 +24,7 @@ public class AchievementManager
      * String = name of the achievement (Without ACH_ & Roman number.
      * Achievement = Instance of the Achievement class.
      */
-    public final THashMap<String, Achievement> achievements;
+    private final THashMap<String, Achievement> achievements;
 
     /**
      * The AchievementManager, shit happens here.
@@ -73,6 +73,15 @@ public class AchievementManager
                 Emulator.getLogging().logErrorLine(e);
             }
         }
+    }
+
+    /**
+     * @param name The achievement to find.
+     * @return The achievement
+     */
+    public Achievement getAchievement(String name)
+    {
+        return this.achievements.get(name);
     }
 
     /**

@@ -136,7 +136,7 @@ public abstract class Game implements Runnable
 
                 if(this.endTime > this.startTime)
                 {
-                    AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().achievements.get("GamePlayed"));
+                    AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("GamePlayed"));
                 }
             }
         }
