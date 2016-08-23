@@ -162,6 +162,12 @@ public class RoomPlaceItemEvent extends MessageHandler
                 {
                     for (int j = y; j < y + item.getBaseItem().getLength(); j++)
                     {
+                        if (!room.getTopItemAt(i, j).getBaseItem().allowStack())
+                        {
+                            this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
+                            return;
+                        }
+                        
                         double testheight = room.getStackHeight(i, j, true);
                         if (checkStackHeight != testheight)
                         {

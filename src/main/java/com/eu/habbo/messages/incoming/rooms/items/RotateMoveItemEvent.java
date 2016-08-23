@@ -79,6 +79,18 @@ public class RotateMoveItemEvent extends MessageHandler
             }
         }
 
+        HabboItem hasStackHelper = room.getStackHelper(x, y);
+        HabboItem topItem = null;
+        if(hasStackHelper == null)
+            topItem = room.getTopItemAt(x, y);
+
+        if (topItem != null && !topItem.getBaseItem().allowStack())
+        {
+            this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
+            this.client.sendResponse(new FloorItemUpdateComposer(item));
+            return;
+        }
+
         THashSet<Tile> updatedTiles = new THashSet<Tile>();
 
         Rectangle currentSquare = PathFinder.getSquare(item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
@@ -141,6 +153,10 @@ public class RotateMoveItemEvent extends MessageHandler
             }
         }
 
+        if(topItem == null || (topItem != item && topItem.getBaseItem().allowStack())) {
+            item.setZ(topItem == null && hasStackHelper != null ? hasStackHelper.getExtradata().isEmpty() ? Double.valueOf("0.0") : Double.valueOf(hasStackHelper.getExtradata()) / 100.0D : checkStackHeight);
+        }
+
         if(item.getBaseItem().allowSit())
         {
             THashSet<Habbo> habbos = room.getHabbosAt(oldX, oldY);
@@ -150,15 +166,6 @@ public class RotateMoveItemEvent extends MessageHandler
                 habbo.getRoomUnit().getStatus().remove("sit");
             }
             room.sendComposer(new RoomUserStatusComposer(updatedUnits, false).compose());
-        }
-
-        HabboItem hasStackHelper = room.getStackHelper(x, y);
-        HabboItem topItem = null;
-        if(hasStackHelper == null)
-            topItem = room.getTopItemAt(x, y);
-
-        if(topItem == null || (topItem != item && topItem.getBaseItem().allowStack())) {
-            item.setZ(topItem == null && hasStackHelper != null ? hasStackHelper.getExtradata().isEmpty() ? Double.valueOf("0.0") : Double.valueOf(hasStackHelper.getExtradata()) / 100.0D : checkStackHeight);
         }
 
         item.setX(x);
