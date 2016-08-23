@@ -17,6 +17,7 @@ import java.sql.SQLException;
 
 public class InteractionCrackable extends HabboItem
 {
+    public boolean cracked = false;
     public InteractionCrackable(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
@@ -65,6 +66,9 @@ public class InteractionCrackable extends HabboItem
         if(client == null)
             return;
 
+        if (this.getRoomId() == 0)
+            return;
+
         if(this.getExtradata().length() == 0)
             this.setExtradata("0");
 
@@ -78,8 +82,9 @@ public class InteractionCrackable extends HabboItem
         {
             AchievementManager.progressAchievement(client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement(rewardData.achievementTick));
         }
-        if(Integer.valueOf(this.getExtradata()) >= Emulator.getGameEnvironment().getItemManager().getCrackableCount(this.getBaseItem().getId()))
+        if(!this.cracked && Integer.valueOf(this.getExtradata()) >= Emulator.getGameEnvironment().getItemManager().getCrackableCount(this.getBaseItem().getId()))
         {
+            this.cracked = true;
             Emulator.getThreading().run(new CrackableExplode(room, this), 1500);
 
             if(rewardData != null && !rewardData.achievementCracked.isEmpty())
