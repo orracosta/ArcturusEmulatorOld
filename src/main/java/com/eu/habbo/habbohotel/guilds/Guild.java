@@ -62,6 +62,7 @@ public class Guild implements Runnable
         this.colorTwo = colorTwo;
         this.badge = badge;
         this.memberCount = 0;
+        this.dateCreated = Emulator.getIntUnixTimestamp();
     }
 
     public void loadMemberCount()
