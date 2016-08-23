@@ -82,7 +82,7 @@ public class InteractionCrackable extends HabboItem
         {
             AchievementManager.progressAchievement(client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement(rewardData.achievementTick));
         }
-        if(!this.cracked && Integer.valueOf(this.getExtradata()) >= Emulator.getGameEnvironment().getItemManager().getCrackableCount(this.getBaseItem().getId()))
+        if(!this.cracked && Integer.valueOf(this.getExtradata()) == Emulator.getGameEnvironment().getItemManager().getCrackableCount(this.getBaseItem().getId()))
         {
             this.cracked = true;
             Emulator.getThreading().run(new CrackableExplode(room, this), 1500);
