@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.users.inventory;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import gnu.trove.TCollections;
@@ -8,6 +9,7 @@ import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
+import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.PreparedStatement;
@@ -92,6 +94,30 @@ public class ItemsComponent
     public HabboItem getHabboItem(int itemId)
     {
         return this.items.get(itemId);
+    }
+
+    public HabboItem getAndRemoveHabboItem(final Item item)
+    {
+        final HabboItem[] habboItem = {null};
+        synchronized (this.items)
+        {
+            this.items.forEachValue(new TObjectProcedure<HabboItem>()
+            {
+                @Override
+                public boolean execute(HabboItem object)
+                {
+                    if (object.getBaseItem() == item)
+                    {
+                        habboItem[0] = object;
+                        return false;
+                    }
+
+                    return true;
+                }
+            });
+        }
+        this.removeHabboItem(habboItem[0]);
+        return habboItem[0];
     }
 
     public void removeHabboItem(int itemId)

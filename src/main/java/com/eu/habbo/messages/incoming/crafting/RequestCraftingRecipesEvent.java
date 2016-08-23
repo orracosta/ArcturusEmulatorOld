@@ -1,24 +1,29 @@
 package com.eu.habbo.messages.incoming.crafting;
 
+import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.crafting.CraftingAltar;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.crafting.CraftingRecipeComposer;
+import com.eu.habbo.messages.outgoing.crafting.CraftableProductsComposer;
+import com.eu.habbo.messages.outgoing.crafting.CraftingRecipesAvailableComposer;
 
 public class RequestCraftingRecipesEvent extends MessageHandler
 {
     @Override
     public void handle() throws Exception
     {
-        System.out.println("Crafting: " + this.getClass().getName());
+        System.out.println(this.getClass().getName());
         int itemId = this.packet.readInt();
-
         HabboItem item = this.client.getHabbo().getHabboInfo().getCurrentRoom().getHabboItem(itemId);
 
         if(item != null)
         {
-            item.setExtradata("2");
-            this.client.getHabbo().getHabboInfo().getCurrentRoom().updateItem(item);
-            this.client.sendResponse(new CraftingRecipeComposer());
+            CraftingAltar altar = Emulator.getGameEnvironment().getCraftingManager().getAltar(item.getBaseItem());
+
+            if (altar != null)
+            {
+                this.client.sendResponse(new CraftableProductsComposer(altar.getRecipesForHabbo(this.client.getHabbo()), altar.getIngredients()));
+            }
         }
     }
 }

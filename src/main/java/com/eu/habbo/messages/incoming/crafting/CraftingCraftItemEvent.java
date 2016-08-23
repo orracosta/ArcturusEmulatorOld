@@ -1,14 +1,76 @@
 package com.eu.habbo.messages.incoming.crafting;
 
+import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.crafting.CraftingAltar;
+import com.eu.habbo.habbohotel.crafting.CraftingRecipe;
+import com.eu.habbo.habbohotel.items.Item;
+import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
+import com.eu.habbo.messages.outgoing.crafting.CraftingResultComposer;
+import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
+import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
+import com.eu.habbo.messages.outgoing.inventory.RemoveHabboItemComposer;
+import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;
+import com.eu.habbo.threading.runnables.QueryDeleteHabboItems;
+import gnu.trove.map.hash.TIntObjectHashMap;
+import gnu.trove.procedure.TObjectProcedure;
+
+import java.util.Map;
 
 public class CraftingCraftItemEvent extends MessageHandler
 {
     @Override
     public void handle() throws Exception
     {
-        System.out.println("Crafting: " + this.getClass().getName());
-        this.packet.readInt();
-        this.packet.readString();
+        System.out.println(this.getClass().getName());
+        int craftingTable = this.packet.readInt();
+        HabboItem item = this.client.getHabbo().getHabboInfo().getCurrentRoom().getHabboItem(craftingTable);
+        CraftingAltar altar = Emulator.getGameEnvironment().getCraftingManager().getAltar(item.getBaseItem());
+        CraftingRecipe recipe = altar.getRecipe(this.packet.readString());
+
+        if (recipe != null)
+        {
+            TIntObjectHashMap<HabboItem> toRemove = new TIntObjectHashMap<HabboItem>();
+            for (Map.Entry<Item, Integer> set : recipe.getIngredients().entrySet())
+            {
+                for (int i = 0; i < set.getValue(); i++)
+                {
+                    HabboItem habboItem = this.client.getHabbo().getHabboInventory().getItemsComponent().getAndRemoveHabboItem(set.getKey());
+
+                    if (habboItem == null)
+                    {
+                        return;
+                    }
+
+                    toRemove.put(habboItem.getId(), habboItem);
+                }
+            }
+
+            HabboItem rewardItem = Emulator.getGameEnvironment().getItemManager().createItem(this.client.getHabbo().getHabboInfo().getId(), recipe.getReward(), 0, 0, "");
+
+            if (rewardItem != null)
+            {
+                this.client.sendResponse(new CraftingResultComposer(recipe));
+
+                this.client.getHabbo().getHabboInventory().getItemsComponent().addItem(rewardItem);
+                this.client.sendResponse(new AddHabboItemComposer(rewardItem));
+                toRemove.forEachValue(new TObjectProcedure<HabboItem>()
+                {
+                    @Override
+                    public boolean execute(HabboItem object)
+                    {
+                        client.sendResponse(new RemoveHabboItemComposer(object.getId()));
+                        return true;
+                    }
+                });
+                this.client.sendResponse(new InventoryRefreshComposer());
+
+                Emulator.getThreading().run(new QueryDeleteHabboItems(toRemove));
+                return;
+            }
+
+        }
+
+        this.client.sendResponse(new CraftingResultComposer(null));
     }
 }

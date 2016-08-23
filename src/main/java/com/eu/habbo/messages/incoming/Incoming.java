@@ -276,7 +276,7 @@ public class Incoming
 
     public static final int RequestCraftingRecipesEvent = 426;
     public static final int RequestCraftingRecipesAvailableEvent = 1653;
-    public static final int CraftingAddItemEvent = 3654;
+    public static final int CraftingAddRecipeEvent = 3654;
     public static final int CraftingCraftItemEvent = 2934;
     public static final int CraftingCraftSecretEvent = 1622;
 

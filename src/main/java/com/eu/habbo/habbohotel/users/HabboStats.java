@@ -54,11 +54,12 @@ public class HabboStats implements Runnable
     public int rentedTimeEnd;
     public int hofPoints;
 
-    private final THashMap<Achievement, Integer> achievementProgress; //TEMP PUBLIC
+    private final THashMap<Achievement, Integer> achievementProgress;
     private final THashMap<Achievement, Integer> achievementCache;
     private final THashMap<Integer, CatalogItem> recentPurchases;
-    private final TIntHashSet favoriteRooms;
-    public final TIntHashSet ignoredUsers;
+    private final TIntArrayList favoriteRooms;
+    public final TIntArrayList ignoredUsers;
+    public final TIntArrayList secretRecipes;
 
     public final HabboNavigatorWindowSettings navigatorWindowSettings;
     public final THashMap<String, Object> cache;
@@ -69,8 +70,9 @@ public class HabboStats implements Runnable
         this.achievementProgress = new THashMap<Achievement, Integer>();
         this.achievementCache = new THashMap<Achievement, Integer>();
         this.recentPurchases = new THashMap<Integer, CatalogItem>();
-        this.favoriteRooms = new TIntHashSet();
-        this.ignoredUsers = new TIntHashSet();
+        this.favoriteRooms = new TIntArrayList();
+        this.ignoredUsers = new TIntArrayList();
+        this.secretRecipes = new TIntArrayList();
 
         this.habbo = habbo;
 
@@ -135,6 +137,27 @@ public class HabboStats implements Runnable
             favoriteSet.close();
             favoriteRoomsStatement.close();
             favoriteRoomsStatement.getConnection().close();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
+        PreparedStatement recipesStatement = Emulator.getDatabase().prepare("SELECT * FROM users_recipes WHERE user_id = ?");
+
+        try
+        {
+            recipesStatement.setInt(1, this.habbo.getHabboInfo().getId());
+            ResultSet recipeSet = recipesStatement.executeQuery();
+
+            while (recipeSet.next())
+            {
+                this.secretRecipes.add(recipeSet.getInt("recipe"));
+            }
+
+            recipeSet.close();
+            recipesStatement.close();
+            recipesStatement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -307,7 +330,7 @@ public class HabboStats implements Runnable
 
                 while(set.next())
                 {
-                    stats.achievementProgress.put(Emulator.getGameEnvironment().getAchievementManager().achievements.get(set.getString("achievement_name")), set.getInt("progress"));
+                    stats.achievementProgress.put(Emulator.getGameEnvironment().getAchievementManager().getAchievement(set.getString("achievement_name")), set.getInt("progress"));
                 }
 
                 set.close();
@@ -503,8 +526,37 @@ public class HabboStats implements Runnable
         return this.favoriteRooms.contains(roomId);
     }
 
-    public TIntHashSet getFavoriteRooms()
+    public TIntArrayList getFavoriteRooms()
     {
         return this.favoriteRooms;
+    }
+
+    public boolean hasRecipe(int id)
+    {
+        return this.secretRecipes.contains(id);
+    }
+
+    public boolean addRecipe(int id)
+    {
+        if (this.secretRecipes.contains(id))
+            return false;
+
+        PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO users_recipes (user_id, recipe) VALUES (?, ?)");
+
+        try
+        {
+            statement.setInt(1, this.habbo.getHabboInfo().getId());
+            statement.setInt(2, id);
+            statement.execute();
+            statement.close();
+            statement.getConnection().close();
+        }
+        catch (SQLException e)
+        {
+
+        }
+
+        this.secretRecipes.add(id);
+        return true;
     }
 }

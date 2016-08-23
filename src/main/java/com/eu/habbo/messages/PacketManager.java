@@ -469,7 +469,7 @@ public class PacketManager
     void registerCrafting() throws Exception
     {
         this.registerHandler(Incoming.RequestCraftingRecipesEvent,              RequestCraftingRecipesEvent.class);
-        this.registerHandler(Incoming.CraftingAddItemEvent,                     CraftingAddItemEvent.class);
+        this.registerHandler(Incoming.CraftingAddRecipeEvent,                   CraftingAddRecipeEvent.class);
         this.registerHandler(Incoming.CraftingCraftItemEvent,                   CraftingCraftItemEvent.class);
         this.registerHandler(Incoming.CraftingCraftSecretEvent,                 CraftingCraftSecretEvent.class);
         this.registerHandler(Incoming.RequestCraftingRecipesAvailableEvent,     RequestCraftingRecipesAvailableEvent.class);
