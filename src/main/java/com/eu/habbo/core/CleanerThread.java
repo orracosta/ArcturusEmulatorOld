@@ -196,6 +196,19 @@ public class CleanerThread implements Runnable {
             Emulator.getLogging().logSQLException(e);
         }
 
+        try
+        {
+            PreparedStatement statement = Emulator.getDatabase().prepare("DELETE users_favorite_rooms FROM users_favorite_rooms LEFT JOIN rooms ON room_id = rooms.id WHERE rooms.id IS NULL");
+            statement.setInt(1, Emulator.getIntUnixTimestamp());
+            statement.execute();
+            statement.close();
+            statement.getConnection().close();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+        
         Emulator.getLogging().logStart("Database -> Cleaned! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
 }
