@@ -250,6 +250,15 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.activeTrades = new THashSet<RoomTrade>();
         this.rights = new TIntArrayList();
         this.wiredHighscoreData = new THashMap<WiredHighscoreScoreType, THashMap<WiredHighscoreClearType, THashSet<WiredHighscoreData>>>();
+
+        try
+        {
+            this.loadBans();
+        }
+        catch (Exception e)
+        {
+            Emulator.getLogging().logErrorLine(e);
+        }
     }
 
     public void loadData()
@@ -271,15 +280,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 try
                 {
                     this.loadRights();
-                }
-                catch (Exception e)
-                {
-                    Emulator.getLogging().logErrorLine(e);
-                }
-
-                try
-                {
-                    this.loadBans();
                 }
                 catch (Exception e)
                 {
@@ -772,6 +772,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         try
         {
             this.loaded = false;
+
+            synchronized (this.mutedHabbos)
+            {
+                this.mutedHabbos.clear();
+            }
 
             synchronized (this.games)
             {
@@ -2867,6 +2872,26 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
     }
 
+    public boolean isMuted(Habbo habbo)
+    {
+        if (this.isOwner(habbo) || this.hasRights(habbo))
+            return false;
+
+        if(this.mutedHabbos.containsKey(habbo.getHabboInfo().getId()))
+        {
+            boolean time = this.mutedHabbos.get(habbo.getHabboInfo().getId()) > Emulator.getIntUnixTimestamp();
+
+            if (!time)
+            {
+                this.mutedHabbos.remove(habbo.getHabboInfo().getId());
+            }
+
+            return time;
+        }
+
+        return false;
+    }
+
     public void habboEntered(Habbo habbo)
     {
         habbo.getRoomUnit().animateWalk = false;
@@ -2943,10 +2968,16 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             }
         }
 
-        if(this.isMuted())
+        if(!habbo.hasPermission("acc_nomute"))
         {
-            if(!habbo.hasPermission("acc_nomute"))
+            if(this.isMuted() && !this.isOwner(habbo))
             {
+                return;
+            }
+
+            if (this.isMuted(habbo))
+            {
+                habbo.getClient().sendResponse(new MutedWhisperComposer(this.mutedHabbos.get(habbo.getHabboInfo().getId()) - Emulator.getIntUnixTimestamp()));
                 return;
             }
         }
@@ -2981,12 +3012,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         if (habbo.getRoomUnit().talkTimeOut > 0 && (Emulator.getIntUnixTimestamp() - habbo.getRoomUnit().talkTimeOut < 0))
             return;
-
-        synchronized (this.mutedHabbos)
-        {
-            if (this.mutedHabbos.get(habbo.getHabboInfo().getId()) > Emulator.getIntUnixTimestamp())
-                return;
-        }
 
         habbo.getRoomUnit().talkCounter++;
 
@@ -4008,13 +4033,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         return rightsMap;
     }
 
-    public void banHabbo(Habbo habbo, int length)
-    {
-        RoomBan roomBan = new RoomBan(this.id, habbo.getHabboInfo().getId(), habbo.getHabboInfo().getUsername(), Emulator.getIntUnixTimestamp() + length);
-        roomBan.insert();
-        this.bannedHabbos.put(roomBan.userId, roomBan);
-    }
-
     public void unbanHabbo(int userId)
     {
         RoomBan ban = this.bannedHabbos.remove(userId);
@@ -4029,19 +4047,26 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public boolean isBanned(Habbo habbo)
     {
-        return this.isBanned(habbo.getHabboInfo().getId());
-    }
+        RoomBan ban = this.bannedHabbos.get(habbo.getHabboInfo().getId());
 
-    public boolean isBanned(int userId)
-    {
-        RoomBan ban = this.bannedHabbos.get(userId);
+        boolean banned = ban != null && ban.endTimestamp > Emulator.getIntUnixTimestamp() && !habbo.hasPermission("acc_anyroomowner") && !habbo.hasPermission("acc_enteranyroom");
 
-        return ban != null && ban.endTimestamp >= Emulator.getIntUnixTimestamp();
+        if (!banned && ban != null)
+        {
+            this.unbanHabbo(habbo.getHabboInfo().getId());
+        }
+
+        return banned;
     }
 
     public TIntObjectHashMap<RoomBan> getBannedHabbos()
     {
         return this.bannedHabbos;
+    }
+
+    public void addRoomBan(RoomBan roomBan)
+    {
+        this.bannedHabbos.put(roomBan.userId, roomBan);
     }
 
     public void makeSit(Habbo habbo)

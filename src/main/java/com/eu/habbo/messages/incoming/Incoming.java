@@ -238,6 +238,7 @@ public class Incoming
     public static final int JukeBoxRequestPlayListEvent = 2541;
     public static final int JukeBoxEventOne = 1042;
     public static final int JukeBoxEventTwo = 815;
+    public static final int RoomUserMuteEvent = 2997;
     //public static final int JukeBoxEventThree = 3846;
     public static final int RequestDeleteRoomEvent = 722;
     public static final int RequestPromotionRoomsEvent = 3616;
@@ -270,6 +271,7 @@ public class Incoming
     public static final int IgnoreRoomUserEvent = 2394;
     public static final int UnIgnoreRoomUserEvent = 3023;
     public static final int UnbanRoomUserEvent = 3060;
+    public static final int RoomUserBanEvent = 3940;
     public static final int RequestNavigatorSettingsEvent = 1086;
     public static final int SaveWindowSettingsEvent = 272;
     public static final int GetHabboGuildBadgesMessageEvent = 301;

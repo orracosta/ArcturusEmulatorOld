@@ -10,6 +10,8 @@ import com.eu.habbo.habbohotel.navigation.NavigatorFilterField;
 import com.eu.habbo.habbohotel.polls.PollManager;
 import com.eu.habbo.habbohotel.users.DanceType;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.habbohotel.users.HabboInfo;
+import com.eu.habbo.habbohotel.users.HabboManager;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericErrorMessagesComposer;
@@ -582,6 +584,12 @@ public class RoomManager {
             }
         }
 
+        if (room.isBanned(habbo) && !habbo.hasPermission("acc_anyroomowner") && !habbo.hasPermission("acc_enteranyroom"))
+        {
+            habbo.getClient().sendResponse(new RoomEnterErrorComposer(RoomEnterErrorComposer.ROOM_ERROR_BANNED));
+            return;
+        }
+
         if(overrideChecks ||
            room.isOwner(habbo) ||
            room.getState() == RoomState.OPEN ||
@@ -646,6 +654,7 @@ public class RoomManager {
             habbo.getClient().sendResponse(new RoomEnterErrorComposer(RoomEnterErrorComposer.ROOM_ERROR_BANNED));
             return;
         }
+
         if (room.getUserCount() >= room.getUsersMax() && !habbo.hasPermission("acc_fullrooms"))
         {
             habbo.getClient().sendResponse(new RoomEnterErrorComposer(RoomEnterErrorComposer.ROOM_ERROR_GUESTROOM_FULL));
@@ -1460,5 +1469,55 @@ public class RoomManager {
         }
 
         return this.loadCustomLayout(room);
+    }
+
+    public void banUserFromRoom(int userId, int roomId, RoomBanTypes length)
+    {
+        Room room = this.getRoom(roomId);
+
+        String name = "";
+
+        Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(userId);
+        if (room != null)
+        {
+            if (habbo != null)
+            {
+                name = habbo.getHabboInfo().getUsername();
+            }
+            else
+            {
+                name = HabboManager.getOfflineHabboInfo(userId).getUsername();
+            }
+        }
+        RoomBan roomBan = new RoomBan(roomId, userId, name, Emulator.getIntUnixTimestamp() + length.duration);
+        roomBan.insert();
+
+        if (room != null)
+        {
+            room.addRoomBan(roomBan);
+
+            if (habbo != null)
+            {
+                if (habbo.getHabboInfo().getCurrentRoom() == room)
+                {
+                    room.removeHabbo(habbo);
+                    habbo.getClient().sendResponse(new RoomEnterErrorComposer(RoomEnterErrorComposer.ROOM_ERROR_BANNED));
+                }
+            }
+        }
+    }
+
+    public enum RoomBanTypes
+    {
+        RWUAM_BAN_USER_HOUR(60 * 60),
+        RWUAM_BAN_USER_DAY(24 * 60 * 60),
+        RWUAM_BAN_USER_PERM(10 * 365 * 24 * 60 * 60);
+
+        public int duration;
+
+        RoomBanTypes(int duration)
+        {
+            this.duration = duration;
+        }
     }
 }

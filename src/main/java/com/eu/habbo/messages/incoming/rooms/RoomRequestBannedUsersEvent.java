@@ -17,7 +17,7 @@ public class RoomRequestBannedUsersEvent extends MessageHandler
 
         if(room != null)
         {
-            //this.client.sendResponse(new RoomBannedUsersComposer(room));
+            this.client.sendResponse(new RoomBannedUsersComposer(room));
         }
 
         AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("SelfModChatFloodFilterSeen"));

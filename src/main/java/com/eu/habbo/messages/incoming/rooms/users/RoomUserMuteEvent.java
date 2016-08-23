@@ -1,5 +1,6 @@
 package com.eu.habbo.messages.incoming.rooms.users;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -9,24 +10,21 @@ public class RoomUserMuteEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
+        int userId = this.packet.readInt();
+        int roomId = this.packet.readInt();
+        int minutes = this.packet.readInt();
 
-        if(room == null)
-            return;
+        Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(roomId);
 
-        if(room.hasRights(this.client.getHabbo()) || this.client.getHabbo().hasPermission("acc_anyroomowner"))
+        if (room != null)
         {
-            int userId = this.packet.readInt();
-            int roomId = this.packet.readInt();
-            int minutes = this.packet.readInt();
-
-            if(room.getId() == roomId)
+            if (room.hasRights(this.client.getHabbo()) || this.client.getHabbo().hasPermission("acc_ambassador"))
             {
-                Habbo habbo = room.getHabboByRoomUnitId(userId);
+                Habbo habbo = room.getHabbo(userId);
 
-                if(habbo != null)
+                if (habbo != null)
                 {
-
+                    room.muteHabbo(habbo, minutes);
                 }
             }
         }

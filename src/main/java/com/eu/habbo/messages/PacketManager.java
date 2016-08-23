@@ -334,6 +334,8 @@ public class PacketManager
         this.registerHandler(Incoming.BuyRoomPromotionEvent,                    BuyRoomPromotionEvent.class);
         this.registerHandler(Incoming.IgnoreRoomUserEvent,                      IgnoreRoomUserEvent.class);
         this.registerHandler(Incoming.UnIgnoreRoomUserEvent,                    UnIgnoreRoomUserEvent.class);
+        this.registerHandler(Incoming.RoomUserMuteEvent,                        RoomUserMuteEvent.class);
+        this.registerHandler(Incoming.RoomUserBanEvent,                         RoomUserBanEvent.class);
         this.registerHandler(Incoming.UnbanRoomUserEvent,                       UnbanRoomUserEvent.class);
         this.registerHandler(Incoming.RequestRoomUserTagsEvent,                 RequestRoomUserTagsEvent.class);
         this.registerHandler(Incoming.RoomFavoriteEvent,                        RoomFavoriteEvent.class);
