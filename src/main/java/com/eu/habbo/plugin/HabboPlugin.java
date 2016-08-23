@@ -23,6 +23,12 @@ public abstract class HabboPlugin
         return this.registeredEvents.containsKey(clazz);
     }
 
+    /**
+     * Add in here your own permission checks.
+     * @param habbo They Habbo to check for the permission.
+     * @param key The permission key.
+     * @return Return true if the given Habbo has the permission key.
+     */
     public abstract boolean hasPermission(Habbo habbo, String key);
 
     public URLClassLoader classLoader;

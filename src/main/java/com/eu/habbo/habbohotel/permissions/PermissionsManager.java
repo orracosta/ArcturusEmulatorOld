@@ -158,7 +158,7 @@ public class PermissionsManager
             return false;
         }
 
-        return true;
+        return result;
     }
 
     public boolean hasPermission(int rankId, String permission)
