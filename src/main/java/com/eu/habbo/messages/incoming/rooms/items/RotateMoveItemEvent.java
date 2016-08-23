@@ -84,7 +84,7 @@ public class RotateMoveItemEvent extends MessageHandler
         if(hasStackHelper == null)
             topItem = room.getTopItemAt(x, y);
 
-        if (topItem != null && !topItem.getBaseItem().allowStack())
+        if (topItem != null && topItem != item && !topItem.getBaseItem().allowStack())
         {
             this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
             this.client.sendResponse(new FloorItemUpdateComposer(item));

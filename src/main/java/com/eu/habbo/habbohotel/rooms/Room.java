@@ -2968,20 +2968,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             }
         }
 
-        if(!habbo.hasPermission("acc_nomute"))
-        {
-            if(this.isMuted() && !this.isOwner(habbo))
-            {
-                return;
-            }
-
-            if (this.isMuted(habbo))
-            {
-                habbo.getClient().sendResponse(new MutedWhisperComposer(this.mutedHabbos.get(habbo.getHabboInfo().getId()) - Emulator.getIntUnixTimestamp()));
-                return;
-            }
-        }
-
         if(!this.wordFilterWords.isEmpty())
         {
             if (!habbo.hasPermission("acc_chat_no_filter"))
@@ -3007,6 +2993,20 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 {
                     return;
                 }
+            }
+        }
+
+        if(!habbo.hasPermission("acc_nomute"))
+        {
+            if(this.isMuted() && !this.isOwner(habbo))
+            {
+                return;
+            }
+
+            if (this.isMuted(habbo))
+            {
+                habbo.getClient().sendResponse(new MutedWhisperComposer(this.mutedHabbos.get(habbo.getHabboInfo().getId()) - Emulator.getIntUnixTimestamp()));
+                return;
             }
         }
 
