@@ -170,6 +170,32 @@ public class CleanerThread implements Runnable {
             Emulator.getLogging().logSQLException(e);
         }
 
+        try
+        {
+            PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM room_mutes WHERE ends < ?");
+            statement.setInt(1, Emulator.getIntUnixTimestamp());
+            statement.execute();
+            statement.close();
+            statement.getConnection().close();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
+        try
+        {
+            PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM room_bans WHERE ends < ?");
+            statement.setInt(1, Emulator.getIntUnixTimestamp());
+            statement.execute();
+            statement.close();
+            statement.getConnection().close();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
         Emulator.getLogging().logStart("Database -> Cleaned! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
 }
