@@ -692,7 +692,12 @@ public class GuildManager
 
             while (set.next())
             {
-                guilds.add(getGuild(set.getInt("guild_id")));
+                Guild guild = getGuild(set.getInt("guild_id"));
+
+                if (guild != null)
+                {
+                    guilds.add(guild);
+                }
             }
 
             set.close();

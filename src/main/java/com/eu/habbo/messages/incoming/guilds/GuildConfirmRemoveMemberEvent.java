@@ -19,14 +19,16 @@ public class GuildConfirmRemoveMemberEvent extends MessageHandler
         if (guild == null)
             return;
 
-        if(guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() && userId != this.client.getHabbo().getHabboInfo().getId())
+        if((guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() && userId != this.client.getHabbo().getHabboInfo().getId()) || userId == this.client.getHabbo().getHabboInfo().getId())
         {
             Room room = Emulator.getGameEnvironment().getRoomManager().loadRoom(guild.getRoomId());
 
+            int count = 0;
             if(room != null)
             {
-                this.client.sendResponse(new GuildConfirmRemoveMemberComposer(userId, room.getUserFurniCount(userId)));
+                count = room.getUserFurniCount(userId);
             }
+            this.client.sendResponse(new GuildConfirmRemoveMemberComposer(userId, count));
         }
     }
 }
