@@ -351,7 +351,6 @@ public class ItemManager {
      */
     public void loadItems()
     {
-        // proxyItem;
         try
         {
             PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM items_base ORDER BY id DESC");

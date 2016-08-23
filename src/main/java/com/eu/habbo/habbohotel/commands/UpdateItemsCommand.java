@@ -17,6 +17,8 @@ public class UpdateItemsCommand extends Command
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
         Emulator.getGameEnvironment().getItemManager().loadItems();
+        Emulator.getGameEnvironment().getItemManager().loadCrackable();
+        Emulator.getGameEnvironment().getItemManager().loadSoundTracks();
 
         gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_update_items"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
 
