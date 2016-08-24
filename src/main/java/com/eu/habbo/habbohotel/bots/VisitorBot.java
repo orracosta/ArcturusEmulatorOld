@@ -15,7 +15,7 @@ public class VisitorBot extends Bot
 {
     private static SimpleDateFormat formatDate;
     private boolean showedLog = false;
-    private THashSet<ModToolRoomVisit> visits;
+    private THashSet<ModToolRoomVisit> visits = new THashSet<ModToolRoomVisit>();
 
     public VisitorBot(ResultSet set) throws SQLException
     {
