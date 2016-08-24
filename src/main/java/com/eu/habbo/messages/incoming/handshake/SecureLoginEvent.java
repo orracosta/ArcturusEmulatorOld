@@ -42,6 +42,10 @@ public class SecureLoginEvent extends MessageHandler
 
         String sso = this.packet.readString();
 
+        if (sso == null)
+        {
+            this.client.getChannel().close();
+        }
         if(this.client.getHabbo() == null)
         {
             Habbo habbo = Emulator.getGameEnvironment().getHabboManager().loadHabbo(sso);
