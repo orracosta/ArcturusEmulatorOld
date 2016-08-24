@@ -156,4 +156,6 @@ UNIQUE (
     )
 ) ENGINE = MYISAM ;
 
+ALTER TABLE  `items_crackable` CHANGE  `prizes`  `prizes` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT  'Used in the format of item_id:chance;item_id_2:chance. item_id must be id in the items_base table. Default value for chance is 100.';
+
 #END DATABASE UPDATE: 1.0.7 -> 1.0.8
