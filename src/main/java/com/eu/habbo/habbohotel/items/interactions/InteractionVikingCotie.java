@@ -1,10 +1,10 @@
 package com.eu.habbo.habbohotel.items.interactions;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.threading.runnables.VikingCotieBurnDown;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,14 +24,28 @@ public class InteractionVikingCotie extends InteractionDefault
     @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
-        if(this.getExtradata().isEmpty() || this.getExtradata().equalsIgnoreCase("0"))
+        if(this.getExtradata().isEmpty())
+        {
+            this.setExtradata("0");
+        }
+
+        if (client.getHabbo().getHabboInfo().getId() == this.getUserId())
         {
             if (client.getHabbo().getRoomUnit().getEffectId() == 5)
             {
-                this.setExtradata("1");
+                int state = Integer.valueOf(this.getExtradata());
 
-                Emulator.getThreading().run(new VikingCotieBurnDown(this, room, client.getHabbo()), 500);
-                room.updateItem(this);
+                if (state < 5)
+                {
+                    ++state;
+                    this.setExtradata(state + "");
+                    room.updateItem(this);
+
+                    if (state == 5)
+                    {
+                        AchievementManager.progressAchievement(client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("ViciousViking"));
+                    }
+                }
             }
         }
 
