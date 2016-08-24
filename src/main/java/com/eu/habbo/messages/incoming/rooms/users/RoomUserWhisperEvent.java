@@ -17,12 +17,10 @@ public class RoomUserWhisperEvent extends MessageHandler
             return;
 
         RoomChatMessage chatMessage = new RoomChatMessage(this);
-        if(!CommandHandler.handleCommand(this.client, chatMessage.getMessage()))
-        {
-            if(!this.client.getHabbo().getRoomUnit().canTalk())
-                return;
 
-            this.client.getHabbo().getHabboInfo().getCurrentRoom().talk(this.client.getHabbo(), chatMessage, RoomChatType.WHISPER, true);
-        }
+        if(!this.client.getHabbo().getRoomUnit().canTalk() && chatMessage.getTargetHabbo() != null)
+            return;
+
+        this.client.getHabbo().getHabboInfo().getCurrentRoom().talk(this.client.getHabbo(), chatMessage, RoomChatType.WHISPER, true);
     }
 }
