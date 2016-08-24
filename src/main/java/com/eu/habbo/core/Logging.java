@@ -151,6 +151,7 @@ public class Logging
     
     public synchronized void logErrorLine(Object line)
     {
+
         System.err.println("[ERROR] " + line.toString());
 
         if (Emulator.isReady && Emulator.getConfig().getBoolean("logging.errors.runtime"))
