@@ -41,6 +41,7 @@ public class RoomUserKickEvent extends MessageHandler
 
         if(room.hasRights(this.client.getHabbo()) || this.client.getHabbo().hasPermission("acc_anyroomowner") || this.client.getHabbo().hasPermission("acc_ambassador"))
         {
+            target.getClient().sendResponse(new GenericErrorMessagesComposer(GenericErrorMessagesComposer.KICKED_OUT_OF_THE_ROOM));
             room.kickHabbo(target);
         }
     }
