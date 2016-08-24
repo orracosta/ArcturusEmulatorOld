@@ -1,5 +1,6 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.triggers;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.rooms.Room;
@@ -65,7 +66,7 @@ public class WiredTriggerCollision extends InteractionWiredTrigger
     public void serializeWiredData(ServerMessage message)
     {
         message.appendBoolean(false);
-        message.appendInt32(5);
+        message.appendInt32(Emulator.getConfig().getInt("hotel.wired.furni.selection.count"));
         message.appendInt32(0);
         message.appendInt32(this.getBaseItem().getSpriteId());
         message.appendInt32(this.getId());

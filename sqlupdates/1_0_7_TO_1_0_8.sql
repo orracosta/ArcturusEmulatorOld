@@ -161,7 +161,10 @@ ALTER TABLE  `items_crackable` CHANGE  `prizes`  `prizes` VARCHAR( 255 ) CHARACT
 INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.trading.enabled', '1');
 INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.catalog.recycler.enabled', '1');
 INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('debug.show.errors', '1');
-DELETE FROM emulator_settings WHERE `key` LIKE 'emulator.log%';
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.wired.furni.selection.count', '5');
+
 UPDATE `emulator_settings` SET  `key` =  'hotel.catalog.discounts.amount' WHERE  `emulator_settings`.`key` =  'hotel.catalogue.discounts.amount';
+
+DELETE FROM emulator_settings WHERE `key` LIKE 'emulator.log%';
 
 #END DATABASE UPDATE: 1.0.7 -> 1.0.8

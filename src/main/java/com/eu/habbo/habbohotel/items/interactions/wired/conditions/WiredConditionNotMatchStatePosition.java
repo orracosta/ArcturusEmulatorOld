@@ -149,7 +149,7 @@ public class WiredConditionNotMatchStatePosition extends InteractionWiredConditi
         this.refresh();
 
         message.appendBoolean(false);
-        message.appendInt32(5);
+        message.appendInt32(Emulator.getConfig().getInt("hotel.wired.furni.selection.count"));
         message.appendInt32(this.settings.size());
 
         for(WiredMatchFurniSetting item : this.settings)

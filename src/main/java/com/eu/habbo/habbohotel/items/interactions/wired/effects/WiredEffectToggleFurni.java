@@ -52,7 +52,7 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
             }
 
             message.appendBoolean(false);
-            message.appendInt32(5);
+            message.appendInt32(Emulator.getConfig().getInt("hotel.wired.furni.selection.count"));
             message.appendInt32(this.items.size());
             for (HabboItem item : this.items)
             {
