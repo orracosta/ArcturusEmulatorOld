@@ -30,7 +30,7 @@ public class GuildDeleteEvent extends MessageHandler
 
                     if (guild.getRoomId() == this.client.getHabbo().getHabboInfo().getCurrentRoom().getId())
                     {
-                        this.client.sendResponse(new RoomSettingsComposer(this.client.getHabbo().getHabboInfo().getCurrentRoom()));
+                        this.client.sendResponse(new RoomDataComposer(this.client.getHabbo().getHabboInfo().getCurrentRoom(), this.client.getHabbo(), false, false));
                     }
                 }
             }
