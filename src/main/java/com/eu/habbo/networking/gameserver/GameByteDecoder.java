@@ -51,7 +51,7 @@ public class GameByteDecoder extends ByteToMessageDecoder
             return;
         }
 
-        if (in.readableBytes() < length)
+        if (in.readableBytes() < length || length < 0)
         {
             in.resetReaderIndex();
             return;
