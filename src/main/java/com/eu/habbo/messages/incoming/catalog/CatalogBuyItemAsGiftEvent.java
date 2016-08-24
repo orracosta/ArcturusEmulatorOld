@@ -12,11 +12,13 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.*;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.HotelWillCloseInMinutesComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
 import com.eu.habbo.messages.outgoing.users.UserCurrencyComposer;
 import com.eu.habbo.messages.outgoing.users.UserPointsComposer;
+import com.eu.habbo.threading.runnables.ShutdownEmulator;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.PreparedStatement;
@@ -29,6 +31,12 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
+        if (ShutdownEmulator.timestamp > 0)
+        {
+            this.client.sendResponse(new HotelWillCloseInMinutesComposer((ShutdownEmulator.timestamp - Emulator.getIntUnixTimestamp()) / 60));
+            return;
+        }
+
         int pageId = this.packet.readInt();
         int itemId = this.packet.readInt();
         String extraData = this.packet.readString();

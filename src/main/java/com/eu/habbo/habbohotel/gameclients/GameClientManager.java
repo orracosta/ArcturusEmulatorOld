@@ -123,7 +123,7 @@ public class GameClientManager
         sendBroadcastResponse(composer.compose());
     }
 
-    void sendBroadcastResponse(ServerMessage msg)
+    public void sendBroadcastResponse(ServerMessage msg)
     {
         for (GameClient client : this.clients.values()) {
             client.sendResponse(msg);

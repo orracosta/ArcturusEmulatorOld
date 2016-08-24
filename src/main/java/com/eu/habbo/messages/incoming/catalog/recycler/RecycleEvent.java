@@ -5,10 +5,12 @@ import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.RecyclerCompleteComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.HotelWillCloseInMinutesComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.inventory.RemoveHabboItemComposer;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;
+import com.eu.habbo.threading.runnables.ShutdownEmulator;
 import gnu.trove.set.hash.THashSet;
 
 public class RecycleEvent extends MessageHandler
@@ -16,7 +18,13 @@ public class RecycleEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        if(Emulator.getGameEnvironment().getCatalogManager().ecotronItem != null)
+        if (ShutdownEmulator.timestamp > 0)
+        {
+            this.client.sendResponse(new HotelWillCloseInMinutesComposer((ShutdownEmulator.timestamp - Emulator.getIntUnixTimestamp()) / 60));
+            return;
+        }
+
+        if(Emulator.getGameEnvironment().getCatalogManager().ecotronItem != null && Emulator.getConfig().getBoolean("hotel.catalog.recycler.enabled"))
         {
             THashSet<HabboItem> items = new THashSet<HabboItem>();
 

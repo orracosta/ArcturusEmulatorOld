@@ -1,5 +1,6 @@
 package com.eu.habbo.messages.incoming.trading;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -22,6 +23,12 @@ public class TradeStartEvent extends MessageHandler
                 if (this.client.getHabbo().hasPermission("acc_trade_anywhere"))
                 {
                     room.startTrade(this.client.getHabbo(), targetUser);
+                    return;
+                }
+
+                if (!Emulator.getConfig().getBoolean("hotel.trading.enabled"))
+                {
+                    this.client.sendResponse(new TradeStartFailComposer(TradeStartFailComposer.HOTEL_TRADING_NOT_ALLOWED));
                     return;
                 }
 

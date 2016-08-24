@@ -891,9 +891,9 @@ public class CatalogManager
 
             for(CatalogItem item : pageIterator.value().getCatalogItems().valueCollection())
             {
-                if(!item.isLimited())
+                item.run();
+                if(item.isLimited())
                 {
-                    item.run();
                     this.limitedNumbers.get(item.getId()).run();
                 }
             }

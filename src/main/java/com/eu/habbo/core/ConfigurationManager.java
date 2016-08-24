@@ -184,4 +184,14 @@ public class ConfigurationManager
         }
         return defaultValue;
     }
+
+    /**
+     * Updates the give key.
+     * @param key The key to update.
+     * @param value The new value.
+     */
+    public void update(String key, String value)
+    {
+        this.properties.setProperty(key, value);
+    }
 }

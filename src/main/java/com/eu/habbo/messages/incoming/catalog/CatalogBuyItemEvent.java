@@ -9,8 +9,10 @@ import com.eu.habbo.habbohotel.catalog.layouts.RoomBundleLayout;
 import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.*;
+import com.eu.habbo.messages.outgoing.generic.alerts.HotelWillCloseInMinutesComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.users.*;
+import com.eu.habbo.threading.runnables.ShutdownEmulator;
 import gnu.trove.procedure.TObjectProcedure;
 
 public class CatalogBuyItemEvent extends MessageHandler
@@ -18,6 +20,12 @@ public class CatalogBuyItemEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
+        if (ShutdownEmulator.timestamp > 0)
+        {
+            this.client.sendResponse(new HotelWillCloseInMinutesComposer((ShutdownEmulator.timestamp - Emulator.getIntUnixTimestamp()) / 60));
+            return;
+        }
+
         int pageId = this.packet.readInt();
         int itemId = this.packet.readInt();
         String extraData = this.packet.readString();
