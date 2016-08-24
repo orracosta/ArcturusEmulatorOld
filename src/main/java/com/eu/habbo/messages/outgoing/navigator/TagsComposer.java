@@ -25,7 +25,7 @@ public class TagsComposer extends MessageComposer
         {
             this.response.appendString(s);
             this.response.appendInt32(i);
-            ++i;
+            i++;
         }
 
         return this.response;

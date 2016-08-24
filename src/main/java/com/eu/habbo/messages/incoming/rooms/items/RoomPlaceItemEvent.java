@@ -175,7 +175,7 @@ public class RoomPlaceItemEvent extends MessageHandler
                             this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
                             return;
                         }
-                        if (room.getHabbosAt(i, j).size() > 0)
+                        if (!room.getHabbosAt(i, j).isEmpty())
                         {
                             this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
                             return;

@@ -132,7 +132,7 @@ public class RotateMoveItemEvent extends MessageHandler
                         return;
                     }
 
-                    if (room.getHabbosAt(i, j).size() > 0 && !item.getBaseItem().allowSit() && !(item instanceof InteractionStackHelper))
+                    if (!room.getHabbosAt(i, j).isEmpty() && !item.getBaseItem().allowSit() && !(item instanceof InteractionStackHelper))
                     {
                         this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
                         this.client.sendResponse(new FloorItemUpdateComposer(item));

@@ -960,7 +960,7 @@ public class RoomManager {
                 if(tagCount.get(s) != null)
                     i++;
 
-                tagCount.put(s, ++i);
+                tagCount.put(s, i++);
             }
         }
         return new TreeMap<String, Integer>(tagCount).keySet();

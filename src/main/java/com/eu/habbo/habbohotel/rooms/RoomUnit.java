@@ -209,7 +209,7 @@ public class RoomUnit
                 if (!room.tileWalkable(next.getX(), next.getY()) && !(item instanceof InteractionTeleport))
                 {
                     this.getPathFinder().findPath();
-                    if (this.getPathFinder().getPath().size() == 0)
+                    if (this.getPathFinder().getPath().isEmpty())
                     {
                         room.sendComposer(new RoomUserStatusComposer(this).compose());
                         return false;

@@ -60,7 +60,7 @@ public class PetData
             this.petVocals.put(type, new THashSet<PetVocal>());
         }
 
-        if(PetData.generalPetVocals.size() == 0)
+        if(PetData.generalPetVocals.isEmpty())
         {
             for(PetVocalsType type : PetVocalsType.values())
             {

@@ -41,7 +41,7 @@ public class PathFinder
 
                 Queue<Node> nodeQueue = gameMap.findPath(this.roomUnit.getX(), this.roomUnit.getY(), this.roomUnit.getGoalX(), this.roomUnit.getGoalY(), room);
 
-                if (nodeQueue.size() > 0) {
+                if (!nodeQueue.isEmpty()) {
                     try {
                         gameMap.finalize();
                     } catch (Throwable e) {

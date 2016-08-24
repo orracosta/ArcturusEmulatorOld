@@ -541,7 +541,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             }
 
             THashSet<HabboItem> items = getItemsAt(x, y);
-            if(items.size() == 0)
+            if(items.isEmpty())
                 return true;
 
             boolean walkAble = true;
@@ -1632,7 +1632,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             {
 
                 if(this.idleCycles < 60)
-                    ++this.idleCycles;
+                    this.idleCycles++;
                 else
                     this.dispose();
             }

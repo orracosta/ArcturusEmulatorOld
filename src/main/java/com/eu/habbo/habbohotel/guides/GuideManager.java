@@ -292,7 +292,7 @@ public class GuideManager
         {
             int total = 0;
 
-            if(this.tourRequestTiming.size() == 0)
+            if(this.tourRequestTiming.isEmpty())
                 return 5;
 
             for(Map.Entry<Integer, Integer> set : this.tourRequestTiming.entrySet())

@@ -313,7 +313,7 @@ public class CatalogManager
 
                 if (item == null)
                 {
-                    ++catalogItemAmount;
+                    catalogItemAmount++;
                     item = new CatalogItem(set);
                     page.addItem(item);
 

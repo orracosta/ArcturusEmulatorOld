@@ -87,9 +87,9 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
                 if(target.getRoomUnit().getX() == item.getX())
                 {
                     if (item.getY() < target.getRoomUnit().getY())
-                        ++y;
+                        y++;
                     else
-                        --y;
+                        y--;
 
                     Tile newTile = new Tile(item.getX() + x, item.getY() + y, 0);
 
@@ -116,9 +116,9 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
                 if(target.getRoomUnit().getY() == item.getY() || notFound)
                 {
                     if (item.getX() < target.getRoomUnit().getX())
-                        ++x;
+                        x++;
                     else
-                        --x;
+                        x--;
 
                     Tile newTile = new Tile(item.getX() + x, item.getY() + y, 0);
 

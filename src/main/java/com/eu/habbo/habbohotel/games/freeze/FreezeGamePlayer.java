@@ -58,7 +58,7 @@ public class FreezeGamePlayer extends GamePlayer
     {
         if(this.lives < FreezeGame.MAX_LIVES)
         {
-            ++this.lives;
+            this.lives++;
             super.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new FreezeLivesComposer(this).compose());
         }
     }
@@ -97,7 +97,7 @@ public class FreezeGamePlayer extends GamePlayer
     public synchronized void addSnowball()
     {
         if(this.snowBalls < FreezeGame.MAX_SNOWBALLS)
-            ++this.snowBalls;
+            this.snowBalls++;
     }
 
     public synchronized void addSnowball(int amount)
@@ -111,7 +111,7 @@ public class FreezeGamePlayer extends GamePlayer
     public synchronized void takeSnowball()
     {
         if(this.snowBalls > 0)
-            --this.snowBalls;
+            this.snowBalls--;
     }
 
     public synchronized boolean canThrowSnowball()
@@ -181,7 +181,7 @@ public class FreezeGamePlayer extends GamePlayer
     public synchronized void increaseExplosion()
     {
         if(this.explosionBoost < 5)
-            ++this.explosionBoost;
+            this.explosionBoost++;
     }
 
     public synchronized void addExplosion(int radius)
@@ -205,7 +205,7 @@ public class FreezeGamePlayer extends GamePlayer
 
         if(this.isProtected())
         {
-            --this.protectionTime;
+            this.protectionTime--;
 
             if(!this.isProtected())
                 needsEffectUpdate = true;
@@ -213,7 +213,7 @@ public class FreezeGamePlayer extends GamePlayer
 
         if(this.frozenTime > 0)
         {
-            --this.frozenTime;
+            this.frozenTime--;
 
             if(frozenTime <= 0)
             {

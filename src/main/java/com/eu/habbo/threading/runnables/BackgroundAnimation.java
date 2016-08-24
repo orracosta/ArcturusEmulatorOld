@@ -30,7 +30,7 @@ public class BackgroundAnimation implements Runnable
             if (this.toner.getRoomId() > 0 && this.length > 0)
             {
                 Emulator.getThreading().run(this, 500);
-                --this.length;
+                this.length--;
             }
         }
     }

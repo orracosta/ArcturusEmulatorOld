@@ -127,7 +127,7 @@ public class WiredConditionNotFurniTypeMatch extends InteractionWiredCondition
 
         if(room != null)
         {
-            for (int i = 0; i < count; ++i)
+            for (int i = 0; i < count; i++)
             {
                 this.items.add(room.getHabboItem(packet.readInt()));
             }

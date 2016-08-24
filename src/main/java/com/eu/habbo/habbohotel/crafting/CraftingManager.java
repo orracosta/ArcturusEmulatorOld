@@ -101,7 +101,7 @@ public class CraftingManager
                 {
                     if (altar.hasIngredient(item))
                     {
-                        ++i[0];
+                        i[0]++;
                     }
 
                     return true;
