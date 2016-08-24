@@ -34,7 +34,7 @@ public class InteractionRoller extends HabboItem
     @Override
     public boolean canWalkOn(RoomUnit roomUnit, Room room, Object[] objects)
     {
-        return false;
+        return true;
     }
 
     @Override
