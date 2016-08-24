@@ -97,20 +97,21 @@ public class InteractionWater extends InteractionDefault
         if (_11 == 0 && !room.getLayout().tileWalkable(this.getX() + 1, this.getY() + 2)) _11 = 1;
 
         int result = 0;
-        result |= _1  <<  11;
-        result |= _2  <<  10;
-        result |= _3  <<  9;
-        result |= _4  <<  8;
-        result |= _5  <<  7;
-        result |= _6  <<  6;
-        result |= _7  <<  5;
-        result |= _8  <<  4;
-        result |= _9  <<  3;
-        result |= _10  << 2;
-        result |= _11  << 1;
-        result |= _12  << 0;
+        result |= _1  << 11;
+        result |= _2  << 10;
+        result |= _3  << 9;
+        result |= _4  << 8;
+        result |= _5  << 7;
+        result |= _6  << 6;
+        result |= _7  << 5;
+        result |= _8  << 4;
+        result |= _9  << 3;
+        result |= _10 << 2;
+        result |= _11 << 1;
+        result |= _12 << 0;
 
         this.setExtradata(result + "");
+        this.needsUpdate(true);
         room.updateItem(this);
     }
 
