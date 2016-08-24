@@ -36,34 +36,37 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
     @Override
     public void serializeWiredData(ServerMessage message)
     {
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
-
-        for(HabboItem item : this.items)
+        synchronized (this.items)
         {
-            if(item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
-                items.add(item);
-        }
+            THashSet<HabboItem> items = new THashSet<HabboItem>();
 
-        for(HabboItem item : items)
-        {
-            this.items.remove(item);
-        }
+            for (HabboItem item : this.items)
+            {
+                if (item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
+                    items.add(item);
+            }
 
-        message.appendBoolean(false);
-        message.appendInt32(5);
-        message.appendInt32(this.items.size());
-        for(HabboItem item : this.items)
-        {
-            message.appendInt32(item.getId());
+            for (HabboItem item : items)
+            {
+                this.items.remove(item);
+            }
+
+            message.appendBoolean(false);
+            message.appendInt32(5);
+            message.appendInt32(this.items.size());
+            for (HabboItem item : this.items)
+            {
+                message.appendInt32(item.getId());
+            }
+            message.appendInt32(this.getBaseItem().getSpriteId());
+            message.appendInt32(this.getId());
+            message.appendString("");
+            message.appendInt32(0);
+            message.appendInt32(0);
+            message.appendInt32(this.getType().code);
+            message.appendInt32(this.getDelay());
+            message.appendInt32(0);
         }
-        message.appendInt32(this.getBaseItem().getSpriteId());
-        message.appendInt32(this.getId());
-        message.appendString("");
-        message.appendInt32(0);
-        message.appendInt32(0);
-        message.appendInt32(this.getType().code);
-        message.appendInt32(this.getDelay());
-        message.appendInt32(0);
     }
 
     @Override
@@ -72,13 +75,16 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
         packet.readInt();
         packet.readString();
 
-        this.items.clear();
-
-        int count = packet.readInt();
-
-        for(int i = 0; i < count; i++)
+        synchronized (this.items)
         {
-            this.items.add(Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(packet.readInt()));
+            this.items.clear();
+
+            int count = packet.readInt();
+
+            for (int i = 0; i < count; i++)
+            {
+                this.items.add(Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(packet.readInt()));
+            }
         }
 
         this.setDelay(packet.readInt());
@@ -89,42 +95,44 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
-        Habbo habbo = room.getHabbo(roomUnit);
-        THashSet<HabboItem> items = this.items;
-
-        HabboItem triggerItem = null;
-
-        if (stuff != null && stuff.length > 0)
+        synchronized (this.items)
         {
-            if (stuff[0] instanceof HabboItem)
+            Habbo habbo = room.getHabbo(roomUnit);
+            THashSet<HabboItem> items = this.items;
+
+            HabboItem triggerItem = null;
+
+            if (stuff != null && stuff.length > 0)
             {
-                triggerItem = (HabboItem) stuff[0];
+                if (stuff[0] instanceof HabboItem)
+                {
+                    triggerItem = (HabboItem) stuff[0];
+                }
+            }
+
+            for (HabboItem item : items)
+            {
+                if (item.getRoomId() == 0)
+                {
+                    this.items.remove(item);
+                    continue;
+                }
+
+                if (triggerItem != null && triggerItem.getId() == item.getId())
+                {
+                    continue;
+                }
+
+                try
+                {
+                    item.onClick(habbo != null ? habbo.getClient() : null, room, new Object[]{item.getExtradata().length() == 0 ? 0 : Integer.valueOf(item.getExtradata()), this.getType()});
+                }
+                catch (Exception e)
+                {
+                    Emulator.getLogging().logErrorLine(e);
+                }
             }
         }
-
-        for(HabboItem item : items)
-        {
-            if(item.getRoomId() == 0)
-            {
-                this.items.remove(item);
-                continue;
-            }
-
-            if (triggerItem != null && triggerItem.getId() == item.getId())
-            {
-                continue;
-            }
-
-            try
-            {
-                item.onClick(habbo != null ? habbo.getClient() : null, room, new Object[]{item.getExtradata().length() == 0 ? 0 : Integer.valueOf(item.getExtradata()), this.getType()});
-            }
-            catch (Exception e)
-            {
-                Emulator.getLogging().logErrorLine(e);
-            }
-        }
-
         return true;
     }
 
@@ -133,11 +141,14 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
     {
         String wiredData = this.getDelay() + "\t";
 
-        if(items != null && !items.isEmpty())
+        synchronized (this.items)
         {
-            for (HabboItem item : this.items)
+            if(items != null && !items.isEmpty())
             {
-                wiredData += item.getId() + ";";
+                for (HabboItem item : this.items)
+                {
+                    wiredData += item.getId() + ";";
+                }
             }
         }
 
@@ -147,23 +158,26 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
     @Override
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
-        this.items = new THashSet<HabboItem>();
-        String[] wiredData = set.getString("wired_data").split("\t");
+        synchronized (this.items)
+        {
+            this.items = new THashSet<HabboItem>();
+            String[] wiredData = set.getString("wired_data").split("\t");
 
-        if (wiredData.length >= 1)
-        {
-            this.setDelay(Integer.valueOf(wiredData[0]));
-        }
-        if (wiredData.length == 2)
-        {
-            if (wiredData[1].contains(";"))
+            if (wiredData.length >= 1)
             {
-                for (String s : wiredData[1].split(";"))
+                this.setDelay(Integer.valueOf(wiredData[0]));
+            }
+            if (wiredData.length == 2)
+            {
+                if (wiredData[1].contains(";"))
                 {
-                    HabboItem item = room.getHabboItem(Integer.valueOf(s));
+                    for (String s : wiredData[1].split(";"))
+                    {
+                        HabboItem item = room.getHabboItem(Integer.valueOf(s));
 
-                    if (item != null)
-                        this.items.add(item);
+                        if (item != null)
+                            this.items.add(item);
+                    }
                 }
             }
         }
@@ -172,8 +186,11 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
     @Override
     public void onPickUp()
     {
-        this.items.clear();
-        this.setDelay(0);
+        synchronized (this.items)
+        {
+            this.items.clear();
+            this.setDelay(0);
+        }
     }
 
     @Override
