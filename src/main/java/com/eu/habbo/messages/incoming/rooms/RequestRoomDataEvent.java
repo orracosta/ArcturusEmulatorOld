@@ -23,7 +23,8 @@ public class RequestRoomDataEvent extends MessageHandler
                 unknown = false;
             }
 
-            this.client.sendResponse(new RoomDataComposer(room, this.client.getHabbo(), this.client.getHabbo().getHabboInfo().getCurrentRoom() != room, unknown));
+            //this.client.getHabbo().getHabboInfo().getCurrentRoom() != room
+            this.client.sendResponse(new RoomDataComposer(room, this.client.getHabbo(), true, unknown));
         }
     }
 }

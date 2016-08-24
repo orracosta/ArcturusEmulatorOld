@@ -879,9 +879,6 @@ public class RoomManager {
 
     void logEnter(Habbo habbo, Room room)
     {
-        if(habbo.getHabboInfo().getCurrentRoom() == room)
-            return;
-
         try
         {
             PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO room_enter_log (room_id, user_id, timestamp) VALUES(?, ?, ?)");
