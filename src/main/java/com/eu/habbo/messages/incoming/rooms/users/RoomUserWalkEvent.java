@@ -13,59 +13,61 @@ public class RoomUserWalkEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        int x = this.packet.readInt();
-        int y = this.packet.readInt();
-
-        Habbo habbo = this.client.getHabbo();
-        RoomUnit roomUnit = this.client.getHabbo().getRoomUnit();
-
-        if(roomUnit.isTeleporting)
-            return;
-
-        if(roomUnit.getCacheable().get("control") != null)
+        if (this.client.getHabbo().getHabboInfo().getCurrentRoom() != null)
         {
-            habbo = (Habbo)roomUnit.getCacheable().get("control");
+            int x = this.packet.readInt();
+            int y = this.packet.readInt();
 
-            if(habbo.getHabboInfo().getCurrentRoom() != this.client.getHabbo().getHabboInfo().getCurrentRoom())
+            Habbo habbo = this.client.getHabbo();
+            RoomUnit roomUnit = this.client.getHabbo().getRoomUnit();
+
+            if (roomUnit.isTeleporting)
+                return;
+
+            if (roomUnit.getCacheable().get("control") != null)
             {
-                habbo.getRoomUnit().getCacheable().remove("controller");
-                this.client.getHabbo().getRoomUnit().getCacheable().remove("control");
-                habbo = this.client.getHabbo();
-            }
-        }
+                habbo = (Habbo) roomUnit.getCacheable().get("control");
 
-        roomUnit = habbo.getRoomUnit();
-
-        try
-        {
-            if (roomUnit != null && roomUnit.isInRoom() && roomUnit.canWalk())
-            {
-                if (!roomUnit.cmdTeleport)
+                if (habbo.getHabboInfo().getCurrentRoom() != this.client.getHabbo().getHabboInfo().getCurrentRoom())
                 {
-                    if (habbo.getHabboInfo().getRiding() != null && habbo.getHabboInfo().getRiding().getTask().equals(PetTask.JUMP))
-                        return;
-
-                    if (x == roomUnit.getX() && y == roomUnit.getY())
-                        return;
-
-                    roomUnit.setGoalLocation(x, y);
+                    habbo.getRoomUnit().getCacheable().remove("controller");
+                    this.client.getHabbo().getRoomUnit().getCacheable().remove("control");
+                    habbo = this.client.getHabbo();
                 }
-                else
-                {
-                    roomUnit.stopWalking();
-                    Tile t = new Tile(x, y, habbo.getHabboInfo().getCurrentRoom().getTopHeightAt(x, y));
-                    habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUnitOnRollerComposer(roomUnit, null, t, habbo.getHabboInfo().getCurrentRoom()).compose());
+            }
 
-                    if (habbo.getHabboInfo().getRiding() != null)
+            roomUnit = habbo.getRoomUnit();
+
+            try
+            {
+                if (roomUnit != null && roomUnit.isInRoom() && roomUnit.canWalk())
+                {
+                    if (!roomUnit.cmdTeleport)
                     {
-                        habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUnitOnRollerComposer(habbo.getHabboInfo().getRiding().getRoomUnit(), null, t, habbo.getHabboInfo().getCurrentRoom()).compose());
+                        if (habbo.getHabboInfo().getRiding() != null && habbo.getHabboInfo().getRiding().getTask().equals(PetTask.JUMP))
+                            return;
+
+                        if (x == roomUnit.getX() && y == roomUnit.getY())
+                            return;
+
+                        roomUnit.setGoalLocation(x, y);
+                    }
+                    else
+                    {
+                        Tile t = new Tile(x, y, habbo.getHabboInfo().getCurrentRoom().getTopHeightAt(x, y));
+                        habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUnitOnRollerComposer(roomUnit, null, t, habbo.getHabboInfo().getCurrentRoom()).compose());
+
+                        if (habbo.getHabboInfo().getRiding() != null)
+                        {
+                            habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUnitOnRollerComposer(habbo.getHabboInfo().getRiding().getRoomUnit(), null, t, habbo.getHabboInfo().getCurrentRoom()).compose());
+                        }
                     }
                 }
             }
-        }
-        catch (Exception e)
-        {
-            Emulator.getLogging().logErrorLine(e);
+            catch (Exception e)
+            {
+                Emulator.getLogging().logErrorLine(e);
+            }
         }
     }
 }
