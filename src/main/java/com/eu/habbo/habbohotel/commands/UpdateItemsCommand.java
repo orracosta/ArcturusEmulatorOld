@@ -2,8 +2,10 @@ package com.eu.habbo.habbohotel.commands;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
+import com.eu.habbo.messages.outgoing.rooms.RoomRelativeMapComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
 public class UpdateItemsCommand extends Command
@@ -20,6 +22,17 @@ public class UpdateItemsCommand extends Command
         Emulator.getGameEnvironment().getItemManager().loadCrackable();
         Emulator.getGameEnvironment().getItemManager().loadSoundTracks();
 
+        synchronized (Emulator.getGameEnvironment().getRoomManager().getActiveRooms())
+        {
+            for (Room room : Emulator.getGameEnvironment().getRoomManager().getActiveRooms())
+            {
+                if (room.isLoaded() && room.getUserCount() > 0)
+                {
+                    room.sendComposer(new RoomRelativeMapComposer(room).compose());
+                }
+            }
+        }
+        
         gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_update_items"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
 
         return true;
