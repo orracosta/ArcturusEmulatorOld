@@ -1,11 +1,13 @@
 package com.eu.habbo.messages.incoming.crafting;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.crafting.CraftingAltar;
 import com.eu.habbo.habbohotel.crafting.CraftingRecipe;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
+import com.eu.habbo.messages.outgoing.catalog.AlertLimitedSoldOutComposer;
 import com.eu.habbo.messages.outgoing.crafting.CraftingResultComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
@@ -30,6 +32,12 @@ public class CraftingCraftItemEvent extends MessageHandler
 
         if (recipe != null)
         {
+            if (!recipe.canBeCrafted())
+            {
+                this.client.sendResponse(new AlertLimitedSoldOutComposer());
+                return;
+            }
+
             TIntObjectHashMap<HabboItem> toRemove = new TIntObjectHashMap<HabboItem>();
             for (Map.Entry<Item, Integer> set : recipe.getIngredients().entrySet())
             {
@@ -50,8 +58,17 @@ public class CraftingCraftItemEvent extends MessageHandler
 
             if (rewardItem != null)
             {
-                this.client.sendResponse(new CraftingResultComposer(recipe));
+                if (recipe.isLimited())
+                {
+                    recipe.decrease();
+                }
 
+                if (!recipe.getAchievement().isEmpty())
+                {
+                    AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement(recipe.getAchievement()));
+                }
+
+                this.client.sendResponse(new CraftingResultComposer(recipe));
                 this.client.getHabbo().getHabboInventory().getItemsComponent().addItem(rewardItem);
                 this.client.sendResponse(new AddHabboItemComposer(rewardItem));
                 toRemove.forEachValue(new TObjectProcedure<HabboItem>()

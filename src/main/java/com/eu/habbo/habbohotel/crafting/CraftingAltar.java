@@ -43,6 +43,11 @@ public class CraftingAltar
             boolean contains = true;
             boolean equals = true;
 
+            if (set.getValue().isLimited() && set.getValue().getRemaining() <= 0)
+            {
+                continue;
+            }
+
             for (Map.Entry<Item, Integer> entry : set.getValue().getIngredients().entrySet())
             {
                 if (contains)

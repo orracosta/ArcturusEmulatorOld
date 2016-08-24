@@ -93,11 +93,6 @@ public class CraftingRecipe
         return this.limited;
     }
 
-    public int getRemaining()
-    {
-        return this.remaining;
-    }
-
     public THashMap<Item, Integer> getIngredients()
     {
         return this.ingredients;
