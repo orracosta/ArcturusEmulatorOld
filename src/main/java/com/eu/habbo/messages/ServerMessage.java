@@ -65,6 +65,12 @@ public class ServerMessage
 
     public void appendString(String obj)
     {
+        if (obj == null)
+        {
+            this.appendString("");
+            return;
+        }
+
         try
         {
             byte[] data = obj.getBytes();
