@@ -159,6 +159,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     //Use appropriately. Could potentially cause memory leaks when used incorrectly.
     public volatile boolean preventUnloading = false;
     public volatile boolean preventUncaching = false;
+    public THashMap<Integer, TIntArrayList> waterTiles;
 
     public Room(ResultSet set) throws SQLException
     {
@@ -2348,6 +2349,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             } else if (item instanceof InteractionTalkingFurniture)
             {
                 this.roomSpecialTypes.addUndefined(item);
+            } else if (item instanceof InteractionWater)
+            {
+                this.roomSpecialTypes.addUndefined(item);
             } else if (item instanceof InteractionWaterItem)
             {
                 this.roomSpecialTypes.addUndefined(item);
@@ -2511,6 +2515,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 this.roomSpecialTypes.removeUndefined(item);
             }
             else if (item instanceof InteractionTalkingFurniture)
+            {
+                this.roomSpecialTypes.removeUndefined(item);
+            }
+            else if (item instanceof InteractionWater)
             {
                 this.roomSpecialTypes.removeUndefined(item);
             }
