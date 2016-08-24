@@ -85,6 +85,11 @@ public class CatalogManager
     public final Item ecotronItem;
 
     /**
+     * The numbers available for limited furniture.
+     */
+    public final THashMap<Integer, CatalogLimitedConfiguration> limitedNumbers;
+
+    /**
      * The amount of items that are on sale.
      */
     public static int catalogItemAmount;
@@ -134,17 +139,21 @@ public class CatalogManager
 
     public CatalogManager()
     {
-        long millis = System.currentTimeMillis();
-        this.catalogPages = TCollections.synchronizedMap(new TIntObjectHashMap<CatalogPage>());
-        this.prizes = new THashMap<Integer, THashSet<Item>>();
-        this.giftWrappers = new THashMap<Integer, Integer>();
-        this.giftFurnis = new THashMap<Integer, Integer>();
-        this.clubItems = new THashSet<CatalogItem>();
-        this.clothing = new THashMap<Integer, ClothItem>();
-        this.offerDefs = new TIntIntHashMap();
-        this.vouchers = new ArrayList<Voucher>();
+        long millis         = System.currentTimeMillis();
+        this.catalogPages   = TCollections.synchronizedMap(new TIntObjectHashMap<CatalogPage>());
+        this.prizes         = new THashMap<Integer, THashSet<Item>>();
+        this.giftWrappers   = new THashMap<Integer, Integer>();
+        this.giftFurnis     = new THashMap<Integer, Integer>();
+        this.clubItems      = new THashSet<CatalogItem>();
+        this.clothing       = new THashMap<Integer, ClothItem>();
+        this.offerDefs      = new TIntIntHashMap();
+        this.vouchers       = new ArrayList<Voucher>();
+        this.limitedNumbers = new THashMap<Integer, CatalogLimitedConfiguration>();
+
         this.initialize();
+
         this.ecotronItem = Emulator.getGameEnvironment().getItemManager().getItem("ecotron_box");
+
         Emulator.getLogging().logStart("Catalog Manager -> Loaded! ("+(System.currentTimeMillis() - millis)+" MS)");
     }
 
@@ -157,6 +166,7 @@ public class CatalogManager
 
         try
         {
+            loadLimitedNumbers();
             loadCatalogPages();
             loadCatalogItems();
             loadVouchers();
@@ -167,6 +177,49 @@ public class CatalogManager
         catch(SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
+        }
+    }
+
+    private synchronized void loadLimitedNumbers() throws SQLException
+    {
+        this.limitedNumbers.clear();
+
+        PreparedStatement statement = null;
+
+        THashMap<Integer, LinkedList<Integer>> limiteds = new THashMap<Integer, LinkedList<Integer>>();
+        try
+        {
+            statement = Emulator.getDatabase().prepare("SELECT * FROM catalog_items_limited WHERE user_id = 0");
+            ResultSet set = statement.executeQuery();
+
+            while (set.next())
+            {
+                if (!limiteds.containsKey(set.getInt("catalog_item_id")))
+                {
+                    limiteds.put(set.getInt("catalog_item_id"), new LinkedList<Integer>());
+                }
+
+                limiteds.get(set.getInt("catalog_item_id")).push(set.getInt("number"));
+            }
+
+            set.close();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+        finally
+        {
+            if (statement != null)
+            {
+                statement.close();
+                statement.getConnection().close();
+            }
+        }
+
+        for (Map.Entry<Integer, LinkedList<Integer>> set : limiteds.entrySet())
+        {
+            this.limitedNumbers.put(set.getKey(), new CatalogLimitedConfiguration(set.getKey(), set.getValue()));
         }
     }
 
@@ -273,6 +326,11 @@ public class CatalogManager
                 }
                 else
                     item.update(set);
+
+                if (item.isLimited())
+                {
+                    this.createOrUpdateLimitedConfig(item);
+                }
             }
 
             set.close();
@@ -776,6 +834,50 @@ public class CatalogManager
         return catalogPage;
     }
 
+    public CatalogLimitedConfiguration getLimitedConfig(CatalogItem item)
+    {
+        synchronized (this.limitedNumbers)
+        {
+            return this.limitedNumbers.get(item.getId());
+        }
+    }
+
+    public CatalogLimitedConfiguration createOrUpdateLimitedConfig(CatalogItem item)
+    {
+        if (item.isLimited())
+        {
+            CatalogLimitedConfiguration limitedConfiguration = this.limitedNumbers.get(item.getId());
+
+            if (limitedConfiguration == null)
+            {
+                limitedConfiguration = new CatalogLimitedConfiguration(item.getId(), new LinkedList<Integer>());
+                limitedConfiguration.generateNumbers(1, item.limitedStack);
+                this.limitedNumbers.put(item.getId(), limitedConfiguration);
+            }
+            else
+            {
+                if (limitedConfiguration.getTotalSet() != item.limitedStack)
+                {
+                    if (limitedConfiguration.getTotalSet() == 0)
+                    {
+                        limitedConfiguration.setTotalSet(item.limitedStack);
+                    }
+                    else if (item.limitedStack > limitedConfiguration.getTotalSet())
+                    {
+                        limitedConfiguration.generateNumbers(item.limitedStack + 1, item.limitedStack - limitedConfiguration.getTotalSet());
+                    }
+                    else
+                    {
+                        item.limitedStack = limitedConfiguration.getTotalSet();
+                    }
+                }
+            }
+
+            return limitedConfiguration;
+        }
+
+        return null;
+    }
     /**
      * Disposes the CatalogManager.
      */
@@ -792,6 +894,7 @@ public class CatalogManager
                 if(!item.isLimited())
                 {
                     item.run();
+                    this.limitedNumbers.get(item.getId()).run();
                 }
             }
         }
@@ -817,15 +920,17 @@ public class CatalogManager
 
         try
         {
+            CatalogLimitedConfiguration limitedConfiguration = null;
+            int limitedStack = 0;
+            int limitedNumber = 0;
             if (item.isLimited())
             {
                 amount = 1;
-                if (item.getLimitedSells() == item.getLimitedStack())
+                if (this.getLimitedConfig(item).available() == 0)
                 {
                     habbo.getClient().sendResponse(new AlertLimitedSoldOutComposer());
                     return;
                 }
-                item.sellRare();
             }
 
             if(amount > 1)
@@ -864,6 +969,20 @@ public class CatalogManager
                 habbo.getClient().sendResponse(new AlertPurchaseUnavailableComposer(AlertPurchaseUnavailableComposer.ILLEGAL));
                 return;
             }
+
+            if (item.isLimited())
+            {
+                limitedConfiguration = this.getLimitedConfig(item);
+
+                if (limitedConfiguration == null)
+                {
+                    limitedConfiguration = this.createOrUpdateLimitedConfig(item);
+                }
+
+                limitedNumber = limitedConfiguration.getNumber();
+                limitedStack = limitedConfiguration.getTotalSet();
+            }
+
 
             for(int i = 0; i < amount; i++)
             {
@@ -958,15 +1077,15 @@ public class CatalogManager
 
                                             if (baseItem.getInteractionType().getType() == InteractionTeleport.class)
                                             {
-                                                HabboItem teleportOne = Emulator.getGameEnvironment().getItemManager().createItem(habbo.getClient().getHabbo(), item, baseItem, extradata);
-                                                HabboItem teleportTwo = Emulator.getGameEnvironment().getItemManager().createItem(habbo.getClient().getHabbo(), item, baseItem, extradata);
+                                                HabboItem teleportOne = Emulator.getGameEnvironment().getItemManager().createItem(habbo.getClient().getHabbo().getHabboInfo().getId(), baseItem, limitedStack, limitedNumber, extradata);
+                                                HabboItem teleportTwo = Emulator.getGameEnvironment().getItemManager().createItem(habbo.getClient().getHabbo().getHabboInfo().getId(), baseItem, limitedStack, limitedNumber, extradata);
                                                 Emulator.getGameEnvironment().getItemManager().insertTeleportPair(teleportOne.getId(), teleportTwo.getId());
                                                 itemsList.add(teleportOne);
                                                 itemsList.add(teleportTwo);
                                             }
                                             else if(baseItem.getInteractionType().getType() == InteractionHopper.class)
                                             {
-                                                HabboItem hopper = Emulator.getGameEnvironment().getItemManager().createItem(habbo.getClient().getHabbo().getHabboInfo().getId(), baseItem, item.getLimitedSells(), item.getLimitedSells(), extradata);
+                                                HabboItem hopper = Emulator.getGameEnvironment().getItemManager().createItem(habbo.getClient().getHabbo().getHabboInfo().getId(), baseItem, limitedStack, limitedNumber, extradata);
 
                                                 Emulator.getGameEnvironment().getItemManager().insertHopper(hopper);
 
@@ -974,7 +1093,7 @@ public class CatalogManager
                                             }
                                             else if(baseItem.getInteractionType().getType() == InteractionGuildFurni.class || baseItem.getInteractionType().getType() == InteractionGuildGate.class)
                                             {
-                                                InteractionGuildFurni habboItem = (InteractionGuildFurni)Emulator.getGameEnvironment().getItemManager().createItem(habbo.getClient().getHabbo(), item, baseItem, extradata);
+                                                InteractionGuildFurni habboItem = (InteractionGuildFurni)Emulator.getGameEnvironment().getItemManager().createItem(habbo.getClient().getHabbo().getHabboInfo().getId(), baseItem, limitedStack, limitedNumber, extradata);
                                                 habboItem.setExtradata("");
                                                 habboItem.needsUpdate(true);
                                                 int guildId;
@@ -1002,7 +1121,7 @@ public class CatalogManager
                                                     return;
                                                 }
 
-                                                InteractionMusicDisc habboItem = (InteractionMusicDisc)Emulator.getGameEnvironment().getItemManager().createItem(habbo.getClient().getHabbo(), item, baseItem, habbo.getClient().getHabbo().getHabboInfo().getUsername() + "\n" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "\n" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "\n" + Calendar.getInstance().get(Calendar.YEAR) + "\n" + track.getLength() + "\n" + track.getName() + "\n" + track.getId());
+                                                InteractionMusicDisc habboItem = (InteractionMusicDisc)Emulator.getGameEnvironment().getItemManager().createItem(habbo.getClient().getHabbo().getHabboInfo().getId(), baseItem, limitedStack, limitedNumber, habbo.getClient().getHabbo().getHabboInfo().getUsername() + "\n" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "\n" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "\n" + Calendar.getInstance().get(Calendar.YEAR) + "\n" + track.getLength() + "\n" + track.getName() + "\n" + track.getId());
                                                 habboItem.needsUpdate(true);
 
                                                 Emulator.getThreading().run(habboItem);
@@ -1010,7 +1129,7 @@ public class CatalogManager
                                             }
                                             else
                                             {
-                                                HabboItem habboItem = Emulator.getGameEnvironment().getItemManager().createItem(habbo.getClient().getHabbo(), item, baseItem, extradata);
+                                                HabboItem habboItem = Emulator.getGameEnvironment().getItemManager().createItem(habbo.getClient().getHabbo().getHabboInfo().getId(), baseItem, limitedStack, limitedNumber, extradata);;
                                                 itemsList.add(habboItem);
                                             }
                                         }
@@ -1070,6 +1189,11 @@ public class CatalogManager
                 {
                     Event furnitureBought = new FurnitureBoughtEvent(itm, habbo.getClient().getHabbo());
                     Emulator.getPluginManager().fireEvent(furnitureBought);
+
+                    if (limitedConfiguration != null)
+                    {
+                        limitedConfiguration.limitedSold(item.getId(), habbo, itm);
+                    }
                 }
             }
 

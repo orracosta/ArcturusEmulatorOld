@@ -351,6 +351,7 @@ public class ItemManager {
      */
     public void loadItems()
     {
+        // proxyItem;
         try
         {
             PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM items_base ORDER BY id DESC");
@@ -493,11 +494,6 @@ public class ItemManager {
         }
 
         return null;
-    }
-
-    public HabboItem createItem(Habbo habbo, CatalogItem catalogItem, Item item, String extraData)
-    {
-        return createItem(habbo.getHabboInfo().getId(), item, catalogItem.getLimitedStack(), catalogItem.getLimitedSells(), extraData);
     }
 
     public HabboItem createItem(int habboId, Item item, int limitedStack, int limitedSells, String extraData)

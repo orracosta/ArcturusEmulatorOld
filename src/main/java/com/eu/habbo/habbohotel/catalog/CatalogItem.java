@@ -125,7 +125,7 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
 
     public int getLimitedSells()
     {
-        return limitedSells;
+        return limitedStack - Emulator.getGameEnvironment().getCatalogManager().getLimitedConfig(this).available();
     }
 
     public String getExtradata()

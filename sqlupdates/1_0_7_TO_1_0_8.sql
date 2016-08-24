@@ -138,10 +138,22 @@ INSERT INTO `crafting_recipes_ingredients` (`recipe_id`, `item_id`, `amount`) VA
 
 UPDATE achievements SET category = 'explore' WHERE name LIKE 'CameraPhotoCount';
 
-CREATE TABLE  `habbo`.`room_mutes` (
-`room_id` INT NOT NULL ,
-`user_id` INT NOT NULL ,
-`ends` INT NOT NULL
+CREATE TABLE  `room_mutes` (
+    `room_id` INT NOT NULL ,
+    `user_id` INT NOT NULL ,
+    `ends` INT NOT NULL
+) ENGINE = MYISAM ;
+
+CREATE TABLE  `catalog_items_limited` (
+    `catalog_item_id` INT NOT NULL ,
+    `number` INT NOT NULL ,
+    `user_id` INT NOT NULL DEFAULT  '0',
+    `timestamp` INT NOT NULL DEFAULT  '0',
+    `item_id` INT NOT NULL DEFAULT  '0',
+UNIQUE (
+    `catalog_item_id` ,
+    `number`
+    )
 ) ENGINE = MYISAM ;
 
 #END DATABASE UPDATE: 1.0.7 -> 1.0.8
