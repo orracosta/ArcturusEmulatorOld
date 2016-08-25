@@ -517,6 +517,9 @@ public class RoomUnit
         this.oldX = this.x;
         this.oldY = this.y;
         this.oldZ = this.z;
+
+        this.goalX = x;
+        this.goalY = y;
     }
 
     public void setGoalLocation(Tile tile)

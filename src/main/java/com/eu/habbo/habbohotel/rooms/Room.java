@@ -1222,7 +1222,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                     }
                                 } else
                                 {
-                                    if (!habbo.getRoomUnit().getStatus().containsKey("sit"))
+                                    if (!habbo.getRoomUnit().getStatus().containsKey("sit") || habbo.getRoomUnit().sitUpdate)
                                     {
                                         if (topItem instanceof InteractionMultiHeight)
                                         {
@@ -1233,6 +1233,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                         }
                                         habbo.getRoomUnit().setRotation(RoomUserRotation.values()[topItem.getRotation()]);
                                         updatedUnit.add(habbo.getRoomUnit());
+                                        habbo.getRoomUnit().sitUpdate = false;
                                     }
                                 }
                             }
@@ -1562,7 +1563,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                 tile.Z = habbo.getRoomUnit().getZ() + zOffset;
                                 if (!habbo.getRoomUnit().getStatus().containsKey("mv"))
                                 {
-
                                     if(roomUserRolledEvent != null)
                                     {
                                         roomUserRolledEvent = new UserRolledEvent(habbo, roller, tile);
