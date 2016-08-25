@@ -2611,11 +2611,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.updateDatabaseUserCount();
     }
 
-    public void kickHabbo(Habbo habbo)
-    {
-        this.kickHabbo(habbo, false);
-    }
-
     public void kickHabbo(Habbo habbo, boolean alert)
     {
         Emulator.getGameEnvironment().getRoomManager().leaveRoom(habbo, this);
