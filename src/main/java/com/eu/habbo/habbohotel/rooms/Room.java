@@ -3687,7 +3687,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         {
             for (Habbo habbo : this.currentHabbos.valueCollection())
             {
-                if (habbo.getHabboInfo().getUsername().equals(username))
+                if (habbo.getHabboInfo().getUsername().equalsIgnoreCase(username))
                     return habbo;
             }
         }
