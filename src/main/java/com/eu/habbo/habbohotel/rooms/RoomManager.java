@@ -655,7 +655,7 @@ public class RoomManager {
             return;
         }
 
-        if (room.getUserCount() >= room.getUsersMax() && !habbo.hasPermission("acc_fullrooms"))
+        if (room.getUserCount() >= room.getUsersMax() && !habbo.hasPermission("acc_fullrooms") && !room.hasRights(habbo))
         {
             habbo.getClient().sendResponse(new RoomEnterErrorComposer(RoomEnterErrorComposer.ROOM_ERROR_GUESTROOM_FULL));
             return;
