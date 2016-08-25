@@ -33,6 +33,11 @@ public class RoomUserKickEvent extends MessageHandler
             return;
         }
 
+        if (room.isOwner(target))
+        {
+            return;
+        }
+
         UserKickEvent event = new UserKickEvent(this.client.getHabbo(), target);
         Emulator.getPluginManager().fireEvent(event);
 
