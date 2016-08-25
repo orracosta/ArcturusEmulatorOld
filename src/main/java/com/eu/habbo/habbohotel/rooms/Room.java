@@ -3006,7 +3006,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         if(!habbo.hasPermission("acc_nomute"))
         {
-            if(this.isMuted() && !this.isOwner(habbo))
+            if(this.isMuted() && !this.hasRights(habbo))
             {
                 return;
             }
