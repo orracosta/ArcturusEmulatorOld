@@ -14,7 +14,7 @@ public class MoonwalkCommand extends Command
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
-        if(gameClient.getHabbo().getHabboInfo().getCurrentRoom() != null)
+        if(gameClient.getHabbo().getHabboInfo().getCurrentRoom() != null && gameClient.getHabbo().getHabboStats().hasActiveClub())
         {
             if (gameClient.getHabbo().getRoomUnit().getEffectId() != 136)
             {
