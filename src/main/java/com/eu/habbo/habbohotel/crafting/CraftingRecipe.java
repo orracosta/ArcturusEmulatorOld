@@ -97,4 +97,9 @@ public class CraftingRecipe
     {
         return this.ingredients;
     }
+
+    public int getRemaining()
+    {
+        return this.remaining;
+    }
 }

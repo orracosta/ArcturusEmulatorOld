@@ -43,7 +43,7 @@ public class CraftingAltar
             boolean contains = true;
             boolean equals = true;
 
-            if (set.getValue().isLimited() && set.getValue().getRemaining() <= 0)
+            if (set.getValue().isLimited() && !set.getValue().canBeCrafted())
             {
                 continue;
             }
