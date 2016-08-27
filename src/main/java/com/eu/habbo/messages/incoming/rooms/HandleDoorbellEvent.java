@@ -12,7 +12,7 @@ public class HandleDoorbellEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        if(this.client.getHabbo().getHabboInfo().getCurrentRoom() != null)
+        if(this.client.getHabbo().getHabboInfo().getCurrentRoom() != null && this.client.getHabbo().getHabboInfo().getCurrentRoom().hasRights(this.client.getHabbo()))
         {
             String username = this.packet.readString();
             boolean accepted = this.packet.readBoolean();
