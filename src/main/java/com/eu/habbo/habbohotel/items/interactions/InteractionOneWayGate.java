@@ -71,7 +71,7 @@ public class InteractionOneWayGate extends HabboItem
         if(tile.equals(new Tile(client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY(), 0)))
         {
             if(room.getHabbosAt(this.getX(), this.getY()).isEmpty())
-            {                        
+            {
                 client.getHabbo().getRoomUnit().setGoalLocation(this.getX(), this.getY());
                 client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[(this.getRotation() + 4) % 8]);
                 client.getHabbo().getRoomUnit().getStatus().put("mv", this.getX() + "," + this.getY() + "," + this.getZ());
