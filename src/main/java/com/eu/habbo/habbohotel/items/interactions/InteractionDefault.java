@@ -105,13 +105,13 @@ public class InteractionDefault extends HabboItem
 
                 if (habbo != null)
                 {
-                    if (habbo.getHabboInfo().getGender().equals(HabboGender.M) && this.getBaseItem().getEffectM() > 0)
+                    if (habbo.getHabboInfo().getGender().equals(HabboGender.M) && this.getBaseItem().getEffectM() > 0 && habbo.getRoomUnit().getEffectId() != this.getBaseItem().getEffectM())
                     {
                         room.giveEffect(habbo, this.getBaseItem().getEffectM());
                         return;
                     }
 
-                    if (habbo.getHabboInfo().getGender().equals(HabboGender.F) && this.getBaseItem().getEffectF() > 0)
+                    if (habbo.getHabboInfo().getGender().equals(HabboGender.F) && this.getBaseItem().getEffectF() > 0 && habbo.getRoomUnit().getEffectId() != this.getBaseItem().getEffectF())
                     {
                         room.giveEffect(habbo, this.getBaseItem().getEffectF());
                         return;
