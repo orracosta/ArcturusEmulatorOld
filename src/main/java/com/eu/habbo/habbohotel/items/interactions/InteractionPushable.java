@@ -45,6 +45,8 @@ public abstract class InteractionPushable extends InteractionDefault
     @Override
     public void onWalkOff(RoomUnit roomUnit, final Room room, Object[] objects) throws Exception
     {
+        super.onWalkOff(roomUnit, room, objects);
+        
         if(!(currentThread == null || currentThread.dead))
             return;
         
@@ -64,7 +66,9 @@ public abstract class InteractionPushable extends InteractionDefault
     
     @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
-    {        
+    {
+        super.onClick(client, room, objects);
+        
         if(PathFinder.tilesAdjecent(new Tile(client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY()), new Tile(this.getX(), this.getY())))
         {
             int velocity = this.getTackleVelocity(client.getHabbo().getRoomUnit(), room);
@@ -85,6 +89,8 @@ public abstract class InteractionPushable extends InteractionDefault
     @Override
     public void onWalkOn(RoomUnit roomUnit, final Room room, Object[] objects) throws Exception
     {
+        super.onWalkOn(roomUnit, room, objects);
+        
         int velocity;
         RoomUserRotation direction;
         
