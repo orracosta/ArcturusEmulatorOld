@@ -293,6 +293,7 @@ public class PacketManager
         this.registerHandler(Incoming.RoomUserWalkEvent,                        RoomUserWalkEvent.class);
         this.registerHandler(Incoming.RoomUserGiveRespectEvent,                 RoomUserGiveRespectEvent.class);
         this.registerHandler(Incoming.RoomUserGiveRightsEvent,                  RoomUserGiveRightsEvent.class);
+        this.registerHandler(Incoming.RoomRemoveRightsEvent,                    RoomRemoveRightsEvent.class);
         this.registerHandler(Incoming.RequestRoomRightsEvent,                   RequestRoomRightsEvent.class);
         this.registerHandler(Incoming.RoomRemoveAllRightsEvent,                 RoomRemoveAllRightsEvent.class);
         this.registerHandler(Incoming.RoomUserRemoveRightsEvent,                RoomUserRemoveRightsEvent.class);

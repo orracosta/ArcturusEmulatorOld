@@ -17,6 +17,7 @@ public class Incoming
     public static final int FriendPrivateMessageEvent = 1981;//1527
     public static final int CloseDiceEvent = 191;//1739
     public static final int RoomUserRemoveRightsEvent = 40;//3639
+    public static final int RoomRemoveRightsEvent = 879;
     public static final int GuildDeclineMembershipEvent = 403;//1320
     public static final int AnswerPollEvent = 3757;//1847
     public static final int UserWearBadgeEvent = 2752;//2473
