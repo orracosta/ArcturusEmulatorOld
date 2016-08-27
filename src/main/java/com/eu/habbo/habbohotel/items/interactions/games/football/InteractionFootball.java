@@ -201,4 +201,10 @@ public class InteractionFootball extends InteractionPushable
         HabboItem topItem = room.getTopItemAt(from.x, from.y, this);
         return !(room.hasHabbosAt(to.x, to.y) || (topItem != null && topItem.getBaseItem().getName().startsWith("fball_goal_") && currentStep != 1));
     }
+    
+    @Override
+    public void onPickUp()
+    {
+        this.setExtradata("0");
+    }
 }
