@@ -28,13 +28,31 @@ public class OneWayGateActionOne implements Runnable
         //this.room.sendComposer(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()).compose());
 
         Tile t = PathFinder.getSquareInFront(this.oneWayGate.getX(), this.oneWayGate.getY(), (this.oneWayGate.getRotation() + 4) % 8);
-
-        if(this.room.tileWalkable(t))
+        
+        if(client.getHabbo().getRoomUnit().animateWalk)
         {
-            this.client.getHabbo().getRoomUnit().isTeleporting = false;
+            client.getHabbo().getRoomUnit().animateWalk = false;
+        }
+        
+        if(this.room.tileWalkable(t) && this.client.getHabbo().getRoomUnit().getX() == this.oneWayGate.getX() && this.client.getHabbo().getRoomUnit().getY() == this.oneWayGate.getY())
+        {
             this.client.getHabbo().getRoomUnit().setGoalLocation(t);
-
-            Emulator.getThreading().run(new HabboItemNewState(this.oneWayGate, this.room, "0"), 1000);
+            
+            if(!this.oneWayGate.getExtradata().equals("0"))
+            {
+                Emulator.getThreading().run(new HabboItemNewState(this.oneWayGate, this.room, "0"), 1000);
+            }
+        }
+        else if(this.client.getHabbo().getRoomUnit().getX() == this.oneWayGate.getX() && this.client.getHabbo().getRoomUnit().getY() == this.oneWayGate.getY())
+        {
+            Emulator.getThreading().run(this, 500);
+        }
+        else 
+        {
+            if(!this.oneWayGate.getExtradata().equals("0"))
+            {
+                Emulator.getThreading().run(new HabboItemNewState(this.oneWayGate, this.room, "0"), 1000);
+            }
         }
     }
 }
