@@ -56,6 +56,8 @@ public class RoomUnitOnRollerComposer extends MessageComposer
         {
             if(roller != null)
             {
+                this.roller.onWalkOff(this.roomUnit, this.room, new Object[]{this.roller});
+
                 HabboItem item = this.room.getTopItemAt(this.newLocation.X, this.newLocation.Y);
 
                 if(item != null)
