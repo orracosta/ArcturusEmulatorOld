@@ -117,7 +117,7 @@ public class RotateMoveItemEvent extends MessageHandler
 
         Rectangle newSquare = PathFinder.getSquare(x, y, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), rotation);
 
-        if (x != item.getX() || y != item.getY() || item.getRotation() != rotation)
+        //if (x != item.getX() || y != item.getY() || item.getRotation() != rotation)
         {
             checkStackHeight = room.getStackHeight(x, y, false, item);
             for (int i = newSquare.x; i < newSquare.x + newSquare.getWidth(); i++)
