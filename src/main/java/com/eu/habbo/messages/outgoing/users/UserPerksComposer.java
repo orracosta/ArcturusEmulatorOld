@@ -1,12 +1,19 @@
 package com.eu.habbo.messages.outgoing.users;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class UserPerksComposer extends MessageComposer
 {
+    private final Habbo habbo;
+
+    public UserPerksComposer(Habbo habbo)
+    {
+        this.habbo = habbo;
+    }
 
     @Override
     public ServerMessage compose()
@@ -40,8 +47,8 @@ public class UserPerksComposer extends MessageComposer
         this.response.appendBoolean(true);
 
         this.response.appendString("TRADE");
-        this.response.appendString("");
-        this.response.appendBoolean(true);
+        this.response.appendString("requirement.unfulfilled.no_trade_lock");
+        this.response.appendBoolean(this.habbo.getHabboStats().allowTrade);
 
         this.response.appendString("HEIGHTMAP_EDITOR_BETA");
         this.response.appendString("requirement.unfulfilled.feature_disabled");
@@ -57,7 +64,7 @@ public class UserPerksComposer extends MessageComposer
 
         this.response.appendString("CAMERA");
         this.response.appendString("");
-        this.response.appendBoolean(true);
+        this.response.appendBoolean(Emulator.getConfig().getBoolean("hotel.navigator.camera", false));
 
         this.response.appendString("NAVIGATOR_PHASE_TWO_2014");
         this.response.appendString("");
