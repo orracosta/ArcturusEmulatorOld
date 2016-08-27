@@ -18,7 +18,7 @@ public class RoomBackgroundEvent extends MessageHandler
         if(room == null)
             return;
 
-        if(room.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || this.client.getHabbo().hasPermission("acc_placefurni"))
+        if(room.hasRights(this.client.getHabbo()) || this.client.getHabbo().hasPermission("acc_placefurni"))
         {
             HabboItem item = room.getHabboItem(itemId);
 
