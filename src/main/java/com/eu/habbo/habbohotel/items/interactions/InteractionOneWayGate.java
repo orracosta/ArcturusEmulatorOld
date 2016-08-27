@@ -8,7 +8,6 @@ import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.threading.runnables.OneWayGateActionOne;
 import com.eu.habbo.util.pathfinding.PathFinder;
@@ -72,17 +71,14 @@ public class InteractionOneWayGate extends HabboItem
         if(tile.equals(new Tile(client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY(), 0)))
         {
             if(room.getHabbosAt(this.getX(), this.getY()).isEmpty())
-            {
-                client.getHabbo().getRoomUnit().isTeleporting = true;
-
+            {                        
                 client.getHabbo().getRoomUnit().setGoalLocation(this.getX(), this.getY());
                 client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[(this.getRotation() + 4) % 8]);
                 client.getHabbo().getRoomUnit().getStatus().put("mv", this.getX() + "," + this.getY() + "," + this.getZ());
+                client.getHabbo().getRoomUnit().animateWalk = true;
                 room.sendComposer(new RoomUserStatusComposer(client.getHabbo().getRoomUnit()).compose());
-                client.getHabbo().getRoomUnit().setX(this.getX());
-                client.getHabbo().getRoomUnit().setY(this.getY());
-                client.getHabbo().getRoomUnit().setZ(this.getZ());
-                client.getHabbo().getRoomUnit().getStatus().remove("mv");
+                
+                client.getHabbo().getRoomUnit().setLocation(this.getX(), this.getY(), this.getZ());
 
                 this.setExtradata("1");
                 room.updateItem(this);
@@ -90,5 +86,11 @@ public class InteractionOneWayGate extends HabboItem
                 Emulator.getThreading().run(new OneWayGateActionOne(client, room, this), 300);
             }
         }
+    }
+    
+    @Override
+    public void onPickUp()
+    {
+        this.setExtradata("0");
     }
 }
