@@ -1,13 +1,13 @@
 package com.eu.habbo.habbohotel.items.interactions.games.football;
 
-import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
-import com.eu.habbo.habbohotel.items.interactions.InteractionDefault;
+import com.eu.habbo.habbohotel.items.interactions.InteractionPushable;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
-import com.eu.habbo.threading.runnables.KickBallAction;
+import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.messages.outgoing.rooms.items.ItemStateComposer;
+import com.eu.habbo.util.pathfinding.Node;
 import com.eu.habbo.util.pathfinding.PathFinder;
 import com.eu.habbo.util.pathfinding.Rotation;
 import com.eu.habbo.util.pathfinding.Tile;
@@ -15,7 +15,7 @@ import com.eu.habbo.util.pathfinding.Tile;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class InteractionFootball extends InteractionDefault
+public class InteractionFootball extends InteractionPushable
 {
     public InteractionFootball(ResultSet set, Item baseItem) throws SQLException
     {
@@ -27,84 +27,178 @@ public class InteractionFootball extends InteractionDefault
         super(id, userId, item, extradata, limitedStack, limitedSells);
     }
     
-    /*@Override
-    public boolean canWalkOn(RoomUnit roomUnit, Room room, Object[] objects)
-    {
-        return true;
-    }
-
-    @Override
-    public boolean isWalkable()
-    {
-        return true;
-    }*/
-    
-    private KickBallAction currentThread;
+    // Velocity
     
     @Override
-    public void onWalkOff(RoomUnit roomUnit, final Room room, Object[] objects) throws Exception
+    public int getWalkOnVelocity(RoomUnit roomUnit, Room room)
     {
-        if(!(currentThread == null || currentThread.dead))
-            return;
-        
-        int length = 6;
-        
-        if(this.getBaseItem().getName().equals("bw_bball"))
-        {
-            length = 4;
-        }
-        
-        if(length > 0)
-        {
-            if(currentThread != null)
-            {
-                currentThread.dead = true;
-            }
-            currentThread = new KickBallAction(this, room, roomUnit, KickBallAction.oppositeDirection(RoomUserRotation.values()[Rotation.Calculate(this.getX(), this.getY(), roomUnit.getGoalX(), roomUnit.getGoalY())]), length);
-            Emulator.getThreading().run(currentThread, 0);
-        }
-    }
-    
-    @Override
-    public void onClick(GameClient client, Room room, Object[] objects) throws Exception
-    {
-        if(PathFinder.tilesAdjecent(new Tile(client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY()), new Tile(this.getX(), this.getY())))
-        {
-            if(currentThread != null)
-            {
-                currentThread.dead = true;
-            }
-            currentThread = new KickBallAction(this, room, client.getHabbo().getRoomUnit(), client.getHabbo().getRoomUnit().getBodyRotation(), 2);
-            Emulator.getThreading().run(currentThread, 0);
-        }
-    }
-    
-    @Override
-    public void onWalkOn(RoomUnit roomUnit, final Room room, Object[] objects) throws Exception
-    {        
-        int length = 0;
-        
         if(roomUnit.getPathFinder().getPath().isEmpty() && roomUnit.tilesWalked() == 2)
-            return;
+            return 0;
         
-        if(this.getX() == roomUnit.getGoalX() && this.getY() == roomUnit.getGoalY())
-        {
-            length = 6;
-            if(this.getBaseItem().getName().equals("bw_bball"))
-            {
-                length = 4;
-            }
-        }
-        else
-        {            
-            length = 1;
-        }
+        return 6;
+    }
+    
+    @Override
+    public int getWalkOffVelocity(RoomUnit roomUnit, Room room)
+    {
+        return 6;
+    }
+    
+    @Override
+    public int getDragVelocity(RoomUnit roomUnit, Room room)
+    {
+        if(roomUnit.getPathFinder().getPath().isEmpty() && roomUnit.tilesWalked() == 2)
+            return 0;
         
-        if(currentThread != null)
+        return 1;
+    }
+    
+    @Override
+    public int getTackleVelocity(RoomUnit roomUnit, Room room)
+    {        
+        return 2;
+    }
+    
+    // Direction
+        
+    @Override
+    public RoomUserRotation getWalkOnDirection(RoomUnit roomUnit, Room room)
+    {
+        return roomUnit.getBodyRotation();
+    }
+    
+    @Override
+    public RoomUserRotation getWalkOffDirection(RoomUnit roomUnit, Room room)
+    {
+        Node peek = roomUnit.getPathFinder().getPath().peek();
+        Tile nextWalkTile = peek != null ? new Tile(peek.getX(), peek.getY()) : new Tile(roomUnit.getGoalX(), roomUnit.getGoalY());
+        return RoomUserRotation.values()[(RoomUserRotation.values().length + Rotation.Calculate(roomUnit.getX(), roomUnit.getY(), nextWalkTile.x, nextWalkTile.y) + 4) % 8];
+    }
+    
+    public RoomUserRotation getDragDirection(RoomUnit roomUnit, Room room)
+    {
+        return roomUnit.getBodyRotation();
+    }
+    
+    public RoomUserRotation getTackleDirection(RoomUnit roomUnit, Room room)
+    {
+        return roomUnit.getBodyRotation();
+    }
+    
+    // Methods
+    
+    @Override
+    public int getNextRollDelay(int currentStep, int totalSteps)
+    {
+        int t = 2500;
+        return (totalSteps == 1) ? 500 : 100*((t=t/t-1)*t*t*t*t + 1) + (currentStep * 100);
+    }
+    
+    @Override
+    public RoomUserRotation getBounceDirection(Room room, RoomUserRotation currentDirection)
+    {
+        switch(currentDirection)
         {
-            currentThread.dead = true;
+            default:
+            case NORTH:
+                return RoomUserRotation.SOUTH;
+            
+            case NORTH_EAST:
+                if(this.validMove(room, new Tile(this.getX(), this.getY()), PathFinder.getSquareInFront(this.getX(), this.getY(), RoomUserRotation.NORTH_WEST.getValue())))
+                    return RoomUserRotation.NORTH_WEST;
+                else if(this.validMove(room, new Tile(this.getX(), this.getY()), PathFinder.getSquareInFront(this.getX(), this.getY(), RoomUserRotation.SOUTH_EAST.getValue())))
+                    return RoomUserRotation.SOUTH_EAST;
+                else
+                    return RoomUserRotation.SOUTH_WEST;
+                
+            case EAST:
+                return RoomUserRotation.WEST;
+                
+            case SOUTH_EAST:
+                if(this.validMove(room, new Tile(this.getX(), this.getY()), PathFinder.getSquareInFront(this.getX(), this.getY(), RoomUserRotation.SOUTH_WEST.getValue())))
+                    return RoomUserRotation.SOUTH_WEST;
+                else if(this.validMove(room, new Tile(this.getX(), this.getY()), PathFinder.getSquareInFront(this.getX(), this.getY(), RoomUserRotation.NORTH_EAST.getValue())))
+                    return RoomUserRotation.NORTH_EAST;
+                else
+                    return RoomUserRotation.NORTH_WEST;
+                
+            case SOUTH:
+                return RoomUserRotation.NORTH;
+                
+            case SOUTH_WEST:
+                if(this.validMove(room, new Tile(this.getX(), this.getY()), PathFinder.getSquareInFront(this.getX(), this.getY(), RoomUserRotation.SOUTH_EAST.getValue())))
+                    return RoomUserRotation.SOUTH_EAST;
+                else if(this.validMove(room, new Tile(this.getX(), this.getY()), PathFinder.getSquareInFront(this.getX(), this.getY(), RoomUserRotation.NORTH_WEST.getValue())))
+                    return RoomUserRotation.NORTH_WEST;
+                else
+                    return RoomUserRotation.NORTH_EAST;
+                
+            case WEST:
+                return RoomUserRotation.EAST;
+                
+            case NORTH_WEST:
+                if(this.validMove(room, new Tile(this.getX(), this.getY()), PathFinder.getSquareInFront(this.getX(), this.getY(), RoomUserRotation.NORTH_EAST.getValue())))
+                    return RoomUserRotation.NORTH_EAST;
+                else if(this.validMove(room, new Tile(this.getX(), this.getY()), PathFinder.getSquareInFront(this.getX(), this.getY(), RoomUserRotation.SOUTH_WEST.getValue())))
+                    return RoomUserRotation.SOUTH_WEST;
+                else
+                    return RoomUserRotation.SOUTH_EAST;
         }
-        currentThread = new KickBallAction(this, room, roomUnit, roomUnit.getBodyRotation(), length);
-        Emulator.getThreading().run(currentThread, 0);
+    }
+    
+    // Checks
+    
+    @Override
+    public boolean validMove(Room room, Tile from, Tile to)
+    {
+        HabboItem topItem = room.getTopItemAt(to.x, to.y, this);
+        return !(!room.getLayout().tileWalkable(to.x, to.y) || (topItem != null && (!topItem.getBaseItem().allowStack() || topItem.getBaseItem().allowSit() || topItem.getBaseItem().allowLay())));
+    }
+    
+    //Events
+    
+    @Override
+    public void onDrag(Room room, RoomUnit roomUnit, int velocity, RoomUserRotation direction)
+    {
+        
+    }
+    
+    @Override
+    public void onKick(Room room, RoomUnit roomUnit, int velocity, RoomUserRotation direction)
+    {
+        
+    }
+    
+    @Override
+    public void onTackle(Room room, RoomUnit roomUnit, int velocity, RoomUserRotation direction)
+    {
+        
+    }
+    
+    @Override
+    public void onMove(Room room, Tile from, Tile to, RoomUserRotation direction, RoomUnit kicker, int nextRoll, int currentStep, int totalSteps)
+    {        
+        this.setExtradata(nextRoll <= 200 ? "8" : (nextRoll <= 250 ? "7" : (nextRoll <= 300 ? "6" : (nextRoll <= 350 ? "5" : (nextRoll <= 400 ? "4" : (nextRoll <= 450 ? "3" : (nextRoll <= 500 ? "2" : "1")))))));
+        room.sendComposer(new ItemStateComposer(this).compose());
+    }
+    
+    @Override
+    public void onBounce(Room room, RoomUserRotation oldDirection, RoomUserRotation newDirection, RoomUnit kicker)
+    {
+        
+    }
+    
+    @Override
+    public void onStop(Room room, RoomUnit kicker, int currentStep, int totalSteps)
+    {
+        this.setExtradata("0");
+        room.sendComposer(new ItemStateComposer(this).compose());
+    }
+    
+    @Override
+    public boolean canStillMove(Room room, Tile from, Tile to, RoomUserRotation direction, RoomUnit kicker, int nextRoll, int currentStep, int totalSteps)
+    {
+        HabboItem topItem = room.getTopItemAt(from.x, from.y, this);
+        return !(room.hasHabbosAt(to.x, to.y) || (topItem != null && topItem.getBaseItem().getName().startsWith("fball_goal_") && currentStep != 1));
     }
 }
