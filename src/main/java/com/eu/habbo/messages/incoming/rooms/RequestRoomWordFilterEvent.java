@@ -12,7 +12,7 @@ public class RequestRoomWordFilterEvent extends MessageHandler
     {
         Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.packet.readInt());
 
-        if(room != null)
+        if(room != null && room.hasRights(this.client.getHabbo()))
         {
             this.client.sendResponse(new RoomFilterWordsComposer(room));
         }
