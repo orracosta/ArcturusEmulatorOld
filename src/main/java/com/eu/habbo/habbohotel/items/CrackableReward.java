@@ -1,10 +1,10 @@
 package com.eu.habbo.habbohotel.items;
 
 import com.eu.habbo.Emulator;
-import javafx.util.Pair;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +12,7 @@ public class CrackableReward
 {
     public final int itemId;
     public final int count;
-    public final Map<Integer, Pair<Integer, Integer>> prizes;
+    public final Map<Integer, Map.Entry<Integer, Integer>> prizes;
     public int totalChance;
     public final String achievementTick;
     public final String achievementCracked;
@@ -25,7 +25,7 @@ public class CrackableReward
         this.achievementCracked = set.getString("achievement_cracked");
 
         String[] data = set.getString("prizes").split(";");
-        this.prizes = new HashMap<Integer, Pair<Integer, Integer>>();
+        this.prizes = new HashMap<Integer, Map.Entry<Integer, Integer>>();
 
         this.totalChance = 0;
         for(int i = 0; i < data.length; i++)
@@ -45,7 +45,7 @@ public class CrackableReward
                     itemId = Integer.valueOf(data[i].replace(":", ""));
                 }
 
-                this.prizes.put(itemId, new Pair<Integer, Integer>(this.totalChance, chance));
+                this.prizes.put(itemId, new AbstractMap.SimpleEntry<Integer, Integer>(this.totalChance, chance));
                 this.totalChance += chance;
             }
             catch (Exception e)
@@ -60,7 +60,7 @@ public class CrackableReward
         int random = Emulator.getRandom().nextInt(this.totalChance);
 
         int notFound = 0;
-        for (Map.Entry<Integer, Pair<Integer, Integer>> set : this.prizes.entrySet())
+        for (Map.Entry<Integer, Map.Entry<Integer, Integer>> set : this.prizes.entrySet())
         {
             notFound = set.getKey();
             if (set.getValue().getKey() >= random && set.getValue().getValue() < random)

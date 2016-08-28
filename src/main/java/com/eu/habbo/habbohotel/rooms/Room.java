@@ -2613,12 +2613,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void kickHabbo(Habbo habbo, boolean alert)
     {
-        Emulator.getGameEnvironment().getRoomManager().leaveRoom(habbo, this);
-
         if(alert)
         {
             habbo.getClient().sendResponse(new GenericErrorMessagesComposer(GenericErrorMessagesComposer.KICKED_OUT_OF_THE_ROOM));
         }
+
+        Emulator.getGameEnvironment().getRoomManager().leaveRoom(habbo, this);
     }
 
     public void removeHabbo(Habbo habbo)

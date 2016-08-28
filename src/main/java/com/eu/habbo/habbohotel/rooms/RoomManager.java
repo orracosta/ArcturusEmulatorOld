@@ -575,11 +575,19 @@ public class RoomManager {
         if(room == null)
             return;
 
+        if (habbo.getHabboInfo().getLoadingRoom() != 0 && room.getId() != habbo.getHabboInfo().getLoadingRoom())
+        {
+            habbo.getClient().sendResponse(new HotelViewComposer());
+            habbo.getHabboInfo().setLoadingRoom(0);
+            return;
+        }
+
         if(Emulator.getPluginManager().fireEvent(new UserEnterRoomEvent(habbo, room)).isCancelled())
         {
             if(habbo.getHabboInfo().getCurrentRoom() == null)
             {
                 habbo.getClient().sendResponse(new HotelViewComposer());
+                habbo.getHabboInfo().setLoadingRoom(0);
                 return;
             }
         }
@@ -618,6 +626,7 @@ public class RoomManager {
             {
                 habbo.getClient().sendResponse(new RoomAccessDeniedComposer(""));
                 habbo.getClient().sendResponse(new HotelViewComposer());
+                habbo.getHabboInfo().setLoadingRoom(0);
                 return;
             }
 
@@ -632,6 +641,7 @@ public class RoomManager {
             {
                 habbo.getClient().sendResponse(new GenericErrorMessagesComposer(-100002));
                 habbo.getClient().sendResponse(new HotelViewComposer());
+                habbo.getHabboInfo().setLoadingRoom(0);
             }
         }
     }

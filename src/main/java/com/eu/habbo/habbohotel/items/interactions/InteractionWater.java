@@ -55,19 +55,18 @@ public class InteractionWater extends InteractionDefault
             room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
         }
 
-        int _1 = 0;
-        int _2 = 0;
-        int _3 = 0;
-        int _4 = 0;
-        int _5 = 0;
-        int _6 = 0;
-        int _7 = 0;
-        int _8 = 0;
-        int _9 = 0;
+        int _1  = 0;
+        int _2  = 0;
+        int _3  = 0;
+        int _4  = 0;
+        int _5  = 0;
+        int _6  = 0;
+        int _7  = 0;
+        int _8  = 0;
+        int _9  = 0;
         int _10 = 0;
         int _11 = 0;
         int _12 = 0;
-
 
         for(HabboItem item : room.getRoomSpecialTypes().getItemsOfType(InteractionWaterItem.class))
         {
@@ -88,7 +87,7 @@ public class InteractionWater extends InteractionDefault
         if (room.waterTiles.containsKey(this.getX() + 2) && room.waterTiles.get(this.getX() + 2).contains(this.getY() + 2)) _12 = 1;
 
         if (_2  == 0 && !room.getLayout().tileWalkable(this.getX()    , this.getY() - 1)) _2  = 1;
-        if (_3  == 0 && !room.getLayout().tileWalkable(this.getX() + 1, this.getY() - 1)) _3 = 1;
+        if (_3  == 0 && !room.getLayout().tileWalkable(this.getX() + 1, this.getY() - 1)) _3  = 1;
         if (_5  == 0 && !room.getLayout().tileWalkable(this.getX() - 1, this.getY()    )) _5  = 1;
         if (_6  == 0 && !room.getLayout().tileWalkable(this.getX() + 2, this.getY()    )) _6  = 1;
         if (_7  == 0 && !room.getLayout().tileWalkable(this.getX() - 1, this.getY() + 1)) _7  = 1;

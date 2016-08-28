@@ -167,4 +167,10 @@ UPDATE `emulator_settings` SET  `key` =  'hotel.catalog.discounts.amount' WHERE 
 
 DELETE FROM emulator_settings WHERE `key` LIKE 'emulator.log%';
 
+CREATE TABLE IF NOT EXISTS `users_recipes` (
+  `user_id` int(11) NOT NULL,
+  `recipe` int(11) NOT NULL,
+  UNIQUE KEY `user_id` (`user_id`,`recipe`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
 #END DATABASE UPDATE: 1.0.7 -> 1.0.8

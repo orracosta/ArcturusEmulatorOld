@@ -203,7 +203,7 @@ public class InteractionFootball extends InteractionPushable
     }
     
     @Override
-    public void onPickUp()
+    public void onPickUp(Room room)
     {
         this.setExtradata("0");
     }
