@@ -232,7 +232,7 @@ public class RoomUnit
             HabboItem habboItem = room.getTopItemAt(this.x, this.y);
             if(habboItem != null)
             {
-                if(!PathFinder.pointInSquare(habboItem.getX(), habboItem.getY(), habboItem.getX() + habboItem.getBaseItem().getWidth() - 1, habboItem.getY() + habboItem.getBaseItem().getLength() - 1, next.getX(), next.getY()))
+                if(habboItem != item || !PathFinder.pointInSquare(habboItem.getX(), habboItem.getY(), habboItem.getX() + habboItem.getBaseItem().getWidth() - 1, habboItem.getY() + habboItem.getBaseItem().getLength() - 1, next.getX(), next.getY()))
                     habboItem.onWalkOff(this, room, null);
             }
 
@@ -242,7 +242,7 @@ public class RoomUnit
             this.setRotation(RoomUserRotation.values()[Rotation.Calculate(this.getX(), this.getY(), next.getX(), next.getY())]);
             if (item != null)
             {
-                if(!PathFinder.pointInSquare(item.getX(), item.getY(), item.getX() + item.getBaseItem().getWidth() - 1, item.getY() + item.getBaseItem().getLength() - 1, this.x, this.y))
+                if(item != habboItem || !PathFinder.pointInSquare(item.getX(), item.getY(), item.getX() + item.getBaseItem().getWidth() - 1, item.getY() + item.getBaseItem().getLength() - 1, this.x, this.y))
                 {
                     if(item.canWalkOn(this, room, null))
                     {

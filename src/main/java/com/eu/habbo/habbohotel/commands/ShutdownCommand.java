@@ -29,13 +29,16 @@ public class ShutdownCommand extends Command
         }
         else
         {
-            try
+            if (params.length == 2)
             {
-                minutes = Integer.valueOf(params[1]);
-            }
-            catch (Exception e)
-            {
-                reason = params[1];
+                try
+                {
+                    minutes = Integer.valueOf(params[1]);
+                }
+                catch (Exception e)
+                {
+                    reason = params[1];
+                }
             }
         }
 
