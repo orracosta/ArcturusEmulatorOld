@@ -16,11 +16,13 @@ import java.util.NoSuchElementException;
 public class RoomFloorItemsComposer extends MessageComposer
 {
 
-    private final Room room;
+    private final TIntObjectMap<String> furniOwnerNames;
+    private final THashSet<HabboItem> items;
 
-    public RoomFloorItemsComposer(Room room)
+    public RoomFloorItemsComposer(TIntObjectMap<String> furniOwnerNames, THashSet<HabboItem> items)
     {
-        this.room = room;
+        this.furniOwnerNames = furniOwnerNames;
+        this.items = items;
     }
 
     @Override
@@ -28,7 +30,6 @@ public class RoomFloorItemsComposer extends MessageComposer
     {
         this.response.init(Outgoing.RoomFloorItemsComposer);
 
-        TIntObjectMap<String> furniOwnerNames = this.room.getFurniOwnerNames();
         TIntObjectIterator<String> iterator = furniOwnerNames.iterator();
 
         this.response.appendInt32(furniOwnerNames.size());
@@ -45,8 +46,6 @@ public class RoomFloorItemsComposer extends MessageComposer
                 break;
             }
         }
-
-        THashSet<HabboItem> items = this.room.getFloorItems();
 
         this.response.appendInt32(items.size());
 

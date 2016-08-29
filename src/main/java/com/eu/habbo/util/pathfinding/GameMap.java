@@ -97,7 +97,7 @@ public class GameMap<T extends AbstractNode>
                 if((Math.abs(room.getLayout().getHeightAtSquare(current.getX(), current.getY()) - room.getLayout().getHeightAtSquare(currentAdj.getX(), currentAdj.getY())) > 1))
                     continue;
 
-                if (!this.openList.contains(currentAdj) || (currentAdj.getX() == newX && currentAdj.getY() == newY && (canWalkOntoFurniture(room, oldX, oldY, newX, newY))))
+                if (!this.openList.contains(currentAdj) || (currentAdj.getX() == newX && currentAdj.getY() == newY))
                 {
                     currentAdj.setPrevious(current);
                     currentAdj.sethCosts(this.nodes[newX][newY]);
@@ -161,19 +161,19 @@ public class GameMap<T extends AbstractNode>
         {
             if (newTopItem.getBaseItem().allowSit() || newTopItem.getBaseItem().allowLay())
             {
-                return false;
+                return true;
             }
 
             if (oldTopItem != null)
             {
                 if (Math.abs((oldTopItem.getZ() + Item.getCurrentHeight(oldTopItem)) - (newTopItem.getZ() + Item.getCurrentHeight(newTopItem))) > 1.5)
                 {
-                    return false;
+                    return true;
                 }
             }
         }
 
-        return true;
+        return false;
     }
 
     private synchronized List<T> getAdjacent(T node, int newX, int newY, Room room)
@@ -184,7 +184,7 @@ public class GameMap<T extends AbstractNode>
         if (x > 0)
         {
             T temp = getNode(x - 1, y);
-            if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && !canWalkOntoFurniture(room, x, y, newX, newY)))
+            if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && canWalkOntoFurniture(room, x, y, newX, newY)))
             {
                 temp.setIsDiagonaly(false);
                 adj.add(temp);
@@ -193,7 +193,7 @@ public class GameMap<T extends AbstractNode>
         if (x < this.width)
         {
             T temp = getNode(x + 1, y);
-            if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && !canWalkOntoFurniture(room, x, y, newX, newY)))
+            if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && canWalkOntoFurniture(room, x, y, newX, newY)))
             {
                 temp.setIsDiagonaly(false);
                 adj.add(temp);
@@ -202,7 +202,7 @@ public class GameMap<T extends AbstractNode>
         if (y > 0)
         {
             T temp = getNode(x, y - 1);
-            if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && !canWalkOntoFurniture(room, x, y, newX, newY)))
+            if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && canWalkOntoFurniture(room, x, y, newX, newY)))
             {
                 temp.setIsDiagonaly(false);
                 adj.add(temp);
@@ -211,7 +211,7 @@ public class GameMap<T extends AbstractNode>
         if (y < this.height)
         {
             T temp = getNode(x, y + 1);
-            if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && !canWalkOntoFurniture(room, x, y, newX, newY)))
+            if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && canWalkOntoFurniture(room, x, y, newX, newY)))
             {
                 temp.setIsDiagonaly(false);
                 adj.add(temp);
@@ -222,7 +222,7 @@ public class GameMap<T extends AbstractNode>
             if ((x < this.width) && (y < this.height))
             {
                 T temp = getNode(x + 1, y + 1);
-                if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && !canWalkOntoFurniture(room, x, y, newX, newY)))
+                if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && canWalkOntoFurniture(room, x, y, newX, newY)))
                 {
                     temp.setIsDiagonaly(true);
                     adj.add(temp);
@@ -231,7 +231,7 @@ public class GameMap<T extends AbstractNode>
             if ((x > 0) && (y > 0))
             {
                 T temp = getNode(x - 1, y - 1);
-                if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && !canWalkOntoFurniture(room, x, y, newX, newY)))
+                if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && canWalkOntoFurniture(room, x, y, newX, newY)))
                 {
                     temp.setIsDiagonaly(true);
                     adj.add(temp);
@@ -240,7 +240,7 @@ public class GameMap<T extends AbstractNode>
             if ((x > 0) && (y < this.height))
             {
                 T temp = getNode(x - 1, y + 1);
-                if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && !canWalkOntoFurniture(room, x, y, newX, newY)))
+                if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && canWalkOntoFurniture(room, x, y, newX, newY)))
                 {
                     temp.setIsDiagonaly(true);
                     adj.add(temp);
@@ -249,7 +249,7 @@ public class GameMap<T extends AbstractNode>
             if ((x < this.width) && (y > 0))
             {
                 T temp = getNode(x + 1, y - 1);
-                if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && !canWalkOntoFurniture(room, x, y, newX, newY)))
+                if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && canWalkOntoFurniture(room, x, y, newX, newY)))
                 {
                     temp.setIsDiagonaly(true);
                     adj.add(temp);

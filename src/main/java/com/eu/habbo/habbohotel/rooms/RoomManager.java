@@ -8,10 +8,7 @@ import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
 import com.eu.habbo.habbohotel.navigation.NavigatorFilterComparator;
 import com.eu.habbo.habbohotel.navigation.NavigatorFilterField;
 import com.eu.habbo.habbohotel.polls.PollManager;
-import com.eu.habbo.habbohotel.users.DanceType;
-import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.habbohotel.users.HabboInfo;
-import com.eu.habbo.habbohotel.users.HabboManager;
+import com.eu.habbo.habbohotel.users.*;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericErrorMessagesComposer;
@@ -29,6 +26,7 @@ import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.procedure.TIntProcedure;
+import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.PreparedStatement;
@@ -159,7 +157,6 @@ public class RoomManager {
             {
                 String query = filterField.databaseQuery + " AND rooms.state != 'invisible' ORDER BY rooms.users, rooms.id DESC LIMIT " + Emulator.getConfig().getValue("hotel.navigator.search.maxresults");
                 PreparedStatement statement = Emulator.getDatabase().prepare(query);
-                System.out.println(query);
                 statement.setString(1, (filterField.comparator == NavigatorFilterComparator.EQUALS ? value : "%" + value + "%"));
                 ResultSet set = statement.executeQuery();
 
@@ -718,7 +715,7 @@ public class RoomManager {
         }
     }
 
-    public void enterRoom(Habbo habbo, Room room)
+    public void enterRoom(final Habbo habbo, final Room room)
     {
         if(habbo.getHabboInfo().getLoadingRoom() != room.getId())
         {
@@ -765,8 +762,6 @@ public class RoomManager {
 
         if(!room.getCurrentBots().isEmpty())
         {
-            //client.sendResponse(new RoomUsersComposer(room.getCurrentBots(), true));
-
             TIntObjectIterator<Bot> botIterator = room.getCurrentBots().iterator();
             for(int i = room.getCurrentBots().size(); i-- > 0;)
             {
@@ -795,7 +790,29 @@ public class RoomManager {
 
         habbo.getClient().sendResponse(new RoomWallItemsComposer(room));
 
-        habbo.getClient().sendResponse(new RoomFloorItemsComposer(room));
+        synchronized (room.getFloorItems())
+        {
+            final THashSet<HabboItem> floorItems = new THashSet<HabboItem>();
+
+            room.getFloorItems().forEach(new TObjectProcedure<HabboItem>()
+            {
+                @Override
+                public boolean execute(HabboItem object)
+                {
+                    floorItems.add(object);
+                    if (floorItems.size() == 250)
+                    {
+                        habbo.getClient().sendResponse(new RoomFloorItemsComposer(room.getFurniOwnerNames(), floorItems));
+                        floorItems.clear();
+                    }
+
+                    return true;
+                }
+            });
+
+            habbo.getClient().sendResponse(new RoomFloorItemsComposer(room.getFurniOwnerNames(), floorItems));
+            floorItems.clear();
+        }
 
         if(!room.getCurrentPets().isEmpty())
         {
