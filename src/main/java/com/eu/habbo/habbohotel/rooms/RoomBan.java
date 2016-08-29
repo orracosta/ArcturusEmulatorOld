@@ -51,7 +51,7 @@ public class RoomBan
     {
         try
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM room_bans WHERE room_id = ?, user_id = ?");
+            PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM room_bans WHERE room_id = ? AND user_id = ?");
             statement.setInt(1, this.roomId);
             statement.setInt(2, this.userId);
             statement.execute();
