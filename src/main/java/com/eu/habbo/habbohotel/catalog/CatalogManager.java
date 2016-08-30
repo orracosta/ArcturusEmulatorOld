@@ -1173,7 +1173,10 @@ public class CatalogManager
                 }
                 else
                 {
-                    habbo.getClient().sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.ALREADY_HAVE_BADGE));
+                    if (item.getBaseItems().size() > 1)
+                    {
+                        habbo.getClient().sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.ALREADY_HAVE_BADGE));
+                    }
                 }
             }
 
