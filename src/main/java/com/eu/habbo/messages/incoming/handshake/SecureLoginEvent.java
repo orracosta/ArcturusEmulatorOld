@@ -46,8 +46,15 @@ public class SecureLoginEvent extends MessageHandler
         {
             this.client.getChannel().close();
         }
+
         if(this.client.getHabbo() == null)
         {
+            if (Emulator.getGameEnvironment().getModToolManager().hasIPBan(this.client.getChannel()))
+            {
+                this.client.getChannel().close();
+                return;
+            }
+
             Habbo habbo = Emulator.getGameEnvironment().getHabboManager().loadHabbo(sso);
             if(habbo != null)
             {

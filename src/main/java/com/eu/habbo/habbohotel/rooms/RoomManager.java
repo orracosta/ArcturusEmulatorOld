@@ -738,7 +738,6 @@ public class RoomManager {
         habbo.getRoomUnit().setPathFinderRoom(room);
         habbo.getRoomUnit().resetIdleTimer();
         room.addHabbo(habbo);
-        habbo.getRoomUnit().setId(room.getUnitCounter());
 
         if(!room.getCurrentHabbos().isEmpty())
         {

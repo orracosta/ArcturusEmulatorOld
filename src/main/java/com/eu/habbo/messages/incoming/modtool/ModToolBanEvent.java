@@ -1,6 +1,8 @@
 package com.eu.habbo.messages.incoming.modtool;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.modtool.ModToolManager;
+import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
 public class ModToolBanEvent extends MessageHandler
@@ -14,7 +16,16 @@ public class ModToolBanEvent extends MessageHandler
             String message = this.packet.readString();
             int expireDate = (this.packet.readInt() * 3600) + Emulator.getIntUnixTimestamp();
 
-            Emulator.getGameEnvironment().getModToolManager().createBan(userId, this.client.getHabbo(), expireDate, message);
+            Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(userId);
+
+            if (habbo != null)
+            {
+                Emulator.getGameEnvironment().getModToolManager().createBan(habbo, this.client.getHabbo(), expireDate, message, "account");
+            }
+            else
+            {
+                Emulator.getGameEnvironment().getModToolManager().createBan(userId, "offline", this.client.getHabbo(), expireDate, message, "account");
+            }
         }
         else
         {

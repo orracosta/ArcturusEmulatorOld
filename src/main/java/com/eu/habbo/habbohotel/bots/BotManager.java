@@ -158,7 +158,6 @@ public class BotManager
                 bot.setRoom(room);
                 bot.needsUpdate(true);
                 room.addBot(bot);
-                roomUnit.setId(room.getUnitCounter());
                 Emulator.getThreading().run(bot);
                 room.sendComposer(new RoomUsersComposer(bot).compose());
                 habbo.getHabboInventory().getBotsComponent().removeBot(bot);

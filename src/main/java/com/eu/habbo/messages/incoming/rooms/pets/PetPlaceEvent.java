@@ -68,7 +68,6 @@ public class PetPlaceEvent extends MessageHandler
         roomUnit.setRoomUnitType(RoomUnitType.PET);
         pet.setRoomUnit(roomUnit);
         room.addPet(pet);
-        roomUnit.setId(room.getUnitCounter());
         pet.needsUpdate = true;
         Emulator.getThreading().run(pet);
         room.sendComposer(new RoomPetComposer(pet).compose());

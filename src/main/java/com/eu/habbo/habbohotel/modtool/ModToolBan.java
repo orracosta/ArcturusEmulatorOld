@@ -8,23 +8,27 @@ import java.sql.SQLException;
 
 public class ModToolBan implements Runnable
 {
-    private int userId;
-    private int staffId;
+    public int userId;
+    public String ip;
+    public int staffId;
     public int expireDate;
     public String reason;
+    public String type;
 
     private boolean needsInsert;
 
     public ModToolBan(ResultSet set) throws SQLException
     {
         this.userId = set.getInt("user_id");
+        this.ip = set.getString("ip");
         this.staffId = set.getInt("user_staff_id");
         this.expireDate = set.getInt("ban_expire");
         this.reason = set.getString("ban_reason");
+        this.type = set.getString("type");
         this.needsInsert = false;
     }
 
-    public ModToolBan(int userId, int staffId, int expireDate, String reason)
+    public ModToolBan(int userId, String ip, int staffId, int expireDate, String reason, String type)
     {
         this.userId = userId;
         this.staffId = staffId;
@@ -36,15 +40,17 @@ public class ModToolBan implements Runnable
     @Override
     public void run()
     {
-        if(needsInsert)
+        if(this.needsInsert)
         {
             try
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO bans (user_id, user_staff_id, ban_expire, ban_reason) VALUES (?, ?, ?, ?)");
+                PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO bans (user_id, ip, user_staff_id, ban_expire, ban_reason, type) VALUES (?, ?, ?, ?, ?, ?)");
                 statement.setInt(1, this.userId);
-                statement.setInt(2, this.staffId);
-                statement.setInt(3, this.expireDate);
-                statement.setString(4, this.reason);
+                statement.setString(2, this.ip);
+                statement.setInt(3, this.staffId);
+                statement.setInt(4, this.expireDate);
+                statement.setString(5, this.reason);
+                statement.setString(6, this.type);
                 statement.execute();
                 statement.close();
                 statement.getConnection().close();

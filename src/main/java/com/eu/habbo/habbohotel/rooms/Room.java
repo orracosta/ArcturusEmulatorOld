@@ -449,7 +449,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 b.getRoomUnit().setCanWalk(set.getBoolean("freeroam"));
                 b.getRoomUnit().setInRoom(true);
                 this.addBot(b);
-                b.getRoomUnit().setId(this.unitCounter);
             }
         }
         set.close();
@@ -2220,8 +2219,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         return this.wordFilterWords;
     }
 
-    public int getUnitCounter() {
-        return unitCounter;
+    public synchronized int getUnitCounter()
+    {
+        return this.unitCounter;
     }
 
     public RoomSpecialTypes getRoomSpecialTypes()
@@ -2604,8 +2604,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
     }
 
-    public void addHabbo(Habbo habbo)
+    public synchronized void addHabbo(Habbo habbo)
     {
+        habbo.getRoomUnit().setId(this.unitCounter);
         this.currentHabbos.put(habbo.getHabboInfo().getId(), habbo);
         this.unitCounter++;
         this.updateDatabaseUserCount();
@@ -2666,17 +2667,26 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             }
         }
 
+        RoomTrade trade = this.getActiveTradeForHabbo(habbo);
+
+        if(trade != null)
+        {
+            trade.stopTrade(habbo);
+        }
+
         this.updateDatabaseUserCount();
     }
 
-    public void addBot(Bot bot)
+    public synchronized void addBot(Bot bot)
     {
+        bot.getRoomUnit().setId(this.unitCounter);
         this.currentBots.put(bot.getId(), bot);
         this.unitCounter++;
     }
 
-    public void addPet(AbstractPet pet)
+    public synchronized void addPet(AbstractPet pet)
     {
+        pet.getRoomUnit().setId(this.unitCounter);
         this.currentPets.put(pet.getId(), pet);
         this.unitCounter++;
     }
@@ -3778,8 +3788,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         try
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT users.username, users.id, room_bans.* FROM room_bans INNER JOIN users ON room_bans.user_id = users.id WHERE ends > ?");
+            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT users.username, users.id, room_bans.* FROM room_bans INNER JOIN users ON room_bans.user_id = users.id WHERE ends > ? AND room_bans.room_id = ?");
             statement.setInt(1, Emulator.getIntUnixTimestamp());
+            statement.setInt(2, this.id);
             ResultSet set = statement.executeQuery();
 
             while(set.next())

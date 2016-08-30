@@ -53,6 +53,7 @@ public class CommandHandler
         addCommand(new HandItemCommand());
         addCommand(new HappyHourCommand());
         addCommand(new HotelAlertCommand());
+        addCommand(new IPBanCommand());
         addCommand(new MassBadgeCommand());
         addCommand(new MassCreditsCommand());
         addCommand(new MassGiftCommand());

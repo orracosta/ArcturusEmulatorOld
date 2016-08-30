@@ -10,6 +10,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelId;
 import io.netty.util.AttributeKey;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -116,6 +118,21 @@ public class GameClientManager
         }
 
         return null;
+    }
+
+    public List<Habbo> getHabbosWithIP(String ip)
+    {
+        List<Habbo> habbos = new ArrayList<Habbo>();
+
+        for (GameClient client : this.clients.values())
+        {
+            if (client.getChannel().remoteAddress().toString().contains(ip))
+            {
+                habbos.add(client.getHabbo());
+            }
+        }
+
+        return habbos;
     }
 
     public void sendBroadcastResponse(MessageComposer composer)
