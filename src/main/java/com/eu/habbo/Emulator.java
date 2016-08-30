@@ -39,7 +39,7 @@ public final class Emulator
     /**
      * Stable build version of the emulator.
      */
-    public final static int BUILD = 8;
+    public final static int BUILD = 9;
 
     /**
      * Version as string.
