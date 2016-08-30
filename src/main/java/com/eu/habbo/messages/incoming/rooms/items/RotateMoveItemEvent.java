@@ -132,7 +132,7 @@ public class RotateMoveItemEvent extends MessageHandler
                         return;
                     }
 
-                    if (!room.getHabbosAt(i, j).isEmpty() && !item.getBaseItem().allowSit() && !(item instanceof InteractionStackHelper))
+                    if (!room.getHabbosAt(i, j).isEmpty() && !(oldX == x && oldY == y) && !(item instanceof InteractionStackHelper))
                     {
                         this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
                         this.client.sendResponse(new FloorItemUpdateComposer(item));
@@ -204,8 +204,13 @@ public class RotateMoveItemEvent extends MessageHandler
         for(Tile t : updatedTiles)
         {
             t.Z = room.getStackHeight(t.X, t.Y, true);
-            room.updateHabbosAt(t.X, t.Y);
+
+            if(oldX != t.X || oldY != t.Y)
+                room.updateHabbosAt(t.X, t.Y);
         }
+
+        if(oldX != x || oldY != y)
+            room.updateHabbosAt(oldX, oldY);
 
         room.updateTiles(updatedTiles);
         room.sendComposer(new UpdateStackHeightComposer(updatedTiles).compose());
