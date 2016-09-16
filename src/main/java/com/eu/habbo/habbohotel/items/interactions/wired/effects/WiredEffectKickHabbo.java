@@ -68,16 +68,24 @@ public class WiredEffectKickHabbo extends InteractionWiredEffect
     @Override
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
-        String[] data = set.getString("wired_data").split("\t");
-
-        if (data.length >= 1)
+        try
         {
-            this.setDelay(Integer.valueOf(data[0]));
+            String[] data = set.getString("wired_data").split("\t");
 
-            if (data.length >= 2)
+            if (data.length >= 1)
             {
-                this.message = data[1];
+                this.setDelay(Integer.valueOf(data[0]));
+
+                if (data.length >= 2)
+                {
+                    this.message = data[1];
+                }
             }
+        }
+        catch (Exception e)
+        {
+            this.message = "";
+            this.setDelay(0);
         }
     }
 

@@ -74,7 +74,14 @@ public class WiredConditionNotTriggerOnFurni extends InteractionWiredCondition
         String[] data = set.getString("wired_data").split(";");
 
         for(String s : data)
-            this.items.add(room.getHabboItem(Integer.valueOf(s)));
+        {
+            HabboItem item = room.getHabboItem(Integer.valueOf(s));
+
+            if (item != null)
+            {
+                this.items.add(item);
+            }
+        }
     }
 
     @Override
@@ -127,7 +134,12 @@ public class WiredConditionNotTriggerOnFurni extends InteractionWiredCondition
         {
             for (int i = 0; i < count; i++)
             {
-                this.items.add(room.getHabboItem(packet.readInt()));
+                HabboItem item = room.getHabboItem(packet.readInt());
+
+                if (item != null)
+                {
+                    this.items.add(item);
+                }
             }
         }
 
@@ -147,14 +159,11 @@ public class WiredConditionNotTriggerOnFurni extends InteractionWiredCondition
         {
             for (HabboItem item : this.items)
             {
-                if (room.getHabboItem(item.getId()) == null)
+                if (item.getRoomId() != room.getId())
                     items.add(item);
             }
         }
 
-        for(HabboItem item : items)
-        {
-            this.items.remove(item);
-        }
+        this.items.removeAll(items);
     }
 }

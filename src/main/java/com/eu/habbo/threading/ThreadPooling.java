@@ -6,16 +6,14 @@ import java.util.concurrent.*;
 
 public class ThreadPooling
 {
-    private final ThreadPoolExecutor threadPool;
+    public final int threads;
     private final ScheduledExecutorService scheduledPool;
     private volatile boolean canAdd;
 
     public ThreadPooling(Integer threads)
     {
-        RejectedExecutionHandlerImpl rejectionHandler = new RejectedExecutionHandlerImpl();
-        ThreadFactory threadFactory = Executors.defaultThreadFactory();
-        this.threadPool = new ThreadPoolExecutor(3, 10, 10L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(), threadFactory, rejectionHandler);
-        this.scheduledPool = Executors.newScheduledThreadPool(2);
+        this.threads = threads;
+        this.scheduledPool = Executors.newScheduledThreadPool(this.threads);
         this.canAdd = true;
         Emulator.getLogging().logStart("Thread Pool -> Loaded!");
     }
@@ -26,7 +24,7 @@ public class ThreadPooling
         {
             if (this.canAdd)
             {
-                this.threadPool.execute(run);
+                this.run(run, 0);
             }
         }
         catch (Exception e)
@@ -54,13 +52,14 @@ public class ThreadPooling
     public void shutDown()
     {
         this.canAdd = false;
-        this.threadPool.shutdownNow();
-
-        while (!this.threadPool.isTerminated()) {
-        }
 
         this.scheduledPool.shutdownNow();
         while(!this.scheduledPool.isTerminated()) {
         }
+    }
+
+    public ScheduledExecutorService getService()
+    {
+        return this.scheduledPool;
     }
 }

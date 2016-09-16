@@ -81,17 +81,23 @@ public class RoomSpecialTypes
         this.banzaiTeleporters.remove(item.getId());
     }
 
-    public synchronized THashSet<InteractionBattleBanzaiTeleporter> getBanzaiTeleporters()
+    public THashSet<InteractionBattleBanzaiTeleporter> getBanzaiTeleporters()
     {
-        THashSet<InteractionBattleBanzaiTeleporter> battleBanzaiTeleporters = new THashSet<InteractionBattleBanzaiTeleporter>();
-        battleBanzaiTeleporters.addAll(this.banzaiTeleporters.values());
+        synchronized (this.banzaiTeleporters)
+        {
+            THashSet<InteractionBattleBanzaiTeleporter> battleBanzaiTeleporters = new THashSet<InteractionBattleBanzaiTeleporter>();
+            battleBanzaiTeleporters.addAll(this.banzaiTeleporters.values());
 
-        return battleBanzaiTeleporters;
+            return battleBanzaiTeleporters;
+        }
     }
 
-    public synchronized InteractionBattleBanzaiTeleporter getRandomTeleporter()
+    public InteractionBattleBanzaiTeleporter getRandomTeleporter()
     {
-        return (InteractionBattleBanzaiTeleporter)this.banzaiTeleporters.values().toArray()[Emulator.getRandom().nextInt(this.banzaiTeleporters.size())];
+        synchronized (this.banzaiTeleporters)
+        {
+            return (InteractionBattleBanzaiTeleporter) this.banzaiTeleporters.values().toArray()[Emulator.getRandom().nextInt(this.banzaiTeleporters.size())];
+        }
     }
 
     /*
@@ -112,12 +118,15 @@ public class RoomSpecialTypes
         this.nests.remove(item.getId());
     }
 
-    public synchronized THashSet<InteractionNest> getNests()
+    public THashSet<InteractionNest> getNests()
     {
-        THashSet<InteractionNest> nests = new THashSet<InteractionNest>();
-        nests.addAll(this.nests.values());
+        synchronized (this.nests)
+        {
+            THashSet<InteractionNest> nests = new THashSet<InteractionNest>();
+            nests.addAll(this.nests.values());
 
-        return nests;
+            return nests;
+        }
     }
 
     /*
@@ -138,12 +147,15 @@ public class RoomSpecialTypes
         this.petDrinks.remove(item.getId());
     }
 
-    public synchronized THashSet<InteractionPetDrink> getPetDrinks()
+    public THashSet<InteractionPetDrink> getPetDrinks()
     {
-        THashSet<InteractionPetDrink> petDrinks = new THashSet<InteractionPetDrink>();
-        petDrinks.addAll(this.petDrinks.values());
+        synchronized (this.petDrinks)
+        {
+            THashSet<InteractionPetDrink> petDrinks = new THashSet<InteractionPetDrink>();
+            petDrinks.addAll(this.petDrinks.values());
 
-        return petDrinks;
+            return petDrinks;
+        }
     }
 
     /*
@@ -164,12 +176,15 @@ public class RoomSpecialTypes
         this.petFoods.remove(petFood.getId());
     }
 
-    public synchronized THashSet<InteractionPetFood> getPetFoods()
+    public THashSet<InteractionPetFood> getPetFoods()
     {
-        THashSet<InteractionPetFood> petFoods = new THashSet<InteractionPetFood>();
-        petFoods.addAll(this.petFoods.values());
+        synchronized (this.petFoods)
+        {
+            THashSet<InteractionPetFood> petFoods = new THashSet<InteractionPetFood>();
+            petFoods.addAll(this.petFoods.values());
 
-        return petFoods;
+            return petFoods;
+        }
     }
 
     /*
@@ -190,41 +205,50 @@ public class RoomSpecialTypes
         this.rollers.remove(roller.getId());
     }
 
-    public synchronized THashSet<InteractionRoller> getRollers()
+    public THashSet<InteractionRoller> getRollers()
     {
-        THashSet<InteractionRoller> rollers = new THashSet<InteractionRoller>();
-        rollers.addAll(this.rollers.values());
+        synchronized (this.rollers)
+        {
+            THashSet<InteractionRoller> rollers = new THashSet<InteractionRoller>();
+            rollers.addAll(this.rollers.values());
 
-        return rollers;
+            return rollers;
+        }
     }
 
     /*
         Wired Triggers
      */
-    public synchronized InteractionWiredTrigger getTrigger(int itemId)
+    public InteractionWiredTrigger getTrigger(int itemId)
     {
-        for(Map.Entry<WiredTriggerType, THashSet<InteractionWiredTrigger>> map : this.wiredTriggers.entrySet())
+        synchronized (this.wiredTriggers)
         {
-            for(InteractionWiredTrigger trigger : map.getValue())
+            for (Map.Entry<WiredTriggerType, THashSet<InteractionWiredTrigger>> map : this.wiredTriggers.entrySet())
             {
-                if(trigger.getId() == itemId)
-                    return trigger;
+                for (InteractionWiredTrigger trigger : map.getValue())
+                {
+                    if (trigger.getId() == itemId)
+                        return trigger;
+                }
             }
-        }
 
-        return null;
+            return null;
+        }
     }
 
-    public synchronized THashSet<InteractionWiredTrigger> getTriggers()
+    public THashSet<InteractionWiredTrigger> getTriggers()
     {
-        THashSet<InteractionWiredTrigger> triggers = new THashSet<InteractionWiredTrigger>();
-
-        for(Map.Entry<WiredTriggerType, THashSet<InteractionWiredTrigger>> map : this.wiredTriggers.entrySet())
+        synchronized (this.wiredTriggers)
         {
-            triggers.addAll(map.getValue());
-        }
+            THashSet<InteractionWiredTrigger> triggers = new THashSet<InteractionWiredTrigger>();
 
-        return triggers;
+            for (Map.Entry<WiredTriggerType, THashSet<InteractionWiredTrigger>> map : this.wiredTriggers.entrySet())
+            {
+                triggers.addAll(map.getValue());
+            }
+
+            return triggers;
+        }
     }
 
     public THashSet<InteractionWiredTrigger> getTriggers(WiredTriggerType type)
@@ -283,16 +307,19 @@ public class RoomSpecialTypes
         return null;
     }
 
-    public synchronized THashSet<InteractionWiredEffect> getEffects()
+    public THashSet<InteractionWiredEffect> getEffects()
     {
-        THashSet<InteractionWiredEffect> effects = new THashSet<InteractionWiredEffect>();
-
-        for(Map.Entry<WiredEffectType, THashSet<InteractionWiredEffect>> map : this.wiredEffects.entrySet())
+        synchronized (this.wiredEffects)
         {
-            effects.addAll(map.getValue());
-        }
+            THashSet<InteractionWiredEffect> effects = new THashSet<InteractionWiredEffect>();
 
-        return effects;
+            for (Map.Entry<WiredEffectType, THashSet<InteractionWiredEffect>> map : this.wiredEffects.entrySet())
+            {
+                effects.addAll(map.getValue());
+            }
+
+            return effects;
+        }
     }
 
     public THashSet<InteractionWiredEffect> getEffects(WiredEffectType type)
@@ -300,20 +327,23 @@ public class RoomSpecialTypes
         return this.wiredEffects.get(type);
     }
 
-    public synchronized THashSet<InteractionWiredEffect> getEffects(int x, int y)
+    public THashSet<InteractionWiredEffect> getEffects(int x, int y)
     {
-        THashSet<InteractionWiredEffect> effects = new THashSet<InteractionWiredEffect>();
-
-        for(Map.Entry<WiredEffectType, THashSet<InteractionWiredEffect>> map : this.wiredEffects.entrySet())
+        synchronized (this.wiredEffects)
         {
-            for(InteractionWiredEffect effect : map.getValue())
-            {
-                if(effect.getX() == x && effect.getY() == y)
-                    effects.add(effect);
-            }
-        }
+            THashSet<InteractionWiredEffect> effects = new THashSet<InteractionWiredEffect>();
 
-        return effects;
+            for (Map.Entry<WiredEffectType, THashSet<InteractionWiredEffect>> map : this.wiredEffects.entrySet())
+            {
+                for (InteractionWiredEffect effect : map.getValue())
+                {
+                    if (effect.getX() == x && effect.getY() == y)
+                        effects.add(effect);
+                }
+            }
+
+            return effects;
+        }
     }
 
     public void addEffect(InteractionWiredEffect effect)
@@ -363,25 +393,31 @@ public class RoomSpecialTypes
         return conditions;
     }
 
-    public synchronized THashSet<InteractionWiredCondition> getConditions(WiredConditionType type)
+    public THashSet<InteractionWiredCondition> getConditions(WiredConditionType type)
     {
-        return this.wiredConditions.get(type);
+        synchronized (this.wiredConditions)
+        {
+            return this.wiredConditions.get(type);
+        }
     }
 
-    public synchronized THashSet<InteractionWiredCondition> getConditions(int x, int y)
+    public THashSet<InteractionWiredCondition> getConditions(int x, int y)
     {
-        THashSet<InteractionWiredCondition> conditions = new THashSet<InteractionWiredCondition>();
-
-        for(Map.Entry<WiredConditionType, THashSet<InteractionWiredCondition>> map : this.wiredConditions.entrySet())
+        synchronized (this.wiredConditions)
         {
-            for(InteractionWiredCondition condition : map.getValue())
-            {
-                if(condition.getX() == x && condition.getY() == y)
-                    conditions.add(condition);
-            }
-        }
+            THashSet<InteractionWiredCondition> conditions = new THashSet<InteractionWiredCondition>();
 
-        return conditions;
+            for (Map.Entry<WiredConditionType, THashSet<InteractionWiredCondition>> map : this.wiredConditions.entrySet())
+            {
+                for (InteractionWiredCondition condition : map.getValue())
+                {
+                    if (condition.getX() == x && condition.getY() == y)
+                        conditions.add(condition);
+                }
+            }
+
+            return conditions;
+        }
     }
 
     public void addCondition(InteractionWiredCondition condition)
@@ -420,66 +456,78 @@ public class RoomSpecialTypes
         this.gameScoreboards.remove(scoreboard.getId());
     }
 
-    public synchronized THashMap<Integer, InteractionFreezeScoreboard> getFreezeScoreboards()
+    public THashMap<Integer, InteractionFreezeScoreboard> getFreezeScoreboards()
     {
-        THashMap<Integer, InteractionFreezeScoreboard> boards = new THashMap<Integer, InteractionFreezeScoreboard>();
-
-        for(Map.Entry<Integer, InteractionGameScoreboard> set : this.gameScoreboards.entrySet())
+        synchronized (this.gameScoreboards)
         {
-            if(set.getValue() instanceof InteractionFreezeScoreboard)
+            THashMap<Integer, InteractionFreezeScoreboard> boards = new THashMap<Integer, InteractionFreezeScoreboard>();
+
+            for (Map.Entry<Integer, InteractionGameScoreboard> set : this.gameScoreboards.entrySet())
             {
-                boards.put(set.getValue().getId(), (InteractionFreezeScoreboard) set.getValue());
-            }
-        }
-
-        return boards;
-    }
-
-    public synchronized THashMap<Integer, InteractionFreezeScoreboard> getFreezeScoreboards(GameTeamColors teamColor)
-    {
-        THashMap<Integer, InteractionFreezeScoreboard> boards = new THashMap<Integer, InteractionFreezeScoreboard>();
-
-        for(Map.Entry<Integer, InteractionGameScoreboard> set : this.gameScoreboards.entrySet())
-        {
-            if(set.getValue() instanceof InteractionFreezeScoreboard)
-            {
-                if(((InteractionFreezeScoreboard) set.getValue()).teamColor.equals(teamColor))
+                if (set.getValue() instanceof InteractionFreezeScoreboard)
+                {
                     boards.put(set.getValue().getId(), (InteractionFreezeScoreboard) set.getValue());
+                }
             }
-        }
 
-        return boards;
+            return boards;
+        }
     }
 
-    public synchronized THashMap<Integer, InteractionBattleBanzaiScoreboard> getBattleBanzaiScoreboards()
+    public THashMap<Integer, InteractionFreezeScoreboard> getFreezeScoreboards(GameTeamColors teamColor)
     {
-        THashMap<Integer, InteractionBattleBanzaiScoreboard> boards = new THashMap<Integer, InteractionBattleBanzaiScoreboard>();
-
-        for(Map.Entry<Integer, InteractionGameScoreboard> set : this.gameScoreboards.entrySet())
+        synchronized (this.gameScoreboards)
         {
-            if(set.getValue() instanceof InteractionBattleBanzaiScoreboard)
-            {
-                boards.put(set.getValue().getId(), (InteractionBattleBanzaiScoreboard) set.getValue());
-            }
-        }
+            THashMap<Integer, InteractionFreezeScoreboard> boards = new THashMap<Integer, InteractionFreezeScoreboard>();
 
-        return boards;
+            for (Map.Entry<Integer, InteractionGameScoreboard> set : this.gameScoreboards.entrySet())
+            {
+                if (set.getValue() instanceof InteractionFreezeScoreboard)
+                {
+                    if (((InteractionFreezeScoreboard) set.getValue()).teamColor.equals(teamColor))
+                        boards.put(set.getValue().getId(), (InteractionFreezeScoreboard) set.getValue());
+                }
+            }
+
+            return boards;
+        }
     }
 
-    public synchronized THashMap<Integer, InteractionBattleBanzaiScoreboard> getBattleBanzaiScoreboards(GameTeamColors teamColor)
+    public THashMap<Integer, InteractionBattleBanzaiScoreboard> getBattleBanzaiScoreboards()
     {
-        THashMap<Integer, InteractionBattleBanzaiScoreboard> boards = new THashMap<Integer, InteractionBattleBanzaiScoreboard>();
-
-        for(Map.Entry<Integer, InteractionGameScoreboard> set : this.gameScoreboards.entrySet())
+        synchronized (this.gameScoreboards)
         {
-            if(set.getValue() instanceof InteractionBattleBanzaiScoreboard)
+            THashMap<Integer, InteractionBattleBanzaiScoreboard> boards = new THashMap<Integer, InteractionBattleBanzaiScoreboard>();
+
+            for (Map.Entry<Integer, InteractionGameScoreboard> set : this.gameScoreboards.entrySet())
             {
-                if(((InteractionBattleBanzaiScoreboard) set.getValue()).teamColor.equals(teamColor))
+                if (set.getValue() instanceof InteractionBattleBanzaiScoreboard)
+                {
                     boards.put(set.getValue().getId(), (InteractionBattleBanzaiScoreboard) set.getValue());
+                }
             }
-        }
 
-        return boards;
+            return boards;
+        }
+    }
+
+    public THashMap<Integer, InteractionBattleBanzaiScoreboard> getBattleBanzaiScoreboards(GameTeamColors teamColor)
+    {
+        synchronized (this.gameScoreboards)
+        {
+            THashMap<Integer, InteractionBattleBanzaiScoreboard> boards = new THashMap<Integer, InteractionBattleBanzaiScoreboard>();
+
+            for (Map.Entry<Integer, InteractionGameScoreboard> set : this.gameScoreboards.entrySet())
+            {
+                if (set.getValue() instanceof InteractionBattleBanzaiScoreboard)
+                {
+                    if (((InteractionBattleBanzaiScoreboard) set.getValue()).teamColor.equals(teamColor))
+                        boards.put(set.getValue().getId(), (InteractionBattleBanzaiScoreboard) set.getValue());
+                }
+            }
+
+            return boards;
+        }
     }
 
     /*
@@ -500,34 +548,40 @@ public class RoomSpecialTypes
         this.gameGates.remove(gameGate.getId());
     }
 
-    public synchronized THashMap<Integer, InteractionFreezeGate> getFreezeGates()
+    public THashMap<Integer, InteractionFreezeGate> getFreezeGates()
     {
-        THashMap<Integer, InteractionFreezeGate> gates = new THashMap<Integer, InteractionFreezeGate>();
-
-        for(Map.Entry<Integer, InteractionGameGate> set : this.gameGates.entrySet())
+        synchronized (this.gameGates)
         {
-            if(set.getValue() instanceof InteractionFreezeGate)
-            {
-                gates.put(set.getValue().getId(), (InteractionFreezeGate) set.getValue());
-            }
-        }
+            THashMap<Integer, InteractionFreezeGate> gates = new THashMap<Integer, InteractionFreezeGate>();
 
-        return gates;
+            for (Map.Entry<Integer, InteractionGameGate> set : this.gameGates.entrySet())
+            {
+                if (set.getValue() instanceof InteractionFreezeGate)
+                {
+                    gates.put(set.getValue().getId(), (InteractionFreezeGate) set.getValue());
+                }
+            }
+
+            return gates;
+        }
     }
 
-    public synchronized THashMap<Integer, InteractionBattleBanzaiGate> getBattleBanzaiGates()
+    public THashMap<Integer, InteractionBattleBanzaiGate> getBattleBanzaiGates()
     {
-        THashMap<Integer, InteractionBattleBanzaiGate> gates = new THashMap<Integer, InteractionBattleBanzaiGate>();
-
-        for(Map.Entry<Integer, InteractionGameGate> set : this.gameGates.entrySet())
+        synchronized (this.gameGates)
         {
-            if(set.getValue() instanceof InteractionBattleBanzaiGate)
-            {
-                gates.put(set.getValue().getId(), (InteractionBattleBanzaiGate) set.getValue());
-            }
-        }
+            THashMap<Integer, InteractionBattleBanzaiGate> gates = new THashMap<Integer, InteractionBattleBanzaiGate>();
 
-        return gates;
+            for (Map.Entry<Integer, InteractionGameGate> set : this.gameGates.entrySet())
+            {
+                if (set.getValue() instanceof InteractionBattleBanzaiGate)
+                {
+                    gates.put(set.getValue().getId(), (InteractionBattleBanzaiGate) set.getValue());
+                }
+            }
+
+            return gates;
+        }
     }
 
     /*
@@ -548,34 +602,40 @@ public class RoomSpecialTypes
         this.gameTimers.remove(gameTimer.getId());
     }
 
-    public synchronized THashMap<Integer, InteractionFreezeTimer> getFreezeTimers()
+    public THashMap<Integer, InteractionFreezeTimer> getFreezeTimers()
     {
-        THashMap<Integer, InteractionFreezeTimer> timers = new THashMap<Integer, InteractionFreezeTimer>();
-
-        for(Map.Entry<Integer, InteractionGameTimer> set : this.gameTimers.entrySet())
+        synchronized (this.gameTimers)
         {
-            if(set.getValue() instanceof InteractionFreezeTimer)
-            {
-                timers.put(set.getValue().getId(), (InteractionFreezeTimer) set.getValue());
-            }
-        }
+            THashMap<Integer, InteractionFreezeTimer> timers = new THashMap<Integer, InteractionFreezeTimer>();
 
-        return timers;
+            for (Map.Entry<Integer, InteractionGameTimer> set : this.gameTimers.entrySet())
+            {
+                if (set.getValue() instanceof InteractionFreezeTimer)
+                {
+                    timers.put(set.getValue().getId(), (InteractionFreezeTimer) set.getValue());
+                }
+            }
+
+            return timers;
+        }
     }
 
-    public synchronized THashMap<Integer, InteractionBattleBanzaiTimer> getBattleBanzaiTimers()
+    public THashMap<Integer, InteractionBattleBanzaiTimer> getBattleBanzaiTimers()
     {
-        THashMap<Integer, InteractionBattleBanzaiTimer> timers = new THashMap<Integer, InteractionBattleBanzaiTimer>();
-
-        for(Map.Entry<Integer, InteractionGameTimer> set : this.gameTimers.entrySet())
+        synchronized (this.gameTimers)
         {
-            if(set.getValue() instanceof InteractionBattleBanzaiTimer)
-            {
-                timers.put(set.getValue().getId(), (InteractionBattleBanzaiTimer) set.getValue());
-            }
-        }
+            THashMap<Integer, InteractionBattleBanzaiTimer> timers = new THashMap<Integer, InteractionBattleBanzaiTimer>();
 
-        return timers;
+            for (Map.Entry<Integer, InteractionGameTimer> set : this.gameTimers.entrySet())
+            {
+                if (set.getValue() instanceof InteractionBattleBanzaiTimer)
+                {
+                    timers.put(set.getValue().getId(), (InteractionBattleBanzaiTimer) set.getValue());
+                }
+            }
+
+            return timers;
+        }
     }
 
     /*
@@ -637,7 +697,7 @@ public class RoomSpecialTypes
         return items;
     }
 
-    public void dispose()
+    public synchronized void dispose()
     {
         this.banzaiTeleporters.clear();
         this.nests.clear();

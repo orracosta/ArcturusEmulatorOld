@@ -507,9 +507,9 @@ public class ModToolManager
 
     public void pickTicket(ModToolIssue issue, Habbo habbo)
     {
-        issue.modId = habbo.getHabboInfo().getId();
+        issue.modId   = habbo.getHabboInfo().getId();
         issue.modName = habbo.getHabboInfo().getUsername();
-        issue.state = ModToolTicketState.PICKED;
+        issue.state   = ModToolTicketState.PICKED;
 
         this.updateTicketToMods(issue);
         issue.updateInDatabase();

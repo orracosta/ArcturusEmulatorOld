@@ -151,8 +151,10 @@ public class Logging
     
     public synchronized void logErrorLine(Object line)
     {
-
-        System.err.println("[ERROR] " + line.toString());
+        if (Emulator.isReady && Emulator.getConfig().getBoolean("debug.show.errors"))
+        {
+            System.err.println("[ERROR] " + line.toString());
+        }
 
         if (Emulator.isReady && Emulator.getConfig().getBoolean("logging.errors.runtime"))
         {
@@ -196,6 +198,18 @@ public class Logging
                 ((Exception) e).printStackTrace();
 
             write(errorsPacketsWriter, e);
+        }
+
+        if(e instanceof Throwable)
+        {
+            ((Throwable) e).printStackTrace();
+            if (e instanceof SQLException)
+            {
+                this.logSQLException((SQLException) e);
+                return;
+            }
+
+            Emulator.getThreading().run(new HTTPPostError((Throwable) e));
         }
     }
     

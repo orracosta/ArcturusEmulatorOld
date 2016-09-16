@@ -28,8 +28,8 @@ class DatabasePool
             databaseConfiguration.setConnectionTimeout(3400L);
             databaseConfiguration.setValidationTimeout(3399L);
             databaseConfiguration.setLeakDetectionThreshold(5000L);
-            databaseConfiguration.setMaxLifetime(2874000L);
-            databaseConfiguration.setIdleTimeout(2874000L);
+            databaseConfiguration.setMaxLifetime(3000L);
+            databaseConfiguration.setIdleTimeout(2500L);
             //databaseConfiguration.setDriverClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
             this.database = new HikariDataSource(databaseConfiguration);
         }

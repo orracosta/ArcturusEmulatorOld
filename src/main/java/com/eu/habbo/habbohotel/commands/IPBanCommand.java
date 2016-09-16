@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 
 public class IPBanCommand extends Command
 {
+    public final static int TEN_YEARS = 315569260;
     public IPBanCommand()
     {
         super("cmd_ip_ban", Emulator.getTexts().getValue("commands.keys.cmd_ip_ban").split(";"));
@@ -33,11 +34,15 @@ public class IPBanCommand extends Command
 
         if (habbo != null)
         {
-            ModToolBan ban = Emulator.getGameEnvironment().getModToolManager().createBan(habbo, gameClient.getHabbo(), Emulator.getIntUnixTimestamp() * 2, reason, "ip");
+            int time = Emulator.getIntUnixTimestamp() + TEN_YEARS;
+            ModToolBan ban = Emulator.getGameEnvironment().getModToolManager().createBan(habbo, gameClient.getHabbo(), time, reason, "ip");
 
             for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithIP(ban.ip))
             {
-                Emulator.getGameEnvironment().getModToolManager().createBan(h, gameClient.getHabbo(), Emulator.getIntUnixTimestamp() * 2, reason, "ip");
+                if (h != null)
+                {
+                    Emulator.getGameEnvironment().getModToolManager().createBan(h, gameClient.getHabbo(), time, reason, "ip");
+                }
             }
         }
 

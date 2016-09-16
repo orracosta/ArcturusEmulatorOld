@@ -1,5 +1,6 @@
 package com.eu.habbo.util.pathfinding;
 
+import com.eu.habbo.Emulator;
 import gnu.trove.set.hash.THashSet;
 
 import java.awt.*;
@@ -9,15 +10,6 @@ public class Tile extends Point
     public int X;
     public int Y;
     public double Z;
-
-    public Tile()
-    {
-        super(0, 0);
-
-        this.X = 0;
-        this.Y = 0;
-        this.Z = 0;
-    }
 
     public Tile(int x, int y)
     {

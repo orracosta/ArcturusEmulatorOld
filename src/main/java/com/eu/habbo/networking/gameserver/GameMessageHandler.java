@@ -3,15 +3,24 @@ package com.eu.habbo.networking.gameserver;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClientManager;
 import com.eu.habbo.messages.ClientMessage;
+import com.eu.habbo.threading.runnables.ChannelReadHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import java.io.IOException;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class GameMessageHandler extends ChannelInboundHandlerAdapter
 {
+    private ScheduledExecutorService pooling;
+
+    public GameMessageHandler(ScheduledExecutorService pooling)
+    {
+        this.pooling = pooling;
+    }
+
     @Override
     public void channelRegistered(ChannelHandlerContext ctx)
     {
@@ -29,15 +38,16 @@ public class GameMessageHandler extends ChannelInboundHandlerAdapter
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg)
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception
     {
-        ByteBuf m = (ByteBuf) msg;
-        int length = m.readInt();
-        short header = m.readShort();
-        ByteBuf body = Unpooled.wrappedBuffer(m.readBytes(m.readableBytes()));
-
-        Emulator.getGameServer().getPacketManager().handlePacket(ctx.attr(GameClientManager.CLIENT).get(), new ClientMessage(header, body));
-
+        try
+        {
+            Emulator.getThreading().run(new ChannelReadHandler(ctx, msg));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override

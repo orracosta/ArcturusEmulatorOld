@@ -155,6 +155,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     private RoomSpecialTypes roomSpecialTypes;
 
     private final Object loadLock = new Object();
+    private final Object cycleLock = new Object();
 
     //Use appropriately. Could potentially cause memory leaks when used incorrectly.
     public volatile boolean preventUnloading = false;
@@ -262,7 +263,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
     }
 
-    public void loadData()
+    public synchronized void loadData()
     {
         synchronized (this.loadLock)
         {
@@ -483,7 +484,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             pet.getRoomUnit().setRoomUnitType(RoomUnitType.PET);
             pet.getRoomUnit().setCanWalk(true);
             this.addPet(pet);
-            pet.getRoomUnit().setId(this.unitCounter);
         }
         set.close();
         statement.close();
@@ -1016,7 +1016,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         if(this.loaded)
         {
-            Emulator.getThreading().run(this, 500);
+            Emulator.getThreading().run(this, 485);
             this.cycle();
         }
 
@@ -1104,10 +1104,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             Emulator.getLogging().logSQLException(e);
         }
     }
+
     private synchronized void cycle()
     {
-        int currentTimestamp = Emulator.getIntUnixTimestamp();
-
         boolean foundRightHolder = false;
 
         if(this.loaded)
@@ -1663,27 +1662,33 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
     }
 
-    public int getId() {
+    public int getId()
+    {
         return this.id;
     }
 
-    public int getOwnerId() {
+    public int getOwnerId()
+    {
         return this.ownerId;
     }
 
-    public String getOwnerName() {
+    public String getOwnerName()
+    {
         return this.ownerName;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
 
-    public String getDescription() {
+    public String getDescription()
+    {
         return this.description;
     }
 
-    public RoomLayout getLayout() {
+    public RoomLayout getLayout()
+    {
         return this.layout;
     }
 
@@ -1702,39 +1707,48 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.overrideModel = overrideModel;
     }
 
-    public String getPassword() {
+    public String getPassword()
+    {
         return this.password;
     }
 
-    public RoomState getState() {
+    public RoomState getState()
+    {
         return this.state;
     }
 
-    public int getUsersMax() {
+    public int getUsersMax()
+    {
         return this.usersMax;
     }
 
-    public int getScore() {
+    public int getScore()
+    {
         return this.score;
     }
 
-    public int getCategory() {
+    public int getCategory()
+    {
         return this.category;
     }
 
-    public String getFloorPaint() {
+    public String getFloorPaint()
+    {
         return this.floorPaint;
     }
 
-    public String getWallPaint() {
+    public String getWallPaint()
+    {
         return this.wallPaint;
     }
 
-    public String getBackgroundPaint() {
+    public String getBackgroundPaint()
+    {
         return this.backgroundPaint;
     }
 
-    public int getWallSize() {
+    public int getWallSize()
+    {
         return this.wallSize;
     }
 
@@ -1748,11 +1762,13 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.wallHeight = wallHeight;
     }
 
-    public int getFloorSize() {
+    public int getFloorSize()
+    {
         return this.floorSize;
     }
 
-    public String getTags() {
+    public String getTags()
+    {
         return this.tags;
     }
 
@@ -1791,7 +1807,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         return "";
     }
 
-    public boolean isPublicRoom() {
+    public boolean isPublicRoom()
+    {
         return this.publicRoom;
     }
 
@@ -1805,11 +1822,13 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.staffPromotedRoom = staffPromotedRoom;
     }
 
-    public boolean isAllowPets() {
+    public boolean isAllowPets()
+    {
         return this.allowPets;
     }
 
-    public boolean isAllowPetsEat() {
+    public boolean isAllowPetsEat()
+    {
         return this.allowPetsEat;
     }
 
@@ -1823,52 +1842,59 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         return this.allowBotsWalk;
     }
 
-    public boolean isHideWall() {
+    public boolean isHideWall()
+    {
         return this.hideWall;
     }
 
-    public synchronized Color getBackgroundTonerColor()
+    public Color getBackgroundTonerColor()
     {
         final Color[] color = {new Color(0, 0, 0)};
-        this.roomItems.forEachValue(new TObjectProcedure<HabboItem>()
+        synchronized (this.roomItems)
         {
-            @Override
-            public boolean execute(HabboItem object)
+            this.roomItems.forEachValue(new TObjectProcedure<HabboItem>()
             {
-                if (object instanceof InteractionBackgroundToner)
+                @Override
+                public boolean execute(HabboItem object)
                 {
-                    String[] extraData = object.getExtradata().split(":");
-
-                    if (extraData.length == 4)
+                    if (object instanceof InteractionBackgroundToner)
                     {
-                        if (extraData[0].equalsIgnoreCase("1"))
+                        String[] extraData = object.getExtradata().split(":");
+
+                        if (extraData.length == 4)
                         {
-                            color[0] = Color.getHSBColor(Integer.valueOf(extraData[1]), Integer.valueOf(extraData[2]), Integer.valueOf(extraData[3]));
-                            return false;
+                            if (extraData[0].equalsIgnoreCase("1"))
+                            {
+                                color[0] = Color.getHSBColor(Integer.valueOf(extraData[1]), Integer.valueOf(extraData[2]), Integer.valueOf(extraData[3]));
+                                return false;
+                            }
                         }
                     }
+
+                    return true;
                 }
-
-                return true;
-            }
-        });
-
+            });
+        }
         return color[0];
     }
 
-    public int getChatMode() {
+    public int getChatMode()
+    {
         return this.chatMode;
     }
 
-    public int getChatWeight() {
+    public int getChatWeight()
+    {
         return this.chatWeight;
     }
 
-    public int getChatSpeed() {
+    public int getChatSpeed()
+    {
         return this.chatSpeed;
     }
 
-    public int getChatDistance() {
+    public int getChatDistance()
+    {
         return this.chatDistance;
     }
 
@@ -1879,47 +1905,61 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         if (this.hasGuild())
         {
             Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(this.guild);
-            guild.setRoomName(name);
+
+            if (guild != null)
+            {
+                guild.setRoomName(name);
+            }
         }
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description)
+    {
         this.description = description;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(String password)
+    {
         this.password = password;
     }
 
-    public void setState(RoomState state) {
+    public void setState(RoomState state)
+    {
         this.state = state;
     }
 
-    public void setUsersMax(int usersMax) {
+    public void setUsersMax(int usersMax)
+    {
         this.usersMax = usersMax;
     }
 
-    public void setScore(int score) {
+    public void setScore(int score)
+    {
         this.score = score;
     }
 
-    public void setCategory(int category) {
+    public void setCategory(int category)
+    {
         this.category = category;
     }
 
-    public void setFloorPaint(String floorPaint) {
+    public void setFloorPaint(String floorPaint)
+    {
         this.floorPaint = floorPaint;
     }
 
-    public void setWallPaint(String wallPaint) {
+    public void setWallPaint(String wallPaint)
+    {
         this.wallPaint = wallPaint;
     }
 
-    public void setBackgroundPaint(String backgroundPaint) {
+    public void setBackgroundPaint(String backgroundPaint)
+    {
         this.backgroundPaint = backgroundPaint;
     }
 
-    public void setWallSize(int wallSize) {
+    public void setWallSize(int wallSize)
+    {
         this.wallSize = wallSize;
     }
 
@@ -1938,15 +1978,18 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.tradeMode = tradeMode;
     }
 
-    public void setAllowPets(boolean allowPets) {
+    public void setAllowPets(boolean allowPets)
+    {
         this.allowPets = allowPets;
     }
 
-    public void setAllowPetsEat(boolean allowPetsEat) {
+    public void setAllowPetsEat(boolean allowPetsEat)
+    {
         this.allowPetsEat = allowPetsEat;
     }
 
-    public void setAllowWalkthrough(boolean allowWalkthrough) {
+    public void setAllowWalkthrough(boolean allowWalkthrough)
+    {
         this.allowWalkthrough = allowWalkthrough;
     }
 
@@ -1955,23 +1998,28 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.allowBotsWalk = allowBotsWalk;
     }
 
-    public void setHideWall(boolean hideWall) {
+    public void setHideWall(boolean hideWall)
+    {
         this.hideWall = hideWall;
     }
 
-    public void setChatMode(int chatMode) {
+    public void setChatMode(int chatMode)
+    {
         this.chatMode = chatMode;
     }
 
-    public void setChatWeight(int chatWeight) {
+    public void setChatWeight(int chatWeight)
+    {
         this.chatWeight = chatWeight;
     }
 
-    public void setChatSpeed(int chatSpeed) {
+    public void setChatSpeed(int chatSpeed)
+    {
         this.chatSpeed = chatSpeed;
     }
 
-    public void setChatDistance(int chatDistance) {
+    public void setChatDistance(int chatDistance)
+    {
         this.chatDistance = chatDistance;
     }
 
@@ -2219,11 +2267,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         return this.wordFilterWords;
     }
 
-    public synchronized int getUnitCounter()
-    {
-        return this.unitCounter;
-    }
-
     public RoomSpecialTypes getRoomSpecialTypes()
     {
         return this.roomSpecialTypes;
@@ -2232,11 +2275,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public boolean isPreLoaded()
     {
         return this.preLoaded;
-    }
-
-    public void setPreLoaded(boolean value)
-    {
-        this.preLoaded = value;
     }
 
     public boolean isLoaded()
@@ -2949,7 +2987,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.talk(habbo, roomChatMessage, chatType, false);
     }
 
-    public void talk(Habbo habbo, RoomChatMessage roomChatMessage, RoomChatType chatType, boolean ignoreWired)
+    public void talk(final Habbo habbo, final RoomChatMessage roomChatMessage, RoomChatType chatType, boolean ignoreWired)
     {
         if(roomChatMessage != null && roomChatMessage.getMessage().equalsIgnoreCase("i am a pirate"))
         {
@@ -3030,23 +3068,38 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         if(chatType == RoomChatType.WHISPER)
         {
-            ServerMessage message = new RoomUserWhisperComposer(roomChatMessage).compose();
+            if (roomChatMessage.getTargetHabbo() == null)
+            {
+                return;
+            }
+
+            final ServerMessage message = new RoomUserWhisperComposer(roomChatMessage).compose();
             RoomChatMessage staffChatMessage = new RoomChatMessage(roomChatMessage);
             staffChatMessage.setMessage("To " + staffChatMessage.getTargetHabbo().getHabboInfo().getUsername() + ": " + staffChatMessage.getMessage());
-            ServerMessage staffMessage = new RoomUserWhisperComposer(staffChatMessage).compose();
-            for(Habbo h : this.getCurrentHabbos().valueCollection())
-            {
-                if(h == roomChatMessage.getTargetHabbo() || h == habbo)
-                {
-                    if(!h.getHabboStats().ignoredUsers.contains(habbo.getHabboInfo().getId()))
-                        h.getClient().sendResponse(message);
+            final ServerMessage staffMessage = new RoomUserWhisperComposer(staffChatMessage).compose();
 
-                    continue;
-                }
-                if(h.hasPermission("acc_see_whispers"))
+            synchronized (this.currentHabbos)
+            {
+                this.currentHabbos.forEachValue(new TObjectProcedure<Habbo>()
                 {
-                    h.getClient().sendResponse(staffMessage);
-                }
+                    @Override
+                    public boolean execute(Habbo h)
+                    {
+                        if (h == roomChatMessage.getTargetHabbo() || h == habbo)
+                        {
+                            if (!h.getHabboStats().ignoredUsers.contains(habbo.getHabboInfo().getId()))
+                                h.getClient().sendResponse(message);
+
+                            return true;
+                        }
+                        if (h.hasPermission("acc_see_whispers"))
+                        {
+                            h.getClient().sendResponse(staffMessage);
+                        }
+
+                        return true;
+                    }
+                });
             }
         }
         else if (chatType == RoomChatType.TALK)

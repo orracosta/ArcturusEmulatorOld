@@ -142,8 +142,6 @@ public class CleanerThread implements Runnable {
      */
     void databaseCleanup()
     {
-        long millis = System.currentTimeMillis();
-
         try
         {
             PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users SET online = ?");
@@ -208,6 +206,6 @@ public class CleanerThread implements Runnable {
             Emulator.getLogging().logSQLException(e);
         }
 
-        Emulator.getLogging().logStart("Database -> Cleaned! (" + (System.currentTimeMillis() - millis) + " MS)");
+        Emulator.getLogging().logStart("Database -> Cleaned!");
     }
 }

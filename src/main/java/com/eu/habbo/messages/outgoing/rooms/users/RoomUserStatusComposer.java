@@ -12,7 +12,6 @@ import java.util.Map;
 
 public class RoomUserStatusComposer extends MessageComposer
 {
-
     private TIntObjectMap<Habbo> habbos;
     private THashSet<RoomUnit> roomUnits;
 
@@ -63,25 +62,30 @@ public class RoomUserStatusComposer extends MessageComposer
             }
         }
         else {
-            this.response.appendInt32(this.habbos.size());
-            for (Habbo habbo : this.habbos.valueCollection()) {
-                this.response.appendInt32(habbo.getRoomUnit().getId());
-                this.response.appendInt32(habbo.getRoomUnit().getOldX());
-                this.response.appendInt32(habbo.getRoomUnit().getOldY());
-                this.response.appendString(habbo.getRoomUnit().getOldZ() + "");
-                this.response.appendInt32(habbo.getRoomUnit().getHeadRotation().getValue());
-                this.response.appendInt32(habbo.getRoomUnit().getBodyRotation().getValue());
+            synchronized (this.habbos)
+            {
+                this.response.appendInt32(this.habbos.size());
+                for (Habbo habbo : this.habbos.valueCollection())
+                {
+                    this.response.appendInt32(habbo.getRoomUnit().getId());
+                    this.response.appendInt32(habbo.getRoomUnit().getOldX());
+                    this.response.appendInt32(habbo.getRoomUnit().getOldY());
+                    this.response.appendString(habbo.getRoomUnit().getOldZ() + "");
+                    this.response.appendInt32(habbo.getRoomUnit().getHeadRotation().getValue());
+                    this.response.appendInt32(habbo.getRoomUnit().getBodyRotation().getValue());
 
-                String status = "/";
-                for (Map.Entry<String, String> keys : habbo.getRoomUnit().getStatus().entrySet()) {
-                    status = status + keys.getKey() + " " + keys.getValue() + "/";
+                    String status = "/";
+                    for (Map.Entry<String, String> keys : habbo.getRoomUnit().getStatus().entrySet())
+                    {
+                        status = status + keys.getKey() + " " + keys.getValue() + "/";
+                    }
+                    this.response.appendString(status);
+
+
+                    habbo.getRoomUnit().setOldX(habbo.getRoomUnit().getX());
+                    habbo.getRoomUnit().setOldY(habbo.getRoomUnit().getY());
+                    habbo.getRoomUnit().setOldZ(habbo.getRoomUnit().getZ());
                 }
-                this.response.appendString(status);
-
-
-                habbo.getRoomUnit().setOldX(habbo.getRoomUnit().getX());
-                habbo.getRoomUnit().setOldY(habbo.getRoomUnit().getY());
-                habbo.getRoomUnit().setOldZ(habbo.getRoomUnit().getZ());
             }
         }
         return this.response;

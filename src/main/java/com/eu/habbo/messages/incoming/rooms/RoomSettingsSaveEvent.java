@@ -16,9 +16,9 @@ public class RoomSettingsSaveEvent extends MessageHandler
     {
         int roomId = this.packet.readInt();
 
-        Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
+        Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(roomId);
 
-        if(room.getId() == roomId)
+        if(room != null)
         {
             if(room.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || this.client.getHabbo().hasPermission("acc_anyroomowner"))
             {

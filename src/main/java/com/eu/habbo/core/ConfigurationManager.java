@@ -71,6 +71,9 @@ public class ConfigurationManager
      */
     public void loadFromDatabase()
     {
+        Emulator.getLogging().logStart("Loading configuration from database...");
+
+        long millis = System.currentTimeMillis();
         PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM emulator_settings");
 
         ResultSet set = null;
@@ -102,6 +105,8 @@ public class ConfigurationManager
                 Emulator.getLogging().logSQLException(e);
             }
         }
+
+        Emulator.getLogging().logStart("Configuration -> loaded! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
 
     /**

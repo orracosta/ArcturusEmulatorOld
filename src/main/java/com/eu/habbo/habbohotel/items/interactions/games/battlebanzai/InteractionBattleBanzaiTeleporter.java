@@ -66,7 +66,7 @@ public class InteractionBattleBanzaiTeleporter extends HabboItem
         this.setExtradata("1");
         HabboItem target = room.getRoomSpecialTypes().getRandomTeleporter();
 
-        while(target == this)
+        while (target == this && room.getRoomSpecialTypes().getBanzaiTeleporters().size() > 1)
             target = room.getRoomSpecialTypes().getRandomTeleporter();
 
         target.setExtradata("1");
@@ -74,7 +74,6 @@ public class InteractionBattleBanzaiTeleporter extends HabboItem
         room.updateItem(target);
         roomUnit.setGoalLocation(roomUnit.getX(), roomUnit.getY());
         Emulator.getThreading().run(new BanzaiRandomTeleport(this, target, room.getHabbo(roomUnit), room), 500);
-
     }
 
     @Override

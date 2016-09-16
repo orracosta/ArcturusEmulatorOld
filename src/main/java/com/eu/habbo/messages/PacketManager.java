@@ -99,13 +99,11 @@ public class PacketManager
                 if(Emulator.getConfig().getBoolean("debug.show.packets"))
                     Emulator.getLogging().logPacketLine("[" + Logging.ANSI_CYAN + "CLIENT" + Logging.ANSI_RESET + "][" + packet.getMessageId() + "] => " + packet.getMessageBody());
 
-                MessageHandler handler = this.incoming.get(packet.getMessageId()).newInstance();
+                final MessageHandler handler = this.incoming.get(packet.getMessageId()).newInstance();
 
                 handler.client = client;
                 handler.packet = packet;
-
                 handler.handle();
-
             }
             else
             {

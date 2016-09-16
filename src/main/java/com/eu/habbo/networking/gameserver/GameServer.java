@@ -1,5 +1,6 @@
 package com.eu.habbo.networking.gameserver;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClientManager;
 import com.eu.habbo.messages.PacketManager;
 import io.netty.bootstrap.ServerBootstrap;
@@ -8,6 +9,8 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.concurrent.DefaultEventExecutorGroup;
+import io.netty.util.concurrent.EventExecutorGroup;
 
 public class GameServer
 {
@@ -25,8 +28,16 @@ public class GameServer
         this.packetManager = new PacketManager();
         this.gameClientManager = new GameClientManager();
 
-        this.bossGroup = new NioEventLoopGroup(1);
-        this.workerGroup = new NioEventLoopGroup(10);
+        if (Emulator.getConfig().getInt("io.bossgroup.threads") + Emulator.getConfig().getInt("io.workergroup.threads") <= Emulator.getThreading().threads)
+        {
+            this.bossGroup = new NioEventLoopGroup(Emulator.getConfig().getInt("io.bossgroup.threads"), Emulator.getThreading().getService());
+            this.workerGroup = new NioEventLoopGroup(Emulator.getConfig().getInt("io.workergroup.threads"), Emulator.getThreading().getService());
+        }
+        else
+        {
+            throw new RuntimeException("io.bossgroup.threads (" + Emulator.getConfig().getInt("io.bossgroup.threads") + ") + " +
+                    "io.workergroup.threads (" + Emulator.getConfig().getInt("io.workergroup.threads") + ") exceeds ");
+        }
 
         this.serverBootstrap = new ServerBootstrap();
 
@@ -36,7 +47,7 @@ public class GameServer
 
     public void initialise()
     {
-        this.serverBootstrap.group(bossGroup, workerGroup);
+        this.serverBootstrap.group(this.bossGroup, this.workerGroup);
         this.serverBootstrap.channel(NioServerSocketChannel.class);
         this.serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>()
         {
@@ -44,7 +55,7 @@ public class GameServer
             public void initChannel(SocketChannel ch) throws Exception
             {
                 ch.pipeline().addLast("bytesDecoder", new GameByteDecoder());
-                ch.pipeline().addLast(new GameMessageHandler());
+                ch.pipeline().addLast(new GameMessageHandler(Emulator.getThreading().getService()));
             }
         });
         this.serverBootstrap.childOption(ChannelOption.TCP_NODELAY, true);

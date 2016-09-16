@@ -78,14 +78,17 @@ public class GameClientManager
     
     public boolean containsHabbo(Integer id)
     {
-        for (GameClient client : this.clients.values())
+        if (!this.clients.isEmpty())
         {
-            if(client.getHabbo() != null)
+            for (GameClient client : this.clients.values())
             {
-                if(client.getHabbo().getHabboInfo() != null)
+                if (client.getHabbo() != null)
                 {
-                    if (client.getHabbo().getHabboInfo().getId() == id)
-                        return true;
+                    if (client.getHabbo().getHabboInfo() != null)
+                    {
+                        if (client.getHabbo().getHabboInfo().getId() == id)
+                            return true;
+                    }
                 }
             }
         }

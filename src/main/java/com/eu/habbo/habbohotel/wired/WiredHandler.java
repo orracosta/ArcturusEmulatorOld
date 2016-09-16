@@ -37,6 +37,9 @@ public class WiredHandler
     {
         boolean talked = false;
 
+        if (room == null)
+            return false;
+
         if(!room.isLoaded())
             return false;
 

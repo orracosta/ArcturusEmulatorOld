@@ -50,7 +50,7 @@ class TeleportActionThree implements Runnable
         if(targetRoom != this.room)
         {
             this.room.sendComposer(new RoomUserRemoveComposer(client.getHabbo().getRoomUnit()).compose());
-            Emulator.getGameEnvironment().getRoomManager().enterRoom(this.client.getHabbo(), targetRoom.getId(), "", false);
+            Emulator.getGameEnvironment().getRoomManager().enterRoom(this.client.getHabbo(), targetRoom.getId(), "", Emulator.getConfig().getBoolean("hotel.teleport.locked.allowed"));
         }
 
         targetTeleport.setExtradata("2");

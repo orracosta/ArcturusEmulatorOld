@@ -1011,11 +1011,14 @@ public class RoomManager {
     {
         ArrayList<Room> rooms = new ArrayList<Room>();
 
-        for(Room room : this.activeRooms.values())
+        synchronized (this.activeRooms)
         {
-            if(!room.isPublicRoom() && room.getUserCount() > 0)
+            for (Room room : this.activeRooms.values())
             {
-                rooms.add(room);
+                if (!room.isPublicRoom() && room.getUserCount() > 0)
+                {
+                    rooms.add(room);
+                }
             }
         }
 
@@ -1033,11 +1036,14 @@ public class RoomManager {
     {
         ArrayList<Room> rooms = new ArrayList<Room>();
 
-        for(Room room : this.activeRooms.values())
+        synchronized (this.activeRooms)
         {
-            if(!room.isPublicRoom() && room.getCategory() == category)
+            for (Room room : this.activeRooms.values())
             {
-                rooms.add(room);
+                if (!room.isPublicRoom() && room.getCategory() == category)
+                {
+                    rooms.add(room);
+                }
             }
         }
 
@@ -1055,16 +1061,19 @@ public class RoomManager {
     {
         Map<Integer, List<Room>> rooms = new HashMap<Integer, List<Room>>();
 
-        for (Room room : this.activeRooms.values())
+        synchronized (this.activeRooms)
         {
-            if (!room.isPublicRoom())
+            for (Room room : this.activeRooms.values())
             {
-                if (!rooms.containsKey(room.getCategory()))
+                if (!room.isPublicRoom())
                 {
-                    rooms.put(room.getCategory(), new ArrayList<Room>());
-                }
+                    if (!rooms.containsKey(room.getCategory()))
+                    {
+                        rooms.put(room.getCategory(), new ArrayList<Room>());
+                    }
 
-                rooms.get(room.getCategory()).add(room);
+                    rooms.get(room.getCategory()).add(room);
+                }
             }
         }
 
@@ -1087,11 +1096,14 @@ public class RoomManager {
     {
         ArrayList<Room> rooms = new ArrayList<Room>();
 
-        for(Room room : this.activeRooms.values())
+        synchronized (this.activeRooms)
         {
-            if(room.getName().toLowerCase().contains(name.toLowerCase()))
+            for (Room room : this.activeRooms.values())
             {
-                rooms.add(room);
+                if (room.getName().toLowerCase().contains(name.toLowerCase()))
+                {
+                    rooms.add(room);
+                }
             }
         }
 
@@ -1144,14 +1156,17 @@ public class RoomManager {
     {
         ArrayList<Room> rooms = new ArrayList<Room>();
 
-        for(Room room : this.activeRooms.values())
+        synchronized (this.activeRooms)
         {
-            for(String s : room.getTags().split(";"))
+            for (Room room : this.activeRooms.values())
             {
-                if(s.toLowerCase().equals(tag.toLowerCase()))
+                for (String s : room.getTags().split(";"))
                 {
-                    rooms.add(room);
-                    break;
+                    if (s.toLowerCase().equals(tag.toLowerCase()))
+                    {
+                        rooms.add(room);
+                        break;
+                    }
                 }
             }
         }
@@ -1165,13 +1180,16 @@ public class RoomManager {
     {
         ArrayList<Room> rooms = new ArrayList<Room>();
 
-        for(Room room : this.activeRooms.values())
+        synchronized (this.activeRooms)
         {
-            if(room.getGuildId() == 0)
-                continue;
+            for (Room room : this.activeRooms.values())
+            {
+                if (room.getGuildId() == 0)
+                    continue;
 
-            if(room.getName().toLowerCase().contains(name.toLowerCase()))
-                rooms.add(room);
+                if (room.getName().toLowerCase().contains(name.toLowerCase()))
+                    rooms.add(room);
+            }
         }
 
         if(rooms.size() < 25)
@@ -1194,16 +1212,16 @@ public class RoomManager {
             statement.setString(1, "%"+name+"%");
             ResultSet set = statement.executeQuery();
 
-            while(set.next())
+            synchronized (this.activeRooms)
             {
-                if(this.activeRooms.containsKey(set.getInt("id")))
-                    continue;
-
-                Room r = new Room(set);
-                rooms.add(r);
-
-                synchronized (this.activeRooms)
+                while(set.next())
                 {
+                    if(this.activeRooms.containsKey(set.getInt("id")))
+                        continue;
+
+                    Room r = new Room(set);
+                    rooms.add(r);
+
                     this.activeRooms.put(r.getId(), r);
                 }
             }
@@ -1336,15 +1354,18 @@ public class RoomManager {
             statement.setInt(1, habbo.getHabboInfo().getId());
             ResultSet set = statement.executeQuery();
 
-            while(set.next())
+            synchronized (this.activeRooms)
             {
-                if(this.activeRooms.containsKey(set.getInt("id")))
+                while (set.next())
                 {
-                    rooms.add(this.activeRooms.get(set.getInt("id")));
-                }
-                else
-                {
-                    rooms.add(new Room(set));
+                    if (this.activeRooms.containsKey(set.getInt("id")))
+                    {
+                        rooms.add(this.activeRooms.get(set.getInt("id")));
+                    }
+                    else
+                    {
+                        rooms.add(new Room(set));
+                    }
                 }
             }
 
@@ -1454,14 +1475,17 @@ public class RoomManager {
         return r;
     }
 
-    public void dispose()
+    public synchronized void dispose()
     {
-        for(Room room : this.activeRooms.values())
+        synchronized (this.activeRooms)
         {
-            room.dispose();
-        }
+            for (Room room : this.activeRooms.values())
+            {
+                room.dispose();
+            }
 
-        this.activeRooms.clear();
+            this.activeRooms.clear();
+        }
 
         Emulator.getLogging().logShutdownLine("Room Manager -> Disposed!");
     }

@@ -34,6 +34,8 @@ public class ModToolBan implements Runnable
         this.staffId = staffId;
         this.expireDate = expireDate;
         this.reason = reason;
+        this.ip = ip;
+        this.type = type;
         this.needsInsert = true;
     }
 

@@ -48,7 +48,11 @@ public class RotateMoveItemEvent extends MessageHandler
             if (item == null || (!room.hasRights(this.client.getHabbo()) && !this.client.getHabbo().hasPermission("acc_placefurni") && !(room.getGuildId() > 0 && room.guildRightLevel(this.client.getHabbo()) >= 2)))
             {
                 this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "cant_set_not_owner"));
-                this.client.sendResponse(new FloorItemUpdateComposer(item));
+
+                if (item != null)
+                {
+                    this.client.sendResponse(new FloorItemUpdateComposer(item));
+                }
                 return;
             }
         }

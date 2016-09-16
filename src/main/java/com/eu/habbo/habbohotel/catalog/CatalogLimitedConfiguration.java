@@ -15,9 +15,10 @@ public class CatalogLimitedConfiguration implements Runnable
     private int totalSet;
     private final LinkedList<Integer> limitedNumbers;
 
-    public CatalogLimitedConfiguration(int itemId, LinkedList<Integer> availableNumbers)
+    public CatalogLimitedConfiguration(int itemId, LinkedList<Integer> availableNumbers, int totalSet)
     {
         this.itemId = itemId;
+        this.totalSet = totalSet;
         this.limitedNumbers = availableNumbers;
         Collections.shuffle(this.limitedNumbers);
     }
@@ -43,7 +44,7 @@ public class CatalogLimitedConfiguration implements Runnable
                 statement.setInt(3, item.getId());
                 statement.setInt(4, catalogItemId);
                 statement.setInt(5, item.getLimitedSells());
-                statement.executeUpdate();
+                statement.execute();
                 statement.close();
                 statement.getConnection().close();
             }

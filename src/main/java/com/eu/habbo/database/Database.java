@@ -61,6 +61,7 @@ public class Database
                 if(statement == null)
                 {
                     this.databasePool.getStoragePooling(config);
+                    this.dataSource = this.databasePool.getDatabase();
                 }
             }
         }

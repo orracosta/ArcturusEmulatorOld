@@ -92,7 +92,10 @@ public class GameMap<T extends AbstractNode>
             List<T> adjacentNodes = getAdjacent(current, newX, newY, room);
             for (T currentAdj : adjacentNodes)
             {
-                if((Math.abs(room.getLayout().getHeightAtSquare(current.getX(), current.getY()) - room.getLayout().getHeightAtSquare(currentAdj.getX(), currentAdj.getY())) > 1))
+                if (!room.isLoaded())
+                    continue;
+
+                if(!room.getLayout().tileWalkable(currentAdj.getX(), currentAdj.getY()) || Math.abs(room.getLayout().getHeightAtSquare(current.getX(), current.getY()) - room.getLayout().getHeightAtSquare(currentAdj.getX(), currentAdj.getY())) > 1)
                     continue;
 
                 if (!this.openList.contains(currentAdj) || (currentAdj.getX() == newX && currentAdj.getY() == newY && (room.canSitOrLayAt(newX, newY))))

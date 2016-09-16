@@ -116,11 +116,11 @@ public final class Emulator
             long startTime = System.nanoTime();
 
             Emulator.runtime = Runtime.getRuntime();
-            Emulator.threading = new ThreadPooling((Runtime.getRuntime().availableProcessors() * 2) + 100);
             Emulator.config = new ConfigurationManager("config.ini");
             Emulator.database = new Database(Emulator.getConfig());
             Emulator.config.loaded = true;
             Emulator.config.loadFromDatabase();
+            Emulator.threading = new ThreadPooling(Emulator.getConfig().getInt("runtime.threads"));
             Emulator.pluginManager = new PluginManager();
             Emulator.pluginManager.reload();
             Emulator.texts = new TextsManager();
@@ -154,6 +154,11 @@ public final class Emulator
             Emulator.getPluginManager().fireEvent(new EmulatorLoadedEvent());
             Emulator.isReady = true;
             Emulator.timeStarted = getIntUnixTimestamp();
+
+            if (Emulator.getConfig().getInt("runtime.threads") < (Runtime.getRuntime().availableProcessors() * 2))
+            {
+                Emulator.getLogging().logStart("Emulator settings runtime.threads (" + Emulator.getConfig().getInt("runtime.threads") + ") can be increased to " + (Runtime.getRuntime().availableProcessors() * 2) + " to possibly increase performance.");
+            }
         }
         catch (Exception e)
         {

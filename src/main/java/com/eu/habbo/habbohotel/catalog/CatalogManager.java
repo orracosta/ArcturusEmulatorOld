@@ -187,9 +187,10 @@ public class CatalogManager
         PreparedStatement statement = null;
 
         THashMap<Integer, LinkedList<Integer>> limiteds = new THashMap<Integer, LinkedList<Integer>>();
+        TIntIntHashMap totals = new TIntIntHashMap();
         try
         {
-            statement = Emulator.getDatabase().prepare("SELECT * FROM catalog_items_limited WHERE user_id = 0");
+            statement = Emulator.getDatabase().prepare("SELECT * FROM catalog_items_limited");
             ResultSet set = statement.executeQuery();
 
             while (set.next())
@@ -199,7 +200,12 @@ public class CatalogManager
                     limiteds.put(set.getInt("catalog_item_id"), new LinkedList<Integer>());
                 }
 
-                limiteds.get(set.getInt("catalog_item_id")).push(set.getInt("number"));
+                totals.adjustOrPutValue(set.getInt("catalog_item_id"), 1, 1);
+
+                if (set.getInt("user_id") == 0)
+                {
+                    limiteds.get(set.getInt("catalog_item_id")).push(set.getInt("number"));
+                }
             }
 
             set.close();
@@ -219,7 +225,7 @@ public class CatalogManager
 
         for (Map.Entry<Integer, LinkedList<Integer>> set : limiteds.entrySet())
         {
-            this.limitedNumbers.put(set.getKey(), new CatalogLimitedConfiguration(set.getKey(), set.getValue()));
+            this.limitedNumbers.put(set.getKey(), new CatalogLimitedConfiguration(set.getKey(), set.getValue(), totals.get(set.getKey())));
         }
     }
 
@@ -850,7 +856,7 @@ public class CatalogManager
 
             if (limitedConfiguration == null)
             {
-                limitedConfiguration = new CatalogLimitedConfiguration(item.getId(), new LinkedList<Integer>());
+                limitedConfiguration = new CatalogLimitedConfiguration(item.getId(), new LinkedList<Integer>(), 0);
                 limitedConfiguration.generateNumbers(1, item.limitedStack);
                 this.limitedNumbers.put(item.getId(), limitedConfiguration);
             }
@@ -1185,17 +1191,17 @@ public class CatalogManager
             habbo.getClient().sendResponse(new PurchaseOKComposer(item, cBaseItem));
             habbo.getClient().sendResponse(new InventoryRefreshComposer());
 
-            if(Emulator.getPluginManager().isRegistered(FurnitureBoughtEvent.class, true))
+            for(HabboItem itm : itemsList)
             {
-                for(HabboItem itm : itemsList)
+                if(Emulator.getPluginManager().isRegistered(FurnitureBoughtEvent.class, true))
                 {
                     Event furnitureBought = new FurnitureBoughtEvent(itm, habbo.getClient().getHabbo());
                     Emulator.getPluginManager().fireEvent(furnitureBought);
+                }
 
-                    if (limitedConfiguration != null)
-                    {
-                        limitedConfiguration.limitedSold(item.getId(), habbo, itm);
-                    }
+                if (limitedConfiguration != null)
+                {
+                    limitedConfiguration.limitedSold(item.getId(), habbo, itm);
                 }
             }
 

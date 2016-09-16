@@ -31,7 +31,7 @@ public class MimicCommand extends Command
             }
             else if(habbo.hasPermission("acc_not_mimiced") && !gameClient.getHabbo().hasPermission("acc_not_mimiced"))
             {
-                gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_mimic.blocked").replace("%user%", params[1]).replace("%gender_name%", (habbo.getHabboInfo().getGender().equals(HabboGender.M) ? Emulator.getTexts().getValue("gender.his") : Emulator.getTexts().getValue("gender.her"))), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_mimic.blocked").replace("%user%", params[1]).replace("%gender_name%", (habbo.getHabboInfo().getGender().equals(HabboGender.M) ? Emulator.getTexts().getValue("gender.him") : Emulator.getTexts().getValue("gender.her"))), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
                 return true;
             }
             else
@@ -40,7 +40,7 @@ public class MimicCommand extends Command
                 gameClient.getHabbo().getHabboInfo().setGender(habbo.getHabboInfo().getGender());
                 gameClient.sendResponse(new UserDataComposer(gameClient.getHabbo()));
                 gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserDataComposer(gameClient.getHabbo()).compose());
-                gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_mimic.copied").replace("%user%", params[1]).replace("%gender_name%", (habbo.getHabboInfo().getGender().equals(HabboGender.M) ? Emulator.getTexts().getValue("gender.his") : Emulator.getTexts().getValue("gender.her"))), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_mimic.copied").replace("%user%", params[1]).replace("%gender_name%", (habbo.getHabboInfo().getGender().equals(HabboGender.M) ? Emulator.getTexts().getValue("gender.him") : Emulator.getTexts().getValue("gender.her"))), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
                 return true;
             }
         }
