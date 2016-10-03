@@ -3,6 +3,7 @@ package com.eu.habbo.messages.incoming.catalog;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.catalog.CatalogItem;
+import com.eu.habbo.habbohotel.catalog.CatalogLimitedConfiguration;
 import com.eu.habbo.habbohotel.catalog.CatalogPage;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.*;
@@ -161,7 +162,7 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
         {
             if (item.isLimited())
             {
-                if (item.getLimitedSells() == item.getLimitedStack())
+                if (item.getLimitedStack() == item.getLimitedSells())
                 {
                     this.client.sendResponse(new AlertLimitedSoldOutComposer());
                     return;
@@ -171,6 +172,29 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
 
             int totalCredits = 0;
             int totalPoints = 0;
+
+            CatalogLimitedConfiguration limitedConfiguration = null;
+            int limitedStack = 0;
+            int limitedNumber = 0;
+            if (item.isLimited())
+            {
+                count = 1;
+                if (Emulator.getGameEnvironment().getCatalogManager().getLimitedConfig(item).available() == 0)
+                {
+                    habbo.getClient().sendResponse(new AlertLimitedSoldOutComposer());
+                    return;
+                }
+
+                limitedConfiguration = Emulator.getGameEnvironment().getCatalogManager().getLimitedConfig(item);
+
+                if (limitedConfiguration == null)
+                {
+                    limitedConfiguration = Emulator.getGameEnvironment().getCatalogManager().createOrUpdateLimitedConfig(item);
+                }
+
+                limitedNumber = limitedConfiguration.getNumber();
+                limitedStack = limitedConfiguration.getTotalSet();
+            }
 
             THashSet<HabboItem> itemsList = new THashSet<HabboItem>();
 
@@ -217,15 +241,15 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
 
                                             if (baseItem.getInteractionType().getType() == InteractionTeleport.class)
                                             {
-                                                HabboItem teleportOne = Emulator.getGameEnvironment().getItemManager().createItem(0, baseItem, item.getLimitedStack(), item.getLimitedSells(), extraData);
-                                                HabboItem teleportTwo = Emulator.getGameEnvironment().getItemManager().createItem(0, baseItem, item.getLimitedStack(), item.getLimitedSells(), extraData);
+                                                HabboItem teleportOne = Emulator.getGameEnvironment().getItemManager().createItem(0, baseItem, limitedStack, limitedNumber, extraData);
+                                                HabboItem teleportTwo = Emulator.getGameEnvironment().getItemManager().createItem(0, baseItem, limitedStack, limitedNumber, extraData);
                                                 Emulator.getGameEnvironment().getItemManager().insertTeleportPair(teleportOne.getId(), teleportTwo.getId());
                                                 itemsList.add(teleportOne);
                                                 itemsList.add(teleportTwo);
                                             }
                                             else if(baseItem.getInteractionType().getType() == InteractionHopper.class)
                                             {
-                                                HabboItem hopper = Emulator.getGameEnvironment().getItemManager().createItem(0, baseItem, item.getLimitedSells(), item.getLimitedSells(), extraData);
+                                                HabboItem hopper = Emulator.getGameEnvironment().getItemManager().createItem(0, baseItem, limitedNumber, limitedNumber, extraData);
 
                                                 Emulator.getGameEnvironment().getItemManager().insertHopper(hopper);
 
@@ -233,7 +257,7 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                                             }
                                             else if(baseItem.getInteractionType().getType() == InteractionGuildFurni.class || baseItem.getInteractionType().getType() == InteractionGuildGate.class)
                                             {
-                                                InteractionGuildFurni habboItem = (InteractionGuildFurni)Emulator.getGameEnvironment().getItemManager().createItem(0, baseItem, item.getLimitedStack(), item.getLimitedSells(), extraData);
+                                                InteractionGuildFurni habboItem = (InteractionGuildFurni)Emulator.getGameEnvironment().getItemManager().createItem(0, baseItem, limitedStack, limitedNumber, extraData);
                                                 habboItem.setExtradata("");
                                                 habboItem.needsUpdate(true);
                                                 int guildId;
@@ -253,7 +277,7 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                                             }
                                             else
                                             {
-                                                HabboItem habboItem = Emulator.getGameEnvironment().getItemManager().createItem(0, baseItem, item.getLimitedStack(), item.getLimitedSells(), extraData);
+                                                HabboItem habboItem = Emulator.getGameEnvironment().getItemManager().createItem(0, baseItem, limitedStack, limitedNumber, extraData);
                                                 itemsList.add(habboItem);
                                             }
                                         }

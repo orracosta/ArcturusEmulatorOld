@@ -1134,7 +1134,7 @@ public class CatalogManager
                                             }
                                             else
                                             {
-                                                HabboItem habboItem = Emulator.getGameEnvironment().getItemManager().createItem(habbo.getClient().getHabbo().getHabboInfo().getId(), baseItem, limitedStack, limitedNumber, extradata);;
+                                                HabboItem habboItem = Emulator.getGameEnvironment().getItemManager().createItem(habbo.getClient().getHabbo().getHabboInfo().getId(), baseItem, limitedStack, limitedNumber, extradata);
                                                 itemsList.add(habboItem);
                                             }
                                         }
