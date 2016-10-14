@@ -21,9 +21,13 @@ public class Guild implements Runnable
     private int colorTwo;
     private String badge;
     private int dateCreated;
-
     private int memberCount;
     private int requestCount;
+    private boolean forum = false;
+    private SettingsState readForum = SettingsState.ADMINS;
+    private SettingsState postMessages = SettingsState.ADMINS;
+    private SettingsState postThreads = SettingsState.ADMINS;
+    private SettingsState modForum = SettingsState.ADMINS;
 
     public boolean needsUpdate;
     public int lastRequested = Emulator.getIntUnixTimestamp();
@@ -43,6 +47,11 @@ public class Guild implements Runnable
         this.colorTwo = set.getInt("color_two");
         this.badge = set.getString("badge");
         this.dateCreated = set.getInt("date_created");
+        this.forum = set.getString("forum").equalsIgnoreCase("1");
+        this.readForum = SettingsState.valueOf(set.getString("read_forum"));
+        this.postMessages = SettingsState.valueOf(set.getString("post_messages"));
+        this.postThreads = SettingsState.valueOf(set.getString("post_threads"));
+        this.modForum = SettingsState.valueOf(set.getString("mod_forum"));
         this.memberCount = 0;
         this.requestCount = 0;
     }
@@ -109,7 +118,7 @@ public class Guild implements Runnable
         {
             try
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE guilds SET name = ?, description = ?, state = ?, rights = ?, color_one = ?, color_two = ?, badge = ? WHERE id = ?");
+                PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE guilds SET name = ?, description = ?, state = ?, rights = ?, color_one = ?, color_two = ?, badge = ?, read_forum = ?, post_messages = ?, post_threads = ?, mod_forum = ? WHERE id = ?");
                 statement.setString(1, this.name);
                 statement.setString(2, this.description);
                 statement.setInt(3, this.state.state);
@@ -117,7 +126,11 @@ public class Guild implements Runnable
                 statement.setInt(5, this.colorOne);
                 statement.setInt(6, this.colorTwo);
                 statement.setString(7, this.badge);
-                statement.setInt(8, this.id);
+                statement.setString(8, this.readForum.name());
+                statement.setString(9, this.postMessages.name());
+                statement.setString(10, this.postThreads.name());
+                statement.setString(11, this.modForum.name());
+                statement.setInt(12, this.id);
                 statement.execute();
                 statement.close();
                 statement.getConnection().close();
@@ -270,8 +283,53 @@ public class Guild implements Runnable
         this.requestCount--;
     }
 
-    public boolean hasGuild()
+    public boolean hasForum()
     {
-        return true;
+        return this.forum;
+    }
+
+    public void setForum(boolean forum)
+    {
+        this.forum = forum;
+    }
+
+    public SettingsState canReadForum()
+    {
+        return this.readForum;
+    }
+
+    public void setReadForum(SettingsState readForum)
+    {
+        this.readForum = readForum;
+    }
+
+    public SettingsState canPostMessages()
+    {
+        return this.postMessages;
+    }
+
+    public void setPostMessages(SettingsState postMessages)
+    {
+        this.postMessages = postMessages;
+    }
+
+    public SettingsState canPostThreads()
+    {
+        return this.postThreads;
+    }
+
+    public void setPostThreads(SettingsState postThreads)
+    {
+        this.postThreads = postThreads;
+    }
+
+    public SettingsState canModForum()
+    {
+        return this.modForum;
+    }
+
+    public void setModForum(SettingsState modForum)
+    {
+        this.modForum = modForum;
     }
 }

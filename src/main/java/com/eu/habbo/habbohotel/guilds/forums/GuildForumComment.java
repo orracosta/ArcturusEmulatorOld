@@ -1,34 +1,54 @@
 package com.eu.habbo.habbohotel.guilds.forums;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.ISerialize;
 import com.eu.habbo.messages.ServerMessage;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class GuildForumComment implements ISerialize
+public class GuildForumComment implements ISerialize, Runnable
 {
-    public final int id;
-    public final int index;
-    public final int userId;
-    public final String userName;
-    public final String look;
-    public final int timestamp;
-    public final String message;
-    public GuildForum.ThreadState state = GuildForum.ThreadState.OPEN;
-    public int adminId = 0;
-    public String adminName = "";
-    public int authorPostCount;
+    private int id;
+    private final int threadId;
+    private int index = -1;
+    private final int userId;
+    private final String userName;
+    private final String look;
+    private final int timestamp;
+    private final String message;
+    private GuildForum.ThreadState state = GuildForum.ThreadState.OPEN;
+    private int adminId;
+    private String adminName;
+    private int authorPostCount;
 
-    public GuildForumComment(final ResultSet set) throws SQLException
+    public GuildForumComment(int threadId, int userId, String userName, String look, String message)
+    {
+        this.threadId = threadId;
+        this.userId = userId;
+        this.userName = userName;
+        this.look = look;
+        this.timestamp = Emulator.getIntUnixTimestamp();
+        this.message = message;
+        this.adminName = "";
+    }
+
+    public GuildForumComment(final ResultSet set, final int index) throws SQLException
     {
         this.id = set.getInt("id");
-        this.index = set.getInt("index");
+        this.threadId = set.getInt("thread_id");
+        this.index = index;
         this.userId = set.getInt("user_id");
-        this.userName = set.getString("username");
+        this.userName = set.getString("author_name");
         this.look = set.getString("look");
         this.timestamp = set.getInt("timestamp");
         this.message = set.getString("message");
+        this.state = GuildForum.ThreadState.valueOf(set.getString("state"));
+        this.adminId = set.getInt("admin_id");
+        this.adminName = set.getString("admin_name");
     }
 
     public void setAuthorPostCount(int authorPostCount)
@@ -44,12 +64,116 @@ public class GuildForumComment implements ISerialize
         message.appendInt32(this.userId);           //_local_2._SafeStr_11317 = k._SafeStr_5878();  = author_id
         message.appendString(this.userName);        //_local_2._SafeStr_6798 = k.readString();      = author_name
         message.appendString(this.look);            //_local_2._SafeStr_11319 = k.readString();     = author_look
-        message.appendInt32(this.timestamp);        //_local_2._SafeStr_11164 = k._SafeStr_5878();  = creation_time
+        message.appendInt32(Emulator.getIntUnixTimestamp() - this.timestamp);        //_local_2._SafeStr_11164 = k._SafeStr_5878();  = creation_time
         message.appendString(this.message);         //_local_2._SafeStr_9526 = k.readString();      = message
         message.appendByte(this.state.state);       //_local_2.state = k.readByte();                = state
         message.appendInt32(this.adminId);          //_local_2._SafeStr_19188 = k._SafeStr_5878();  = admin_id
         message.appendString(this.adminName);       //_local_2._SafeStr_11326 = k.readString();     = admin_name
         message.appendInt32(0);                     //_local_2._SafeStr_19189 = k._SafeStr_5878();  = (UNUSED)
         message.appendInt32(this.authorPostCount);  //_local_2._SafeStr_11320 = k._SafeStr_5878();  = author_post_count
+    }
+
+    public int getId()
+    {
+        return this.id;
+    }
+
+    public void setId(int id)
+    {
+        this.id = id;
+    }
+
+    public int getThreadId()
+    {
+        return this.threadId;
+    }
+
+    public int getIndex()
+    {
+        return this.index;
+    }
+
+    public void setIndex(int index)
+    {
+        this.index = index;
+    }
+
+    public int getUserId()
+    {
+        return this.userId;
+    }
+
+    public String getUserName()
+    {
+        return this.userName;
+    }
+
+    public String getLook()
+    {
+        return this.look;
+    }
+
+    public int getTimestamp()
+    {
+        return this.timestamp;
+    }
+
+    public String getMessage()
+    {
+        return this.message;
+    }
+
+    public GuildForum.ThreadState getState()
+    {
+        return this.state;
+    }
+
+    public void setState(GuildForum.ThreadState state)
+    {
+        this.state = state;
+    }
+
+    public int getAdminId()
+    {
+        return this.adminId;
+    }
+
+    public void setAdminId(int adminId)
+    {
+        this.adminId = adminId;
+    }
+
+    public String getAdminName()
+    {
+        return this.adminName;
+    }
+
+    public void setAdminName(String adminName)
+    {
+        this.adminName = adminName;
+    }
+
+    public int getAuthorPostCount()
+    {
+        return this.authorPostCount;
+    }
+
+    @Override
+    public void run()
+    {
+        try
+        {
+            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE guilds_forums_comments SET state = ?, admin_id = ? WHERE id = ?");
+            statement.setString(1, this.state.name());
+            statement.setInt(2, this.adminId);
+            statement.setInt(3, this.getId());
+            statement.execute();
+            statement.close();
+            statement.getConnection().close();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
     }
 }

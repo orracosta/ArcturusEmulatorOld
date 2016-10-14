@@ -25,7 +25,7 @@ public class UserDataComposer extends MessageComposer
         this.response.appendString(this.habbo.getHabboInfo().getLook());
         this.response.appendString(this.habbo.getHabboInfo().getGender().name().toUpperCase());
         this.response.appendString(this.habbo.getHabboInfo().getMotto());
-        this.response.appendString(this.habbo.getHabboInfo().getRealName());
+        this.response.appendString(this.habbo.getHabboInfo().getUsername());
         this.response.appendBoolean(false);
         this.response.appendInt32(this.habbo.getHabboStats().respectPointsReceived);
         this.response.appendInt32(this.habbo.getHabboStats().respectPointsToGive);

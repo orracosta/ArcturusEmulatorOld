@@ -24,7 +24,7 @@ public class ModToolBanEvent extends MessageHandler
             }
             else
             {
-                Emulator.getGameEnvironment().getModToolManager().createBan(userId, "offline", this.client.getHabbo(), expireDate, message, "account");
+                Emulator.getGameEnvironment().getModToolManager().createBan(userId, "offline", "offline", this.client.getHabbo(), expireDate, message, "account");
             }
         }
         else

@@ -44,4 +44,37 @@ ALTER TABLE  `catalog_pages` ADD  `includes` VARCHAR( 32 ) NOT NULL DEFAULT  '' 
 INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('pathfinder.step.maximum.height', '1.1');
 INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('pathfinder.step.allow.falling', '1');
 
+ALTER TABLE  `guilds`
+ADD  `forum` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0',
+ADD  `read_forum` ENUM(  'EVERYONE',  'MEMBERS',  'ADMINS' ) NOT NULL DEFAULT  'EVERYONE',
+ADD  `post_messages` ENUM(  'EVERYONE',  'MEMBERS',  'ADMINS',  'OWNER' ) NOT NULL DEFAULT  'EVERYONE',
+ADD  `post_threads` ENUM(  'EVERYONE',  'MEMBERS',  'ADMINS',  'OWNER' ) NOT NULL DEFAULT  'EVERYONE',
+ADD  `mod_forum` ENUM(  'ADMINS',  'OWNER' ) NOT NULL DEFAULT  'ADMINS';
+
+CREATE TABLE `guilds_forums` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `guild_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `subject` mediumtext NOT NULL,
+  `message` longtext NOT NULL,
+  `state` enum('OPEN','CLOSED','HIDDEN_BY_ADMIN','HIDDEN_BY_STAFF') NOT NULL DEFAULT 'OPEN',
+  `admin_id` int(11) NOT NULL DEFAULT '0',
+  `pinned` enum('0','1') NOT NULL DEFAULT '0',
+  `locked` enum('0','1') NOT NULL DEFAULT '0',
+  `timestamp` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `guilds_forums_comments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `thread_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `timestamp` int(11) NOT NULL,
+  `message` longtext NOT NULL,
+  `state` enum('OPEN','CLOSED','HIDDEN_BY_ADMIN','HIDDEN_BY_STAFF') NOT NULL DEFAULT 'OPEN',
+  `admin_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
+
+
 #END DATABASE UPDATE: 1.0.8 -> 1.0.9

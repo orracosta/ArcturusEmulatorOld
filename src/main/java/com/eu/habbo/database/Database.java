@@ -64,11 +64,22 @@ public class Database
 
         if(statement == null)
         {
+            dispose();
             this.databasePool.getStoragePooling(config);
             this.dataSource = this.databasePool.getDatabase();
+
+            return this.prepare(query);
         }
 
         return statement;
+    }
+
+    public void dispose()
+    {
+        if (this.databasePool != null)
+        {
+            this.databasePool.getDatabase().close();
+        }
     }
 }
 

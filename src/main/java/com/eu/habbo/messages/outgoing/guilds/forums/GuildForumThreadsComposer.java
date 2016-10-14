@@ -5,12 +5,12 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class UnknownGuildForumComposer8 extends MessageComposer
+public class GuildForumThreadsComposer extends MessageComposer
 {
     public final GuildForum forum;
     public final int index;
 
-    public UnknownGuildForumComposer8(GuildForum forum, int index)
+    public GuildForumThreadsComposer(GuildForum forum, int index)
     {
         this.forum = forum;
         this.index = index;
@@ -19,8 +19,8 @@ public class UnknownGuildForumComposer8 extends MessageComposer
     @Override
     public ServerMessage compose()
     {
-        this.response.init(Outgoing.UnknownGuildForumComposer8);
-        this.response.appendInt32(this.forum.getGuild().getId());
+        this.response.init(Outgoing.GuildForumThreadsComposer);
+        this.response.appendInt32(this.forum.getGuild());
         this.response.appendInt32(this.index);
         this.forum.serializeThreads(this.response);
         return this.response;

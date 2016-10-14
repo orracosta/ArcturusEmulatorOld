@@ -18,7 +18,6 @@ import com.eu.habbo.threading.ThreadPooling;
 import com.eu.habbo.threading.runnables.CameraClientAutoReconnect;
 import com.eu.habbo.util.imager.badges.BadgeImager;
 
-import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -118,6 +117,13 @@ public final class Emulator
 
             Emulator.runtime = Runtime.getRuntime();
             Emulator.config = new ConfigurationManager("config.ini");
+
+            if (Emulator.getConfig().getValue("username").isEmpty())
+            {
+                Emulator.getLogging().logErrorLine("Please make sure you enter your forum login details!");
+                Thread.sleep(2000);
+            }
+
             Emulator.database = new Database(Emulator.getConfig());
             Emulator.config.loaded = true;
             Emulator.config.loadFromDatabase();
@@ -200,7 +206,8 @@ public final class Emulator
         if (Emulator.pluginManager != null)
             Emulator.pluginManager.dispose();
 
-
+        Emulator.getLogging().saveLogs();
+        Emulator.getDatabase().dispose();
         Emulator.getLogging().logShutdownLine("Stopped Arcturus Emulator " + version + "...");
         Emulator.stopped = true;
     }

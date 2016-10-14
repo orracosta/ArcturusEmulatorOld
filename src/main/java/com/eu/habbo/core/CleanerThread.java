@@ -115,6 +115,7 @@ public class CleanerThread implements Runnable {
         if(time - LAST_INACTIVE_GUILDS_CLEARED > REMOVE_INACTIVE_GUILDS)
         {
             Emulator.getGameEnvironment().getGuildManager().clearInactiveGuilds();
+            Emulator.getGameEnvironment().getGuildForumManager().clearInactiveForums();
             LAST_INACTIVE_GUILDS_CLEARED = time;
         }
 

@@ -151,37 +151,32 @@ public class Logging
     
     public synchronized void logErrorLine(Object line)
     {
-        if (line.equals("java.lang.NullPointerException"))
-        {
-            new Exception("No stacktrace!").printStackTrace();
-        }
-
         if (Emulator.isReady && Emulator.getConfig().getBoolean("debug.show.errors"))
         {
             System.err.println("[ERROR] " + line.toString());
         }
 
-        if (Emulator.isReady && Emulator.getConfig().getBoolean("logging.errors.runtime"))
+        if (Emulator.getConfig().loaded && Emulator.getConfig().getBoolean("logging.errors.runtime"))
         {
             write(errorsRuntimeWriter, line);
+        }
 
-            if(line instanceof Throwable)
+        if(line instanceof Throwable)
+        {
+            ((Throwable) line).printStackTrace();
+            if (line instanceof SQLException)
             {
-                ((Throwable) line).printStackTrace();
-                if (line instanceof SQLException)
-                {
-                    this.logSQLException((SQLException) line);
-                    return;
-                }
-                Emulator.getThreading().run(new HTTPPostError((Throwable) line));
-
-                this.errorLogs.add(new ErrorLog("Exception", (Throwable) line));
-
+                this.logSQLException((SQLException) line);
                 return;
             }
+            Emulator.getThreading().run(new HTTPPostError((Throwable) line));
 
-            this.errorLogs.add(new ErrorLog("Emulator", line.toString()));
+            this.errorLogs.add(new ErrorLog("Exception", (Throwable) line));
+
+            return;
         }
+
+        this.errorLogs.add(new ErrorLog("Emulator", line.toString()));
     }
 
     public void logSQLException(SQLException e)

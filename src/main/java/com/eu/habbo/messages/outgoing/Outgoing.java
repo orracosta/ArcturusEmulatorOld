@@ -244,14 +244,14 @@ public class Outgoing
     public final static int UnknownGuildComposer = 423; //Could be related to forums. //Updated
 
     public final static int GuildForumsUnreadMessagesCountComposer = 3062; //Updated
-    public final static int UnknownGuildForumComposer2 = 3683; //Updated
-    public final static int UnknownGuildForumComposer3 = 1936; //Updated
-    public final static int UnknownGuildForumComposer4 = 254; //Updated
-    public final static int UnknownGuildForumComposer5 = 879; //Updated
+    public final static int GuildForumThreadMessagesComposer = 3683; //Updated
+    public final static int GuildForumAddCommentComposer = 1936; //Updated
+    public final static int GuildForumDataComposer = 254; //Updated
+    public final static int GuildForumCommentsComposer = 879; //Updated
     public final static int UnknownGuildForumComposer6 = 1752; //Updated
     public final static int UnknownGuildForumComposer7 = 3226; //Updated
-    public final static int UnknownGuildForumComposer8 = 1538; //Updated
-    public final static int UnknownGuildForumComposer9 = 3596; //Updated
+    public final static int GuildForumThreadsComposer = 1538; //Updated
+    public final static int GuildForumListComposer = 3596; //Updated
 
     public final static int GuideSessionAttachedComposer = 2054; //Updated
     public final static int GuideSessionDetachedComposer = 733; //Updated

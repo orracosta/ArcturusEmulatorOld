@@ -17,7 +17,6 @@ import java.util.Map;
 public class HabboInfo implements Runnable
 {
     private String username;
-    private String realName;
     private String motto;
     private String look;
     private HabboGender gender;
@@ -58,7 +57,6 @@ public class HabboInfo implements Runnable
         {
             this.id = set.getInt("id");
             this.username = set.getString("username");
-            this.realName = set.getString("real_name");
             this.motto = set.getString("motto");
             this.look = set.getString("look");
             this.gender = HabboGender.valueOf(set.getString("gender"));
@@ -172,11 +170,6 @@ public class HabboInfo implements Runnable
     public String getUsername()
     {
         return this.username;
-    }
-
-    public String getRealName()
-    {
-        return this.realName;
     }
 
     public String getMotto()

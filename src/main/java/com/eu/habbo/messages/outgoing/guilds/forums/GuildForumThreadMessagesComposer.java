@@ -5,11 +5,11 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class UnknownGuildForumComposer2 extends MessageComposer
+public class GuildForumThreadMessagesComposer extends MessageComposer
 {
     public final GuildForumThread thread;
 
-    public UnknownGuildForumComposer2(GuildForumThread thread)
+    public GuildForumThreadMessagesComposer(GuildForumThread thread)
     {
         this.thread = thread;
     }
@@ -17,7 +17,7 @@ public class UnknownGuildForumComposer2 extends MessageComposer
     @Override
     public ServerMessage compose()
     {
-        this.response.init(Outgoing.UnknownGuildForumComposer2);
+        this.response.init(Outgoing.GuildForumThreadMessagesComposer);
         this.response.appendInt32(this.thread.getGuildId());
         this.thread.serialize(this.response);
         return this.response;
