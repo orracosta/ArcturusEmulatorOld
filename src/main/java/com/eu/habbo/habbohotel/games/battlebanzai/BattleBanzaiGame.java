@@ -309,7 +309,7 @@ public class BattleBanzaiGame extends Game
                 if(!event.habbo.getHabboInfo().getCurrentRoom().hasObjectTypeAt(InteractionBattleBanzaiTile.class, event.toLocation.getX(), event.toLocation.getY()))
                 {
                     event.setCancelled(true);
-                    event.habbo.getRoomUnit().setGoalLocation(event.habbo.getRoomUnit().getLocation());
+                    event.habbo.getRoomUnit().setGoalLocation(event.habbo.getRoomUnit().getCurrentLocation());
                     event.habbo.getRoomUnit().getStatus().remove("mv");
                     game.room.sendComposer(new RoomUserStatusComposer(event.habbo.getRoomUnit()).compose());
                 }

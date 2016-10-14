@@ -4,12 +4,11 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.threading.runnables.hopper.HopperActionOne;
-import com.eu.habbo.util.pathfinding.Tile;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -60,7 +59,7 @@ public class InteractionHopper extends HabboItem
 
         if(room != null)
         {
-            Tile loc = HabboItem.getSquareInFront(this);
+            RoomTile loc = HabboItem.getSquareInFront(room.getLayout(), this);
             if (canUseTeleport(client, loc, room))
             {
                 client.getHabbo().getRoomUnit().isTeleporting = true;
@@ -98,12 +97,12 @@ public class InteractionHopper extends HabboItem
         super.run();
     }
 
-    private boolean canUseTeleport(GameClient client, Tile front, Room room)
+    private boolean canUseTeleport(GameClient client, RoomTile front, Room room)
     {
-        if(client.getHabbo().getRoomUnit().getX() != front.X)
+        if(client.getHabbo().getRoomUnit().getX() != front.x)
             return false;
 
-        if(client.getHabbo().getRoomUnit().getY() != front.Y)
+        if(client.getHabbo().getRoomUnit().getY() != front.y)
             return false;
 
         if(client.getHabbo().getRoomUnit().isTeleporting)

@@ -3,9 +3,9 @@ package com.eu.habbo.habbohotel.items.interactions;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
 import java.awt.*;
@@ -38,7 +38,7 @@ public class InteractionWaterItem extends InteractionDefault
     }
 
     @Override
-    public void onMove(Room room, Tile oldLocation, Tile newLocation)
+    public void onMove(Room room, RoomTile oldLocation, RoomTile newLocation)
     {
         this.update();
     }

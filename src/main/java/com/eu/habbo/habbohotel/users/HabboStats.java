@@ -114,7 +114,7 @@ public class HabboStats implements Runnable
         {
             PreparedStatement stmt = Emulator.getDatabase().prepare("INSERT INTO user_window_settings (user_id) VALUES (?)");
             stmt.setInt(1, this.habbo.getHabboInfo().getId());
-            stmt.execute();
+            stmt.executeQuery();
             stmt.close();
             stmt.getConnection().close();
             this.navigatorWindowSettings = new HabboNavigatorWindowSettings();
@@ -194,7 +194,7 @@ public class HabboStats implements Runnable
             statement.setInt(21, this.hofPoints);
             statement.setString(22, this.blockStaffAlerts ? "1" : "0");
             statement.setInt(23, this.habbo.getHabboInfo().getId());
-            statement.execute();
+            statement.executeUpdate();
             statement.close();
             statement.getConnection().close();
         }
@@ -238,7 +238,7 @@ public class HabboStats implements Runnable
         {
             PreparedStatement insertQuery = Emulator.getDatabase().prepare("INSERT INTO users_settings (user_id) VALUES (?)");
             insertQuery.setInt(1, habbo.getHabboInfo().getId());
-            insertQuery.execute();
+            insertQuery.executeUpdate();
             insertQuery.close();
             insertQuery.getConnection().close();
 

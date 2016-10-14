@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.items.interactions.games.football;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPushable;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -10,7 +11,6 @@ import com.eu.habbo.messages.outgoing.rooms.items.ItemStateComposer;
 import com.eu.habbo.util.pathfinding.Node;
 import com.eu.habbo.util.pathfinding.PathFinder;
 import com.eu.habbo.util.pathfinding.Rotation;
-import com.eu.habbo.util.pathfinding.Tile;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -71,7 +71,7 @@ public class InteractionFootball extends InteractionPushable
     public RoomUserRotation getWalkOffDirection(RoomUnit roomUnit, Room room)
     {
         Node peek = roomUnit.getPathFinder().getPath().peek();
-        Tile nextWalkTile = peek != null ? new Tile(peek.getX(), peek.getY()) : new Tile(roomUnit.getGoalX(), roomUnit.getGoalY());
+        RoomTile nextWalkTile = peek != null ? room.getLayout().getTile((short) peek.getX(), (short) peek.getY()) : roomUnit.getGoal();
         return RoomUserRotation.values()[(RoomUserRotation.values().length + Rotation.Calculate(roomUnit.getX(), roomUnit.getY(), nextWalkTile.x, nextWalkTile.y) + 4) % 8];
     }
     
@@ -104,9 +104,9 @@ public class InteractionFootball extends InteractionPushable
                 return RoomUserRotation.SOUTH;
             
             case NORTH_EAST:
-                if(this.validMove(room, new Tile(this.getX(), this.getY()), PathFinder.getSquareInFront(this.getX(), this.getY(), RoomUserRotation.NORTH_WEST.getValue())))
+                if(this.validMove(room, room.getLayout().getTile(this.getX(), this.getY()), PathFinder.getSquareInFront(room.getLayout(), this.getX(), this.getY(), RoomUserRotation.NORTH_WEST.getValue())))
                     return RoomUserRotation.NORTH_WEST;
-                else if(this.validMove(room, new Tile(this.getX(), this.getY()), PathFinder.getSquareInFront(this.getX(), this.getY(), RoomUserRotation.SOUTH_EAST.getValue())))
+                else if(this.validMove(room, room.getLayout().getTile(this.getX(), this.getY()), PathFinder.getSquareInFront(room.getLayout(), this.getX(), this.getY(), RoomUserRotation.SOUTH_EAST.getValue())))
                     return RoomUserRotation.SOUTH_EAST;
                 else
                     return RoomUserRotation.SOUTH_WEST;
@@ -115,9 +115,9 @@ public class InteractionFootball extends InteractionPushable
                 return RoomUserRotation.WEST;
                 
             case SOUTH_EAST:
-                if(this.validMove(room, new Tile(this.getX(), this.getY()), PathFinder.getSquareInFront(this.getX(), this.getY(), RoomUserRotation.SOUTH_WEST.getValue())))
+                if(this.validMove(room, room.getLayout().getTile(this.getX(), this.getY()), PathFinder.getSquareInFront(room.getLayout(), this.getX(), this.getY(), RoomUserRotation.SOUTH_WEST.getValue())))
                     return RoomUserRotation.SOUTH_WEST;
-                else if(this.validMove(room, new Tile(this.getX(), this.getY()), PathFinder.getSquareInFront(this.getX(), this.getY(), RoomUserRotation.NORTH_EAST.getValue())))
+                else if(this.validMove(room, room.getLayout().getTile(this.getX(), this.getY()), PathFinder.getSquareInFront(room.getLayout(), this.getX(), this.getY(), RoomUserRotation.NORTH_EAST.getValue())))
                     return RoomUserRotation.NORTH_EAST;
                 else
                     return RoomUserRotation.NORTH_WEST;
@@ -126,9 +126,9 @@ public class InteractionFootball extends InteractionPushable
                 return RoomUserRotation.NORTH;
                 
             case SOUTH_WEST:
-                if(this.validMove(room, new Tile(this.getX(), this.getY()), PathFinder.getSquareInFront(this.getX(), this.getY(), RoomUserRotation.SOUTH_EAST.getValue())))
+                if(this.validMove(room, room.getLayout().getTile(this.getX(), this.getY()), PathFinder.getSquareInFront(room.getLayout(), this.getX(), this.getY(), RoomUserRotation.SOUTH_EAST.getValue())))
                     return RoomUserRotation.SOUTH_EAST;
-                else if(this.validMove(room, new Tile(this.getX(), this.getY()), PathFinder.getSquareInFront(this.getX(), this.getY(), RoomUserRotation.NORTH_WEST.getValue())))
+                else if(this.validMove(room, room.getLayout().getTile(this.getX(), this.getY()), PathFinder.getSquareInFront(room.getLayout(), this.getX(), this.getY(), RoomUserRotation.NORTH_WEST.getValue())))
                     return RoomUserRotation.NORTH_WEST;
                 else
                     return RoomUserRotation.NORTH_EAST;
@@ -137,9 +137,9 @@ public class InteractionFootball extends InteractionPushable
                 return RoomUserRotation.EAST;
                 
             case NORTH_WEST:
-                if(this.validMove(room, new Tile(this.getX(), this.getY()), PathFinder.getSquareInFront(this.getX(), this.getY(), RoomUserRotation.NORTH_EAST.getValue())))
+                if(this.validMove(room, room.getLayout().getTile(this.getX(), this.getY()), PathFinder.getSquareInFront(room.getLayout(), this.getX(), this.getY(), RoomUserRotation.NORTH_EAST.getValue())))
                     return RoomUserRotation.NORTH_EAST;
-                else if(this.validMove(room, new Tile(this.getX(), this.getY()), PathFinder.getSquareInFront(this.getX(), this.getY(), RoomUserRotation.SOUTH_WEST.getValue())))
+                else if(this.validMove(room, room.getLayout().getTile(this.getX(), this.getY()), PathFinder.getSquareInFront(room.getLayout(), this.getX(), this.getY(), RoomUserRotation.SOUTH_WEST.getValue())))
                     return RoomUserRotation.SOUTH_WEST;
                 else
                     return RoomUserRotation.SOUTH_EAST;
@@ -149,7 +149,7 @@ public class InteractionFootball extends InteractionPushable
     // Checks
     
     @Override
-    public boolean validMove(Room room, Tile from, Tile to)
+    public boolean validMove(Room room, RoomTile from, RoomTile to)
     {
         HabboItem topItem = room.getTopItemAt(to.x, to.y, this);
         return !(!room.getLayout().tileWalkable(to.x, to.y) || (topItem != null && (!topItem.getBaseItem().allowStack() || topItem.getBaseItem().allowSit() || topItem.getBaseItem().allowLay())));
@@ -176,7 +176,7 @@ public class InteractionFootball extends InteractionPushable
     }
     
     @Override
-    public void onMove(Room room, Tile from, Tile to, RoomUserRotation direction, RoomUnit kicker, int nextRoll, int currentStep, int totalSteps)
+    public void onMove(Room room, RoomTile from, RoomTile to, RoomUserRotation direction, RoomUnit kicker, int nextRoll, int currentStep, int totalSteps)
     {        
         this.setExtradata(nextRoll <= 200 ? "8" : (nextRoll <= 250 ? "7" : (nextRoll <= 300 ? "6" : (nextRoll <= 350 ? "5" : (nextRoll <= 400 ? "4" : (nextRoll <= 450 ? "3" : (nextRoll <= 500 ? "2" : "1")))))));
         room.sendComposer(new ItemStateComposer(this).compose());
@@ -196,7 +196,7 @@ public class InteractionFootball extends InteractionPushable
     }
     
     @Override
-    public boolean canStillMove(Room room, Tile from, Tile to, RoomUserRotation direction, RoomUnit kicker, int nextRoll, int currentStep, int totalSteps)
+    public boolean canStillMove(Room room, RoomTile from, RoomTile to, RoomUserRotation direction, RoomUnit kicker, int nextRoll, int currentStep, int totalSteps)
     {
         HabboItem topItem = room.getTopItemAt(from.x, from.y, this);
         return !(room.hasHabbosAt(to.x, to.y) || (topItem != null && topItem.getBaseItem().getName().startsWith("fball_goal_") && currentStep != 1));

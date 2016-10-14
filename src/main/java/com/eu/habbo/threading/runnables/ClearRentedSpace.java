@@ -3,11 +3,11 @@ package com.eu.habbo.threading.runnables;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionRentableSpace;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
 public class ClearRentedSpace implements Runnable
@@ -26,9 +26,9 @@ public class ClearRentedSpace implements Runnable
     {
         THashSet<HabboItem> items = new THashSet<HabboItem>();
 
-        for(Tile t : PathFinder.getTilesAt(this.item.getX(), this.item.getY(), this.item.getBaseItem().getWidth(), this.item.getBaseItem().getLength(), this.item.getRotation()))
+        for(RoomTile t : PathFinder.getTilesAt(this.room.getLayout(), this.item.getX(), this.item.getY(), this.item.getBaseItem().getWidth(), this.item.getBaseItem().getLength(), this.item.getRotation()))
         {
-            for(HabboItem i : this.room.getItemsAt(t.X, t.Y))
+            for(HabboItem i : this.room.getItemsAt(t.x, t.y))
             {
                 if(i.getUserId() == this.item.getRenterId())
                 {

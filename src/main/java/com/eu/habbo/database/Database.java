@@ -52,22 +52,20 @@ public class Database
     public PreparedStatement prepare(String query)
     {
         PreparedStatement statement = null;
+
         try
         {
-            while(statement == null)
-            {
-                statement = this.dataSource.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-
-                if(statement == null)
-                {
-                    this.databasePool.getStoragePooling(config);
-                    this.dataSource = this.databasePool.getDatabase();
-                }
-            }
+            statement = this.dataSource.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         }
-        catch (SQLException e)
+        catch (Exception e)
         {
-            Emulator.getLogging().logSQLException(e);
+            Emulator.getLogging().logErrorLine(e);
+        }
+
+        if(statement == null)
+        {
+            this.databasePool.getStoragePooling(config);
+            this.dataSource = this.databasePool.getDatabase();
         }
 
         return statement;

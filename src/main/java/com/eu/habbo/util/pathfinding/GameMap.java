@@ -13,8 +13,6 @@ public class GameMap<T extends AbstractNode>
     private final T[][] nodes;
     private final int width;
     private final int height;
-    private List<T> openList;
-    private List<T> closedList;
 
     public GameMap(int width, int height)
     {
@@ -24,7 +22,7 @@ public class GameMap<T extends AbstractNode>
         initEmptyNodes();
     }
 
-    private synchronized void initEmptyNodes()
+    private void initEmptyNodes()
     {
         for (int i = 0; i <= this.width; i++) {
             for (int j = 0; j <= this.height; j++) {
@@ -33,7 +31,7 @@ public class GameMap<T extends AbstractNode>
         }
     }
 
-    public synchronized void setWalkable(int x, int y, boolean bool)
+    public void setWalkable(int x, int y, boolean bool)
     {
         if(x > this.nodes.length - 1)
             return;
@@ -49,7 +47,7 @@ public class GameMap<T extends AbstractNode>
         return this.nodes[x][y];
     }
 
-    public synchronized final List<T> getNodes()
+    public final List<T> getNodes()
     {
         List<T> nodes = new ArrayList<T>();
         for (int x = 0; x < this.nodes.length; x++) {
@@ -62,13 +60,15 @@ public class GameMap<T extends AbstractNode>
 
     private boolean done = false;
 
-    public synchronized final Queue<T> findPath(int oldX, int oldY, int newX, int newY, Room room)
+    public final Queue<T> findPath(int oldX, int oldY, int newX, int newY, Room room)
     {
         if ((oldX == newX) && (oldY == newY)) {
             return new LinkedList();
         }
-        this.openList = new LinkedList();
-        this.closedList = new LinkedList();
+
+
+        List<T> openList = new LinkedList();
+        List<T> closedList = new LinkedList();
 
         if(oldX > this.width  ||
                 oldY > this.height ||
@@ -77,40 +77,40 @@ public class GameMap<T extends AbstractNode>
                 )
             return new LinkedList();
 
-        this.openList.add(this.nodes[oldX][oldY]);
+        openList.add(this.nodes[oldX][oldY]);
 
         this.done = false;
         while (!this.done)
         {
-            T current = lowestFInOpen();
-            this.closedList.add(current);
-            this.openList.remove(current);
+            T current = lowestFInOpen(openList);
+            closedList.add(current);
+            openList.remove(current);
 
             if ((current.getX() == newX) && (current.getY() == newY)) {
                 return calcPath(this.nodes[oldX][oldY], current, room);
             }
-            List<T> adjacentNodes = getAdjacent(current, newX, newY, room);
+            List<T> adjacentNodes = getAdjacent(closedList, current, newX, newY, room);
             for (T currentAdj : adjacentNodes)
             {
                 if (!room.isLoaded())
                     continue;
 
-                if(!room.getLayout().tileWalkable(currentAdj.getX(), currentAdj.getY()) || Math.abs(room.getLayout().getHeightAtSquare(current.getX(), current.getY()) - room.getLayout().getHeightAtSquare(currentAdj.getX(), currentAdj.getY())) > 1)
+                if(!room.getLayout().tileWalkable((short)currentAdj.getX(), (short)currentAdj.getY()) || Math.abs(room.getLayout().getHeightAtSquare(current.getX(), current.getY()) - room.getLayout().getHeightAtSquare(currentAdj.getX(), currentAdj.getY())) > 1)
                     continue;
 
-                if (!this.openList.contains(currentAdj) || (currentAdj.getX() == newX && currentAdj.getY() == newY && (room.canSitOrLayAt(newX, newY))))
+                if (!openList.contains(currentAdj) || (currentAdj.getX() == newX && currentAdj.getY() == newY && (room.canSitOrLayAt(newX, newY))))
                 {
                     currentAdj.setPrevious(current);
                     currentAdj.sethCosts(this.nodes[newX][newY]);
                     currentAdj.setgCosts(current);
-                    this.openList.add(currentAdj);
+                    openList.add(currentAdj);
                 } else if (currentAdj.getgCosts() > currentAdj.calculategCosts(current))
                 {
                     currentAdj.setPrevious(current);
                     currentAdj.setgCosts(current);
                 }
             }
-            if (this.openList.isEmpty()) {
+            if (openList.isEmpty()) {
                 return new LinkedList();
             }
         }
@@ -137,13 +137,13 @@ public class GameMap<T extends AbstractNode>
         return path;
     }
 
-    private synchronized T lowestFInOpen()
+    private synchronized T lowestFInOpen(List<T> openList)
     {
-        if(this.openList == null)
+        if(openList == null)
             return null;
 
-        T cheapest = this.openList.get(0);
-        for (T anOpenList : this.openList)
+        T cheapest = openList.get(0);
+        for (T anOpenList : openList)
         {
             if (anOpenList.getfCosts() < cheapest.getfCosts())
             {
@@ -153,7 +153,7 @@ public class GameMap<T extends AbstractNode>
         return cheapest;
     }
 
-    private synchronized List<T> getAdjacent(T node, int newX, int newY, Room room)
+    private synchronized List<T> getAdjacent(List<T> closedList, T node, int newX, int newY, Room room)
     {
         int x = node.getX();
         int y = node.getY();
@@ -161,7 +161,7 @@ public class GameMap<T extends AbstractNode>
         if (x > 0)
         {
             T temp = getNode(x - 1, y);
-            if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && room.canSitOrLayAt(newX, newY)))
+            if (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && room.canSitOrLayAt(newX, newY)))
             {
                 temp.setIsDiagonaly(false);
                 adj.add(temp);
@@ -170,7 +170,7 @@ public class GameMap<T extends AbstractNode>
         if (x < this.width)
         {
             T temp = getNode(x + 1, y);
-            if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && room.canSitOrLayAt(newX, newY)))
+            if (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && room.canSitOrLayAt(newX, newY)))
             {
                 temp.setIsDiagonaly(false);
                 adj.add(temp);
@@ -179,7 +179,7 @@ public class GameMap<T extends AbstractNode>
         if (y > 0)
         {
             T temp = getNode(x, y - 1);
-            if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && room.canSitOrLayAt(newX, newY)))
+            if (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && room.canSitOrLayAt(newX, newY)))
             {
                 temp.setIsDiagonaly(false);
                 adj.add(temp);
@@ -188,7 +188,7 @@ public class GameMap<T extends AbstractNode>
         if (y < this.height)
         {
             T temp = getNode(x, y + 1);
-            if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && room.canSitOrLayAt(newX, newY)))
+            if (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && room.canSitOrLayAt(newX, newY)))
             {
                 temp.setIsDiagonaly(false);
                 adj.add(temp);
@@ -199,7 +199,7 @@ public class GameMap<T extends AbstractNode>
             if ((x < this.width) && (y < this.height))
             {
                 T temp = getNode(x + 1, y + 1);
-                if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && room.canSitOrLayAt(newX, newY)))
+                if (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && room.canSitOrLayAt(newX, newY)))
                 {
                     temp.setIsDiagonaly(true);
                     adj.add(temp);
@@ -208,7 +208,7 @@ public class GameMap<T extends AbstractNode>
             if ((x > 0) && (y > 0))
             {
                 T temp = getNode(x - 1, y - 1);
-                if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && room.canSitOrLayAt(newX, newY)))
+                if (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && room.canSitOrLayAt(newX, newY)))
                 {
                     temp.setIsDiagonaly(true);
                     adj.add(temp);
@@ -217,7 +217,7 @@ public class GameMap<T extends AbstractNode>
             if ((x > 0) && (y < this.height))
             {
                 T temp = getNode(x - 1, y + 1);
-                if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && room.canSitOrLayAt(newX, newY)))
+                if (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && room.canSitOrLayAt(newX, newY)))
                 {
                     temp.setIsDiagonaly(true);
                     adj.add(temp);
@@ -226,7 +226,7 @@ public class GameMap<T extends AbstractNode>
             if ((x < this.width) && (y > 0))
             {
                 T temp = getNode(x + 1, y - 1);
-                if (((temp.isWalkable()) && (!this.closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && room.canSitOrLayAt(newX, newY)))
+                if (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.getX() == newX && temp.getY() == newY && room.canSitOrLayAt(newX, newY)))
                 {
                     temp.setIsDiagonaly(true);
                     adj.add(temp);

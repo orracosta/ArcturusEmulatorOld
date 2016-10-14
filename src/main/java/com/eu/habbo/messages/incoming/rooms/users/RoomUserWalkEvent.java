@@ -2,11 +2,11 @@ package com.eu.habbo.messages.incoming.rooms.users;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.pets.PetTask;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUnitOnRollerComposer;
-import com.eu.habbo.util.pathfinding.Tile;
 
 public class RoomUserWalkEvent extends MessageHandler
 {
@@ -50,11 +50,11 @@ public class RoomUserWalkEvent extends MessageHandler
                         if (x == roomUnit.getX() && y == roomUnit.getY())
                             return;
 
-                        roomUnit.setGoalLocation(x, y);
+                        roomUnit.setGoalLocation(habbo.getHabboInfo().getCurrentRoom().getLayout().getTile((short) x, (short) y));
                     }
                     else
                     {
-                        Tile t = new Tile(x, y, habbo.getHabboInfo().getCurrentRoom().getTopHeightAt(x, y));
+                        RoomTile t = habbo.getHabboInfo().getCurrentRoom().getLayout().getTile((short) x, (short) y);
                         habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUnitOnRollerComposer(roomUnit, null, t, habbo.getHabboInfo().getCurrentRoom()).compose());
 
                         if (habbo.getHabboInfo().getRiding() != null)

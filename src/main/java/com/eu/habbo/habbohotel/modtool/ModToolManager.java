@@ -13,6 +13,7 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.set.hash.THashSet;
 import io.netty.channel.Channel;
 
+import java.net.InetSocketAddress;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -391,7 +392,7 @@ public class ModToolManager
 
     public ModToolBan createBan(Habbo target, Habbo staff, int expireDate, String reason, String type)
     {
-        return createBan(target.getHabboInfo().getId(), ModToolManager.cleanIp(target.getClient().getChannel()), staff, expireDate, reason, type);
+        return createBan(target.getHabboInfo().getId(), target.getHabboInfo().getIpLogin(), staff, expireDate, reason, type);
     }
 
     public ModToolBan createBan(int target, String ip, Habbo staff, int expireDate, String reason, String type)
@@ -417,7 +418,7 @@ public class ModToolManager
         ModToolBan ban = null;
         try
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM bans WHERE user_id = ? AND ban_expire >= ? AND type = 'account' LIMIT 1");
+            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM bans WHERE user_id = ? AND ban_expire >= ? AND (type = 'account' OR type = 'super') LIMIT 1");
             statement.setInt(1, userId);
             statement.setInt(2, Emulator.getIntUnixTimestamp());
             ResultSet set = statement.executeQuery();
@@ -441,12 +442,64 @@ public class ModToolManager
 
     public boolean hasIPBan(Channel habbo)
     {
+        if (habbo == null)
+            return false;
+
         boolean banned = false;
         PreparedStatement statement = null;
         try
         {
-            statement = Emulator.getDatabase().prepare("SELECT * FROM bans WHERE ip = ? AND type = 'ip' AND ban_expire > ? LIMIT 1");
-            statement.setString(1, ModToolManager.cleanIp(habbo));
+            statement = Emulator.getDatabase().prepare("SELECT * FROM bans WHERE ip = ? AND (type = 'ip' OR type = 'super')  AND ban_expire > ? LIMIT 1");
+            statement.setString(1, ((InetSocketAddress)habbo.remoteAddress()).getAddress().getHostAddress());
+            statement.setInt(2, Emulator.getIntUnixTimestamp());
+            ResultSet set = statement.executeQuery();
+
+            if (set.next())
+            {
+                banned = true;
+            }
+
+            set.close();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+        finally
+        {
+            if (statement != null)
+            {
+                try
+                {
+                    statement.close();
+                    statement.getConnection().close();
+                }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            }
+        }
+
+        return banned;
+    }
+
+    public boolean hasMACBan(GameClient habbo)
+    {
+        if (habbo == null)
+            return false;
+
+        if (habbo.getMachineId().isEmpty())
+        {
+            return false;
+        }
+
+        boolean banned = false;
+        PreparedStatement statement = null;
+        try
+        {
+            statement = Emulator.getDatabase().prepare("SELECT * FROM bans WHERE machine_id = ? AND type = 'machine' OR type = 'super') AND ban_expire > ? LIMIT 1");
+            statement.setString(1, habbo.getMachineId());
             statement.setInt(2, Emulator.getIntUnixTimestamp());
             ResultSet set = statement.executeQuery();
 
@@ -617,17 +670,5 @@ public class ModToolManager
     public ModToolIssue getTicket(int ticketId)
     {
         return this.tickets.get(ticketId);
-    }
-
-    public static String cleanIp(Channel channel)
-    {
-        try
-        {
-            return channel.remoteAddress().toString().split(":")[0].replace("/", "");
-        }
-        catch (Exception e)
-        {
-            return "";
-        }
     }
 }

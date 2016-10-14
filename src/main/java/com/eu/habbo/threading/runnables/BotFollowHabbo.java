@@ -3,10 +3,9 @@ package com.eu.habbo.threading.runnables;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 
 public class BotFollowHabbo implements Runnable
 {
@@ -34,12 +33,12 @@ public class BotFollowHabbo implements Runnable
                     {
                         if (this.bot.getRoomUnit() != null)
                         {
-                            Tile target = PathFinder.getSquareInFront(this.habbo.getRoomUnit().getX(), this.habbo.getRoomUnit().getY(), Math.abs((this.habbo.getRoomUnit().getBodyRotation().getValue() + 4)) % 8);
+                            RoomTile target = PathFinder.getSquareInFront(this.room.getLayout(), this.habbo.getRoomUnit().getX(), this.habbo.getRoomUnit().getY(), Math.abs((this.habbo.getRoomUnit().getBodyRotation().getValue() + 4)) % 8);
 
-                            if (target.X < 0 || target.Y < 0)
-                                target = PathFinder.getSquareInFront(this.habbo.getRoomUnit().getX(), this.habbo.getRoomUnit().getY(), this.habbo.getRoomUnit().getBodyRotation().getValue());
+                            if (target.x < 0 || target.y < 0)
+                                target = PathFinder.getSquareInFront(this.room.getLayout(), this.habbo.getRoomUnit().getX(), this.habbo.getRoomUnit().getY(), this.habbo.getRoomUnit().getBodyRotation().getValue());
 
-                            if (target.X >= 0 && target.Y >= 0)
+                            if (target.x >= 0 && target.y >= 0)
                             {
                                 this.bot.getRoomUnit().setGoalLocation(target);
                                 this.bot.getRoomUnit().setCanWalk(true);

@@ -2,11 +2,11 @@ package com.eu.habbo.threading.runnables;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class RoomUnitWalkToRoomUnit implements Runnable
     private List<Runnable> targetReached;
     private List<Runnable> failedReached;
 
-    private Tile goalTile = null;
+    private RoomTile goalTile = null;
 
     public RoomUnitWalkToRoomUnit(RoomUnit walker, RoomUnit target, Room room, List<Runnable> targetReached, List<Runnable> failedReached)
     {
@@ -41,7 +41,7 @@ public class RoomUnitWalkToRoomUnit implements Runnable
         else if(this.walker.getGoal().equals(this.goalTile)) //Check if the goal is still the same. Chances are something is running the same task. If so we dump this task.
         {
             //Check if arrived.
-            if(this.walker.getLocation().equals(this.goalTile))
+            if(this.walker.getCurrentLocation().equals(this.goalTile))
             {
                 for(Runnable r : this.targetReached)
                 {
@@ -52,9 +52,9 @@ public class RoomUnitWalkToRoomUnit implements Runnable
             }
             else
             {
-                List<Tile> tiles = PathFinder.getTilesAround(this.target.getX(), this.target.getY());
+                List<RoomTile> tiles = PathFinder.getTilesAround(this.room.getLayout(), this.target.getX(), this.target.getY());
 
-                for(Tile t : tiles)
+                for(RoomTile t : tiles)
                 {
                     if(t.equals(this.goalTile))
                     {
@@ -72,13 +72,13 @@ public class RoomUnitWalkToRoomUnit implements Runnable
 
     private void findNewLocation()
     {
-        this.goalTile = PathFinder.getSquareInFront(this.target.getX(), this.target.getY(), this.target.getBodyRotation().getValue());
+        this.goalTile = PathFinder.getSquareInFront(this.room.getLayout(), this.target.getX(), this.target.getY(), this.target.getBodyRotation().getValue());
 
         if (!this.room.tileWalkable(this.goalTile))
         {
-            List<Tile> tiles = PathFinder.getTilesAround(this.target.getX(), this.target.getY());
+            List<RoomTile> tiles = PathFinder.getTilesAround(this.room.getLayout(), this.target.getX(), this.target.getY());
 
-            for (Tile t : tiles)
+            for (RoomTile t : tiles)
             {
                 if (this.room.tileWalkable(t))
                 {
@@ -89,9 +89,9 @@ public class RoomUnitWalkToRoomUnit implements Runnable
             }
         }
 
-        walker.setGoalLocation(this.goalTile);
+        this.walker.setGoalLocation(this.goalTile);
 
-        if(walker.getPathFinder().getPath() == null)
+        if(this.walker.getPathFinder().getPath() == null)
         {
             for(Runnable r : this.failedReached)
             {

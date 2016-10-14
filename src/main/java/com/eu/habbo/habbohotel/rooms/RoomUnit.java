@@ -19,26 +19,20 @@ import com.eu.habbo.threading.runnables.RoomUnitKick;
 import com.eu.habbo.util.pathfinding.Node;
 import com.eu.habbo.util.pathfinding.PathFinder;
 import com.eu.habbo.util.pathfinding.Rotation;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 
 public class RoomUnit
 {
     private int id;
-    private int x;
-    private int y;
+    private RoomTile startLocation;
+    private RoomTile previousLocation;
+    private RoomTile currentLocation;
+    private RoomTile goalLocation;
+
     private double z;
 
-    private int oldX;
-    private int oldY;
-    private double oldZ;
-
-    private int startX;
-    private int startY;
     private int tilesWalked;
-    private int goalX;
-    private int goalY;
 
     private boolean inRoom;
     private boolean canWalk;
@@ -73,8 +67,6 @@ public class RoomUnit
     public RoomUnit()
     {
         this.id = 0;
-        this.x = 0;
-        this.y = 0;
         this.inRoom = false;
         this.canWalk = true;
         this.status = new THashMap<String, String>();
@@ -94,10 +86,8 @@ public class RoomUnit
 
     public void clearWalking()
     {
-        this.x = 0;
-        this.y = 0;
-        this.goalX = 0;
-        this.goalY = 0;
+        this.goalLocation = null;
+        this.startLocation = this.currentLocation;
         this.inRoom = false;
 
         synchronized (this.status)
@@ -113,16 +103,12 @@ public class RoomUnit
         synchronized (this.status)
         {
             this.status.remove("mv");
-            this.setGoalLocation(this.x, this.y);
+            this.setGoalLocation(this.currentLocation);
         }
     }
 
     public boolean cycle(Room room)
     {
-        this.oldX = this.x;
-        this.oldY = this.y;
-        this.oldZ = this.z;
-
         try
         {
             /**
@@ -184,7 +170,7 @@ public class RoomUnit
 
                 if (Emulator.getPluginManager().isRegistered(UserTakeStepEvent.class, false))
                 {
-                    Event e = new UserTakeStepEvent(habbo, new Tile(this.x, this.y, this.z), next);
+                    Event e = new UserTakeStepEvent(habbo, room.getLayout().getTile(this.getX(), this.getY()), next);
                     Emulator.getPluginManager().fireEvent(e);
 
                     if (e.isCancelled())
@@ -206,7 +192,7 @@ public class RoomUnit
 
             if(!(this.getPathFinder().getPath().size() == 1 && canSitNextTile))
             {
-                if (!room.tileWalkable(next.getX(), next.getY()) && !(item instanceof InteractionTeleport))
+                if (!room.tileWalkable((short) next.getX(), (short) next.getY()) && !(item instanceof InteractionTeleport))
                 {
                     this.getPathFinder().findPath();
                     if (this.getPathFinder().getPath().isEmpty())
@@ -229,7 +215,7 @@ public class RoomUnit
                 }
             }
 
-            HabboItem habboItem = room.getTopItemAt(this.x, this.y);
+            HabboItem habboItem = room.getTopItemAt(this.getX(), this.getY());
             if(habboItem != null)
             {
                 if(habboItem != item || !PathFinder.pointInSquare(habboItem.getX(), habboItem.getY(), habboItem.getX() + habboItem.getBaseItem().getWidth() - 1, habboItem.getY() + habboItem.getBaseItem().getLength() - 1, next.getX(), next.getY()))
@@ -242,7 +228,7 @@ public class RoomUnit
             this.setRotation(RoomUserRotation.values()[Rotation.Calculate(this.getX(), this.getY(), next.getX(), next.getY())]);
             if (item != null)
             {
-                if(item != habboItem || !PathFinder.pointInSquare(item.getX(), item.getY(), item.getX() + item.getBaseItem().getWidth() - 1, item.getY() + item.getBaseItem().getLength() - 1, this.x, this.y))
+                if(item != habboItem || !PathFinder.pointInSquare(item.getX(), item.getY(), item.getX() + item.getBaseItem().getWidth() - 1, item.getY() + item.getBaseItem().getLength() - 1, this.getX(), this.getY()))
                 {
                     if(item.canWalkOn(this, room, null))
                     {
@@ -252,7 +238,7 @@ public class RoomUnit
                     {
                         this.setRotation(oldRotation);
                         this.tilesWalked--;
-                        this.setGoalLocation(this.getX(), this.getY());
+                        this.setGoalLocation(this.currentLocation);
                         this.getStatus().remove("mv");
                         room.sendComposer(new RoomUserStatusComposer(this).compose());
                         return false;
@@ -287,12 +273,12 @@ public class RoomUnit
                 zHeight += room.getLayout().getHeightAtSquare(next.getX(), next.getY());
             }
 
+            this.previousLocation = this.currentLocation;
             this.getStatus().put("mv", next.getX() + "," + next.getY() + "," + zHeight);
             //room.sendComposer(new RoomUserStatusComposer(this).compose());
 
             this.setZ(zHeight);
-            this.setX(next.getX());
-            this.setY(next.getY());
+            this.setCurrentLocation(room.getLayout().getTile((short) next.getX(), (short) next.getY()));
             this.resetIdleTimer();
 
             if (habbo != null)
@@ -320,20 +306,19 @@ public class RoomUnit
         this.id = id;
     }
 
-    public int getX() {
-        return x;
+    public RoomTile getCurrentLocation()
+    {
+        return this.currentLocation;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public short getX()
+    {
+        return this.currentLocation.x;
     }
 
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
+    public short getY()
+    {
+        return this.currentLocation.y;
     }
 
     public double getZ()
@@ -344,41 +329,6 @@ public class RoomUnit
     public void setZ(double z)
     {
         this.z = z;
-    }
-
-    public int getOldX()
-    {
-        return this.oldX;
-    }
-
-    public void setOldX(int oldX)
-    {
-        this.oldX = oldX;
-    }
-
-    public int getOldY()
-    {
-        return this.oldY;
-    }
-
-    public void setOldY(int oldY)
-    {
-        this.oldY = oldY;
-    }
-
-    public double getOldZ()
-    {
-        return this.oldZ;
-    }
-
-    public void setOldZ(double oldZ)
-    {
-        this.oldZ = oldZ;
-    }
-
-    public Tile getLocation()
-    {
-        return new Tile(this.x, this.y, this.z);
     }
 
     public boolean isInRoom() {
@@ -447,19 +397,9 @@ public class RoomUnit
         return this.fastWalk;
     }
 
-    public Tile getStartLocation()
+    public RoomTile getStartLocation()
     {
-        return new Tile(this.startX, this.startY, 0);
-    }
-
-    public int getStartX()
-    {
-        return this.startX;
-    }
-
-    public int getStartY()
-    {
-        return this.startY;
+        return this.startLocation;
     }
 
     public int tilesWalked()
@@ -467,64 +407,53 @@ public class RoomUnit
         return this.tilesWalked;
     }
 
-    public Tile getGoal()
+    public RoomTile getGoal()
     {
-        return new Tile(this.goalX, this.goalY, 0);
+        return this.goalLocation;
     }
 
-    public int getGoalX() {
-        return goalX;
-    }
-
-    public int getGoalY() {
-        return goalY;
-    }
-
-    public void setGoalLocation(int x, int y)
+    public void setGoalLocation(RoomTile goalLocation)
     {
         if(Emulator.getPluginManager().isRegistered(RoomUnitSetGoalEvent.class, false))
         {
-            Event event = new RoomUnitSetGoalEvent(this.room, this, new Tile(x, y, 0));
+            Event event = new RoomUnitSetGoalEvent(this.room, this, goalLocation);
             Emulator.getPluginManager().fireEvent(event);
 
             if(event.isCancelled())
                 return;
         }
 
-        this.oldX = this.x;
-        this.oldY = this.y;
-        this.oldZ = this.z;
-        this.startX = this.x;
-        this.startY = this.y;
+        this.startLocation = this.currentLocation;
+        this.goalLocation = goalLocation;
         this.tilesWalked = 0;
-        this.goalX = x;
-        this.goalY = y;
         this.pathFinder.findPath();
         this.cmdSit = false;
     }
 
-    public void setLocation(int x, int y)
+    public void setLocation(RoomTile location)
     {
-        this.setLocation(x, y, this.z);
+        this.startLocation      = location;
+        this.previousLocation   = location;
+        this.currentLocation    = location;
+        this.goalLocation       = location;
     }
 
-    public void setLocation(int x, int y, double z)
+    public void setCurrentLocation(RoomTile location)
     {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-
-        this.oldX = this.x;
-        this.oldY = this.y;
-        this.oldZ = this.z;
-
-        this.goalX = x;
-        this.goalY = y;
+        if (location != null)
+        {
+            this.currentLocation = location;
+        }
     }
 
-    public void setGoalLocation(Tile tile)
+    public RoomTile getPreviousLocation()
     {
-        this.setGoalLocation(tile.X, tile.Y);
+        return this.previousLocation;
+    }
+
+    public void setPreviousLocation(RoomTile previousLocation)
+    {
+        this.previousLocation = previousLocation;
     }
 
     public PathFinder getPathFinder() {
@@ -541,12 +470,12 @@ public class RoomUnit
 
     public boolean isAtGoal()
     {
-        return this.goalX == this.x && this.goalY == this.y;
+        return this.currentLocation.equals(this.goalLocation);
     }
 
     public boolean isWalking()
     {
-        return (this.goalX != this.x || this.goalY != this.y) && this.canWalk;
+        return !isAtGoal() && this.canWalk;
     }
 
     public synchronized TMap<String, String> getStatus()
@@ -646,7 +575,7 @@ public class RoomUnit
         this.idleTimer = Emulator.getConfig().getInt("hotel.roomuser.idle.cycles", 240);
     }
 
-    public void lookAtPoint(Tile location)
+    public void lookAtPoint(RoomTile location)
     {
         if(Emulator.getPluginManager().isRegistered(RoomUnitLookAtPointEvent.class, false))
         {
@@ -657,7 +586,7 @@ public class RoomUnit
                 return;
         }
 
-        this.bodyRotation = (RoomUserRotation.values()[Rotation.Calculate(this.x, this.y, location.x, location.y)]);
-        this.headRotation = (RoomUserRotation.values()[Rotation.Calculate(this.x, this.y, location.x, location.y)]);
+        this.bodyRotation = (RoomUserRotation.values()[Rotation.Calculate(this.getX(), this.getY(), location.x, location.y)]);
+        this.headRotation = (RoomUserRotation.values()[Rotation.Calculate(this.getX(), this.getY(), location.x, location.y)]);
     }
 }

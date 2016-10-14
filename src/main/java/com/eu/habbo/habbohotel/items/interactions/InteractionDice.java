@@ -56,26 +56,29 @@ public class InteractionDice extends HabboItem
     {
         super.onClick(client, room, objects);
 
-        if (PathFinder.tilesAdjecent(this.getLocation(), client.getHabbo().getRoomUnit().getLocation()))
+        if (client != null)
         {
-            if (this.rollTaks == null)
+            if (PathFinder.tilesAdjecent(this.getX(), this.getY(), client.getHabbo().getRoomUnit().getCurrentLocation().x, client.getHabbo().getRoomUnit().getCurrentLocation().y))
             {
-                FurnitureDiceRolledEvent event = (FurnitureDiceRolledEvent) Emulator.getPluginManager().fireEvent(new FurnitureDiceRolledEvent(this, client.getHabbo(), -1));
-
-                if (event.isCancelled())
-                    return;
-
-                this.setExtradata("-1");
-                room.updateItem(this);
-                Emulator.getThreading().run(this);
-
-                if (event.result > 0)
+                if (this.rollTaks == null)
                 {
-                    Emulator.getThreading().run(new RandomDiceNumber(room, this, event.result), 1500);
-                }
-                else
-                {
-                    Emulator.getThreading().run(new RandomDiceNumber(this, room, this.getBaseItem().getStateCount()), 1500);
+                    FurnitureDiceRolledEvent event = (FurnitureDiceRolledEvent) Emulator.getPluginManager().fireEvent(new FurnitureDiceRolledEvent(this, client.getHabbo(), -1));
+
+                    if (event.isCancelled())
+                        return;
+
+                    this.setExtradata("-1");
+                    room.updateItem(this);
+                    Emulator.getThreading().run(this);
+
+                    if (event.result > 0)
+                    {
+                        Emulator.getThreading().run(new RandomDiceNumber(room, this, event.result), 1500);
+                    }
+                    else
+                    {
+                        Emulator.getThreading().run(new RandomDiceNumber(this, room, this.getBaseItem().getStateCount()), 1500);
+                    }
                 }
             }
         }

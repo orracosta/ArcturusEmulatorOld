@@ -62,8 +62,8 @@ public class PetPlaceEvent extends MessageHandler
         }
 
         roomUnit.setRotation(RoomUserRotation.SOUTH);
-        roomUnit.setLocation(x, y, room.getStackHeight(x, y, false));
-        roomUnit.setGoalLocation(x, y);
+        roomUnit.setLocation(room.getLayout().getTile((short)x, (short)y));
+        roomUnit.setZ(room.getStackHeight(x, y, false));
         roomUnit.setPathFinderRoom(room);
         roomUnit.setRoomUnitType(RoomUnitType.PET);
         pet.setRoomUnit(roomUnit);

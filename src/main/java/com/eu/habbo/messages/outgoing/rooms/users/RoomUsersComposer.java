@@ -9,13 +9,14 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.set.hash.THashSet;
+import java.util.Collection;
 
 public class RoomUsersComposer extends MessageComposer
 {
     private Habbo habbo;
     private TIntObjectMap<Habbo> habbos;
     private Bot bot;
-    private THashSet<Bot> bots;
+    private Collection<Bot> bots;
 
     public RoomUsersComposer(Habbo habbo)
     {
@@ -32,7 +33,7 @@ public class RoomUsersComposer extends MessageComposer
         this.bot = bot;
     }
 
-    public RoomUsersComposer(THashSet<Bot> bots, boolean isBot)
+    public RoomUsersComposer(Collection<Bot> bots, boolean isBot)
     {
         this.bots = bots;
     }

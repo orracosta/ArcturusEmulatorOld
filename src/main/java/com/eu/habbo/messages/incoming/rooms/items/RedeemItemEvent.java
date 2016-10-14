@@ -2,6 +2,7 @@ package com.eu.habbo.messages.incoming.rooms.items;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.UpdateStackHeightComposer;
@@ -12,7 +13,6 @@ import com.eu.habbo.messages.outgoing.users.UserPointsComposer;
 import com.eu.habbo.plugin.Event;
 import com.eu.habbo.plugin.events.furniture.FurnitureRedeemedEvent;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;
-import com.eu.habbo.util.pathfinding.Tile;
 
 public class RedeemItemEvent extends MessageHandler
 {
@@ -120,9 +120,10 @@ public class RedeemItemEvent extends MessageHandler
 
                     room.removeHabboItem(item);
                     room.sendComposer(new RemoveFloorItemComposer(item).compose());
-                    Tile t = new Tile(item.getX(), item.getY(), room.getStackHeight(item.getX(), item.getY(), true));
+                    RoomTile t = room.getLayout().getTile(item.getX(), item.getY());
+                    t.setStackHeight(room.getStackHeight(item.getX(), item.getY(), false));
                     room.updateTile(t);
-                    room.sendComposer(new UpdateStackHeightComposer(item.getX(), item.getY(), t.Z).compose());
+                    room.sendComposer(new UpdateStackHeightComposer(item.getX(), item.getY(), t.relativeHeight()).compose());
                     Emulator.getThreading().run(new QueryDeleteHabboItem(item));
                 }
             }

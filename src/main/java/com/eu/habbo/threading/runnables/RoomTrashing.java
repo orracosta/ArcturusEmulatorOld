@@ -2,6 +2,7 @@ package com.eu.habbo.threading.runnables;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
@@ -9,7 +10,6 @@ import com.eu.habbo.messages.outgoing.rooms.items.FloorItemOnRollerComposer;
 import com.eu.habbo.plugin.EventHandler;
 import com.eu.habbo.plugin.events.users.UserTakeStepEvent;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
 public class RoomTrashing implements Runnable
@@ -57,12 +57,12 @@ public class RoomTrashing implements Runnable
 
                     int offset = Emulator.getRandom().nextInt(4) + 2;
 
-                    Tile t = null;
+                    RoomTile t = null;
                     while(offset > 0)
                     {
-                        t = PathFinder.getSquareInFront(event.toLocation.getX(), event.toLocation.getY(), event.habbo.getRoomUnit().getBodyRotation().getValue(), offset);
+                        t = PathFinder.getSquareInFront(INSTANCE.room.getLayout(), (short) event.toLocation.getX(), (short) event.toLocation.getY(), event.habbo.getRoomUnit().getBodyRotation().getValue(), (short) offset);
 
-                        if(!INSTANCE.room.getLayout().tileWalkable(t.X, t.Y))
+                        if(!INSTANCE.room.getLayout().tileWalkable(t.x, t.y))
                         {
                             offset--;
                         }
@@ -74,9 +74,9 @@ public class RoomTrashing implements Runnable
 
                     for(HabboItem item : items)
                     {
-                        t.Z = (INSTANCE.room.getTopHeightAt(t.X, t.Y));
+                        double offsetZ = (INSTANCE.room.getTopHeightAt(t.x, t.y)) - item.getZ();
 
-                        messages.add(new FloorItemOnRollerComposer(item, null, t, INSTANCE.room).compose());
+                        messages.add(new FloorItemOnRollerComposer(item, null, t, offsetZ, INSTANCE.room).compose());
                     }
 
 
@@ -85,9 +85,9 @@ public class RoomTrashing implements Runnable
                     t = null;
                     while(offset > 0)
                     {
-                        t = PathFinder.getSquareInFront(event.toLocation.getX(), event.toLocation.getY(), event.habbo.getRoomUnit().getBodyRotation().getValue() + 7, offset);
+                        t = PathFinder.getSquareInFront(INSTANCE.room.getLayout(), (short)event.toLocation.getX(), (short)event.toLocation.getY(), event.habbo.getRoomUnit().getBodyRotation().getValue() + 7, (short) offset);
 
-                        if(!INSTANCE.room.getLayout().tileWalkable(t.X, t.Y))
+                        if(!INSTANCE.room.getLayout().tileWalkable(t.x, t.y))
                         {
                             offset--;
                         }
@@ -97,14 +97,14 @@ public class RoomTrashing implements Runnable
                         }
                     }
 
-                    Tile s = PathFinder.getSquareInFront(INSTANCE.habbo.getRoomUnit().getX(), INSTANCE.habbo.getRoomUnit().getY(), INSTANCE.habbo.getRoomUnit().getBodyRotation().getValue() + 7);
-                    items = INSTANCE.room.getItemsAt(s.X, s.Y);
+                    RoomTile s = PathFinder.getSquareInFront(INSTANCE.room.getLayout(), INSTANCE.habbo.getRoomUnit().getX(), INSTANCE.habbo.getRoomUnit().getY(), INSTANCE.habbo.getRoomUnit().getBodyRotation().getValue() + 7);
+                    items = INSTANCE.room.getItemsAt(s.x, s.y);
 
                     for(HabboItem item : items)
                     {
-                        t.Z = (INSTANCE.room.getTopHeightAt(t.X, t.Y));
+                        double offsetZ = (INSTANCE.room.getTopHeightAt(t.x, t.y)) - item.getZ();
 
-                        messages.add(new FloorItemOnRollerComposer(item, null, t, INSTANCE.room).compose());
+                        messages.add(new FloorItemOnRollerComposer(item, null, t, offsetZ, INSTANCE.room).compose());
                     }
 
                     offset = Emulator.getRandom().nextInt(4) + 2;
@@ -112,9 +112,9 @@ public class RoomTrashing implements Runnable
                     t = null;
                     while(offset > 0)
                     {
-                        t = PathFinder.getSquareInFront(event.toLocation.getX(), event.toLocation.getY(), event.habbo.getRoomUnit().getBodyRotation().getValue() + 1, offset);
+                        t = PathFinder.getSquareInFront(INSTANCE.room.getLayout(), (short)event.toLocation.getX(), (short)event.toLocation.getY(), event.habbo.getRoomUnit().getBodyRotation().getValue() + 1, (short) offset);
 
-                        if(!INSTANCE.room.getLayout().tileWalkable(t.X, t.Y))
+                        if(!INSTANCE.room.getLayout().tileWalkable(t.x, t.y))
                         {
                             offset--;
                         }
@@ -124,17 +124,15 @@ public class RoomTrashing implements Runnable
                         }
                     }
 
-                    s = PathFinder.getSquareInFront(INSTANCE.habbo.getRoomUnit().getX(), INSTANCE.habbo.getRoomUnit().getY(), INSTANCE.habbo.getRoomUnit().getBodyRotation().getValue() + 1);
-                    items = INSTANCE.room.getItemsAt(s.X, s.Y);
+                    s = PathFinder.getSquareInFront(INSTANCE.room.getLayout(), INSTANCE.habbo.getRoomUnit().getX(), INSTANCE.habbo.getRoomUnit().getY(), INSTANCE.habbo.getRoomUnit().getBodyRotation().getValue() + 1);
+                    items = INSTANCE.room.getItemsAt(s.x, s.y);
 
                     for(HabboItem item : items)
                     {
-                        t.Z = (INSTANCE.room.getTopHeightAt(t.X, t.Y));
+                        double offsetZ = (INSTANCE.room.getTopHeightAt(t.x, t.y)) - item.getZ();
 
-                        messages.add(new FloorItemOnRollerComposer(item, null, t, INSTANCE.room).compose());
+                        messages.add(new FloorItemOnRollerComposer(item, null, t, offsetZ, INSTANCE.room).compose());
                     }
-
-
 
                     for(ServerMessage message : messages)
                     {

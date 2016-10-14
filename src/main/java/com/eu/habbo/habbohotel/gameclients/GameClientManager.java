@@ -73,6 +73,11 @@ public class GameClientManager
             client.dispose();
             client.setHabbo(null);
         }
+
+        channel.attr(CLIENT).set(null);
+        channel.deregister();
+        channel.closeFuture();
+        channel.close();
         this.clients.remove(channel.id());
     }
     
@@ -130,6 +135,21 @@ public class GameClientManager
         for (GameClient client : this.clients.values())
         {
             if (client.getChannel().remoteAddress().toString().contains(ip))
+            {
+                habbos.add(client.getHabbo());
+            }
+        }
+
+        return habbos;
+    }
+
+    public List<Habbo> getHabbosWithMachineId(String machineId)
+    {
+        List<Habbo> habbos = new ArrayList<Habbo>();
+
+        for (GameClient client : this.clients.values())
+        {
+            if (client.getMachineId().equalsIgnoreCase(machineId))
             {
                 habbos.add(client.getHabbo());
             }

@@ -119,6 +119,12 @@ public class ServerMessage
         }
     }
 
+    public void appendInt32(Short obj)
+    {
+        this.appendShort(0);
+        this.appendShort(obj);
+    }
+
     public void appendInt32(Byte obj)
     {
         try

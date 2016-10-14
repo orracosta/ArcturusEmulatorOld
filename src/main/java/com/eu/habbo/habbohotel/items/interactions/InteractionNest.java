@@ -80,7 +80,7 @@ public class InteractionNest extends HabboItem
                 if (pet.getEnergy() <= 85)
                 {
                     ((Pet) pet).setTask(PetTask.NEST);
-                    pet.getRoomUnit().setGoalLocation(this.getX(), this.getY());
+                    pet.getRoomUnit().setGoalLocation(room.getLayout().getTile(this.getX(), this.getY()));
                     pet.getRoomUnit().getStatus().clear();
                     pet.getRoomUnit().getStatus().remove("mv");
                     pet.getRoomUnit().getStatus().put("lay", room.getStackHeight(this.getX(), this.getY(), false) + "");

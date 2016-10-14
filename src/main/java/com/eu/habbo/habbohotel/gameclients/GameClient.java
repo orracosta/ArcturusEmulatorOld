@@ -9,7 +9,9 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelOption;
 
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 
 public class GameClient
@@ -23,6 +25,11 @@ public class GameClient
      * The Habbo it is linked to.
      */
     private Habbo habbo;
+
+    /**
+     * The MAC Address of the connected client.
+     */
+    private String machineId;
 
     public GameClient(Channel channel)
     {
@@ -133,5 +140,15 @@ public class GameClient
     public void setHabbo(Habbo habbo)
     {
         this.habbo = habbo;
+    }
+
+    public String getMachineId()
+    {
+        return this.machineId;
+    }
+
+    public void setMachineId(String machineId)
+    {
+        this.machineId = machineId;
     }
 }

@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -14,7 +15,6 @@ import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemOnRollerComposer;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.ResultSet;
@@ -54,18 +54,16 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
 
         for(HabboItem item : this.items)
         {
-            Tile t = new Tile(item.getX(), item.getY(), 0);
+            RoomTile t = room.getLayout().getTile(item.getX(), item.getY());
             double shortest = 1000.0D;
 
             Habbo target = null;
 
             for(Habbo habbo : room.getCurrentHabbos().valueCollection())
             {
-                Tile h = new Tile(habbo.getRoomUnit().getX(), habbo.getRoomUnit().getY(), 0);
-
-                if(t.distance(h) <= shortest)
+                if(habbo.getRoomUnit().getCurrentLocation().distance(t) <= shortest)
                 {
-                    shortest = t.distance(h);
+                    shortest = habbo.getRoomUnit().getCurrentLocation().distance(t);
                     target = habbo;
                 }
             }
@@ -90,18 +88,19 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
                     else
                         y++;
 
-                    Tile newTile = new Tile(item.getX() + x, item.getY() + y, 0);
+                    RoomTile newTile = room.getLayout().getTile((short) (item.getX() + x), (short) (item.getY() + y));
 
-                    if (room.getLayout().tileExists(newTile.X, newTile.Y))
+                    if (room.getLayout().tileExists(newTile.x, newTile.y))
                     {
-                        HabboItem topItem = room.getTopItemAt(newTile.X, newTile.Y);
+                        HabboItem topItem = room.getTopItemAt(newTile.x, newTile.y);
 
                         if (topItem == null || topItem.getBaseItem().allowStack())
                         {
+                            double offset = 0;
                             if (topItem != null)
-                                newTile.Z = topItem.getZ() + topItem.getBaseItem().getHeight();
+                                offset = topItem.getZ() + topItem.getBaseItem().getHeight() - item.getZ();
 
-                            room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, room).compose());
+                            room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, offset, room).compose());
                             continue;
                         }
                     }
@@ -119,18 +118,19 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
                     else
                         x++;
 
-                    Tile newTile = new Tile(item.getX() + x, item.getY() + y, 0);
+                    RoomTile newTile = room.getLayout().getTile((short) (item.getX() + x), (short) (item.getY() + y));
 
-                    if (room.getLayout().tileExists(newTile.X, newTile.Y))
+                    if (room.getLayout().tileExists(newTile.x, newTile.y))
                     {
-                        HabboItem topItem = room.getTopItemAt(newTile.X, newTile.Y);
+                        HabboItem topItem = room.getTopItemAt(newTile.x, newTile.y);
 
                         if (topItem == null || topItem.getBaseItem().allowStack())
                         {
+                            double offset = 0;
                             if (topItem != null)
-                                newTile.Z = topItem.getZ() + topItem.getBaseItem().getHeight();
+                                offset = topItem.getZ() + topItem.getBaseItem().getHeight() - item.getZ();
 
-                            room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, room).compose());
+                            room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, offset, room).compose());
                         }
                     }
                 }

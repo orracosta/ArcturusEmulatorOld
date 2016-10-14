@@ -5,13 +5,13 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.ResultSet;
@@ -90,7 +90,7 @@ public class WiredEffectTriggerStacks extends InteractionWiredEffect
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
-        THashSet<Tile> usedTiles = new THashSet<Tile>();
+        THashSet<RoomTile> usedTiles = new THashSet<RoomTile>();
 
         boolean found;
 
@@ -99,9 +99,9 @@ public class WiredEffectTriggerStacks extends InteractionWiredEffect
             if(item instanceof InteractionWiredTrigger)
             {
                 found = false;
-                for(Tile tile : usedTiles)
+                for(RoomTile tile : usedTiles)
                 {
-                    if(tile.X == item.getX() && tile.Y == item.getY())
+                    if(tile.x == item.getX() && tile.y == item.getY())
                     {
                         found = true;
                         break;
@@ -110,7 +110,7 @@ public class WiredEffectTriggerStacks extends InteractionWiredEffect
 
                 if(!found)
                 {
-                    usedTiles.add(new Tile(item.getX(), item.getY(), 0));
+                    usedTiles.add(room.getLayout().getTile(item.getX(), item.getY()));
                 }
             }
         }

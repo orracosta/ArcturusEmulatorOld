@@ -2,21 +2,17 @@ package com.eu.habbo.habbohotel.items.interactions;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
-import com.eu.habbo.habbohotel.items.interactions.InteractionDefault;
 import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class InteractionWater extends InteractionDefault
 {
@@ -31,7 +27,7 @@ public class InteractionWater extends InteractionDefault
     }
 
     @Override
-    public void onMove(Room room, Tile oldLocation, Tile newLocation)
+    public void onMove(Room room, RoomTile oldLocation, RoomTile newLocation)
     {
         this.recalculate(room);
     }
@@ -86,14 +82,14 @@ public class InteractionWater extends InteractionDefault
         if (room.waterTiles.containsKey(this.getX() + 1) && room.waterTiles.get(this.getX() + 1).contains(this.getY() + 2)) _11 = 1;
         if (room.waterTiles.containsKey(this.getX() + 2) && room.waterTiles.get(this.getX() + 2).contains(this.getY() + 2)) _12 = 1;
 
-        if (_2  == 0 && !room.getLayout().tileWalkable(this.getX()    , this.getY() - 1)) _2  = 1;
-        if (_3  == 0 && !room.getLayout().tileWalkable(this.getX() + 1, this.getY() - 1)) _3  = 1;
-        if (_5  == 0 && !room.getLayout().tileWalkable(this.getX() - 1, this.getY()    )) _5  = 1;
-        if (_6  == 0 && !room.getLayout().tileWalkable(this.getX() + 2, this.getY()    )) _6  = 1;
-        if (_7  == 0 && !room.getLayout().tileWalkable(this.getX() - 1, this.getY() + 1)) _7  = 1;
-        if (_8  == 0 && !room.getLayout().tileWalkable(this.getX() + 2, this.getY() + 1)) _8  = 1;
-        if (_10 == 0 && !room.getLayout().tileWalkable(this.getX()    , this.getY() + 2)) _10 = 1;
-        if (_11 == 0 && !room.getLayout().tileWalkable(this.getX() + 1, this.getY() + 2)) _11 = 1;
+        if (_2  == 0 && !room.getLayout().tileWalkable(this.getX()              , (short) (this.getY() - 1))) _2  = 1;
+        if (_3  == 0 && !room.getLayout().tileWalkable((short) (this.getX() + 1), (short) (this.getY() - 1))) _3  = 1;
+        if (_5  == 0 && !room.getLayout().tileWalkable((short) (this.getX() - 1),          this.getY()     )) _5  = 1;
+        if (_6  == 0 && !room.getLayout().tileWalkable((short) (this.getX() + 2),          this.getY()     )) _6  = 1;
+        if (_7  == 0 && !room.getLayout().tileWalkable((short) (this.getX() - 1), (short) (this.getY() + 1))) _7  = 1;
+        if (_8  == 0 && !room.getLayout().tileWalkable((short) (this.getX() + 2), (short) (this.getY() + 1))) _8  = 1;
+        if (_10 == 0 && !room.getLayout().tileWalkable(this.getX()              , (short) (this.getY() + 2))) _10 = 1;
+        if (_11 == 0 && !room.getLayout().tileWalkable((short) (this.getX() + 1), (short) (this.getY() + 2))) _11 = 1;
 
         int result = 0;
         result |= _1  << 11;
@@ -107,7 +103,7 @@ public class InteractionWater extends InteractionDefault
         result |= _9  << 3;
         result |= _10 << 2;
         result |= _11 << 1;
-        result |= _12 << 0;
+        result |= _12     ;
 
         this.setExtradata(result + "");
         this.needsUpdate(true);

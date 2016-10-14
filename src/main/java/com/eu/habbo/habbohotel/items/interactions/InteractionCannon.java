@@ -4,15 +4,11 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.TestComposer;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.threading.runnables.CannonKickAction;
-import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -58,13 +54,16 @@ public class InteractionCannon extends HabboItem
         if(room == null)
             return;
 
-        Tile tile = new Tile(this.getX(), this.getY(), 0.0);
-
-        if(tile.distance(client.getHabbo().getRoomUnit().getLocation()) <= 2)
+        if (client != null)
         {
-            this.setExtradata("1");
-            room.updateItem(this);
-            Emulator.getThreading().run(new CannonKickAction(this, room), 1000);
+            RoomTile tile = room.getLayout().getTile(this.getX(), this.getY());
+
+            if (tile.distance(client.getHabbo().getRoomUnit().getCurrentLocation()) <= 2)
+            {
+                this.setExtradata("1");
+                room.updateItem(this);
+                Emulator.getThreading().run(new CannonKickAction(this, room), 1000);
+            }
         }
     }
 

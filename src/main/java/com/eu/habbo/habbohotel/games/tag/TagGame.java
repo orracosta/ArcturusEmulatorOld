@@ -173,7 +173,7 @@ public abstract class TagGame extends Game
     @EventHandler
     public static void onUserLookAtPoint(RoomUnitLookAtPointEvent event)
     {
-        if (PathFinder.tilesAdjecent(event.roomUnit.getLocation(), event.location))
+        if (PathFinder.tilesAdjecent(event.roomUnit.getCurrentLocation(), event.location))
         {
             Habbo habbo = event.room.getHabbo(event.roomUnit);
 

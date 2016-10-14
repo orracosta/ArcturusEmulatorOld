@@ -4,11 +4,11 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.threading.runnables.KickBallAction;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -69,7 +69,7 @@ public abstract class InteractionPushable extends InteractionDefault
     {
         super.onClick(client, room, objects);
         
-        if(PathFinder.tilesAdjecent(new Tile(client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY()), new Tile(this.getX(), this.getY())))
+        if(PathFinder.tilesAdjecent(client.getHabbo().getRoomUnit().getCurrentLocation(), room.getLayout().getTile(this.getX(), this.getY())))
         {
             int velocity = this.getTackleVelocity(client.getHabbo().getRoomUnit(), room);
             RoomUserRotation direction = this.getWalkOnDirection(client.getHabbo().getRoomUnit(), room);
@@ -94,7 +94,7 @@ public abstract class InteractionPushable extends InteractionDefault
         int velocity;
         RoomUserRotation direction;
         
-        if(this.getX() == roomUnit.getGoalX() && this.getY() == roomUnit.getGoalY()) //User clicked on the tile the ball is on, they want to kick it
+        if(this.getX() == roomUnit.getGoal().x && this.getY() == roomUnit.getGoal().y) //User clicked on the tile the ball is on, they want to kick it
         {
             velocity = this.getWalkOnVelocity(roomUnit, room);
             direction = this.getWalkOnDirection(roomUnit, room);
@@ -215,7 +215,7 @@ public abstract class InteractionPushable extends InteractionDefault
      * @param to The coordinate the item wishes to move to
      * @return Is this move allowed? 
      */
-    public abstract boolean validMove(Room room, Tile from, Tile to); //Checks if the next move is valid
+    public abstract boolean validMove(Room room, RoomTile from, RoomTile to); //Checks if the next move is valid
     
     /**
      * Triggered when a Habbo drags a pushable item.
@@ -260,7 +260,7 @@ public abstract class InteractionPushable extends InteractionDefault
      * @param currentStep The current step of the move sequence
      * @param totalSteps The total number of steps to complete the move sequence
      */
-    public abstract void onMove(Room room, Tile from, Tile to, RoomUserRotation direction, RoomUnit kicker, int nextRoll, int currentStep, int totalSteps);
+    public abstract void onMove(Room room, RoomTile from, RoomTile to, RoomUserRotation direction, RoomUnit kicker, int nextRoll, int currentStep, int totalSteps);
     
     /**
      * Triggered when an item cannot move any further and has changed it's direction.
@@ -295,5 +295,5 @@ public abstract class InteractionPushable extends InteractionDefault
      * @param totalSteps The total number of steps to complete the move sequence
      * @return Can the item still move?
      */
-    public abstract boolean canStillMove(Room room, Tile from, Tile to, RoomUserRotation direction, RoomUnit kicker, int nextRoll, int currentStep, int totalSteps);
+    public abstract boolean canStillMove(Room room, RoomTile from, RoomTile to, RoomUserRotation direction, RoomUnit kicker, int nextRoll, int currentStep, int totalSteps);
 }

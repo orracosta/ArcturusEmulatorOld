@@ -1,10 +1,7 @@
 package com.eu.habbo.habbohotel.bots;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
-import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
-import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboGender;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
@@ -20,7 +17,6 @@ import com.eu.habbo.plugin.events.bots.BotTalkEvent;
 import com.eu.habbo.plugin.events.bots.BotWhisperEvent;
 import com.eu.habbo.threading.runnables.BotFollowHabbo;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 
 import java.lang.reflect.Array;
 import java.sql.PreparedStatement;
@@ -277,9 +273,9 @@ public class Bot implements Runnable
                     }
                 } else
                 {
-                    for (Tile t : PathFinder.getTilesAround(this.getRoomUnit().getX(), this.getRoomUnit().getY()))
+                    for (RoomTile t : PathFinder.getTilesAround(room.getLayout(), this.getRoomUnit().getX(), this.getRoomUnit().getY()))
                     {
-                        WiredHandler.handle(WiredTriggerType.BOT_REACHED_STF, this.roomUnit, this.room, room.getItemsAt(t.X, t.Y).toArray());
+                        WiredHandler.handle(WiredTriggerType.BOT_REACHED_STF, this.roomUnit, this.room, room.getItemsAt(t.x, t.y).toArray());
                     }
                 }
             }

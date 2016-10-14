@@ -4,8 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.plugin.events.bots.BotPlacedEvent;
-import com.eu.habbo.util.pathfinding.Tile;
 
 public class BotPlaceEvent extends MessageHandler
 {
@@ -22,6 +20,9 @@ public class BotPlaceEvent extends MessageHandler
         if(bot == null)
             return;
 
-        Emulator.getGameEnvironment().getBotManager().placeBot(bot, this.client.getHabbo(), this.client.getHabbo().getHabboInfo().getCurrentRoom(), new Tile(this.packet.readInt(), this.packet.readInt(), 0));
+        int x = this.packet.readInt();
+        int y = this.packet.readInt();
+
+        Emulator.getGameEnvironment().getBotManager().placeBot(bot, this.client.getHabbo(), this.client.getHabbo().getHabboInfo().getCurrentRoom(), room.getLayout().getTile((short) x, (short) y));
     }
 }

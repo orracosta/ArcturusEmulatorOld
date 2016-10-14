@@ -130,22 +130,22 @@ public class InteractionObstacle extends HabboItem
                     {
                         if(roomUnit.getBodyRotation().equals(RoomUserRotation.WEST))
                         {
-                            ((HorsePet) pet).getRider().getRoomUnit().setGoalLocation(roomUnit.getX() - 3, roomUnit.getY());
+                            ((HorsePet) pet).getRider().getRoomUnit().setGoalLocation(room.getLayout().getTile((short) (roomUnit.getX() - 3), roomUnit.getY()));
                         }
                         else if(roomUnit.getBodyRotation().equals(RoomUserRotation.EAST))
                         {
-                            ((HorsePet) pet).getRider().getRoomUnit().setGoalLocation(roomUnit.getX() + 3, roomUnit.getY());
+                            ((HorsePet) pet).getRider().getRoomUnit().setGoalLocation(room.getLayout().getTile((short) (roomUnit.getX() + 3), roomUnit.getY()));
                         }
                     }
                     else if(this.getRotation() == 4)
                     {
                         if(roomUnit.getBodyRotation().equals(RoomUserRotation.NORTH))
                         {
-                            ((HorsePet) pet).getRider().getRoomUnit().setGoalLocation(roomUnit.getX(), roomUnit.getY() - 3);
+                            ((HorsePet) pet).getRider().getRoomUnit().setGoalLocation(room.getLayout().getTile(roomUnit.getX(), (short) (roomUnit.getY() - 3)));
                         }
                         else if(roomUnit.getBodyRotation().equals(RoomUserRotation.SOUTH))
                         {
-                            ((HorsePet) pet).getRider().getRoomUnit().setGoalLocation(roomUnit.getX(), roomUnit.getY() + 3);
+                            ((HorsePet) pet).getRider().getRoomUnit().setGoalLocation(room.getLayout().getTile(roomUnit.getX(), (short) (roomUnit.getY() + 3)));
                         }
                     }
                 }

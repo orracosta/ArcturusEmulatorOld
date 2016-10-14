@@ -8,7 +8,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
 public class ToggleFloorItemEvent extends MessageHandler
@@ -94,7 +93,7 @@ public class ToggleFloorItemEvent extends MessageHandler
             if(item instanceof InteractionMonsterPlantSeed)
             {
                 Emulator.getThreading().run(new QueryDeleteHabboItem(item));
-                Emulator.getGameEnvironment().getPetManager().createMonsterplant(room, this.client.getHabbo(), false, new Tile(item.getX(), item.getY(), item.getZ()));
+                Emulator.getGameEnvironment().getPetManager().createMonsterplant(room, this.client.getHabbo(), false, room.getLayout().getTile(item.getX(), item.getY()));
                 room.sendComposer(new RemoveFloorItemComposer(item, true).compose());
                 return;
             }
@@ -103,7 +102,7 @@ public class ToggleFloorItemEvent extends MessageHandler
 
             if(item instanceof InteractionWired)
             {
-                this.client.getHabbo().getRoomUnit().setGoalLocation(this.client.getHabbo().getRoomUnit().getX(), this.client.getHabbo().getRoomUnit().getY());
+                this.client.getHabbo().getRoomUnit().setGoalLocation(this.client.getHabbo().getRoomUnit().getCurrentLocation());
             }
         }
         catch(Exception e)

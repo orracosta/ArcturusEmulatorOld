@@ -1,10 +1,7 @@
 package com.eu.habbo.habbohotel.bots;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.habbohotel.rooms.RoomUnitType;
-import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
+import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.generic.alerts.BotErrorComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
@@ -15,7 +12,6 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserRemoveComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUsersComposer;
 import com.eu.habbo.plugin.events.bots.BotPickedUpEvent;
 import com.eu.habbo.plugin.events.bots.BotPlacedEvent;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.map.hash.THashMap;
 
 import java.lang.reflect.Method;
@@ -124,7 +120,7 @@ public class BotManager
      * @param room The Room this Bot is being placed in.
      * @param location The given location of the Bot.
      */
-    public void placeBot(Bot bot, Habbo habbo, Room room, Tile location)
+    public void placeBot(Bot bot, Habbo habbo, Room room, RoomTile location)
     {
         BotPlacedEvent event = new BotPlacedEvent(bot, location, habbo);
         Emulator.getPluginManager().fireEvent(event);
@@ -142,14 +138,13 @@ public class BotManager
                     return;
                 }
 
-                if (!room.tileWalkable(location.X, location.Y))
+                if (!room.tileWalkable(location.x, location.y))
                     return;
 
                 RoomUnit roomUnit = new RoomUnit();
                 roomUnit.setRotation(RoomUserRotation.SOUTH);
-                roomUnit.setX(location.X);
-                roomUnit.setY(location.Y);
-                roomUnit.setZ(room.getStackHeight(location.X, location.Y, false));
+                roomUnit.setLocation(location);
+                roomUnit.setZ(room.getStackHeight(location.x, location.y, false));
                 roomUnit.setGoalLocation(location);
                 roomUnit.setPathFinderRoom(room);
                 roomUnit.setRoomUnitType(RoomUnitType.BOT);

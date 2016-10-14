@@ -27,7 +27,8 @@ public class HopperActionOne implements Runnable
         this.client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[(this.teleportOne.getRotation() + 4) % 8]);
         this.client.getHabbo().getRoomUnit().getStatus().put("mv", this.teleportOne.getX() + "," + this.teleportOne.getY() + "," + this.teleportOne.getZ());
         this.room.sendComposer(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()).compose());
-        this.client.getHabbo().getRoomUnit().setLocation(this.teleportOne.getX(), this.teleportOne.getY(), this.teleportOne.getZ());
+        this.client.getHabbo().getRoomUnit().setLocation(this.room.getLayout().getTile(this.teleportOne.getX(), this.teleportOne.getY()));
+        this.client.getHabbo().getRoomUnit().setZ(this.teleportOne.getZ());
 
         Emulator.getThreading().run(new Runnable()
         {

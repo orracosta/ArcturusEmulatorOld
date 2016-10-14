@@ -1,6 +1,8 @@
 package com.eu.habbo.util.pathfinding;
 
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomLayout;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import gnu.trove.set.hash.THashSet;
 
@@ -39,7 +41,7 @@ public class PathFinder
             GameMap<Node> gameMap = this.room.getGameMap();
             if (gameMap != null) {
 
-                Queue<Node> nodeQueue = gameMap.findPath(this.roomUnit.getX(), this.roomUnit.getY(), this.roomUnit.getGoalX(), this.roomUnit.getGoalY(), room);
+                Queue<Node> nodeQueue = gameMap.findPath(this.roomUnit.getX(), this.roomUnit.getY(), this.roomUnit.getGoal().x, this.roomUnit.getGoal().y, room);
 
                 if (!nodeQueue.isEmpty()) {
                     try {
@@ -100,7 +102,7 @@ public class PathFinder
         return (pointX >= x1 && pointY >= y1) && (pointX <= x2 && pointY <= y2);
     }
 
-    public static boolean tilesAdjecent(Tile one, Tile two)
+    public static boolean tilesAdjecent(RoomTile one, RoomTile two)
     {
         return tilesAdjecent(one.x, one.y, two.x, two.y);
     }
@@ -110,42 +112,42 @@ public class PathFinder
         return !(Math.abs(x1 - x2) > 1) && !(Math.abs(y1 - y2) > 1);
     }
 
-    public static Tile getSquareInFront(int x, int y, int rotation)
+    public static RoomTile getSquareInFront(RoomLayout roomLayout, short x, short y, int rotation)
     {
-        return getSquareInFront(x, y, rotation, 1);
+        return getSquareInFront(roomLayout, x, y, rotation, (short)1);
     }
 
-    public static Tile getSquareInFront(int x, int y, int rotation, int offset)
+    public static RoomTile getSquareInFront(RoomLayout roomLayout, short x, short y, int rotation, short offset)
     {
         rotation = rotation % 8;
 
         if(rotation == 0)
-            return new Tile(x, y - offset, 0);
+            return roomLayout.getTile(x, (short) (y - offset));
         else if(rotation == 1)
-            return new Tile(x + offset, y - offset, 0);
+            return roomLayout.getTile((short) (x + offset), (short) (y - offset));
         else if(rotation == 2)
-            return new Tile(x + offset, y, 0);
+            return roomLayout.getTile((short) (x + offset), y);
         else if(rotation == 3)
-            return new Tile(x + offset, y + offset, 0);
+            return roomLayout.getTile((short) (x + offset), (short) (y + offset));
         else if(rotation == 4)
-            return new Tile(x, y + offset, 0);
+            return roomLayout.getTile(x, (short) (y + offset));
         else if(rotation == 5)
-            return new Tile(x - offset, y + offset, 0);
+            return roomLayout.getTile((short) (x - offset), (short) (y + offset));
         else if(rotation == 6)
-            return new Tile(x - offset, y, 0);
+            return roomLayout.getTile((short) (x - offset), y);
         else if(rotation == 7)
-            return new Tile(x - offset, y - offset, 0);
+            return roomLayout.getTile((short) (x - offset), (short) (y - offset));
         else
-            return new Tile(x, y, 0);
+            return roomLayout.getTile(x, y);
     }
 
-    public static List<Tile> getTilesAround(int x, int y)
+    public static List<RoomTile> getTilesAround(RoomLayout roomLayout, short x, short y)
     {
-        List<Tile> tiles = new ArrayList<Tile>();
+        List<RoomTile> tiles = new ArrayList<RoomTile>();
 
         for(int i = 0; i < 8; i++)
         {
-            tiles.add(getSquareInFront(x, y, i));
+            tiles.add(getSquareInFront(roomLayout, x, y, i));
         }
 
         return tiles;
@@ -154,16 +156,7 @@ public class PathFinder
     public static Rectangle getSquare(int x, int y, int width, int length, int rotation)
     {
         rotation = (rotation % 8);
-        /*if(rotation == 6)
-        {
-            System.out.println((x) + "|" + (y-width) + "|" + length + "|" + width);
-            return new Rectangle(x, y - width, length, width);
-        }
-        else if(rotation == 4)
-        {
-            System.out.println((x - width) + "|" + (y - length) + "|" + width + "|" + length);
-            return new Rectangle(x - width, y - length, width, length);
-        }*/
+
         if(rotation == 2 || rotation == 6)
         {
             return new Rectangle(x, y, length, width);
@@ -172,27 +165,27 @@ public class PathFinder
         return new Rectangle(x, y, width, length);
     }
 
-    public static THashSet<Tile> getTilesAt(int x, int y, int width, int length, int rotation)
+    public static THashSet<RoomTile> getTilesAt(RoomLayout layout, short x, short y, int width, int length, int rotation)
     {
-        THashSet<Tile> pointList = new THashSet<Tile>();
+        THashSet<RoomTile> pointList = new THashSet<RoomTile>();
 
         if(rotation == 0 || rotation == 4)
         {
-            for (int i = x; i <= (x + (width - 1)); i++)
+            for (short i = x; i <= (x + (width - 1)); i++)
             {
-                for (int j = y; j <= (y + (length - 1)); j++)
+                for (short j = y; j <= (y + (length - 1)); j++)
                 {
-                    pointList.add(new Tile(i, j, 0.0));
+                    pointList.add(layout.getTile(i, j));
                 }
             }
         }
         else if(rotation == 2 || rotation == 6)
         {
-            for (int i = x; i <= (x + (length - 1)); i++)
+            for (short i = x; i <= (x + (length - 1)); i++)
             {
-                for (int j = y; j <= (y + (width - 1)); j++)
+                for (short j = y; j <= (y + (width - 1)); j++)
                 {
-                    pointList.add(new Tile(i, j, 0.0));
+                    pointList.add(layout.getTile(i, j));
                 }
             }
         }
@@ -200,11 +193,11 @@ public class PathFinder
         return pointList;
     }
 
-    public static boolean tilesAdjecent(Tile tile, Tile comparator, int width, int length, int rotation)
+    public static boolean tilesAdjecent(RoomTile tile, RoomTile comparator, int width, int length, int rotation)
     {
-        Rectangle rectangle = getSquare(comparator.X, comparator.Y, width, length, rotation);
+        Rectangle rectangle = getSquare(comparator.x, comparator.y, width, length, rotation);
         rectangle = new Rectangle(rectangle.x - 1, rectangle.y -1, rectangle.width + 2, rectangle.height + 2);
 
-        return rectangle.contains(tile);
+        return rectangle.contains(tile.x, tile.y);
     }
 }

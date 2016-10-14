@@ -318,7 +318,7 @@ public class Messenger
             PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO messenger_friendrequests (user_to_id, user_from_id) VALUES (?, ?)");
             statement.setInt(1, userTo);
             statement.setInt(2, userFrom);
-            statement.execute();
+            statement.executeUpdate();
             statement.close();
             statement.getConnection().close();
         }

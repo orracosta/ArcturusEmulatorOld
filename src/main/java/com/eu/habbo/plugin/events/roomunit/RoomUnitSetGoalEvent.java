@@ -1,18 +1,17 @@
 package com.eu.habbo.plugin.events.roomunit;
 
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.util.pathfinding.Tile;
 
 public class RoomUnitSetGoalEvent extends RoomUnitEvent
 {
     /**
      * Target goal that the Habbo has set.
      */
-    public final Tile goal;
+    public final RoomTile goal;
 
-    public RoomUnitSetGoalEvent(Room room, RoomUnit roomUnit, Tile goal)
+    public RoomUnitSetGoalEvent(Room room, RoomUnit roomUnit, RoomTile goal)
     {
         super(room, roomUnit);
 
@@ -24,7 +23,7 @@ public class RoomUnitSetGoalEvent extends RoomUnitEvent
      * This will trigger an new event instance of this class.
      * @param t an location.
      */
-    public void setGoal(Tile t)
+    public void setGoal(RoomTile t)
     {
         super.roomUnit.setGoalLocation(t);
     }

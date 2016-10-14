@@ -1,18 +1,19 @@
 package com.eu.habbo.messages.outgoing.rooms;
 
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
-public class UpdateStackHeightComposer extends MessageComposer{
+public class UpdateStackHeightComposer extends MessageComposer
+{
 
     private int x;
     private int y;
     private double height;
 
-    private THashSet<Tile> updateTiles;
+    private THashSet<RoomTile> updateTiles;
 
     public UpdateStackHeightComposer(int x, int y, double height)
     {
@@ -21,7 +22,7 @@ public class UpdateStackHeightComposer extends MessageComposer{
         this.height = height;
     }
 
-    public UpdateStackHeightComposer(THashSet<Tile> updateTiles)
+    public UpdateStackHeightComposer(THashSet<RoomTile> updateTiles)
     {
         this.updateTiles = updateTiles;
     }
@@ -33,11 +34,11 @@ public class UpdateStackHeightComposer extends MessageComposer{
         if(this.updateTiles != null)
         {
             this.response.appendByte(this.updateTiles.size());
-            for(Tile t : this.updateTiles)
+            for(RoomTile t : this.updateTiles)
             {
-                this.response.appendByte(t.X);
-                this.response.appendByte(t.Y);
-                this.response.appendShort((int)(t.Z));
+                this.response.appendByte((int) t.x);
+                this.response.appendByte((int) t.y);
+                this.response.appendShort((int)(t.relativeHeight()));
             }
         }
         else

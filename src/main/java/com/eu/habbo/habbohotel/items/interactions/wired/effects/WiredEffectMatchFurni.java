@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
@@ -11,7 +12,6 @@ import com.eu.habbo.habbohotel.wired.WiredMatchFurniSetting;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemOnRollerComposer;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.ResultSet;
@@ -65,9 +65,11 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
 
                 if(this.position)
                 {
-                    Tile t = new Tile(setting.x, setting.y, setting.z);
+                    RoomTile t = room.getLayout().getTile((short)setting.x, (short)setting.y);
 
-                    room.sendComposer(new FloorItemOnRollerComposer(item, null, t, room).compose());
+                    double offsetZ = setting.z - item.getZ();
+
+                    room.sendComposer(new FloorItemOnRollerComposer(item, null, t, offsetZ, room).compose());
                 }
             }
         }

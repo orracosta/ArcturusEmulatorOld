@@ -22,7 +22,6 @@ import com.eu.habbo.messages.outgoing.rooms.users.*;
 import com.eu.habbo.plugin.events.navigator.NavigatorRoomCreatedEvent;
 import com.eu.habbo.plugin.events.users.UserEnterRoomEvent;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.procedure.TIntProcedure;
@@ -33,19 +32,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class RoomManager {
 
     private final THashMap<Integer, RoomCategory> roomCategories;
     private final THashSet<RoomLayout> roomLayouts;
-    private final THashMap<Integer, Room> activeRooms;
+    private final ConcurrentHashMap<Integer, Room> activeRooms;
 
     public RoomManager()
     {
         long millis = System.currentTimeMillis();
         this.roomCategories = new THashMap<Integer, RoomCategory>();
         this.roomLayouts = new THashSet<RoomLayout>();
-        this.activeRooms = new THashMap<Integer, Room>();
+        this.activeRooms = new ConcurrentHashMap<Integer, Room>();
         this.loadRoomCategories();
         this.loadRoomModels();
 
@@ -150,45 +150,42 @@ public class RoomManager {
 
     public THashMap<Integer, List<Room>> findRooms(NavigatorFilterField filterField, String value)
     {
-        synchronized (this.activeRooms)
+        THashMap<Integer, List<Room>> rooms = new THashMap<Integer, List<Room>>();
+        try
         {
-            THashMap<Integer, List<Room>> rooms = new THashMap<Integer, List<Room>>();
-            try
+            String query = filterField.databaseQuery + " AND rooms.state != 'invisible' ORDER BY rooms.users, rooms.id DESC LIMIT " + Emulator.getConfig().getValue("hotel.navigator.search.maxresults");
+            PreparedStatement statement = Emulator.getDatabase().prepare(query);
+            statement.setString(1, (filterField.comparator == NavigatorFilterComparator.EQUALS ? value : "%" + value + "%"));
+            ResultSet set = statement.executeQuery();
+
+            while (set.next())
             {
-                String query = filterField.databaseQuery + " AND rooms.state != 'invisible' ORDER BY rooms.users, rooms.id DESC LIMIT " + Emulator.getConfig().getValue("hotel.navigator.search.maxresults");
-                PreparedStatement statement = Emulator.getDatabase().prepare(query);
-                statement.setString(1, (filterField.comparator == NavigatorFilterComparator.EQUALS ? value : "%" + value + "%"));
-                ResultSet set = statement.executeQuery();
+                Room room = this.activeRooms.get(set.getInt("id"));
 
-                while (set.next())
+                if (room == null)
                 {
-                    Room room = this.activeRooms.get(set.getInt("id"));
-
-                    if (room == null)
-                    {
-                        room = new Room(set);
-                        this.activeRooms.put(set.getInt("id"), room);
-                    }
-
-                    if (!rooms.containsKey(set.getInt("category")))
-                    {
-                        rooms.put(set.getInt("category"), new ArrayList<Room>());
-                    }
-
-                    rooms.get(set.getInt("category")).add(room);
+                    room = new Room(set);
+                    this.activeRooms.put(set.getInt("id"), room);
                 }
 
-                set.close();
-                statement.close();
-                statement.getConnection().close();
-            }
-            catch (SQLException e)
-            {
-                Emulator.getLogging().logSQLException(e);
+                if (!rooms.containsKey(set.getInt("category")))
+                {
+                    rooms.put(set.getInt("category"), new ArrayList<Room>());
+                }
+
+                rooms.get(set.getInt("category")).add(room);
             }
 
-            return rooms;
+            set.close();
+            statement.close();
+            statement.getConnection().close();
         }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
+        return rooms;
     }
 
     public RoomCategory getCategory(int id)
@@ -264,17 +261,14 @@ public class RoomManager {
 
     public List<Room> getActiveRooms(int categoryId)
     {
-        synchronized (this.activeRooms)
+        List<Room> rooms = new ArrayList<Room>();
+        for (Room room : this.activeRooms.values())
         {
-            List<Room> rooms = new ArrayList<Room>();
-            for (Room room : this.activeRooms.values())
-            {
-                if (categoryId == room.getCategory() || categoryId == -1)
-                    rooms.add(room);
-            }
-            Collections.sort(rooms);
-            return rooms;
+            if (categoryId == room.getCategory() || categoryId == -1)
+                rooms.add(room);
         }
+        Collections.sort(rooms);
+        return rooms;
     }
 
     //TODO Move to HabboInfo class.
@@ -323,7 +317,7 @@ public class RoomManager {
         return rooms;
     }
 
-    public synchronized Room loadRoom(int id)
+    public Room loadRoom(int id)
     {
         Room room = null;
 
@@ -355,10 +349,7 @@ public class RoomManager {
 
             if(room != null)
             {
-                synchronized (this.activeRooms)
-                {
-                    this.activeRooms.put(room.getId(), room);
-                }
+                this.activeRooms.put(room.getId(), room);
             }
         }
         catch (SQLException e)
@@ -494,6 +485,46 @@ public class RoomManager {
         return null;
     }
 
+    public RoomLayout loadLayout(String name)
+    {
+        RoomLayout layout = null;
+        PreparedStatement statement = null;
+        try
+        {
+            statement = Emulator.getDatabase().prepare("SELECT * FROM room_models WHERE name LIKE ? LIMIT 1");
+            statement.setString(1, name);
+            ResultSet set = statement.executeQuery();
+
+            if (set.next())
+            {
+                layout = new RoomLayout(set);
+            }
+
+            set.close();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+        finally
+        {
+            if (statement != null)
+            {
+                try
+                {
+                    statement.close();
+                    statement.getConnection().close();
+                }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            }
+        }
+
+        return layout;
+    }
+
     public void unloadRoom(Room room)
     {
         this.activeRooms.remove(room.getId());
@@ -565,7 +596,7 @@ public class RoomManager {
         this.enterRoom(habbo, roomId, password, overrideChecks, null);
     }
 
-    public void enterRoom(Habbo habbo, int roomId, String password, boolean overrideChecks, Tile doorLocation)
+    public void enterRoom(Habbo habbo, int roomId, String password, boolean overrideChecks, RoomTile doorLocation)
     {
         Room room = loadRoom(roomId);
 
@@ -643,7 +674,7 @@ public class RoomManager {
         }
     }
 
-    void openRoom(Habbo habbo, Room room, Tile doorLocation)
+    void openRoom(Habbo habbo, Room room, RoomTile doorLocation)
     {
         if (room == null)
             return;
@@ -695,6 +726,11 @@ public class RoomManager {
 
         habbo.getHabboInfo().setLoadingRoom(room.getId());
 
+        if (habbo.getRoomUnit().isTeleporting)
+        {
+            habbo.getRoomUnit().setLocation(doorLocation);
+        }
+
         habbo.getClient().sendResponse(new RoomModelComposer(room));
 
         if (!room.getWallPaint().equals("0.0"))
@@ -723,6 +759,7 @@ public class RoomManager {
             return;
         }
 
+        habbo.getHabboInfo().setLoadingRoom(0);
         habbo.getHabboInfo().setCurrentRoom(room);
         habbo.getRoomUnit().setHandItem(0);
         habbo.getRoomUnit().setEffectId(0);
@@ -730,8 +767,8 @@ public class RoomManager {
 
         if(!habbo.getRoomUnit().isTeleporting)
         {
-            habbo.getRoomUnit().setGoalLocation(room.getLayout().getDoorX(), room.getLayout().getDoorY());
-            habbo.getRoomUnit().setLocation(room.getLayout().getDoorX(), room.getLayout().getDoorY(), room.getLayout().getDoorZ());
+            habbo.getRoomUnit().setLocation(room.getLayout().getTile(room.getLayout().getDoorX(), room.getLayout().getDoorY()));
+            habbo.getRoomUnit().setZ(room.getLayout().getTile(room.getLayout().getDoorX(), room.getLayout().getDoorY()).getStackHeight());
             habbo.getRoomUnit().setBodyRotation(RoomUserRotation.values()[room.getLayout().getDoorDirection()]);
             habbo.getRoomUnit().setHeadRotation(RoomUserRotation.values()[room.getLayout().getDoorDirection()]);
         }
@@ -759,6 +796,7 @@ public class RoomManager {
             habbo.getClient().sendResponse(new RoomUserStatusComposer(room.getCurrentHabbos()));
         }
 
+        habbo.getClient().sendResponse(new RoomUsersComposer(room.getCurrentBots().valueCollection(), true));
         if(!room.getCurrentBots().isEmpty())
         {
             TIntObjectIterator<Bot> botIterator = room.getCurrentBots().iterator();
@@ -773,7 +811,6 @@ public class RoomManager {
                     break;
                 }
                 Bot bot = botIterator.value();
-                habbo.getClient().sendResponse(new RoomUsersComposer(bot));
                 if(!bot.getRoomUnit().getDanceType().equals(DanceType.NONE))
                 {
                     habbo.getClient().sendResponse(new RoomUserDanceComposer(bot.getRoomUnit()));
@@ -898,8 +935,6 @@ public class RoomManager {
 
         WiredHandler.handle(WiredTriggerType.ENTER_ROOM, habbo.getRoomUnit(), room, null);
 
-        habbo.getHabboInfo().setLoadingRoom(0);
-
         room.habboEntered(habbo);
     }
 
@@ -930,7 +965,7 @@ public class RoomManager {
             habbo.getRoomUnit().setPathFinderRoom(null);
             if (habbo.getHabboInfo().getRiding() != null)
             {
-                habbo.getHabboInfo().getRiding().getRoomUnit().setGoalLocation(habbo.getHabboInfo().getRiding().getRoomUnit().getX(), habbo.getHabboInfo().getRiding().getRoomUnit().getY());
+                habbo.getHabboInfo().getRiding().getRoomUnit().setGoalLocation(habbo.getHabboInfo().getRiding().getRoomUnit().getCurrentLocation());
                 habbo.getHabboInfo().getRiding().setTask(null);
                 habbo.getHabboInfo().getRiding().setRider(null);
                 habbo.getHabboInfo().setRiding(null);
@@ -955,14 +990,15 @@ public class RoomManager {
             control.getRoomUnit().getCacheable().remove("controller");
         }
 
-        if(habbo.getHabboInfo().getCurrentRoom() != null)
+        Room room = habbo.getHabboInfo().getCurrentRoom();
+        if(room != null)
         {
             try
             {
                 PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE room_enter_log SET exit_timestamp = ? WHERE user_id = ? AND room_id = ? ORDER BY timestamp DESC LIMIT 1");
                 statement.setInt(1, Emulator.getIntUnixTimestamp());
                 statement.setInt(2, habbo.getHabboInfo().getId());
-                statement.setInt(3, habbo.getHabboInfo().getCurrentRoom().getId());
+                statement.setInt(3, room.getId());
                 statement.execute();
                 statement.close();
                 statement.getConnection().close();
@@ -1011,14 +1047,11 @@ public class RoomManager {
     {
         ArrayList<Room> rooms = new ArrayList<Room>();
 
-        synchronized (this.activeRooms)
+        for (Room room : this.activeRooms.values())
         {
-            for (Room room : this.activeRooms.values())
+            if (!room.isPublicRoom() && room.getUserCount() > 0)
             {
-                if (!room.isPublicRoom() && room.getUserCount() > 0)
-                {
-                    rooms.add(room);
-                }
+                rooms.add(room);
             }
         }
 
@@ -1036,14 +1069,11 @@ public class RoomManager {
     {
         ArrayList<Room> rooms = new ArrayList<Room>();
 
-        synchronized (this.activeRooms)
+        for (Room room : this.activeRooms.values())
         {
-            for (Room room : this.activeRooms.values())
+            if (!room.isPublicRoom() && room.getCategory() == category)
             {
-                if (!room.isPublicRoom() && room.getCategory() == category)
-                {
-                    rooms.add(room);
-                }
+                rooms.add(room);
             }
         }
 
@@ -1061,19 +1091,16 @@ public class RoomManager {
     {
         Map<Integer, List<Room>> rooms = new HashMap<Integer, List<Room>>();
 
-        synchronized (this.activeRooms)
+        for (Room room : this.activeRooms.values())
         {
-            for (Room room : this.activeRooms.values())
+            if (!room.isPublicRoom())
             {
-                if (!room.isPublicRoom())
+                if (!rooms.containsKey(room.getCategory()))
                 {
-                    if (!rooms.containsKey(room.getCategory()))
-                    {
-                        rooms.put(room.getCategory(), new ArrayList<Room>());
-                    }
-
-                    rooms.get(room.getCategory()).add(room);
+                    rooms.put(room.getCategory(), new ArrayList<Room>());
                 }
+
+                rooms.get(room.getCategory()).add(room);
             }
         }
 
@@ -1096,14 +1123,11 @@ public class RoomManager {
     {
         ArrayList<Room> rooms = new ArrayList<Room>();
 
-        synchronized (this.activeRooms)
+        for (Room room : this.activeRooms.values())
         {
-            for (Room room : this.activeRooms.values())
+            if (room.getName().toLowerCase().contains(name.toLowerCase()))
             {
-                if (room.getName().toLowerCase().contains(name.toLowerCase()))
-                {
-                    rooms.add(room);
-                }
+                rooms.add(room);
             }
         }
 
@@ -1134,10 +1158,7 @@ public class RoomManager {
 
                 Room r = new Room(set);
                 rooms.add(r);
-                synchronized (this.activeRooms)
-                {
-                    this.activeRooms.put(r.getId(), r);
-                }
+                this.activeRooms.put(r.getId(), r);
             }
 
             set.close();
@@ -1156,17 +1177,14 @@ public class RoomManager {
     {
         ArrayList<Room> rooms = new ArrayList<Room>();
 
-        synchronized (this.activeRooms)
+        for (Room room : this.activeRooms.values())
         {
-            for (Room room : this.activeRooms.values())
+            for (String s : room.getTags().split(";"))
             {
-                for (String s : room.getTags().split(";"))
+                if (s.toLowerCase().equals(tag.toLowerCase()))
                 {
-                    if (s.toLowerCase().equals(tag.toLowerCase()))
-                    {
-                        rooms.add(room);
-                        break;
-                    }
+                    rooms.add(room);
+                    break;
                 }
             }
         }
@@ -1180,16 +1198,13 @@ public class RoomManager {
     {
         ArrayList<Room> rooms = new ArrayList<Room>();
 
-        synchronized (this.activeRooms)
+        for (Room room : this.activeRooms.values())
         {
-            for (Room room : this.activeRooms.values())
-            {
-                if (room.getGuildId() == 0)
-                    continue;
+            if (room.getGuildId() == 0)
+                continue;
 
-                if (room.getName().toLowerCase().contains(name.toLowerCase()))
-                    rooms.add(room);
-            }
+            if (room.getName().toLowerCase().contains(name.toLowerCase()))
+                rooms.add(room);
         }
 
         if(rooms.size() < 25)
@@ -1212,18 +1227,15 @@ public class RoomManager {
             statement.setString(1, "%"+name+"%");
             ResultSet set = statement.executeQuery();
 
-            synchronized (this.activeRooms)
+            while(set.next())
             {
-                while(set.next())
-                {
-                    if(this.activeRooms.containsKey(set.getInt("id")))
-                        continue;
+                if(this.activeRooms.containsKey(set.getInt("id")))
+                    continue;
 
-                    Room r = new Room(set);
-                    rooms.add(r);
+                Room r = new Room(set);
+                rooms.add(r);
 
-                    this.activeRooms.put(r.getId(), r);
-                }
+                this.activeRooms.put(r.getId(), r);
             }
 
             set.close();
@@ -1354,18 +1366,15 @@ public class RoomManager {
             statement.setInt(1, habbo.getHabboInfo().getId());
             ResultSet set = statement.executeQuery();
 
-            synchronized (this.activeRooms)
+            while (set.next())
             {
-                while (set.next())
+                if (this.activeRooms.containsKey(set.getInt("id")))
                 {
-                    if (this.activeRooms.containsKey(set.getInt("id")))
-                    {
-                        rooms.add(this.activeRooms.get(set.getInt("id")));
-                    }
-                    else
-                    {
-                        rooms.add(new Room(set));
-                    }
+                    rooms.add(this.activeRooms.get(set.getInt("id")));
+                }
+                else
+                {
+                    rooms.add(new Room(set));
                 }
             }
 
@@ -1477,15 +1486,12 @@ public class RoomManager {
 
     public synchronized void dispose()
     {
-        synchronized (this.activeRooms)
+        for (Room room : this.activeRooms.values())
         {
-            for (Room room : this.activeRooms.values())
-            {
-                room.dispose();
-            }
-
-            this.activeRooms.clear();
+            room.dispose();
         }
+
+        this.activeRooms.clear();
 
         Emulator.getLogging().logShutdownLine("Room Manager -> Disposed!");
     }

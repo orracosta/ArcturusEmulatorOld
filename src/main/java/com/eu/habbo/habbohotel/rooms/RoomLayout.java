@@ -2,7 +2,6 @@ package com.eu.habbo.habbohotel.rooms;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,26 +9,25 @@ import java.sql.SQLException;
 
 public class RoomLayout
 {
+    public  boolean CANMOVEDIAGONALY = true;
     private String name;
-    private int doorX;
-    private int doorY;
-    private int doorZ;
+    private short doorX;
+    private short doorY;
+    private short doorZ;
     private int doorDirection;
     private String heightmap;
     private int mapSize;
     private int mapSizeX;
     private int mapSizeY;
-    private short[][] squareHeights;
-    private RoomTileState[][] squareStates;
-    private double heighestPoint;
+    private RoomTile[][] roomTiles;
 
     public RoomLayout(ResultSet set) throws SQLException
     {
         try
         {
             this.name = set.getString("name");
-            this.doorX = set.getInt("door_x");
-            this.doorY = set.getInt("door_y");
+            this.doorX = set.getShort("door_x");
+            this.doorY = set.getShort("door_y");
 
             this.doorDirection = set.getInt("door_dir");
             this.heightmap = set.getString("heightmap");
@@ -49,13 +47,9 @@ public class RoomLayout
         this.mapSize = 0;
         this.mapSizeX = modelTemp[0].length();
         this.mapSizeY = modelTemp.length;
-        this.squareHeights = new short[this.mapSizeX][this.mapSizeY];
-        this.squareStates = new RoomTileState[this.mapSizeX][this.mapSizeY];
+        this.roomTiles = new RoomTile[this.mapSizeX][this.mapSizeY];
 
-        int x;
-        String Square;
-        short height;
-        for (int y = 0; y < this.mapSizeY; y++)
+        for (short y = 0; y < this.mapSizeY; y++)
         {
             if(modelTemp[y].isEmpty() || modelTemp[y].equalsIgnoreCase("\r"))
                 continue;
@@ -63,59 +57,52 @@ public class RoomLayout
             if (y > 0) {
                 modelTemp[y] = modelTemp[y].substring(1);
             }
-            for (x = 0; x < this.mapSizeX; x++)
+            for (short x = 0; x < this.mapSizeX; x++)
             {
                 if(modelTemp[y].length() != this.mapSizeX)
                     break;
 
-                Square = modelTemp[y].substring(x, x + 1).trim().toLowerCase();
-                if (Square.equals("x"))
+                String square = modelTemp[y].substring(x, x + 1).trim().toLowerCase();
+                RoomTileState state = RoomTileState.OPEN;
+                short height = 0;
+                if (square.equals("x"))
                 {
-                    this.squareStates[x][y] = RoomTileState.BLOCKED;
-                    this.mapSize += 1;
+                    state = RoomTileState.BLOCKED;
                 }
                 else
                 {
-                    if (Square.isEmpty()) {
+                    if (square.isEmpty()) {
                         height = 0;
                     }
-                    else if (Emulator.isNumeric(Square))
+                    else if (Emulator.isNumeric(square))
                     {
-                        height = Short.parseShort(Square);
+                        height = Short.parseShort(square);
                     }
                     else
                     {
-                        height = (short) (10 + "ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(Square.toUpperCase()));
-                    }
-                    this.squareStates[x][y] = RoomTileState.OPEN;
-                    this.squareHeights[x][y] = height;
-                    this.mapSize += 1;
-                    if (this.heighestPoint < height) {
-                        this.heighestPoint = height;
+                        height = (short) (10 + "ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(square.toUpperCase()));
                     }
                 }
-//                if ((this.doorX == x) && (this.doorY == y))
-//                {
-//                    this.squareStates[x][y] = RoomTileState.OPEN;
-//                    this.doorZ = (int)this.squareHeights[x][y];
-//                }
+                this.mapSize += 1;
+
+                this.roomTiles[x][y] = new RoomTile(x, y, height, state);
             }
         }
 
-        Tile doorFrontTile = PathFinder.getSquareInFront(this.doorX, this.doorY, this.doorDirection);
+        RoomTile doorFrontTile = PathFinder.getSquareInFront(this, this.doorX, this.doorY, this.doorDirection);
 
-        if(this.tileExists(doorFrontTile.x, doorFrontTile.y))
+        if(doorFrontTile != null && this.tileExists(doorFrontTile.x, doorFrontTile.y))
         {
-            if(this.getSquareStates()[doorFrontTile.x][doorFrontTile.y] != RoomTileState.BLOCKED)
+            if(this.roomTiles[doorFrontTile.x][doorFrontTile.y].state != RoomTileState.BLOCKED)
             {
-                if (this.doorZ != this.squareHeights[doorFrontTile.x][doorFrontTile.y] || this.squareStates[this.doorX][this.doorY] != this.squareStates[doorFrontTile.x][doorFrontTile.y])
+                if (this.doorZ != this.roomTiles[doorFrontTile.x][doorFrontTile.y].z || this.roomTiles[this.doorX][this.doorY].state != this.roomTiles[doorFrontTile.x][doorFrontTile.y].state)
                 {
-                    this.doorZ = (int) this.squareHeights[doorFrontTile.x][doorFrontTile.y];
-                    this.squareStates[this.doorX][this.doorY] = this.squareStates[doorFrontTile.x][doorFrontTile.y];
-                    this.squareHeights[this.doorX][this.doorY] = this.squareHeights[doorFrontTile.x][doorFrontTile.y];
+                    this.doorZ = this.roomTiles[doorFrontTile.x][doorFrontTile.y].z;
+                    this.roomTiles[this.doorX][this.doorY].state = RoomTileState.OPEN;
+                    //this.roomTiles[this.doorX][this.doorY].z = this.doorZ;
 
                     StringBuilder stringBuilder = new StringBuilder(this.heightmap);
-                    stringBuilder.setCharAt((this.doorY * (this.getMapSizeX() + 2)) + this.doorX, this.squareHeights[doorFrontTile.x][doorFrontTile.y] >= 10 ? "ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(this.squareHeights[doorFrontTile.x][doorFrontTile.y] - 10) : ("" + (int) (this.squareHeights[doorFrontTile.x][doorFrontTile.y])).charAt(0));
+                    stringBuilder.setCharAt((this.doorY * (this.getMapSizeX() + 2)) + this.doorX, this.roomTiles[doorFrontTile.x][doorFrontTile.y].z >= 10 ? "ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(this.roomTiles[doorFrontTile.x][doorFrontTile.y].z - 10) : ("" + (this.roomTiles[doorFrontTile.x][doorFrontTile.y]).z).charAt(0));
                     this.heightmap = stringBuilder.toString();
 
                     try
@@ -151,22 +138,22 @@ public class RoomLayout
         return name;
     }
 
-    public int getDoorX()
+    public short getDoorX()
     {
         return this.doorX;
     }
 
-    public void setDoorX(int doorX)
+    public void setDoorX(short doorX)
     {
         this.doorX = doorX;
     }
 
-    public int getDoorY()
+    public short getDoorY()
     {
         return this.doorY;
     }
 
-    public void setDoorY(int doorY)
+    public void setDoorY(short doorY)
     {
         this.doorY = doorY;
     }
@@ -219,24 +206,33 @@ public class RoomLayout
            y >= this.getMapSizeY())
             return 0;
 
-        return this.squareHeights[x][y];
+        return this.roomTiles[x][y].z;
     }
 
-    public boolean tileExists(int x, int y)
+    public RoomTile getTile(short x, short y)
+    {
+        if (tileExists(x, y))
+        {
+            return this.roomTiles[x][y];
+        }
+
+        return null;
+    }
+
+    public boolean tileExists(short x, short y)
     {
         return !(x < 0 || y < 0 || x >= this.getMapSizeX() || y >= this.getMapSizeY());
     }
 
-    public boolean tileWalkable(int x, int y)
+    public boolean tileWalkable(short x, short y)
     {
-        return this.tileExists(x, y) && this.getSquareStates()[x][y] == RoomTileState.OPEN;
+        return this.tileExists(x, y) && this.roomTiles[x][y].state == RoomTileState.OPEN;
     }
 
-    public RoomTileState[][] getSquareStates()
+    public RoomTileState getStateAt(short x, short y)
     {
-        return this.squareStates;
+        return this.roomTiles[x][y].state;
     }
-
     public String getRelativeMap()
     {
         return this.heightmap.replace("\r\n", "\r");

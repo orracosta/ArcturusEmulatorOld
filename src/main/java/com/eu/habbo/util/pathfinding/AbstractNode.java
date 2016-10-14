@@ -4,8 +4,8 @@ public abstract class AbstractNode
 {
     protected static final int BASICMOVEMENTCOST = 10;
     protected static final int DIAGONALMOVEMENTCOST = 14;
-    private int xPosition;
-    private int yPosition;
+    private short xPosition;
+    private short yPosition;
     private boolean walkable;
     private AbstractNode previous;
     private boolean diagonally;
@@ -13,7 +13,7 @@ public abstract class AbstractNode
     private int gCosts;
     private int hCosts;
 
-    AbstractNode(int xPosition, int yPosition)
+    public AbstractNode(short xPosition, short yPosition)
     {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
@@ -29,12 +29,6 @@ public abstract class AbstractNode
     public void setIsDiagonaly(boolean isDiagonaly)
     {
         this.diagonally = isDiagonaly;
-    }
-
-    public void setCoordinates(int x, int y)
-    {
-        this.xPosition = x;
-        this.yPosition = y;
     }
 
     public int getX()
@@ -129,7 +123,10 @@ public abstract class AbstractNode
         this.hCosts = hCosts;
     }
 
-    public abstract void sethCosts(AbstractNode paramAbstractNode);
+    public void sethCosts(AbstractNode paramAbstractNode)
+    {
+       this.hCosts = Math.abs(getX() - paramAbstractNode.getX()) + Math.abs(getY() - paramAbstractNode.getY()) * 10;
+    }
 
     public String toString()
     {

@@ -1,9 +1,8 @@
 package com.eu.habbo.plugin.events.users;
 
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
-import com.eu.habbo.plugin.events.users.UserEvent;
-import com.eu.habbo.util.pathfinding.Tile;
 
 public class UserRolledEvent extends UserEvent
 {
@@ -15,7 +14,7 @@ public class UserRolledEvent extends UserEvent
     /**
      * The new location of the RoomUnit.
      */
-    public final Tile location;
+    public final RoomTile location;
 
     /**
      * Called upon any roomunit being rolled on a roller.
@@ -23,7 +22,7 @@ public class UserRolledEvent extends UserEvent
      * @param roller The roller the Habbo has been rolled by.
      * @param location The new location of the Habbo.
      */
-    public UserRolledEvent(Habbo habbo, HabboItem roller, Tile location)
+    public UserRolledEvent(Habbo habbo, HabboItem roller, RoomTile location)
     {
         super(habbo);
 

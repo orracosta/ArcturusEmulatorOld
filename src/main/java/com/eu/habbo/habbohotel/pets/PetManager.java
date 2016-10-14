@@ -7,8 +7,8 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionNest;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPetDrink;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPetFood;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
@@ -320,7 +320,7 @@ public class PetManager
         return pet;
     }
 
-    public MonsterplantPet createMonsterplant(Room room, Habbo habbo, boolean rare, Tile t)
+    public MonsterplantPet createMonsterplant(Room room, Habbo habbo, boolean rare, RoomTile t)
     {
         return new MonsterplantPet(habbo.getHabboInfo().getId(), 0, 0, 0, 0, 0);
     }

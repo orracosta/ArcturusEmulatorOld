@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.*;
 import com.eu.habbo.habbohotel.items.interactions.games.InteractionGameGate;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
@@ -13,10 +14,8 @@ import com.eu.habbo.messages.outgoing.rooms.items.AddFloorItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.AddWallItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.UpdateStackHeightComposer;
 import com.eu.habbo.plugin.Event;
-import com.eu.habbo.plugin.PluginManager;
 import com.eu.habbo.plugin.events.furniture.FurniturePlacedEvent;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
 public class RoomPlaceItemEvent extends MessageHandler
@@ -107,11 +106,11 @@ public class RoomPlaceItemEvent extends MessageHandler
             return;
         }
 
-        THashSet<Tile> updatedTiles = new THashSet<Tile>();
+        THashSet<RoomTile> updatedTiles = new THashSet<RoomTile>();
         if(item.getBaseItem().getType().toLowerCase().equals("s"))
         {
-            int x = Integer.valueOf(values[1]);
-            int y = Integer.valueOf(values[2]);
+            short x = Short.valueOf(values[1]);
+            short y = Short.valueOf(values[2]);
             int rotation = Integer.valueOf(values[3]);
 
             if(x < 0 || y < 0 || rotation < 0)
@@ -137,7 +136,7 @@ public class RoomPlaceItemEvent extends MessageHandler
 
             if(Emulator.getPluginManager().isRegistered(FurniturePlacedEvent.class, true))
             {
-                Event furniturePlacedEvent = new FurniturePlacedEvent(item, this.client.getHabbo(), new Tile(x, y, 0.0));
+                Event furniturePlacedEvent = new FurniturePlacedEvent(item, this.client.getHabbo(), room.getLayout().getTile(x, y));
                 Emulator.getPluginManager().fireEvent(furniturePlacedEvent);
 
                 if(furniturePlacedEvent.isCancelled())
@@ -158,9 +157,9 @@ public class RoomPlaceItemEvent extends MessageHandler
 
             if(stackHelper == null)
             {
-                for (int i = x; i < x + item.getBaseItem().getWidth(); i++)
+                for (short i = x; i < x + item.getBaseItem().getWidth(); i++)
                 {
-                    for (int j = y; j < y + item.getBaseItem().getLength(); j++)
+                    for (short j = y; j < y + item.getBaseItem().getLength(); j++)
                     {
                         HabboItem topItem = room.getTopItemAt(i, j);
                         if (topItem != null && !topItem.getBaseItem().allowStack())
@@ -180,7 +179,7 @@ public class RoomPlaceItemEvent extends MessageHandler
                             this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
                             return;
                         }
-                        updatedTiles.add(new Tile(i, j, 0));
+                        updatedTiles.add(room.getLayout().getTile(i, j));
                     }
                 }
             }
@@ -215,9 +214,9 @@ public class RoomPlaceItemEvent extends MessageHandler
 
         if(!updatedTiles.isEmpty())
         {
-            for (Tile t : updatedTiles)
+            for (RoomTile t : updatedTiles)
             {
-                t.Z = room.getStackHeight(t.X, t.Y, true);
+                t.setStackHeight(room.getStackHeight(t.x, t.y, false));
             }
             room.sendComposer(new UpdateStackHeightComposer(updatedTiles).compose());
         }

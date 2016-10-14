@@ -77,7 +77,7 @@ public class InteractionPetDrink extends HabboItem
                 if (((Pet) pet).levelThirst >= 35)
                 {
                     ((Pet) pet).setTask(PetTask.EAT);
-                    pet.getRoomUnit().setGoalLocation(this.getX(), this.getY());
+                    pet.getRoomUnit().setGoalLocation(room.getLayout().getTile(this.getX(), this.getY()));
                     pet.getRoomUnit().setRotation(RoomUserRotation.values()[this.getRotation()]);
                     pet.getRoomUnit().getStatus().clear();
                     pet.getRoomUnit().getStatus().remove("mv");

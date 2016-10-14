@@ -41,9 +41,9 @@ public class RoomUserStatusComposer extends MessageComposer
             for(RoomUnit roomUnit : this.roomUnits)
             {
                 this.response.appendInt32(roomUnit.getId());
-                this.response.appendInt32(roomUnit.getOldX());
-                this.response.appendInt32(roomUnit.getOldY());
-                this.response.appendString(roomUnit.getOldZ() + "");
+                this.response.appendInt32(roomUnit.getPreviousLocation().x);
+                this.response.appendInt32(roomUnit.getPreviousLocation().y);
+                this.response.appendString(roomUnit.getPreviousLocation().getStackHeight() + "");
                 this.response.appendInt32(roomUnit.getHeadRotation().getValue());
                 this.response.appendInt32(roomUnit.getBodyRotation().getValue());
 
@@ -55,10 +55,8 @@ public class RoomUserStatusComposer extends MessageComposer
                 }
 
                 this.response.appendString(status);
-
-                roomUnit.setOldX(roomUnit.getX());
-                roomUnit.setOldY(roomUnit.getY());
-                roomUnit.setOldZ(roomUnit.getZ());
+                roomUnit.setPreviousLocation(roomUnit.getCurrentLocation());
+                roomUnit.getPreviousLocation().setStackHeight(roomUnit.getZ());
             }
         }
         else {
@@ -68,9 +66,9 @@ public class RoomUserStatusComposer extends MessageComposer
                 for (Habbo habbo : this.habbos.valueCollection())
                 {
                     this.response.appendInt32(habbo.getRoomUnit().getId());
-                    this.response.appendInt32(habbo.getRoomUnit().getOldX());
-                    this.response.appendInt32(habbo.getRoomUnit().getOldY());
-                    this.response.appendString(habbo.getRoomUnit().getOldZ() + "");
+                    this.response.appendInt32(habbo.getRoomUnit().getPreviousLocation().x);
+                    this.response.appendInt32(habbo.getRoomUnit().getPreviousLocation().y);
+                    this.response.appendString(habbo.getRoomUnit().getPreviousLocation().getStackHeight() + "");
                     this.response.appendInt32(habbo.getRoomUnit().getHeadRotation().getValue());
                     this.response.appendInt32(habbo.getRoomUnit().getBodyRotation().getValue());
 
@@ -80,11 +78,8 @@ public class RoomUserStatusComposer extends MessageComposer
                         status = status + keys.getKey() + " " + keys.getValue() + "/";
                     }
                     this.response.appendString(status);
-
-
-                    habbo.getRoomUnit().setOldX(habbo.getRoomUnit().getX());
-                    habbo.getRoomUnit().setOldY(habbo.getRoomUnit().getY());
-                    habbo.getRoomUnit().setOldZ(habbo.getRoomUnit().getZ());
+                    habbo.getRoomUnit().setPreviousLocation(habbo.getRoomUnit().getCurrentLocation());
+                    habbo.getRoomUnit().getPreviousLocation().setStackHeight(habbo.getRoomUnit().getZ());
                 }
             }
         }

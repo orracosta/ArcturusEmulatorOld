@@ -6,7 +6,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.plugin.events.users.UserIdleEvent;
-import com.eu.habbo.util.pathfinding.Tile;
 
 public class RoomUserLookAtPoint extends MessageHandler
 {
@@ -46,7 +45,7 @@ public class RoomUserLookAtPoint extends MessageHandler
 
         if(!roomUnit.getStatus().containsKey("sit"))
         {
-            roomUnit.lookAtPoint(new Tile(x, y, 0.0));
+            roomUnit.lookAtPoint(habbo.getHabboInfo().getCurrentRoom().getLayout().getTile((short) x, (short) y));
         }
 
         UserIdleEvent event = new UserIdleEvent(this.client.getHabbo(), UserIdleEvent.IdleReason.WALKED, false);

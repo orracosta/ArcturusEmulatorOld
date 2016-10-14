@@ -6,8 +6,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
-import com.eu.habbo.util.pathfinding.Tile;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -59,7 +57,7 @@ public class InteractionGate extends HabboItem
 
         this.setExtradata((Integer.valueOf(this.getExtradata()) + 1 ) % 2 + "");
         room.getGameMap().getNode(this.getX(), this.getY()).setWalkable(room.tileWalkable(this.getX(), this.getY()));
-        room.updateTile(new Tile(this.getX(), this.getY(), this.getZ()));
+        room.updateTile(room.getLayout().getTile(this.getX(), this.getY()));
         this.needsUpdate(true);
         room.updateItem(this);
     }

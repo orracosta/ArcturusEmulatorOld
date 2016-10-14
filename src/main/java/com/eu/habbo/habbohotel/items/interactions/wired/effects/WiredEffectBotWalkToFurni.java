@@ -127,7 +127,7 @@ public class WiredEffectBotWalkToFurni extends InteractionWiredEffect
                 {
                     if (i == j)
                     {
-                        bot.getRoomUnit().setGoalLocation(item.getX(), item.getY());
+                        bot.getRoomUnit().setGoalLocation(room.getLayout().getTile(item.getX(), item.getY()));
                         break;
                     } else
                     {

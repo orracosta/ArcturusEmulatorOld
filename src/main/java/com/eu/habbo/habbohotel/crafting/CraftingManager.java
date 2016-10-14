@@ -80,6 +80,9 @@ public class CraftingManager
                         }
                     }
                 }
+                set.close();
+                statement.close();
+                statement.getConnection().close();
             }
             catch (SQLException e)
             {
@@ -153,8 +156,12 @@ public class CraftingManager
                         statement.setInt(1, recipe.getRemaining());
                         statement.setInt(2, recipe.getId());
                     }
+
+                    statement.execute();
                 }
             }
+            statement.close();
+            statement.getConnection().close();
         }
         catch (SQLException e)
         {

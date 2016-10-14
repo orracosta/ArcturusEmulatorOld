@@ -1,10 +1,9 @@
 package com.eu.habbo.threading.runnables;
 
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUnitOnRollerComposer;
-import com.eu.habbo.util.pathfinding.Tile;
 
 public class RoomUnitTeleport implements Runnable
 {
@@ -29,13 +28,11 @@ public class RoomUnitTeleport implements Runnable
     @Override
     public void run()
     {
-        this.roomUnit.setGoalLocation(x, y);
+        RoomTile t = this.room.getLayout().getTile((short) x, (short) y);
+        this.roomUnit.setGoalLocation(t);
         this.roomUnit.getStatus().remove("mv");
-
-        Tile t = new Tile(x, y, z);
-
         this.room.sendComposer(new RoomUnitOnRollerComposer(this.roomUnit, null, t, this.room).compose());
         this.room.giveEffect(this.roomUnit, this.newEffect);
-        this.room.updateHabbosAt(this.x, this.y);
+        this.room.updateHabbosAt(t.x, t.y);
     }
 }

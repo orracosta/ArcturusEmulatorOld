@@ -24,11 +24,11 @@ public class TeleportActionOne implements Runnable
     @Override
     public void run()
     {
-        this.client.getHabbo().getRoomUnit().setGoalLocation(currentTeleport.getX(), currentTeleport.getY());
+        this.client.getHabbo().getRoomUnit().setGoalLocation(this.room.getLayout().getTile(this.currentTeleport.getX(), this.currentTeleport.getY()));
         this.client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[(this.currentTeleport.getRotation() + 4) % 8]);
         this.client.getHabbo().getRoomUnit().getStatus().put("mv", this.currentTeleport.getX() + "," + this.currentTeleport.getY() + "," + this.currentTeleport.getZ());
         this.room.sendComposer(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()).compose());
-        this.client.getHabbo().getRoomUnit().setLocation(this.currentTeleport.getX(), this.currentTeleport.getY(), this.currentTeleport.getZ());
+        this.client.getHabbo().getRoomUnit().setLocation(this.room.getLayout().getTile(this.currentTeleport.getX(), this.currentTeleport.getY()));
         this.client.getHabbo().getRoomUnit().getStatus().remove("mv");
         this.currentTeleport.setExtradata("0");
 

@@ -155,7 +155,7 @@ public class RoomChatMessage implements Runnable, ISerialize
                 {
                     statement.setInt(6, 0);
                 }
-                statement.execute();
+                statement.executeUpdate();
                 statement.close();
                 statement.getConnection().close();
             }

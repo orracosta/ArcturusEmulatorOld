@@ -4,11 +4,11 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.HorsePet;
 import com.eu.habbo.habbohotel.pets.PetTask;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserEffectComposer;
 import com.eu.habbo.threading.runnables.RoomUnitRideHorse;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 
 public class HorseRideEvent extends MessageHandler
 {
@@ -44,9 +44,9 @@ public class HorseRideEvent extends MessageHandler
                     }
                 }
 
-                Tile goalTile = PathFinder.getSquareInFront(this.client.getHabbo().getRoomUnit().getX(), this.client.getHabbo().getRoomUnit().getY(), this.client.getHabbo().getRoomUnit().getBodyRotation().getValue());
+                RoomTile goalTile = PathFinder.getSquareInFront(this.client.getHabbo().getHabboInfo().getCurrentRoom().getLayout(), this.client.getHabbo().getRoomUnit().getX(), this.client.getHabbo().getRoomUnit().getY(), this.client.getHabbo().getRoomUnit().getBodyRotation().getValue());
 
-                if (goalTile.X == this.client.getHabbo().getRoomUnit().getX() && goalTile.Y == this.client.getHabbo().getRoomUnit().getY())
+                if (goalTile.equals(this.client.getHabbo().getRoomUnit().getCurrentLocation()))
                 {
                     this.client.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(this.client.getHabbo(), 77);
                     this.client.getHabbo().getHabboInfo().setRiding((HorsePet) pet);

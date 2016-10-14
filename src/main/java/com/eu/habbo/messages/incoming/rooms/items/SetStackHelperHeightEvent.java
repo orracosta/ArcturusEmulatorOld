@@ -1,12 +1,11 @@
 package com.eu.habbo.messages.incoming.rooms.items;
 
 import com.eu.habbo.habbohotel.items.interactions.InteractionStackHelper;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.UpdateStackHeightComposer;
-import com.eu.habbo.messages.outgoing.rooms.items.UpdateStackHeightTileHeightComposer;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
 public class SetStackHelperHeightEvent extends MessageHandler
@@ -32,7 +31,7 @@ public class SetStackHelperHeightEvent extends MessageHandler
 
                 double height = 0;
 
-                THashSet<Tile> tiles = PathFinder.getTilesAt(item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
+                THashSet<RoomTile> tiles = PathFinder.getTilesAt(this.client.getHabbo().getHabboInfo().getCurrentRoom().getLayout(), item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
 
                 if(stackerHeight >= 0)
                 {
@@ -40,9 +39,9 @@ public class SetStackHelperHeightEvent extends MessageHandler
                 }
                 else
                 {
-                    for (Tile tile : tiles)
+                    for (RoomTile tile : tiles)
                     {
-                        double tileHeight = this.client.getHabbo().getHabboInfo().getCurrentRoom().getTopHeightAt(tile.X, tile.Y);
+                        double tileHeight = this.client.getHabbo().getHabboInfo().getCurrentRoom().getTopHeightAt(tile.x, tile.y);
 
                         if (tileHeight > height)
                         {
@@ -51,9 +50,9 @@ public class SetStackHelperHeightEvent extends MessageHandler
                     }
                 }
 
-                for (Tile tile : tiles)
+                for (RoomTile tile : tiles)
                 {
-                    tile.Z = height * 256.0D;
+                    tile.setStackHeight(height);
                 }
 
                 item.setZ(height);

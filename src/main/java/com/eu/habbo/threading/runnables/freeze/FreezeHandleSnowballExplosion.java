@@ -6,10 +6,9 @@ import com.eu.habbo.habbohotel.games.freeze.FreezeGame;
 import com.eu.habbo.habbohotel.games.freeze.FreezeGamePlayer;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeBlock;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeTile;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
 class FreezeHandleSnowballExplosion implements Runnable
@@ -26,7 +25,7 @@ class FreezeHandleSnowballExplosion implements Runnable
     {
         try
         {
-            THashSet<Tile> tiles = new THashSet<Tile>();
+            THashSet<RoomTile> tiles = new THashSet<RoomTile>();
 
             if(this.thrownData == null || this.thrownData.habbo.getHabboInfo().getGamePlayer() == null)
                 return;
@@ -49,9 +48,9 @@ class FreezeHandleSnowballExplosion implements Runnable
 
             THashSet<InteractionFreezeTile> freezeTiles = new THashSet<InteractionFreezeTile>();
 
-            for (Tile t : tiles)
+            for (RoomTile t : tiles)
             {
-                THashSet<HabboItem> items = this.thrownData.room.getItemsAt((int) t.getX(), (int) t.getY());
+                THashSet<HabboItem> items = this.thrownData.room.getItemsAt((int) t.x, (int) t.y);
 
                 for (HabboItem i : items)
                 {

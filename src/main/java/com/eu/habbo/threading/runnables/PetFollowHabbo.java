@@ -3,9 +3,9 @@ package com.eu.habbo.threading.runnables;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.PetTask;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 
 public class PetFollowHabbo implements Runnable
 {
@@ -34,14 +34,14 @@ public class PetFollowHabbo implements Runnable
                 {
                     if (this.pet.getRoomUnit() != null)
                     {
-                        Tile target = PathFinder.getSquareInFront(this.habbo.getRoomUnit().getX(), this.habbo.getRoomUnit().getY(), Math.abs((this.habbo.getRoomUnit().getBodyRotation().getValue() + directionOffset + 4) % 8));
+                        RoomTile target = PathFinder.getSquareInFront(this.habbo.getHabboInfo().getCurrentRoom().getLayout(), this.habbo.getRoomUnit().getX(), this.habbo.getRoomUnit().getY(), Math.abs((this.habbo.getRoomUnit().getBodyRotation().getValue() + directionOffset + 4) % 8));
 
-                        if (target.X < 0 || target.Y < 0)
-                            target = PathFinder.getSquareInFront(this.habbo.getRoomUnit().getX(), this.habbo.getRoomUnit().getY(), this.habbo.getRoomUnit().getBodyRotation().getValue());
+                        if (target.x < 0 || target.y < 0)
+                            target = PathFinder.getSquareInFront(this.habbo.getHabboInfo().getCurrentRoom().getLayout(), this.habbo.getRoomUnit().getX(), this.habbo.getRoomUnit().getY(), this.habbo.getRoomUnit().getBodyRotation().getValue());
 
-                        if (target.X >= 0 && target.Y >= 0)
+                        if (target.x >= 0 && target.y >= 0)
                         {
-                            if(this.pet.getRoom().getLayout().tileWalkable(target.X, target.Y))
+                            if(this.pet.getRoom().getLayout().tileWalkable(target.x, target.y))
                             {
                                 this.pet.getRoomUnit().setGoalLocation(target);
                                 this.pet.getRoomUnit().setCanWalk(true);

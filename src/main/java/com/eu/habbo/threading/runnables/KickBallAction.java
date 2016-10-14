@@ -3,8 +3,8 @@ package com.eu.habbo.threading.runnables;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPushable;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemOnRollerComposer;
@@ -32,39 +32,38 @@ public class KickBallAction implements Runnable
     @Override
     public void run()
     {
-        if(dead || !this.room.isLoaded())
+        if(this.dead || !this.room.isLoaded())
             return;
         
-        if(currentStep < totalSteps)
+        if(this.currentStep < this.totalSteps)
         {            
-            Tile next = PathFinder.getSquareInFront(this.ball.getX(), this.ball.getY(), this.currentDirection.getValue());            
-            if (!this.ball.validMove(this.room, new Tile(this.ball.getX(), this.ball.getY()), next))
+            RoomTile next = PathFinder.getSquareInFront(this.room.getLayout(), this.ball.getX(), this.ball.getY(), this.currentDirection.getValue());
+            if (!this.ball.validMove(this.room, this.room.getLayout().getTile(this.ball.getX(), this.ball.getY()), next))
             {
                 RoomUserRotation oldDirection = this.currentDirection;
                 this.currentDirection = this.ball.getBounceDirection(this.room, this.currentDirection);
                 if(this.currentDirection != oldDirection)
                 {
-                    this.ball.onBounce(room, oldDirection, this.currentDirection, this.kicker);
+                    this.ball.onBounce(this.room, oldDirection, this.currentDirection, this.kicker);
                 }
                 else
                 {
-                    currentStep = totalSteps; //End the move sequence, the ball can't bounce anywhere
+                    this.currentStep = this.totalSteps; //End the move sequence, the ball can't bounce anywhere
                 }
                 run();
             }
             else
             {
                 //Move the ball & run again
-                currentStep++;
+                this.currentStep++;
                 
                 int delay = this.ball.getNextRollDelay(this.currentStep, this.totalSteps); //Algorithm to work out the delay till next run
                 
-                if(this.ball.canStillMove(room, new Tile(this.ball.getX(), this.ball.getY()), next, this.currentDirection, this.kicker, delay, this.currentStep, this.totalSteps))
+                if(this.ball.canStillMove(this.room, this.room.getLayout().getTile(this.ball.getX(), this.ball.getY()), next, this.currentDirection, this.kicker, delay, this.currentStep, this.totalSteps))
                 {
-                    this.ball.onMove(room, new Tile(this.ball.getX(), this.ball.getY()), next, this.currentDirection, this.kicker, delay, this.currentStep, this.totalSteps);
-                
-                    next.Z = room.getStackHeight(next.X, next.Y, false);
-                    this.room.sendComposer(new FloorItemOnRollerComposer(this.ball, null, next, this.room).compose());                
+                    this.ball.onMove(this.room, this.room.getLayout().getTile(this.ball.getX(), this.ball.getY()), next, this.currentDirection, this.kicker, delay, this.currentStep, this.totalSteps);
+
+                    this.room.sendComposer(new FloorItemOnRollerComposer(this.ball, null, next, this.ball.getZ() - this.room.getStackHeight(next.x, next.y, false), this.room).compose());
 
                     Emulator.getThreading().run(this, (long)delay);
                 }

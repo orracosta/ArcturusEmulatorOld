@@ -16,6 +16,7 @@ import com.eu.habbo.messages.outgoing.users.UserCurrencyComposer;
 import com.eu.habbo.messages.outgoing.users.UserPointsComposer;
 import com.eu.habbo.plugin.events.users.UserDisconnectEvent;
 
+import java.net.InetSocketAddress;
 import java.sql.ResultSet;
 
 public class Habbo implements Runnable
@@ -123,13 +124,13 @@ public class Habbo implements Runnable
      */
     public void connect()
     {
+        this.habboInfo.setIpLogin(((InetSocketAddress)this.client.getChannel().remoteAddress()).getAddress().getHostAddress());
         this.isOnline(true);
 
         this.messenger.connectionChanged(this, true, false);
 
         Emulator.getGameEnvironment().getRoomManager().loadRoomsForHabbo(this);
-
-        Emulator.getLogging().logUserLine(this.habboInfo.getUsername() + " logged in from IP " + this.client.getChannel().remoteAddress().toString().replace("/", ""));
+        Emulator.getLogging().logUserLine(this.habboInfo.getUsername() + " logged in from IP " + this.habboInfo.getIpLogin());
     }
 
 

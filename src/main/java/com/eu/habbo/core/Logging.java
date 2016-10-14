@@ -151,6 +151,11 @@ public class Logging
     
     public synchronized void logErrorLine(Object line)
     {
+        if (line.equals("java.lang.NullPointerException"))
+        {
+            new Exception("No stacktrace!").printStackTrace();
+        }
+
         if (Emulator.isReady && Emulator.getConfig().getBoolean("debug.show.errors"))
         {
             System.err.println("[ERROR] " + line.toString());

@@ -68,8 +68,8 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
 
             if(layout != null)
             {
-                layout.setDoorX(doorX);
-                layout.setDoorY(doorY);
+                layout.setDoorX((short) doorX);
+                layout.setDoorY((short) doorY);
                 layout.setDoorDirection(doorRotation);
                 layout.setHeightmap(map);
                 layout.parse();

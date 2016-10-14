@@ -1,12 +1,10 @@
 package com.eu.habbo.messages.outgoing.floorplaneditor;
 
 import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.rooms.RoomTileState;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
-import com.eu.habbo.util.pathfinding.Node;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
 import java.util.ArrayList;
@@ -25,13 +23,13 @@ public class FloorPlanEditorBlockedTilesComposer extends MessageComposer
     {
         this.response.init(Outgoing.FloorPlanEditorBlockedTilesComposer);
 
-        THashSet<Tile> tileList = this.room.getLockedTiles();
+        THashSet<RoomTile> tileList = this.room.getLockedTiles();
 
         this.response.appendInt32(tileList.size());
-        for(Tile node : tileList)
+        for(RoomTile node : tileList)
         {
-            this.response.appendInt32((int) node.getX());
-            this.response.appendInt32((int) node.getY());
+            this.response.appendInt32((int) node.x);
+            this.response.appendInt32((int) node.y);
         }
 
         return this.response;

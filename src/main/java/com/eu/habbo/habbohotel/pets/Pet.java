@@ -345,7 +345,7 @@ public class Pet extends AbstractPet
             case 1:
             {
                 this.getRoomUnit().getStatus().put("sit", room.getStackHeight(this.getRoomUnit().getX(), this.getRoomUnit().getY(), false) - 0.50 + "");
-                this.getRoomUnit().setGoalLocation(this.getRoomUnit().getX(), this.getRoomUnit().getY());
+                this.getRoomUnit().setGoalLocation(this.room.getLayout().getTile(this.getRoomUnit().getX(), this.getRoomUnit().getY()));
                 this.task = PetTask.SIT;
                 this.packetUpdate = true;
 
@@ -361,7 +361,7 @@ public class Pet extends AbstractPet
                 if(this.task == PetTask.DOWN)
                     return;
 
-                this.getRoomUnit().setGoalLocation(this.getRoomUnit().getX(), this.getRoomUnit().getY());
+                this.getRoomUnit().setGoalLocation(this.room.getLayout().getTile(this.getRoomUnit().getX(), this.getRoomUnit().getY()));
                 this.getRoomUnit().getStatus().remove("mv");
                 this.getRoomUnit().getStatus().remove("sit");
                 this.getRoomUnit().getStatus().put("lay", room.getStackHeight(this.getRoomUnit().getX(), this.getRoomUnit().getY(), false) + "");
@@ -380,7 +380,7 @@ public class Pet extends AbstractPet
                 if(this.task == PetTask.HERE)
                     return;
 
-                this.getRoomUnit().setGoalLocation(PathFinder.getSquareInFront(habbo.getRoomUnit().getX(), habbo.getRoomUnit().getY(), habbo.getRoomUnit().getBodyRotation().getValue()));
+                this.getRoomUnit().setGoalLocation(PathFinder.getSquareInFront(this.room.getLayout(), habbo.getRoomUnit().getX(), habbo.getRoomUnit().getY(), habbo.getRoomUnit().getBodyRotation().getValue()));
                 this.task = PetTask.HERE;
                 this.roomUnit.setCanWalk(true);
 
@@ -622,7 +622,7 @@ public class Pet extends AbstractPet
 
             case 18:
             {
-                this.getRoomUnit().setGoalLocation(PathFinder.getSquareInFront(habbo.getRoomUnit().getX(), habbo.getRoomUnit().getY(), habbo.getRoomUnit().getBodyRotation().getValue()));
+                this.getRoomUnit().setGoalLocation(PathFinder.getSquareInFront(this.room.getLayout(), habbo.getRoomUnit().getX(), habbo.getRoomUnit().getY(), habbo.getRoomUnit().getBodyRotation().getValue()));
                 this.roomUnit.setCanWalk(true);
             }
             break;
@@ -661,7 +661,7 @@ public class Pet extends AbstractPet
             case 24:
             {
                 //Move forward:
-                this.getRoomUnit().setGoalLocation(PathFinder.getSquareInFront(this.roomUnit.getX(), this.roomUnit.getY(), this.roomUnit.getBodyRotation().getValue()));
+                this.getRoomUnit().setGoalLocation(PathFinder.getSquareInFront(this.room.getLayout(), this.roomUnit.getX(), this.roomUnit.getY(), this.roomUnit.getBodyRotation().getValue()));
                 this.roomUnit.setCanWalk(true);
 
                 super.say(this.petData.randomVocal(PetVocalsType.GENERIC_NEUTRAL));
@@ -722,7 +722,7 @@ public class Pet extends AbstractPet
 
                 HabboItem waterPatch = (HabboItem) waterItems.toArray()[Emulator.getRandom().nextInt(waterItems.size())];
 
-                this.getRoomUnit().setGoalLocation(waterPatch.getX(), waterPatch.getY());
+                this.roomUnit.setGoalLocation(this.room.getLayout().getTile(waterPatch.getX(), waterPatch.getY()));
             }
             break;
 
@@ -940,7 +940,7 @@ public class Pet extends AbstractPet
         this.roomUnit.setCanWalk(true);
         if(item != null)
         {
-            this.roomUnit.setGoalLocation(item.getX(), item.getY());
+            this.roomUnit.setGoalLocation(this.room.getLayout().getTile(item.getX(), item.getY()));
         }
         else
         {
@@ -956,7 +956,7 @@ public class Pet extends AbstractPet
         if(item != null)
         {
             this.roomUnit.setCanWalk(true);
-            this.roomUnit.setGoalLocation(item.getX(), item.getY());
+            this.roomUnit.setGoalLocation(this.room.getLayout().getTile(item.getX(), item.getY()));
         }
     }
 
@@ -967,7 +967,7 @@ public class Pet extends AbstractPet
             if(item != null)
             {
                 this.roomUnit.setCanWalk(true);
-                this.roomUnit.setGoalLocation(item.getX(), item.getY());
+                this.roomUnit.setGoalLocation(this.room.getLayout().getTile(item.getX(), item.getY()));
             }
         }
     }

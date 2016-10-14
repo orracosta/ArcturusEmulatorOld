@@ -2,9 +2,9 @@ package com.eu.habbo.threading.runnables;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
-import com.eu.habbo.util.pathfinding.Tile;
 
 public class RoomUnitVendingMachineAction implements Runnable
 {
@@ -22,14 +22,14 @@ public class RoomUnitVendingMachineAction implements Runnable
     @Override
     public void run()
     {
-        if(this.habbo.getHabboInfo().getCurrentRoom() == room)
+        if(this.habbo.getHabboInfo().getCurrentRoom() == this.room)
         {
-            if(this.habboItem.getRoomId() == room.getId())
+            if(this.habboItem.getRoomId() == this.room.getId())
             {
-                Tile tile = HabboItem.getSquareInFront(habboItem);
-                if(this.habbo.getRoomUnit().getGoalX() == tile.X && this.habbo.getRoomUnit().getGoalY() == tile.Y)
+                RoomTile tile = HabboItem.getSquareInFront(this.room.getLayout(), this.habboItem);
+                if(this.habbo.getRoomUnit().getGoal().equals(tile))
                 {
-                    if (tile.X == habbo.getRoomUnit().getX() && tile.Y == habbo.getRoomUnit().getY())
+                    if (this.habbo.getRoomUnit().getCurrentLocation().equals(tile))
                     {
                         try
                         {
@@ -41,9 +41,9 @@ public class RoomUnitVendingMachineAction implements Runnable
                     }
                     else
                     {
-                        if(room.getGameMap().getNode(tile.X, tile.Y).isWalkable())
+                        if(this.room.getGameMap().getNode(tile.x, tile.y).isWalkable())
                         {
-                            this.habbo.getRoomUnit().setGoalLocation(tile.X, tile.Y);
+                            this.habbo.getRoomUnit().setGoalLocation(tile);
                             Emulator.getThreading().run(this, this.habbo.getRoomUnit().getPathFinder().getPath().size() + 2 * 510);
                         }
                     }

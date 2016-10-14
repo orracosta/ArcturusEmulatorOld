@@ -10,7 +10,6 @@ import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemOnRollerComposer;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.ResultSet;
@@ -101,14 +100,14 @@ public class WiredEffectLowerFurni extends InteractionWiredEffect
 
             if(item.getZ() > 0)
             {
-                double z = (item.getZ() - (0.1) * (double)offset);
+                double z = (0.1) * (double)offset;
                 double minZ = room.getLayout().getHeightAtSquare(item.getX(), item.getY());
                 if(z < minZ)
                 {
                     z = minZ;
                 }
 
-                room.sendComposer(new FloorItemOnRollerComposer(item, null, new Tile(item.getX(), item.getY(), z), room).compose());
+                room.sendComposer(new FloorItemOnRollerComposer(item, null, room.getLayout().getTile(item.getX(), item.getY()), z, room).compose());
             }
         }
 

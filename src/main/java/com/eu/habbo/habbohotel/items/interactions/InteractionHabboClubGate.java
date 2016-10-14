@@ -63,7 +63,7 @@ public class InteractionHabboClubGate extends InteractionGate
                 habbo.getClient().sendResponse(new CustomNotificationComposer(CustomNotificationComposer.GATE_NO_HC));
             }
 
-            roomUnit.setGoalLocation(roomUnit.getLocation());
+            roomUnit.setGoalLocation(roomUnit.getCurrentLocation());
         }
     }
 

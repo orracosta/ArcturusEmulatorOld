@@ -6,12 +6,13 @@ import com.eu.habbo.habbohotel.items.IEventTriggers;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.*;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomLayout;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,8 +25,8 @@ public abstract class HabboItem implements Runnable, IEventTriggers
     private int roomId;
     private Item baseItem;
     private String wallPosition;
-    private int x;
-    private int y;
+    private short x;
+    private short y;
     private double z;
     private int rotation;
     private String extradata;
@@ -41,8 +42,8 @@ public abstract class HabboItem implements Runnable, IEventTriggers
         this.roomId = set.getInt("room_id");
         this.baseItem = baseItem;
         this.wallPosition = set.getString("wall_pos");
-        this.x = set.getInt("x");
-        this.y = set.getInt("y");
+        this.x = set.getShort("x");
+        this.y = set.getShort("y");
         this.z = set.getDouble("z");
         this.rotation = set.getInt("rot");
         this.extradata = set.getString("extra_data");
@@ -143,7 +144,7 @@ public abstract class HabboItem implements Runnable, IEventTriggers
 
     public String getWallPosition()
     {
-        return wallPosition;
+        return this.wallPosition;
     }
 
     public void setWallPosition(String wallPosition)
@@ -151,24 +152,24 @@ public abstract class HabboItem implements Runnable, IEventTriggers
         this.wallPosition = wallPosition;
     }
 
-    public int getX()
+    public short getX()
     {
         return this.x;
     }
 
-    public void setX(int x)
+    public void setX(short x)
     {
-        this.x = (short)x;
+        this.x = x;
     }
 
-    public int getY()
+    public short getY()
     {
         return this.y;
     }
 
-    public void setY(int y)
+    public void setY(short y)
     {
-        this.y = (short)y;
+        this.y = y;
     }
 
     public double getZ()
@@ -179,11 +180,6 @@ public abstract class HabboItem implements Runnable, IEventTriggers
     public void setZ(double z)
     {
         this.z = z;
-    }
-
-    public Tile getLocation()
-    {
-        return new Tile(this.x, this.y, this.z);
     }
 
     public int getRotation()
@@ -300,9 +296,9 @@ public abstract class HabboItem implements Runnable, IEventTriggers
         }
     }
 
-    public static Tile getSquareInFront(HabboItem item)
+    public static RoomTile getSquareInFront(RoomLayout roomLayout, HabboItem item)
     {
-        return PathFinder.getSquareInFront(item.getX(), item.getY(), item.getRotation());
+        return PathFinder.getSquareInFront(roomLayout, item.getX(), item.getY(), item.getRotation());
     }
 
     public abstract boolean canWalkOn(RoomUnit roomUnit, Room room, Object[] objects);
@@ -340,7 +336,7 @@ public abstract class HabboItem implements Runnable, IEventTriggers
 
     }
 
-    public void onMove(Room room, Tile oldLocation, Tile newLocation)
+    public void onMove(Room room, RoomTile oldLocation, RoomTile newLocation)
     {
 
     }

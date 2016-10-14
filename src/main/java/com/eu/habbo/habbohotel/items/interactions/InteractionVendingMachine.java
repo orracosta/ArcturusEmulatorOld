@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.items.interactions;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.threading.runnables.RoomUnitGiveHanditem;
@@ -12,7 +13,6 @@ import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.util.pathfinding.Rotation;
-import com.eu.habbo.util.pathfinding.Tile;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -46,23 +46,26 @@ public class InteractionVendingMachine extends HabboItem
     {
         super.onClick(client, room, objects);
 
-        Tile tile = getSquareInFront(this);
-        if(tile.X == client.getHabbo().getRoomUnit().getX() && tile.Y == client.getHabbo().getRoomUnit().getY())
+        if (client != null)
         {
-            if(this.getExtradata().equals("0") || this.getExtradata().length() == 0)
+            RoomTile tile = getSquareInFront(room.getLayout(), this);
+            if (tile.equals(client.getHabbo().getRoomUnit().getCurrentLocation()))
             {
-                client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[Rotation.Calculate(client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY(), this.getX(), this.getY())]);
-                room.sendComposer(new RoomUserStatusComposer(client.getHabbo().getRoomUnit()).compose());
-                this.setExtradata("1");
-                room.updateItem(this);
-                Emulator.getThreading().run(this, 1000);
-                Emulator.getThreading().run(new RoomUnitGiveHanditem(client.getHabbo().getRoomUnit(), room, this.getBaseItem().getRandomVendingItem()));
+                if (this.getExtradata().equals("0") || this.getExtradata().length() == 0)
+                {
+                    client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[Rotation.Calculate(client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY(), this.getX(), this.getY())]);
+                    room.sendComposer(new RoomUserStatusComposer(client.getHabbo().getRoomUnit()).compose());
+                    this.setExtradata("1");
+                    room.updateItem(this);
+                    Emulator.getThreading().run(this, 1000);
+                    Emulator.getThreading().run(new RoomUnitGiveHanditem(client.getHabbo().getRoomUnit(), room, this.getBaseItem().getRandomVendingItem()));
+                }
             }
-        }
-        else
-        {
-            client.getHabbo().getRoomUnit().setGoalLocation(tile.X, tile.Y);
-            Emulator.getThreading().run(new RoomUnitVendingMachineAction(client.getHabbo(), this, room), client.getHabbo().getRoomUnit().getPathFinder().getPath().size() + 2 * 510);
+            else
+            {
+                client.getHabbo().getRoomUnit().setGoalLocation(tile);
+                Emulator.getThreading().run(new RoomUnitVendingMachineAction(client.getHabbo(), this, room), client.getHabbo().getRoomUnit().getPathFinder().getPath().size() + 2 * 510);
+            }
         }
     }
 

@@ -24,7 +24,7 @@ class TeleportActionFive implements Runnable
     public void run()
     {
         this.client.getHabbo().getRoomUnit().isTeleporting = false;
-        this.client.getHabbo().getRoomUnit().setGoalLocation(PathFinder.getSquareInFront(this.currentTeleport.getX(), this.currentTeleport.getY(), this.currentTeleport.getRotation()));
+        this.client.getHabbo().getRoomUnit().setGoalLocation(PathFinder.getSquareInFront(this.room.getLayout(), this.currentTeleport.getX(), this.currentTeleport.getY(), this.currentTeleport.getRotation()));
 
         Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "0"), 1000);
     }

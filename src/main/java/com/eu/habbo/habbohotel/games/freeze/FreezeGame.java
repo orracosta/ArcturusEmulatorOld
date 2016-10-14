@@ -14,18 +14,17 @@ import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreeze
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.gates.InteractionFreezeGate;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.scoreboards.InteractionFreezeScoreboard;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.plugin.EventHandler;
 import com.eu.habbo.plugin.events.users.UserTakeStepEvent;
 import com.eu.habbo.threading.runnables.freeze.FreezeClearEffects;
 import com.eu.habbo.threading.runnables.freeze.FreezeThrowSnowball;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
@@ -133,44 +132,44 @@ public class FreezeGame extends Game
         }
     }
 
-    public THashSet<Tile> affectedTilesByExplosion(int x, int y, int radius)
+    public THashSet<RoomTile> affectedTilesByExplosion(short x, short y, int radius)
     {
-        THashSet<Tile> tiles = new THashSet<Tile>();
+        THashSet<RoomTile> tiles = new THashSet<RoomTile>();
 
         for(int i = 0; i < 4; i++)
         {
-            Tile t = new Tile(x, y, 0.0D);
+            RoomTile t = room.getLayout().getTile(x, y);
 
             for(int j = 0; j < radius; j++)
             {
-                t = PathFinder.getSquareInFront(t.X, t.Y, i * 2);
+                t = PathFinder.getSquareInFront(room.getLayout(), t.x, t.y, i * 2);
 
-                if(t.X < 0 || t.Y < 0 || t.X >= this.room.getLayout().getMapSizeX() || t.Y >= this.room.getLayout().getMapSizeY())
+                if(t.x < 0 || t.y < 0 || t.x >= this.room.getLayout().getMapSizeX() || t.y >= this.room.getLayout().getMapSizeY())
                     continue;
 
-                tiles.add(new Tile(t.X, t.Y, 0.0D));
+                tiles.add(room.getLayout().getTile(t.x, t.y));
             }
         }
 
         return tiles;
     }
 
-    public THashSet<Tile>affectedTilesByExplosionDiagonal(int x, int y, int radius)
+    public THashSet<RoomTile>affectedTilesByExplosionDiagonal(short x, short y, int radius)
     {
-        THashSet<Tile> tiles = new THashSet<Tile>();
+        THashSet<RoomTile> tiles = new THashSet<RoomTile>();
 
         for(int i = 0; i < 4; i++)
         {
-            Tile t = new Tile(x, y, 0.0D);
+            RoomTile t = room.getLayout().getTile(x, y);
 
             for(int j = 0; j < radius; j++)
             {
-                t = PathFinder.getSquareInFront(t.X, t.Y, (i * 2) + 1);
+                t = PathFinder.getSquareInFront(room.getLayout(), t.x, t.y, (i * 2) + 1);
 
-                if(t.X < 0 || t.Y < 0 || t.X >= this.room.getLayout().getMapSizeX() || t.Y >= this.room.getLayout().getMapSizeY())
+                if(t.x < 0 || t.y < 0 || t.x >= this.room.getLayout().getMapSizeX() || t.y >= this.room.getLayout().getMapSizeY())
                     continue;
 
-                tiles.add(new Tile(t.X, t.Y, 0.0D));
+                tiles.add(room.getLayout().getTile(t.x, t.y));
             }
         }
 
@@ -390,7 +389,7 @@ public class FreezeGame extends Game
                 if (!game.room.hasObjectTypeAt(InteractionFreezeTile.class, event.toLocation.getX(), event.toLocation.getY()))
                 {
                     event.setCancelled(true);
-                    event.habbo.getRoomUnit().setGoalLocation(event.habbo.getRoomUnit().getX(), event.habbo.getRoomUnit().getY());
+                    event.habbo.getRoomUnit().setGoalLocation(event.habbo.getRoomUnit().getCurrentLocation());
                     event.habbo.getRoomUnit().getStatus().remove("mv");
                     game.room.sendComposer(new RoomUserStatusComposer(event.habbo.getRoomUnit()).compose());
                 }

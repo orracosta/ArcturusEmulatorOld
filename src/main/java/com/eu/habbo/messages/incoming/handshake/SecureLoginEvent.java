@@ -65,6 +65,7 @@ public class SecureLoginEvent extends MessageHandler
                 Emulator.getGameEnvironment().getHabboManager().addHabbo(habbo);
 
                 ArrayList<ServerMessage> messages = new ArrayList<ServerMessage>();
+
                 messages.add(new SecureLoginOKComposer().compose());
                 messages.add(new UserHomeRoomComposer(this.client.getHabbo().getHabboInfo().getHomeRoom(), 0).compose());
                 messages.add(new UserPermissionsComposer(this.client.getHabbo()).compose());

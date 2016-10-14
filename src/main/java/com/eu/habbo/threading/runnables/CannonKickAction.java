@@ -3,11 +3,11 @@ package com.eu.habbo.threading.runnables;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionCannon;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.map.hash.THashMap;
 
 public class CannonKickAction implements Runnable
@@ -31,15 +31,15 @@ public class CannonKickAction implements Runnable
         ServerMessage message = new BubbleAlertComposer("cannon.png", dater).compose();
 
         int rotation = this.cannon.getRotation();
-        Tile a = PathFinder.getSquareInFront(this.cannon.getX(), this.cannon.getY(), rotation + 6);
-        Tile b = PathFinder.getSquareInFront(a.X, a.Y, rotation);
-        Tile c = PathFinder.getSquareInFront(b.X, b.Y, rotation);
+        RoomTile a = PathFinder.getSquareInFront(room.getLayout(), this.cannon.getX(), this.cannon.getY(), rotation + 6);
+        RoomTile b = PathFinder.getSquareInFront(room.getLayout(), a.x, a.y, rotation);
+        RoomTile c = PathFinder.getSquareInFront(room.getLayout(), b.x, b.y, rotation);
 
-        Tile[] tiles = {a, b, c};
+        RoomTile[] tiles = {a, b, c};
 
-        for(Tile t : tiles)
+        for(RoomTile t : tiles)
         {
-            for(Habbo habbo : this.room.getHabbosAt(t.X, t.Y))
+            for(Habbo habbo : this.room.getHabbosAt(t.x, t.y))
             {
                 Emulator.getGameEnvironment().getRoomManager().leaveRoom(habbo, this.room);
                 habbo.getClient().sendResponse(message); //kicked composer

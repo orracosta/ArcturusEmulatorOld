@@ -42,10 +42,10 @@ public class GameByteDecoder extends ByteToMessageDecoder
                     "  <allow-access-from domain=\"*\" to-ports=\"1-31111\" />\n" +
                     "  </cross-domain-policy>" + (char) 0, CharsetUtil.UTF_8));
 
-            if (!f.isSuccess())
-            {
-                Emulator.getLogging().logErrorLine(f.cause());
-            }
+//            if (!f.isSuccess())
+//            {
+//                Emulator.getLogging().logErrorLine(f.cause());
+//            }
 
             f.channel().close();
             return;

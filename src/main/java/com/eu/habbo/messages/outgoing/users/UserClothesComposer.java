@@ -16,7 +16,7 @@ public class UserClothesComposer extends MessageComposer
 
     public UserClothesComposer(Habbo habbo)
     {
-        for (Integer i : habbo.getHabboInventory().getWardrobeComponent().getClothing())
+        for (int i : habbo.getHabboInventory().getWardrobeComponent().getClothing())
         {
             ClothItem item = Emulator.getGameEnvironment().getCatalogManager().clothing.get(i);
 

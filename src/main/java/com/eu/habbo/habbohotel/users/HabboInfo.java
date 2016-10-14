@@ -24,6 +24,7 @@ public class HabboInfo implements Runnable
     private String mail;
     private String sso;
     private String ipRegister;
+    private String ipLogin;
 
     private int id;
     private int accountCreated;
@@ -237,6 +238,16 @@ public class HabboInfo implements Runnable
         this.ipRegister = ipRegister;
     }
 
+    public String getIpLogin()
+    {
+        return this.ipLogin;
+    }
+
+    public void setIpLogin(String ipLogin)
+    {
+        this.ipLogin = ipLogin;
+    }
+
     public int getAccountCreated()
     {
         return this.accountCreated;
@@ -419,7 +430,7 @@ public class HabboInfo implements Runnable
 
         try
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users SET motto = ?, online = ?, look = ?, gender = ?, credits = ?, last_login = ?, last_online = ?, home_room = ? WHERE id = ?");
+            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users SET motto = ?, online = ?, look = ?, gender = ?, credits = ?, last_login = ?, last_online = ?, home_room = ?, ip_current = ? WHERE id = ?");
             statement.setString(1, this.motto);
             statement.setString(2, this.online ? "1" : "0");
             statement.setString(3, this.look);
@@ -428,8 +439,9 @@ public class HabboInfo implements Runnable
             statement.setInt(7, this.lastOnline);
             statement.setInt(6, Emulator.getIntUnixTimestamp());
             statement.setInt(8, this.homeRoom);
-            statement.setInt(9, this.id);
-            statement.execute();
+            statement.setString(9, this.ipLogin);
+            statement.setInt(10, this.id);
+            statement.executeUpdate();
             statement.close();
             statement.getConnection().close();
         }

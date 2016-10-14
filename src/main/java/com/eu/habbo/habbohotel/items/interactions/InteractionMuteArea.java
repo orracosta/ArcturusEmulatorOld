@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.items.interactions;
 
 import com.eu.habbo.habbohotel.items.Item;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import gnu.trove.map.hash.THashMap;
 
 import java.awt.*;
@@ -27,7 +28,7 @@ public class InteractionMuteArea extends InteractionCustomValues
         super(id, userId, item, extradata, limitedStack, limitedSells, defaultValues);
     }
 
-    public boolean inSquare(Point p)
+    public boolean inSquare(RoomTile location)
     {
         try
         {
@@ -35,7 +36,7 @@ public class InteractionMuteArea extends InteractionCustomValues
                             this.getX() - Integer.valueOf(this.values.get("tilesBack")),
                             this.getY() + Integer.valueOf(this.values.get("tilesLeft")) - (Integer.valueOf(this.values.get("tilesLeft"))  + Integer.valueOf(this.values.get("tilesRight"))),
                             Integer.valueOf(this.values.get("tilesLeft"))  + Integer.valueOf(this.values.get("tilesRight")) + 1,
-                            Integer.valueOf(this.values.get("tilesFront")) + Integer.valueOf(this.values.get("tilesBack"))  + 1).contains(p);
+                            Integer.valueOf(this.values.get("tilesFront")) + Integer.valueOf(this.values.get("tilesBack"))  + 1).contains(location.x, location.y);
         }
         catch (Exception e)
         {

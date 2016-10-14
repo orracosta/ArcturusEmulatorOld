@@ -10,7 +10,6 @@ import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemOnRollerComposer;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.ResultSet;
@@ -99,7 +98,8 @@ public class WiredEffectRaiseFurni extends InteractionWiredEffect
             if(item.getRoomId() == 0)
                 continue;
 
-            room.sendComposer(new FloorItemOnRollerComposer(item, null, new Tile(item.getX(), item.getY(), (item.getZ() + (0.1) * offset) % 127), room).compose());
+            double offsetZ = (item.getZ() + ((0.1) * offset))  % 127;
+            room.sendComposer(new FloorItemOnRollerComposer(item, null, room.getLayout().getTile(item.getX(), item.getY()), offsetZ, room).compose());
         }
 
         return true;

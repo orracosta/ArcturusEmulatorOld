@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -12,7 +13,6 @@ import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemOnRollerComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
 import java.awt.*;
@@ -130,10 +130,10 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
                     moveDirection = RoomUserRotation.WEST;
                 }
 
-                Tile newTile = new Tile(
-                        item.getX() + ((moveDirection == RoomUserRotation.WEST || moveDirection == RoomUserRotation.NORTH_WEST || moveDirection == RoomUserRotation.SOUTH_WEST) ? -1 : (((moveDirection == RoomUserRotation.EAST || moveDirection == RoomUserRotation.SOUTH_EAST || moveDirection == RoomUserRotation.NORTH_EAST) ? 1 : 0))),
-                        item.getY() + ((moveDirection == RoomUserRotation.NORTH || moveDirection == RoomUserRotation.NORTH_EAST || moveDirection == RoomUserRotation.NORTH_WEST) ? 1 : ((moveDirection == RoomUserRotation.SOUTH || moveDirection == RoomUserRotation.SOUTH_EAST || moveDirection == RoomUserRotation.SOUTH_WEST) ? -1 : 0)),
-                        item.getZ());
+                RoomTile newTile = room.getLayout().getTile(
+                        (short) (item.getX() + ((moveDirection == RoomUserRotation.WEST || moveDirection == RoomUserRotation.NORTH_WEST || moveDirection == RoomUserRotation.SOUTH_WEST) ? -1 : (((moveDirection == RoomUserRotation.EAST || moveDirection == RoomUserRotation.SOUTH_EAST || moveDirection == RoomUserRotation.NORTH_EAST) ? 1 : 0)))),
+                        (short) (item.getY() + ((moveDirection == RoomUserRotation.NORTH || moveDirection == RoomUserRotation.NORTH_EAST || moveDirection == RoomUserRotation.NORTH_WEST) ? 1 : ((moveDirection == RoomUserRotation.SOUTH || moveDirection == RoomUserRotation.SOUTH_EAST || moveDirection == RoomUserRotation.SOUTH_WEST) ? -1 : 0)))
+                        );
 
                 if(room.tileWalkable(newTile))
                 {
@@ -148,10 +148,10 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
                         {
                             HabboItem i = room.getTopItemAt(x, y, item);
 
-                            if (i == null || i.getBaseItem().allowStack())
+                            if (i == null || i == item || i.getBaseItem().allowStack())
                             {
-                                newTile.Z = room.getStackHeight(newTile.X, newTile.Y, false);
-                                room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, room).compose());
+                                double offset = room.getStackHeight(newTile.x, newTile.y, false) - item.getZ();
+                                room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, offset, room).compose());
                             }
                         }
                     }

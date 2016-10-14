@@ -4,7 +4,7 @@ public class Node extends AbstractNode {
 
     public Node(int xPosition, int yPosition)
     {
-        super(xPosition, yPosition);
+        super((short)xPosition, (short)yPosition);
     }
 
     @Override

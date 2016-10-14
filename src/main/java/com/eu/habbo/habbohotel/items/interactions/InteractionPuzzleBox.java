@@ -3,13 +3,13 @@ package com.eu.habbo.habbohotel.items.interactions;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemOnRollerComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,7 +36,7 @@ public class InteractionPuzzleBox extends HabboItem
             return;
 
 
-        Tile boxLocation = new Tile(this.getX(), this.getY(), this.getZ());
+        RoomTile boxLocation = room.getLayout().getTile(this.getX(), this.getY());
         client.getHabbo().getRoomUnit().lookAtPoint(boxLocation);
         room.sendComposer(new RoomUserStatusComposer(client.getHabbo().getRoomUnit()).compose());
 
@@ -49,28 +49,23 @@ public class InteractionPuzzleBox extends HabboItem
                 return;
         }
 
-        Tile tile = PathFinder.getSquareInFront(super.getX(), super.getY(), client.getHabbo().getRoomUnit().getBodyRotation().getValue());
+        RoomTile tile = PathFinder.getSquareInFront(room.getLayout(), this.getX(), this.getY(), client.getHabbo().getRoomUnit().getBodyRotation().getValue());
 
         if (!room.tileWalkable(tile))
         {
             return;
         }
 
-        tile.Z = room.getStackHeight(tile.X, tile.Y, false);
+        double offset = room.getStackHeight(tile.x, tile.y, false) - this.getZ();
 
-        if (tile.Z != this.getZ())
-        {
-            return;
-        }
-
-        if(!boxLocation.equals(PathFinder.getSquareInFront(client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY(), client.getHabbo().getRoomUnit().getBodyRotation().getValue())))
+        if(!boxLocation.equals(PathFinder.getSquareInFront(room.getLayout(), client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY(), client.getHabbo().getRoomUnit().getBodyRotation().getValue())))
             return;
 
-        HabboItem item = room.getTopItemAt(tile.X, tile.Y);
+        HabboItem item = room.getTopItemAt(tile.x, tile.y);
 
         if(item == null || (item.getZ() <= this.getZ() && item.getBaseItem().allowWalk()))
         {
-            room.sendComposer(new FloorItemOnRollerComposer(this, null, tile, room).compose());
+            room.sendComposer(new FloorItemOnRollerComposer(this, null, tile, offset, room).compose());
             client.getHabbo().getRoomUnit().setGoalLocation(boxLocation);
             this.needsUpdate(true);
         }

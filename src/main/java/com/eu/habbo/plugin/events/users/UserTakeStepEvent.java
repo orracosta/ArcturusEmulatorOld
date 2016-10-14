@@ -1,15 +1,15 @@
 package com.eu.habbo.plugin.events.users;
 
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.util.pathfinding.AbstractNode;
-import com.eu.habbo.util.pathfinding.Tile;
 
 public class UserTakeStepEvent extends UserEvent
 {
     /**
      * The old location of the Habbo.
      */
-    public final Tile fromLocation;
+    public final RoomTile fromLocation;
 
     /**
      * The new location of the Habbo.
@@ -22,7 +22,7 @@ public class UserTakeStepEvent extends UserEvent
      * @param fromLocation The old location of the Habbo.
      * @param toLocation The new location of the Habbo.
      */
-    public UserTakeStepEvent(Habbo habbo, Tile fromLocation, AbstractNode toLocation)
+    public UserTakeStepEvent(Habbo habbo, RoomTile fromLocation, AbstractNode toLocation)
     {
         super(habbo);
 

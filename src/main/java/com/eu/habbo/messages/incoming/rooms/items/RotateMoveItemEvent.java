@@ -3,6 +3,7 @@ package com.eu.habbo.messages.incoming.rooms.items;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionStackHelper;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -14,10 +15,8 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.messages.outgoing.rooms.UpdateStackHeightComposer;
 import com.eu.habbo.plugin.Event;
 import com.eu.habbo.plugin.events.furniture.FurnitureMovedEvent;
-import com.eu.habbo.plugin.events.furniture.FurniturePlacedEvent;
 import com.eu.habbo.plugin.events.furniture.FurnitureRotatedEvent;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 import gnu.trove.set.hash.THashSet;
 
 import java.awt.*;
@@ -39,9 +38,6 @@ public class RotateMoveItemEvent extends MessageHandler
         if(!this.client.getHabbo().getHabboStats().canRentSpace())
         {
             rentSpace = room.getHabboItem(this.client.getHabbo().getHabboStats().rentedItemId);
-
-            //if(rentSpace == null)
-            //    return;
         }
         else
         {
@@ -67,11 +63,11 @@ public class RotateMoveItemEvent extends MessageHandler
             return;
         }
 
-        int oldX = item.getX();
-        int oldY = item.getY();
+        short oldX = item.getX();
+        short oldY = item.getY();
         int oldRotation = item.getRotation();
 
-        Tile oldLocation = new Tile(oldX, oldY, item.getZ());
+        RoomTile oldLocation = room.getLayout().getTile(oldX, oldY);
 
         if(rentSpace != null)
         {
@@ -95,15 +91,15 @@ public class RotateMoveItemEvent extends MessageHandler
             return;
         }
 
-        THashSet<Tile> updatedTiles = new THashSet<Tile>();
+        THashSet<RoomTile> updatedTiles = new THashSet<RoomTile>();
 
         Rectangle currentSquare = PathFinder.getSquare(item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
 
-        for (int i = currentSquare.x; i < currentSquare.x + currentSquare.getWidth(); i++)
+        for (short i = (short) currentSquare.x; i < currentSquare.x + currentSquare.getWidth(); i++)
         {
-            for (int j = currentSquare.y; j < currentSquare.y + currentSquare.getHeight(); j++)
+            for (short j = (short) currentSquare.y; j < currentSquare.y + currentSquare.getHeight(); j++)
             {
-                updatedTiles.add(new Tile(i, j, 0));
+                updatedTiles.add(room.getLayout().getTile(i, j));
             }
         }
 
@@ -124,9 +120,9 @@ public class RotateMoveItemEvent extends MessageHandler
         //if (x != item.getX() || y != item.getY() || item.getRotation() != rotation)
         {
             checkStackHeight = room.getStackHeight(x, y, false, item);
-            for (int i = newSquare.x; i < newSquare.x + newSquare.getWidth(); i++)
+            for (short i = (short) newSquare.x; i < newSquare.x + newSquare.getWidth(); i++)
             {
-                for (int j = newSquare.y; j < newSquare.y + newSquare.getHeight(); j++)
+                for (short j = (short) newSquare.y; j < newSquare.y + newSquare.getHeight(); j++)
                 {
                     double testheight = room.getStackHeight(i, j, false, item);
                     if (checkStackHeight != testheight && !(item instanceof InteractionStackHelper))
@@ -143,12 +139,12 @@ public class RotateMoveItemEvent extends MessageHandler
                         return;
                     }
 
-                    Tile t = null;
-                    for (Tile tile : updatedTiles)
+                    RoomTile t = null;
+                    for (RoomTile tile : updatedTiles)
                     {
-                        if (tile.X != i || tile.Y != j)
+                        if (tile.x != i || tile.y != j)
                         {
-                            t = new Tile(i, j, 0);
+                            t = room.getLayout().getTile(i, j);
                         }
                     }
                     if (t != null)
@@ -172,8 +168,8 @@ public class RotateMoveItemEvent extends MessageHandler
             room.sendComposer(new RoomUserStatusComposer(updatedUnits, false).compose());
         }
 
-        item.setX(x);
-        item.setY(y);
+        item.setX((short) x);
+        item.setY((short) y);
 
         if(item.getRotation() != rotation)
         {
@@ -191,7 +187,7 @@ public class RotateMoveItemEvent extends MessageHandler
             }
         }
 
-        Tile newLocation = new Tile(item.getX(), item.getY(), item.getZ());
+        RoomTile newLocation = room.getLayout().getTile(item.getX(), item.getY());
         item.onMove(room, oldLocation, newLocation);
 
         if(Emulator.getPluginManager().isRegistered(FurnitureMovedEvent.class, true))
@@ -205,12 +201,12 @@ public class RotateMoveItemEvent extends MessageHandler
 
         room.sendComposer(new FloorItemUpdateComposer(item).compose());
 
-        for(Tile t : updatedTiles)
+        for(RoomTile t : updatedTiles)
         {
-            t.Z = room.getStackHeight(t.X, t.Y, true);
+            t.setStackHeight(room.getStackHeight(t.x, t.y, false));
 
-            if(oldX != t.X || oldY != t.Y)
-                room.updateHabbosAt(t.X, t.Y);
+            if(oldX != t.x || oldY != t.y)
+                room.updateHabbosAt(t.x, t.y);
         }
 
         if(oldX != x || oldY != y)

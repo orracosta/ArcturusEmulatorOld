@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -11,7 +12,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.threading.runnables.OneWayGateActionOne;
 import com.eu.habbo.util.pathfinding.PathFinder;
-import com.eu.habbo.util.pathfinding.Tile;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -66,24 +66,25 @@ public class InteractionOneWayGate extends HabboItem
     {
         super.onClick(client, room, objects);
 
-        Tile tile = PathFinder.getSquareInFront(this.getX(), this.getY(), this.getRotation());
-
-        if(tile.equals(new Tile(client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY(), 0)))
+        if (client != null)
         {
-            if(room.getHabbosAt(this.getX(), this.getY()).isEmpty())
+            RoomTile tile = PathFinder.getSquareInFront(room.getLayout(), this.getX(), this.getY(), this.getRotation());
+
+            if (tile.equals(client.getHabbo().getRoomUnit().getCurrentLocation()))
             {
-                client.getHabbo().getRoomUnit().setGoalLocation(this.getX(), this.getY());
-                client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[(this.getRotation() + 4) % 8]);
-                client.getHabbo().getRoomUnit().getStatus().put("mv", this.getX() + "," + this.getY() + "," + this.getZ());
-                client.getHabbo().getRoomUnit().animateWalk = true;
-                room.sendComposer(new RoomUserStatusComposer(client.getHabbo().getRoomUnit()).compose());
-                
-                client.getHabbo().getRoomUnit().setLocation(this.getX(), this.getY(), this.getZ());
+                if (room.getHabbosAt(this.getX(), this.getY()).isEmpty())
+                {
+                    client.getHabbo().getRoomUnit().setLocation(room.getLayout().getTile(this.getX(), this.getY()));
+                    client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[(this.getRotation() + 4) % 8]);
+                    client.getHabbo().getRoomUnit().getStatus().put("mv", this.getX() + "," + this.getY() + "," + this.getZ());
+                    client.getHabbo().getRoomUnit().animateWalk = true;
+                    room.sendComposer(new RoomUserStatusComposer(client.getHabbo().getRoomUnit()).compose());
 
-                this.setExtradata("1");
-                room.updateItem(this);
+                    this.setExtradata("1");
+                    room.updateItem(this);
 
-                Emulator.getThreading().run(new OneWayGateActionOne(client, room, this), 300);
+                    Emulator.getThreading().run(new OneWayGateActionOne(client, room, this), 300);
+                }
             }
         }
     }

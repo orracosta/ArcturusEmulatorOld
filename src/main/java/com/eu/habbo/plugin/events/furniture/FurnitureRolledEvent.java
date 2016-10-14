@@ -1,7 +1,7 @@
 package com.eu.habbo.plugin.events.furniture;
 
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.HabboItem;
-import com.eu.habbo.util.pathfinding.Tile;
 
 public class FurnitureRolledEvent extends FurnitureEvent
 {
@@ -13,7 +13,7 @@ public class FurnitureRolledEvent extends FurnitureEvent
     /**
      * The new location of the furniture.
      */
-    public final Tile newLocation;
+    public final RoomTile newLocation;
 
     /**
      * This event is triggered when an furniture is being rolled by a roller.
@@ -21,7 +21,7 @@ public class FurnitureRolledEvent extends FurnitureEvent
      * @param roller The roller who moved the furniture.
      * @param newLocation The new location of the furniture.
      */
-    public FurnitureRolledEvent(HabboItem furniture, HabboItem roller, Tile newLocation)
+    public FurnitureRolledEvent(HabboItem furniture, HabboItem roller, RoomTile newLocation)
     {
         super(furniture);
 
