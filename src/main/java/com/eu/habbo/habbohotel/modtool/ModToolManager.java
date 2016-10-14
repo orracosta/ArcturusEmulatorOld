@@ -392,14 +392,14 @@ public class ModToolManager
 
     public ModToolBan createBan(Habbo target, Habbo staff, int expireDate, String reason, String type)
     {
-        return createBan(target.getHabboInfo().getId(), target.getHabboInfo().getIpLogin(), staff, expireDate, reason, type);
+        return createBan(target.getHabboInfo().getId(), target.getHabboInfo().getIpLogin(), target.getClient().getMachineId(), staff, expireDate, reason, type);
     }
 
-    public ModToolBan createBan(int target, String ip, Habbo staff, int expireDate, String reason, String type)
+    public ModToolBan createBan(int target, String ip, String machineId, Habbo staff, int expireDate, String reason, String type)
     {
         if(staff.hasPermission("acc_supporttool"))
         {
-            ModToolBan ban = new ModToolBan(target, ip, staff.getHabboInfo().getId(), expireDate, reason, type);
+            ModToolBan ban = new ModToolBan(target, ip, machineId, staff.getHabboInfo().getId(), expireDate, reason, type);
             Emulator.getThreading().run(ban);
 
             Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(target);

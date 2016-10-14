@@ -15,12 +15,16 @@ Super is all of the above.';
 
 ALTER TABLE  `permissions` ADD  `cmd_ip_ban` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_ha`;
 ALTER TABLE  `permissions` ADD  `cmd_machine_ban` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_ip_ban`;
+ALTER TABLE  `permissions` ADD  `cmd_super_ban` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_summonrank`;
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.keys.cmd_ip_ban', 'ipban;banip;ip_ban;ban_ip'), ('commands.description.cmd_ip_ban', ':ipban <username> [reason]');
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.keys.cmd_machine_ban', 'machineban;banmachine;banmac;macban'), ('commands.description.cmd_machine_ban', ':machineban <username> [reason]');
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.keys.cmd_super_ban', 'superban;megaban'), ('commands.description.cmd_super_ban', ':superban <username> [reason]');
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.succes.cmd_machine_ban', '%count% accounts have been MAC banned!');
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.succes.cmd_ip_ban', '%count% accounts have been IP banned!');
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.succes.cmd_super_ban', '%count% accounts have been Super banned!');
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.error.cmd_ip_ban.ban_self', 'You cannot IP Ban yourself!');
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.error.cmd_machine_ban.ban_self', 'You cannot issue yourself a MAC Ban!');
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.error.cmd_super_ban.ban_self', 'You cannot superban yourself!');
 
 ALTER TABLE `items` CHANGE `extra_data` `extra_data` VARCHAR(1024) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';
 INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('runtime.threads', '8');
