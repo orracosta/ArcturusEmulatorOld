@@ -155,9 +155,9 @@ public class CraftingManager
                     {
                         statement.setInt(1, recipe.getRemaining());
                         statement.setInt(2, recipe.getId());
-                    }
 
-                    statement.execute();
+                        statement.execute();
+                    }
                 }
             }
             statement.close();
