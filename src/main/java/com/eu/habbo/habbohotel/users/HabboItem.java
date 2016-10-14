@@ -5,10 +5,7 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.IEventTriggers;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.*;
-import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.rooms.RoomLayout;
-import com.eu.habbo.habbohotel.rooms.RoomTile;
-import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.ServerMessage;
@@ -17,6 +14,8 @@ import com.eu.habbo.util.pathfinding.PathFinder;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class HabboItem implements Runnable, IEventTriggers
 {
@@ -329,16 +328,79 @@ public abstract class HabboItem implements Runnable, IEventTriggers
 
     public void onPlace(Room room)
     {
+
     }
 
     public void onPickUp(Room room)
     {
+        if(this.getBaseItem().getEffectF() > 0 || this.getBaseItem().getEffectM() > 0)
+        {
+            for (Habbo habbo : room.getHabbosOnItem(this))
+            {
+                if (this.getBaseItem().getEffectM() > 0 && habbo.getHabboInfo().getGender().equals(HabboGender.M) && habbo.getRoomUnit().getEffectId() == this.getBaseItem().getEffectM())
+                {
+                    room.giveEffect(habbo, 0);
+                    return;
+                }
 
+                if (this.getBaseItem().getEffectF() > 0 && habbo.getHabboInfo().getGender().equals(HabboGender.F) && habbo.getRoomUnit().getEffectId() == this.getBaseItem().getEffectF())
+                {
+                    room.giveEffect(habbo, 0);
+                    return;
+                }
+            }
+        }
     }
 
     public void onMove(Room room, RoomTile oldLocation, RoomTile newLocation)
     {
+        if(this.getBaseItem().getEffectF() > 0 || this.getBaseItem().getEffectM() > 0)
+        {
+            List<Habbo> oldHabbos = new ArrayList<Habbo>();
+            List<Habbo> newHabbos = new ArrayList<Habbo>();
 
+            for (RoomTile tile : PathFinder.getTilesAt(room.getLayout(), oldLocation.x, oldLocation.y, this.getBaseItem().getWidth(), this.getBaseItem().getLength(), this.getRotation()))
+            {
+                oldHabbos.addAll(room.getHabbosAt(tile));
+            }
+
+            for (RoomTile tile : PathFinder.getTilesAt(room.getLayout(), newLocation.x, newLocation.y, this.getBaseItem().getWidth(), this.getBaseItem().getLength(), this.getRotation()))
+            {
+                newHabbos.addAll(room.getHabbosAt(tile));
+            }
+
+            oldHabbos.removeAll(newHabbos);
+
+            for (Habbo habbo : oldHabbos)
+            {
+                if (this.getBaseItem().getEffectM() > 0 && habbo.getHabboInfo().getGender().equals(HabboGender.M) && habbo.getRoomUnit().getEffectId() == this.getBaseItem().getEffectM())
+                {
+                    room.giveEffect(habbo, 0);
+                    return;
+                }
+
+                if (this.getBaseItem().getEffectF() > 0 && habbo.getHabboInfo().getGender().equals(HabboGender.F) && habbo.getRoomUnit().getEffectId() == this.getBaseItem().getEffectF())
+                {
+                    room.giveEffect(habbo, 0);
+                    return;
+                }
+            }
+
+            for (Habbo habbo : newHabbos)
+            {
+                if (this.getBaseItem().getEffectM() > 0 && habbo.getHabboInfo().getGender().equals(HabboGender.M) && habbo.getRoomUnit().getEffectId() != this.getBaseItem().getEffectM())
+                {
+                    room.giveEffect(habbo, this.getBaseItem().getEffectM());
+                    return;
+                }
+
+                if (this.getBaseItem().getEffectF() > 0 && habbo.getHabboInfo().getGender().equals(HabboGender.F) && habbo.getRoomUnit().getEffectId() != this.getBaseItem().getEffectF())
+                {
+                    room.giveEffect(habbo, this.getBaseItem().getEffectF());
+                    return;
+                }
+            }
+        }
     }
 
     public String getDatabaseExtraData()
