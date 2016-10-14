@@ -19,7 +19,7 @@ public class NavigatorRoomAdsFilter extends NavigatorFilter
     public List<SearchResultList> getResult(Habbo habbo)
     {
         List<SearchResultList> resultList = new ArrayList<SearchResultList>();
-        resultList.add(new SearchResultList(0, "categories", "", SearchAction.NONE, SearchMode.LIST, false, Emulator.getGameEnvironment().getRoomManager().getRoomsPromoted(), false));
+        resultList.add(new SearchResultList(0, "categories", "", SearchAction.NONE, SearchMode.LIST, false, Emulator.getGameEnvironment().getRoomManager().getRoomsPromoted(), false, false));
         return resultList;
     }
 }

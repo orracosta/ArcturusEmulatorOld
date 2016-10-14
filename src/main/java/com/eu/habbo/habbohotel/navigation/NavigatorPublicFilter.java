@@ -20,13 +20,13 @@ public class NavigatorPublicFilter extends NavigatorFilter
     {
         List<SearchResultList> resultLists = new ArrayList<SearchResultList>();
         int i = 0;
-        resultLists.add(new SearchResultList(i, "official-root", "", SearchAction.NONE, SearchMode.THUMBNAILS, false, Emulator.getGameEnvironment().getRoomManager().getPublicRooms(), false));
+        resultLists.add(new SearchResultList(i, "official-root", "", SearchAction.NONE, SearchMode.THUMBNAILS, false, Emulator.getGameEnvironment().getRoomManager().getPublicRooms(), false, false));
         i++;
         for (NavigatorPublicCategory category : Emulator.getGameEnvironment().getNavigatorManager().publicCategories.values())
         {
             if (!category.rooms.isEmpty())
             {
-                resultLists.add(new SearchResultList(i, "", category.name, SearchAction.NONE, category.image, false, category.rooms, true));
+                resultLists.add(new SearchResultList(i, "", category.name, SearchAction.NONE, category.image, false, category.rooms, true, false));
                 i++;
             }
         }

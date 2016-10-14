@@ -24,7 +24,7 @@ public class NavigatorUserFilter extends NavigatorFilter
         List<SearchResultList> resultLists = new ArrayList<SearchResultList>();
         List<Room> rooms = Emulator.getGameEnvironment().getRoomManager().getRoomsForHabbo(habbo);
         Collections.sort(rooms);
-        resultLists.add(new SearchResultList(i, "my", "", SearchAction.NONE, SearchMode.LIST, false, rooms, true));
+        resultLists.add(new SearchResultList(i, "my", "", SearchAction.NONE, SearchMode.LIST, false, rooms, true, false));
         i++;
 
         List<Room> favoriteRooms = Emulator.getGameEnvironment().getRoomManager().getRoomsFavourite(habbo);
@@ -32,7 +32,7 @@ public class NavigatorUserFilter extends NavigatorFilter
         if (!favoriteRooms.isEmpty())
         {
             Collections.sort(favoriteRooms);
-            resultLists.add(new SearchResultList(1, "favorites", "", SearchAction.NONE, SearchMode.LIST, false, favoriteRooms, true));
+            resultLists.add(new SearchResultList(1, "favorites", "", SearchAction.NONE, SearchMode.LIST, false, favoriteRooms, true, false));
             i++;
         }
         return resultLists;

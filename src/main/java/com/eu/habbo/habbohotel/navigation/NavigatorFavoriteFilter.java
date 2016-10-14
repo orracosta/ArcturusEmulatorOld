@@ -23,7 +23,7 @@ public class NavigatorFavoriteFilter extends NavigatorFilter
         List<SearchResultList> resultLists = new ArrayList<SearchResultList>();
         List<Room> rooms = Emulator.getGameEnvironment().getRoomManager().getRoomsFavourite(habbo);
         Collections.sort(rooms);
-        resultLists.add(new SearchResultList(0, "favorites", "", SearchAction.NONE, SearchMode.LIST, false, rooms, true));
+        resultLists.add(new SearchResultList(0, "favorites", "", SearchAction.NONE, SearchMode.LIST, false, rooms, true, false));
         return resultLists;
     }
 }
