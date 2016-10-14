@@ -353,6 +353,19 @@ public class CatalogManager
                 statement.getConnection().close();
             }
         }
+
+        for (CatalogPage page : this.catalogPages.valueCollection())
+        {
+            for (Integer id : page.getIncluded())
+            {
+                CatalogPage p = this.catalogPages.get(id);
+
+                if (p != null)
+                {
+                    page.getCatalogItems().putAll(p.getCatalogItems());
+                }
+            }
+        }
     }
 
     /**

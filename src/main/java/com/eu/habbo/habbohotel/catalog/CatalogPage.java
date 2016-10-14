@@ -1,5 +1,6 @@
 package com.eu.habbo.habbohotel.catalog;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.ISerialize;
 import com.eu.habbo.messages.ServerMessage;
 import gnu.trove.TCollections;
@@ -10,6 +11,7 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 
 public abstract class CatalogPage implements Comparable<CatalogPage>, ISerialize
@@ -35,7 +37,8 @@ public abstract class CatalogPage implements Comparable<CatalogPage>, ISerialize
     protected String textTeaser;
     protected TIntArrayList offerIds = new TIntArrayList();
     protected THashMap<Integer, CatalogPage> childPages = new THashMap<Integer, CatalogPage>();;
-    private TIntObjectMap<CatalogItem> catalogItems = TCollections.synchronizedMap(new TIntObjectHashMap<CatalogItem>());;
+    private TIntObjectMap<CatalogItem> catalogItems = TCollections.synchronizedMap(new TIntObjectHashMap<CatalogItem>());
+    private ArrayList<Integer> included = new ArrayList<>();
 
     public CatalogPage(ResultSet set) throws SQLException
     {
@@ -61,6 +64,18 @@ public abstract class CatalogPage implements Comparable<CatalogPage>, ISerialize
         this.textTwo = set.getString("page_text2");
         this.textDetails = set.getString("page_text_details");
         this.textTeaser = set.getString("page_text_teaser");
+
+        for (String id : set.getString("includes").split(";"))
+        {
+            try
+            {
+                this.included.add(Integer.valueOf(id));
+            }
+            catch (Exception e)
+            {
+                Emulator.getLogging().logErrorLine(e);
+            }
+        }
     }
 
     public int getId()
@@ -181,6 +196,11 @@ public abstract class CatalogPage implements Comparable<CatalogPage>, ISerialize
     public CatalogItem getCatalogItem(int id)
     {
         return this.catalogItems.get(id);
+    }
+
+    public ArrayList<Integer> getIncluded()
+    {
+        return this.included;
     }
 
     public THashMap<Integer, CatalogPage> getChildPages()

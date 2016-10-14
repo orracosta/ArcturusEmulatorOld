@@ -32,4 +32,9 @@ ALTER TABLE  `users` CHANGE  `ip_register`  `ip_register` VARCHAR( 45 ) CHARACTE
                      CHANGE  `ip_current`   `ip_current`  VARCHAR( 45 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
 
 ALTER TABLE  `items` CHANGE  `z`  `z` DOUBLE( 10, 5 ) NOT NULL DEFAULT  '0.0';
+
+ALTER TABLE  `catalog_pages` ADD  `includes` VARCHAR( 32 ) NOT NULL DEFAULT  '' COMMENT  'Example usage: 1;2;3
+ This will include page 1, 2 and 3 in the current page.
+ Note that permissions are only used for the current entry.';
+
 #END DATABASE UPDATE: 1.0.8 -> 1.0.9
