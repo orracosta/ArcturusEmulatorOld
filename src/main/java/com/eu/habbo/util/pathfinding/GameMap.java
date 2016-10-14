@@ -1,6 +1,10 @@
 package com.eu.habbo.util.pathfinding;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.plugin.EventHandler;
+import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
+import com.eu.habbo.plugin.events.users.UserTakeStepEvent;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -9,6 +13,9 @@ import java.util.Queue;
 
 public class GameMap<T extends AbstractNode>
 {
+    public static double MAXIMUM_STEP_HEIGHT = 1.1;
+    public static boolean ALLOW_FALLING = true;
+
     private static final boolean CANMOVEDIAGONALY = true;
     private final T[][] nodes;
     private final int width;
@@ -95,7 +102,11 @@ public class GameMap<T extends AbstractNode>
                 if (!room.isLoaded())
                     continue;
 
-                if(!room.getLayout().tileWalkable((short)currentAdj.getX(), (short)currentAdj.getY()) || Math.abs(room.getLayout().getHeightAtSquare(current.getX(), current.getY()) - room.getLayout().getHeightAtSquare(currentAdj.getX(), currentAdj.getY())) > 1)
+                if(!room.getLayout().tileWalkable((short)currentAdj.getX(), (short)currentAdj.getY())) continue;
+
+                double height = (room.getLayout().getStackHeightAtSquare(currentAdj.getX(), currentAdj.getY()) - room.getLayout().getStackHeightAtSquare(current.getX(), current.getY()));
+
+                if ((!ALLOW_FALLING && height < -MAXIMUM_STEP_HEIGHT) || height > MAXIMUM_STEP_HEIGHT)
                     continue;
 
                 if (!openList.contains(currentAdj) || (currentAdj.getX() == newX && currentAdj.getY() == newY && (room.canSitOrLayAt(newX, newY))))
@@ -240,5 +251,12 @@ public class GameMap<T extends AbstractNode>
             throws Throwable
     {
         super.finalize();
+    }
+
+    @EventHandler
+    public static void configurationUpdated(EmulatorConfigUpdatedEvent event)
+    {
+        MAXIMUM_STEP_HEIGHT = Emulator.getConfig().getDouble("pathfinder.step.maximum.height", 1.1);
+        ALLOW_FALLING = Emulator.getConfig().getBoolean("pathfinder.step.allow.falling", true);
     }
 }

@@ -37,4 +37,7 @@ ALTER TABLE  `catalog_pages` ADD  `includes` VARCHAR( 32 ) NOT NULL DEFAULT  '' 
  This will include page 1, 2 and 3 in the current page.
  Note that permissions are only used for the current entry.';
 
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('pathfinder.step.maximum.height', '1.1');
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('pathfinder.step.allow.falling', '1');
+
 #END DATABASE UPDATE: 1.0.8 -> 1.0.9

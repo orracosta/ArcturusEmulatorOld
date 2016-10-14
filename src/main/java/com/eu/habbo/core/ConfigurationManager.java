@@ -1,6 +1,8 @@
 package com.eu.habbo.core;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.plugin.PluginManager;
+import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -64,6 +66,11 @@ public class ConfigurationManager
         }
 
         Emulator.getLogging().logStart("Configuration Manager -> Loaded!");
+
+        if (Emulator.getPluginManager() != null)
+        {
+            Emulator.getPluginManager().fireEvent(new EmulatorConfigUpdatedEvent());
+        }
     }
 
     /**
@@ -187,6 +194,36 @@ public class ConfigurationManager
         {
             Emulator.getLogging().logErrorLine(e);
         }
+        return defaultValue;
+    }
+
+    /**
+     * Gets the double value for a specific key.
+     * @param key The key to find the value for.
+     * @return The double value for the key. Returns 0 if not found.
+     */
+    public double getDouble(String key)
+    {
+        return getDouble(key, 0.0);
+    }
+
+    /**
+     * Gets the double value for a specific key.
+     * @param key The key to find the value for.
+     * @param defaultValue The value that will be returned when the key is not found.
+     * @return The double value for the key. Returns defaultValue when not found.
+     */
+    public double getDouble(String key, Double defaultValue)
+    {
+        try
+        {
+            return Double.parseDouble(getValue(key, defaultValue.toString()));
+        }
+        catch (Exception e)
+        {
+            Emulator.getLogging().logErrorLine(e);
+        }
+
         return defaultValue;
     }
 

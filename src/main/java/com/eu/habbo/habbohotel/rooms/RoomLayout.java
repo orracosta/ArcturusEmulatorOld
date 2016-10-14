@@ -209,6 +209,28 @@ public class RoomLayout
         return this.roomTiles[x][y].z;
     }
 
+    public double getStackHeightAtSquare(int x, int y)
+    {
+        if(x < 0 ||
+                y < 0 ||
+                x >= this.getMapSizeX() ||
+                y >= this.getMapSizeY())
+            return 0;
+
+        return this.roomTiles[x][y].getStackHeight();
+    }
+
+    public double getRelativeHeightAtSquare(int x, int y)
+    {
+        if(x < 0 ||
+                y < 0 ||
+                x >= this.getMapSizeX() ||
+                y >= this.getMapSizeY())
+            return 0;
+
+        return this.roomTiles[x][y].relativeHeight();
+    }
+
     public RoomTile getTile(short x, short y)
     {
         if (tileExists(x, y))
