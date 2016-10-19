@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.commands;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.Pet;
@@ -26,6 +27,10 @@ public class TestCommand extends Command
         if (!Emulator.debugging)
             return false;
 
+        if (params[1].equals("ach"))
+        {
+            AchievementManager.progressAchievement(gameClient.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("PetLover"), 1000);
+        }
         //Emulator.getGameEnvironment().getRoomManager().clearInactiveRooms();
         //gameClient.sendResponse(new RoomDataComposer(gameClient.getHabbo().getHabboInfo().getCurrentRoom(), gameClient.getHabbo(), true, false));
 

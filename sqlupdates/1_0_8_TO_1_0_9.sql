@@ -76,5 +76,9 @@ CREATE TABLE `guilds_forums_comments` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.succes.cmd_alert.cmd_connect_camera', 'Camera reconnected!');
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.keys.cmd_connect_camera', 'connectcamera;connect_camera;cameraconnect');
+
+ALTER TABLE  `permissions` ADD  `cmd_connect_camera` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_commands`;
 
 #END DATABASE UPDATE: 1.0.8 -> 1.0.9

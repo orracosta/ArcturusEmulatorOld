@@ -37,6 +37,7 @@ public class CommandHandler
         addCommand(new BotsCommand());
         addCommand(new ChatTypeCommand());
         addCommand(new CommandsCommand());
+        addCommand(new ConnectCameraCommand());
         addCommand(new ControlCommand());
         addCommand(new CoordsCommand());
         addCommand(new CreditsCommand());
