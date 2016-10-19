@@ -92,7 +92,10 @@ class FreezeHandleSnowballExplosion implements Runnable
                 }
             }
 
-            ((FreezeGamePlayer)this.thrownData.habbo.getHabboInfo().getGamePlayer()).addSnowball();
+            if (((FreezeGamePlayer)this.thrownData.habbo.getHabboInfo().getGamePlayer()) != null)
+            {
+                ((FreezeGamePlayer)this.thrownData.habbo.getHabboInfo().getGamePlayer()).addSnowball();
+            }
 
             Emulator.getThreading().run(new FreezeResetExplosionTiles(freezeTiles, this.thrownData.room), 1000);
         }

@@ -29,7 +29,7 @@ public class GameClient
     /**
      * The MAC Address of the connected client.
      */
-    private String machineId;
+    private String machineId = "";
 
     public GameClient(Channel channel)
     {
@@ -149,6 +149,10 @@ public class GameClient
 
     public void setMachineId(String machineId)
     {
+        if (machineId == null)
+        {
+            throw new NullPointerException("Cannot set machineID to NULL");
+        }
         this.machineId = machineId;
     }
 }

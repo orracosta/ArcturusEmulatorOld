@@ -35,6 +35,7 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
         if (ShutdownEmulator.timestamp > 0)
         {
             this.client.sendResponse(new HotelWillCloseInMinutesComposer((ShutdownEmulator.timestamp - Emulator.getIntUnixTimestamp()) / 60));
+            this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR).compose());
             return;
         }
 

@@ -498,7 +498,7 @@ public class ModToolManager
         PreparedStatement statement = null;
         try
         {
-            statement = Emulator.getDatabase().prepare("SELECT * FROM bans WHERE machine_id = ? AND type = 'machine' OR type = 'super') AND ban_expire > ? LIMIT 1");
+            statement = Emulator.getDatabase().prepare("SELECT * FROM bans WHERE machine_id = ? AND (type = 'machine' OR type = 'super') AND ban_expire > ? LIMIT 1");
             statement.setString(1, habbo.getMachineId());
             statement.setInt(2, Emulator.getIntUnixTimestamp());
             ResultSet set = statement.executeQuery();

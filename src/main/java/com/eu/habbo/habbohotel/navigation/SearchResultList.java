@@ -46,7 +46,7 @@ public class SearchResultList implements ISerialize
 
         if (!this.showInvisible)
         {
-            List<Room> toRemove = new ArrayList<>();
+            List<Room> toRemove = new ArrayList<Room>();
             for (Room room : this.rooms)
             {
                 if (room.getState() == RoomState.INVISIBLE)

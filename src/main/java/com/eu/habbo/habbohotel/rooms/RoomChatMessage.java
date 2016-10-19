@@ -147,13 +147,13 @@ public class RoomChatMessage implements Runnable, ISerialize
                     statement.setInt(2, 0);
                 statement.setString(3, this.unfilteredMessage);
                 statement.setInt(4, Emulator.getIntUnixTimestamp());
-                if(habbo.getHabboInfo().getCurrentRoom() != null)
+                if(this.habbo.getHabboInfo().getCurrentRoom() != null)
                 {
-                    statement.setInt(5, habbo.getHabboInfo().getCurrentRoom().getId());
+                    statement.setInt(5, this.habbo.getHabboInfo().getCurrentRoom().getId());
                 }
                 else
                 {
-                    statement.setInt(6, 0);
+                    statement.setInt(5, 0);
                 }
                 statement.executeUpdate();
                 statement.close();

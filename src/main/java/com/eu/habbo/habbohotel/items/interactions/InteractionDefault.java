@@ -97,24 +97,27 @@ public class InteractionDefault extends HabboItem
     {
         super.onWalkOn(roomUnit, room, objects);
 
-        if(this.getBaseItem().getEffectF() > 0 || this.getBaseItem().getEffectM() > 0)
+        if (roomUnit != null)
         {
-            if (roomUnit.getRoomUnitType().equals(RoomUnitType.USER))
+            if (this.getBaseItem().getEffectF() > 0 || this.getBaseItem().getEffectM() > 0)
             {
-                Habbo habbo = room.getHabbo(roomUnit);
-
-                if (habbo != null)
+                if (roomUnit.getRoomUnitType().equals(RoomUnitType.USER))
                 {
-                    if (habbo.getHabboInfo().getGender().equals(HabboGender.M) && this.getBaseItem().getEffectM() > 0 && habbo.getRoomUnit().getEffectId() != this.getBaseItem().getEffectM())
-                    {
-                        room.giveEffect(habbo, this.getBaseItem().getEffectM());
-                        return;
-                    }
+                    Habbo habbo = room.getHabbo(roomUnit);
 
-                    if (habbo.getHabboInfo().getGender().equals(HabboGender.F) && this.getBaseItem().getEffectF() > 0 && habbo.getRoomUnit().getEffectId() != this.getBaseItem().getEffectF())
+                    if (habbo != null)
                     {
-                        room.giveEffect(habbo, this.getBaseItem().getEffectF());
-                        return;
+                        if (habbo.getHabboInfo().getGender().equals(HabboGender.M) && this.getBaseItem().getEffectM() > 0 && habbo.getRoomUnit().getEffectId() != this.getBaseItem().getEffectM())
+                        {
+                            room.giveEffect(habbo, this.getBaseItem().getEffectM());
+                            return;
+                        }
+
+                        if (habbo.getHabboInfo().getGender().equals(HabboGender.F) && this.getBaseItem().getEffectF() > 0 && habbo.getRoomUnit().getEffectId() != this.getBaseItem().getEffectF())
+                        {
+                            room.giveEffect(habbo, this.getBaseItem().getEffectF());
+                            return;
+                        }
                     }
                 }
             }
@@ -126,24 +129,27 @@ public class InteractionDefault extends HabboItem
     {
         super.onWalkOff(roomUnit, room, objects);
 
-        if(this.getBaseItem().getEffectF() > 0 || this.getBaseItem().getEffectM() > 0)
+        if (roomUnit != null)
         {
-            if (roomUnit.getRoomUnitType().equals(RoomUnitType.USER))
+            if (this.getBaseItem().getEffectF() > 0 || this.getBaseItem().getEffectM() > 0)
             {
-                Habbo habbo = room.getHabbo(roomUnit);
-
-                if (habbo != null)
+                if (roomUnit.getRoomUnitType().equals(RoomUnitType.USER))
                 {
-                    if (habbo.getHabboInfo().getGender().equals(HabboGender.M) && this.getBaseItem().getEffectM() > 0)
-                    {
-                        room.giveEffect(habbo, 0);
-                        return;
-                    }
+                    Habbo habbo = room.getHabbo(roomUnit);
 
-                    if (habbo.getHabboInfo().getGender().equals(HabboGender.F) && this.getBaseItem().getEffectF() > 0)
+                    if (habbo != null)
                     {
-                        room.giveEffect(habbo, 0);
-                        return;
+                        if (habbo.getHabboInfo().getGender().equals(HabboGender.M) && this.getBaseItem().getEffectM() > 0)
+                        {
+                            room.giveEffect(habbo, 0);
+                            return;
+                        }
+
+                        if (habbo.getHabboInfo().getGender().equals(HabboGender.F) && this.getBaseItem().getEffectF() > 0)
+                        {
+                            room.giveEffect(habbo, 0);
+                            return;
+                        }
                     }
                 }
             }

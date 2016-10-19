@@ -4,7 +4,9 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.RoomUnitType;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.habbohotel.users.HabboGender;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.UpdateStackHeightComposer;
@@ -53,8 +55,11 @@ public class InteractionMultiHeight extends HabboItem
     {
         super.onClick(client, room, objects);
 
-        if (!room.hasRights(client.getHabbo()))
-            return;
+        if (client != null)
+        {
+            if (!room.hasRights(client.getHabbo()))
+                return;
+        }
 
         if (objects.length > 0)
         {
@@ -109,11 +114,63 @@ public class InteractionMultiHeight extends HabboItem
     public void onWalkOn(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
         super.onWalkOn(roomUnit, room, objects);
+
+        if (roomUnit != null)
+        {
+            if (this.getBaseItem().getEffectF() > 0 || this.getBaseItem().getEffectM() > 0)
+            {
+                if (roomUnit.getRoomUnitType().equals(RoomUnitType.USER))
+                {
+                    Habbo habbo = room.getHabbo(roomUnit);
+
+                    if (habbo != null)
+                    {
+                        if (habbo.getHabboInfo().getGender().equals(HabboGender.M) && this.getBaseItem().getEffectM() > 0 && habbo.getRoomUnit().getEffectId() != this.getBaseItem().getEffectM())
+                        {
+                            room.giveEffect(habbo, this.getBaseItem().getEffectM());
+                            return;
+                        }
+
+                        if (habbo.getHabboInfo().getGender().equals(HabboGender.F) && this.getBaseItem().getEffectF() > 0 && habbo.getRoomUnit().getEffectId() != this.getBaseItem().getEffectF())
+                        {
+                            room.giveEffect(habbo, this.getBaseItem().getEffectF());
+                            return;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override
     public void onWalkOff(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
         super.onWalkOff(roomUnit, room, objects);
+
+        if (roomUnit != null)
+        {
+            if (this.getBaseItem().getEffectF() > 0 || this.getBaseItem().getEffectM() > 0)
+            {
+                if (roomUnit.getRoomUnitType().equals(RoomUnitType.USER))
+                {
+                    Habbo habbo = room.getHabbo(roomUnit);
+
+                    if (habbo != null)
+                    {
+                        if (habbo.getHabboInfo().getGender().equals(HabboGender.M) && this.getBaseItem().getEffectM() > 0)
+                        {
+                            room.giveEffect(habbo, 0);
+                            return;
+                        }
+
+                        if (habbo.getHabboInfo().getGender().equals(HabboGender.F) && this.getBaseItem().getEffectF() > 0)
+                        {
+                            room.giveEffect(habbo, 0);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

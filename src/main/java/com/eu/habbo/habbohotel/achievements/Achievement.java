@@ -66,6 +66,11 @@ public class Achievement
 
         for(AchievementLevel level : this.levels.values())
         {
+            if (l == null && level.level == 1)
+            {
+                l = level;
+            }
+
             if (progress >= level.progress)
             {
                 if (l != null)

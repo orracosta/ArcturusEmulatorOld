@@ -94,7 +94,7 @@ public class Incoming
     public static final int TradeCancelOfferItemEvent = 1033;//373
     public static final int TriggerDiceEvent = 1182;//987
     public static final int GetPollDataEvent = 2580;//1960
-    public static final int MachineIDEvent = -1;//512
+    public static final int MachineIDEvent = 1471;//512
     public static final int RequestDiscountEvent = 1294;//3794
     public static final int RequestFriendRequestEvent = 2485;//275
     public static final int RoomSettingsSaveEvent = 2074;//2384

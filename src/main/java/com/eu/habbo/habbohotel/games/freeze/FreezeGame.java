@@ -138,16 +138,16 @@ public class FreezeGame extends Game
 
         for(int i = 0; i < 4; i++)
         {
-            RoomTile t = room.getLayout().getTile(x, y);
+            RoomTile t = this.room.getLayout().getTile(x, y);
 
             for(int j = 0; j < radius; j++)
             {
-                t = PathFinder.getSquareInFront(room.getLayout(), t.x, t.y, i * 2);
+                t = PathFinder.getSquareInFront(this.room.getLayout(), t.x, t.y, i * 2);
 
-                if(t.x < 0 || t.y < 0 || t.x >= this.room.getLayout().getMapSizeX() || t.y >= this.room.getLayout().getMapSizeY())
+                if(t == null || t.x < 0 || t.y < 0 || t.x >= this.room.getLayout().getMapSizeX() || t.y >= this.room.getLayout().getMapSizeY())
                     continue;
 
-                tiles.add(room.getLayout().getTile(t.x, t.y));
+                tiles.add(t);
             }
         }
 

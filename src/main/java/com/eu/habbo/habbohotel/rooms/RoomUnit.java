@@ -432,10 +432,13 @@ public class RoomUnit
 
     public void setLocation(RoomTile location)
     {
-        this.startLocation      = location;
-        this.previousLocation   = location;
-        this.currentLocation    = location;
-        this.goalLocation       = location;
+        if (location != null)
+        {
+            this.startLocation    = location;
+            this.previousLocation = location;
+            this.currentLocation  = location;
+            this.goalLocation     = location;
+        }
     }
 
     public void setCurrentLocation(RoomTile location)

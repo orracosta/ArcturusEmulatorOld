@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.messages.outgoing.achievements.AchievementProgressComposer;
 import com.eu.habbo.messages.outgoing.achievements.AchievementUnlockedComposer;
+import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDataComposer;
 import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
 import com.eu.habbo.messages.outgoing.users.UserBadgesComposer;
 import com.eu.habbo.plugin.Event;
@@ -136,7 +137,7 @@ public class AchievementManager
         if(oldLevel == null)
             return;
 
-        if(oldLevel.level == achievement.levels.size() && currentProgress == oldLevel.progress)
+        if(oldLevel.level == achievement.levels.size() && currentProgress == oldLevel.progress) //Maximum achievement gotten.
             return;
 
         habbo.getHabboStats().setProgress(achievement, currentProgress + amount);
@@ -187,6 +188,11 @@ public class AchievementManager
             }
 
             habbo.getHabboStats().addAchievementScore(newLevel.points);
+
+            if (habbo.getHabboInfo().getCurrentRoom() != null)
+            {
+                habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserDataComposer(habbo).compose());
+            }
         }
     }
 

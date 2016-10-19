@@ -38,7 +38,7 @@ public abstract class CatalogPage implements Comparable<CatalogPage>, ISerialize
     protected TIntArrayList offerIds = new TIntArrayList();
     protected THashMap<Integer, CatalogPage> childPages = new THashMap<Integer, CatalogPage>();;
     private TIntObjectMap<CatalogItem> catalogItems = TCollections.synchronizedMap(new TIntObjectHashMap<CatalogItem>());
-    private ArrayList<Integer> included = new ArrayList<>();
+    private ArrayList<Integer> included = new ArrayList<Integer>();
 
     public CatalogPage(ResultSet set) throws SQLException
     {

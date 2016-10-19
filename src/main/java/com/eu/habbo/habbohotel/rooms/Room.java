@@ -61,6 +61,7 @@ import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
 import java.awt.*;
+import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -3977,12 +3978,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void removeRights(int userId)
     {
-        this.sendComposer(new RoomRemoveRightsListComposer(this, userId).compose());
-
         Habbo habbo = this.getHabbo(userId);
 
         if(Emulator.getPluginManager().fireEvent(new UserRightsTakenEvent(this.getHabbo(this.getOwnerId()), userId, habbo)).isCancelled())
             return;
+
+        this.sendComposer(new RoomRemoveRightsListComposer(this, userId).compose());
 
         if(this.rights.remove(userId))
         {

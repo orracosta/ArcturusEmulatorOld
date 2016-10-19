@@ -23,7 +23,7 @@ public class GuildAcceptMembershipEvent extends MessageHandler
 
         Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(guildId);
 
-        if(guild == null || guild.getOwnerId() != this.client.getHabbo().getHabboInfo().getId() && !this.client.getHabbo().hasPermission("acc_guild_admin"))
+        if(guild == null || (guild.getOwnerId() != this.client.getHabbo().getHabboInfo().getId() && !Emulator.getGameEnvironment().getGuildManager().getOnlyAdmins(guild).containsKey(this.client.getHabbo().getHabboInfo().getId()) && !this.client.getHabbo().hasPermission("acc_guild_admin")))
             return;
 
         Emulator.getGameEnvironment().getGuildManager().joinGuild(guild, this.client, userId, true);
