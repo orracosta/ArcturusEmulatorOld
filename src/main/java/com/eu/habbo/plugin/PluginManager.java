@@ -262,6 +262,7 @@ public class PluginManager
             this.methods.add(TagGame.class.getMethod("onUserLookAtPoint", RoomUnitLookAtPointEvent.class));
             this.methods.add(TagGame.class.getMethod("onUserWalkEvent", UserTakeStepEvent.class));
             this.methods.add(GameMap.class.getMethod("configurationUpdated", EmulatorConfigUpdatedEvent.class));
+            this.methods.add(FreezeGame.class.getMethod("onConfigurationUpdated", EmulatorConfigUpdatedEvent.class));
         }
         catch (NoSuchMethodException e)
         {

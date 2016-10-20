@@ -21,6 +21,7 @@ import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.plugin.EventHandler;
+import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
 import com.eu.habbo.plugin.events.users.UserTakeStepEvent;
 import com.eu.habbo.threading.runnables.freeze.FreezeClearEffects;
 import com.eu.habbo.threading.runnables.freeze.FreezeThrowSnowball;
@@ -34,17 +35,17 @@ import java.util.Map;
 public class FreezeGame extends Game
 {
     public static final int effectId = 40;
-    public static final int POWER_UP_POINTS = Emulator.getConfig().getInt("hotel.freeze.points.effect");
-    public static final int POWER_UP_CHANCE = Emulator.getConfig().getInt("hotel.freeze.powerup.chance");
-    public static final int POWER_UP_PROTECT_TIME = Emulator.getConfig().getInt("hotel.freeze.powerup.protection.time");
-    public static final int DESTROY_BLOCK_POINTS = Emulator.getConfig().getInt("hotel.freeze.points.block");
-    public static final int FREEZE_TIME = Emulator.getConfig().getInt("hotel.freeze.onfreeze.time.frozen");
-    public static final int FREEZE_LOOSE_SNOWBALL = Emulator.getConfig().getInt("hotel.freeze.onfreeze.loose.snowballs");
-    public static final int FREEZE_LOOSE_BOOST = Emulator.getConfig().getInt("hotel.freeze.onfreeze.loose.explosionboost");
-    public static final int MAX_LIVES = Emulator.getConfig().getInt("hotel.freeze.powerup.max.lives");
-    public static final int MAX_SNOWBALLS = Emulator.getConfig().getInt("hotel.freeze.powerup.max.snowballs");
-    public static final int FREEZE_LOOSE_POINTS = Emulator.getConfig().getInt("hotel.freeze.points.freeze");
-    public static final boolean POWERUP_STACK = Emulator.getConfig().getBoolean("hotel.freeze.powerup.protection.stack");
+    public static int POWER_UP_POINTS;
+    public static int POWER_UP_CHANCE;
+    public static int POWER_UP_PROTECT_TIME;
+    public static int DESTROY_BLOCK_POINTS;
+    public static int FREEZE_TIME;
+    public static int FREEZE_LOOSE_SNOWBALL;
+    public static int FREEZE_LOOSE_BOOST;
+    public static int MAX_LIVES;
+    public static int MAX_SNOWBALLS;
+    public static int FREEZE_LOOSE_POINTS;
+    public static boolean POWERUP_STACK;
 
     public HabboItem exitTile;
     private int timeLeft;
@@ -136,10 +137,12 @@ public class FreezeGame extends Game
     {
         THashSet<RoomTile> tiles = new THashSet<RoomTile>();
 
+        RoomTile t = this.room.getLayout().getTile(x, y);
+
+        tiles.add(t);
+
         for(int i = 0; i < 4; i++)
         {
-            RoomTile t = this.room.getLayout().getTile(x, y);
-
             for(int j = 0; j < radius; j++)
             {
                 t = PathFinder.getSquareInFront(this.room.getLayout(), t.x, t.y, i * 2);
@@ -395,5 +398,21 @@ public class FreezeGame extends Game
                 }
             }
         }
+    }
+
+    @EventHandler
+    public static void onConfigurationUpdated(EmulatorConfigUpdatedEvent event)
+    {
+        POWER_UP_POINTS = Emulator.getConfig().getInt("hotel.freeze.points.effect");
+        POWER_UP_CHANCE = Emulator.getConfig().getInt("hotel.freeze.powerup.chance");
+        POWER_UP_PROTECT_TIME = Emulator.getConfig().getInt("hotel.freeze.powerup.protection.time");
+        DESTROY_BLOCK_POINTS = Emulator.getConfig().getInt("hotel.freeze.points.block");
+        FREEZE_TIME = Emulator.getConfig().getInt("hotel.freeze.onfreeze.time.frozen");
+        FREEZE_LOOSE_SNOWBALL = Emulator.getConfig().getInt("hotel.freeze.onfreeze.loose.snowballs");
+        FREEZE_LOOSE_BOOST = Emulator.getConfig().getInt("hotel.freeze.onfreeze.loose.explosionboost");
+        MAX_LIVES = Emulator.getConfig().getInt("hotel.freeze.powerup.max.lives");
+        MAX_SNOWBALLS = Emulator.getConfig().getInt("hotel.freeze.powerup.max.snowballs");
+        FREEZE_LOOSE_POINTS = Emulator.getConfig().getInt("hotel.freeze.points.freeze");
+        POWERUP_STACK = Emulator.getConfig().getBoolean("hotel.freeze.powerup.protection.stack");
     }
 }
