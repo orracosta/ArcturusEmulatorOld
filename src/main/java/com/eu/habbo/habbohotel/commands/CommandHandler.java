@@ -111,10 +111,7 @@ public class CommandHandler
         addCommand(new UpdateWordFilterCommand());
         addCommand(new UserInfoCommand());
 
-        if (Emulator.debugging)
-        {
-            addCommand(new TestCommand());
-        }
+        addCommand(new TestCommand());
     }
 
     /**

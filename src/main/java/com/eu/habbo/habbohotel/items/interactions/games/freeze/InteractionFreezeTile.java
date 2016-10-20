@@ -38,11 +38,15 @@ public class InteractionFreezeTile extends HabboItem
     @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
-        FreezeGame game = (FreezeGame) room.getGame(FreezeGame.class);
+        if (client.getHabbo().getRoomUnit().getCurrentLocation().x == this.getX() && client.getHabbo().getRoomUnit().getCurrentLocation().y == this.getY())
+        {
+            FreezeGame game = (FreezeGame) room.getGame(FreezeGame.class);
 
-        if(game != null)
-            game.throwBall(client.getHabbo(), this);
+            if (game != null)
+                game.throwBall(client.getHabbo(), this);
+        }
     }
+
     @Override
     public void onWalk(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
