@@ -81,4 +81,6 @@ INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.keys.cmd_connect
 
 ALTER TABLE  `permissions` ADD  `cmd_connect_camera` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_commands`;
 
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.error.cmd_disconnect.higher_rank', 'The Habbo you wanted to disconnect is more important than you are.');
+
 #END DATABASE UPDATE: 1.0.8 -> 1.0.9

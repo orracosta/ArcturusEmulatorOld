@@ -37,6 +37,12 @@ public class DisconnectCommand extends Command
             return true;
         }
 
+        if (target.getHabboInfo().getRank() > gameClient.getHabbo().getHabboInfo().getRank())
+        {
+            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_disconnect.higher_rank"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            return true;
+        }
+
         target.getClient().getChannel().close();
 
         gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_disconnect.disconnected").replace("%user%", params[1]), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
