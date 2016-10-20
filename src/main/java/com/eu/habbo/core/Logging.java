@@ -77,12 +77,12 @@ public class Logging
 
         try
         {
-            packetsWriter = new PrintWriter(new FileWriter(packets));
-            packetsUndefinedWriter = new PrintWriter(new FileWriter(packetsUndefined));
-            errorsPacketsWriter = new PrintWriter(new FileWriter(errorsPackets));
-            errorsSQLWriter = new PrintWriter(new FileWriter(errorsSQL));
-            errorsRuntimeWriter = new PrintWriter(new FileWriter(errorsRuntime));
-            debugFileWriter = new PrintWriter(new FileWriter(debugFile));
+            packetsWriter = new PrintWriter(new FileWriter(packets, true));
+            packetsUndefinedWriter = new PrintWriter(new FileWriter(packetsUndefined, true));
+            errorsPacketsWriter = new PrintWriter(new FileWriter(errorsPackets, true));
+            errorsSQLWriter = new PrintWriter(new FileWriter(errorsSQL, true));
+            errorsRuntimeWriter = new PrintWriter(new FileWriter(errorsRuntime, true));
+            debugFileWriter = new PrintWriter(new FileWriter(debugFile, true));
         }
         catch (IOException e)
         {
