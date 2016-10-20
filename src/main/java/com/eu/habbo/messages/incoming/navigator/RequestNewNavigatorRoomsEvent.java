@@ -214,7 +214,7 @@ public class RequestNewNavigatorRoomsEvent extends MessageHandler
 
             if (category != null)
             {
-                resultLists.add(new SearchResultList(1, view, view, SearchAction.BACK, SearchMode.LIST, false, Emulator.getGameEnvironment().getRoomManager().getPopularRooms(50, category.getId()), true, true));
+                resultLists.add(new SearchResultList(1, view, view, SearchAction.BACK, SearchMode.LIST, false, Emulator.getGameEnvironment().getRoomManager().getPopularRooms(50, category.getId()), true, false));
             }
 
             filter = Emulator.getGameEnvironment().getNavigatorManager().filters.get("hotel_view");
