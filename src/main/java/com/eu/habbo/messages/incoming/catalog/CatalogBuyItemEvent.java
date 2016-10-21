@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.catalog.CatalogPage;
 import com.eu.habbo.habbohotel.catalog.layouts.ClubBuyLayout;
 import com.eu.habbo.habbohotel.catalog.layouts.RecentPurchasesLayout;
 import com.eu.habbo.habbohotel.catalog.layouts.RoomBundleLayout;
+import com.eu.habbo.habbohotel.catalog.layouts.VipBuyLayout;
 import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.*;
@@ -122,7 +123,7 @@ public class CatalogBuyItemEvent extends MessageHandler
             return;
         }
 
-        if(page instanceof ClubBuyLayout)
+        if(page instanceof ClubBuyLayout || page instanceof VipBuyLayout)
         {
             CatalogItem item = Emulator.getGameEnvironment().getCatalogManager().getClubItem(itemId);
 
@@ -138,19 +139,19 @@ public class CatalogBuyItemEvent extends MessageHandler
 
             for(int i = 0; i < count; i++)
             {
-                String[] data = item.getName().split("_");
+                String[] data = item.getName().replace("_VIP_", "_").toLowerCase().split("_");
 
-                if(data[2].equalsIgnoreCase("day"))
+                if(data[3].equalsIgnoreCase("day"))
                 {
-                    totalDays = Integer.valueOf(data[3]);
+                    totalDays = Integer.valueOf(data[2]);
                 }
-                else if(data[2].equalsIgnoreCase("month"))
+                else if(data[3].equalsIgnoreCase("month"))
                 {
-                    totalDays = Integer.valueOf(data[3]) * 31;
+                    totalDays = Integer.valueOf(data[2]) * 31;
                 }
-                else if(data[2].equalsIgnoreCase("year"))
+                else if(data[3].equalsIgnoreCase("year"))
                 {
-                    totalDays = Integer.valueOf(data[3]) * 365;
+                    totalDays = Integer.valueOf(data[2]) * 365;
                 }
 
                 totalCredits += item.getCredits();
