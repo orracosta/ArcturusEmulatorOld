@@ -13,7 +13,7 @@ public class ForwardUser extends RCONMessage<ForwardUser.ForwardUserJSON>
     }
 
     @Override
-    public void handle(ForwardUserJSON object)
+    public void handle(Gson gson, ForwardUserJSON object)
     {
         Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.user_id);
 

@@ -2,11 +2,7 @@ package com.eu.habbo.messages.rcon;
 
 import java.lang.reflect.Type;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
+import com.google.gson.*;
 
 public abstract class RCONMessage<T>
 {
@@ -27,10 +23,12 @@ public abstract class RCONMessage<T>
     }
 
     /**
+     *
+     * @param gson
      * @param json The mapped JSON object.
      * @return A string that gets send to the RCON Client. Can be anything (JSON / XML) whatever you want.
      */
-    public abstract void handle(T json);
+    public abstract void handle(Gson gson, T json);
 
     public int status = STATUS_OK;
     public String message = "";

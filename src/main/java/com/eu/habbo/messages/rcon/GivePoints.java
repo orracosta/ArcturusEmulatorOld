@@ -15,7 +15,7 @@ public class GivePoints extends RCONMessage<GivePoints.JSONGivePoints>
     }
 
     @Override
-    public void handle(JSONGivePoints object)
+    public void handle(Gson gson, JSONGivePoints object)
     {
         Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.username);
 

@@ -15,7 +15,7 @@ public class GiveCredits extends RCONMessage<GiveCredits.JSONGiveCredits>
     }
 
     @Override
-    public void handle(JSONGiveCredits object)
+    public void handle(Gson gson, JSONGiveCredits object)
     {
         Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.username);
 

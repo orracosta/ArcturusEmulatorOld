@@ -1,9 +1,7 @@
 package com.eu.habbo.messages.rcon;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.messages.outgoing.users.UserClubComposer;
 import com.eu.habbo.messages.outgoing.users.UserPermissionsComposer;
 import com.google.gson.Gson;
 
@@ -17,7 +15,7 @@ public class SetRank extends RCONMessage<SetRank.JSONSetRank>
     }
 
     @Override
-    public void handle(JSONSetRank object)
+    public void handle(Gson gson, JSONSetRank object)
     {
         Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.username);
 

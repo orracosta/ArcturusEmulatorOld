@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
+import com.google.gson.Gson;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +21,7 @@ public class GiveBadge extends RCONMessage<GiveBadge.GiveBadgeJSON>
     }
 
     @Override
-    public void handle(GiveBadgeJSON json)
+    public void handle(Gson gson, GiveBadgeJSON json)
     {
         if (json.username.isEmpty() && json.userid == -1)
         {

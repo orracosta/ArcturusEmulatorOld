@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
+import com.google.gson.Gson;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +19,7 @@ public class SendGift extends RCONMessage<SendGift.SendGiftJSON>
     }
 
     @Override
-    public void handle(SendGiftJSON json)
+    public void handle(Gson gson, SendGiftJSON json)
     {
         if (json.userid < 0 && json.username.isEmpty())
         {

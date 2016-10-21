@@ -15,7 +15,7 @@ public class GivePixels extends RCONMessage<GivePixels.JSONGivePixels>
     }
 
     @Override
-    public void handle(JSONGivePixels object)
+    public void handle(Gson gson, JSONGivePixels object)
     {
         Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.username);
 

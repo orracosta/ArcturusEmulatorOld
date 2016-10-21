@@ -1,10 +1,8 @@
 package com.eu.habbo.messages.rcon;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
-import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
+import com.google.gson.Gson;
 
 public class DisconnectUser extends RCONMessage<DisconnectUser.DisconnectUserJSON>
 {
@@ -14,7 +12,7 @@ public class DisconnectUser extends RCONMessage<DisconnectUser.DisconnectUserJSO
     }
 
     @Override
-    public void handle(DisconnectUserJSON json)
+    public void handle(Gson gson, DisconnectUserJSON json)
     {
         Habbo target = null;
 

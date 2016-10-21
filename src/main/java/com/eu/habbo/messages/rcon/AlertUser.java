@@ -13,7 +13,7 @@ public class AlertUser extends RCONMessage<AlertUser.JSONAlertUser>
     }
 
     @Override
-    public void handle(JSONAlertUser object)
+    public void handle(Gson gson, JSONAlertUser object)
     {
         Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.username);
 

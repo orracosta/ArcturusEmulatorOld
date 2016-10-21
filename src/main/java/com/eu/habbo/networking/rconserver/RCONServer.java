@@ -52,7 +52,6 @@ public class RCONServer
         this.addRCONMessage("sendgift",             SendGift.class);
         this.addRCONMessage("setrank",              SetRank.class);
         this.addRCONMessage("updatewordfilter",     UpdateWordfilter.class);
-
     }
 
     public void initialise()
@@ -109,9 +108,15 @@ public class RCONServer
             {
                 RCONMessage rcon = message.getDeclaredConstructor().newInstance();
                 Gson gson = this.gsonBuilder.create();
-                rcon.handle(rcon.type.cast(gson.fromJson(body, rcon.type)));
-                System.out.println("[" + Logging.ANSI_BLUE + "RCON" + Logging.ANSI_RESET + "] Handled RCON Message: " + message.getSimpleName());
-                result = gson.toJson(rcon, RCONMessage.class);
+                rcon.handle(gson, rcon.type.cast(gson.fromJson(body, rcon.type)));
+                System.out.print("[" + Logging.ANSI_BLUE + "RCON" + Logging.ANSI_RESET + "] Handled RCON Message: " + message.getSimpleName());
+                result = gson.toJson(rcon, message);
+
+                if (Emulator.debugging)
+                {
+                    System.out.println(" [" + Logging.ANSI_BLUE + "DATA" + Logging.ANSI_RESET + "]" + result);
+                }
+
                 return result;
             }
             catch (Exception ex)

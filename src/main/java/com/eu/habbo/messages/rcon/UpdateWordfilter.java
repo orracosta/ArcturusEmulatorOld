@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.rcon;
 
 import com.eu.habbo.Emulator;
+import com.google.gson.Gson;
 
 public class UpdateWordfilter extends RCONMessage<UpdateWordfilter.WordFilterJSON>
 {
@@ -10,7 +11,7 @@ public class UpdateWordfilter extends RCONMessage<UpdateWordfilter.WordFilterJSO
     }
 
     @Override
-    public void handle(WordFilterJSON object)
+    public void handle(Gson gson, WordFilterJSON object)
     {
         Emulator.getGameEnvironment().getWordFilter().reload();
     }
