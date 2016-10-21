@@ -677,6 +677,7 @@ public class GuildManager
             if(!this.guilds.containsKey(guildId))
                 this.guilds.put(guildId, g);
         }
+
         return g;
     }
 

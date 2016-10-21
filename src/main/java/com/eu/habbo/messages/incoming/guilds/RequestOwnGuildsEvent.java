@@ -18,7 +18,12 @@ public class RequestOwnGuildsEvent extends MessageHandler
             if(i == 0)
                 continue;
 
-            guilds.add(Emulator.getGameEnvironment().getGuildManager().getGuild(i));
+            Guild g = Emulator.getGameEnvironment().getGuildManager().getGuild(i);
+
+            if (g != null)
+            {
+                guilds.add(g);
+            }
         }
 
         this.client.sendResponse(new GuildListComposer(guilds, this.client.getHabbo()));
