@@ -18,6 +18,11 @@ public enum CatalogPageLayouts
     guilds,
 
     /**
+     * The page that allows you to buy a forum for your Guild.
+     */
+    guild_forum,
+
+    /**
      * The page with information about duckets.
      */
     info_duckets,
@@ -26,6 +31,16 @@ public enum CatalogPageLayouts
      * The page with information about rentables.
      */
     info_rentables,
+
+    /**
+     * The page with information about loyalty programme.
+     */
+    info_loyalty,
+
+    /**
+     * The page you can buy VIP with loyalty points.
+     */
+    loyalty_vip_buy,
 
     /**
      * The page where you can buy bots from.
@@ -157,8 +172,8 @@ public enum CatalogPageLayouts
      */
     root,
 
-    /*
-        Testing
+    /**
+     * The page where you can buy Habbo VIP from.
      */
-    productpage1
+    vip_buy
 }

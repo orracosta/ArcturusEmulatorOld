@@ -6,9 +6,9 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TrophiesLayout extends CatalogPage {
-
-    public TrophiesLayout(ResultSet set) throws SQLException
+public class GuildForumLayout extends CatalogPage
+{
+    public GuildForumLayout(ResultSet set) throws SQLException
     {
         super(set);
     }
@@ -16,11 +16,10 @@ public class TrophiesLayout extends CatalogPage {
     @Override
     public void serialize(ServerMessage message)
     {
-        message.appendString("trophies");
-        message.appendInt32(3);
+        message.appendString("guild_forum");
+        message.appendInt32(2);
         message.appendString(super.getHeaderImage());
         message.appendString(super.getTeaserImage());
-        message.appendString(super.getSpecialImage());
         message.appendInt32(3);
         message.appendString(super.getTextOne());
         message.appendString(super.getTextDetails());

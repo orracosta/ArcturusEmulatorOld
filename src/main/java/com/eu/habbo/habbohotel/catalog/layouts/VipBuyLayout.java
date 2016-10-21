@@ -6,9 +6,9 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TrophiesLayout extends CatalogPage {
-
-    public TrophiesLayout(ResultSet set) throws SQLException
+public class VipBuyLayout extends CatalogPage
+{
+    public VipBuyLayout(ResultSet set) throws SQLException
     {
         super(set);
     }
@@ -16,7 +16,7 @@ public class TrophiesLayout extends CatalogPage {
     @Override
     public void serialize(ServerMessage message)
     {
-        message.appendString("trophies");
+        message.appendString("vip_buy");
         message.appendInt32(3);
         message.appendString(super.getHeaderImage());
         message.appendString(super.getTeaserImage());

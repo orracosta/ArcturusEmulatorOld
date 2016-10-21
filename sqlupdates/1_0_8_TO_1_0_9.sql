@@ -83,4 +83,12 @@ ALTER TABLE  `permissions` ADD  `cmd_connect_camera` ENUM(  '0',  '1' ) NOT NULL
 
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.error.cmd_disconnect.higher_rank', 'The Habbo you wanted to disconnect is more important than you are.');
 
+ALTER TABLE  `catalog_pages` CHANGE  `page_layout`  `page_layout` ENUM(
+'default_3x3',  'club_buy',  'club_gift',  'frontpage',  'spaces',  'recycler',  'recycler_info',
+'recycler_prizes',  'trophies',  'marketplace',  'marketplace_own_items',  'pets',
+'spaces_new',  'soundmachine',  'guilds',  'guild_furni',  'info_duckets',  'info_rentables',
+'info_pets', 'roomads',  'single_bundle',  'sold_ltd_items',  'badge_display',  'bots',  'pets2',
+'pets3',  'room_bundle',  'recent_purchases',  'pets2',  'pets3',  'default_3x3_color_grouping',
+'guild_forum',  'vip_buy',  'loyalty_info',  'loyalty_vip_buy',  'collectibles' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT  'default_3x3'
+
 #END DATABASE UPDATE: 1.0.8 -> 1.0.9

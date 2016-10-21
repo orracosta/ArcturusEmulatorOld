@@ -6,9 +6,9 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ClubBuyLayout extends CatalogPage
+public class InfoLoyaltyLayout extends CatalogPage
 {
-    public ClubBuyLayout(ResultSet set) throws SQLException
+    public InfoLoyaltyLayout(ResultSet set) throws SQLException
     {
         super(set);
     }
@@ -16,10 +16,11 @@ public class ClubBuyLayout extends CatalogPage
     @Override
     public void serialize(ServerMessage message)
     {
-        message.appendString("club_buy");
-        message.appendInt32(2);
-        message.appendString(super.getHeaderImage());
-        message.appendString(super.getTeaserImage());
+        message.appendString("info_loyalty");
+        message.appendInt32(1);
+        message.appendString(getHeaderImage());
+        message.appendInt32(1);
+        message.appendString(getTextOne());
         message.appendInt32(0);
     }
 }

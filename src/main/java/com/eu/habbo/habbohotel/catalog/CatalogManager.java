@@ -119,17 +119,20 @@ public class CatalogManager
                     case info_duckets:                  put(layout.name().toLowerCase(), InfoDucketsLayout.class); break;
                     case info_pets:                     put(layout.name().toLowerCase(), InfoPetsLayout.class); break;
                     case info_rentables:                put(layout.name().toLowerCase(), InfoRentablesLayout.class); break;
+                    case info_loyalty:                  put(layout.name().toLowerCase(), InfoLoyaltyLayout.class); break;
+                    case loyalty_vip_buy:               put(layout.name().toLowerCase(), LoyaltyVipBuyLayout.class); break;
                     case guilds:                        put(layout.name().toLowerCase(), GuildFrontpageLayout.class); break;
                     case guild_furni:                   put(layout.name().toLowerCase(), GuildFurnitureLayout.class); break;
+                    case guild_forum:                   put(layout.name().toLowerCase(), GuildForumLayout.class); break;
                     case pets:                          put(layout.name().toLowerCase(), PetsLayout.class); break;
                     case pets2:                         put(layout.name().toLowerCase(), Pets2Layout.class); break;
                     case pets3:                         put(layout.name().toLowerCase(), Pets3Layout.class); break;
-                    case productpage1:                  put(layout.name().toLowerCase(), ProductPage1Layout.class); break;
                     case soundmachine:                  put(layout.name().toLowerCase(), TraxLayout.class); break;
                     case default_3x3_color_grouping:    put(layout.name().toLowerCase(), ColorGroupingLayout.class); break;
                     case recent_purchases:              put(layout.name().toLowerCase(), RecentPurchasesLayout.class); break;
                     case room_bundle:                   put(layout.name().toLowerCase(), RoomBundleLayout.class); break;
                     case petcustomization:              put(layout.name().toLowerCase(), PetCustomizationLayout.class); break;
+                    case vip_buy:                       put(layout.name().toLowerCase(), VipBuyLayout.class); break;
                     case default_3x3:
                     default:                            put("default_3x3", Default_3x3Layout.class); break;
                 }
