@@ -46,7 +46,16 @@ public class PetManager
 
             while(set.next())
             {
-                this.petData.get(set.getInt("pet_type")).update(set);
+                PetData petData = this.petData.get(set.getInt("pet_type"));
+
+                if (petData != null)
+                {
+                    petData.update(set);
+                }
+                else
+                {
+                    this.petData.put(set.getInt("pet_type"), new PetData(set));
+                }
             }
 
             set.close();
@@ -73,10 +82,14 @@ public class PetManager
         this.loadPetItems();
 
         this.loadPetVocals();
+
+        this.loadRaces();
     }
 
     void loadRaces()
     {
+        this.petRaces.clear();
+
         try
         {
             PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM pet_breeds ORDER BY race, color_one, color_two ASC");
