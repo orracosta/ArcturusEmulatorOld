@@ -112,7 +112,7 @@ public class BadgesComponent
         {
             for (HabboBadge badge : this.badges)
             {
-                if (badge.getCode().equals(badgeCode))
+                if (badge.getCode().equalsIgnoreCase(badgeCode))
                     return badge;
             }
             return null;
