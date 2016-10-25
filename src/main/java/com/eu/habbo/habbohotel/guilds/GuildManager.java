@@ -158,11 +158,25 @@ public class GuildManager
             deleteFavourite.setInt(1, 0);
             deleteFavourite.setInt(2, guild.getId());
             deleteFavourite.execute();
-            deleteFavourite.getConnection().close();
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
+        }
+        finally
+        {
+            if (deleteFavourite != null)
+            {
+                try
+                {
+                    deleteFavourite.close();
+                    deleteFavourite.getConnection().close();
+                }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            }
         }
 
         THashSet<GuildMember> members = this.getGuildMembers(guild);
@@ -188,12 +202,25 @@ public class GuildManager
         {
             statement.setInt(1, guild.getId());
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
+        }
+        finally
+        {
+            if (statement != null)
+            {
+                try
+                {
+                    statement.close();
+                    statement.getConnection().close();
+                }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            }
         }
 
         PreparedStatement stmt = Emulator.getDatabase().prepare("DELETE FROM guilds WHERE id = ?");
@@ -202,11 +229,25 @@ public class GuildManager
         {
             stmt.setInt(1, guild.getId());
             stmt.execute();
-            stmt.close();
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
+        }
+        finally
+        {
+            if (stmt != null)
+            {
+                try
+                {
+                    stmt.close();
+                    stmt.getConnection().close();
+                }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            }
         }
 
         Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(guild.getRoomId());

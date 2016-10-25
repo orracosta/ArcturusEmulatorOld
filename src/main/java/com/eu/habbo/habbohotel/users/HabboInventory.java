@@ -1,5 +1,6 @@
 package com.eu.habbo.habbohotel.users;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.catalog.marketplace.MarketPlace;
 import com.eu.habbo.habbohotel.catalog.marketplace.MarketPlaceOffer;
 import com.eu.habbo.habbohotel.catalog.marketplace.MarketPlaceState;
@@ -14,16 +15,64 @@ public class HabboInventory
     private EffectsComponent effectsComponent;
     private ItemsComponent itemsComponent;
     private PetsComponent petsComponent;
+
     private final THashSet<MarketPlaceOffer> items;
 
     public HabboInventory(Habbo habbo)
     {
-        this.badgesComponent = new BadgesComponent(habbo);
-        this.botsComponent = new BotsComponent(habbo);
-        this.effectsComponent = new EffectsComponent(habbo);
-        this.itemsComponent = new ItemsComponent(habbo);
-        this.petsComponent = new PetsComponent(habbo);
-        this.wardrobeComponent = new WardrobeComponent(habbo);
+        try
+        {
+            this.badgesComponent = new BadgesComponent(habbo);
+        }
+        catch (Exception e)
+        {
+            Emulator.getLogging().logErrorLine(e);
+        }
+
+        try
+        {
+            this.botsComponent = new BotsComponent(habbo);
+        }
+        catch (Exception e)
+        {
+            Emulator.getLogging().logErrorLine(e);
+        }
+
+        try
+        {
+            this.effectsComponent = new EffectsComponent(habbo);
+        }
+        catch (Exception e)
+        {
+            Emulator.getLogging().logErrorLine(e);
+        }
+
+        try
+        {
+            this.itemsComponent = new ItemsComponent(habbo);
+        }
+        catch (Exception e)
+        {
+            Emulator.getLogging().logErrorLine(e);
+        }
+
+        try
+        {
+            this.petsComponent = new PetsComponent(habbo);
+        }
+        catch (Exception e)
+        {
+            Emulator.getLogging().logErrorLine(e);
+        }
+
+        try
+        {
+            this.wardrobeComponent = new WardrobeComponent(habbo);
+        }
+        catch (Exception e)
+        {
+            Emulator.getLogging().logErrorLine(e);
+        }
 
         this.items = MarketPlace.getOwnOffers(habbo);
     }

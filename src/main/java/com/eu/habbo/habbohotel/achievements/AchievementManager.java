@@ -108,10 +108,13 @@ public class AchievementManager
      */
     public static void progressAchievement(Habbo habbo, Achievement achievement, int amount)
     {
-        if(achievement == null)
+        if (achievement == null)
             return;
 
-        if(habbo == null)
+        if (habbo == null)
+            return;
+
+        if (!habbo.isOnline())
             return;
 
         int currentProgress = habbo.getHabboStats().getAchievementProgress(achievement);
@@ -162,7 +165,18 @@ public class AchievementManager
             habbo.getClient().sendResponse(new AchievementProgressComposer(habbo, achievement));
             habbo.getClient().sendResponse(new AchievementUnlockedComposer(habbo, achievement));
 
-            HabboBadge badge = habbo.getHabboInventory().getBadgesComponent().getBadge("ACH_" + achievement.name + oldLevel.level);
+            //Exception could possibly arise when the user disconnects while being in tour.
+            //The achievement is then progressed but the user is already disposed so fetching
+            //the badge would result in an nullpointer exception. This is normal behaviour.
+            HabboBadge badge = null;
+            try
+            {
+              badge = habbo.getHabboInventory().getBadgesComponent().getBadge("ACH_" + achievement.name + oldLevel.level);
+            }
+            catch (Exception e)
+            {
+                return;
+            }
 
             if (badge != null)
             {

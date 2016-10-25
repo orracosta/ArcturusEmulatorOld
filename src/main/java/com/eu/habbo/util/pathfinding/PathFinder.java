@@ -175,7 +175,12 @@ public class PathFinder
             {
                 for (short j = y; j <= (y + (length - 1)); j++)
                 {
-                    pointList.add(layout.getTile(i, j));
+                    RoomTile t = layout.getTile(i, j);
+
+                    if (t != null)
+                    {
+                        pointList.add(t);
+                    }
                 }
             }
         }
@@ -185,7 +190,12 @@ public class PathFinder
             {
                 for (short j = y; j <= (y + (width - 1)); j++)
                 {
-                    pointList.add(layout.getTile(i, j));
+                    RoomTile t = layout.getTile(i, j);
+
+                    if (t != null)
+                    {
+                        pointList.add(t);
+                    }
                 }
             }
         }

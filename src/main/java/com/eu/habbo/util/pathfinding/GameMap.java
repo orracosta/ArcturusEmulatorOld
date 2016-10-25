@@ -16,13 +16,14 @@ public class GameMap<T extends AbstractNode>
     public static double MAXIMUM_STEP_HEIGHT = 1.1;
     public static boolean ALLOW_FALLING = true;
 
-    private static final boolean CANMOVEDIAGONALY = true;
+    private boolean CANMOVEDIAGONALY = true;
     private final T[][] nodes;
     private final int width;
     private final int height;
 
-    public GameMap(int width, int height)
+    public GameMap(int width, int height, boolean moveDiagonally)
     {
+        this.CANMOVEDIAGONALY = moveDiagonally;
         this.nodes = (T[][]) new AbstractNode[width][height];
         this.width = (width - 1);
         this.height = (height - 1);
@@ -245,6 +246,11 @@ public class GameMap<T extends AbstractNode>
             }
         }
         return adj;
+    }
+
+    public void moveDiagonally(boolean value)
+    {
+        this.CANMOVEDIAGONALY = value;
     }
 
     public void finalize()

@@ -89,6 +89,13 @@ ALTER TABLE  `catalog_pages` CHANGE  `page_layout`  `page_layout` ENUM(
 'spaces_new',  'soundmachine',  'guilds',  'guild_furni',  'info_duckets',  'info_rentables',
 'info_pets', 'roomads',  'single_bundle',  'sold_ltd_items',  'badge_display',  'bots',  'pets2',
 'pets3',  'room_bundle',  'recent_purchases',  'pets2',  'pets3',  'default_3x3_color_grouping',
-'guild_forum',  'vip_buy',  'loyalty_info',  'loyalty_vip_buy',  'collectibles' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT  'default_3x3'
+'guild_forum',  'vip_buy',  'loyalty_info',  'loyalty_vip_buy',  'collectibles' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT  'default_3x3';
+
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.rooms.handitem.time', '100');
+
+ALTER TABLE `permissions` ADD  `cmd_diagonal` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '1' AFTER  `cmd_danceall`;
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.keys.cmd_diagonal', 'diagonal;disablediagonal;diagonally'), ('commands.description.cmd_diagonal', ':diagonal');
+ALTER TABLE `rooms` ADD  `move_diagonally` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '1';
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.succes.cmd_diagonal.disabled', 'You can no longer walk diagonally!'), ('commands.succes.cmd_diagonal.disabled', 'You can now walk diagonally!');
 
 #END DATABASE UPDATE: 1.0.8 -> 1.0.9
