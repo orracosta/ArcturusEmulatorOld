@@ -45,6 +45,7 @@ public class ItemManager {
     private final TIntObjectHashMap<CrackableReward> crackableRewards;
     private final THashSet<ItemInteraction> interactionsList;
     private final THashMap<String, SoundTrack> soundTracks;
+    private final YoutubeManager youtubeManager;
 
     public ItemManager()
     {
@@ -52,6 +53,7 @@ public class ItemManager {
         this.crackableRewards   = new TIntObjectHashMap<CrackableReward>();
         this.interactionsList   = new THashSet<ItemInteraction>();
         this.soundTracks        = new THashMap<String, SoundTrack>();
+        this.youtubeManager     = new YoutubeManager();
     }
 
     public void load()
@@ -64,6 +66,7 @@ public class ItemManager {
         this.loadItems();
         this.loadCrackable();
         this.loadSoundTracks();
+        this.youtubeManager.load();
 
         Emulator.getLogging().logStart("Item Manager -> Loaded! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
@@ -117,6 +120,7 @@ public class ItemManager {
         this.interactionsList.add(new ItemInteraction("mutearea",               InteractionMuteArea.class));
         this.interactionsList.add(new ItemInteraction("information_terminal",   InteractionInformationTerminal.class));
         this.interactionsList.add(new ItemInteraction("external_image",         InteractionExternalImage.class));
+        this.interactionsList.add(new ItemInteraction("youtube",                InteractionYoutubeTV.class));
 
         /*
             Wireds
@@ -898,6 +902,11 @@ public class ItemManager {
         }
 
         return null;
+    }
+
+    public YoutubeManager getYoutubeManager()
+    {
+        return this.youtubeManager;
     }
 
     public void dispose()

@@ -98,4 +98,35 @@ INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.keys.cmd_diagona
 ALTER TABLE `rooms` ADD  `move_diagonally` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '1';
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.succes.cmd_diagonal.disabled', 'You can no longer walk diagonally!'), ('commands.succes.cmd_diagonal.disabled', 'You can now walk diagonally!');
 
+CREATE TABLE  `youtube_items` (
+`id` INT NOT NULL ,
+`video` VARCHAR( 128 ) NOT NULL ,
+`title` VARCHAR( 128 ) NOT NULL ,
+`description` VARCHAR( 128 ) NOT NULL ,
+`start_time` INT( 5 ) NOT NULL DEFAULT  '0',
+`end_time` INT( 5 ) NOT NULL DEFAULT  '0'
+) ENGINE = MYISAM ;
+
+CREATE TABLE  `youtube_playlists` (
+`item_id` INT NOT NULL ,
+`video_id` INT NOT NULL ,
+`order` INT NOT NULL ,
+UNIQUE (
+`item_id` ,
+`video_id` ,
+`order`
+)
+) ENGINE = MYISAM ;
+
+ALTER TABLE  `youtube_items` ADD PRIMARY KEY (  `id` );
+ALTER TABLE  `youtube_items` CHANGE  `id`  `id` INT( 11 ) NOT NULL AUTO_INCREMENT;
+
+INSERT INTO  `emulator_settings` (
+`key` ,
+`value`
+)
+VALUES (
+'imager.url.youtube',  'imager.php?url=http://img.youtube.com/vi/%video%/default.jpg'
+);
+
 #END DATABASE UPDATE: 1.0.8 -> 1.0.9

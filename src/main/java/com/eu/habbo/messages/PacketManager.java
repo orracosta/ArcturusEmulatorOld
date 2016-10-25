@@ -33,6 +33,9 @@ import com.eu.habbo.messages.incoming.rooms.*;
 import com.eu.habbo.messages.incoming.rooms.bots.*;
 import com.eu.habbo.messages.incoming.rooms.items.*;
 import com.eu.habbo.messages.incoming.rooms.items.rentablespace.*;
+import com.eu.habbo.messages.incoming.rooms.items.youtube.YoutubeRequestNextVideoEvent;
+import com.eu.habbo.messages.incoming.rooms.items.youtube.YoutubeRequestPlayListEvent;
+import com.eu.habbo.messages.incoming.rooms.items.youtube.YoutubeRequestVideoDataEvent;
 import com.eu.habbo.messages.incoming.rooms.pets.*;
 import com.eu.habbo.messages.incoming.rooms.promotions.*;
 import com.eu.habbo.messages.incoming.rooms.users.*;
@@ -337,6 +340,9 @@ public class PacketManager
         this.registerHandler(Incoming.RoomUserBanEvent,                         RoomUserBanEvent.class);
         this.registerHandler(Incoming.UnbanRoomUserEvent,                       UnbanRoomUserEvent.class);
         this.registerHandler(Incoming.RequestRoomUserTagsEvent,                 RequestRoomUserTagsEvent.class);
+        this.registerHandler(Incoming.YoutubeRequestPlayListEvent,              YoutubeRequestPlayListEvent.class);
+        this.registerHandler(Incoming.YoutubeRequestNextVideoEvent,             YoutubeRequestNextVideoEvent.class);
+        this.registerHandler(Incoming.YoutubeRequestVideoDataEvent,             YoutubeRequestVideoDataEvent.class);
         this.registerHandler(Incoming.RoomFavoriteEvent,                        RoomFavoriteEvent.class);
     }
 
