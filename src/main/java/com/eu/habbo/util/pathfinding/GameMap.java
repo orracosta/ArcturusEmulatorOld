@@ -110,7 +110,7 @@ public class GameMap<T extends AbstractNode>
                 if ((!ALLOW_FALLING && height < -MAXIMUM_STEP_HEIGHT) || height > MAXIMUM_STEP_HEIGHT)
                     continue;
 
-                if (!openList.contains(currentAdj) || (currentAdj.getX() == newX && currentAdj.getY() == newY && (room.canSitOrLayAt(newX, newY))))
+                if (!openList.contains(currentAdj) || (currentAdj.getX() == newX && currentAdj.getY() == newY && (room.canSitOrLayAt(newX, newY) && !room.hasHabbosAt(newX, newY))))
                 {
                     currentAdj.setPrevious(current);
                     currentAdj.sethCosts(this.nodes[newX][newY]);
