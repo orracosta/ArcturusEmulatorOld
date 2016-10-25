@@ -4,6 +4,7 @@ import com.eu.habbo.core.CleanerThread;
 import com.eu.habbo.core.ConfigurationManager;
 import com.eu.habbo.core.Logging;
 import com.eu.habbo.core.TextsManager;
+import com.eu.habbo.core.consolecommands.ConsoleCommand;
 import com.eu.habbo.database.Database;
 import com.eu.habbo.habbohotel.GameEnvironment;
 import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
@@ -18,6 +19,8 @@ import com.eu.habbo.threading.ThreadPooling;
 import com.eu.habbo.threading.runnables.CameraClientAutoReconnect;
 import com.eu.habbo.util.imager.badges.BadgeImager;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -165,6 +168,13 @@ public final class Emulator
             if (Emulator.getConfig().getInt("runtime.threads") < (Runtime.getRuntime().availableProcessors() * 2))
             {
                 Emulator.getLogging().logStart("Emulator settings runtime.threads (" + Emulator.getConfig().getInt("runtime.threads") + ") can be increased to " + (Runtime.getRuntime().availableProcessors() * 2) + " to possibly increase performance.");
+            }
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+            while (true)
+            {
+                ConsoleCommand.handle(reader.readLine());
             }
         }
         catch (Exception e)
