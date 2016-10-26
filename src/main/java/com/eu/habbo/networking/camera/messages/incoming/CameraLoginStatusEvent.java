@@ -65,7 +65,6 @@ public class CameraLoginStatusEvent extends CameraIncomingMessage
         else
         {
             CameraClient.attemptReconnect = false;
-            Emulator.getCameraClient().disconnect();
         }
     }
 }

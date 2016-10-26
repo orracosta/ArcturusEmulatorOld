@@ -1641,17 +1641,20 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         {
                             for (HabboItem item : itemsOnRoller)
                             {
-                                if (furnitureRolledEvent != null)
+                                if (item.getX() == roller.getX() && item.getY() == roller.getY())
                                 {
-                                    furnitureRolledEvent = new FurnitureRolledEvent(item, roller, roomTile);
-                                    Emulator.getPluginManager().fireEvent(furnitureRolledEvent);
+                                    if (furnitureRolledEvent != null)
+                                    {
+                                        furnitureRolledEvent = new FurnitureRolledEvent(item, roller, roomTile);
+                                        Emulator.getPluginManager().fireEvent(furnitureRolledEvent);
 
-                                    if (furnitureRolledEvent.isCancelled())
-                                        continue;
+                                        if (furnitureRolledEvent.isCancelled())
+                                            continue;
+                                    }
+
+                                    if (item != roller)
+                                        messages.add(new FloorItemOnRollerComposer(item, roller, roomTile, zOffset, this));
                                 }
-
-                                if (item != roller)
-                                    messages.add(new FloorItemOnRollerComposer(item, roller, roomTile, zOffset, this));
                             }
                         }
                     }
