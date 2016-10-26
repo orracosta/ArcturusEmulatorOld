@@ -7,9 +7,9 @@ import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
-public class SuperBanCommand extends Command
+public class SuperbanCommand extends Command
 {
-    public SuperBanCommand()
+    public SuperbanCommand()
     {
         super("cmd_super_ban", Emulator.getTexts().getValue("commands.keys.cmd_super_ban").split(";"));
     }

@@ -93,7 +93,7 @@ public class CommandHandler
         addCommand(new StalkCommand());
         addCommand(new SummonCommand());
         addCommand(new SummonRankCommand());
-        addCommand(new SuperBanCommand());
+        addCommand(new SuperbanCommand());
         addCommand(new SuperPullCommand());
         addCommand(new TeleportCommand());
         addCommand(new TrashCommand());
