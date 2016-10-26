@@ -43,12 +43,12 @@ public class InteractionMannequin extends HabboItem
         else
         {
             serverMessage.appendString("GENDER");
-            serverMessage.appendString("M");
+            serverMessage.appendString("m");
             serverMessage.appendString("FIGURE");
             serverMessage.appendString("");
             serverMessage.appendString("OUTFIT_NAME");
             serverMessage.appendString("My Look");
-            this.setExtradata("M: :My look");
+            this.setExtradata("m: :My look");
             this.needsUpdate(true);
             Emulator.getThreading().run(this);
         }

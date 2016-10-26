@@ -24,11 +24,11 @@ public class MannequinSaveLookEvent extends MessageHandler
         //TODO: Only clothing not whole body part.
         if(data.length == 3)
         {
-            item.setExtradata(this.client.getHabbo().getHabboInfo().getGender().name().toUpperCase() + ":" + this.client.getHabbo().getHabboInfo().getLook() + ":" + data[2]);
+            item.setExtradata(this.client.getHabbo().getHabboInfo().getGender().name().toLowerCase() + ":" + this.client.getHabbo().getHabboInfo().getLook() + ":" + data[2]);
         }
         else
         {
-            item.setExtradata(this.client.getHabbo().getHabboInfo().getGender().name().toUpperCase() + ":" + this.client.getHabbo().getHabboInfo().getLook() + ":" + this.client.getHabbo().getHabboInfo().getUsername() + "'s look.");
+            item.setExtradata(this.client.getHabbo().getHabboInfo().getGender().name().toLowerCase() + ":" + this.client.getHabbo().getHabboInfo().getLook() + ":" + this.client.getHabbo().getHabboInfo().getUsername() + "'s look.");
         }
         item.needsUpdate(true);
         Emulator.getThreading().run(item);
