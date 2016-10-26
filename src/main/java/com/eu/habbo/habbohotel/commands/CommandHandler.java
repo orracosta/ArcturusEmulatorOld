@@ -289,7 +289,7 @@ public class CommandHandler
     {
         commands.clear();
 
-        Emulator.getLogging().logShutdownLine("Command Handled -> Disposed!");
+        Emulator.getLogging().logShutdownLine("Command Handler -> Disposed!");
     }
 
     /**
