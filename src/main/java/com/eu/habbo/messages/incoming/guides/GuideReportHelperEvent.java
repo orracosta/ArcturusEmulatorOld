@@ -43,6 +43,9 @@ public class GuideReportHelperEvent extends MessageHandler
 
             this.client.sendResponse(new GuideSessionDetachedComposer());
             this.client.sendResponse(new GuideSessionEndedComposer(GuideSessionEndedComposer.HELP_CASE_CLOSED));
+
+            reported.getClient().sendResponse(new GuideSessionDetachedComposer());
+            reported.getClient().sendResponse(new GuideSessionEndedComposer(GuideSessionEndedComposer.HELP_CASE_CLOSED));
         }
     }
 }
