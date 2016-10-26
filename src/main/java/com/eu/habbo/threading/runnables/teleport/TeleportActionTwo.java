@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionTeleport;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
+import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,6 +28,8 @@ class TeleportActionTwo implements Runnable
     @Override
     public void run()
     {
+        this.client.getHabbo().getRoomUnit().getStatus().remove("mv");
+        this.room.sendComposer(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()).compose());
         this.currentTeleport.setExtradata("2");
         this.room.updateItem(this.currentTeleport);
 

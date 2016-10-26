@@ -29,7 +29,6 @@ public class TeleportActionOne implements Runnable
         this.client.getHabbo().getRoomUnit().getStatus().put("mv", this.currentTeleport.getX() + "," + this.currentTeleport.getY() + "," + this.currentTeleport.getZ());
         this.room.sendComposer(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()).compose());
         this.client.getHabbo().getRoomUnit().setLocation(this.room.getLayout().getTile(this.currentTeleport.getX(), this.currentTeleport.getY()));
-        this.client.getHabbo().getRoomUnit().getStatus().remove("mv");
         this.currentTeleport.setExtradata("0");
 
         Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "0"), 500);
