@@ -216,7 +216,10 @@ public class RoomPlaceItemEvent extends MessageHandler
         {
             for (RoomTile t : updatedTiles)
             {
-                t.setStackHeight(room.getStackHeight(t.x, t.y, false));
+                if (t != null)
+                {
+                    t.setStackHeight(room.getStackHeight(t.x, t.y, false));
+                }
             }
             room.sendComposer(new UpdateStackHeightComposer(updatedTiles).compose());
         }
