@@ -90,7 +90,15 @@ public class RoomUsersComposer extends MessageComposer
                 this.response.appendString(habbo.getHabboInfo().getGender().name().toUpperCase());
                 this.response.appendInt32(habbo.getHabboStats().guild != 0 ? habbo.getHabboStats().guild : -1);
                 this.response.appendInt32(habbo.getHabboStats().guild != 0 ? habbo.getHabboStats().guild : -1);
-                this.response.appendString(habbo.getHabboStats().guild != 0 ? Emulator.getGameEnvironment().getGuildManager().getGuild(habbo.getHabboStats().guild).getName() : "");
+                String name = "";
+                if(this.habbo.getHabboStats().guild != 0)
+                {
+                    Guild g = Emulator.getGameEnvironment().getGuildManager().getGuild(this.habbo.getHabboStats().guild);
+
+                    if(g != null)
+                        name = g.getName();
+                }
+                this.response.appendString(name);
                 this.response.appendString("");
                 this.response.appendInt32(habbo.getHabboStats().getAchievementScore());
                 this.response.appendBoolean(true);
