@@ -52,6 +52,7 @@ public class CommandHandler
         addCommand(new FreezeBotsCommand());
         addCommand(new FreezeCommand());
         addCommand(new GiftCommand());
+        addCommand(new HabnamCommand());
         addCommand(new HandItemCommand());
         addCommand(new HappyHourCommand());
         addCommand(new HotelAlertCommand());
