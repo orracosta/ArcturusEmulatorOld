@@ -18,6 +18,7 @@ public class PermissionsManager
     private final THashMap<Integer, THashSet<String>> permissions;
     private final THashMap<Integer, String> rankNames;
     private final TIntIntHashMap enables;
+    private final TIntIntHashMap roomEffect;
 
     public PermissionsManager()
     {
@@ -25,6 +26,7 @@ public class PermissionsManager
         this.permissions = new THashMap<Integer, THashSet<String>>();
         this.rankNames   = new THashMap<Integer, String>();
         this.enables     = new TIntIntHashMap();
+        this.roomEffect  = new TIntIntHashMap();
 
         this.reload();
 
@@ -34,7 +36,6 @@ public class PermissionsManager
     public void reload()
     {
         this.loadPermissions();
-
         this.loadEnables();
     }
 
@@ -65,11 +66,15 @@ public class PermissionsManager
                         }
                         else if(meta.getColumnName(i).equalsIgnoreCase("rank_name"))
                         {
-                            rankNames.put(set.getInt("id"), set.getString(i));
+                            this.rankNames.put(set.getInt("id"), set.getString(i));
+                        }
+                        else if (meta.getColumnName(i).equalsIgnoreCase("room_effect"))
+                        {
+                            this.roomEffect.put(set.getInt("id"), set.getInt(i));
                         }
                     }
 
-                    permissions.put(set.getInt("id"), names);
+                    this.permissions.put(set.getInt("id"), names);
                 }
 
                 set.close();
@@ -134,6 +139,11 @@ public class PermissionsManager
         }
 
         return -1;
+    }
+
+    public int getEffect(int rankId)
+    {
+        return this.roomEffect.get(rankId);
     }
 
     public boolean isEffectBlocked(int effectId, int rank)

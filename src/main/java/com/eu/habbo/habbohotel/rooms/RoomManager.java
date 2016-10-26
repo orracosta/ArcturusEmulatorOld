@@ -762,7 +762,14 @@ public class RoomManager {
         habbo.getHabboInfo().setLoadingRoom(0);
         habbo.getHabboInfo().setCurrentRoom(room);
         habbo.getRoomUnit().setHandItem(0);
-        habbo.getRoomUnit().setEffectId(0);
+
+        int effect = Emulator.getGameEnvironment().getPermissionsManager().getEffect(habbo.getHabboInfo().getRank());
+
+        if (effect > 0)
+        {
+            habbo.getRoomUnit().setEffectId(effect);
+        }
+
         habbo.getRoomUnit().setPathFinder(new PathFinder(habbo.getRoomUnit()));
 
         if(!habbo.getRoomUnit().isTeleporting)

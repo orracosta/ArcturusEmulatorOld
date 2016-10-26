@@ -129,4 +129,6 @@ VALUES (
 'imager.url.youtube',  'imager.php?url=http://img.youtube.com/vi/%video%/default.jpg'
 );
 
+ALTER TABLE  `permissions` ADD  `room_effect` INT NOT NULL DEFAULT  '0' AFTER  `rank_name`;
+
 #END DATABASE UPDATE: 1.0.8 -> 1.0.9
