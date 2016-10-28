@@ -280,7 +280,7 @@ public class Bot implements Runnable
                 }
             }
 
-            if(this.chatTimeOut <= Emulator.getIntUnixTimestamp() && this.chatAuto)
+            if(!this.chatLines.isEmpty() && this.chatTimeOut <= Emulator.getIntUnixTimestamp() && this.chatAuto)
             {
                 Room room = this.roomUnit.getPathFinder().getRoom();
                 if(room != null)
