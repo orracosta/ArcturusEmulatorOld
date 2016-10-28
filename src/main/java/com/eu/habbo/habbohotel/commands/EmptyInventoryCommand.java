@@ -56,7 +56,7 @@ public class EmptyInventoryCommand extends Command
             Emulator.getThreading().run(new QueryDeleteHabboItems(items));
 
             habbo.getClient().sendResponse(new InventoryRefreshComposer());
-            habbo.getClient().sendResponse(new InventoryItemsComposer(gameClient.getHabbo()));
+            habbo.getClient().sendResponse(new InventoryItemsComposer(1, 1, gameClient.getHabbo().getHabboInventory().getItemsComponent().getItems()));
 
             gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_empty.cleared"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
         }
