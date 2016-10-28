@@ -7,15 +7,20 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
+import gnu.trove.map.TIntObjectMap;
 import gnu.trove.procedure.TIntObjectProcedure;
 
 public class InventoryItemsComposer extends MessageComposer implements TIntObjectProcedure<HabboItem>
 {
-    private Habbo habbo;
+    private final int page;
+    private final int out;
+    private final TIntObjectMap<HabboItem> items;
 
-    public InventoryItemsComposer(Habbo habbo)
+    public InventoryItemsComposer(int page, int out, TIntObjectMap<HabboItem> items)
     {
-        this.habbo = habbo;
+        this.page = page;
+        this.out = out;
+        this.items = items;
     }
 
     @Override
@@ -24,11 +29,11 @@ public class InventoryItemsComposer extends MessageComposer implements TIntObjec
         try
         {
             this.response.init(Outgoing.InventoryItemsComposer);
-            this.response.appendInt32(1);
-            this.response.appendInt32(0);
-            this.response.appendInt32(this.habbo.getHabboInventory().getItemsComponent().getItems().size());
+            this.response.appendInt32(this.out);
+            this.response.appendInt32(this.page - 1);
+            this.response.appendInt32(this.items.size());
 
-            this.habbo.getHabboInventory().getItemsComponent().getItems().forEachEntry(this);
+            this.items.forEachEntry(this);
             return this.response;
         }
         catch(Exception e)
