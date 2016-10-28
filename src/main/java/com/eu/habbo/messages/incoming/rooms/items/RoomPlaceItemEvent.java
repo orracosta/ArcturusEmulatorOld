@@ -179,7 +179,13 @@ public class RoomPlaceItemEvent extends MessageHandler
                             this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
                             return;
                         }
-                        updatedTiles.add(room.getLayout().getTile(i, j));
+
+                        RoomTile t = room.getLayout().getTile(i, j);
+
+                        if (t != null)
+                        {
+                            updatedTiles.add(t);
+                        }
                     }
                 }
             }
@@ -216,10 +222,7 @@ public class RoomPlaceItemEvent extends MessageHandler
         {
             for (RoomTile t : updatedTiles)
             {
-                if (t != null)
-                {
-                    t.setStackHeight(room.getStackHeight(t.x, t.y, false));
-                }
+                t.setStackHeight(room.getStackHeight(t.x, t.y, false));
             }
             room.sendComposer(new UpdateStackHeightComposer(updatedTiles).compose());
         }
