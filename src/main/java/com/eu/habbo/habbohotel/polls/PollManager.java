@@ -10,37 +10,83 @@ import java.sql.SQLException;
 
 public class PollManager
 {
-    private static final THashMap<Integer, Poll> activePolls = new THashMap<Integer, Poll>();
+    private final THashMap<Integer, Poll> activePolls = new THashMap<Integer, Poll>();
 
-    private static void loadPoll(int id)
+    public PollManager()
     {
-        try
+        this.loadPolls();
+    }
+
+    public void loadPolls()
+    {
+        synchronized (this.activePolls)
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT polls.title, polls.reward_badge, polls.thanks_message, polls_questions.* FROM polls INNER JOIN polls_questions ON polls.id = polls_questions.poll_id WHERE polls.id = ? ORDER BY polls_questions.question_number ASC");
-            statement.setInt(1, id);
-            ResultSet set = statement.executeQuery();
-            activePolls.put(id, new Poll(set));
-            set.close();
-            statement.close();
-            statement.getConnection().close();
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
+            this.activePolls.clear();
+
+            try
+            {
+                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM polls");
+                ResultSet set = statement.executeQuery();
+
+                while (set.next())
+                {
+                    this.activePolls.put(set.getInt("id"), new Poll(set));
+                }
+
+                set.close();
+                statement.close();
+                statement.getConnection().close();
+            }
+            catch (SQLException e)
+            {
+                Emulator.getLogging().logSQLException(e);
+            }
+
+            try
+            {
+                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM polls_questions ORDER BY parent_id, `order` ASC");
+                ResultSet set = statement.executeQuery();
+
+                while (set.next())
+                {
+                    Poll poll = this.getPoll(set.getInt("poll_id"));
+
+                    if (poll != null)
+                    {
+                        PollQuestion question = new PollQuestion(set);
+
+                        if (set.getInt("parent_id") <= 0)
+                        {
+                            poll.addQuestion(question);
+                        }
+                        else
+                        {
+                            PollQuestion parentQuestion = poll.getQuestion(set.getInt("parent_id"));
+
+                            if (parentQuestion != null)
+                            {
+                                parentQuestion.addSubQuestion(question);
+                            }
+                        }
+
+                        poll.lastQuestionId = question.getId();
+                    }
+                }
+
+                set.close();
+                statement.close();
+                statement.getConnection().close();
+            }
+            catch (SQLException e)
+            {
+                Emulator.getLogging().logSQLException(e);
+            }
         }
     }
 
-    public static Poll getPoll(int pollId)
+    public Poll getPoll(int pollId)
     {
-        Poll poll = activePolls.get(pollId);
-
-        if(poll == null)
-        {
-            loadPoll(pollId);
-            poll = activePolls.get(pollId);
-        }
-
-        return poll;
+        return this.activePolls.get(pollId);
     }
 
     public static boolean donePoll(Habbo habbo, int pollId)

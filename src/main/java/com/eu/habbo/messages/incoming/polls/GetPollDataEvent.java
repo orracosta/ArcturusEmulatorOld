@@ -1,5 +1,6 @@
 package com.eu.habbo.messages.incoming.polls;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.polls.Poll;
 import com.eu.habbo.habbohotel.polls.PollManager;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -12,7 +13,7 @@ public class GetPollDataEvent extends MessageHandler
     {
         int pollId = this.packet.readInt();
 
-        Poll poll = PollManager.getPoll(pollId);
+        Poll poll = Emulator.getGameEnvironment().getPollManager().getPoll(pollId);
 
         if(poll != null)
         {

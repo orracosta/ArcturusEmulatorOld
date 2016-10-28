@@ -16,7 +16,7 @@ public class CancelPollEvent extends MessageHandler
         int pollId = this.packet.readInt();
 
 
-        Poll poll = PollManager.getPoll(pollId);
+        Poll poll = Emulator.getGameEnvironment().getPollManager().getPoll(pollId);
 
         if(poll != null)
         {

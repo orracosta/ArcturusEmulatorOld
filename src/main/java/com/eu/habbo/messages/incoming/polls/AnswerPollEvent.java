@@ -28,7 +28,7 @@ public class AnswerPollEvent extends MessageHandler
 
         answer = answer.substring(1);
 
-        Poll poll = PollManager.getPoll(pollId);
+        Poll poll = Emulator.getGameEnvironment().getPollManager().getPoll(pollId);
 
         if(poll != null)
         {
@@ -48,7 +48,7 @@ public class AnswerPollEvent extends MessageHandler
                 Emulator.getLogging().logSQLException(e);
             }
 
-            if(poll.getQuestions().get(poll.getQuestions().size()).getId() == questionId)
+            if(poll.lastQuestionId == questionId)
             {
                 if(poll.getBadgeReward().length() > 0)
                 {

@@ -4,6 +4,8 @@ import gnu.trove.map.hash.THashMap;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Poll
 {
@@ -11,24 +13,17 @@ public class Poll
     private String title;
     private String thanksMessage;
     private String badgeReward;
+    public int lastQuestionId;
 
-    private THashMap<Integer, PollQuestion> questions;
+    private ArrayList<PollQuestion> questions;
 
     public Poll(ResultSet set) throws SQLException
     {
-        set.first();
-        this.id = set.getInt("poll_id");
+        this.id = set.getInt("id");
         this.title = set.getString("title");
         this.thanksMessage = set.getString("thanks_message");
         this.badgeReward = set.getString("reward_badge");
-
-        this.questions = new THashMap<Integer, PollQuestion>();
-
-        set.beforeFirst();
-        while(set.next())
-        {
-            this.questions.put(set.getInt("question_number"), new PollQuestion(set));
-        }
+        this.questions = new ArrayList<PollQuestion>();
     }
 
     public int getId()
@@ -51,8 +46,28 @@ public class Poll
         return this.badgeReward;
     }
 
-    public THashMap<Integer, PollQuestion> getQuestions()
+    public ArrayList<PollQuestion> getQuestions()
     {
         return this.questions;
+    }
+
+    public PollQuestion getQuestion(int id)
+    {
+        for (PollQuestion q : this.questions)
+        {
+            if (q.getId() == id)
+            {
+                return q;
+            }
+        }
+
+        return null;
+    }
+
+    public void addQuestion(PollQuestion question)
+    {
+        this.questions.add(question);
+
+        Collections.sort(this.questions);
     }
 }

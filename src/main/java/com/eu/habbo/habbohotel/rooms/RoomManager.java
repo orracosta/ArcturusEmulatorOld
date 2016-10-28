@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.guilds.Guild;
 import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
 import com.eu.habbo.habbohotel.navigation.NavigatorFilterComparator;
 import com.eu.habbo.habbohotel.navigation.NavigatorFilterField;
+import com.eu.habbo.habbohotel.polls.Poll;
 import com.eu.habbo.habbohotel.polls.PollManager;
 import com.eu.habbo.habbohotel.users.*;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
@@ -936,7 +937,12 @@ public class RoomManager {
         {
             if(!PollManager.donePoll(habbo.getClient().getHabbo(), room.getPollId()))
             {
-                habbo.getClient().sendResponse(new PollStartComposer(PollManager.getPoll(room.getPollId())));
+                Poll poll = Emulator.getGameEnvironment().getPollManager().getPoll(room.getPollId());
+
+                if (poll != null)
+                {
+                    habbo.getClient().sendResponse(new PollStartComposer(poll));
+                }
             }
         }
 

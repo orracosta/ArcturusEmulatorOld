@@ -19,6 +19,7 @@ import com.eu.habbo.habbohotel.modtool.WordFilter;
 import com.eu.habbo.habbohotel.navigation.NavigatorManager;
 import com.eu.habbo.habbohotel.permissions.PermissionsManager;
 import com.eu.habbo.habbohotel.pets.PetManager;
+import com.eu.habbo.habbohotel.polls.PollManager;
 import com.eu.habbo.habbohotel.rooms.RoomManager;
 import com.eu.habbo.habbohotel.users.HabboManager;
 
@@ -41,6 +42,7 @@ public class GameEnvironment
     private GuideManager guideManager;
     private WordFilter wordFilter;
     private CraftingManager craftingManager;
+    private PollManager pollManager;
 
     private CreditsScheduler creditsScheduler;
     private PixelScheduler pixelScheduler;
@@ -68,6 +70,7 @@ public class GameEnvironment
         this.guideManager       = new GuideManager();
         this.wordFilter         = new WordFilter();
         this.craftingManager    = new CraftingManager();
+        this.pollManager        = new PollManager();
 
         this.roomManager.loadPublicRooms();
 
@@ -177,5 +180,10 @@ public class GameEnvironment
     public CraftingManager getCraftingManager()
     {
         return this.craftingManager;
+    }
+
+    public PollManager getPollManager()
+    {
+        return this.pollManager;
     }
 }
