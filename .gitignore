@@ -13,3 +13,4 @@ config.ini
 /logging/packets/packets.txt
 /config.ini
 /logging/**
+/logging/
