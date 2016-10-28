@@ -42,7 +42,7 @@ public final class Emulator
     /**
      * Stable build version of the emulator.
      */
-    public final static int BUILD = 9;
+    public final static int BUILD = 10;
 
     /**
      * Version as string.
@@ -174,7 +174,12 @@ public final class Emulator
 
             while (true)
             {
-                ConsoleCommand.handle(reader.readLine());
+                String line = reader.readLine();
+
+                if (line != null)
+                {
+                    ConsoleCommand.handle(line);
+                }
             }
         }
         catch (Exception e)
