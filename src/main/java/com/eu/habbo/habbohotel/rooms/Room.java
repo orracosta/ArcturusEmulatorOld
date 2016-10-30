@@ -33,6 +33,7 @@ import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.rooms.*;
 import com.eu.habbo.messages.outgoing.rooms.items.*;
+import com.eu.habbo.messages.outgoing.rooms.items.jukebox.JukeBoxNowPlayingMessageComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.*;
 import com.eu.habbo.messages.outgoing.users.MutedWhisperComposer;
 import com.eu.habbo.plugin.Event;
@@ -2466,6 +2467,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             } else if (item instanceof InteractionTagField)
             {
                 this.roomSpecialTypes.addUndefined(item);
+            }else if (item instanceof InteractionJukeBox)
+            {
+                this.roomSpecialTypes.addUndefined(item);
             }
         }
     }
@@ -2640,6 +2644,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     this.roomSpecialTypes.removeUndefined(item);
                 }
                 else if (item instanceof InteractionTagField)
+                {
+                    this.roomSpecialTypes.removeUndefined(item);
+                }
+                else if (item instanceof InteractionJukeBox)
                 {
                     this.roomSpecialTypes.removeUndefined(item);
                 }
@@ -3595,43 +3603,52 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         double height = this.layout.getHeightAtSquare(x, y);
         boolean canStack = true;
+        boolean stackHelper = false;
+        THashSet<HabboItem> items = this.getItemsAt(x, y);
 
-        for(HabboItem item : this.getItemsAt(x, y))
+        for (HabboItem item : items)
         {
-            if(item instanceof InteractionStackHelper)
+            if (item instanceof InteractionStackHelper)
             {
+                stackHelper = true;
                 height = item.getExtradata().isEmpty() ? Double.valueOf("0.0") : (Double.valueOf(item.getExtradata()) / 100);
                 canStack = true;
-                break;
             }
-            if(item.getBaseItem().allowSit())
-            {
-                canStack = false;
-                height = -1.0D;
-                break;
-            }
+        }
 
-            if(!item.getBaseItem().allowStack())
+        if (!stackHelper)
+        {
+            for (HabboItem item : items)
             {
-                canStack = false;
-                height = -1.0D;
-                break;
-            }
-
-            double itemHeight = (item.getBaseItem().allowSit() ? 0.0D : item.getBaseItem().getHeight()) + item.getZ();
-
-            if(item instanceof InteractionMultiHeight)
-            {
-                if(item.getExtradata().length() == 0)
+                if (item.getBaseItem().allowSit())
                 {
-                    item.setExtradata("0");
+                    canStack = false;
+                    height = -1.0D;
+                    break;
                 }
-                itemHeight += Item.getCurrentHeight(item);
-            }
 
-            if(itemHeight > height)
-            {
-                height = itemHeight;
+                if (!item.getBaseItem().allowStack())
+                {
+                    canStack = false;
+                    height = -1.0D;
+                    break;
+                }
+
+                double itemHeight = (item.getBaseItem().allowSit() ? 0.0D : item.getBaseItem().getHeight()) + item.getZ();
+
+                if (item instanceof InteractionMultiHeight)
+                {
+                    if (item.getExtradata().length() == 0)
+                    {
+                        item.setExtradata("0");
+                    }
+                    itemHeight += Item.getCurrentHeight(item);
+                }
+
+                if (itemHeight > height)
+                {
+                    height = itemHeight;
+                }
             }
         }
 

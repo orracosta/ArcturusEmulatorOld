@@ -35,7 +35,7 @@ public class CatalogPageComposer extends MessageComposer
         this.response.appendString(this.mode);
         this.page.serialize(this.response);
 
-        if(page instanceof RecentPurchasesLayout)
+        if(this.page instanceof RecentPurchasesLayout)
         {
             this.response.appendInt32(this.habbo.getHabboStats().getRecentPurchases().size());
 

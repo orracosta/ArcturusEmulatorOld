@@ -1160,7 +1160,7 @@ public class RoomManager {
 
         try
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM rooms WHERE name LIKE ? ORDER BY id DESC LIMIT 25");
+            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT users.username AS owner_name, rooms.* FROM rooms INNER JOIN users ON owner_id = users.id WHERE name LIKE ? ORDER BY id DESC LIMIT 25");
             statement.setString(1, "%"+name+"%");
             ResultSet set = statement.executeQuery();
 
@@ -1236,7 +1236,7 @@ public class RoomManager {
 
         try
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM rooms WHERE name LIKE ? AND guild_id != 0 ORDER BY id DESC LIMIT 25");
+            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT users.username AS owner_name, rooms.* FROM rooms INNER JOIN users ON rooms.owner_id = users.id WHERE name LIKE ? AND guild_id != 0 ORDER BY id DESC LIMIT 25");
             statement.setString(1, "%"+name+"%");
             ResultSet set = statement.executeQuery();
 

@@ -121,6 +121,7 @@ public class ItemManager {
         this.interactionsList.add(new ItemInteraction("information_terminal",   InteractionInformationTerminal.class));
         this.interactionsList.add(new ItemInteraction("external_image",         InteractionExternalImage.class));
         this.interactionsList.add(new ItemInteraction("youtube",                InteractionYoutubeTV.class));
+        this.interactionsList.add(new ItemInteraction("jukebox",                InteractionJukeBox.class));
 
         /*
             Wireds

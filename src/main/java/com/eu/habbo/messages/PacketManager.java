@@ -32,6 +32,10 @@ import com.eu.habbo.messages.incoming.polls.*;
 import com.eu.habbo.messages.incoming.rooms.*;
 import com.eu.habbo.messages.incoming.rooms.bots.*;
 import com.eu.habbo.messages.incoming.rooms.items.*;
+import com.eu.habbo.messages.incoming.rooms.items.jukebox.JukeBoxAddSoundTrackEvent;
+import com.eu.habbo.messages.incoming.rooms.items.jukebox.JukeBoxEventOne;
+import com.eu.habbo.messages.incoming.rooms.items.jukebox.JukeBoxEventTwo;
+import com.eu.habbo.messages.incoming.rooms.items.jukebox.JukeBoxRequestPlayListEvent;
 import com.eu.habbo.messages.incoming.rooms.items.rentablespace.*;
 import com.eu.habbo.messages.incoming.rooms.items.youtube.YoutubeRequestNextVideoEvent;
 import com.eu.habbo.messages.incoming.rooms.items.youtube.YoutubeRequestPlayListEvent;
@@ -328,6 +332,7 @@ public class PacketManager
         this.registerHandler(Incoming.RoomRequestBannedUsersEvent,              RoomRequestBannedUsersEvent.class);
         this.registerHandler(Incoming.JukeBoxRequestTrackCodeEvent,             JukeBoxRequestTrackCodeEvent.class);
         this.registerHandler(Incoming.JukeBoxRequestTrackDataEvent,             JukeBoxRequestTrackDataEvent.class);
+        this.registerHandler(Incoming.JukeBoxAddSoundTrackEvent,                JukeBoxAddSoundTrackEvent.class);
         this.registerHandler(Incoming.JukeBoxRequestPlayListEvent,              JukeBoxRequestPlayListEvent.class);
         this.registerHandler(Incoming.JukeBoxEventOne,                          JukeBoxEventOne.class);
         this.registerHandler(Incoming.JukeBoxEventTwo,                          JukeBoxEventTwo.class);

@@ -1,7 +1,7 @@
-package com.eu.habbo.messages.incoming.rooms;
+package com.eu.habbo.messages.incoming.rooms.items.jukebox;
 
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.rooms.JukeBoxNowPlayingMessageComposer;
+import com.eu.habbo.messages.outgoing.rooms.items.jukebox.JukeBoxNowPlayingMessageComposer;
 
 public class JukeBoxEventOne extends MessageHandler
 {

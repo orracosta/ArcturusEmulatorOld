@@ -118,6 +118,7 @@ public class RotateMoveItemEvent extends MessageHandler
         Rectangle newSquare = PathFinder.getSquare(x, y, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), rotation);
 
         //if (x != item.getX() || y != item.getY() || item.getRotation() != rotation)
+        if (hasStackHelper == null)
         {
             checkStackHeight = room.getStackHeight(x, y, false, item);
             for (short i = (short) newSquare.x; i < newSquare.x + newSquare.getWidth(); i++)
@@ -197,6 +198,16 @@ public class RotateMoveItemEvent extends MessageHandler
 
             if(furnitureMovedEvent.isCancelled())
                 return;
+        }
+
+        if (item instanceof InteractionStackHelper)
+        {
+            try
+            {
+                item.setZ(Double.valueOf(item.getExtradata()) / 100.0);
+            }
+            catch (Exception e)
+            {}
         }
 
         room.sendComposer(new FloorItemUpdateComposer(item).compose());

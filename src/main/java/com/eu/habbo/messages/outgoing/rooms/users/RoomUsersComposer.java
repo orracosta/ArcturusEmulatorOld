@@ -93,7 +93,7 @@ public class RoomUsersComposer extends MessageComposer
                 String name = "";
                 if(habbo.getHabboStats().guild != 0)
                 {
-                    Guild g = Emulator.getGameEnvironment().getGuildManager().getGuild(this.habbo.getHabboStats().guild);
+                    Guild g = Emulator.getGameEnvironment().getGuildManager().getGuild(habbo.getHabboStats().guild);
 
                     if(g != null)
                         name = g.getName();

@@ -3,7 +3,7 @@ package com.eu.habbo.messages.incoming.catalog;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.SoundTrack;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.rooms.JukeBoxTrackDataComposer;
+import com.eu.habbo.messages.outgoing.rooms.items.jukebox.JukeBoxTrackDataComposer;
 
 import java.util.ArrayList;
 import java.util.List;

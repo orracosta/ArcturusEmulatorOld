@@ -30,7 +30,7 @@ public class AchievementProgressComposer extends MessageComposer
 
         this.response.appendInt32(achievement.id); //ID
         this.response.appendInt32(achievementProgress == -1 ? 1 : (level == null) ? 1 : level.level);
-        this.response.appendString("ACH_" + achievement.name + ((level == null ? 0 : level.level) + 1));
+        this.response.appendString("ACH_" + achievement.name + ((oldLevel == null ? level.level : oldLevel.level)));
         this.response.appendInt32(oldLevel != null ? oldLevel.progress : 0);
         this.response.appendInt32(level != null ? level.progress : 0);
         this.response.appendInt32(level != null ? level.pixels : 0);

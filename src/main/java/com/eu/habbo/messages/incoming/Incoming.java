@@ -234,6 +234,7 @@ public class Incoming
     public static final int CatalogSearchedItemEvent = 2180;
     public static final int JukeBoxRequestTrackCodeEvent = 3585;
     public static final int JukeBoxRequestTrackDataEvent = 3418;
+    public static final int JukeBoxAddSoundTrackEvent = 1878;
     public static final int RoomStaffPickEvent = 510;
     public static final int RoomRequestBannedUsersEvent = 581;
     public static final int JukeBoxRequestPlayListEvent = 2541;

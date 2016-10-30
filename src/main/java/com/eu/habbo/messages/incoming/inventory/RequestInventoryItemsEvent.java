@@ -20,7 +20,7 @@ public class RequestInventoryItemsEvent extends MessageHandler
 
         synchronized (this.client.getHabbo().getHabboInventory().getItemsComponent().getItems())
         {
-            TIntObjectMap<HabboItem> items = new TIntObjectHashMap<>();
+            TIntObjectMap<HabboItem> items = new TIntObjectHashMap<HabboItem>();
             TIntObjectIterator<HabboItem> iterator = this.client.getHabbo().getHabboInventory().getItemsComponent().getItems().iterator();
             int count = 0;
             int page = 1;

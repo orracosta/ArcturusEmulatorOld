@@ -1,4 +1,4 @@
-package com.eu.habbo.messages.outgoing.rooms;
+package com.eu.habbo.messages.outgoing.rooms.items.jukebox;
 
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;

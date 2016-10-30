@@ -106,6 +106,12 @@ public class RoomPlaceItemEvent extends MessageHandler
             return;
         }
 
+        if (item instanceof InteractionJukeBox && !room.getRoomSpecialTypes().getItemsOfType(InteractionJukeBox.class).isEmpty())
+        {
+            this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "max_soundfurni"));
+            return;
+        }
+
         THashSet<RoomTile> updatedTiles = new THashSet<RoomTile>();
         if(item.getBaseItem().getType().toLowerCase().equals("s"))
         {

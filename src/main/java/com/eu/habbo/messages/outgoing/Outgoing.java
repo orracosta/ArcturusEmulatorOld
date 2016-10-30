@@ -474,49 +474,49 @@ public class Outgoing
     public final static int UnknownComposer_2601 = 2601; //Unused
     public final static int UnknownComposer_2621 = 2621; //Unused
     public final static int UnknownComposer_2698 = 2698; //Something related to name suggestions for name change.
-//    2699;
-//    2748;
-//    2773;
-//    2964;
-//    3020;
-//    3024;
-//    3046;
-//    3124;
-//    3179;
-//    3189;
-//    328;
-//    3291;
-//    3334;
-//    3379;
-//    3391;
-//    3427;
-//    347;
-//    3509;
-//    3519;
-//    3581;
-//    3684;
+    public final static int UnknownInventoryComposer = 2699;
+    public final static int UnknownComposer_2748 = 2748; //Unused
+    public final static int UnknownComposer_2773 = 2773; //Something gamecenter related.
+    public final static int UnknownComposer_2964 = 2964; //Something messenger related.
+    public final static int UnknownComposer_3020 = 3020; //Something gamecenter related.
+    public final static int UnknownComposer_3024 = 3024; //Unused
+    public final static int UnknownRoomCompetitionComposer = 3046;
+    public final static int UnknownGameCenterComposer = 3124; //Something leaderboard stats.
+    public final static int UnknownComposer_3179 = 3179; //Unknown. Crypto Related
+    public final static int UnknownComposer_3189 = 3189; //Unused
+    public final static int UnknownComposer_328 = 328; //Unused
+    public final static int UnknownComposer_3291 = 3291; //Unused
+    public final static int UnknownComposer_3334 = 3334; //Unused
+    public final static int HabboWayQuizComposer1 = 3379;
+    public final static int UpdatePetCommandsComposer = 3391;
+    public final static int UnknownComposer_3427 = 3427; //Unused
+    public final static int UnknownRoomUsersComposer = 347;
+    public final static int UnknownComposer_3509 = 3509; //Unused
+    public final static int PetPermissionsUpdateComposer = 3519; //i,i,b,b,b,b
+    public final static int QuestExpiredComposer = 3581;
+    public final static int UnknownQuestComposer = 3684; //i, i, {i, s}
     public final static int YouTradingDisabledComposer = 3697;
-//    3707;
-//    3745;
-//    3759;
-//    3782;
-//    3786;
-//    3822;
+    public final static int UnknownWiredComposer = 3707; //i -> Response 3487 : i
+    public final static int UnknownContextLinkComposer = 3745; //:test 3745 s:http://google.com (NUX Related?)
+    public final static int UnknownComposer_3759 = 3759; //Unused
+    public final static int UnknownComposer_3782 = 3782; //Unused
+    public final static int RoomFloorThicknessUpdatedComposer = 3786; //b, i, i (walls, floor)
+    public final static int CatalogPromoComposer = 3822; //page_id, item
     public final static int CameraPurchaseSuccesfullComposer = 3908;
     public final static int CameraCompetitionStatusComposer = 3953;
-//    3986;
-//    467;
-//    549;
+    public final static int NUXBotOptionsComposer = 3986;
+    public final static int UnknownComposer_467 = 467;
+    public final static int UnknownGameCenterComposer2 = 549;
     public final static int CameraURLComposer = 550;
-//    608;
-//    624;
-//    675;
-//    690;
-//    707;
-//    749;
-//    812;
-//    843;
-//    947;
-//    982;
+    public final static int AdsWatchImageComposer = 608;
+    public final static int UnknownComposer_624 = 624; //Unused
+    public final static int UnknownComposer_675 = 675; //Unused
+    public final static int HotelViewCatalogPageExpiringComposer = 690;
+    public final static int HotelViewNextLTDAvailableComposer = 707;
+    public final static int BaseJumpJoinQueueComposer = 749;
+    public final static int UnknownComposer_812 = 812; //Unused
+    public final static int UnknownNavigatorComposer = 843;
+    public final static int UnknownComposer_947 = 947; //Unused
+    public final static int UnknownComposer_982 = 982; //Unused
 
 }
