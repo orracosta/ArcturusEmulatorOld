@@ -127,7 +127,7 @@ public abstract class Game implements Runnable
             }
 
             GameTeam team = this.getTeamForHabbo(habbo);
-            if (team.isMember(habbo))
+            if (team != null && team.isMember(habbo))
             {
                 team.removeMember(habbo.getHabboInfo().getGamePlayer());
                 habbo.getHabboInfo().getGamePlayer().reset();
