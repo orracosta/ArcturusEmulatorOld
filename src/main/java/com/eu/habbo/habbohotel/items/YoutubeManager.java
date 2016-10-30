@@ -18,6 +18,7 @@ public class YoutubeManager
     public void load()
     {
         this.videos.clear();
+        this.playLists.clear();
 
         try
         {
