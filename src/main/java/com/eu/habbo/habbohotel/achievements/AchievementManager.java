@@ -147,7 +147,7 @@ public class AchievementManager
 
         AchievementLevel newLevel = achievement.getLevelForProgress(currentProgress + amount);
 
-        if(oldLevel.level == newLevel.level)
+        if(oldLevel.level == newLevel.level && newLevel.level < achievement.levels.size())
         {
             habbo.getClient().sendResponse(new AchievementProgressComposer(habbo, achievement));
         }
