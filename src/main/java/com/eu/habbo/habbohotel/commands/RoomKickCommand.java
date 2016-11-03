@@ -5,6 +5,8 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
+import gnu.trove.iterator.TIntObjectIterator;
+import gnu.trove.procedure.TObjectProcedure;
 
 public class RoomKickCommand extends Command
 {
@@ -16,7 +18,7 @@ public class RoomKickCommand extends Command
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
-        Room room = gameClient.getHabbo().getHabboInfo().getCurrentRoom();
+        final Room room = gameClient.getHabbo().getHabboInfo().getCurrentRoom();
         if(room != null)
         {
             if(params.length > 1)
@@ -29,13 +31,19 @@ public class RoomKickCommand extends Command
                 room.sendComposer(new GenericAlertComposer(message  + "\r\n-" + gameClient.getHabbo().getHabboInfo().getUsername()).compose());
             }
 
-            for (Habbo habbo : room.getCurrentHabbos().valueCollection())
+            room.getCurrentHabbos().forEachValue(new TObjectProcedure<Habbo>()
             {
-                if (habbo.hasPermission("acc_unkickable"))
-                    continue;
+                @Override
+                public boolean execute(Habbo object)
+                {
+                    if (!(object.hasPermission("acc_unkickable") || object.hasPermission("acc_supporttool") || room.isOwner(object)))
+                    {
+                        room.kickHabbo(object, true);
+                    }
 
-                Emulator.getGameEnvironment().getRoomManager().leaveRoom(habbo, room);
-            }
+                    return true;
+                }
+            });
         }
         return true;
     }

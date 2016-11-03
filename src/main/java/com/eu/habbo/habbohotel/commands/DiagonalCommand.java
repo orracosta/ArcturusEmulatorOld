@@ -20,7 +20,7 @@ public class DiagonalCommand extends Command
         {
             if (gameClient.getHabbo().getHabboInfo().getCurrentRoom().hasRights(gameClient.getHabbo()))
             {
-                gameClient.getHabbo().getHabboInfo().getCurrentRoom().moveDiagonally(gameClient.getHabbo().getHabboInfo().getCurrentRoom().moveDiagonally());
+                gameClient.getHabbo().getHabboInfo().getCurrentRoom().moveDiagonally(!gameClient.getHabbo().getHabboInfo().getCurrentRoom().moveDiagonally());
 
                 if (!gameClient.getHabbo().getHabboInfo().getCurrentRoom().moveDiagonally())
                 {
