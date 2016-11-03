@@ -28,6 +28,14 @@ public class SellItemEvent extends MessageHandler
         HabboItem item = this.client.getHabbo().getHabboInventory().getItemsComponent().getHabboItem(itemId);
         if(item != null)
         {
+            if (!item.getBaseItem().allowMarketplace())
+            {
+                String message = Emulator.getTexts().getValue("scripter.warning.marketplace.forbidden").replace("%username%", client.getHabbo().getHabboInfo().getUsername()).replace("%itemname%", item.getBaseItem().getName()).replace("%credits%", credits + "");
+                Emulator.getGameEnvironment().getModToolManager().quickTicket(this.client.getHabbo(), "Scripter", message);
+                Emulator.getLogging().logUserLine(message);
+                this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR));
+            }
+
             if(credits < 0)
             {
                 String message = Emulator.getTexts().getValue("scripter.warning.marketplace.negative").replace("%username%", client.getHabbo().getHabboInfo().getUsername()).replace("%itemname%", item.getBaseItem().getName()).replace("%credits%", credits + "");

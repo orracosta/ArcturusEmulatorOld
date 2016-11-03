@@ -8,5 +8,6 @@ INSERT INTO  `emulator_texts` (`key`, `value`) VALUES
 ('commands.keys.cmd_word_quiz',  'wordquiz;quiz'),
 ('commands.description.cmd_word_quiz',  ':wordquiz <question>');
 
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('scripter.warning.marketplace.forbidden', '%username% tried to sell an %itemname% for %credits% which is not allowed to be sold on the marketplace!');
 
 #END DATABASE UPDATE: 1.0.8 -> 1.0.9
