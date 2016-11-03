@@ -73,6 +73,7 @@ public class InteractionBattleBanzaiTeleporter extends HabboItem
         room.updateItem(this);
         room.updateItem(target);
         roomUnit.setGoalLocation(room.getLayout().getTile(roomUnit.getX(), roomUnit.getY()));
+        roomUnit.setCanWalk(false);
         Emulator.getThreading().run(new BanzaiRandomTeleport(this, target, room.getHabbo(roomUnit), room), 500);
     }
 

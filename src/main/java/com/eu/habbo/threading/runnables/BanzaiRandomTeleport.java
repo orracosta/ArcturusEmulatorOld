@@ -28,5 +28,6 @@ public class BanzaiRandomTeleport implements Runnable
         this.room.updateItem(this.item);
         this.room.updateItem(this.toItem);
         this.room.teleportHabboToItem(this.habbo, this.toItem);
+        this.habbo.getRoomUnit().setCanWalk(true);
     }
 }

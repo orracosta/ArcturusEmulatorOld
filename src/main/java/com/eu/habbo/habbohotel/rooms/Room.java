@@ -2992,7 +2992,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     void teleportHabboToLocation(Habbo habbo, short x, short y, double z)
     {
-        habbo.getRoomUnit().setLocation(this.layout.getTile(x, y));
+        RoomTile tile = this.layout.getTile(x, y);
+        habbo.getRoomUnit().setLocation(tile);
+        habbo.getRoomUnit().setGoalLocation(tile);
         habbo.getRoomUnit().setZ(z);
         this.sendComposer(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
     }
