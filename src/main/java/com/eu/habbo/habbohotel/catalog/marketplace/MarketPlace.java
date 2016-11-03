@@ -418,7 +418,7 @@ public class MarketPlace
 
         if (!item.getBaseItem().allowMarketplace() || price < 0)
             return false;
-        
+
         try
         {
             MarketPlaceOffer offer = new MarketPlaceOffer(item, calculateCommision(price), client.getHabbo());
