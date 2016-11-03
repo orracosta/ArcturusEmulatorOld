@@ -4219,7 +4219,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         habbo.getRoomUnit().cmdSit = true;
         habbo.getRoomUnit().setBodyRotation(RoomUserRotation.values()[habbo.getRoomUnit().getBodyRotation().getValue() - habbo.getRoomUnit().getBodyRotation().getValue() % 2]);
-        habbo.getRoomUnit().getStatus().put("sit", habbo.getRoomUnit().getZ() + 0.5 + "");
+        habbo.getRoomUnit().getStatus().put("sit", 0.5 + "");
         this.sendComposer(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
     }
 
