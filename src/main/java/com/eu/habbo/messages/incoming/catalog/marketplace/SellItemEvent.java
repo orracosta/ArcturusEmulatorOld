@@ -34,6 +34,7 @@ public class SellItemEvent extends MessageHandler
                 Emulator.getGameEnvironment().getModToolManager().quickTicket(this.client.getHabbo(), "Scripter", message);
                 Emulator.getLogging().logUserLine(message);
                 this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR));
+                return;
             }
 
             if(credits < 0)
@@ -42,6 +43,7 @@ public class SellItemEvent extends MessageHandler
                 Emulator.getGameEnvironment().getModToolManager().quickTicket(this.client.getHabbo(), "Scripter", message);
                 Emulator.getLogging().logUserLine(message);
                 this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR));
+                return;
             }
 
             if(MarketPlace.sellItem(this.client, item, credits))
