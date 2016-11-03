@@ -1,5 +1,6 @@
 package com.eu.habbo.messages.incoming.rooms.users;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.commands.CommandHandler;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatType;
@@ -7,6 +8,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
+import com.eu.habbo.plugin.events.users.UserTalkEvent;
 
 public class RoomUserWhisperEvent extends MessageHandler
 {
@@ -20,6 +22,12 @@ public class RoomUserWhisperEvent extends MessageHandler
 
         if(!this.client.getHabbo().getRoomUnit().canTalk() && chatMessage.getTargetHabbo() != null)
             return;
+
+
+        if (Emulator.getPluginManager().fireEvent(new UserTalkEvent(this.client.getHabbo(), chatMessage, RoomChatType.WHISPER)).isCancelled())
+        {
+            return;
+        }
 
         this.client.getHabbo().getHabboInfo().getCurrentRoom().talk(this.client.getHabbo(), chatMessage, RoomChatType.WHISPER, true);
     }

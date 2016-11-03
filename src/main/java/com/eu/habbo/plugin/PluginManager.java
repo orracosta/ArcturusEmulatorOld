@@ -5,6 +5,7 @@ import com.eu.habbo.core.Easter;
 import com.eu.habbo.habbohotel.games.battlebanzai.BattleBanzaiGame;
 import com.eu.habbo.habbohotel.games.freeze.FreezeGame;
 import com.eu.habbo.habbohotel.games.tag.TagGame;
+import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.rooms.users.RoomUserLookAtPoint;
 import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
 import com.eu.habbo.plugin.events.roomunit.RoomUnitLookAtPointEvent;
@@ -14,6 +15,8 @@ import com.eu.habbo.threading.runnables.RoomTrashing;
 import com.eu.habbo.util.pathfinding.GameMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import gnu.trove.iterator.TIntObjectIterator;
+import gnu.trove.iterator.hash.TObjectHashIterator;
 import gnu.trove.set.hash.THashSet;
 
 import java.io.*;
@@ -21,6 +24,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.NoSuchElementException;
 
 public class PluginManager
 {
@@ -148,28 +152,38 @@ public class PluginManager
             }
         }
 
-        synchronized (this.plugins)
+        TObjectHashIterator<HabboPlugin> iterator = this.plugins.iterator();
+        while (iterator.hasNext())
         {
-            for (HabboPlugin plugin : this.plugins)
+            try
             {
-                THashSet<Method> methods = plugin.registeredEvents.get(event.getClass().asSubclass(Event.class));
+                HabboPlugin plugin = iterator.next();
 
-                if(methods != null)
+                if (plugin != null)
                 {
-                    for(Method method : methods)
+                    THashSet<Method> methods = plugin.registeredEvents.get(event.getClass().asSubclass(Event.class));
+
+                    if(methods != null)
                     {
-                        try
+                        for(Method method : methods)
                         {
-                            method.invoke(plugin, event);
-                        }
-                        catch (Exception e)
-                        {
-                            Emulator.getLogging().logErrorLine("Could not pass event " + event.getClass().getName() + " to " + plugin.configuration.name);
-                            Emulator.getLogging().logErrorLine(e);
-                            e.printStackTrace();
+                            try
+                            {
+                                method.invoke(plugin, event);
+                            }
+                            catch (Exception e)
+                            {
+                                Emulator.getLogging().logErrorLine("Could not pass event " + event.getClass().getName() + " to " + plugin.configuration.name);
+                                Emulator.getLogging().logErrorLine(e);
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
+            }
+            catch (NoSuchElementException e)
+            {
+                break;
             }
         }
 
@@ -184,12 +198,18 @@ public class PluginManager
      */
     public boolean isRegistered(Class<? extends Event> clazz, boolean pluginsOnly)
     {
-        synchronized (this.plugins)
+        TObjectHashIterator<HabboPlugin> iterator = this.plugins.iterator();
+        while (iterator.hasNext())
         {
-            for(HabboPlugin plugin : this.plugins)
+            try
             {
+                HabboPlugin plugin = iterator.next();
                 if(plugin.isRegistered(clazz))
                     return true;
+            }
+            catch (NoSuchElementException e)
+            {
+                break;
             }
         }
 
@@ -219,30 +239,41 @@ public class PluginManager
 
     private void disposePlugins()
     {
-        synchronized (this.plugins)
+        TObjectHashIterator<HabboPlugin> iterator = this.plugins.iterator();
+        while (iterator.hasNext())
         {
-            for (HabboPlugin p : this.plugins)
+            try
             {
-                p.onDisable();
+                HabboPlugin p = iterator.next();
 
-                try
+                if (p != null)
                 {
-                    p.stream.close();
-                    p.classLoader.close();
-                }
-                catch (IOException e)
-                {
-                    Emulator.getLogging().logErrorLine(e);
+                    p.onDisable();
+
+                    try
+                    {
+                        p.stream.close();
+                        p.classLoader.close();
+                    }
+                    catch (IOException e)
+                    {
+                        Emulator.getLogging().logErrorLine(e);
+                    }
                 }
             }
-
-            this.plugins.clear();
+            catch (NoSuchElementException e)
+            {
+                break;
+            }
         }
+        this.plugins.clear();
     }
 
     public void reload()
     {
         long millis = System.currentTimeMillis();
+
+        this.methods.clear();
 
         this.loadPlugins();
 
@@ -271,7 +302,7 @@ public class PluginManager
         }
     }
 
-    public synchronized THashSet<HabboPlugin> getPlugins()
+    public THashSet<HabboPlugin> getPlugins()
     {
         return this.plugins;
     }

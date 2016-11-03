@@ -31,9 +31,10 @@ import com.eu.habbo.messages.outgoing.guilds.GuildInfoComposer;
 import com.eu.habbo.messages.outgoing.hotelview.HotelViewComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
+import com.eu.habbo.messages.outgoing.polls.infobus.SimplePollAnswerComposer;
+import com.eu.habbo.messages.outgoing.polls.infobus.SimplePollStartComposer;
 import com.eu.habbo.messages.outgoing.rooms.*;
 import com.eu.habbo.messages.outgoing.rooms.items.*;
-import com.eu.habbo.messages.outgoing.rooms.items.jukebox.JukeBoxNowPlayingMessageComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.*;
 import com.eu.habbo.messages.outgoing.users.MutedWhisperComposer;
 import com.eu.habbo.plugin.Event;
@@ -62,7 +63,6 @@ import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
 import java.awt.*;
-import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -162,6 +162,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public volatile boolean preventUnloading = false;
     public volatile boolean preventUncaching = false;
     public THashMap<Integer, TIntArrayList> waterTiles;
+    public String wordQuiz = "";
+    public int noVotes = 0;
+    public int yesVotes = 0;
 
     public Room(ResultSet set) throws SQLException
     {
@@ -901,6 +904,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             Emulator.getLogging().logErrorLine(e);
         }
 
+        this.wordQuiz = "";
+        this.yesVotes = 0;
+        this.noVotes = 0;
         this.updateDatabaseUserCount();
         this.preLoaded = true;
     }
@@ -1535,10 +1541,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                     for (InteractionRoller roller : this.roomSpecialTypes.getRollers())
                     {
-                        if(Double.compare(roller.getZ(), this.layout.getHeightAtSquare(roller.getX(), roller.getY())) != 0)
-                        {
-                            continue;
-                        }
+                        //if(Double.compare(roller.getZ(), this.layout.getHeightAtSquare(roller.getX(), roller.getY())) != 0)
+                       // {
+                        //    continue;
+                        //}
 
                         HabboItem newRoller = null;
 
@@ -2631,7 +2637,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 {
                     this.roomSpecialTypes.removeUndefined(item);
                 }
-                else if (item instanceof InteractionWaterItem)
+                else if (item instanceof InteractionWater)
                 {
                     this.roomSpecialTypes.removeUndefined(item);
                 }
@@ -4611,5 +4617,32 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         THashMap<WiredHighscoreClearType, THashSet<WiredHighscoreData>> dataMap = new THashMap<WiredHighscoreClearType, THashSet<WiredHighscoreData>>();
         dataMap.put(clearType, wiredData);
         this.wiredHighscoreData.put(scoreType, dataMap);
+    }
+
+    public void handleWordQuiz(Habbo habbo, String answer)
+    {
+        if (!this.wordQuiz.isEmpty())
+        {
+            answer = answer.replace(":", "");
+
+            if (answer.equals("0"))
+            {
+                this.noVotes++;
+            }
+            else if (answer.equals("1"))
+            {
+                this.yesVotes++;
+            }
+
+            this.sendComposer(new SimplePollAnswerComposer(habbo.getHabboInfo().getId(), answer, this.noVotes, this.yesVotes).compose());
+        }
+    }
+
+    public void startWordQuiz(String question, int duration)
+    {
+        this.wordQuiz = question;
+        this.noVotes = 0;
+        this.yesVotes = 0;
+        this.sendComposer(new SimplePollStartComposer(duration, question).compose());
     }
 }

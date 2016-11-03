@@ -92,7 +92,7 @@ public class WordFilter
 
     public boolean autoReportCheck(RoomChatMessage roomChatMessage)
     {
-        String message = this.normalise(roomChatMessage.getMessage());
+        String message = this.normalise(roomChatMessage.getMessage()).toLowerCase();
 
         TObjectHashIterator iterator = this.autoReportWords.iterator();
 
@@ -117,7 +117,7 @@ public class WordFilter
 
     public boolean hideMessageCheck(String message)
     {
-        message = this.normalise(message);
+        message = this.normalise(message).toLowerCase();
 
         TObjectHashIterator iterator = this.hideMessageWords.iterator();
 

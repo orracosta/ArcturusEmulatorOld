@@ -112,6 +112,7 @@ public class CommandHandler
         addCommand(new UpdateTextsCommand());
         addCommand(new UpdateWordFilterCommand());
         addCommand(new UserInfoCommand());
+        addCommand(new WordQuizCommand());
 
         addCommand(new TestCommand());
     }

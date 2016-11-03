@@ -26,6 +26,10 @@ public class AnswerPollEvent extends MessageHandler
             answer += ":" + this.packet.readString();
         }
 
+        if (pollId < 0)
+        {
+            this.client.getHabbo().getHabboInfo().getCurrentRoom().handleWordQuiz(this.client.getHabbo(), answer);
+        }
         answer = answer.substring(1);
 
         Poll poll = Emulator.getGameEnvironment().getPollManager().getPoll(pollId);

@@ -149,7 +149,7 @@ public class GameMap<T extends AbstractNode>
         return path;
     }
 
-    private synchronized T lowestFInOpen(List<T> openList)
+    private T lowestFInOpen(List<T> openList)
     {
         if(openList == null)
             return null;
@@ -165,7 +165,7 @@ public class GameMap<T extends AbstractNode>
         return cheapest;
     }
 
-    private synchronized List<T> getAdjacent(List<T> closedList, T node, int newX, int newY, Room room)
+    private List<T> getAdjacent(List<T> closedList, T node, int newX, int newY, Room room)
     {
         int x = node.getX();
         int y = node.getY();

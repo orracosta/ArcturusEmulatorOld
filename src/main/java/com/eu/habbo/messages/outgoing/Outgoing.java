@@ -340,9 +340,9 @@ public class Outgoing
     public final static int RoomEditSettingsErrorComposer = 468; //:test 3094 i:15 i:7 s:derp //Updated
     public final static int GuildAcceptMemberErrorComposer = 2241; //:test 305 i:12 i:1 //Updated
     public final static int MostUselessErrorAlertComposer = 3321; //Updated
-    public final static int AchievementsConfigurationComposer = 890; //Updated
+    public final static int GameAchievementsConfigurationComposer = 890; //Updated
     public final static int PetBreedingResultComposer = 616; //Updated
-    public final static int RoomUserQuestionAnsweredComposer = 16; //Updated
+    public final static int SimplePollAnswerComposer = 16; //Updated
     public final static int PetBreedingStartComposer = 2705; //:test 285 i:0 i:1 i:2 //Updated
     public final static int CustomNotificationComposer = 1282; //Updated
     public final static int UpdateStackHeightTileHeightComposer = 1317; //:test 2830 i:86476 i:999 //Updated

@@ -1,13 +1,10 @@
 package com.eu.habbo.messages.incoming.rooms.users;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.commands.CommandHandler;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatType;
-import com.eu.habbo.habbohotel.wired.WiredHandler;
-import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserShoutComposer;
+import com.eu.habbo.plugin.events.users.UserTalkEvent;
 
 public class RoomUserShoutEvent extends MessageHandler
 {
@@ -22,6 +19,12 @@ public class RoomUserShoutEvent extends MessageHandler
 
 
         RoomChatMessage message = new RoomChatMessage(this);
+
+        if (Emulator.getPluginManager().fireEvent(new UserTalkEvent(this.client.getHabbo(), message, RoomChatType.SHOUT)).isCancelled())
+        {
+            return;
+        }
+
         this.client.getHabbo().getHabboInfo().getCurrentRoom().talk(this.client.getHabbo(), message, RoomChatType.SHOUT);
 
         if (!message.isCommand)
