@@ -52,6 +52,8 @@ public class RCONServer
         this.addRCONMessage("sendgift",             SendGift.class);
         this.addRCONMessage("setrank",              SetRank.class);
         this.addRCONMessage("updatewordfilter",     UpdateWordfilter.class);
+        this.addRCONMessage("updatecatalog",        UpdateCatalog.class);
+        this.addRCONMessage("executecmd",           ExecuteCommand.class);
     }
 
     public void initialise()
