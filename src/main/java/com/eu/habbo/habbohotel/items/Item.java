@@ -87,7 +87,7 @@ public class Item {
                 String[] s = set.getString("multiheight").split(";");
                 this.multiHeights = new double[s.length];
 
-                for(int i = 0; i < s.length - 1; i++)
+                for(int i = 0; i < s.length; i++)
                 {
                     this.multiHeights[i] = Double.parseDouble(s[i]);
                 }
@@ -205,7 +205,9 @@ public class Item {
     {
         if(item instanceof InteractionMultiHeight)
         {
-            return item.getBaseItem().getMultiHeights()[(item.getExtradata().isEmpty() ? 0 : Integer.valueOf(item.getExtradata()) % item.getBaseItem().getMultiHeights().length)];
+            int index = Integer.valueOf(item.getExtradata()) % (item.getBaseItem().getMultiHeights().length);
+            System.out.println(item.getBaseItem().getMultiHeights()[index]);
+            return item.getBaseItem().getMultiHeights()[(item.getExtradata().isEmpty() ? 0 : index)];
         }
         else
         {

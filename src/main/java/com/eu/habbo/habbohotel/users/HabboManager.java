@@ -5,6 +5,8 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.modtool.ModToolBan;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
+import com.eu.habbo.messages.outgoing.users.UserPermissionsComposer;
+import com.eu.habbo.messages.rcon.RCONMessage;
 import com.eu.habbo.plugin.events.users.UserRegisteredEvent;
 import gnu.trove.set.hash.THashSet;
 
@@ -242,4 +244,56 @@ public class HabboManager
         return habboInfo;
     }
 
+    /**
+     * Sets the rank for an user.
+     * Updates the database if the user is offline.
+     * @param userId The ID of the user.
+     * @param rankId The new rank ID for the user.
+     * @throws Exception When the rank does not exist.
+     */
+    public void setRank(int userId, int rankId) throws Exception
+    {
+        Habbo habbo = this.getHabbo(userId);
+
+        if (Emulator.getGameEnvironment().getPermissionsManager().getPermissionsForRank(userId) == null)
+        {
+            throw new Exception("Rank ID (" + rankId + ") does not exist");
+        }
+
+        if(habbo != null)
+        {
+            habbo.getHabboInfo().setRank(rankId);
+            habbo.getClient().sendResponse(new UserPermissionsComposer(habbo));
+        }
+        else
+        {
+            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users SET rank = ? WHERE id = ? LIMIT 1");
+
+            try
+            {
+                statement.setInt(1, rankId);
+                statement.setInt(2, userId);
+                statement.execute();
+            }
+            catch (SQLException e)
+            {
+                Emulator.getLogging().logSQLException(e);
+            }
+            finally
+            {
+                if (statement != null)
+                {
+                    try
+                    {
+                        statement.close();
+                        statement.getConnection().close();
+                    }
+                    catch (SQLException e)
+                    {
+                        Emulator.getLogging().logSQLException(e);
+                    }
+                }
+            }
+        }
+    }
 }
