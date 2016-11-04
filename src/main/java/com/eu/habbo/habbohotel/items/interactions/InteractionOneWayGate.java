@@ -74,16 +74,16 @@ public class InteractionOneWayGate extends HabboItem
             {
                 if (room.getHabbosAt(this.getX(), this.getY()).isEmpty())
                 {
-                    client.getHabbo().getRoomUnit().setLocation(room.getLayout().getTile(this.getX(), this.getY()));
                     client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[(this.getRotation() + 4) % 8]);
                     client.getHabbo().getRoomUnit().getStatus().put("mv", this.getX() + "," + this.getY() + "," + this.getZ());
                     client.getHabbo().getRoomUnit().animateWalk = true;
                     room.sendComposer(new RoomUserStatusComposer(client.getHabbo().getRoomUnit()).compose());
+                    client.getHabbo().getRoomUnit().setLocation(room.getLayout().getTile(this.getX(), this.getY()));
 
                     this.setExtradata("1");
                     room.updateItem(this);
 
-                    Emulator.getThreading().run(new OneWayGateActionOne(client, room, this), 300);
+                    Emulator.getThreading().run(new OneWayGateActionOne(client, room, this), 500);
                 }
             }
         }
