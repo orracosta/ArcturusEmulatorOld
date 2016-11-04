@@ -24,15 +24,15 @@ public class UserPerksComposer extends MessageComposer
 
         this.response.appendString("USE_GUIDE_TOOL");
         this.response.appendString("requirement.unfulfilled.helper_level_4");
-        this.response.appendBoolean(true);
+        this.response.appendBoolean(Emulator.getGameEnvironment().getPermissionsManager().hasPermission(this.habbo, "acc_helper_use_guide_tool"));
 
         this.response.appendString("GIVE_GUIDE_TOURS");
         this.response.appendString("");
-        this.response.appendBoolean(true);
+        this.response.appendBoolean(Emulator.getGameEnvironment().getPermissionsManager().hasPermission(this.habbo, "acc_helper_give_guide_tours"));
 
         this.response.appendString("JUDGE_CHAT_REVIEWS");
         this.response.appendString("requirement.unfulfilled.helper_level_6");
-        this.response.appendBoolean(true);
+        this.response.appendBoolean(Emulator.getGameEnvironment().getPermissionsManager().hasPermission(this.habbo, "acc_helper_judge_chat_reviews"));
 
         this.response.appendString("VOTE_IN_COMPETITIONS");
         this.response.appendString("requirement.unfulfilled.helper_level_2");
@@ -64,7 +64,7 @@ public class UserPerksComposer extends MessageComposer
 
         this.response.appendString("CAMERA");
         this.response.appendString("");
-        this.response.appendBoolean(Emulator.getConfig().getBoolean("hotel.navigator.camera", false));
+        this.response.appendBoolean(true);
 
         this.response.appendString("NAVIGATOR_PHASE_TWO_2014");
         this.response.appendString("");
@@ -76,7 +76,7 @@ public class UserPerksComposer extends MessageComposer
 
         this.response.appendString("NAVIGATOR_ROOM_THUMBNAIL_CAMERA");
         this.response.appendString("");
-        this.response.appendBoolean(Emulator.getConfig().getBoolean("hotel.navigator.camera", false));
+        this.response.appendBoolean(true);
 
         this.response.appendString("HABBO_CLUB_OFFER_BETA");
         this.response.appendString("");

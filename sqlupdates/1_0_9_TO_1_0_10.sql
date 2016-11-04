@@ -10,4 +10,9 @@ INSERT INTO  `emulator_texts` (`key`, `value`) VALUES
 
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('scripter.warning.marketplace.forbidden', '%username% tried to sell an %itemname% for %credits% which is not allowed to be sold on the marketplace!');
 
+ALTER TABLE `permissions`
+ADD `acc_helper_use_guide_tool` ENUM('0','1') NOT NULL DEFAULT '0',
+ADD `acc_helper_give_guide_tours` ENUM('0','1') NOT NULL DEFAULT '0',
+ADD `acc_helper_judge_chat_reviews` ENUM('0','1') NOT NULL DEFAULT '0';
+
 #END DATABASE UPDATE: 1.0.8 -> 1.0.9
