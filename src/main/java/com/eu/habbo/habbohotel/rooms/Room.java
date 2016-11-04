@@ -2739,7 +2739,13 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             habbo.getClient().sendResponse(new GenericErrorMessagesComposer(GenericErrorMessagesComposer.KICKED_OUT_OF_THE_ROOM));
         }
 
-        Emulator.getGameEnvironment().getRoomManager().leaveRoom(habbo, this);
+        habbo.getRoomUnit().setGoalLocation(this.layout.getTile(this.layout.getDoorX(), this.layout.getDoorY()));
+
+        if (habbo.getRoomUnit().getPathFinder().getPath().poll() == null)
+        {
+            habbo.getRoomUnit().setCanWalk(true);
+            Emulator.getGameEnvironment().getRoomManager().leaveRoom(habbo, this);
+        }
     }
 
     public void removeHabbo(Habbo habbo)

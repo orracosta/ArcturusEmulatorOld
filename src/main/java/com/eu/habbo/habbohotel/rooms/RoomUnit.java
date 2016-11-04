@@ -43,6 +43,7 @@ public class RoomUnit
     public boolean cmdLay = false;
     public boolean sitUpdate = false;
     public boolean isTeleporting = false;
+    public boolean isKicked = false;
     public int talkTimeOut;
     public volatile short talkCounter;
 
@@ -82,6 +83,7 @@ public class RoomUnit
         this.effectId = 0;
         this.wiredMuted = false;
         this.modMuted = false;
+        this.isKicked = false;
     }
 
     public void clearWalking()
@@ -114,7 +116,7 @@ public class RoomUnit
             /**
              * !this.getStatus().containsKey("mv") &&
              */
-            if(!this.isWalking())
+            if (!this.isWalking())
                 return true;
 
             if (this.getStatus().containsKey("mv"))

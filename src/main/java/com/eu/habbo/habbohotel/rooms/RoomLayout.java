@@ -20,6 +20,7 @@ public class RoomLayout
     private int mapSizeX;
     private int mapSizeY;
     private RoomTile[][] roomTiles;
+    private RoomTile doorTile;
 
     public RoomLayout(ResultSet set) throws SQLException
     {
@@ -99,6 +100,7 @@ public class RoomLayout
                 {
                     this.doorZ = this.roomTiles[doorFrontTile.x][doorFrontTile.y].z;
                     this.roomTiles[this.doorX][this.doorY].state = RoomTileState.OPEN;
+                    this.doorTile = this.roomTiles[this.doorX][this.doorY];
                     //this.roomTiles[this.doorX][this.doorY].z = this.doorZ;
 
                     StringBuilder stringBuilder = new StringBuilder(this.heightmap);
@@ -161,6 +163,11 @@ public class RoomLayout
     public int getDoorZ()
     {
         return this.doorZ;
+    }
+
+    public RoomTile getDoorTile()
+    {
+        return this.doorTile;
     }
 
     public int getDoorDirection()

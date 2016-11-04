@@ -769,6 +769,12 @@ public class RoomManager {
             habbo.getHabboInfo().setCurrentRoom(room);
             habbo.getRoomUnit().setHandItem(0);
 
+            if (habbo.getRoomUnit().isKicked && !habbo.getRoomUnit().canWalk())
+            {
+                habbo.getRoomUnit().setCanWalk(true);
+            }
+            habbo.getRoomUnit().isKicked = false;
+
             int effect = Emulator.getGameEnvironment().getPermissionsManager().getEffect(habbo.getHabboInfo().getRank());
 
             if (effect > 0)
@@ -792,7 +798,7 @@ public class RoomManager {
             if (!room.getCurrentHabbos().isEmpty())
             {
                 // ServerMessage m = new RoomUsersComposer(habbo).compose().appendResponse(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
-                //room.sendComposer(new RoomUsersComposer(habbo).compose());
+                room.sendComposer(new RoomUsersComposer(habbo).compose());
 
                 if (habbo.getHabboStats().guild != 0)
                 {

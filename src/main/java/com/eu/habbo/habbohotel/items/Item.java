@@ -206,7 +206,6 @@ public class Item {
         if(item instanceof InteractionMultiHeight)
         {
             int index = Integer.valueOf(item.getExtradata()) % (item.getBaseItem().getMultiHeights().length);
-            System.out.println(item.getBaseItem().getMultiHeights()[index]);
             return item.getBaseItem().getMultiHeights()[(item.getExtradata().isEmpty() ? 0 : index)];
         }
         else

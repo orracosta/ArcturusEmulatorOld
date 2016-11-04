@@ -24,6 +24,9 @@ public class RoomUserWalkEvent extends MessageHandler
             if (roomUnit.isTeleporting)
                 return;
 
+            if (roomUnit.isKicked)
+                return;
+
             if (roomUnit.getCacheable().get("control") != null)
             {
                 habbo = (Habbo) roomUnit.getCacheable().get("control");
