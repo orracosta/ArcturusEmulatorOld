@@ -754,200 +754,204 @@ public class RoomManager {
 
     public void enterRoom(final Habbo habbo, final Room room)
     {
-        if(habbo.getHabboInfo().getLoadingRoom() != room.getId())
+        synchronized (habbo)
         {
-            habbo.getClient().sendResponse(new HotelViewComposer());
-            return;
-        }
-
-        habbo.getHabboInfo().setLoadingRoom(0);
-        habbo.getHabboInfo().setCurrentRoom(room);
-        habbo.getRoomUnit().setHandItem(0);
-
-        int effect = Emulator.getGameEnvironment().getPermissionsManager().getEffect(habbo.getHabboInfo().getRank());
-
-        if (effect > 0)
-        {
-            habbo.getRoomUnit().setEffectId(effect);
-        }
-
-        habbo.getRoomUnit().setPathFinder(new PathFinder(habbo.getRoomUnit()));
-
-        if(!habbo.getRoomUnit().isTeleporting)
-        {
-            habbo.getRoomUnit().setLocation(room.getLayout().getTile(room.getLayout().getDoorX(), room.getLayout().getDoorY()));
-            habbo.getRoomUnit().setZ(room.getLayout().getTile(room.getLayout().getDoorX(), room.getLayout().getDoorY()).getStackHeight());
-            habbo.getRoomUnit().setBodyRotation(RoomUserRotation.values()[room.getLayout().getDoorDirection()]);
-            habbo.getRoomUnit().setHeadRotation(RoomUserRotation.values()[room.getLayout().getDoorDirection()]);
-        }
-        habbo.getRoomUnit().setPathFinderRoom(room);
-        habbo.getRoomUnit().resetIdleTimer();
-        room.addHabbo(habbo);
-
-        if(!room.getCurrentHabbos().isEmpty())
-        {
-            // ServerMessage m = new RoomUsersComposer(habbo).compose().appendResponse(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
-            room.sendComposer(new RoomUsersComposer(habbo).compose());
-
-            if (habbo.getHabboStats().guild != 0)
+            if (habbo.getHabboInfo().getLoadingRoom() != room.getId())
             {
-                Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(habbo.getHabboStats().guild);
-
-                if (guild != null)
+                if (habbo.getHabboInfo().getLoadingRoom() != 0)
                 {
-                    room.sendComposer(new RoomUsersAddGuildBadgeComposer(guild).compose());
+                    habbo.getClient().sendResponse(new HotelViewComposer());
                 }
+                return;
             }
 
-            room.sendComposer(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
-            habbo.getClient().sendResponse(new RoomUsersComposer(room.getCurrentHabbos()));
-            habbo.getClient().sendResponse(new RoomUserStatusComposer(room.getCurrentHabbos()));
-        }
+            habbo.getHabboInfo().setLoadingRoom(0);
+            habbo.getHabboInfo().setCurrentRoom(room);
+            habbo.getRoomUnit().setHandItem(0);
 
-        habbo.getClient().sendResponse(new RoomUsersComposer(room.getCurrentBots().valueCollection(), true));
-        if(!room.getCurrentBots().isEmpty())
-        {
-            TIntObjectIterator<Bot> botIterator = room.getCurrentBots().iterator();
-            for(int i = room.getCurrentBots().size(); i-- > 0;)
+            int effect = Emulator.getGameEnvironment().getPermissionsManager().getEffect(habbo.getHabboInfo().getRank());
+
+            if (effect > 0)
             {
-                try
-                {
-                    botIterator.advance();
-                }
-                catch (NoSuchElementException e)
-                {
-                    break;
-                }
-                Bot bot = botIterator.value();
-                if(!bot.getRoomUnit().getDanceType().equals(DanceType.NONE))
-                {
-                    habbo.getClient().sendResponse(new RoomUserDanceComposer(bot.getRoomUnit()));
-                }
+                habbo.getRoomUnit().setEffectId(effect);
             }
-        }
 
-        habbo.getClient().sendResponse(new RoomPaneComposer(room, room.isOwner(habbo)));
+            habbo.getRoomUnit().setPathFinder(new PathFinder(habbo.getRoomUnit()));
 
-        habbo.getClient().sendResponse(new RoomThicknessComposer(room));
-
-        habbo.getClient().sendResponse(new RoomDataComposer(room, habbo.getClient().getHabbo(), false, true));
-
-        habbo.getClient().sendResponse(new RoomWallItemsComposer(room));
-
-        synchronized (room.getFloorItems())
-        {
-            final THashSet<HabboItem> floorItems = new THashSet<HabboItem>();
-
-            room.getFloorItems().forEach(new TObjectProcedure<HabboItem>()
+            if (!habbo.getRoomUnit().isTeleporting)
             {
-                @Override
-                public boolean execute(HabboItem object)
-                {
-                    floorItems.add(object);
-                    if (floorItems.size() == 250)
-                    {
-                        habbo.getClient().sendResponse(new RoomFloorItemsComposer(room.getFurniOwnerNames(), floorItems));
-                        floorItems.clear();
-                    }
+                habbo.getRoomUnit().setLocation(room.getLayout().getTile(room.getLayout().getDoorX(), room.getLayout().getDoorY()));
+                habbo.getRoomUnit().setZ(room.getLayout().getTile(room.getLayout().getDoorX(), room.getLayout().getDoorY()).getStackHeight());
+                habbo.getRoomUnit().setBodyRotation(RoomUserRotation.values()[room.getLayout().getDoorDirection()]);
+                habbo.getRoomUnit().setHeadRotation(RoomUserRotation.values()[room.getLayout().getDoorDirection()]);
+            }
+            habbo.getRoomUnit().setPathFinderRoom(room);
+            habbo.getRoomUnit().resetIdleTimer();
+            room.addHabbo(habbo);
 
-                    return true;
-                }
-            });
-
-            habbo.getClient().sendResponse(new RoomFloorItemsComposer(room.getFurniOwnerNames(), floorItems));
-            floorItems.clear();
-        }
-
-        if(!room.getCurrentPets().isEmpty())
-        {
-            habbo.getClient().sendResponse(new RoomPetComposer(room.getCurrentPets()));
-        }
-
-        if(habbo.getRoomUnit().isModMuted())
-        {
-            room.sendComposer(new RoomUserIgnoredComposer(habbo, RoomUserIgnoredComposer.MUTED).compose());
-        }
-
-        synchronized (room.getCurrentHabbos())
-        {
-            THashMap<Integer, String> guildBadges = new THashMap<Integer, String>();
-
-            for (Habbo roomHabbo : room.getCurrentHabbos().valueCollection())
+            if (!room.getCurrentHabbos().isEmpty())
             {
-                if (roomHabbo.getRoomUnit().getDanceType().getType() > 0)
-                {
-                    habbo.getClient().sendResponse(new RoomUserDanceComposer(roomHabbo.getRoomUnit()));
-                }
+                // ServerMessage m = new RoomUsersComposer(habbo).compose().appendResponse(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
+                //room.sendComposer(new RoomUsersComposer(habbo).compose());
 
-                if (roomHabbo.getRoomUnit().getHandItem() > 0)
+                if (habbo.getHabboStats().guild != 0)
                 {
-                    habbo.getClient().sendResponse(new RoomUserHandItemComposer(roomHabbo.getRoomUnit()));
-                }
-
-                if (roomHabbo.getRoomUnit().getEffectId() > 0)
-                {
-                    habbo.getClient().sendResponse(new RoomUserEffectComposer(roomHabbo.getRoomUnit()));
-                }
-
-                if (roomHabbo.getRoomUnit().isIdle())
-                {
-                    habbo.getClient().sendResponse(new RoomUnitIdleComposer(roomHabbo.getRoomUnit()));
-                }
-
-                if (roomHabbo.getHabboStats().ignoredUsers.contains(habbo.getHabboInfo().getId()))
-                {
-                    roomHabbo.getClient().sendResponse(new RoomUserIgnoredComposer(habbo, RoomUserIgnoredComposer.IGNORED));
-                }
-
-                if (roomHabbo.getRoomUnit().isModMuted())
-                {
-                    habbo.getClient().sendResponse(new RoomUserIgnoredComposer(roomHabbo, RoomUserIgnoredComposer.MUTED));
-                }
-                else if (habbo.getHabboStats().ignoredUsers.contains(roomHabbo.getHabboInfo().getId()))
-                {
-                    habbo.getClient().sendResponse(new RoomUserIgnoredComposer(roomHabbo, RoomUserIgnoredComposer.IGNORED));
-                }
-
-                if (roomHabbo.getHabboStats().guild != 0 && !guildBadges.containsKey(roomHabbo.getHabboStats().guild))
-                {
-                    Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(roomHabbo.getHabboStats().guild);
+                    Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(habbo.getHabboStats().guild);
 
                     if (guild != null)
                     {
-                        guildBadges.put(roomHabbo.getHabboStats().guild, guild.getBadge());
+                        room.sendComposer(new RoomUsersAddGuildBadgeComposer(guild).compose());
+                    }
+                }
+
+                room.sendComposer(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
+                habbo.getClient().sendResponse(new RoomUsersComposer(room.getCurrentHabbos()));
+                habbo.getClient().sendResponse(new RoomUserStatusComposer(room.getCurrentHabbos()));
+            }
+
+            habbo.getClient().sendResponse(new RoomUsersComposer(room.getCurrentBots().valueCollection(), true));
+            if (!room.getCurrentBots().isEmpty())
+            {
+                TIntObjectIterator<Bot> botIterator = room.getCurrentBots().iterator();
+                for (int i = room.getCurrentBots().size(); i-- > 0; )
+                {
+                    try
+                    {
+                        botIterator.advance();
+                    }
+                    catch (NoSuchElementException e)
+                    {
+                        break;
+                    }
+                    Bot bot = botIterator.value();
+                    if (!bot.getRoomUnit().getDanceType().equals(DanceType.NONE))
+                    {
+                        habbo.getClient().sendResponse(new RoomUserDanceComposer(bot.getRoomUnit()));
                     }
                 }
             }
 
-            habbo.getClient().sendResponse(new RoomUsersGuildBadgesComposer(guildBadges));
-        }
+            habbo.getClient().sendResponse(new RoomPaneComposer(room, room.isOwner(habbo)));
 
-        if(room.hasRights(habbo) || (room.hasGuild() && room.guildRightLevel(habbo) >= 2))
-        {
-            if(!room.getHabboQueue().isEmpty())
+            habbo.getClient().sendResponse(new RoomThicknessComposer(room));
+
+            habbo.getClient().sendResponse(new RoomDataComposer(room, habbo.getClient().getHabbo(), false, true));
+
+            habbo.getClient().sendResponse(new RoomWallItemsComposer(room));
+
+            synchronized (room.getFloorItems())
             {
-                for(Habbo waiting : room.getHabboQueue().valueCollection())
+                final THashSet<HabboItem> floorItems = new THashSet<HabboItem>();
+
+                room.getFloorItems().forEach(new TObjectProcedure<HabboItem>()
                 {
-                    habbo.getClient().sendResponse(new DoorbellAddUserComposer(waiting.getHabboInfo().getUsername()));
+                    @Override
+                    public boolean execute(HabboItem object)
+                    {
+                        floorItems.add(object);
+                        if (floorItems.size() == 250)
+                        {
+                            habbo.getClient().sendResponse(new RoomFloorItemsComposer(room.getFurniOwnerNames(), floorItems));
+                            floorItems.clear();
+                        }
+
+                        return true;
+                    }
+                });
+
+                habbo.getClient().sendResponse(new RoomFloorItemsComposer(room.getFurniOwnerNames(), floorItems));
+                floorItems.clear();
+            }
+
+            if (!room.getCurrentPets().isEmpty())
+            {
+                habbo.getClient().sendResponse(new RoomPetComposer(room.getCurrentPets()));
+            }
+
+            if (habbo.getRoomUnit().isModMuted())
+            {
+                room.sendComposer(new RoomUserIgnoredComposer(habbo, RoomUserIgnoredComposer.MUTED).compose());
+            }
+
+            synchronized (room.getCurrentHabbos())
+            {
+                THashMap<Integer, String> guildBadges = new THashMap<Integer, String>();
+
+                for (Habbo roomHabbo : room.getCurrentHabbos().valueCollection())
+                {
+                    if (roomHabbo.getRoomUnit().getDanceType().getType() > 0)
+                    {
+                        habbo.getClient().sendResponse(new RoomUserDanceComposer(roomHabbo.getRoomUnit()));
+                    }
+
+                    if (roomHabbo.getRoomUnit().getHandItem() > 0)
+                    {
+                        habbo.getClient().sendResponse(new RoomUserHandItemComposer(roomHabbo.getRoomUnit()));
+                    }
+
+                    if (roomHabbo.getRoomUnit().getEffectId() > 0)
+                    {
+                        habbo.getClient().sendResponse(new RoomUserEffectComposer(roomHabbo.getRoomUnit()));
+                    }
+
+                    if (roomHabbo.getRoomUnit().isIdle())
+                    {
+                        habbo.getClient().sendResponse(new RoomUnitIdleComposer(roomHabbo.getRoomUnit()));
+                    }
+
+                    if (roomHabbo.getHabboStats().ignoredUsers.contains(habbo.getHabboInfo().getId()))
+                    {
+                        roomHabbo.getClient().sendResponse(new RoomUserIgnoredComposer(habbo, RoomUserIgnoredComposer.IGNORED));
+                    }
+
+                    if (roomHabbo.getRoomUnit().isModMuted())
+                    {
+                        habbo.getClient().sendResponse(new RoomUserIgnoredComposer(roomHabbo, RoomUserIgnoredComposer.MUTED));
+                    }
+                    else if (habbo.getHabboStats().ignoredUsers.contains(roomHabbo.getHabboInfo().getId()))
+                    {
+                        habbo.getClient().sendResponse(new RoomUserIgnoredComposer(roomHabbo, RoomUserIgnoredComposer.IGNORED));
+                    }
+
+                    if (roomHabbo.getHabboStats().guild != 0 && !guildBadges.containsKey(roomHabbo.getHabboStats().guild))
+                    {
+                        Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(roomHabbo.getHabboStats().guild);
+
+                        if (guild != null)
+                        {
+                            guildBadges.put(roomHabbo.getHabboStats().guild, guild.getBadge());
+                        }
+                    }
+                }
+
+                habbo.getClient().sendResponse(new RoomUsersGuildBadgesComposer(guildBadges));
+            }
+
+            if (room.hasRights(habbo) || (room.hasGuild() && room.guildRightLevel(habbo) >= 2))
+            {
+                if (!room.getHabboQueue().isEmpty())
+                {
+                    for (Habbo waiting : room.getHabboQueue().valueCollection())
+                    {
+                        habbo.getClient().sendResponse(new DoorbellAddUserComposer(waiting.getHabboInfo().getUsername()));
+                    }
+                }
+            }
+
+            if (room.getPollId() > 0)
+            {
+                if (!PollManager.donePoll(habbo.getClient().getHabbo(), room.getPollId()))
+                {
+                    Poll poll = Emulator.getGameEnvironment().getPollManager().getPoll(room.getPollId());
+
+                    if (poll != null)
+                    {
+                        habbo.getClient().sendResponse(new PollStartComposer(poll));
+                    }
                 }
             }
         }
-
-        if(room.getPollId() > 0)
-        {
-            if(!PollManager.donePoll(habbo.getClient().getHabbo(), room.getPollId()))
-            {
-                Poll poll = Emulator.getGameEnvironment().getPollManager().getPoll(room.getPollId());
-
-                if (poll != null)
-                {
-                    habbo.getClient().sendResponse(new PollStartComposer(poll));
-                }
-            }
-        }
-
         WiredHandler.handle(WiredTriggerType.ENTER_ROOM, habbo.getRoomUnit(), room, null);
-
         room.habboEntered(habbo);
     }
 

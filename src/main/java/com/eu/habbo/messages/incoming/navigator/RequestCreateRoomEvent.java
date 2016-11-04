@@ -6,8 +6,11 @@ import com.eu.habbo.habbohotel.rooms.RoomCategory;
 import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.rooms.RoomManager;
 import com.eu.habbo.messages.incoming.MessageHandler;
+import com.eu.habbo.messages.outgoing.hotelview.HotelViewComposer;
 import com.eu.habbo.messages.outgoing.navigator.CanCreateRoomComposer;
 import com.eu.habbo.messages.outgoing.navigator.RoomCreatedComposer;
+import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
+import com.eu.habbo.messages.outgoing.rooms.RoomOpenComposer;
 
 public class RequestCreateRoomEvent extends MessageHandler {
 
@@ -55,10 +58,16 @@ public class RequestCreateRoomEvent extends MessageHandler {
             return;
         }
 
-        Room room = Emulator.getGameEnvironment().getRoomManager().createRoom(this.client.getHabbo(), name, description, modelName, maxUsers, categoryId);
+        final Room room = Emulator.getGameEnvironment().getRoomManager().createRoom(this.client.getHabbo(), name, description, modelName, maxUsers, categoryId);
 
         if(room != null)
         {
+            if (this.client.getHabbo().getHabboInfo().getCurrentRoom() != null)
+            {
+                Emulator.getGameEnvironment().getRoomManager().leaveRoom(this.client.getHabbo(), this.client.getHabbo().getHabboInfo().getCurrentRoom());
+            }
+
+            this.client.getHabbo().getHabboInfo().setLoadingRoom(room.getId());
             this.client.sendResponse(new RoomCreatedComposer(room));
         }
     }
