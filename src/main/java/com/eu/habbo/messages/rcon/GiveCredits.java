@@ -9,6 +9,10 @@ import java.sql.SQLException;
 
 public class GiveCredits extends RCONMessage<GiveCredits.JSONGiveCredits>
 {
+    /**
+     * Gives credits an user.
+     * Updates the database if the user is not online.
+     */
     public GiveCredits()
     {
         super(JSONGiveCredits.class);

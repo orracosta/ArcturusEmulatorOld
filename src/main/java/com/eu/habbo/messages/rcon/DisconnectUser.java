@@ -6,6 +6,9 @@ import com.google.gson.Gson;
 
 public class DisconnectUser extends RCONMessage<DisconnectUser.DisconnectUserJSON>
 {
+    /**
+     * Disconnects an user.
+     */
     public DisconnectUser()
     {
         super(DisconnectUserJSON.class);

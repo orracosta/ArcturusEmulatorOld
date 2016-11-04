@@ -9,6 +9,10 @@ import java.sql.SQLException;
 
 public class GivePoints extends RCONMessage<GivePoints.JSONGivePoints>
 {
+    /**
+     * Sends points of any type (including pixels) to an user.
+     * Updates the database if the user is not online.
+     */
     public GivePoints()
     {
         super(JSONGivePoints.class);

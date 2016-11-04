@@ -9,6 +9,10 @@ import java.sql.SQLException;
 
 public class GivePixels extends RCONMessage<GivePixels.JSONGivePixels>
 {
+    /**
+     * Sends pixels to an user.
+     * Updates the database if the user is not online.
+     */
     public GivePixels()
     {
         super(JSONGivePixels.class);

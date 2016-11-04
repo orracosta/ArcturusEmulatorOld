@@ -9,6 +9,10 @@ import java.sql.PreparedStatement;
 
 public class SetRank extends RCONMessage<SetRank.JSONSetRank>
 {
+    /**
+     * Sets the rank for an user.
+     * Updates the database if the user is not online.
+     */
     public SetRank()
     {
         super(JSONSetRank.class);

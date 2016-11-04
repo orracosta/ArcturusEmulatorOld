@@ -6,10 +6,29 @@ import com.google.gson.*;
 
 public abstract class RCONMessage<T>
 {
+    /**
+     * The RCON Message has been handled succesfully.
+     */
     public final static int STATUS_OK = 0;
+
+    /**
+     * The RCON Message could not be handled succesfully.
+     */
     public final static int STATUS_ERROR = 1;
+
+    /**
+     * The given user could not be found.
+     */
     public final static int HABBO_NOT_FOUND = 2;
+
+    /**
+     * The given room could not be found.
+     */
     public final static int ROOM_NOT_FOUND = 3;
+
+    /**
+     * An unknown error occurred.
+     */
     public final static int SYSTEM_ERROR = 4;
 
     /**

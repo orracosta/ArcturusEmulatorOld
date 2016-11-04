@@ -5,6 +5,9 @@ import com.google.gson.Gson;
 
 public class UpdateWordfilter extends RCONMessage<UpdateWordfilter.WordFilterJSON>
 {
+    /**
+     * Updates the wordfilter.
+     */
     public UpdateWordfilter()
     {
         super(WordFilterJSON.class);

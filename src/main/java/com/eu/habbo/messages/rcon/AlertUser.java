@@ -7,6 +7,9 @@ import com.google.gson.Gson;
 
 public class AlertUser extends RCONMessage<AlertUser.JSONAlertUser>
 {
+    /**
+     * Sends an alert to an online user.
+     */
     public AlertUser()
     {
         super(JSONAlertUser.class);

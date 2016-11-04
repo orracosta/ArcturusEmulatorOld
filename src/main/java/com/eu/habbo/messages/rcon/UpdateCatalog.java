@@ -7,9 +7,12 @@ import com.google.gson.Gson;
 
 public class UpdateCatalog extends RCONMessage<UpdateCatalog.JSONUpdateCatalog>
 {
-    public UpdateCatalog(Class<JSONUpdateCatalog> type)
+    /**
+     * Updates the catalog.
+     */
+    public UpdateCatalog()
     {
-        super(type);
+        super(JSONUpdateCatalog.class);
     }
 
     @Override
