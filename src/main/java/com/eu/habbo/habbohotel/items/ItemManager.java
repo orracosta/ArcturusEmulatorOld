@@ -144,6 +144,7 @@ public class ItemManager {
             this.interactionsList.add(new ItemInteraction("wf_trg_game_ends",           WiredTriggerGameEnds.class));
             this.interactionsList.add(new ItemInteraction("wf_trg_bot_reached_stf",     WiredTriggerBotReachedFurni.class));
             this.interactionsList.add(new ItemInteraction("wf_trg_bot_reached_avtr",    WiredTriggerBotReachedHabbo.class));
+            this.interactionsList.add(new ItemInteraction("wf_trg_says_command",        WiredTriggerHabboSaysCommand.class));
 
             /*
                 Effects
@@ -182,6 +183,7 @@ public class ItemManager {
             this.interactionsList.add(new ItemInteraction("wf_act_roller_speed",        WiredEffectRollerSpeed.class));
             this.interactionsList.add(new ItemInteraction("wf_act_raise_furni",         WiredEffectRaiseFurni.class));
             this.interactionsList.add(new ItemInteraction("wf_act_lower_furni",         WiredEffectLowerFurni.class));
+            this.interactionsList.add(new ItemInteraction("wf_act_give_respect",        WiredEffectGiveRespect.class));
 
             /*
                 Conditions

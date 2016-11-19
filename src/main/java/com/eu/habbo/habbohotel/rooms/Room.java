@@ -3149,6 +3149,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         {
             if (CommandHandler.handleCommand(habbo.getClient(), roomChatMessage.getMessage()))
             {
+                WiredHandler.handle(WiredTriggerType.SAY_COMMAND, habbo.getRoomUnit(), habbo.getHabboInfo().getCurrentRoom(), new Object[]{roomChatMessage.getMessage()});
                 roomChatMessage.isCommand = true;
                 return;
             }
