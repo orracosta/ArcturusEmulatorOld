@@ -127,7 +127,7 @@ public class BadgesComponent
         }
     }
 
-    public void removeBadge(String badge)
+    public HabboBadge removeBadge(String badge)
     {
         synchronized (this.badges)
         {
@@ -136,9 +136,12 @@ public class BadgesComponent
                 if(b.getCode().equalsIgnoreCase(badge))
                 {
                     this.badges.remove(b);
+                    return b;
                 }
             }
         }
+
+        return null;
     }
 
     public void removeBadge(HabboBadge badge)

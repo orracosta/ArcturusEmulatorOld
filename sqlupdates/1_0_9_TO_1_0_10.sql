@@ -46,4 +46,13 @@ ALTER TABLE  `permissions` ADD  `cmd_setmax` ENUM(  '0',  '1' ) NOT NULL DEFAULT
 
 ALTER TABLE  `catalog_pages` ADD  `room_id` INT( 11 ) NOT NULL DEFAULT  '0';
 
+ALTER TABLE  `permissions` ADD  `cmd_take_badge` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_superpull`;
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES
+    ('commands.description.cmd_take_badge', ':takebadge <username> <badge>'),
+    ('commands.keys.cmd_take_badge', 'takebadge;take_badge;remove_badge;removebadge'),
+    ('commands.error.cmd_take_badge.forgot_badge', 'No badge specified!'),
+    ('commands.error.cmd_take_badge.forgot_username', 'No username specified!'),
+    ('commands.error.cmd_take_badge.no_badge', '%username% does not have %badge%!'),
+    ('commands.succes.cmd_take_badge', 'Badge has been taken!');
+
 #END DATABASE UPDATE: 1.0.9 -> 1.0.10

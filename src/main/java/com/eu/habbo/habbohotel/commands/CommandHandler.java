@@ -96,6 +96,7 @@ public class CommandHandler
         addCommand(new SummonRankCommand());
         addCommand(new SuperbanCommand());
         addCommand(new SuperPullCommand());
+        addCommand(new TakeBadgeCommand());
         addCommand(new TeleportCommand());
         addCommand(new TrashCommand());
         addCommand(new UnbanCommand());
