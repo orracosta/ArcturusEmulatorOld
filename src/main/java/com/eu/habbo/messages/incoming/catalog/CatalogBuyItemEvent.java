@@ -36,7 +36,7 @@ public class CatalogBuyItemEvent extends MessageHandler
         if (this.client.getHabbo().getHabboInventory().getItemsComponent().itemCount() > Emulator.getConfig().getInt("inventory.max.items"))
         {
             this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR).compose());
-            this.client.sendResponse(new GenericAlertComposer(Emulator.getConfig().getValue("inventory.full")));
+            this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("inventory.full")));
             return;
         }
 
