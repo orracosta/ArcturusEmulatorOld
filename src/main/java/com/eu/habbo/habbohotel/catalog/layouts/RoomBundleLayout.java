@@ -22,12 +22,15 @@ import java.util.Map;
 
 public class RoomBundleLayout extends SingleBundle
 {
+    public int roomId = 0;
     public Room room;
     private int lastUpdate = 0;
 
     public RoomBundleLayout(ResultSet set) throws SQLException
     {
         super(set);
+
+        this.roomId = set.getInt("room_id");
     }
 
     @Override
@@ -41,10 +44,17 @@ public class RoomBundleLayout extends SingleBundle
 
         if(this.room == null)
         {
-            this.room = Emulator.getGameEnvironment().getRoomManager().loadRoom(Integer.valueOf(this.getPageName().replace("room_bundle_", "")));
+            if (this.roomId > 0)
+            {
+                this.room = Emulator.getGameEnvironment().getRoomManager().loadRoom(this.roomId);
 
-            if(this.room != null)
-                this.room.preventUnloading = true;
+                if (this.room != null)
+                    this.room.preventUnloading = true;
+            }
+            else
+            {
+                Emulator.getLogging().logErrorLine("No room id specified for room bundle " + this.getPageName() + "(" + this.getId() + ")");
+            }
         }
 
         if(this.room == null)

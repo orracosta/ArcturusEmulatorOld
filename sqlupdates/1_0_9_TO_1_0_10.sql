@@ -44,4 +44,6 @@ INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.error.cmd_setmax
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.keys.cmd_setmax', 'setmax;set_max'), ('commands.description.cmd_setmax', ':setmax <amount>'), ('commands.description.cmd_staffalert', ':sA <message>');
 ALTER TABLE  `permissions` ADD  `cmd_setmax` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_say_all`;
 
+ALTER TABLE  `catalog_pages` ADD  `room_id` INT( 11 ) NOT NULL DEFAULT  '0';
+
 #END DATABASE UPDATE: 1.0.9 -> 1.0.10
