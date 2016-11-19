@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.outgoing.rooms;
 
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomTileState;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
@@ -26,7 +27,12 @@ public class RoomRelativeMapComposer extends MessageComposer
         {
             for (short x = 0; x < this.room.getLayout().getMapSizeX(); x++)
             {
-                this.response.appendShort(this.room.getLayout().getTile(x, y).relativeHeight());
+                RoomTile t = this.room.getLayout().getTile(x, y);
+
+                if (t != null)
+                    this.response.appendShort(t.relativeHeight());
+                else
+                    this.response.appendShort(0);
 
             }
         }

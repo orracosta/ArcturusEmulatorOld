@@ -34,7 +34,7 @@ public class InteractionMannequin extends HabboItem
         {
             String[] data = this.getExtradata().split(":");
             serverMessage.appendString("GENDER");
-            serverMessage.appendString(data[0]);
+            serverMessage.appendString(data[0].toLowerCase());
             serverMessage.appendString("FIGURE");
             serverMessage.appendString(data[1].replace(" ", ""));
             serverMessage.appendString("OUTFIT_NAME");

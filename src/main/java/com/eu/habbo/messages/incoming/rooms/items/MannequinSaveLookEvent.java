@@ -22,13 +22,31 @@ public class MannequinSaveLookEvent extends MessageHandler
 
         String[] data = item.getExtradata().split(":");
         //TODO: Only clothing not whole body part.
+
+        String look = "";
+
+        System.out.println(this.client.getHabbo().getHabboInfo().getLook());
+        for (String s : this.client.getHabbo().getHabboInfo().getLook().split("\\."))
+        {
+            System.out.println(s);
+            if (s.startsWith("ch") || s.startsWith("ha") || s.startsWith("lg") || s.startsWith("sh"))
+            {
+                look += s + ".";
+            }
+        }
+
+        if (!look.isEmpty())
+        {
+            look = look.substring(0, look.length() - 2);
+        }
+
         if(data.length == 3)
         {
-            item.setExtradata(this.client.getHabbo().getHabboInfo().getGender().name().toLowerCase() + ":" + this.client.getHabbo().getHabboInfo().getLook() + ":" + data[2]);
+            item.setExtradata(this.client.getHabbo().getHabboInfo().getGender().name().toLowerCase() + ":" + look + ":" + data[2]);
         }
         else
         {
-            item.setExtradata(this.client.getHabbo().getHabboInfo().getGender().name().toLowerCase() + ":" + this.client.getHabbo().getHabboInfo().getLook() + ":" + this.client.getHabbo().getHabboInfo().getUsername() + "'s look.");
+            item.setExtradata(this.client.getHabbo().getHabboInfo().getGender().name().toLowerCase() + ":" + look + ":" + this.client.getHabbo().getHabboInfo().getUsername() + "'s look.");
         }
         item.needsUpdate(true);
         Emulator.getThreading().run(item);
