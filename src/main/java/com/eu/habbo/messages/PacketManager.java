@@ -442,7 +442,7 @@ public class PacketManager
     void registerUnknown() throws Exception
     {
         this.registerHandler(Incoming.RequestResolutionEvent,                   RequestResolutionEvent.class);
-        this.registerHandler(Incoming.RequestTalenTrackEvent,                   RequestTalentTrackEvent.class); //TODO
+        this.registerHandler(Incoming.RequestTalenTrackEvent,                   RequestTalentTrackEvent.class);
         this.registerHandler(Incoming.UnknownEvent1,                            UnknownEvent1.class);
     }
 

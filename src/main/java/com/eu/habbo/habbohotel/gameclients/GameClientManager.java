@@ -170,7 +170,7 @@ public class GameClientManager
         }
     }
 
-    public synchronized void sendBroadcastResponse(ServerMessage msg, GameClient exclude)
+    public void sendBroadcastResponse(ServerMessage msg, GameClient exclude)
     {
         for (GameClient client : this.clients.values()) {
             if(client.equals(exclude))
@@ -179,13 +179,8 @@ public class GameClientManager
             client.sendResponse(msg);
         }
     }
-    
-    public synchronized void sendBroadcastResponse(MessageComposer composer, String minPermission)
-    {
-        sendBroadcastResponse(composer.compose(), minPermission);
-    }
 
-    public synchronized void sendBroadcastResponse(ServerMessage message, String minPermission, GameClient exclude)
+    public void sendBroadcastResponse(ServerMessage message, String minPermission, GameClient exclude)
     {
         for (GameClient client : this.clients.values())
         {
@@ -199,14 +194,6 @@ public class GameClientManager
                     client.sendResponse(message);
                 }
             }
-        }
-    }
-    
-    void sendBroadcastResponse(ServerMessage msg, String minPermission)
-    {
-        for (GameClient client : this.clients.values())
-        {
-
         }
     }
 

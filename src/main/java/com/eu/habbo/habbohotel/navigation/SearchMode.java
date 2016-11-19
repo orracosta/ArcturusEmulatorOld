@@ -12,4 +12,17 @@ public enum SearchMode
     {
         this.type = type;
     }
+
+    public static SearchMode fromType(int type)
+    {
+        for (SearchMode m : SearchMode.values())
+        {
+            if (m.type == type)
+            {
+                return m;
+            }
+        }
+
+        return LIST;
+    }
 }

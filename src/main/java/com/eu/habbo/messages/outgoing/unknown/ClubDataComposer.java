@@ -67,13 +67,7 @@ public class ClubDataComposer extends MessageComposer
             int totalDays = (int)Math.floor((int)seconds / 86400);
             seconds -= totalDays * 86400;
 
-            //this.response.appendInt32(totalMonths); //months
-            //this.response.appendInt32(totalYears); //years
-            //this.response.appendBoolean(false);
-            //this.response.appendInt32(totalDays); //days
-
             this.response.appendInt32((int)secondsTotal / 86400 / 31);
-            System.out.println(item.getName() + " | " + ((int)secondsTotal / 86400 / 31));
             this.response.appendInt32((int)seconds);
             this.response.appendBoolean(false); //giftable
             this.response.appendInt32((int)seconds);

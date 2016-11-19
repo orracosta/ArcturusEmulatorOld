@@ -34,13 +34,23 @@ public class TestCommand extends Command
         //Emulator.getGameEnvironment().getRoomManager().clearInactiveRooms();
         //gameClient.sendResponse(new RoomDataComposer(gameClient.getHabbo().getHabboInfo().getCurrentRoom(), gameClient.getHabbo(), true, false));
 
+        if (params[1].equals("uach"))
+        {
+            Emulator.getGameEnvironment().getAchievementManager().reload();
+        }
+
         if(params[1].equals("units"))
         {
             String s = "";
 
             for(Habbo habbo : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentHabbos().valueCollection())
             {
-                s += "Habbo ID: " + habbo.getHabboInfo().getId() + ", RoomUnit ID: " + habbo.getRoomUnit().getId();
+                s += "Habbo ID: " + habbo.getHabboInfo().getId() + ", RoomUnit ID: " + habbo.getRoomUnit().getId() + "<br>";
+            }
+
+            for (AbstractPet pet : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentPets().valueCollection())
+            {
+                s += "Pet ID: " + pet.getId() + ", RoomUnit ID: " + pet.getRoomUnit().getId() + "<br>";
             }
 
             gameClient.sendResponse(new GenericAlertComposer(s));

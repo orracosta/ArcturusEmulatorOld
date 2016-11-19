@@ -1,5 +1,7 @@
 package com.eu.habbo.habbohotel.rooms;
 
+import com.eu.habbo.habbohotel.navigation.SearchMode;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -12,6 +14,7 @@ public class RoomCategory implements Comparable<RoomCategory> {
     private boolean canTrade;
     private int maxUserCount;
     private boolean official;
+    private SearchMode displayMode;
 
     public RoomCategory(ResultSet set) throws SQLException
     {
@@ -21,6 +24,7 @@ public class RoomCategory implements Comparable<RoomCategory> {
         this.canTrade = set.getBoolean("can_trade");
         this.maxUserCount = set.getInt("max_user_count");
         this.official = set.getString("public").equals("1");
+        this.displayMode = SearchMode.fromType(set.getInt("list_type"));
     }
 
     public int getId() {
@@ -47,6 +51,11 @@ public class RoomCategory implements Comparable<RoomCategory> {
     public boolean isPublic()
     {
         return this.official;
+    }
+
+    public SearchMode getDisplayMode()
+    {
+        return this.displayMode;
     }
 
     @Override

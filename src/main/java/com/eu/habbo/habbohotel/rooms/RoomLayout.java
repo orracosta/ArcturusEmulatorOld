@@ -31,7 +31,7 @@ public class RoomLayout
             this.doorY = set.getShort("door_y");
 
             this.doorDirection = set.getInt("door_dir");
-            this.heightmap = set.getString("heightmap");
+            this.heightmap = set.getString("heightmap").replace("\n", "");
 
             this.parse();
         }
@@ -53,20 +53,24 @@ public class RoomLayout
         for (short y = 0; y < this.mapSizeY; y++)
         {
             if(modelTemp[y].isEmpty() || modelTemp[y].equalsIgnoreCase("\r"))
+            {
+                Emulator.getLogging().logDebugLine("Model " + name + ", Y = empty || equals \\r");
                 continue;
-
-            if (y > 0) {
-                modelTemp[y] = modelTemp[y].substring(1);
             }
+
             for (short x = 0; x < this.mapSizeX; x++)
             {
                 if(modelTemp[y].length() != this.mapSizeX)
+                {
+                    Emulator.getLogging().logDebugLine("Model " + name + ", Y != mapSizeX (" + modelTemp[y].length() + " != " + this.mapSizeX + ")");
+
                     break;
+                }
 
                 String square = modelTemp[y].substring(x, x + 1).trim().toLowerCase();
                 RoomTileState state = RoomTileState.OPEN;
                 short height = 0;
-                if (square.equals("x"))
+                if (square.equalsIgnoreCase("x"))
                 {
                     state = RoomTileState.BLOCKED;
                 }

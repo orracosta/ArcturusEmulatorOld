@@ -27,41 +27,28 @@ public class PurchaseOKComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.PurchaseOKComposer);
-        if(catalogItem != null && item != null)
+//        if(catalogItem != null && item != null)
+//        {
+//            this.response.appendInt32(this.item.getId());
+//            this.response.appendString(this.item.getName());
+//            this.response.appendBoolean(false);
+//            this.response.appendInt32(this.catalogItem.getCredits());
+//            this.response.appendInt32(this.catalogItem.getPoints());
+//            this.response.appendInt32(this.catalogItem.getPointsType());
+//            this.response.appendBoolean(false);
+//            this.response.appendInt32(1);
+//            this.response.appendString(this.item.getType().toLowerCase());
+//            this.response.appendInt32(this.item.getSpriteId());
+//            this.response.appendString("");
+//            this.response.appendInt32(1);
+//            this.response.appendInt32(false);
+//            this.response.appendInt32(0);
+//            this.response.appendBoolean(true);
+//        }
+//        else
+        if(this.catalogItem != null)
         {
-            this.response.appendInt32(this.item.getId());
-            this.response.appendString(this.item.getName());
-            this.response.appendBoolean(false);
-            this.response.appendInt32(this.catalogItem.getCredits());
-            this.response.appendInt32(this.catalogItem.getPoints());
-            this.response.appendInt32(this.catalogItem.getPointsType());
-            this.response.appendBoolean(false);
-            this.response.appendInt32(1);
-            this.response.appendString(this.item.getType().toLowerCase());
-            this.response.appendInt32(this.item.getSpriteId());
-            this.response.appendString("");
-            this.response.appendInt32(1);
-            this.response.appendInt32(false);
-            this.response.appendInt32(0);
-            this.response.appendBoolean(true);
-        }
-        else if(catalogItem != null)
-        {
-            this.response.appendInt32(0);
-            this.response.appendString(this.catalogItem.getName());
-            this.response.appendBoolean(false);
-            this.response.appendInt32(this.catalogItem.getCredits());
-            this.response.appendInt32(this.catalogItem.getPoints());
-            this.response.appendInt32(this.catalogItem.getPointsType());
-            this.response.appendBoolean(false);
-            this.response.appendInt32(1);
-            this.response.appendString("s");
-            this.response.appendInt32(0);
-            this.response.appendString("");
-            this.response.appendInt32(1);
-            this.response.appendInt32(false);
-            this.response.appendInt32(0);
-            this.response.appendBoolean(true);
+            this.catalogItem.serialize(this.response);
         }
         else
         {

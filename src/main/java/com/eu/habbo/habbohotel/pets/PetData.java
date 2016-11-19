@@ -18,6 +18,7 @@ import java.util.List;
 public class PetData
 {
     private int type;
+    private String name;
 
     public static final String BLINK = "eyb";
     public static final String SPEAK = "spk";
@@ -44,6 +45,7 @@ public class PetData
     public PetData(ResultSet set) throws SQLException
     {
         this.type = set.getInt("pet_type");
+        this.name = set.getString("pet_name");
         this.actionsHappy = set.getString("happy_actions").split(";");
         this.actionsTired = set.getString("tired_actions").split(";");
         this.actionsRandom = set.getString("random_actions").split(";");
@@ -82,6 +84,11 @@ public class PetData
     public int getType()
     {
         return this.type;
+    }
+
+    public String getName()
+    {
+        return this.name;
     }
 
     public void addNest(Item item)

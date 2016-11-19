@@ -67,6 +67,7 @@ public class GameEnvironment
         this.modToolManager     = new ModToolManager();
         this.petManager         = new PetManager();
         this.achievementManager = new AchievementManager();
+        this.achievementManager.reload();
         this.guideManager       = new GuideManager();
         this.wordFilter         = new WordFilter();
         this.craftingManager    = new CraftingManager();

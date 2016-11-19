@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.navigation;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomCategory;
 import com.eu.habbo.habbohotel.users.Habbo;
 
 import java.util.ArrayList;
@@ -22,14 +23,15 @@ public class NavigatorHotelFilter extends NavigatorFilter
     {
         List<SearchResultList> resultLists = new ArrayList<SearchResultList>();
         int i = 0;
-        resultLists.add(new SearchResultList(i, "popular", "", SearchAction.NONE, SearchMode.THUMBNAILS, false, Emulator.getGameEnvironment().getRoomManager().getPopularRooms(10), false, false));
+        resultLists.add(new SearchResultList(i, "popular", "", SearchAction.NONE, SearchMode.fromType(Emulator.getConfig().getInt("hotel.navigator.popular.listtype")), false, Emulator.getGameEnvironment().getRoomManager().getPopularRooms(Emulator.getConfig().getInt("hotel.navigator.popular.amount")), false, false));
         i++;
 
-        for (Map.Entry<Integer, List<Room>> set : Emulator.getGameEnvironment().getRoomManager().getPopularRoomsByCategory(15).entrySet())
+        for (Map.Entry<Integer, List<Room>> set : Emulator.getGameEnvironment().getRoomManager().getPopularRoomsByCategory(Emulator.getConfig().getInt("hotel.navigator.search.maxresults")).entrySet())
         {
             if (!set.getValue().isEmpty())
             {
-                resultLists.add(new SearchResultList(i, Emulator.getGameEnvironment().getRoomManager().getCategory(set.getKey()).getCaption(), Emulator.getGameEnvironment().getRoomManager().getCategory(set.getKey()).getCaption(), SearchAction.MORE, SearchMode.LIST, set.getValue().size() > 10, set.getValue(), true, false));
+                RoomCategory category = Emulator.getGameEnvironment().getRoomManager().getCategory(set.getKey());
+                resultLists.add(new SearchResultList(i, category.getCaption(), category.getCaption(), SearchAction.MORE, category.getDisplayMode(), false, set.getValue(), true, false));
                 i++;
             }
         }
@@ -44,14 +46,15 @@ public class NavigatorHotelFilter extends NavigatorFilter
         {
             List<SearchResultList> resultLists = new ArrayList<SearchResultList>();
             int i = 0;
-            resultLists.add(new SearchResultList(i, "popular", "", SearchAction.NONE, SearchMode.THUMBNAILS, false, Emulator.getGameEnvironment().getRoomManager().getPopularRooms(10), false, false));
+            resultLists.add(new SearchResultList(i, "popular", "", SearchAction.NONE, SearchMode.fromType(Emulator.getConfig().getInt("hotel.navigator.popular.listtype")), false, Emulator.getGameEnvironment().getRoomManager().getPopularRooms(10), false, false));
             i++;
 
             for (Map.Entry<Integer, List<Room>> set : Emulator.getGameEnvironment().getRoomManager().findRooms(filterField, value).entrySet())
             {
                 if (!set.getValue().isEmpty())
                 {
-                    resultLists.add(new SearchResultList(i, Emulator.getGameEnvironment().getRoomManager().getCategory(set.getKey()).getCaption(), Emulator.getGameEnvironment().getRoomManager().getCategory(set.getKey()).getCaption(), SearchAction.MORE, SearchMode.LIST, set.getValue().size() > 10, set.getValue(), true, false));
+                    RoomCategory category = Emulator.getGameEnvironment().getRoomManager().getCategory(set.getKey());
+                    resultLists.add(new SearchResultList(i, category.getCaption(), category.getCaption(), SearchAction.MORE, category.getDisplayMode(), false, set.getValue(), true, false));
                     i++;
                 }
             }

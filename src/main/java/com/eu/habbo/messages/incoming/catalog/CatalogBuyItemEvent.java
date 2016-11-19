@@ -10,6 +10,7 @@ import com.eu.habbo.habbohotel.catalog.layouts.VipBuyLayout;
 import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.*;
+import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.HotelWillCloseInMinutesComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.users.*;
@@ -31,6 +32,13 @@ public class CatalogBuyItemEvent extends MessageHandler
         int itemId = this.packet.readInt();
         String extraData = this.packet.readString();
         int count = this.packet.readInt();
+
+        if (this.client.getHabbo().getHabboInventory().getItemsComponent().itemCount() > Emulator.getConfig().getInt("inventory.max.items"))
+        {
+            this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR).compose());
+            this.client.sendResponse(new GenericAlertComposer(Emulator.getConfig().getValue("inventory.full")));
+            return;
+        }
 
         CatalogPage page = null;
 
@@ -141,15 +149,15 @@ public class CatalogBuyItemEvent extends MessageHandler
             {
                 String[] data = item.getName().replace("_VIP_", "_").toLowerCase().split("_");
 
-                if(data[3].equalsIgnoreCase("day"))
+                if(data[3].startsWith("day"))
                 {
                     totalDays = Integer.valueOf(data[2]);
                 }
-                else if(data[3].equalsIgnoreCase("month"))
+                else if(data[3].startsWith("month"))
                 {
                     totalDays = Integer.valueOf(data[2]) * 31;
                 }
-                else if(data[3].equalsIgnoreCase("year"))
+                else if(data[3].startsWith("year"))
                 {
                     totalDays = Integer.valueOf(data[2]) * 365;
                 }

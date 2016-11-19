@@ -292,4 +292,5 @@ public class Incoming
     public static final int YoutubeRequestPlayListEvent = 3517;
     public static final int YoutubeRequestNextVideoEvent = 1843;
     public static final int YoutubeRequestVideoDataEvent = 890;
+    public static final int StartSafetyQuizEvent = 2652;
 }

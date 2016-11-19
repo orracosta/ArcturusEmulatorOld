@@ -157,6 +157,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     private RoomSpecialTypes roomSpecialTypes;
 
     private final Object loadLock = new Object();
+    private final Object roomUnitLock = new Object();
 
     //Use appropriately. Could potentially cause memory leaks when used incorrectly.
     public volatile boolean preventUnloading = false;
@@ -173,7 +174,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.ownerName = set.getString("owner_name");
         this.name = set.getString("name");
         this.description = set.getString("description");
-        this.layout = Emulator.getGameEnvironment().getRoomManager().loadLayout(set.getString("model"));
         this.password = set.getString("password");
         this.state = RoomState.valueOf(set.getString("state").toUpperCase());
         this.usersMax = set.getInt("users_max");
@@ -204,10 +204,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.guild = set.getInt("guild_id");
         this.rollerSpeed = set.getInt("roller_speed");
         this.overrideModel = set.getInt("override_model") == 1;
-        if(this.overrideModel)
-        {
-            Emulator.getThreading().run(new LoadCustomHeightMap(this));
-        }
 
         this.promoted = set.getInt("promoted") == 1;
         if(this.promoted)
@@ -258,6 +254,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.rights = new TIntArrayList();
         this.wiredHighscoreData = new THashMap<WiredHighscoreScoreType, THashMap<WiredHighscoreClearType, THashSet<WiredHighscoreData>>>();
 
+        if (!this.overrideModel)
+        {
+            this.layout = Emulator.getGameEnvironment().getRoomManager().getLayout(set.getString("model"));
+        }
         try
         {
             this.loadBans();
@@ -300,6 +300,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 catch (Exception e)
                 {
                     Emulator.getLogging().logErrorLine(e);
+                }
+
+                if (this.overrideModel)
+                {
+                    new LoadCustomHeightMap(this).run();
                 }
 
                 try
@@ -1126,13 +1131,16 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
     }
 
-    private synchronized void updateDatabaseUserCount()
+    private void updateDatabaseUserCount()
     {
         PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE rooms SET users = ? WHERE id = ? LIMIT 1");
 
         try
         {
-            statement.setInt(1, this.currentHabbos.size());
+            synchronized (this.currentHabbos)
+            {
+                statement.setInt(1, this.currentHabbos.size());
+            }
             statement.setInt(2, this.id);
             statement.executeUpdate();
         }
@@ -2405,6 +2413,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             }
         }
 
+        //TODO: Move this list
         synchronized (this.roomSpecialTypes)
         {
             if (item instanceof InteractionWiredTrigger)
@@ -2474,6 +2483,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             {
                 this.roomSpecialTypes.addUndefined(item);
             }else if (item instanceof InteractionJukeBox)
+            {
+                this.roomSpecialTypes.addUndefined(item);
+            }else if (item instanceof InteractionPetBreedingNest)
             {
                 this.roomSpecialTypes.addUndefined(item);
             }
@@ -2657,6 +2669,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 {
                     this.roomSpecialTypes.removeUndefined(item);
                 }
+                else if (item instanceof InteractionPetBreedingNest)
+                {
+                    this.roomSpecialTypes.removeUndefined(item);
+                }
             }
         }
     }
@@ -2724,12 +2740,15 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
     }
 
-    public synchronized void addHabbo(Habbo habbo)
+    public void addHabbo(Habbo habbo)
     {
-        habbo.getRoomUnit().setId(this.unitCounter);
-        this.currentHabbos.put(habbo.getHabboInfo().getId(), habbo);
-        this.unitCounter++;
-        this.updateDatabaseUserCount();
+		synchronized (this.roomUnitLock)
+		{
+			habbo.getRoomUnit().setId(this.unitCounter);
+			this.currentHabbos.put(habbo.getHabboInfo().getId(), habbo);
+			this.unitCounter++;
+			this.updateDatabaseUserCount();
+		}
     }
 
     public void kickHabbo(Habbo habbo, boolean alert)
@@ -2803,18 +2822,24 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.updateDatabaseUserCount();
     }
 
-    public synchronized void addBot(Bot bot)
+    public void addBot(Bot bot)
     {
-        bot.getRoomUnit().setId(this.unitCounter);
-        this.currentBots.put(bot.getId(), bot);
-        this.unitCounter++;
+        synchronized (this.roomUnitLock)
+        {
+            bot.getRoomUnit().setId(this.unitCounter);
+            this.currentBots.put(bot.getId(), bot);
+            this.unitCounter++;
+        }
     }
 
-    public synchronized void addPet(AbstractPet pet)
+    public void addPet(AbstractPet pet)
     {
-        pet.getRoomUnit().setId(this.unitCounter);
-        this.currentPets.put(pet.getId(), pet);
-        this.unitCounter++;
+        synchronized (this.roomUnitLock)
+        {
+            pet.getRoomUnit().setId(this.unitCounter);
+            this.currentPets.put(pet.getId(), pet);
+            this.unitCounter++;
+        }
     }
 
     public Bot getBot(int botId)

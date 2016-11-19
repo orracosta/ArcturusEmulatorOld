@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.users;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.Achievement;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
+import com.eu.habbo.habbohotel.achievements.TalentTrackType;
 import com.eu.habbo.habbohotel.catalog.CatalogItem;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import gnu.trove.list.array.TIntArrayList;
@@ -61,6 +62,9 @@ public class HabboStats implements Runnable
     public final TIntArrayList ignoredUsers;
     public final TIntArrayList secretRecipes;
 
+    public int citizenshipLevel;
+    public int helpersLevel;
+
     public final HabboNavigatorWindowSettings navigatorWindowSettings;
     public final THashMap<String, Object> cache;
 
@@ -101,6 +105,8 @@ public class HabboStats implements Runnable
         this.chatColor = RoomChatMessageBubbles.getBubble(set.getInt("chat_color"));
         this.hofPoints = set.getInt("hof_points");
         this.blockStaffAlerts = set.getString("block_alerts").equals("1");
+        this.citizenshipLevel = set.getInt("talent_track_citizenship_level");
+        this.helpersLevel = set.getInt("talent_track_helpers_level");
 
         PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM user_window_settings WHERE user_id = ? LIMIT 1");
         statement.setInt(1, this.habbo.getHabboInfo().getId());
@@ -170,7 +176,7 @@ public class HabboStats implements Runnable
     {
         try
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users_settings SET achievement_score = ?, respects_received = ?, respects_given = ?, daily_respect_points = ?, block_following = ?, block_friendrequests = ?, online_time = online_time + ?, guild_id = ?, daily_pet_respect_points = ?, club_expire_timestamp = ?, login_streak = ?, rent_space_id = ?, rent_space_endtime = ?, volume_system = ?, volume_furni = ?, volume_trax = ?, block_roominvites = ?, old_chat = ?, block_camera_follow = ?, chat_color = ?, hof_points = ?, block_alerts = ? WHERE user_id = ? LIMIT 1");
+            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users_settings SET achievement_score = ?, respects_received = ?, respects_given = ?, daily_respect_points = ?, block_following = ?, block_friendrequests = ?, online_time = online_time + ?, guild_id = ?, daily_pet_respect_points = ?, club_expire_timestamp = ?, login_streak = ?, rent_space_id = ?, rent_space_endtime = ?, volume_system = ?, volume_furni = ?, volume_trax = ?, block_roominvites = ?, old_chat = ?, block_camera_follow = ?, chat_color = ?, hof_points = ?, block_alerts = ?, talent_track_citizenship_level = ?, talent_track_helpers_level = ? WHERE user_id = ? LIMIT 1");
             statement.setInt(1, this.achievementScore);
             statement.setInt(2, this.respectPointsReceived);
             statement.setInt(3, this.respectPointsGiven);
@@ -193,7 +199,9 @@ public class HabboStats implements Runnable
             statement.setInt(20, this.chatColor.getType());
             statement.setInt(21, this.hofPoints);
             statement.setString(22, this.blockStaffAlerts ? "1" : "0");
-            statement.setInt(23, this.habbo.getHabboInfo().getId());
+            statement.setInt(23, this.citizenshipLevel);
+            statement.setInt(24, this.helpersLevel);
+            statement.setInt(25, this.habbo.getHabboInfo().getId());
             statement.executeUpdate();
             statement.close();
             statement.getConnection().close();
@@ -558,5 +566,23 @@ public class HabboStats implements Runnable
 
         this.secretRecipes.add(id);
         return true;
+    }
+
+    public int talentTrackLevel(TalentTrackType type)
+    {
+        if (type == TalentTrackType.CITIZENSHIP)
+            return this.citizenshipLevel;
+        else if (type == TalentTrackType.HELPER)
+            return this.helpersLevel;
+
+        return -1;
+    }
+
+    public void setTalentLevel(TalentTrackType type, int level)
+    {
+        if (type == TalentTrackType.CITIZENSHIP)
+            this.citizenshipLevel = level;
+        else if (type == TalentTrackType.HELPER)
+            this.helpersLevel = level;
     }
 }

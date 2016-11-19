@@ -62,7 +62,16 @@ public class UserProfileComposer extends MessageComposer
                 if (i == 0)
                     break;
 
-                guilds.add(Emulator.getGameEnvironment().getGuildManager().getGuild(i));
+                Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(i);
+
+                if (guild != null)
+                {
+                    guilds.add(guild);
+                }
+                else
+                {
+                    this.habbo.getHabboStats().removeGuild(i);
+                }
             }
         }
         else

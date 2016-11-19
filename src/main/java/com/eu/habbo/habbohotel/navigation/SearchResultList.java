@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SearchResultList implements ISerialize
+public class SearchResultList implements ISerialize, Comparable<SearchResultList>
 {
     public final int order;
     public final String code;
@@ -65,5 +65,16 @@ public class SearchResultList implements ISerialize
         {
             room.serialize(message);
         }
+    }
+
+    @Override
+    public int compareTo(SearchResultList o)
+    {
+        if (this.code.equalsIgnoreCase("popular"))
+        {
+            return -1;
+        }
+
+        return this.rooms.size() - o.rooms.size();
     }
 }

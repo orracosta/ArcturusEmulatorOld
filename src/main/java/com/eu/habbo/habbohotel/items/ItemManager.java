@@ -93,6 +93,7 @@ public class ItemManager {
         this.interactionsList.add(new ItemInteraction("nest",                   InteractionNest.class));
         this.interactionsList.add(new ItemInteraction("pet_drink",              InteractionPetDrink.class));
         this.interactionsList.add(new ItemInteraction("pet_food",               InteractionPetFood.class));
+        this.interactionsList.add(new ItemInteraction("breeding_nest",          InteractionPetBreedingNest.class));
         this.interactionsList.add(new ItemInteraction("obstacle",               InteractionObstacle.class));
         this.interactionsList.add(new ItemInteraction("monsterplant_seed",      InteractionMonsterPlantSeed.class));
         this.interactionsList.add(new ItemInteraction("gift",                   InteractionGift.class));
@@ -176,6 +177,7 @@ public class ItemManager {
             this.interactionsList.add(new ItemInteraction("wf_give_user_diamonds",      WiredEffectGiveDiamonds.class));
             this.interactionsList.add(new ItemInteraction("wf_give_user_xcredits",      WiredEffectGiveCredits.class));
             this.interactionsList.add(new ItemInteraction("wf_give_user_xduckets",      WiredEffectGiveDuckets.class));
+            this.interactionsList.add(new ItemInteraction("wf_act_give_badge",          WiredEffectGiveBadge.class));
             this.interactionsList.add(new ItemInteraction("wf_act_forward_user",        WiredEffectForwardToRoom.class));
             this.interactionsList.add(new ItemInteraction("wf_act_roller_speed",        WiredEffectRollerSpeed.class));
             this.interactionsList.add(new ItemInteraction("wf_act_raise_furni",         WiredEffectRaiseFurni.class));
@@ -778,7 +780,6 @@ public class ItemManager {
         {
             try
             {
-
                 Constructor c = itemClass.getConstructor(ResultSet.class, Item.class);
                 c.setAccessible(true);
 

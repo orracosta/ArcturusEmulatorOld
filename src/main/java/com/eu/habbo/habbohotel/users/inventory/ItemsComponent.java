@@ -39,15 +39,22 @@ public class ItemsComponent
 
             while(set.next())
             {
-                HabboItem item = Emulator.getGameEnvironment().getItemManager().loadHabboItem(set);
+                try
+                {
+                    HabboItem item = Emulator.getGameEnvironment().getItemManager().loadHabboItem(set);
 
-                if(item != null)
-                {
-                    itemsList.put(set.getInt("id"), item);
+                    if (item != null)
+                    {
+                        itemsList.put(set.getInt("id"), item);
+                    }
+                    else
+                    {
+                        Emulator.getLogging().logErrorLine("Failed to load HabboItem: " + set.getInt("id"));
+                    }
                 }
-                else
+                catch (SQLException e)
                 {
-                    Emulator.getLogging().logErrorLine("Failed to load HabboItem: " + set.getInt("id"));
+                    Emulator.getLogging().logSQLException(e);
                 }
             }
             set.close();
@@ -144,6 +151,11 @@ public class ItemsComponent
         items.addAll(this.items.valueCollection());
 
         return items;
+    }
+
+    public int itemCount()
+    {
+        return this.items.size();
     }
 
     public void dispose()

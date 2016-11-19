@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 
 class DatabasePool
 {
-    private final Logger log = LoggerFactory.getLogger(DatabasePool.class);
+    //private final Logger log = LoggerFactory.getLogger(DatabasePool.class);
     private HikariDataSource database;
 
     public boolean getStoragePooling(ConfigurationManager config)
@@ -18,7 +18,8 @@ class DatabasePool
         try
         {
             HikariConfig databaseConfiguration = new HikariConfig();
-            databaseConfiguration.setMaximumPoolSize(20);
+            databaseConfiguration.setMinimumIdle(1);
+            databaseConfiguration.setMaximumPoolSize(100);
             databaseConfiguration.setInitializationFailFast(true);
             databaseConfiguration.setJdbcUrl("jdbc:mysql://" + config.getValue("db.hostname", "localhost") + ":" + config.getValue("db.port", "3306") + "/" + config.getValue("db.database", "habbo"));
             databaseConfiguration.addDataSourceProperty("serverName", config.getValue("db.hostname", "localhost"));

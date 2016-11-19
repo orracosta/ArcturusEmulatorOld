@@ -21,7 +21,7 @@ public class PetInformationComposer extends MessageComposer
     @Override
     public ServerMessage compose()
     {
-        double days = Math.floor((Emulator.getIntUnixTimestamp() - this.pet.getCreated()) / 3600);
+        double days = Math.floor((Emulator.getIntUnixTimestamp() - this.pet.getCreated()) / (3600 * 24));
         this.response.init(Outgoing.PetInformationComposer);
         this.response.appendInt32(this.pet.getId());
         this.response.appendString(this.pet.getName());
@@ -39,7 +39,7 @@ public class PetInformationComposer extends MessageComposer
         this.response.appendInt32(PetManager.experiences[this.pet.getLevel() - 1]); //XP Goal
         this.response.appendInt32(this.pet.getEnergy());
         this.response.appendInt32(this.pet.getLevel() * 100); //Max energy
-        this.response.appendInt32(0); //this.pet.getHappyness()
+        this.response.appendInt32(this.pet.getHappyness()); //this.pet.getHappyness()
         this.response.appendInt32(100);
         this.response.appendInt32(this.pet.getRespect());
         this.response.appendInt32(this.pet.getUserId());

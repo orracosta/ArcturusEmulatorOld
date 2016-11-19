@@ -9,12 +9,17 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionPetFood;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
+import gnu.trove.list.array.TIntArrayList;
+import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.THashMap;
+import gnu.trove.map.hash.TIntIntHashMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class PetManager
 {
@@ -22,6 +27,10 @@ public class PetManager
 
     private final THashMap<Integer, THashSet<PetRace>> petRaces;
     private final THashMap<Integer, PetData> petData;
+    private final TIntIntMap breedingPetType;
+    private final THashMap<Integer, TIntObjectHashMap<ArrayList<PetBreedingReward>>> breedingReward;
+
+
 
     public PetManager()
     {
@@ -29,6 +38,8 @@ public class PetManager
 
         this.petRaces = new THashMap<Integer, THashSet<PetRace>>();
         this.petData = new THashMap<Integer, PetData>();
+        this.breedingPetType = new TIntIntHashMap();
+        this.breedingReward = new THashMap<Integer, TIntObjectHashMap<ArrayList<PetBreedingReward>>>();
 
         this.loadRaces();
         this.loadPetData();
@@ -263,6 +274,57 @@ public class PetManager
         }
     }
 
+    void loadPetBreeding()
+    {
+        try
+        {
+            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM pet_breeding");
+            ResultSet set = statement.executeQuery();
+
+            while (set.next())
+            {
+                this.breedingPetType.put(set.getInt("pet_id"), set.getInt("offspring_id"));
+            }
+
+            set.close();
+            statement.close();
+            statement.getConnection().close();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
+        try
+        {
+            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM pet_breeding_races");
+            ResultSet set = statement.executeQuery();
+
+            while (set.next())
+            {
+                PetBreedingReward reward = new PetBreedingReward(set);
+                if (!this.breedingReward.containsKey(reward.petType))
+                {
+                    this.breedingReward.put(reward.petType, new TIntObjectHashMap<ArrayList<PetBreedingReward>>());
+                }
+
+                if (!this.breedingReward.get(reward.petType).containsKey(reward.rarityLevel))
+                {
+                    this.breedingReward.get(reward.petType).put(reward.rarityLevel, new ArrayList<PetBreedingReward>());
+                }
+
+                this.breedingReward.get(reward.petType).get(reward.rarityLevel).add(reward);
+            }
+
+            set.close();
+            statement.close();
+            statement.getConnection().close();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+    }
     public THashSet<PetRace> getBreeds(String petName)
     {
         if(!petName.startsWith("a0 pet"))

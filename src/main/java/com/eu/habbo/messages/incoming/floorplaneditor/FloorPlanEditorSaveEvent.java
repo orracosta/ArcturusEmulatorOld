@@ -64,17 +64,17 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
             if(this.packet.bytesAvailable() >= 4)
                 wallHeight = this.packet.readInt();
 
-            CustomRoomLayout layout = Emulator.getGameEnvironment().getRoomManager().loadCustomLayout(room);
+            RoomLayout layout = room.getLayout();
 
-            if(layout != null)
+            if(layout instanceof CustomRoomLayout)
             {
                 layout.setDoorX((short) doorX);
                 layout.setDoorY((short) doorY);
                 layout.setDoorDirection(doorRotation);
                 layout.setHeightmap(map);
                 layout.parse();
-                layout.needsUpdate(true);
-                Emulator.getThreading().run(layout);
+                ((CustomRoomLayout)layout).needsUpdate(true);
+                Emulator.getThreading().run((CustomRoomLayout)layout);
             }
             else
             {

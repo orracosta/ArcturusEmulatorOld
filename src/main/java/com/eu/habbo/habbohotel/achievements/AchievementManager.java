@@ -12,10 +12,12 @@ import com.eu.habbo.plugin.Event;
 import com.eu.habbo.plugin.events.users.achievements.UserAchievementLeveledEvent;
 import com.eu.habbo.plugin.events.users.achievements.UserAchievementProgressEvent;
 import gnu.trove.map.hash.THashMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class AchievementManager
@@ -27,15 +29,15 @@ public class AchievementManager
      */
     private final THashMap<String, Achievement> achievements;
 
+    private final THashMap<TalentTrackType, LinkedHashMap<Integer, TalentTrackLevel>> talentTrackLevels;
+
     /**
      * The AchievementManager, shit happens here.
      */
     public AchievementManager()
     {
-        long millis = System.currentTimeMillis();
         this.achievements = new THashMap<String, Achievement>();
-        this.reload();
-        Emulator.getLogging().logStart("Achievement Manager -> Loaded! ("+(System.currentTimeMillis() - millis)+" MS)");
+        this.talentTrackLevels = new THashMap<TalentTrackType, LinkedHashMap<Integer, TalentTrackLevel>>();
     }
 
     /**
@@ -43,6 +45,7 @@ public class AchievementManager
      */
     public void reload()
     {
+        long millis = System.currentTimeMillis();
         synchronized (this.achievements)
         {
             this.achievements.clear();
@@ -74,15 +77,83 @@ public class AchievementManager
                 Emulator.getLogging().logErrorLine(e);
             }
         }
+
+        synchronized (this.talentTrackLevels)
+        {
+            this.talentTrackLevels.clear();
+
+            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM achievements_talents ORDER BY level ASC");
+
+            try
+            {
+                ResultSet set = statement.executeQuery();
+                while (set.next())
+                {
+                    TalentTrackLevel level = new TalentTrackLevel(set);
+
+                    if (!this.talentTrackLevels.containsKey(level.type))
+                    {
+                        this.talentTrackLevels.put(level.type, new LinkedHashMap<Integer, TalentTrackLevel>());
+                    }
+
+                    this.talentTrackLevels.get(level.type).put(level.level, level);
+                }
+
+                set.close();
+            }
+            catch (SQLException e)
+            {
+                Emulator.getLogging().logSQLException(e);
+            }
+            finally
+            {
+                if (statement != null)
+                {
+                    try
+                    {
+                        statement.close();
+                        statement.getConnection().close();
+                    }
+                    catch (SQLException e)
+                    {
+                        Emulator.getLogging().logSQLException(e);
+                    }
+                }
+            }
+        }
+
+        Emulator.getLogging().logStart("Achievement Manager -> Loaded! ("+(System.currentTimeMillis() - millis)+" MS)");
     }
 
     /**
+     * Find an achievement by name.
      * @param name The achievement to find.
      * @return The achievement
      */
     public Achievement getAchievement(String name)
     {
         return this.achievements.get(name);
+    }
+
+    /**
+     * Find an achievement by id
+     * @param id The achievement id to find.
+     * @return The achievement
+     */
+    public Achievement getAchievement(int id)
+    {
+        synchronized (this.achievements)
+        {
+            for (Map.Entry<String, Achievement> set : this.achievements.entrySet())
+            {
+                if (set.getValue().id == id)
+                {
+                    return set.getValue();
+                }
+            }
+        }
+
+        return null;
     }
 
     public THashMap<String, Achievement> getAchievements()
@@ -283,5 +354,15 @@ public class AchievementManager
         {
             Emulator.getLogging().logSQLException(e);
         }
+    }
+
+    /**
+     *
+     * @param type
+     * @return
+     */
+    public LinkedHashMap<Integer, TalentTrackLevel> getTalenTrackLevels(TalentTrackType type)
+    {
+        return this.talentTrackLevels.get(type);
     }
 }

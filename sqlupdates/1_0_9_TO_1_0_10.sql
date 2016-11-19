@@ -1,4 +1,4 @@
-#DATABASE UPDATE: 1.0.8 -> 1.0.9
+#DATABASE UPDATE: 1.0.9 -> 1.0.10
 
 ALTER TABLE  `polls_questions` ADD  `parent_id` INT( 11 ) NOT NULL DEFAULT  '0' AFTER  `id`;
 ALTER TABLE  `polls_questions` CHANGE  `question_number`  `order` INT( 11 ) NOT NULL;
@@ -15,4 +15,33 @@ ADD `acc_helper_use_guide_tool` ENUM('0','1') NOT NULL DEFAULT '0',
 ADD `acc_helper_give_guide_tours` ENUM('0','1') NOT NULL DEFAULT '0',
 ADD `acc_helper_judge_chat_reviews` ENUM('0','1') NOT NULL DEFAULT '0';
 
-#END DATABASE UPDATE: 1.0.8 -> 1.0.9
+ALTER TABLE  `achievements_talents` ADD  `reward_badges` VARCHAR( 100 ) NOT NULL DEFAULT  '';
+
+ALTER TABLE  `pet_actions` ADD  `pet_name` VARCHAR( 32 ) NOT NULL AFTER  `pet_type`;
+
+CREATE TABLE  `pet_breeding` (
+`pet_id` INT( 2 ) NOT NULL ,
+`offspring_id` INT( 2 ) NOT NULL
+) ENGINE = MYISAM ;
+
+CREATE TABLE  `pet_breeding_races` (
+`pet_type` INT( 2 ) NOT NULL ,
+`rarity_level` INT( 2 ) NOT NULL ,
+`breed` INT( 2 ) NOT NULL
+) ENGINE = MYISAM ;
+
+ALTER TABLE  `users_settings` ADD  `talent_track_citizenship_level` INT( 2 ) NOT NULL DEFAULT  '0',
+ADD  `talent_track_helpers_level` INT( 2 ) NOT NULL DEFAULT  '0';
+
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.navigator.popular.amount', '35');
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.navigator.popular.listtype', '1');
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('inventory.max.items', '7500');
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('inventory.full', 'You''ve reached the inventory limit. Move furniture out of your inventory before buying more!');
+
+ALTER TABLE  `navigator_flatcats` ADD  `list_type` INT NOT NULL DEFAULT  '0' COMMENT  'Display mode in the navigator. 0 for list, 1 for thumbnails.';
+
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.error.cmd_setmax.invalid_number', 'Invalid number. Specify a number between 0 and 9999'), ('commands.error.cmd_setmax.forgot_number', 'No number specified. Dork.');
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.keys.cmd_setmax', 'setmax;set_max'), ('commands.description.cmd_setmax', ':setmax <amount>'), ('commands.description.cmd_staffalert', ':sA <message>');
+ALTER TABLE  `permissions` ADD  `cmd_setmax` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_say_all`;
+
+#END DATABASE UPDATE: 1.0.9 -> 1.0.10

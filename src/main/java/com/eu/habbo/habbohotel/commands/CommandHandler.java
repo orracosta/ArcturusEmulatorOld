@@ -82,6 +82,7 @@ public class CommandHandler
         addCommand(new RoomKickCommand());
         addCommand(new SayAllCommand());
         addCommand(new SayCommand());
+        addCommand(new SetMaxCommand());
         addCommand(new SetSpeedCommand());
         addCommand(new ShoutAllCommand());
         addCommand(new ShoutCommand());

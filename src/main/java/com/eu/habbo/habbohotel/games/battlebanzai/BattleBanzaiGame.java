@@ -59,7 +59,7 @@ public class BattleBanzaiGame extends Game
     /**
      * All locked tiles.
      */
-    private THashMap<GameTeamColors, THashSet<HabboItem>> lockedTiles;
+    private final THashMap<GameTeamColors, THashSet<HabboItem>> lockedTiles;
 
     public BattleBanzaiGame(Room room)
     {
@@ -90,9 +90,12 @@ public class BattleBanzaiGame extends Game
             }
         }
 
-        for (GameTeam t : this.teams.values())
+        synchronized (this.teams)
         {
-            t.initialise();
+            for (GameTeam t : this.teams.values())
+            {
+                t.initialise();
+            }
         }
 
         for(HabboItem item : this.room.getRoomSpecialTypes().getItemsOfType(InteractionBattleBanzaiSphere.class))
@@ -124,7 +127,7 @@ public class BattleBanzaiGame extends Game
     }
 
     @Override
-    public synchronized void run()
+    public void run()
     {
         try
         {
@@ -165,18 +168,24 @@ public class BattleBanzaiGame extends Game
                 }
 
                 int total = 0;
-                for(Map.Entry<GameTeamColors, THashSet<HabboItem>> set : this.lockedTiles.entrySet())
+                synchronized (this.lockedTiles)
                 {
-                    total += set.getValue().size();
+                    for (Map.Entry<GameTeamColors, THashSet<HabboItem>> set : this.lockedTiles.entrySet())
+                    {
+                        total += set.getValue().size();
+                    }
                 }
 
                 GameTeam highestScore = null;
 
-                for(Map.Entry<GameTeamColors, GameTeam> set : this.teams.entrySet())
+                synchronized (this.teams)
                 {
-                    if(highestScore == null || highestScore.getTotalScore() < set.getValue().getTotalScore())
+                    for (Map.Entry<GameTeamColors, GameTeam> set : this.teams.entrySet())
                     {
-                        highestScore = set.getValue();
+                        if (highestScore == null || highestScore.getTotalScore() < set.getValue().getTotalScore())
+                        {
+                            highestScore = set.getValue();
+                        }
                     }
                 }
 

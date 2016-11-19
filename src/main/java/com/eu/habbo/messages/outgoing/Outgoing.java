@@ -348,7 +348,7 @@ public class Outgoing
     public final static int UpdateStackHeightTileHeightComposer = 1317; //:test 2830 i:86476 i:999 //Updated
     public final static int HotelViewCustomTimerComposer = 3823; //Updated
     public final static int MarketplaceItemPostedComposer = 3960; //:test 2797 i:0 //Updated
-    public final static int UnknownHabboQuizComposer = 2152; //Updated
+    public final static int HabboWayQuizComposer2 = 2152; //Updated
     public final static int GuildFavoriteRoomUserUpdateComposer = 3685; //Updated
     public final static int RoomAdErrorComposer = 3345; //Updated
     public final static int NewNavigatorSettingsComposer = 1430; //:test 2617 i:10 i:10 i:2 i:0 b:0 i:10 //Updated

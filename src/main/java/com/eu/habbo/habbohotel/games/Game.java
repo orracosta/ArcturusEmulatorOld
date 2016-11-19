@@ -87,13 +87,20 @@ public abstract class Game implements Runnable
                         return false;
                 }
 
-                if (!this.teams.containsKey(teamColor))
-                    this.teams.put(teamColor, this.gameTeamClazz.getDeclaredConstructor(GameTeamColors.class).newInstance(teamColor));
+                synchronized (this.teams)
+                {
+                    GameTeam team = this.getTeam(teamColor);
+                    if (team == null)
+                    {
+                        team = this.gameTeamClazz.getDeclaredConstructor(GameTeamColors.class).newInstance(teamColor);
+                        this.addTeam(team);
+                    }
 
-                GamePlayer player = this.gamePlayerClazz.getDeclaredConstructor(Habbo.class, GameTeamColors.class).newInstance(habbo, teamColor);
-                this.teams.get(teamColor).addMember(player);
-                habbo.getHabboInfo().setCurrentGame(this.getClass());
-                habbo.getHabboInfo().setGamePlayer(player);
+                    GamePlayer player = this.gamePlayerClazz.getDeclaredConstructor(Habbo.class, GameTeamColors.class).newInstance(habbo, teamColor);
+                    team.addMember(player);
+                    habbo.getHabboInfo().setCurrentGame(this.getClass());
+                    habbo.getHabboInfo().setGamePlayer(player);
+                }
 
                 return true;
             }
@@ -235,7 +242,18 @@ public abstract class Game implements Runnable
      */
     public GameTeam getTeam(GameTeamColors teamColor)
     {
-        return this.teams.get(teamColor);
+        synchronized (this.teams)
+        {
+            return this.teams.get(teamColor);
+        }
+    }
+
+    public void addTeam(GameTeam team)
+    {
+        synchronized (this.teams)
+        {
+            this.teams.put(team.teamColor, team);
+        }
     }
 
     /**

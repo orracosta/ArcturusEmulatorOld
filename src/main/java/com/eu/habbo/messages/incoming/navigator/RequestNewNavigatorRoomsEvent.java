@@ -204,6 +204,7 @@ public class RequestNewNavigatorRoomsEvent extends MessageHandler
                 }
             }
 
+            Collections.sort(resultLists);
             this.client.sendResponse(new NewNavigatorSearchResultsComposer(view, query, resultLists));
         }
         else

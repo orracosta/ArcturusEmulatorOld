@@ -407,10 +407,17 @@ public class Messenger
         return this.friends.get(id);
     }
 
-    public synchronized void dispose()
+    public void dispose()
     {
-        this.friends.clear();
-        this.friendRequests.clear();
-    }
+		synchronized (this.friends)
+		{
+			this.friends.clear();
+		}
+        
+		synchronized (this.friendRequests)
+		{
+			this.friendRequests.clear();
+		}
+	}
 
 }

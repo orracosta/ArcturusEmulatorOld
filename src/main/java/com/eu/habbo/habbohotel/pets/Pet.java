@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.pets;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
+import com.eu.habbo.habbohotel.items.interactions.InteractionPetBreedingNest;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWater;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
@@ -863,7 +864,23 @@ public class Pet extends AbstractPet
 
             case 46:
             {
-                //Breed
+                InteractionPetBreedingNest nest = null;
+                for (HabboItem item : room.getRoomSpecialTypes().getItemsOfType(InteractionPetBreedingNest.class))
+                {
+                    if (item.getBaseItem().getName().contains(this.petData.getName()))
+                    {
+                        if (!((InteractionPetBreedingNest)item).boxFull())
+                        {
+                            nest = (InteractionPetBreedingNest) item;
+                            break;
+                        }
+                    }
+                }
+
+                if (nest != null)
+                {
+                    this.roomUnit.setGoalLocation(this.room.getLayout().getTile(nest.getX(), nest.getY()));
+                }
             }
             break;
         }
@@ -994,7 +1011,7 @@ public class Pet extends AbstractPet
 
         if(this.room != null)
         {
-            this.room.sendComposer(new RoomPetExperienceComposer(this, 10).compose());
+            this.room.sendComposer(new RoomPetExperienceComposer(this, amount).compose());
 
             if(this.experience >= PetManager.experiences[this.level - 1])
             {
