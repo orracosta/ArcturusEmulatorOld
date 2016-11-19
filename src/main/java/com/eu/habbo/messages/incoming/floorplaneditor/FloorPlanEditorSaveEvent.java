@@ -16,6 +16,12 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
+        if (!this.client.getHabbo().hasPermission("acc_floorplan_editor"))
+        {
+            this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("floorplan.permission")));
+            return;
+        }
+
         final Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
 
         if(room == null)

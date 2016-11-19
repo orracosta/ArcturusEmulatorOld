@@ -52,7 +52,7 @@ public class UserPerksComposer extends MessageComposer
 
         this.response.appendString("HEIGHTMAP_EDITOR_BETA");
         this.response.appendString("requirement.unfulfilled.feature_disabled");
-        this.response.appendBoolean(true);
+        this.response.appendBoolean(Emulator.getGameEnvironment().getPermissionsManager().hasPermission(this.habbo, "acc_floorplan_editor"));
 
         this.response.appendString("BUILDER_AT_WORK");
         this.response.appendString("");
@@ -64,7 +64,7 @@ public class UserPerksComposer extends MessageComposer
 
         this.response.appendString("CAMERA");
         this.response.appendString("");
-        this.response.appendBoolean(true);
+        this.response.appendBoolean(Emulator.getGameEnvironment().getPermissionsManager().hasPermission(this.habbo, "acc_camera"));
 
         this.response.appendString("NAVIGATOR_PHASE_TWO_2014");
         this.response.appendString("");

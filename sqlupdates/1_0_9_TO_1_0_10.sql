@@ -55,4 +55,11 @@ INSERT INTO `emulator_texts` (`key`, `value`) VALUES
     ('commands.error.cmd_take_badge.no_badge', '%username% does not have %badge%!'),
     ('commands.succes.cmd_take_badge', 'Badge has been taken!');
 
+ALTER TABLE  `permissions`
+    ADD  `acc_floorplan_editor` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0',
+    ADD  `acc_camera` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0';
+
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('camera.permission', 'You don''t have permission to use the camera!');
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('floorplan.permission', 'You don''t have permission to use the floorplan editor!');
+
 #END DATABASE UPDATE: 1.0.9 -> 1.0.10

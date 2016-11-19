@@ -18,6 +18,12 @@ public class CameraRoomPictureEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
+        if (!this.client.getHabbo().hasPermission("acc_camera"))
+        {
+            this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("camera.permission")));
+            return;
+        }
+
         if (CameraClient.isLoggedIn)
         {
 //            int seconds = Emulator.getIntUnixTimestamp() - this.client.getHabbo().getHabboInfo().getPhotoTimestamp();
