@@ -113,6 +113,28 @@ public class TestCommand extends Command
                 }
             }
         }
+        else if (params[1].equalsIgnoreCase("threads"))
+        {
+            for (int i = 0; i < 30; i++)
+            {
+                Emulator.getThreading().run(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        try
+                        {
+                            Thread.sleep(500);
+                            Emulator.getThreading().run(this);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }, i * 10);
+            }
+        }
         else if(params[1].equalsIgnoreCase("st"))
         {
             gameClient.getHabbo().getRoomUnit().getStatus().put(params[2], params[3]);

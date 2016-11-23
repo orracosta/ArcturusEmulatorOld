@@ -36,17 +36,20 @@ public class MassBadgeCommand extends Command
                 {
                     Habbo habbo = set.getValue();
 
-                    if(!habbo.getHabboInventory().getBadgesComponent().hasBadge(badge))
+                    if(habbo.isOnline())
                     {
-                        HabboBadge b = BadgesComponent.createBadge(badge, habbo);
-
-                        if (b != null)
+                        if (habbo.getHabboInventory() != null && habbo.getHabboInventory().getBadgesComponent() != null && !habbo.getHabboInventory().getBadgesComponent().hasBadge(badge))
                         {
-                            habbo.getClient().sendResponse(new AddUserBadgeComposer(b));
+                            HabboBadge b = BadgesComponent.createBadge(badge, habbo);
 
-                            if (habbo.getHabboInfo().getCurrentRoom() != null)
+                            if (b != null)
                             {
-                                habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.generic.cmd_badge.received"), habbo, habbo, RoomChatMessageBubbles.ALERT)));
+                                habbo.getClient().sendResponse(new AddUserBadgeComposer(b));
+
+                                if (habbo.getHabboInfo().getCurrentRoom() != null)
+                                {
+                                    habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.generic.cmd_badge.received"), habbo, habbo, RoomChatMessageBubbles.ALERT)));
+                                }
                             }
                         }
                     }
