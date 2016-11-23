@@ -13,10 +13,13 @@ import com.eu.habbo.messages.outgoing.inventory.RemoveHabboItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.AddFloorItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.AddWallItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.UpdateStackHeightComposer;
+import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.plugin.Event;
 import com.eu.habbo.plugin.events.furniture.FurniturePlacedEvent;
 import com.eu.habbo.util.pathfinding.PathFinder;
 import gnu.trove.set.hash.THashSet;
+
+import java.awt.*;
 
 public class RoomPlaceItemEvent extends MessageHandler
 {
@@ -161,42 +164,46 @@ public class RoomPlaceItemEvent extends MessageHandler
             double checkStackHeight = room.getStackHeight(x, y, true);
             HabboItem stackHelper = room.getStackHelper(x, y);
 
-            if(stackHelper == null)
+            Rectangle newSquare = PathFinder.getSquare(x, y, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), rotation);
+
+            //if (x != item.getX() || y != item.getY() || item.getRotation() != rotation)
+            if (stackHelper == null)
             {
-                for (short i = x; i < x + item.getBaseItem().getWidth(); i++)
+                checkStackHeight = room.getStackHeight(x, y, false, item);
+                for (short i = (short) newSquare.x; i < newSquare.x + newSquare.getWidth(); i++)
                 {
-                    for (short j = y; j < y + item.getBaseItem().getLength(); j++)
+                    for (short j = (short) newSquare.y; j < newSquare.y + newSquare.getHeight(); j++)
                     {
-                        HabboItem topItem = room.getTopItemAt(i, j);
-                        if (topItem != null && !topItem.getBaseItem().allowStack())
+                        double testheight = room.getStackHeight(i, j, false, item);
+                        if (checkStackHeight != testheight && !(item instanceof InteractionStackHelper))
                         {
                             this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
+                            this.client.sendResponse(new FloorItemUpdateComposer(item));
                             return;
                         }
 
-                        double testheight = room.getStackHeight(i, j, true);
-                        if (checkStackHeight != testheight)
+                        if (!room.getHabbosAt(i, j).isEmpty() && !(item instanceof InteractionStackHelper))
                         {
                             this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
-                            return;
-                        }
-                        if (!room.getHabbosAt(i, j).isEmpty())
-                        {
-                            this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
+                            this.client.sendResponse(new FloorItemUpdateComposer(item));
                             return;
                         }
 
-                        RoomTile t = room.getLayout().getTile(i, j);
-
+                        RoomTile t = null;
+                        for (RoomTile tile : updatedTiles)
+                        {
+                            if (tile.x != i || tile.y != j)
+                            {
+                                t = room.getLayout().getTile(i, j);
+                            }
+                        }
                         if (t != null)
-                        {
                             updatedTiles.add(t);
-                        }
                     }
                 }
             }
 
-            item.setZ(stackHelper == null ? room.getStackHeight(x, y, false) : (stackHelper.getExtradata().isEmpty() ? 0.0D : (double)Integer.valueOf(stackHelper.getExtradata()) / 100));
+            item.setZ(stackHelper == null ? room.getStackHeight(x, y, false) : (stackHelper.getExtradata().isEmpty() ? room.getLayout().getHeightAtSquare(x, y) : (double)Integer.valueOf(stackHelper.getExtradata()) / 100));
             item.setX(x);
             item.setY(y);
             item.setRotation(rotation);

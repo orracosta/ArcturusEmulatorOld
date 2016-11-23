@@ -15,7 +15,6 @@ public class SetStackHelperHeightEvent extends MessageHandler
     {
         int itemId = this.packet.readInt();
 
-
         if(this.client.getHabbo().getHabboInfo().getCurrentRoom() == null)
             return;
 
