@@ -96,7 +96,7 @@ public class PacketManager
 
     public void handlePacket(GameClient client, ClientMessage packet)
     {
-        if(client == null)
+        if(client == null || Emulator.isShuttingDown)
             return;
 
         try
