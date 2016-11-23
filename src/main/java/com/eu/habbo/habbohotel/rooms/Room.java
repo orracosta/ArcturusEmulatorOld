@@ -2761,6 +2761,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             habbo.getClient().sendResponse(new GenericErrorMessagesComposer(GenericErrorMessagesComposer.KICKED_OUT_OF_THE_ROOM));
         }
 
+        habbo.getRoomUnit().isKicked = true;
         habbo.getRoomUnit().setGoalLocation(this.layout.getTile(this.layout.getDoorX(), this.layout.getDoorY()));
 
         if (habbo.getRoomUnit().getPathFinder().getPath().poll() == null)

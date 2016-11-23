@@ -1009,6 +1009,7 @@ public class RoomManager {
             room.sendComposer(new RoomUserRemoveComposer(habbo.getRoomUnit()).compose());
             habbo.getClient().sendResponse(new HotelViewComposer());
             habbo.getHabboInfo().setCurrentRoom(null);
+            habbo.getRoomUnit().isKicked = false;
         }
     }
     public void logExit(Habbo habbo)

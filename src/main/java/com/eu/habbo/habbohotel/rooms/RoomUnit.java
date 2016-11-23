@@ -116,7 +116,7 @@ public class RoomUnit
             /**
              * !this.getStatus().containsKey("mv") &&
              */
-            if (!this.isWalking())
+            if (!this.isWalking() && !isKicked)
             {
                 this.getStatus().remove("mv");
                 return false;

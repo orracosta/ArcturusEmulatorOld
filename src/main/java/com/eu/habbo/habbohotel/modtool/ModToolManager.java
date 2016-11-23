@@ -134,7 +134,6 @@ public class ModToolManager
         ModToolIssue issue = new ModToolIssue(0, reason, reported.getHabboInfo().getId(), reported.getHabboInfo().getUsername(), 0, message, ModToolTicketType.AUTOMATIC);
         Emulator.getGameEnvironment().getModToolManager().addTicket(issue);
         Emulator.getGameEnvironment().getModToolManager().updateTicketToMods(issue);
-        Emulator.getLogging().logUserLine(message);
     }
 
     public static void requestUserInfo(GameClient client, ClientMessage packet)
