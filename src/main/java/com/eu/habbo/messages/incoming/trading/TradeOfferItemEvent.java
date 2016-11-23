@@ -9,6 +9,9 @@ public class TradeOfferItemEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
+        if (this.client.getHabbo().getHabboInfo().getCurrentRoom() == null)
+            return;
+
         RoomTrade trade = this.client.getHabbo().getHabboInfo().getCurrentRoom().getActiveTradeForHabbo(this.client.getHabbo());
 
         if(trade == null)

@@ -380,7 +380,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             this.gameMap = new GameMap<Node>(this.layout.getMapSizeX(), this.layout.getMapSizeY(), this.moveDiagonally);
             for (Node node : this.gameMap.getNodes())
             {
-
                 this.gameMap.setWalkable(node.getX(), node.getY(), tileWalkable((short)node.getX(), (short)node.getY()));
 
             }
@@ -637,8 +636,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 {
                     double stackHeight = this.getStackHeight(x, y, false);
                     RoomTile tile = this.layout.getTile(x, y);
-                    tile.setStackHeight(stackHeight);
-                    updatedTiles.add(tile);
+
+                    if (tile != null)
+                    {
+                        tile.setStackHeight(stackHeight);
+                        updatedTiles.add(tile);
+                    }
 
                     updateHabbosAt(x, y);
                 }

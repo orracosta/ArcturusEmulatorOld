@@ -15,7 +15,7 @@ public class FreezeGameTeam extends GameTeam
     @Override
     public void removeMember(GamePlayer gamePlayer)
     {
-        Game game = gamePlayer.getHabbo().getHabboInfo().getCurrentRoom().getGame(gamePlayer.getHabbo().getHabboInfo().getCurrentGame());
+        Game game = gamePlayer.getHabbo().getHabboInfo().getCurrentRoom().getGame(FreezeGame.class);
         if(game != null && game instanceof FreezeGame)
         {
             ((FreezeGame) game).placebackHelmet(gamePlayer.getTeamColor());
