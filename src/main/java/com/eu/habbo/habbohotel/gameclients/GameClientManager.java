@@ -69,7 +69,8 @@ public class GameClientManager
     {
         GameClient client = this.getClient(channel);
 
-        if (client != null) {
+        if (client != null)
+        {
             client.dispose();
             client.setHabbo(null);
         }

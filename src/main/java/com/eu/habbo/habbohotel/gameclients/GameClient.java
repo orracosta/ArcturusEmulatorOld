@@ -119,6 +119,7 @@ public class GameClient
                     this.habbo.disconnect();
 
                 this.habbo = null;
+                this.habbo.setClient(null);
             }
         }
         catch (Exception e)
