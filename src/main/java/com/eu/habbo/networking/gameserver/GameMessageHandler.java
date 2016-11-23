@@ -6,21 +6,16 @@ import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.threading.runnables.ChannelReadHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
 
+@ChannelHandler.Sharable
 public class GameMessageHandler extends ChannelInboundHandlerAdapter
 {
-    private ScheduledExecutorService pooling;
-
-    public GameMessageHandler(ScheduledExecutorService pooling)
-    {
-        this.pooling = pooling;
-    }
-
     @Override
     public void channelRegistered(ChannelHandlerContext ctx)
     {

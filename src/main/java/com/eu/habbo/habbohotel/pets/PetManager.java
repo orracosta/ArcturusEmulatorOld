@@ -30,8 +30,6 @@ public class PetManager
     private final TIntIntMap breedingPetType;
     private final THashMap<Integer, TIntObjectHashMap<ArrayList<PetBreedingReward>>> breedingReward;
 
-
-
     public PetManager()
     {
         long millis = System.currentTimeMillis();

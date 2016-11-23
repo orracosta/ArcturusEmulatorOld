@@ -30,8 +30,8 @@ public class GameServer
 
         if (Emulator.getConfig().getInt("io.bossgroup.threads") + Emulator.getConfig().getInt("io.workergroup.threads") <= Emulator.getThreading().threads)
         {
-            this.bossGroup = new NioEventLoopGroup(Emulator.getConfig().getInt("io.bossgroup.threads"), Emulator.getThreading().getService());
-            this.workerGroup = new NioEventLoopGroup(Emulator.getConfig().getInt("io.workergroup.threads"), Emulator.getThreading().getService());
+            this.bossGroup = new NioEventLoopGroup(Emulator.getConfig().getInt("io.bossgroup.threads"));
+            this.workerGroup = new NioEventLoopGroup(Emulator.getConfig().getInt("io.workergroup.threads"));
         }
         else
         {
@@ -49,13 +49,14 @@ public class GameServer
     {
         this.serverBootstrap.group(this.bossGroup, this.workerGroup);
         this.serverBootstrap.channel(NioServerSocketChannel.class);
+        GameMessageHandler gameMessageHandler = new GameMessageHandler();
         this.serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>()
         {
             @Override
             public void initChannel(SocketChannel ch) throws Exception
             {
                 ch.pipeline().addLast("bytesDecoder", new GameByteDecoder());
-                ch.pipeline().addLast(new GameMessageHandler(Emulator.getThreading().getService()));
+                ch.pipeline().addLast(gameMessageHandler);
             }
         });
         this.serverBootstrap.childOption(ChannelOption.TCP_NODELAY, true);

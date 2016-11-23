@@ -1,6 +1,7 @@
 package com.eu.habbo.threading;
 
 import com.eu.habbo.Emulator;
+import io.netty.util.concurrent.DefaultThreadFactory;
 
 import java.util.concurrent.*;
 
@@ -13,7 +14,7 @@ public class ThreadPooling
     public ThreadPooling(Integer threads)
     {
         this.threads = threads;
-        this.scheduledPool = Executors.newScheduledThreadPool(this.threads);
+        this.scheduledPool = Executors.newScheduledThreadPool(this.threads, new DefaultThreadFactory("ArcturusThreadFactory"));
         this.canAdd = true;
         Emulator.getLogging().logStart("Thread Pool -> Loaded!");
     }
