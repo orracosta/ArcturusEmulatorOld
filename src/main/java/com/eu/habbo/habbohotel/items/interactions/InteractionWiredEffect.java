@@ -40,8 +40,11 @@ public abstract class InteractionWiredEffect extends InteractionWired
     @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
-        if(room.hasRights(client.getHabbo()))
-            client.sendResponse(new WiredEffectDataComposer(this));
+        if (client != null)
+        {
+            if (room.hasRights(client.getHabbo()))
+                client.sendResponse(new WiredEffectDataComposer(this));
+        }
     }
 
     @Override
