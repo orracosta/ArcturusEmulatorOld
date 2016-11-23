@@ -49,7 +49,7 @@ public class GameServer
     {
         this.serverBootstrap.group(this.bossGroup, this.workerGroup);
         this.serverBootstrap.channel(NioServerSocketChannel.class);
-        GameMessageHandler gameMessageHandler = new GameMessageHandler();
+        final GameMessageHandler gameMessageHandler = new GameMessageHandler();
         this.serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>()
         {
             @Override

@@ -118,8 +118,17 @@ public class WiredTriggerFurniStateToggled extends InteractionWiredTrigger
 
         for(HabboItem item : this.items)
         {
-            if(Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
+            if(item.getRoomId() != this.getRoomId())
+            {
                 items.add(item);
+                continue;
+            }
+
+            Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
+            if (room.getHabboItem(item.getId()) == null)
+            {
+                items.add(item);
+            }
         }
 
         for(HabboItem item : items)
