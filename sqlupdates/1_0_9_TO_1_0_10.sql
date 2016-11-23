@@ -62,4 +62,6 @@ ALTER TABLE  `permissions`
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('camera.permission', 'You don''t have permission to use the camera!');
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('floorplan.permission', 'You don''t have permission to use the floorplan editor!');
 
+ALTER TABLE  `room_wordfilter` CHANGE  `word`  `word` VARCHAR( 25 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+
 #END DATABASE UPDATE: 1.0.9 -> 1.0.10

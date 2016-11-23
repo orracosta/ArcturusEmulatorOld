@@ -13,6 +13,11 @@ public class RoomWordFilterModifyEvent extends MessageHandler
         boolean add = this.packet.readBoolean();
         String word = this.packet.readString();
 
+        if (word.length() > 25)
+        {
+            word = word.substring(0, 24);
+        }
+
         Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(roomId);
 
         if(room != null)
