@@ -30,6 +30,9 @@ public class InteractionFreezeBlock extends HabboItem
     @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
+        if (client == null)
+            return;
+
         HabboItem item = null;
         THashSet<HabboItem> items = room.getItemsAt(this.getX(), this.getY());
 
