@@ -1,14 +1,12 @@
 package com.eu.habbo.networking.gameserver;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.gameclients.GameClientManager;
-import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.threading.runnables.ChannelReadHandler;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;

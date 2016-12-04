@@ -216,20 +216,20 @@ public abstract class TagGame extends Game
 
             TagGame game = (TagGame) event.habbo.getHabboInfo().getCurrentRoom().getGame(event.habbo.getHabboInfo().getCurrentGame());
 
-            for (HabboItem item : items)
-            {
-                if (item instanceof InteractionTagField && ((InteractionTagField) item).gameClazz == event.habbo.getHabboInfo().getCurrentGame())
-                {
-                    if (game.taggers.isEmpty())
-                    {
-                        game.tagged(event.habbo.getHabboInfo().getCurrentRoom(), null, event.habbo);
-                    }
-                    return;
-                }
-            }
-
             if (game != null)
             {
+                for (HabboItem item : items)
+                {
+                    if (item instanceof InteractionTagField && ((InteractionTagField) item).gameClazz == event.habbo.getHabboInfo().getCurrentGame())
+                    {
+                        if (game.taggers.isEmpty())
+                        {
+                            game.tagged(event.habbo.getHabboInfo().getCurrentRoom(), null, event.habbo);
+                        }
+                        return;
+                    }
+                }
+
                 game.removeHabbo(event.habbo);
             }
         }

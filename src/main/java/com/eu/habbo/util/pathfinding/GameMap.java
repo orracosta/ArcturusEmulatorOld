@@ -100,8 +100,8 @@ public class GameMap<T extends AbstractNode>
             List<T> adjacentNodes = getAdjacent(closedList, current, newX, newY, room);
             for (T currentAdj : adjacentNodes)
             {
-                if (!room.isLoaded())
-                    continue;
+                if (room == null || !room.isLoaded())
+                    return new LinkedList();;
 
                 if(!room.getLayout().tileWalkable((short)currentAdj.getX(), (short)currentAdj.getY())) continue;
 

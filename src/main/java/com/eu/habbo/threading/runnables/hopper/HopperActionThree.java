@@ -21,7 +21,6 @@ class HopperActionThree implements Runnable
 
     public HopperActionThree(HabboItem teleportOne, Room room, GameClient client, int targetRoomId, int targetItemId)
     {
-        System.out.println("Action 3!");
         this.teleportOne = teleportOne;
         this.room = room;
         this.client = client;

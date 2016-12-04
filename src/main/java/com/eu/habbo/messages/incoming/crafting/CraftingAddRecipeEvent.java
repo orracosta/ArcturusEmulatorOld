@@ -11,7 +11,6 @@ public class CraftingAddRecipeEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        System.out.println(this.getClass().getName());
         String recipeName = this.packet.readString();
         CraftingRecipe recipe = Emulator.getGameEnvironment().getCraftingManager().getRecipe(recipeName);
 

@@ -24,7 +24,6 @@ public class CraftingCraftItemEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        System.out.println(this.getClass().getName());
         int craftingTable = this.packet.readInt();
         HabboItem item = this.client.getHabbo().getHabboInfo().getCurrentRoom().getHabboItem(craftingTable);
         CraftingAltar altar = Emulator.getGameEnvironment().getCraftingManager().getAltar(item.getBaseItem());

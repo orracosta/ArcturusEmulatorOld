@@ -44,8 +44,8 @@ public class RoomDataComposer extends MessageComposer
         this.response.appendInt32(this.room.getUserCount());
         this.response.appendInt32(this.room.getUsersMax());
         this.response.appendString(this.room.getDescription());
-        this.response.appendInt32(0);
         this.response.appendInt32(2);
+        this.response.appendInt32(18);
         this.response.appendInt32(this.room.getScore());
         this.response.appendInt32(this.room.getCategory());
         String[] tags = this.room.getTags().split(";");

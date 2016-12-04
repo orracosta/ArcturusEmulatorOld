@@ -41,7 +41,7 @@ public class FreezeGamePlayer extends GamePlayer
     }
 
     @Override
-    public synchronized void addScore(int amount)
+    public void addScore(int amount)
     {
         super.addScore(amount);
 
@@ -54,7 +54,7 @@ public class FreezeGamePlayer extends GamePlayer
     /*
         Freeze
     */
-    public synchronized void addLife()
+    public void addLife()
     {
         if(this.lives < FreezeGame.MAX_LIVES)
         {
@@ -63,7 +63,7 @@ public class FreezeGamePlayer extends GamePlayer
         }
     }
 
-    public synchronized void takeLife()
+    public void takeLife()
     {
         this.lives--;
         if(this.lives == 0)
@@ -84,7 +84,7 @@ public class FreezeGamePlayer extends GamePlayer
         }
     }
 
-    public synchronized int getLives()
+    public int getLives()
     {
         return this.lives;
     }
@@ -94,13 +94,13 @@ public class FreezeGamePlayer extends GamePlayer
         return this.lives < 3;
     }
 
-    public synchronized void addSnowball()
+    public void addSnowball()
     {
         if(this.snowBalls < FreezeGame.MAX_SNOWBALLS)
             this.snowBalls++;
     }
 
-    public synchronized void addSnowball(int amount)
+    public void addSnowball(int amount)
     {
         this.snowBalls += amount;
 
@@ -108,13 +108,13 @@ public class FreezeGamePlayer extends GamePlayer
             this.snowBalls = 1;
     }
 
-    public synchronized void takeSnowball()
+    public void takeSnowball()
     {
         if(this.snowBalls > 0)
             this.snowBalls--;
     }
 
-    public synchronized boolean canThrowSnowball()
+    public boolean canThrowSnowball()
     {
         if(this.snowBalls > 0)
         {
@@ -125,7 +125,7 @@ public class FreezeGamePlayer extends GamePlayer
         return false;
     }
 
-    public synchronized void freeze()
+    public void freeze()
     {
         if(this.protectionTime > 0 || this.frozenTime > 0)
             return;
@@ -139,12 +139,12 @@ public class FreezeGamePlayer extends GamePlayer
         this.updateEffect();
     }
 
-    public synchronized boolean isFrozen()
+    public boolean isFrozen()
     {
         return this.frozenTime > 0;
     }
 
-    public synchronized boolean canGetFrozen()
+    public boolean canGetFrozen()
     {
         if(this.isFrozen() || this.isProtected())
             return false;
@@ -152,7 +152,7 @@ public class FreezeGamePlayer extends GamePlayer
         return true;
     }
 
-    public synchronized void addProtection()
+    public void addProtection()
     {
         this.updateEffect();
 
@@ -162,12 +162,12 @@ public class FreezeGamePlayer extends GamePlayer
         this.protectionTime += FreezeGame.POWER_UP_PROTECT_TIME;
     }
 
-    public synchronized boolean isProtected()
+    public boolean isProtected()
     {
         return this.protectionTime > 0;
     }
 
-    public synchronized int getExplosionBoost()
+    public int getExplosionBoost()
     {
         if(this.tempMassiveExplosion)
         {
@@ -178,13 +178,13 @@ public class FreezeGamePlayer extends GamePlayer
         return this.explosionBoost;
     }
 
-    public synchronized void increaseExplosion()
+    public void increaseExplosion()
     {
         if(this.explosionBoost < 5)
             this.explosionBoost++;
     }
 
-    public synchronized void addExplosion(int radius)
+    public void addExplosion(int radius)
     {
         this.explosionBoost += radius;
 
@@ -199,7 +199,7 @@ public class FreezeGamePlayer extends GamePlayer
         }
     }
 
-    public synchronized void cycle()
+    public void cycle()
     {
         boolean needsEffectUpdate = false;
 

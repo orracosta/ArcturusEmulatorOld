@@ -8,6 +8,8 @@ import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
+import java.util.List;
+
 public class MachineBanCommand extends Command
 {
     public MachineBanCommand()
@@ -44,9 +46,9 @@ public class MachineBanCommand extends Command
             }
 
             int time = Emulator.getIntUnixTimestamp() + IPBanCommand.TEN_YEARS;
-            ModToolBan ban = Emulator.getGameEnvironment().getModToolManager().createBan(habbo, gameClient.getHabbo(), time, reason, "machine");
             count++;
-            for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithMachineId(habbo.getClient().getMachineId()))
+            ModToolBan ban = Emulator.getGameEnvironment().getModToolManager().createBan(habbo, gameClient.getHabbo(), time, reason, "machine");
+            for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithMachineId(ban.machineId))
             {
                 if (h != null)
                 {

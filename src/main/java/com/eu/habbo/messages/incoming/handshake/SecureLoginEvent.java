@@ -69,8 +69,8 @@ public class SecureLoginEvent extends MessageHandler
                 messages.add(new SecureLoginOKComposer().compose());
                 messages.add(new UserHomeRoomComposer(this.client.getHabbo().getHabboInfo().getHomeRoom(), 0).compose());
                 messages.add(new UserPermissionsComposer(this.client.getHabbo()).compose());
-                messages.add(new MessengerInitComposer(this.client.getHabbo()).compose());
-                messages.add(new FriendsComposer(this.client.getHabbo()).compose());
+                //messages.add(new MessengerInitComposer(this.client.getHabbo()).compose());
+                //messages.add(new FriendsComposer(this.client.getHabbo()).compose());
                 messages.add(new UserClubComposer(this.client.getHabbo()).compose());
                 messages.add(new UserAchievementScoreComposer(this.client.getHabbo()).compose());
                 messages.add(new NewUserIdentityComposer().compose());
@@ -92,6 +92,7 @@ public class SecureLoginEvent extends MessageHandler
                 this.client.sendResponse(new NewNavigatorCollapsedCategoriesComposer());
                 this.client.sendResponse(new NewNavigatorSavedSearchesComposer());
                 this.client.sendResponse(new NewNavigatorEventCategoriesComposer());
+                this.client.sendResponse(new NewNavigatorSettingsComposer(this.client.getHabbo().getHabboStats().navigatorWindowSettings));
                 this.client.sendResponse(new DebugConsoleComposer());
                 this.client.sendResponse(new InventoryRefreshComposer());
                 this.client.sendResponse(new UserClothesComposer(this.client.getHabbo()));

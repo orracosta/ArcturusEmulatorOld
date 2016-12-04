@@ -13,7 +13,8 @@ import gnu.trove.set.hash.THashSet;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public class RoomWallItemsComposer extends MessageComposer{
+public class RoomWallItemsComposer extends MessageComposer
+{
 
     private final Room room;
 
@@ -23,7 +24,8 @@ public class RoomWallItemsComposer extends MessageComposer{
     }
 
     @Override
-    public ServerMessage compose()    {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.RoomWallItemsComposer);
         THashMap<Integer, String> userNames = new THashMap<Integer, String>();
         TIntObjectMap<String> furniOwnerNames = this.room.getFurniOwnerNames();

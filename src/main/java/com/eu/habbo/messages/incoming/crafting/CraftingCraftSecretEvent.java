@@ -24,7 +24,6 @@ public class CraftingCraftSecretEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        System.out.println(this.getClass().getName());
         int altarId = this.packet.readInt();
         int count = this.packet.readInt();
 

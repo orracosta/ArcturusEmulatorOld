@@ -136,7 +136,10 @@ public class Habbo implements Runnable
 
     public synchronized void disconnect()
     {
-        Emulator.getPluginManager().fireEvent(new UserDisconnectEvent(this));
+        if (!Emulator.isShuttingDown)
+        {
+            Emulator.getPluginManager().fireEvent(new UserDisconnectEvent(this));
+        }
 
         if(this.disconnected || this.disconnecting)
             return;
@@ -178,6 +181,7 @@ public class Habbo implements Runnable
             Emulator.getGameEnvironment().getHabboManager().removeHabbo(this);
         }
         Emulator.getLogging().logUserLine(this.habboInfo.getUsername() + " disconnected.");
+        this.client = null;
     }
     @Override
     public void run()

@@ -25,10 +25,8 @@ public class MannequinSaveLookEvent extends MessageHandler
 
         String look = "";
 
-        System.out.println(this.client.getHabbo().getHabboInfo().getLook());
         for (String s : this.client.getHabbo().getHabboInfo().getLook().split("\\."))
         {
-            System.out.println(s);
             if (s.startsWith("ch") || s.startsWith("ha") || s.startsWith("lg") || s.startsWith("sh"))
             {
                 look += s + ".";

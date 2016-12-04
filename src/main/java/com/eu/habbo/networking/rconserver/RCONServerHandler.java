@@ -61,5 +61,6 @@ public class RCONServerHandler extends ChannelInboundHandlerAdapter
         ctx.channel().flush();
         ctx.flush();
         f.channel().close();
+        data.release();
     }
 }

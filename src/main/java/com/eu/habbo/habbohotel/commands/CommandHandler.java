@@ -76,13 +76,17 @@ public class CommandHandler
         addCommand(new PushCommand());
         addCommand(new RedeemCommand());
         addCommand(new RoomBundleCommand());
+        addCommand(new RoomCreditsCommand());
         addCommand(new RoomDanceCommand());
         addCommand(new RoomEffectCommand());
         addCommand(new RoomItemCommand());
         addCommand(new RoomKickCommand());
+        addCommand(new RoomPixelsCommand());
+        addCommand(new RoomPointsCommand());
         addCommand(new SayAllCommand());
         addCommand(new SayCommand());
         addCommand(new SetMaxCommand());
+        addCommand(new SetPollCommand());
         addCommand(new SetSpeedCommand());
         addCommand(new ShoutAllCommand());
         addCommand(new ShoutCommand());
@@ -111,6 +115,7 @@ public class CommandHandler
         addCommand(new UpdatePermissionsCommand());
         addCommand(new UpdatePetDataCommand());
         addCommand(new UpdatePluginsCommand());
+        addCommand(new UpdatePollsCommand());
         addCommand(new UpdateTextsCommand());
         addCommand(new UpdateWordFilterCommand());
         addCommand(new UserInfoCommand());

@@ -190,6 +190,7 @@ public class PacketManager
         this.registerHandler(Incoming.SearchUserEvent,                          SearchUserEvent.class);
         this.registerHandler(Incoming.FriendRequestEvent,                       FriendRequestEvent.class);
         this.registerHandler(Incoming.AcceptFriendRequest,                      AcceptFriendRequestEvent.class);
+        this.registerHandler(Incoming.DeclineFriendRequest,                     DeclineFriendRequestEvent.class);
         this.registerHandler(Incoming.FriendPrivateMessageEvent,                FriendPrivateMessageEvent.class);
         this.registerHandler(Incoming.RequestFriendRequestEvent,                RequestFriendRequestsEvent.class);
         this.registerHandler(Incoming.StalkFriendEvent,                         StalkFriendEvent.class);

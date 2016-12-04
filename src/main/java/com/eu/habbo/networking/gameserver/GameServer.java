@@ -11,6 +11,10 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
+import io.netty.util.internal.logging.InternalLoggerFactory;
+import io.netty.util.internal.logging.Slf4JLoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GameServer
 {
@@ -25,6 +29,7 @@ public class GameServer
 
     public GameServer(String host, int port) throws Exception
     {
+        InternalLoggerFactory.setDefaultFactory(new Slf4JLoggerFactory());
         this.packetManager = new PacketManager();
         this.gameClientManager = new GameClientManager();
 

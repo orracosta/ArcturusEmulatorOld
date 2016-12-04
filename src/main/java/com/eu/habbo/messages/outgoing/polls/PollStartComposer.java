@@ -20,8 +20,8 @@ public class PollStartComposer extends MessageComposer
         this.response.init(Outgoing.PollStartComposer);
         this.response.appendInt32(this.poll.getId());
         this.response.appendString(this.poll.getTitle());
-        this.response.appendString(this.poll.getTitle());
         this.response.appendString(this.poll.getThanksMessage());
+        this.response.appendString(this.poll.getTitle());
         return this.response;
     }
 }

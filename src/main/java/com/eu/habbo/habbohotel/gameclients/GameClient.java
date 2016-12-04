@@ -102,6 +102,7 @@ public class GameClient
             this.channel.write(buffer.copy(), this.channel.voidPromise());
             this.channel.flush();
         }
+        buffer.release();
     }
 
     /**
@@ -118,7 +119,6 @@ public class GameClient
                 if(this.habbo.isOnline())
                     this.habbo.disconnect();
 
-                this.habbo.setClient(null);
                 this.habbo = null;
             }
         }

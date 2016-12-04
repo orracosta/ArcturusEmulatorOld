@@ -61,6 +61,7 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.procedure.TIntObjectProcedure;
 import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
+import javafx.util.Pair;
 
 import java.awt.*;
 import java.sql.PreparedStatement;
@@ -68,6 +69,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Room implements Comparable<Room>, ISerialize, Runnable
 {
@@ -163,6 +165,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public volatile boolean preventUnloading = false;
     public volatile boolean preventUncaching = false;
     public THashMap<Integer, TIntArrayList> waterTiles;
+    public final ConcurrentHashMap<Pair<Integer, Integer>, THashSet<HabboItem>> tileCache = new ConcurrentHashMap<Pair<Integer, Integer>, THashSet<HabboItem>>();
     public String wordQuiz = "";
     public int noVotes = 0;
     public int yesVotes = 0;
@@ -428,6 +431,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 }
                 catch (SQLException e)
                 {
+                    Emulator.getLogging().logSQLException(e);
                 }
             }
         }
@@ -445,34 +449,56 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         this.currentBots.clear();
 
-        PreparedStatement statement = Emulator.getDatabase().prepare("SELECT users.username AS owner_name, bots.* FROM bots INNER JOIN users ON bots.user_id = users.id WHERE room_id = ?");
-        statement.setInt(1, this.id);
-        ResultSet set = statement.executeQuery();
+        PreparedStatement statement = null;
 
-        while(set.next())
+        try
         {
-            //Bot b = new Bot(set);
-            Bot b = Emulator.getGameEnvironment().getBotManager().loadBot(set);
+            statement = Emulator.getDatabase().prepare("SELECT users.username AS owner_name, bots.* FROM bots INNER JOIN users ON bots.user_id = users.id WHERE room_id = ?");
+            statement.setInt(1, this.id);
+            ResultSet set = statement.executeQuery();
 
-            if(b != null)
+            while(set.next())
             {
-                b.setRoom(this);
-                b.setRoomUnit(new RoomUnit());
-                b.getRoomUnit().getPathFinder().setRoom(this);
-                b.getRoomUnit().setLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
-                b.getRoomUnit().setZ(set.getDouble("z"));
-                b.getRoomUnit().setRotation(RoomUserRotation.values()[set.getInt("rot")]);
-                b.getRoomUnit().setGoalLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
-                b.getRoomUnit().setRoomUnitType(RoomUnitType.BOT);
-                b.getRoomUnit().setDanceType(DanceType.values()[set.getInt("dance")]);
-                b.getRoomUnit().setCanWalk(set.getBoolean("freeroam"));
-                b.getRoomUnit().setInRoom(true);
-                this.addBot(b);
+                //Bot b = new Bot(set);
+                Bot b = Emulator.getGameEnvironment().getBotManager().loadBot(set);
+
+                if(b != null)
+                {
+                    b.setRoom(this);
+                    b.setRoomUnit(new RoomUnit());
+                    b.getRoomUnit().getPathFinder().setRoom(this);
+                    b.getRoomUnit().setLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
+                    b.getRoomUnit().setZ(set.getDouble("z"));
+                    b.getRoomUnit().setRotation(RoomUserRotation.values()[set.getInt("rot")]);
+                    b.getRoomUnit().setGoalLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
+                    b.getRoomUnit().setRoomUnitType(RoomUnitType.BOT);
+                    b.getRoomUnit().setDanceType(DanceType.values()[set.getInt("dance")]);
+                    b.getRoomUnit().setCanWalk(set.getBoolean("freeroam"));
+                    b.getRoomUnit().setInRoom(true);
+                    this.addBot(b);
+                }
+            }
+            set.close();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+        finally
+        {
+            if (statement != null)
+            {
+                try
+                {
+                    statement.close();
+                    statement.getConnection().close();
+                }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
             }
         }
-        set.close();
-        statement.close();
-        statement.getConnection().close();
     }
 
     synchronized void loadPets() throws SQLException
@@ -800,6 +826,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         {
             this.loaded = false;
 
+            this.tileCache.clear();
+
             synchronized (this.mutedHabbos)
             {
                 this.mutedHabbos.clear();
@@ -932,7 +960,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     }
 
     @Override
-    public void serialize(ServerMessage message) {
+    public void serialize(ServerMessage message)
+    {
         message.appendInt32(this.id);
         message.appendString(this.name);
         if(this.isPublicRoom())
@@ -1172,6 +1201,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         boolean foundRightHolder = false;
 
+        this.tileCache.clear();
+
         if(this.loaded)
         {
             if (!this.currentHabbos.isEmpty())
@@ -1227,17 +1258,17 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         {
                             //if (habbo.getRoomUnit().talkTimeOut == 0 || currentTimestamp - habbo.getRoomUnit().talkTimeOut < 0)
                             {
-                                if (habbo.getRoomUnit().talkCounter > 2)
+                                if (habbo.getRoomUnit().talkCounter > 3)
                                 {
-                                    if (this.chatProtection == 3)
+                                    if (this.chatProtection == 0)
                                     {
                                         this.floodMuteHabbo(habbo, 30);
                                     }
-                                    else if (this.chatProtection == 2 && habbo.getRoomUnit().talkCounter > 4)
+                                    else if (this.chatProtection == 1 && habbo.getRoomUnit().talkCounter > 4)
                                     {
                                         this.floodMuteHabbo(habbo, 30);
                                     }
-                                    else if (this.chatProtection == 1 && habbo.getRoomUnit().talkCounter > 5)
+                                    else if (this.chatProtection == 2 && habbo.getRoomUnit().talkCounter > 5)
                                     {
                                         this.floodMuteHabbo(habbo, 30);
                                     }
@@ -3095,6 +3126,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void floodMuteHabbo(Habbo habbo, int timeOut)
     {
+        habbo.getRoomUnit().mutedCount++;
+        timeOut += (timeOut * (int)Math.ceil(Math.pow(habbo.getRoomUnit().mutedCount, 2)));
         habbo.getRoomUnit().talkCounter = 0;
         habbo.getRoomUnit().talkTimeOut = Emulator.getIntUnixTimestamp() + timeOut;
         habbo.getClient().sendResponse(new FloodCounterComposer(timeOut));
@@ -3184,7 +3217,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         if (habbo.getRoomUnit().talkTimeOut > 0 && (Emulator.getIntUnixTimestamp() - habbo.getRoomUnit().talkTimeOut < 0))
             return;
 
-        habbo.getRoomUnit().talkCounter++;
+        habbo.getRoomUnit().talkCounter += 2;
 
         if(chatType == RoomChatType.WHISPER)
         {
@@ -3320,10 +3353,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public GameMap<Node> getGameMap()
     {
-        for(Node node : this.gameMap.getNodes())
-        {
-            this.gameMap.setWalkable(node.getX(), node.getY(), this.tileWalkable((short)node.getX(), (short)node.getY()));
-        }
+        //for(Node node : this.gameMap.getNodes())
+        //{
+        //    this.gameMap.setWalkable(node.getX(), node.getY(), this.tileWalkable((short)node.getX(), (short)node.getY()));
+        //}
         return this.gameMap;
     }
 
@@ -3415,6 +3448,17 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public THashSet<HabboItem> getItemsAt(int x, int y)
     {
+        if (this.loaded)
+        {
+            for (Map.Entry<Pair<Integer, Integer>, THashSet<HabboItem>> set : this.tileCache.entrySet())
+            {
+                if (set.getKey().getKey() == x && set.getKey().getValue() == y)
+                {
+                    return set.getValue();
+                }
+            }
+        }
+
         THashSet<HabboItem> items = new THashSet<HabboItem>();
 
         synchronized (this.roomItems)
@@ -3457,6 +3501,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 }
             }
         }
+
+        if (this.loaded)
+        {
+            this.tileCache.put(new Pair<Integer, Integer>(x, y), items);
+        }
+
         return items;
     }
 

@@ -4,7 +4,8 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class UserHomeRoomComposer extends MessageComposer{
+public class UserHomeRoomComposer extends MessageComposer
+{
 
     private int homeRoom;
     private int newRoom;
@@ -16,7 +17,8 @@ public class UserHomeRoomComposer extends MessageComposer{
     }
 
     @Override
-    public ServerMessage compose()    {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.UserHomeRoomComposer);
 
         this.response.appendInt32(this.homeRoom);

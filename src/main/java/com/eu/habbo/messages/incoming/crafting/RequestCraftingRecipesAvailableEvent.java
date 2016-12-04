@@ -16,7 +16,6 @@ public class RequestCraftingRecipesAvailableEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        System.out.println(this.getClass().getName());
         int altarId = this.packet.readInt();
 
         HabboItem item = this.client.getHabbo().getHabboInfo().getCurrentRoom().getHabboItem(altarId);

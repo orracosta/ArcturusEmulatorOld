@@ -86,7 +86,6 @@ public class RoomManager {
 
             if(set.next())
             {
-                //System.out.println("Creating new layout!");
                 layout = new CustomRoomLayout(set, room);
             }
 
@@ -627,6 +626,16 @@ public class RoomManager {
             return;
         }
 
+        if (habbo.getHabboInfo().getRoomQueueId() != roomId)
+        {
+            Room queRoom = Emulator.getGameEnvironment().getRoomManager().getRoom(roomId);
+
+            if (queRoom != null)
+            {
+                queRoom.removeFromQueue(habbo);
+            }
+        }
+
         if(overrideChecks ||
            room.isOwner(habbo) ||
            room.getState() == RoomState.OPEN ||
@@ -659,6 +668,7 @@ public class RoomManager {
                 return;
             }
 
+            habbo.getHabboInfo().setRoomQueueId(roomId);
             habbo.getClient().sendResponse(new DoorbellAddUserComposer(""));
             room.addToQueue(habbo);
         }
@@ -683,6 +693,19 @@ public class RoomManager {
         if (Emulator.getConfig().getBoolean("hotel.room.enter.logs"))
         {
             this.logEnter(habbo, room);
+        }
+
+        if (habbo.getHabboInfo().getRoomQueueId() > 0)
+        {
+            Room r = Emulator.getGameEnvironment().getRoomManager().getRoom(habbo.getHabboInfo().getRoomQueueId());
+
+            if (r != null)
+            {
+                r.removeFromQueue(habbo);
+            }
+
+            habbo.getHabboInfo().setRoomQueueId(0);
+            habbo.getClient().sendResponse(new HideDoorbellComposer(""));
         }
 
         if (habbo.getRoomUnit() == null)
@@ -713,16 +736,13 @@ public class RoomManager {
             habbo.getMessenger().connectionChanged(habbo, true, true);
         }
 
-        if (habbo.getHabboInfo().getRoomQueueId() > 0)
+        if (habbo.getHabboInfo().getLoadingRoom() != 0)
         {
-            Room r = Emulator.getGameEnvironment().getRoomManager().getRoom(habbo.getHabboInfo().getRoomQueueId());
-
-            if (r != null)
+            Room oldRoom = Emulator.getGameEnvironment().getRoomManager().getRoom(habbo.getHabboInfo().getLoadingRoom());
+            if (oldRoom != null)
             {
-                r.removeFromQueue(habbo);
+                oldRoom.removeFromQueue(habbo);
             }
-
-            habbo.getHabboInfo().setRoomQueueId(0);
         }
 
         habbo.getHabboInfo().setLoadingRoom(room.getId());

@@ -106,6 +106,11 @@ public class BattleBanzaiGame extends Game
 
         this.timeLeft = highestTime;
 
+        if (this.timeLeft == 0)
+        {
+            this.timeLeft = 30;
+        }
+
         this.start();
     }
 
@@ -213,9 +218,11 @@ public class BattleBanzaiGame extends Game
                 {
                     for(GamePlayer player : team.getMembers())
                     {
-                        //player.getScore()
-                        AchievementManager.progressAchievement(player.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("BattleBallPlayer"));
-                        AchievementManager.progressAchievement(player.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("BattleBallQuestCompleted"));
+                        if (player.getScore() > 0)
+                        {
+                            AchievementManager.progressAchievement(player.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("BattleBallPlayer"));
+                            AchievementManager.progressAchievement(player.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("BattleBallQuestCompleted"));
+                        }
                     }
 
                     if (winningTeam == null || team.getTotalScore() > winningTeam.getTotalScore())
@@ -224,21 +231,27 @@ public class BattleBanzaiGame extends Game
                     }
                 }
 
-                if(winningTeam != null)
+                if (winningTeam != null)
                 {
-                    for (GamePlayer player : winningTeam.getMembers())
+                    synchronized (winningTeam)
                     {
-                        this.room.sendComposer(new RoomUserActionComposer(player.getHabbo().getRoomUnit(), 1).compose());
-                        AchievementManager.progressAchievement(player.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("BattleBallWinner"));
-                    }
+                        for (GamePlayer player : winningTeam.getMembers())
+                        {
+                            if (player.getScore() > 0)
+                            {
+                                this.room.sendComposer(new RoomUserActionComposer(player.getHabbo().getRoomUnit(), 1).compose());
+                                AchievementManager.progressAchievement(player.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("BattleBallWinner"));
+                            }
+                        }
 
-                    for(HabboItem item : this.room.getRoomSpecialTypes().getItemsOfType(InteractionBattleBanzaiSphere.class))
-                    {
-                        item.setExtradata((7 + winningTeam.teamColor.type) + "");
-                        this.room.updateItem(item);
-                    }
+                        for (HabboItem item : this.room.getRoomSpecialTypes().getItemsOfType(InteractionBattleBanzaiSphere.class))
+                        {
+                            item.setExtradata((7 + winningTeam.teamColor.type) + "");
+                            this.room.updateItem(item);
+                        }
 
-                    Emulator.getThreading().run(new BattleBanzaiTilesFlicker(this.lockedTiles.get(winningTeam.teamColor), winningTeam.teamColor, this.room));
+                        Emulator.getThreading().run(new BattleBanzaiTilesFlicker(this.lockedTiles.get(winningTeam.teamColor), winningTeam.teamColor, this.room));
+                    }
                 }
 
                 this.isRunning = false;

@@ -204,9 +204,16 @@ public class HabboManager
 
         synchronized (this.onlineHabbos)
         {
-            for (Habbo habbo : toDisconnect)
+            for (final Habbo habbo : toDisconnect)
             {
-                habbo.disconnect();
+                Emulator.getThreading().run(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        habbo.disconnect();
+                    }
+                });
             }
         }
         toDisconnect.clear();

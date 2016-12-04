@@ -99,6 +99,7 @@ public class Incoming
     public static final int RequestFriendRequestEvent = 2485;//275
     public static final int RoomSettingsSaveEvent = 2074;//2384
     public static final int AcceptFriendRequest = 45;//333
+    public static final int DeclineFriendRequest = 835;
     public static final int ReleaseVersionEvent = 4000;//4000 
     public static final int SearchRoomsMyFavoriteEvent = 1346;//1532
     public static final int TradeStartEvent = 3313;//466

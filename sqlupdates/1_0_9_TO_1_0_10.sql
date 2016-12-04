@@ -64,4 +64,27 @@ INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('floorplan.permission', 'Y
 
 ALTER TABLE  `room_wordfilter` CHANGE  `word`  `word` VARCHAR( 25 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
 
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES
+    ('commands.keys.cmd_update_polls', 'update_polls;reload_polls'),
+    ('commands.description.cmd_update_polls', ':update_polls'),
+    ('commands.keys.cmd_set_poll', 'setpoll;set_poll'),
+    ('commands.description.cmd_set_poll', ':setpoll <id>'),
+    ('commands.succes.cmd_set_poll', 'Room poll has been updated!'),
+    ('commands.error.cmd_set_poll.invalid_number', 'Please specify a valid number. Use 0 to remove the poll.'),
+    ('commands.error.cmd_set_poll.missing_arg', 'Missing poll id. Use 0 to remove the poll from this room.'),
+    ('commands.keys.cmd_roomcredits', 'roomcredits;room_credits;roomcoins;room_coins'),
+    ('commands.description.cmd_roomcredits', ':roomcredits <amount>'),
+    ('commands.keys.cmd_roompixels', 'roompixels;room_pixels;roomduckets;room_duckets'),
+    ('commands.description.cmd_roompixels', ':roompixels <amount>'),
+    ('commands.keys.cmd_roomgift', 'roomgift;room_gift'),
+    ('commands.description.cmd_roomgift', ':roomgift <item_id> [message]'),
+    ('commands.succes.cmd_update_polls', 'Room polls have been reloaded!'),
+    ('commands.error.cmd_set_poll.not_found', 'Poll %id% not found!');
+
+ALTER TABLE  `permissions` ADD  `cmd_set_poll` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_setmax`;
+ALTER TABLE  `permissions` ADD  `cmd_update_polls` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_update_plugins`;
+ALTER TABLE  `permissions` ADD  `cmd_roomcredits` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_redeem`;
+ALTER TABLE  `permissions` ADD  `cmd_roompixels` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_roomitem` , ADD  `cmd_roompoints` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_roompixels`;
+ALTER TABLE  `permissions` ADD  `cmd_roomgift` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_roomeffect`;
+
 #END DATABASE UPDATE: 1.0.9 -> 1.0.10

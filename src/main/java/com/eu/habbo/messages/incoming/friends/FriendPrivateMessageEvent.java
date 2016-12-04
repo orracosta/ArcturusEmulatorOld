@@ -17,9 +17,7 @@ public class FriendPrivateMessageEvent extends MessageHandler
         int userId = this.packet.readInt();
         String message = this.packet.readString();
 
-        MessengerBuddy buddy = this.client.getHabbo().getMessenger().getFriend(userId);
-
-        if(buddy == null)
+        if(userId == 0)
         {
             if(message.startsWith(":"))
             {
@@ -27,6 +25,12 @@ public class FriendPrivateMessageEvent extends MessageHandler
                 return;
             }
             Emulator.getGameServer().getGameClientManager().sendBroadcastResponse(new FriendChatMessageComposer(new Message(this.client.getHabbo().getHabboInfo().getId(), 0, message)).compose(), "acc_staff_chat", this.client);
+            return;
+        }
+
+        MessengerBuddy buddy = this.client.getHabbo().getMessenger().getFriend(userId);
+        if (buddy == null)
+        {
             return;
         }
 

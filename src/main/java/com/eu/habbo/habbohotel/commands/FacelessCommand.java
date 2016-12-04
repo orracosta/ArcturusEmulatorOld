@@ -27,7 +27,6 @@ public class FacelessCommand extends Command
 
                 for (String part : figureParts)
                 {
-                    System.out.println(part);
                     if (part.startsWith("hd"))
                     {
                         String[] headParts = part.split("-");

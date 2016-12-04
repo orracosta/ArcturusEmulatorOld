@@ -4,7 +4,8 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class RoomEnterErrorComposer extends MessageComposer{
+public class RoomEnterErrorComposer extends MessageComposer
+{
 
     public static final int ROOM_ERROR_GUESTROOM_FULL   = 1;
     public static final int ROOM_ERROR_CANT_ENTER       = 2;
@@ -32,7 +33,8 @@ public class RoomEnterErrorComposer extends MessageComposer{
     }
 
     @Override
-    public ServerMessage compose()    {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.RoomEnterErrorComposer);
         this.response.appendInt32(this.errorCode);
         this.response.appendString(this.queError);

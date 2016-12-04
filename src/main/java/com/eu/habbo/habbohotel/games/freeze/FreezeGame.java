@@ -85,6 +85,11 @@ public class FreezeGame extends Game
 
         this.timeLeft = highestTime;
 
+        if (this.timeLeft == 0)
+        {
+            this.timeLeft = 30;
+        }
+
         this.start();
     }
 
@@ -361,12 +366,15 @@ public class FreezeGame extends Game
                 {
                     this.playerDies(p);
 
-                    if(team.equals(winningTeam))
+                    if (p.getScore() > 0)
                     {
-                        AchievementManager.progressAchievement(p.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("FreezeWinner"), p.getScore());
-                    }
+                        if (team.equals(winningTeam))
+                        {
+                            AchievementManager.progressAchievement(p.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("FreezeWinner"), p.getScore());
+                        }
 
-                    AchievementManager.progressAchievement(p.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("FreezePlayer"));
+                        AchievementManager.progressAchievement(p.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("FreezePlayer"));
+                    }
                 }
             }
 

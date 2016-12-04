@@ -75,10 +75,11 @@ public class BotManager
      */
     public Bot createBot(THashMap<String, String> data, String type)
     {
+        PreparedStatement statement = null;
         try
         {
             Bot bot = null;
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO bots (user_id, room_id, name, motto, figure, gender, type) VALUES (0, 0, ?, ?, ?, ?, ?)");
+            statement = Emulator.getDatabase().prepare("INSERT INTO bots (user_id, room_id, name, motto, figure, gender, type) VALUES (0, 0, ?, ?, ?, ?, ?)");
             statement.setString(1, data.get("name"));
             statement.setString(2, data.get("motto"));
             statement.setString(3, data.get("figure"));
@@ -88,27 +89,63 @@ public class BotManager
             ResultSet set = statement.getGeneratedKeys();
             while(set.next())
             {
-                PreparedStatement stmt = Emulator.getDatabase().prepare("SELECT users.username AS owner_name, bots.* FROM bots LEFT JOIN users ON bots.user_id = users.id WHERE bots.id = ? LIMIT 1");
-                stmt.setInt(1, set.getInt(1));
-                ResultSet resultSet = stmt.executeQuery();
+                PreparedStatement stmt = null;
 
-                if(resultSet.next())
+                try
                 {
-                    bot = this.loadBot(resultSet);
+                    stmt = Emulator.getDatabase().prepare("SELECT users.username AS owner_name, bots.* FROM bots LEFT JOIN users ON bots.user_id = users.id WHERE bots.id = ? LIMIT 1");
+
+                    stmt.setInt(1, set.getInt(1));
+                    ResultSet resultSet = stmt.executeQuery();
+
+                    if (resultSet.next())
+                    {
+                        bot = this.loadBot(resultSet);
+                    }
+                    resultSet.close();
                 }
-                resultSet.close();
-                stmt.close();
-                stmt.getConnection().close();
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
+                finally
+                {
+                    if (stmt != null)
+                    {
+                        try
+                        {
+                            stmt.close();
+                            stmt.getConnection().close();
+                        }
+                        catch (SQLException e)
+                        {
+                            Emulator.getLogging().logSQLException(e);
+                        }
+                    }
+                }
             }
             set.close();
-            statement.close();
-            statement.getConnection().close();
 
             return bot;
         }
         catch(SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
+        }
+        finally
+        {
+            if (statement != null)
+            {
+                try
+                {
+                    statement.close();
+                    statement.getConnection().close();
+                }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            }
         }
         return null;
     }

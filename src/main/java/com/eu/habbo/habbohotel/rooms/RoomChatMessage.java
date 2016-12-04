@@ -137,9 +137,10 @@ public class RoomChatMessage implements Runnable, ISerialize
                 }
             }
 
+            PreparedStatement statement = null;
             try
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO chatlogs_room (user_from_id, user_to_id, message, timestamp, room_id) VALUES (?, ?, ?, ?, ?)");
+                statement = Emulator.getDatabase().prepare("INSERT INTO chatlogs_room (user_from_id, user_to_id, message, timestamp, room_id) VALUES (?, ?, ?, ?, ?)");
                 statement.setInt(1,this.habbo.getHabboInfo().getId());
                 if(this.targetHabbo != null)
                     statement.setInt(2, this.targetHabbo.getHabboInfo().getId());
@@ -156,12 +157,25 @@ public class RoomChatMessage implements Runnable, ISerialize
                     statement.setInt(5, 0);
                 }
                 statement.executeUpdate();
-                statement.close();
-                statement.getConnection().close();
             }
             catch(SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
+            }
+            finally
+            {
+                if (statement != null)
+                {
+                    try
+                    {
+                        statement.close();
+                        statement.getConnection().close();
+                    }
+                    catch (SQLException e)
+                    {
+                        Emulator.getLogging().logSQLException(e);
+                    }
+                }
             }
         }
     }

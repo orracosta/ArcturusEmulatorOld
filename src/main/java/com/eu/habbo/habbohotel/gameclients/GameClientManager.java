@@ -72,7 +72,6 @@ public class GameClientManager
         if (client != null)
         {
             client.dispose();
-            client.setHabbo(null);
         }
 
         channel.attr(CLIENT).set(null);

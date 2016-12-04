@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.commands;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.habbohotel.modtool.ModToolBan;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -43,9 +44,9 @@ public class SuperbanCommand extends Command
             }
 
             int time = Emulator.getIntUnixTimestamp() + IPBanCommand.TEN_YEARS;
-            Emulator.getGameEnvironment().getModToolManager().createBan(habbo, gameClient.getHabbo(), time, reason, "super");
+            ModToolBan ban = Emulator.getGameEnvironment().getModToolManager().createBan(habbo, gameClient.getHabbo(), time, reason, "super");
             count++;
-            for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithMachineId(habbo.getClient().getMachineId()))
+            for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithMachineId(ban.machineId))
             {
                 if (h != null)
                 {
@@ -54,7 +55,7 @@ public class SuperbanCommand extends Command
                 }
             }
 
-            for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithIP(habbo.getHabboInfo().getIpLogin()))
+            for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithIP(ban.ip))
             {
                 if (h != null)
                 {

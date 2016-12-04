@@ -70,7 +70,7 @@ public class InteractionMultiHeight extends HabboItem
 
                 if(this.getBaseItem().getStateCount() > 0)
                 {
-                    this.setExtradata("" + (Integer.valueOf(this.getExtradata()) + 1) % (this.getBaseItem().getStateCount()));
+                    this.setExtradata("" + (Integer.valueOf(this.getExtradata()) + 1) % (this.getBaseItem().getMultiHeights().length));
                     this.needsUpdate(true);
                     room.updateItem(this);
                     room.sendComposer(new UpdateStackHeightComposer(this.getX(), this.getY(), this.getBaseItem().getMultiHeights()[Integer.valueOf(this.getExtradata())] * 256.0D).compose());

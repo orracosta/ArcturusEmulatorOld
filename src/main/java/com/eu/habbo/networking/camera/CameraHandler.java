@@ -23,6 +23,8 @@ public class CameraHandler extends ChannelInboundHandlerAdapter
             short header = b.readShort();
 
             CameraPacketHandler.instance().handle(ctx.channel(), header, b);
+            b.release();
+            ((ByteBuf) msg).release();
         }
         catch (Exception e)
         {

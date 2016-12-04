@@ -24,7 +24,8 @@ public class ChannelReadHandler implements Runnable
         int length = m.readInt();
         short header = m.readShort();
         ByteBuf body = Unpooled.wrappedBuffer(m.readBytes(m.readableBytes()));
-
         Emulator.getGameServer().getPacketManager().handlePacket(ctx.attr(GameClientManager.CLIENT).get(), new ClientMessage(header, body));
+        body.release();
+        m.release();
     }
 }

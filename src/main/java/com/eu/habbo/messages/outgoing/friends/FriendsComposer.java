@@ -26,7 +26,7 @@ public class FriendsComposer extends MessageComposer
             this.response.init(Outgoing.FriendsComposer);
 
             //this.response.appendInt32(300);
-           //this.response.appendInt32(300);
+            //this.response.appendInt32(300);
             //this.response.appendInt32(3); //Club level
             this.response.appendInt32(300);
             this.response.appendInt32(300);

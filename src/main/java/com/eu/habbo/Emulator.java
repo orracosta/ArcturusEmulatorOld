@@ -1,9 +1,6 @@
 package com.eu.habbo;
 
-import com.eu.habbo.core.CleanerThread;
-import com.eu.habbo.core.ConfigurationManager;
-import com.eu.habbo.core.Logging;
-import com.eu.habbo.core.TextsManager;
+import com.eu.habbo.core.*;
 import com.eu.habbo.core.consolecommands.ConsoleCommand;
 import com.eu.habbo.database.Database;
 import com.eu.habbo.habbohotel.GameEnvironment;
@@ -109,6 +106,7 @@ public final class Emulator
      */
     public static void main(String[] args) throws Exception
     {
+        System.setOut(new Interceptor(System.out));
         try
         {
             Emulator.stopped = false;

@@ -46,6 +46,7 @@ public class CameraPacketHandler
             {
                 CameraIncomingMessage message = declaredClass.getDeclaredConstructor(new Class[]{Short.class, ByteBuf.class}).newInstance(i, ii);
                 message.handle(channel);
+                message.buffer.release();
             }
             catch (Exception e)
             {

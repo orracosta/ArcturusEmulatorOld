@@ -27,7 +27,8 @@ public class UpdateFriendComposer extends MessageComposer
     }
 
     @Override
-    public ServerMessage compose()    {
+    public ServerMessage compose()
+    {
 
         this.response.init(Outgoing.UpdateFriendComposer);
         if(buddy != null)

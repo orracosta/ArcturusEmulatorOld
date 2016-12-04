@@ -62,6 +62,7 @@ public class RoomUnit
     public boolean wiredMuted;
     public boolean modMuted;
     public int modMuteTime;
+    public int mutedCount;
     private int idleTimer;
     private Room room;
 

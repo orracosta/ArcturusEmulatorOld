@@ -5,7 +5,8 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class RemoveFloorItemComposer extends MessageComposer{
+public class RemoveFloorItemComposer extends MessageComposer
+{
 
     private final HabboItem item;
     private final boolean noUser;
@@ -23,7 +24,8 @@ public class RemoveFloorItemComposer extends MessageComposer{
     }
 
     @Override
-    public ServerMessage compose()    {
+    public ServerMessage compose()
+    {
         this.response.init(Outgoing.RemoveFloorItemComposer);
 
         this.response.appendString(this.item.getId() + "");

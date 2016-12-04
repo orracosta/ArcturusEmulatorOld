@@ -14,8 +14,8 @@ public class RequestInitFriendsEvent extends MessageHandler
     {
         ArrayList<ServerMessage> messages = new ArrayList<ServerMessage>();
 //
-//        messages.add(new MessengerInitComposer(this.client.getHabbo()).compose());
-//        messages.add(new FriendsComposer(this.client.getHabbo()).compose());
+        messages.add(new MessengerInitComposer(this.client.getHabbo()).compose());
+        messages.add(new FriendsComposer(this.client.getHabbo()).compose());
         this.client.sendResponses(messages);
     }
 }

@@ -18,6 +18,7 @@ import java.util.Properties;
 public class ConfigurationManager
 {
     public boolean loaded = false;
+    public boolean isLoading = false;
     /**
      * Our configurations stored in this object.
      */
@@ -36,6 +37,7 @@ public class ConfigurationManager
      */
     public void reload() throws Exception
     {
+        this.isLoading = true;
         this.properties.clear();
 
         InputStream input = null;
@@ -65,6 +67,7 @@ public class ConfigurationManager
             this.loadFromDatabase();
         }
 
+        this.isLoading = false;
         Emulator.getLogging().logStart("Configuration Manager -> Loaded!");
 
         if (Emulator.getPluginManager() != null)
@@ -134,6 +137,9 @@ public class ConfigurationManager
      */
     public String getValue(String key, String defaultValue)
     {
+        if (this.isLoading)
+            return defaultValue;
+
         if (!this.properties.containsKey(key)) {
             Emulator.getLogging().logErrorLine("[CONFIG] Key not found: " + key);
         }
@@ -158,6 +164,9 @@ public class ConfigurationManager
      */
     public boolean getBoolean(String key, boolean defaultValue)
     {
+        if (this.isLoading)
+            return defaultValue;
+
         try
         {
             return (getValue(key, "0").equals("1")) || (getValue(key, "false").equals("true"));
@@ -187,6 +196,9 @@ public class ConfigurationManager
      */
     public int getInt(String key, Integer defaultValue)
     {
+        if (this.isLoading)
+            return defaultValue;
+
         try
         {
             return Integer.parseInt(getValue(key, defaultValue.toString()));
@@ -215,6 +227,9 @@ public class ConfigurationManager
      */
     public double getDouble(String key, Double defaultValue)
     {
+        if (this.isLoading)
+            return defaultValue;
+
         try
         {
             return Double.parseDouble(getValue(key, defaultValue.toString()));

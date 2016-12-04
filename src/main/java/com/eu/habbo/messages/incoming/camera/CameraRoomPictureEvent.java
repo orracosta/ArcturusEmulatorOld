@@ -24,8 +24,8 @@ public class CameraRoomPictureEvent extends MessageHandler
             return;
         }
 
-        if (CameraClient.isLoggedIn)
-        {
+//        if (CameraClient.isLoggedIn)
+//        {
 //            int seconds = Emulator.getIntUnixTimestamp() - this.client.getHabbo().getHabboInfo().getPhotoTimestamp();
 //            if (seconds < (60 * 2))
 //            {
@@ -50,6 +50,8 @@ public class CameraRoomPictureEvent extends MessageHandler
         inflater.end();*/
             String content = new String(ZIP.inflate(data));
 
+            Emulator.getLogging().logDebugLine(content);
+
             CameraRenderImageComposer composer = new CameraRenderImageComposer(this.client.getHabbo().getHabboInfo().getId(), this.client.getHabbo().getHabboInfo().getCurrentRoom().getBackgroundTonerColor().getRGB(), 320, 320, content);
 
             this.client.getHabbo().getHabboInfo().setPhotoJSON(Emulator.getConfig().getValue("camera.extradata").replace("%timestamp%", composer.timestamp + ""));
@@ -58,11 +60,11 @@ public class CameraRoomPictureEvent extends MessageHandler
             Emulator.getCameraClient().sendMessage(composer);
 
             //Emulator.getCameraClient().sendMessage(new CameraRenderImageComposer(this.client.getHabbo().getHabboInfo().getId(), this.client.getHabbo().getHabboInfo().getCurrentRoom().getBackgroundTonerColor().getRGB(), 320, 320, ""));
-        }
-        else
-        {
-            this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("camera.disabled")));
-        }
+//        }
+//        else
+//        {
+//            this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("camera.disabled")));
+//        }
 
     }
 }

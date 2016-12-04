@@ -64,7 +64,7 @@ public class FriendRequestEvent extends MessageHandler
             id = habbo.getHabboInfo().getId();
             allowFriendRequests = !habbo.getHabboStats().blockFriendRequests;
             if(allowFriendRequests)
-                Emulator.getGameServer().getGameClientManager().getClient(habbo).sendResponse(new FriendRequestComposer(this.client.getHabbo()));
+                habbo.getClient().sendResponse(new FriendRequestComposer(this.client.getHabbo()));
         }
 
         if(id != 0)

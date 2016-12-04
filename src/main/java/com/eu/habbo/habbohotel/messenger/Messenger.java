@@ -177,24 +177,80 @@ public class Messenger
         }
     }
 
+    public void deleteAllFriendRequests(int userTo)
+    {
+        PreparedStatement statement = null;
+
+        try
+        {
+            statement = Emulator.getDatabase().prepare("DELETE FROM messenger_friendrequests WHERE user_to_id = ?");
+            statement.setInt(1, userTo);
+            statement.executeUpdate();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+        finally
+        {
+            if (statement != null)
+            {
+                try
+                {
+                    statement.close();
+                    statement.getConnection().close();
+                }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            }
+        }
+    }
+
+    public int deleteFriendRequests(int userFrom, int userTo)
+    {
+        PreparedStatement statement = null;
+
+        try
+        {
+            statement = Emulator.getDatabase().prepare("DELETE FROM messenger_friendrequests WHERE (user_to_id = ? AND user_from_id = ?)");
+            statement.setInt(1, userTo);
+            statement.setInt(2, userFrom);
+            return statement.executeUpdate();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+        finally
+        {
+            if (statement != null)
+            {
+                try
+                {
+                    statement.close();
+                    statement.getConnection().close();
+                }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            }
+        }
+
+        return 0;
+    }
     //TODO Needs redesign. userFrom is redundant.
     public void acceptFriendRequest(int userFrom, int userTo)
     {
         try
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM messenger_friendrequests WHERE (user_to_id = ? AND user_from_id = ?) OR (user_to_id = ? AND user_from_id = ?)");
-            statement.setInt(1, userFrom);
-            statement.setInt(2, userTo);
-            statement.setInt(3, userTo);
-            statement.setInt(4, userFrom);
-            int count = statement.executeUpdate();
+            int count = deleteFriendRequests(userFrom, userTo);
 
             if(count > 0)
             {
-                statement.close();
-                statement.getConnection().close();
-
-                statement = Emulator.getDatabase().prepare("INSERT INTO messenger_friendships (user_one_id, user_two_id, friends_since) VALUES (?, ?, ?)");
+                PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO messenger_friendships (user_one_id, user_two_id, friends_since) VALUES (?, ?, ?)");
                 statement.setInt(1, userFrom);
                 statement.setInt(2, userTo);
                 statement.setInt(3, Emulator.getIntUnixTimestamp());
@@ -204,6 +260,9 @@ public class Messenger
                 statement.setInt(2, userFrom);
                 statement.setInt(3, Emulator.getIntUnixTimestamp());
                 statement.execute();
+
+                statement.close();
+                statement.getConnection().close();
 
                 Habbo habboTo = Emulator.getGameServer().getGameClientManager().getHabbo(userTo);
                 Habbo habboFrom = Emulator.getGameServer().getGameClientManager().getHabbo(userFrom);
@@ -227,8 +286,6 @@ public class Messenger
                     Emulator.getGameServer().getGameClientManager().getClient(habboFrom).sendResponse(new UpdateFriendComposer(from));
                 }
             }
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {

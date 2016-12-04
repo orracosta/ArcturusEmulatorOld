@@ -50,7 +50,7 @@ public class WiredEffectLeaveTeam extends InteractionWiredEffect
     @Override
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
-        this.setDelay(Integer.valueOf("wired_data"));
+        this.setDelay(Integer.valueOf(set.getString("wired_data")));
     }
 
     @Override
