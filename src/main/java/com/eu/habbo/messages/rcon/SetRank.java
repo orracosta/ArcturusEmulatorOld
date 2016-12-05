@@ -21,7 +21,7 @@ public class SetRank extends RCONMessage<SetRank.JSONSetRank>
     @Override
     public void handle(Gson gson, JSONSetRank object)
     {
-        Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.username);
+        Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.userid);
 
         if(Emulator.getGameEnvironment().getPermissionsManager().getPermissionsForRank(object.rank) == null)
         {
@@ -36,12 +36,12 @@ public class SetRank extends RCONMessage<SetRank.JSONSetRank>
         }
         else
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users SET rank = ? WHERE username = ? LIMIT 1");
+            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users SET rank = ? WHERE id = ? LIMIT 1");
 
             try
             {
                 statement.setInt(1, object.rank);
-                statement.setString(2, object.username);
+                statement.setInt(2, object.userid);
                 statement.execute();
                 statement.close();
                 statement.getConnection().close();
@@ -57,7 +57,7 @@ public class SetRank extends RCONMessage<SetRank.JSONSetRank>
 
     public class JSONSetRank
     {
-        public String username;
+        public int userid;
         public int rank;
     }
 }
