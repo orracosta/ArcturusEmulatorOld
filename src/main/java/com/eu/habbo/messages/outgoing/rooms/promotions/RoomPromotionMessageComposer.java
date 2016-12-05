@@ -27,14 +27,22 @@ public class RoomPromotionMessageComposer extends MessageComposer
 
         if (room == null || roomPromotion == null)
         {
+            // RoomID of the promoted room
             this.response.appendInt32(-1);
+            // UserID of the room owner
             this.response.appendInt32(-1);
+            // Username of the room owner
             this.response.appendString("");
+            // Promoted status? Seems to only switch to 0 or 1
             this.response.appendInt32(0);
             this.response.appendInt32(0);
+            // Promotion title
             this.response.appendString("");
+            // Promotion description
             this.response.appendString("");
+            // Category ID? Also seen in BuyRoomPromotionEvent (last int)
             this.response.appendInt32(0);
+            // On later production these are used to pass the time left in minutes
             this.response.appendInt32(0);
             this.response.appendInt32(0);
         }
