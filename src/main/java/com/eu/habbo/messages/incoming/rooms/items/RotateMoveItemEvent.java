@@ -140,16 +140,21 @@ public class RotateMoveItemEvent extends MessageHandler
                         return;
                     }
 
-                    RoomTile t = null;
+                    boolean found = false;
                     for (RoomTile tile : updatedTiles)
                     {
-                        if (tile.x != i || tile.y != j)
+                        if (tile.x == i && tile.y == j)
                         {
-                            t = room.getLayout().getTile(i, j);
+                            found = true;
                         }
                     }
-                    if (t != null)
-                        updatedTiles.add(t);
+
+                    if (!found)
+                    {
+                        RoomTile t = room.getLayout().getTile(i, j);
+                        if (t != null)
+                            updatedTiles.add(t);
+                    }
                 }
             }
         }
@@ -210,11 +215,10 @@ public class RotateMoveItemEvent extends MessageHandler
             {}
         }
 
-        room.sendComposer(new FloorItemUpdateComposer(item).compose());
 
         for(RoomTile t : updatedTiles)
         {
-            t.setStackHeight(room.getStackHeight(t.x, t.y, false));
+            //t.setStackHeight(room.getStackHeight(t.x, t.y, false));
 
             if(oldX != t.x || oldY != t.y)
                 room.updateHabbosAt(t.x, t.y);
@@ -224,7 +228,7 @@ public class RotateMoveItemEvent extends MessageHandler
             room.updateHabbosAt(oldX, oldY);
 
         room.updateTiles(updatedTiles);
-        room.sendComposer(new UpdateStackHeightComposer(updatedTiles).compose());
+        room.sendComposer(new FloorItemUpdateComposer(item).compose());
         item.needsUpdate(true);
         Emulator.getThreading().run(item);
     }

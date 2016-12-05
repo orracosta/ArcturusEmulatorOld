@@ -165,7 +165,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public volatile boolean preventUnloading = false;
     public volatile boolean preventUncaching = false;
     public THashMap<Integer, TIntArrayList> waterTiles;
-    public final ConcurrentHashMap<Pair<Integer, Integer>, THashSet<HabboItem>> tileCache = new ConcurrentHashMap<Pair<Integer, Integer>, THashSet<HabboItem>>();
+    public final ConcurrentHashMap<RoomTile, THashSet<HabboItem>> tileCache = new ConcurrentHashMap<RoomTile, THashSet<HabboItem>>();
     public String wordQuiz = "";
     public int noVotes = 0;
     public int yesVotes = 0;
@@ -562,10 +562,18 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void updateTiles(THashSet<RoomTile> tiles)
     {
-        for(RoomTile tile : tiles)
+        synchronized (this.tileCache)
         {
-            updateTile(tile);
+            for (RoomTile tile : tiles)
+            {
+                this.tileCache.remove(tile);
+                tile.setStackHeight(this.getStackHeight(tile.x, tile.y, false));
+                this.gameMap.setWalkable(tile.x, tile.y, tileWalkable(tile.x, tile.y));
+                System.out.println(tile.toString() + " - " + tile.relativeHeight() + " : " + this.getStackHeight(tile.x, tile.y, false));
+            }
         }
+
+        this.sendComposer(new UpdateStackHeightComposer(tiles).compose());
     }
 
     public boolean tileWalkable(RoomTile t)
@@ -3353,10 +3361,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public GameMap<Node> getGameMap()
     {
-        //for(Node node : this.gameMap.getNodes())
-        //{
-        //    this.gameMap.setWalkable(node.getX(), node.getY(), this.tileWalkable((short)node.getX(), (short)node.getY()));
-        //}
+//        for(Node node : this.gameMap.getNodes())
+//        {
+//            this.gameMap.setWalkable(node.getX(), node.getY(), this.tileWalkable((short)node.getX(), (short)node.getY()));
+//        }
         return this.gameMap;
     }
 
@@ -3446,16 +3454,25 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         return lockedTiles;
     }
 
+    @Deprecated
     public THashSet<HabboItem> getItemsAt(int x, int y)
+    {
+        RoomTile tile = this.getLayout().getTile((short)x, (short)y);
+
+        if (tile != null)
+        {
+            return this.getItemsAt(tile);
+        }
+
+        return new THashSet<HabboItem>();
+    }
+    public THashSet<HabboItem> getItemsAt(RoomTile tile)
     {
         if (this.loaded)
         {
-            for (Map.Entry<Pair<Integer, Integer>, THashSet<HabboItem>> set : this.tileCache.entrySet())
+            if (this.tileCache.containsKey(tile))
             {
-                if (set.getKey().getKey() == x && set.getKey().getValue() == y)
-                {
-                    return set.getValue();
-                }
+                return this.tileCache.get(tile);
             }
         }
 
@@ -3473,7 +3490,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                     HabboItem item = iterator.value();
 
-                    if (item.getX() == x && item.getY() == y)
+                    if (item.getX() == tile.x && item.getY() == tile.y)
                     {
                         items.add(item);
                     }
@@ -3485,9 +3502,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         }
 
                         THashSet<RoomTile> tiles = PathFinder.getTilesAt(this.layout, item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
-                        for (RoomTile tile : tiles)
+                        for (RoomTile t : tiles)
                         {
-                            if ((tile.x == x) && (tile.y == y) && (!items.contains(item)))
+                            if ((t.x == tile.x) && (t.y == tile.y) && (!items.contains(item)))
                             {
                                 items.add(item);
                             }
@@ -3504,7 +3521,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         if (this.loaded)
         {
-            this.tileCache.put(new Pair<Integer, Integer>(x, y), items);
+            this.tileCache.put(tile, items);
         }
 
         return items;
@@ -3649,11 +3666,24 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             return this.layout.getHeightAtSquare(x, y);
     }
 
+    @Deprecated
     public HabboItem getLowestChair(int x, int y)
+    {
+        RoomTile tile = this.layout.getTile((short)x, (short)y);
+
+        if (tile != null)
+        {
+            return getLowestChair(tile);
+        }
+
+        return null;
+    }
+
+    public HabboItem getLowestChair(RoomTile tile)
     {
         HabboItem lowestChair = null;
 
-        for(HabboItem item : this.getItemsAt(x, y))
+        for(HabboItem item : this.getItemsAt(tile))
         {
             if(item.getBaseItem().allowSit())
             {
@@ -3677,13 +3707,18 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public HabboItem getStackHelper(int x, int y)
     {
-        THashSet<HabboItem> items = this.getItemsAt(x, y);
+        RoomTile tile = this.getLayout().getTile((short)x, (short)y);
 
-        for(HabboItem item : items)
+        if (tile != null)
         {
-            if(item instanceof InteractionStackHelper)
+            THashSet<HabboItem> items = this.getItemsAt(tile);
+
+            for (HabboItem item : items)
             {
-                return item;
+                if (item instanceof InteractionStackHelper)
+                {
+                    return item;
+                }
             }
         }
 

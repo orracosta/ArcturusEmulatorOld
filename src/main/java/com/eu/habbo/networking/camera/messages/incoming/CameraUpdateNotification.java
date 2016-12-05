@@ -36,7 +36,7 @@ public class CameraUpdateNotification extends CameraIncomingMessage
 
         if (alert)
         {
-            Emulator.getGameEnvironment().getHabboManager().sendPacketToHabbosWithPermission(new GenericAlertComposer(message).compose(), "acc_update_notifications");
+            Emulator.getGameServer().getGameClientManager().sendBroadcastResponse(new GenericAlertComposer(message).compose());
         }
     }
 }

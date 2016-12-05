@@ -54,7 +54,7 @@ public class RoomTile extends AbstractNode
 
     public short relativeHeight()
     {
-        if (this.state == RoomTileState.BLOCKED || !allowStack)
+        if (this.state == RoomTileState.BLOCKED && !allowStack)
         {
             return Short.MAX_VALUE;
         }

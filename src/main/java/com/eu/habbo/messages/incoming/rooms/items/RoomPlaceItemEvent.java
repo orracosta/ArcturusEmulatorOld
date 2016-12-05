@@ -189,26 +189,30 @@ public class RoomPlaceItemEvent extends MessageHandler
                             return;
                         }
 
-                        RoomTile t = null;
+                        boolean found = false;
                         for (RoomTile tile : updatedTiles)
                         {
-                            if (tile.x != i || tile.y != j)
+                            if (tile.x == i && tile.y == j)
                             {
-                                t = room.getLayout().getTile(i, j);
+                                found = true;
                             }
                         }
-                        if (t != null)
-                            updatedTiles.add(t);
+
+                        if (!found)
+                        {
+                            RoomTile t = room.getLayout().getTile(i, j);
+                            if (t != null)
+                                updatedTiles.add(t);
+                        }
                     }
                 }
             }
 
-            item.setZ(stackHelper == null ? room.getStackHeight(x, y, false) : (stackHelper.getExtradata().isEmpty() ? room.getLayout().getHeightAtSquare(x, y) : (double)Integer.valueOf(stackHelper.getExtradata()) / 100));
+            item.setZ(stackHelper == null ? room.getStackHeight(x, y, false) : (stackHelper.getExtradata().isEmpty() ? room.getLayout().getHeightAtSquare(x, y) : (double) Integer.valueOf(stackHelper.getExtradata()) / 100));
             item.setX(x);
             item.setY(y);
             item.setRotation(rotation);
             room.sendComposer(new AddFloorItemComposer(item, this.client.getHabbo().getHabboInfo().getUsername()).compose());
-            room.updateTiles(updatedTiles);
         }
         else
         {
@@ -231,14 +235,15 @@ public class RoomPlaceItemEvent extends MessageHandler
         room.addHabboItem(item);
         item.setRoomId(room.getId());
 
-        if(!updatedTiles.isEmpty())
-        {
-            for (RoomTile t : updatedTiles)
-            {
-                t.setStackHeight(room.getStackHeight(t.x, t.y, false));
-            }
-            room.sendComposer(new UpdateStackHeightComposer(updatedTiles).compose());
-        }
+//        if(!updatedTiles.isEmpty())
+//        {
+//            for (RoomTile t : updatedTiles)
+//            {
+//                t.setStackHeight(room.getStackHeight(t.x, t.y, false));
+//            }
+//            room.sendComposer(new UpdateStackHeightComposer(updatedTiles).compose());
+//        }
+        room.updateTiles(updatedTiles);
         Emulator.getThreading().run(item);
         item.onPlace(room);
     }

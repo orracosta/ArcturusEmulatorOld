@@ -35,7 +35,7 @@ public class Database
         }
         catch (Exception e)
         {
-            Emulator.getLogging().logErrorLine(e);
+            e.printStackTrace();
             SQLException = true;
         }
         finally
