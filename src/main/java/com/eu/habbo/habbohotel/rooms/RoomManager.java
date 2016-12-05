@@ -19,6 +19,7 @@ import com.eu.habbo.messages.outgoing.rooms.*;
 import com.eu.habbo.messages.outgoing.rooms.items.RoomFloorItemsComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.RoomWallItemsComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetComposer;
+import com.eu.habbo.messages.outgoing.rooms.promotions.RoomPromotionMessageComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.*;
 import com.eu.habbo.plugin.events.navigator.NavigatorRoomCreatedEvent;
 import com.eu.habbo.plugin.events.users.UserEnterRoomEvent;
@@ -765,6 +766,15 @@ public class RoomManager {
         room.refreshRightsForHabbo(habbo);
 
         habbo.getClient().sendResponse(new RoomScoreComposer(room.getScore(), !this.hasVotedForRoom(habbo, room)));
+
+        if (room.isPromoted())
+        {
+            habbo.getClient().sendResponse(new RoomPromotionMessageComposer(room, room.getPromotion()));
+        }
+        else
+        {
+            habbo.getClient().sendResponse(new RoomPromotionMessageComposer(room));
+        }
 
         if(room.getOwnerId() != habbo.getHabboInfo().getId())
         {

@@ -340,6 +340,7 @@ public class PacketManager
         this.registerHandler(Incoming.SavePostItStickyPoleEvent,                SavePostItStickyPoleEvent.class);
         this.registerHandler(Incoming.RequestPromotionRoomsEvent,               RequestPromotionRoomsEvent.class);
         this.registerHandler(Incoming.BuyRoomPromotionEvent,                    BuyRoomPromotionEvent.class);
+        this.registerHandler(Incoming.EditRoomPromotionMessageEvent,            UpdateRoomPromotionEvent.class);
         this.registerHandler(Incoming.IgnoreRoomUserEvent,                      IgnoreRoomUserEvent.class);
         this.registerHandler(Incoming.UnIgnoreRoomUserEvent,                    UnIgnoreRoomUserEvent.class);
         this.registerHandler(Incoming.RoomUserMuteEvent,                        RoomUserMuteEvent.class);

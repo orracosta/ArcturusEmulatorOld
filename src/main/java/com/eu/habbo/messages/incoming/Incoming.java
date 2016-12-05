@@ -278,6 +278,7 @@ public class Incoming
     public static final int RequestNavigatorSettingsEvent = 1086;
     public static final int SaveWindowSettingsEvent = 272;
     public static final int GetHabboGuildBadgesMessageEvent = 301;
+    public static final int EditRoomPromotionMessageEvent = 3707;
 
     public static final int RequestCraftingRecipesEvent = 426;
     public static final int RequestCraftingRecipesAvailableEvent = 1653;
