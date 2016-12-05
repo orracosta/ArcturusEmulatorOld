@@ -773,7 +773,7 @@ public class RoomManager {
         }
         else
         {
-            habbo.getClient().sendResponse(new RoomPromotionMessageComposer(room));
+            habbo.getClient().sendResponse(new RoomPromotionMessageComposer(null, null));
         }
 
         if(room.getOwnerId() != habbo.getHabboInfo().getId())

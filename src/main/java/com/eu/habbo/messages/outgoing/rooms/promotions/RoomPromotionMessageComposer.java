@@ -6,26 +6,17 @@ import com.eu.habbo.habbohotel.rooms.RoomPromotion;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
+import com.sun.istack.internal.Nullable;
 
 public class RoomPromotionMessageComposer extends MessageComposer
 {
     private final Room room;
     private final RoomPromotion roomPromotion;
 
-    public RoomPromotionMessageComposer(Room room, RoomPromotion roomPromotion)
+    public RoomPromotionMessageComposer(@Nullable Room room, @Nullable RoomPromotion roomPromotion)
     {
         this.room = room;
         this.roomPromotion = roomPromotion;
-    }
-
-    /*
-     * Secondary constructor to avoid NPE when a room is not promoted, roomPromotion filled with default data
-     * Only call this constructor when you know a RoomPromotion object is going to be null
-     */
-    public RoomPromotionMessageComposer(Room room)
-    {
-        this.room = room;
-        this.roomPromotion = new RoomPromotion(room, "", "", 0);
     }
 
     @Override
@@ -34,7 +25,7 @@ public class RoomPromotionMessageComposer extends MessageComposer
 
         this.response.init(Outgoing.RoomEventMessageComposer);
 
-        if (roomPromotion.getEndTimestamp() == 0)
+        if (room == null || roomPromotion == null)
         {
             this.response.appendInt32(-1);
             this.response.appendInt32(-1);
