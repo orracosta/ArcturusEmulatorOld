@@ -1265,6 +1265,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         {
                             //if (habbo.getRoomUnit().talkTimeOut == 0 || currentTimestamp - habbo.getRoomUnit().talkTimeOut < 0)
                             {
+                                habbo.getRoomUnit().talkCounter--;
+
                                 if (habbo.getRoomUnit().talkCounter > 3)
                                 {
                                     if (this.chatProtection == 0)
@@ -1279,10 +1281,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                     {
                                         this.floodMuteHabbo(habbo, 30);
                                     }
-                                }
-                                else
-                                {
-                                    habbo.getRoomUnit().talkCounter--;
                                 }
                             }
                         }
