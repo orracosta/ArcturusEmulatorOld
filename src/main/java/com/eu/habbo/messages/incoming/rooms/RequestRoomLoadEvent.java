@@ -14,7 +14,11 @@ public class RequestRoomLoadEvent extends MessageHandler {
         if(this.client.getHabbo().getHabboInfo().getCurrentRoom() != null)
         {
             Emulator.getGameEnvironment().getRoomManager().logExit(this.client.getHabbo());
-            this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserRemoveComposer(this.client.getHabbo().getRoomUnit()).compose());
+
+            if (this.client.getHabbo().getRoomUnit() != null)
+            {
+                this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserRemoveComposer(this.client.getHabbo().getRoomUnit()).compose());
+            }
             this.client.getHabbo().getHabboInfo().getCurrentRoom().removeHabbo(this.client.getHabbo());
             this.client.getHabbo().getHabboInfo().setCurrentRoom(null);
         }
