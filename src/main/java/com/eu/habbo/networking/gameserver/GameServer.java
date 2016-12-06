@@ -74,7 +74,20 @@ public class GameServer
 
     public void connect()
     {
-        this.serverBootstrap.bind(this.host, this.port);
+        ChannelFuture channelFuture = this.serverBootstrap.bind(this.host, this.port);
+
+        while (!channelFuture.isDone())
+        {}
+
+        if (!channelFuture.isSuccess())
+        {
+            Emulator.getLogging().logShutdownLine("Failed to connect to the host (" + this.host + ":" + this.port + ").");
+            System.exit(0);
+        }
+        else
+        {
+            Emulator.getLogging().logStart("Started GameServer on " + this.host + ":" + this.port);
+        }
     }
 
     public void stop()
