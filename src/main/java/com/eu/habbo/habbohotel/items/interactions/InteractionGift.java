@@ -15,12 +15,12 @@ import java.sql.SQLException;
 public class InteractionGift extends HabboItem
 {
     private int[] itemId;
-    private int colorId;
-    private int ribbonId;
-    private boolean showSender;
-    private String message;
-    private String sender;
-    private String look;
+    private int colorId = 0;
+    private int ribbonId = 0;
+    private boolean showSender = false;
+    private String message = "";
+    private String sender = "";
+    private String look = "";
 
     public THashSet<HabboItem> items = new THashSet<HabboItem>();
 
@@ -30,14 +30,28 @@ public class InteractionGift extends HabboItem
     {
         super(set, baseItem);
 
-        this.loadData();
+        try
+        {
+            this.loadData();
+        }
+        catch (Exception e)
+        {
+            Emulator.getLogging().logDebugLine("Incorrect extradata for gift with ID " + this.getId());
+        }
     }
 
     public InteractionGift(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
     {
         super(id, userId, item, extradata, limitedStack, limitedSells);
 
-        this.loadData();
+        try
+        {
+            this.loadData();
+        }
+        catch (Exception e)
+        {
+            Emulator.getLogging().logDebugLine("Incorrect extradata for gift with ID " + this.getId());
+        }
     }
 
     @Override
@@ -86,7 +100,7 @@ public class InteractionGift extends HabboItem
 
     }
 
-    private void loadData()
+    private void loadData() throws NumberFormatException
     {
         String[] data = null;
 
