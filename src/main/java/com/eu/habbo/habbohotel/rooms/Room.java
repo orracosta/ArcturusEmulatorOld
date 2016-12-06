@@ -569,7 +569,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 this.tileCache.remove(tile);
                 tile.setStackHeight(this.getStackHeight(tile.x, tile.y, false));
                 this.gameMap.setWalkable(tile.x, tile.y, tileWalkable(tile.x, tile.y));
-                System.out.println(tile.toString() + " - " + tile.relativeHeight() + " : " + this.getStackHeight(tile.x, tile.y, false));
             }
         }
 

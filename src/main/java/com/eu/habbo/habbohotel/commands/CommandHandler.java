@@ -171,32 +171,36 @@ public class CommandHandler
 
                 String[] parts = commandLine.split(" ");
 
-                for (Command command : commands)
+                if (parts.length >= 1)
                 {
-                    for (String s : command.keys)
+                    for (Command command : commands)
                     {
-                        if (s.toLowerCase().equals(parts[0].toLowerCase()))
+                        for (String s : command.keys)
                         {
-                            if (command.permission == null || gameClient.getHabbo().hasPermission(command.permission))
+                            if (s.toLowerCase().equals(parts[0].toLowerCase()))
                             {
-                                try
+                                if (command.permission == null || gameClient.getHabbo().hasPermission(command.permission))
                                 {
-                                    Emulator.getPluginManager().fireEvent(new UserExecuteCommandEvent(gameClient.getHabbo(), command, parts));
+                                    try
+                                    {
+                                        Emulator.getPluginManager().fireEvent(new UserExecuteCommandEvent(gameClient.getHabbo(), command, parts));
 
-                                    if(gameClient.getHabbo().getHabboInfo().getCurrentRoom() != null)
-                                        gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserTypingComposer(gameClient.getHabbo().getRoomUnit(), false).compose());
+                                        if (gameClient.getHabbo().getHabboInfo().getCurrentRoom() != null)
+                                            gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserTypingComposer(gameClient.getHabbo().getRoomUnit(), false).compose());
 
-                                    UserCommandEvent event = new UserCommandEvent(gameClient.getHabbo(), parts, command.handle(gameClient, parts));
-                                    Emulator.getPluginManager().fireEvent(event);
+                                        UserCommandEvent event = new UserCommandEvent(gameClient.getHabbo(), parts, command.handle(gameClient, parts));
+                                        Emulator.getPluginManager().fireEvent(event);
 
-                                    return event.succes;
-                                } catch (Exception e)
-                                {
-                                    e.printStackTrace();
-                                    return false;
+                                        return event.succes;
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        e.printStackTrace();
+                                        return false;
+                                    }
                                 }
+                                return false;
                             }
-                            return false;
                         }
                     }
                 }

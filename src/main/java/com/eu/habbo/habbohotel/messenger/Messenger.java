@@ -59,6 +59,41 @@ public class Messenger
         }
     }
 
+    public MessengerBuddy loadFriend(Habbo habbo, int userId)
+    {
+        MessengerBuddy buddy = null;
+        try
+        {
+            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT " +
+                    "users.id, " +
+                    "users.username, " +
+                    "users.gender, " +
+                    "users.online, " +
+                    "users.look, " +
+                    "users.motto, " +
+                    "messenger_friendships.* FROM messenger_friendships INNER JOIN users ON messenger_friendships.user_two_id = users.id WHERE user_one_id = ? AND user_two_id = ? LIMIT 1");
+            statement.setInt(1, habbo.getHabboInfo().getId());
+            statement.setInt(2, userId);
+
+            ResultSet set = statement.executeQuery();
+
+            while(set.next())
+            {
+                buddy = new MessengerBuddy(set);
+                this.friends.putIfAbsent(set.getInt("id"), buddy);
+            }
+            set.close();
+            statement.close();
+            statement.getConnection().close();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
+        return buddy;
+    }
+
     public void loadFriendRequests(Habbo habbo)
     {
         try
@@ -284,6 +319,14 @@ public class Messenger
 
                     Emulator.getGameServer().getGameClientManager().getClient(habboTo).sendResponse(new UpdateFriendComposer(to));
                     Emulator.getGameServer().getGameClientManager().getClient(habboFrom).sendResponse(new UpdateFriendComposer(from));
+                }
+                else if (habboTo != null)
+                {
+                    habboTo.getClient().sendResponse(new UpdateFriendComposer(loadFriend(habboTo, userFrom)));
+                }
+                else if (habboFrom != null)
+                {
+                    habboFrom.getClient().sendResponse(new UpdateFriendComposer(loadFriend(habboFrom, userTo)));
                 }
             }
         }

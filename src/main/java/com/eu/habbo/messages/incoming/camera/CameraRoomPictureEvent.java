@@ -24,30 +24,18 @@ public class CameraRoomPictureEvent extends MessageHandler
             return;
         }
 
-//        if (CameraClient.isLoggedIn)
-//        {
-//            int seconds = Emulator.getIntUnixTimestamp() - this.client.getHabbo().getHabboInfo().getPhotoTimestamp();
-//            if (seconds < (60 * 2))
-//            {
-//                this.client.sendResponse(new CameraPublishWaitMessageComposer(false, seconds - (60 * 2), ""));
-//            }
+        if (CameraClient.isLoggedIn)
+        {
+            int seconds = Emulator.getIntUnixTimestamp() - this.client.getHabbo().getHabboInfo().getPhotoTimestamp();
+            if (seconds < (60 * 2))
+            {
+                this.client.sendResponse(new CameraPublishWaitMessageComposer(false, seconds - (60 * 2), ""));
+            }
 
             this.packet.getBuffer().readFloat();
-            //byte[] buffer = new byte[4096*3];
+
             byte[] data = this.packet.getBuffer().readBytes(this.packet.getBuffer().readableBytes()).array();
 
-        /*Inflater inflater = new Inflater();
-        inflater.setInput(data);
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
-        while (!inflater.finished()) {
-            int count = inflater.inflate(buffer);
-            outputStream.write(buffer, 0, count);
-        }
-        outputStream.close();
-        byte[] output = outputStream.toByteArray();
-
-        inflater.end();*/
             String content = new String(ZIP.inflate(data));
 
             Emulator.getLogging().logDebugLine(content);
@@ -58,13 +46,11 @@ public class CameraRoomPictureEvent extends MessageHandler
             this.client.getHabbo().getHabboInfo().setPhotoTimestamp(composer.timestamp);
 
             Emulator.getCameraClient().sendMessage(composer);
-
-            //Emulator.getCameraClient().sendMessage(new CameraRenderImageComposer(this.client.getHabbo().getHabboInfo().getId(), this.client.getHabbo().getHabboInfo().getCurrentRoom().getBackgroundTonerColor().getRGB(), 320, 320, ""));
-//        }
-//        else
-//        {
-//            this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("camera.disabled")));
-//        }
+        }
+        else
+        {
+            this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("camera.disabled")));
+        }
 
     }
 }
