@@ -532,6 +532,7 @@ public class ItemManager {
                     }
                     catch (Exception e)
                     {
+                        Emulator.getLogging().logDebugLine(e);
                         return new InteractionDefault(set.getInt(1), habboId, item, extraData, limitedStack, limitedSells);
                     }
                 }
@@ -540,6 +541,10 @@ public class ItemManager {
         catch(SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
+        }
+        catch(Exception e)
+        {
+            Emulator.getLogging().logErrorLine(e);
         }
         finally
         {
