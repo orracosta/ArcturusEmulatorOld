@@ -68,7 +68,7 @@ public class InteractionMultiHeight extends HabboItem
                 if(this.getExtradata().length() == 0)
                     this.setExtradata("0");
 
-                if(this.getBaseItem().getStateCount() > 0)
+                if(this.getBaseItem().getMultiHeights().length > 0)
                 {
                     this.setExtradata("" + (Integer.valueOf(this.getExtradata()) + 1) % (this.getBaseItem().getMultiHeights().length));
                     this.needsUpdate(true);
