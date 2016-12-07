@@ -23,7 +23,7 @@ public class AcceptFriendRequestEvent extends MessageHandler
             if(this.client.getHabbo().getMessenger().getFriends().containsKey(userId))
                 continue;
 
-            this.client.getHabbo().getMessenger().acceptFriendRequest(this.client.getHabbo().getHabboInfo().getId(), userId);
+            this.client.getHabbo().getMessenger().acceptFriendRequest(userId, this.client.getHabbo().getHabboInfo().getId());
 
             int progress = this.client.getHabbo().getHabboStats().getAchievementProgress(Emulator.getGameEnvironment().getAchievementManager().getAchievement("FriendListSize"));
 
