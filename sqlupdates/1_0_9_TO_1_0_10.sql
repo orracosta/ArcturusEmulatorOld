@@ -76,6 +76,8 @@ INSERT INTO `emulator_texts` (`key`, `value`) VALUES
     ('commands.description.cmd_roomcredits', ':roomcredits <amount>'),
     ('commands.keys.cmd_roompixels', 'roompixels;room_pixels;roomduckets;room_duckets'),
     ('commands.description.cmd_roompixels', ':roompixels <amount>'),
+    ('commands.keys.cmd_roompoints', 'roompoints;room_points'),
+    ('commands.description.cmd_roompoints', ':roompoints <amount>'),
     ('commands.keys.cmd_roomgift', 'roomgift;room_gift'),
     ('commands.description.cmd_roomgift', ':roomgift <item_id> [message]'),
     ('commands.succes.cmd_update_polls', 'Room polls have been reloaded!'),

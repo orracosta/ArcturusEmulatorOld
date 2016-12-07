@@ -206,14 +206,7 @@ public class HabboManager
         {
             for (final Habbo habbo : toDisconnect)
             {
-                Emulator.getThreading().run(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        habbo.disconnect();
-                    }
-                });
+                habbo.disconnect();
             }
         }
         toDisconnect.clear();
