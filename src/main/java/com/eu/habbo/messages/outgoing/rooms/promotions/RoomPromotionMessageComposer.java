@@ -46,19 +46,21 @@ public class RoomPromotionMessageComposer extends MessageComposer
             this.response.appendInt32(0);
             this.response.appendInt32(0);
         }
+        else
+        {
+            this.response.appendInt32(room.getId());
+            this.response.appendInt32(room.getOwnerId());
+            this.response.appendString(room.getOwnerName());
 
-        this.response.appendInt32(room.getId());
-        this.response.appendInt32(room.getOwnerId());
-        this.response.appendString(room.getOwnerName());
+            this.response.appendInt32(1);
+            this.response.appendInt32(1);
 
-        this.response.appendInt32(1);
-        this.response.appendInt32(1);
-
-        this.response.appendString(roomPromotion.getTitle());
-        this.response.appendString(roomPromotion.getDescription());
-        this.response.appendInt32(0);
-        this.response.appendInt32(0);
-        this.response.appendInt32(0);
+            this.response.appendString(roomPromotion.getTitle());
+            this.response.appendString(roomPromotion.getDescription());
+            this.response.appendInt32(0);
+            this.response.appendInt32(0);
+            this.response.appendInt32(0);
+        }
 
         return this.response;
 
