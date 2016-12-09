@@ -36,8 +36,11 @@ public class HTTPPostError implements Runnable
             wr.writeBytes(urlParameters);
             wr.flush();
             wr.close();
+            pw.close();
+            sw.close();
 
             int responseCode = con.getResponseCode();
+            con.disconnect();
         }
         catch (Exception e)
         {

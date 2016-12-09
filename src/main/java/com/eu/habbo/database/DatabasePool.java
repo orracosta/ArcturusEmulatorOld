@@ -18,8 +18,7 @@ class DatabasePool
         try
         {
             HikariConfig databaseConfiguration = new HikariConfig();
-            databaseConfiguration.setMinimumIdle(1);
-            databaseConfiguration.setMaximumPoolSize(100);
+            databaseConfiguration.setMaximumPoolSize(20);
             databaseConfiguration.setInitializationFailFast(true);
             databaseConfiguration.setJdbcUrl("jdbc:mysql://" + config.getValue("db.hostname", "localhost") + ":" + config.getValue("db.port", "3306") + "/" + config.getValue("db.database", "habbo"));
             databaseConfiguration.addDataSourceProperty("serverName", config.getValue("db.hostname", "localhost"));
@@ -34,9 +33,9 @@ class DatabasePool
             databaseConfiguration.setAutoCommit(true);
             databaseConfiguration.setConnectionTimeout(340L);
             databaseConfiguration.setValidationTimeout(339L);
-            databaseConfiguration.setLeakDetectionThreshold(400L);
+            databaseConfiguration.setLeakDetectionThreshold(4000L);
             databaseConfiguration.setMaxLifetime(30000L);
-            databaseConfiguration.setIdleTimeout(1000L);
+            databaseConfiguration.setIdleTimeout(10000L);
             //databaseConfiguration.setDriverClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
             this.database = new HikariDataSource(databaseConfiguration);
         }

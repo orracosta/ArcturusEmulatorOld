@@ -9,8 +9,12 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
+import io.netty.util.ResourceLeakDetector;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
+import io.netty.util.internal.logging.InternalLogLevel;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import io.netty.util.internal.logging.Slf4JLoggerFactory;
 import org.slf4j.Logger;
@@ -29,7 +33,8 @@ public class GameServer
 
     public GameServer(String host, int port) throws Exception
     {
-        InternalLoggerFactory.setDefaultFactory(new Slf4JLoggerFactory());
+        //Emulator.getLogging().logStart("Current Netty Logging Level: " + ResourceLeakDetector.getLevel().name());
+        //ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.ADVANCED);
         this.packetManager = new PacketManager();
         this.gameClientManager = new GameClientManager();
 

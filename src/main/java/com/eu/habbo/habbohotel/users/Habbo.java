@@ -4,10 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.messenger.Messenger;
-import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
-import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
-import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.habbohotel.rooms.RoomUnitType;
+import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserTalkComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
@@ -154,7 +151,12 @@ public class Habbo implements Runnable
             }
             if (this.getHabboInfo().getRoomQueueId() > 0)
             {
-                Emulator.getGameEnvironment().getRoomManager().getRoom(this.getHabboInfo().getRoomQueueId()).removeFromQueue(this);
+                Room room =  Emulator.getGameEnvironment().getRoomManager().getRoom(this.getHabboInfo().getRoomQueueId());
+
+                if (room != null)
+                {
+                    room.removeFromQueue(this);
+                }
             }
 
             Emulator.getGameEnvironment().getGuideManager().userLogsOut(this);

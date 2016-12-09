@@ -2,6 +2,7 @@ package com.eu.habbo.core;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.util.callback.HTTPPostStatus;
+import com.eu.habbo.util.callback.HTTPVersionCheck;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -85,6 +86,8 @@ public class CleanerThread implements Runnable {
     {
         databaseCleanup();
         Emulator.getThreading().run(this, DELAY);
+
+        Emulator.getThreading().run(new HTTPVersionCheck(), 10000);
     }
 
     @Override

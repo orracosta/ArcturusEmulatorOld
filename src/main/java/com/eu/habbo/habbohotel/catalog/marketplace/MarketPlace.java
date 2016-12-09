@@ -437,7 +437,7 @@ public class MarketPlace
         }
         catch (SQLException e)
         {
-            return false;
+			Emulator.getLogging().logSQLException(e);
         }
 
         return true;

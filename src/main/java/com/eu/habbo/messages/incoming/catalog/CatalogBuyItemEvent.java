@@ -33,11 +33,18 @@ public class CatalogBuyItemEvent extends MessageHandler
         String extraData = this.packet.readString();
         int count = this.packet.readInt();
 
-        if (this.client.getHabbo().getHabboInventory().getItemsComponent().itemCount() > Emulator.getConfig().getInt("inventory.max.items"))
+        try
+        {
+            if (this.client.getHabbo().getHabboInventory().getItemsComponent().itemCount() > Emulator.getConfig().getInt("inventory.max.items"))
+            {
+                this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR).compose());
+                this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("inventory.full")));
+                return;
+            }
+        }
+        catch (Exception e)
         {
             this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR).compose());
-            this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("inventory.full")));
-            return;
         }
 
         CatalogPage page = null;

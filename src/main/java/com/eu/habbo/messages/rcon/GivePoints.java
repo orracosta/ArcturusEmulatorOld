@@ -43,6 +43,7 @@ public class GivePoints extends RCONMessage<GivePoints.JSONGivePoints>
             catch (SQLException e)
             {
                 this.status = RCONMessage.SYSTEM_ERROR;
+				Emulator.getLogging().logSQLException(e);
             }
 
             this.message = "offline";

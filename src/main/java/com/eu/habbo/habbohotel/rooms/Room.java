@@ -4420,19 +4420,19 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     break;
                 }
             }
+        }
 
-            Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(userId);
+        Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(userId);
 
-            if (habbo != null)
-            {
-                habbo.getHabboInventory().getItemsComponent().addItems(items);
-                habbo.getClient().sendResponse(new AddHabboItemComposer(items));
-            }
+        if (habbo != null)
+        {
+            habbo.getHabboInventory().getItemsComponent().addItems(items);
+            habbo.getClient().sendResponse(new AddHabboItemComposer(items));
+        }
 
-            for (HabboItem i : items)
-            {
-                this.pickUpItem(i, null);
-            }
+        for (HabboItem i : items)
+        {
+            this.pickUpItem(i, null);
         }
     }
 

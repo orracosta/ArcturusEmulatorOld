@@ -839,9 +839,15 @@ public class ItemManager {
         if(userId == 0)
             return null;
 
-        PreparedStatement statement;
+        PreparedStatement statement = null;
         try
         {
+            if (extraData.length() > 1000)
+            {
+                Emulator.getLogging().logErrorLine("Extradata exceeds maximum length of 1000 characters:" + extraData);
+                extraData = extraData.substring(0, 1000);
+            }
+
             statement = Emulator.getDatabase().prepare("INSERT INTO items (user_id, item_id, extra_data, limited_data) VALUES (?, ?, ?, ?)");
             statement.setInt(1, userId);
             statement.setInt(2, item.getId());
@@ -863,6 +869,21 @@ public class ItemManager {
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
+        }
+        finally
+        {
+            if (statement != null)
+            {
+                try
+                {
+                    statement.close();
+                    statement.getConnection().close();
+                }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            }
         }
 
         if(gift != null)

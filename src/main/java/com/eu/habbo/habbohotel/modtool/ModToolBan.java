@@ -47,16 +47,18 @@ public class ModToolBan implements Runnable
     {
         if(this.needsInsert)
         {
+            PreparedStatement statement = null;
             try
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO bans (user_id, ip, machine_id, user_staff_id, ban_expire, ban_reason, type) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                statement = Emulator.getDatabase().prepare("INSERT INTO bans (user_id, ip, machine_id, user_staff_id, timestamp, ban_expire, ban_reason, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
                 statement.setInt(1, this.userId);
                 statement.setString(2, this.ip);
                 statement.setString(3, this.machineId);
                 statement.setInt(4, this.staffId);
-                statement.setInt(5, this.expireDate);
-                statement.setString(6, this.reason);
-                statement.setString(7, this.type);
+                statement.setInt(5, Emulator.getIntUnixTimestamp());
+                statement.setInt(6, this.expireDate);
+                statement.setString(7, this.reason);
+                statement.setString(8, this.type);
                 statement.execute();
                 statement.close();
                 statement.getConnection().close();
@@ -64,6 +66,21 @@ public class ModToolBan implements Runnable
             catch (SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
+            }
+            finally
+            {
+                if (statement != null)
+                {
+                    try
+                    {
+                        statement.close();
+                        statement.getConnection().close();
+                    }
+                    catch (SQLException e)
+                    {
+                        Emulator.getLogging().logSQLException(e);
+                    }
+                }
             }
         }
     }

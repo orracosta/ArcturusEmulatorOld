@@ -15,6 +15,8 @@ import com.eu.habbo.plugin.events.emulator.EmulatorStoppedEvent;
 import com.eu.habbo.threading.ThreadPooling;
 import com.eu.habbo.threading.runnables.CameraClientAutoReconnect;
 import com.eu.habbo.util.imager.badges.BadgeImager;
+import io.netty.util.internal.logging.InternalLoggerFactory;
+import io.netty.util.internal.logging.Slf4JLoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -106,7 +108,6 @@ public final class Emulator
      */
     public static void main(String[] args) throws Exception
     {
-        System.setOut(new Interceptor(System.out));
         try
         {
             Emulator.stopped = false;

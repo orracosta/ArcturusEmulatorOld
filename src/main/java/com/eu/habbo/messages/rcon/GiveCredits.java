@@ -41,6 +41,7 @@ public class GiveCredits extends RCONMessage<GiveCredits.JSONGiveCredits>
             catch (SQLException e)
             {
                 this.status = RCONMessage.SYSTEM_ERROR;
+				Emulator.getLogging().logSQLException(e);
             }
 
             this.message = "offline";

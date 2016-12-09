@@ -1,5 +1,6 @@
 package com.eu.habbo.messages.outgoing.modtool;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
@@ -43,7 +44,9 @@ public class ModToolUserInfoComposer extends MessageComposer
         }
         catch (SQLException e)
         {
-            return null;
+			Emulator.getLogging().logSQLException(e);
         }
+
+        return null;
     }
 }

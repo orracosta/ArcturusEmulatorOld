@@ -105,6 +105,7 @@ public class CommandHandler
         addCommand(new TrashCommand());
         addCommand(new UnbanCommand());
         addCommand(new UnloadRoomCommand());
+        addCommand(new UnmuteCommand());
         addCommand(new UpdateBotsCommand());
         addCommand(new UpdateCatalogCommand());
         addCommand(new UpdateConfigCommand());

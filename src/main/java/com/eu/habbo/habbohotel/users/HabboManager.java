@@ -66,7 +66,6 @@ public class HabboManager
         {
             PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM users WHERE auth_ticket = ? LIMIT 1");
             statement.setString(1, sso);
-
             ResultSet set = statement.executeQuery();
             if(set.next())
             {

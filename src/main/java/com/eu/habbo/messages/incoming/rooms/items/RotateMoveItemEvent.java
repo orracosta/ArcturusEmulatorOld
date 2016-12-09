@@ -99,7 +99,12 @@ public class RotateMoveItemEvent extends MessageHandler
         {
             for (short j = (short) currentSquare.y; j < currentSquare.y + currentSquare.getHeight(); j++)
             {
-                updatedTiles.add(room.getLayout().getTile(i, j));
+                RoomTile tile = room.getLayout().getTile(i, j);
+
+                if (tile != null)
+                {
+                    updatedTiles.add(tile);
+                }
             }
         }
 
@@ -143,9 +148,12 @@ public class RotateMoveItemEvent extends MessageHandler
                     boolean found = false;
                     for (RoomTile tile : updatedTiles)
                     {
-                        if (tile.x == i && tile.y == j)
+                        if (tile != null)
                         {
-                            found = true;
+                            if (tile.x == i && tile.y == j)
+                            {
+                                found = true;
+                            }
                         }
                     }
 
