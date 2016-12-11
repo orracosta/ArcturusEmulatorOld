@@ -1,6 +1,7 @@
 # **Arcturus Emulator is released under the [GNU General Public License v3](https://www.gnu.org/licenses/gpl-3.0.txt). Modifications are allowed but must disclosed. Changes in the about menu are forbidden as they are part of the license.** #
 
 # Arcturus Emulator #
+# **PLEASE DO NOT USE THESE DEVELOPMENT BRANCHES FOR PRODUCTION HOTELS, USE AT YOUR OWN RISK. PLEASE USE OFFICIAL RELEASES** #
 
 ## **To Get The Camera To Work Visit http://arcturus.wf and register.** ##
 ## **TUTORIAL FOR PLUGINS http://arcturus.wf/thread-2415.html** ##
