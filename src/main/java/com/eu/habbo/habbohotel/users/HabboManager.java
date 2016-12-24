@@ -62,9 +62,10 @@ public class HabboManager
     public Habbo loadHabbo(String sso)
     {
         Habbo habbo = null;
+        PreparedStatement statement = null;
         try
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM users WHERE auth_ticket = ? LIMIT 1");
+            statement = Emulator.getDatabase().prepare("SELECT * FROM users WHERE auth_ticket = ? LIMIT 1");
             statement.setString(1, sso);
             ResultSet set = statement.executeQuery();
             if(set.next())
@@ -92,11 +93,41 @@ public class HabboManager
                 {
                     Emulator.getPluginManager().fireEvent(new UserRegisteredEvent(habbo));
                 }
+
+                if (!Emulator.debugging)
+                {
+                    PreparedStatement ssoStatement = null;
+
+                    try
+                    {
+                        ssoStatement = Emulator.getDatabase().prepare("UPDATE users SET auth_ticket = ? WHERE auth_ticket = ? AND users.id = ? LIMIT 1");
+                        ssoStatement.setString(1, new String(""));
+                        ssoStatement.setString(2, sso);
+                        ssoStatement.setInt(3, habbo.getHabboInfo().getId());
+                    }
+                    catch (SQLException e)
+                    {
+                        Emulator.getLogging().logSQLException(e);
+                    }
+                    finally
+                    {
+                        if (ssoStatement != null)
+                        {
+                            try
+                            {
+                                ssoStatement.close();
+                                ssoStatement.getConnection().close();
+                            }
+                            catch (SQLException e)
+                            {
+                                Emulator.getLogging().logSQLException(e);
+                            }
+                        }
+                    }
+                }
             }
 
             set.close();
-            statement.close();
-            statement.getConnection().close();
 
         }
         catch(SQLException e)
@@ -106,6 +137,21 @@ public class HabboManager
         catch (Exception e)
         {
             Emulator.getLogging().logErrorLine(e);
+        }
+        finally
+        {
+            if (statement != null)
+            {
+                try
+                {
+                    statement.close();
+                    statement.getConnection().close();
+                }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            }
         }
 
         return habbo;

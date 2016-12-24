@@ -42,7 +42,7 @@ public class SecureLoginEvent extends MessageHandler
 
         String sso = this.packet.readString();
 
-        if (sso == null)
+        if (sso == null || sso.isEmpty())
         {
             this.client.getChannel().close();
         }
