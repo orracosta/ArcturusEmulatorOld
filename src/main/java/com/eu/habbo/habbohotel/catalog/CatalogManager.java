@@ -1063,6 +1063,13 @@ public class CatalogManager
                                         else if(Item.isPet(baseItem))
                                         {
                                             String[] data = extradata.split("\n");
+
+                                            if (data.length < 3)
+                                            {
+                                                habbo.getClient().sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR));
+                                                return;
+                                            }
+                                            
                                             Pet pet = null;
                                             try
                                             {

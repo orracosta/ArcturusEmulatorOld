@@ -45,7 +45,7 @@ public class AboutCommand extends Command
 
                         "\r" +
 
-                "<b>Thanks for using. Report issues on the forums. http://arcturus.wf \r\r" +
+                "<b>Thanks for using Arcturus. Report issues on the forums. http://arcturus.wf \r\r" +
                 "    - The General"
         ));
 
