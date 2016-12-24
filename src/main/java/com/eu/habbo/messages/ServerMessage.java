@@ -4,7 +4,6 @@ import com.eu.habbo.Emulator;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
@@ -15,9 +14,9 @@ public class ServerMessage
     private int header;
     private ByteBufOutputStream stream;
     private ByteBuf channelBuffer;
-    
+
     public ServerMessage() {}
-    
+
     public ServerMessage(int header)
     {
         this.header = header;
@@ -33,7 +32,7 @@ public class ServerMessage
             Emulator.getLogging().handleException(e);
         }
     }
-    
+
     public ServerMessage init(int id)
     {
         this.header = id;
@@ -83,7 +82,7 @@ public class ServerMessage
             Emulator.getLogging().logPacketError(e);
         }
     }
-    
+
     public void appendChar(int obj)
     {
         try
@@ -95,7 +94,7 @@ public class ServerMessage
             Emulator.getLogging().logPacketError(e);
         }
     }
-    
+
     public void appendChars(Object obj)
     {
         try
@@ -107,7 +106,7 @@ public class ServerMessage
             Emulator.getLogging().logPacketError(e);
         }
     }
-    
+
     public void appendInt32(Integer obj)
     {
         try
@@ -137,7 +136,7 @@ public class ServerMessage
             Emulator.getLogging().logPacketError(e);
         }
     }
-    
+
     public void appendInt32(Boolean obj)
     {
         try
@@ -149,7 +148,7 @@ public class ServerMessage
             Emulator.getLogging().logPacketError(e);
         }
     }
-    
+
     public void appendShort(int obj)
     {
         try
@@ -161,7 +160,7 @@ public class ServerMessage
             Emulator.getLogging().logPacketError(e);
         }
     }
-    
+
     public void appendByte(Integer b)
     {
         try
@@ -173,7 +172,7 @@ public class ServerMessage
             Emulator.getLogging().logPacketError(e);
         }
     }
-    
+
     public void appendBoolean(Boolean obj)
     {
         try
@@ -185,7 +184,7 @@ public class ServerMessage
             Emulator.getLogging().logPacketError(e);
         }
     }
-    
+
     public ServerMessage appendResponse(ServerMessage obj)
     {
         try
@@ -199,16 +198,16 @@ public class ServerMessage
 
         return this;
     }
-    
+
     public void appendBody(ISerialize obj)
     {
         obj.serialize(this);
     }
-    
+
     public String getBodyString()
     {
         ByteBuf buffer = this.stream.buffer().duplicate();
-        
+
         buffer.setInt(0, buffer.writerIndex() - 4);
 
         String consoleText = buffer.toString(Charset.forName("UTF-8"));
@@ -221,34 +220,16 @@ public class ServerMessage
 
         return consoleText;
     }
-    
+
     public int getHeader()
     {
         return this.header;
     }
-    
+
     public ByteBuf get()
     {
-        try
-        {
-            this.channelBuffer.setInt(0, this.channelBuffer.writerIndex() - 4);
-            this.stream.close();
-            return this.channelBuffer.copy();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            //this.buffer().release();
-        }
+        this.channelBuffer.setInt(0, this.channelBuffer.writerIndex() - 4);
 
-        return this.channelBuffer;
-    }
-
-    public ByteBuf buffer()
-    {
-        return this.channelBuffer;
+        return this.channelBuffer.copy();
     }
 }

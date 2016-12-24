@@ -10,28 +10,28 @@ public class ClientMessage
 {
     private final int header;
     private final ByteBuf buffer;
-    
+
     public ByteBuf getBuffer()
     {
         return this.buffer;
     }
-    
+
     public int getMessageId()
     {
         return this.header;
     }
-    
+
     public ClientMessage(int messageId, ByteBuf buffer)
     {
         this.header = messageId;
         this.buffer = ((buffer == null) || (buffer.readableBytes() == 0) ? Unpooled.EMPTY_BUFFER : buffer);
     }
-    
+
     public ClientMessage clone() throws CloneNotSupportedException
     {
         return new ClientMessage(this.header, this.buffer.duplicate());
     }
-    
+
     public int readShort()
     {
         try
@@ -44,7 +44,7 @@ public class ClientMessage
 
         return 0;
     }
-    
+
     public Integer readInt()
     {
         try
@@ -57,7 +57,7 @@ public class ClientMessage
 
         return 0;
     }
-    
+
     public boolean readBoolean()
     {
         try
@@ -70,7 +70,7 @@ public class ClientMessage
 
         return false;
     }
-    
+
     public String readString()
     {
         try
@@ -86,7 +86,7 @@ public class ClientMessage
             return "";
         }
     }
-    
+
     public String getMessageBody()
     {
         String consoleText = this.buffer.toString(Charset.defaultCharset());

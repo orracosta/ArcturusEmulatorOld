@@ -76,7 +76,7 @@ public class GameServer
         this.serverBootstrap.childOption(ChannelOption.SO_REUSEADDR, true);
         this.serverBootstrap.childOption(ChannelOption.SO_RCVBUF, 5120);
         this.serverBootstrap.childOption(ChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(5120));
-        this.serverBootstrap.childOption(ChannelOption.ALLOCATOR, new PooledByteBufAllocator());
+        this.serverBootstrap.childOption(ChannelOption.ALLOCATOR, new UnpooledByteBufAllocator(false));
     }
 
     public void connect()
