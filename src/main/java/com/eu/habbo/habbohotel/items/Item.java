@@ -205,12 +205,22 @@ public class Item {
     {
         if(item instanceof InteractionMultiHeight && item.getBaseItem().getMultiHeights().length > 0)
         {
-            int index = Integer.valueOf(item.getExtradata()) % (item.getBaseItem().getMultiHeights().length);
-            return item.getBaseItem().getMultiHeights()[(item.getExtradata().isEmpty() ? 0 : index)];
+            if (item.getExtradata().isEmpty())
+            {
+                item.setExtradata("0");
+            }
+
+            try
+            {
+                int index = Integer.valueOf(item.getExtradata()) % (item.getBaseItem().getMultiHeights().length);
+                return item.getBaseItem().getMultiHeights()[(item.getExtradata().isEmpty() ? 0 : index)];
+            }
+            catch (Exception e)
+            {
+
+            }
         }
-        else
-        {
-            return item.getBaseItem().getHeight();
-        }
+
+        return item.getBaseItem().getHeight();
     }
 }

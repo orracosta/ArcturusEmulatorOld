@@ -123,22 +123,17 @@ public class RoomUsersComposer extends MessageComposer
             this.response.appendString(this.bot.getGender().name().toUpperCase());
             this.response.appendInt32(this.bot.getOwnerId());
             this.response.appendString(this.bot.getOwnerName());
-            this.response.appendInt32(16);
-            this.response.appendInt32(0);
-            this.response.appendInt32(1);
-            this.response.appendInt32(2);
-            this.response.appendInt32(3);
-            this.response.appendInt32(4);
-            this.response.appendInt32(5);
-            this.response.appendInt32(6);
-            this.response.appendInt32(7);
-            this.response.appendInt32(8);
-            this.response.appendInt32(9);
             this.response.appendInt32(10);
-            this.response.appendInt32(11);
-            this.response.appendInt32(12);
-            this.response.appendInt32(13);
-            this.response.appendInt32(14);
+            this.response.appendShort(0);
+            this.response.appendShort(1);
+            this.response.appendShort(2);
+            this.response.appendShort(3);
+            this.response.appendShort(4);
+            this.response.appendShort(5);
+            this.response.appendShort(6);
+            this.response.appendShort(7);
+            this.response.appendShort(8);
+            this.response.appendShort(9);
         }
         else if(this.bots != null)
         {
@@ -158,22 +153,17 @@ public class RoomUsersComposer extends MessageComposer
                 this.response.appendString(bot.getGender().name().toUpperCase());
                 this.response.appendInt32(bot.getOwnerId());
                 this.response.appendString(bot.getOwnerName());
-                this.response.appendInt32(16);
-                this.response.appendInt32(0);
-                this.response.appendInt32(1);
-                this.response.appendInt32(2);
-                this.response.appendInt32(3);
-                this.response.appendInt32(4);
-                this.response.appendInt32(5);
-                this.response.appendInt32(6);
-                this.response.appendInt32(7);
-                this.response.appendInt32(8);
-                this.response.appendInt32(9);
                 this.response.appendInt32(10);
-                this.response.appendInt32(11);
-                this.response.appendInt32(12);
-                this.response.appendInt32(13);
-                this.response.appendInt32(14);
+                this.response.appendShort(0);
+                this.response.appendShort(1);
+                this.response.appendShort(2);
+                this.response.appendShort(3);
+                this.response.appendShort(4);
+                this.response.appendShort(5);
+                this.response.appendShort(6);
+                this.response.appendShort(7);
+                this.response.appendShort(8);
+                this.response.appendShort(9);
             }
         }
         return this.response;

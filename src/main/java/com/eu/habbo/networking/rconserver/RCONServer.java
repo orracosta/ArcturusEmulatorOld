@@ -5,6 +5,7 @@ import com.eu.habbo.core.Logging;
 import com.eu.habbo.messages.rcon.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonPrimitive;
 import gnu.trove.map.hash.THashMap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
@@ -110,9 +111,9 @@ public class RCONServer
             {
                 RCONMessage rcon = message.getDeclaredConstructor().newInstance();
                 Gson gson = this.gsonBuilder.create();
-                rcon.handle(gson, rcon.type.cast(gson.fromJson(body, rcon.type)));
+                rcon.handle(gson, gson.fromJson(body, rcon.type));
                 System.out.print("[" + Logging.ANSI_BLUE + "RCON" + Logging.ANSI_RESET + "] Handled RCON Message: " + message.getSimpleName());
-                result = gson.toJson(rcon, message);
+                result = gson.toJson(rcon, RCONMessage.class);
 
                 if (Emulator.debugging)
                 {

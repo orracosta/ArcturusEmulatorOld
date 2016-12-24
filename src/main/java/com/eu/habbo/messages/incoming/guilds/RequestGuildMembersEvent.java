@@ -16,7 +16,7 @@ public class RequestGuildMembersEvent extends MessageHandler
         int levelId = this.packet.readInt();
 
         Guild g = Emulator.getGameEnvironment().getGuildManager().getGuild(groupId);
-        this.client.sendResponse(new GuildMembersComposer(g, Emulator.getGameEnvironment().getGuildManager().getGuildMembers(g, pageId, levelId, query), this.client.getHabbo(), pageId, levelId));
+        this.client.sendResponse(new GuildMembersComposer(g, Emulator.getGameEnvironment().getGuildManager().getGuildMembers(g, pageId, levelId, query), this.client.getHabbo(), pageId, levelId, query));
 
     }
 }

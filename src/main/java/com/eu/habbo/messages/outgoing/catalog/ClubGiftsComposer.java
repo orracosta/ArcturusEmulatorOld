@@ -20,7 +20,7 @@ public class ClubGiftsComposer extends MessageComposer
         this.response.appendInt32(365); //Days Until Next Gift
         this.response.appendInt32(1); //Gift Selectable
 
-        CatalogPage page = Emulator.getGameEnvironment().getCatalogManager().getCatalogPage(18);
+        CatalogPage page = Emulator.getGameEnvironment().getCatalogManager().getCatalogPage(Emulator.getConfig().getInt("catalog.page.vipgifts"));
         this.response.appendInt32(page.getCatalogItems().size());
 
         TIntObjectIterator<CatalogItem> iterator = page.getCatalogItems().iterator();

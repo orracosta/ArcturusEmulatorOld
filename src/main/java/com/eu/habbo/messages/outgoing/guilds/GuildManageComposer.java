@@ -39,18 +39,20 @@ public class GuildManageComposer extends MessageComposer
         String[] data = badge.split("s");
         int req = 5 - data.length;
         int i = 0;
+
         for(String s : data)
         {
-            this.response.appendInt32((s.length() > 5 ? Integer.parseInt(s.substring(0, 3)) : Integer.parseInt(s.substring(0, 2))));
-            this.response.appendInt32((s.length() > 5 ? Integer.parseInt(s.substring(3, 5)) : Integer.parseInt(s.substring(2, 4))));
+            this.response.appendInt32((s.length() >= 6 ? Integer.parseInt(s.substring(0, 3)) : Integer.parseInt(s.substring(0, 2))));
+            this.response.appendInt32((s.length() >= 6 ? Integer.parseInt(s.substring(3, 5)) : Integer.parseInt(s.substring(2, 4))));
 
             if(s.length() < 5)
                 this.response.appendInt32(0);
-            else if(s.length() > 6)
+            else if(s.length() >= 6)
                 this.response.appendInt32(Integer.parseInt(s.substring(5, 6)));
             else
                 this.response.appendInt32(Integer.parseInt(s.substring(4, 5)));
         }
+
         while(i != req)
         {
             this.response.appendInt32(0);

@@ -76,8 +76,10 @@ public class ClientMessage
         try
         {
             int length = readShort();
-            byte[] data = this.buffer.readBytes(length).array();
-            return new String(data);
+            byte[] data = new byte[length];
+            this.buffer.readBytes(data);
+            String s = new String(data);
+            return s;
         }
         catch (Exception e)
         {

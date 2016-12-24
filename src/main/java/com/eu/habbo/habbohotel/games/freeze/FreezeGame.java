@@ -123,7 +123,7 @@ public class FreezeGame extends Game
 
     public void throwBall(Habbo habbo, InteractionFreezeTile item)
     {
-        if (!this.isRunning || !habbo.getHabboInfo().isInGame())
+        if (!this.isRunning || !habbo.getHabboInfo().isInGame() || habbo.getHabboInfo().getCurrentGame() != this.getClass())
             return;
 
         if (!item.getExtradata().equalsIgnoreCase("0") && !item.getExtradata().isEmpty())

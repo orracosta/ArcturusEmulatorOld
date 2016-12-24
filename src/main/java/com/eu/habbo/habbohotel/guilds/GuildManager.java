@@ -366,7 +366,7 @@ public class GuildManager
 
                             statement = Emulator.getDatabase().prepare("SELECT COUNT(id) as total FROM guilds_members WHERE guild_id = ? AND user_id = ? LIMIT 1");
                             statement.setInt(1, guild.getId());
-                            statement.setInt(2, userId);
+                            statement.setInt(2, client.getHabbo().getHabboInfo().getId());
                             set = statement.executeQuery();
 
                             if (set.next())
@@ -392,7 +392,8 @@ public class GuildManager
                         statement.close();
                         statement.getConnection().close();
                     }
-                } else if(!error)
+                }
+                else if(!error)
                 {
                     statement = Emulator.getDatabase().prepare("UPDATE guilds_members SET level_id = ?, member_since = ? WHERE user_id = ? AND guild_id = ?");
                     statement.setInt(1, 2);
@@ -409,9 +410,10 @@ public class GuildManager
                     if (guild.getState() == GuildState.LOCKED)
                         guild.increaseRequestCount();
                     else
+                    {
                         guild.increaseMemberCount();
-
-                    client.getHabbo().getHabboStats().addGuild(guild.getId());
+                        client.getHabbo().getHabboStats().addGuild(guild.getId());
+                    }
                 }
             }
         }

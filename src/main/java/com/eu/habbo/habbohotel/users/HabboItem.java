@@ -257,6 +257,11 @@ public abstract class HabboItem implements Runnable, IEventTriggers
             catch(SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
+                Emulator.getLogging().logErrorLine("SQLException trying to save HabboItem: " + this.toString());
+            }
+            catch (Exception ex)
+            {
+                Emulator.getLogging().logErrorLine(ex);
             }
             finally
             {
@@ -280,17 +285,37 @@ public abstract class HabboItem implements Runnable, IEventTriggers
         {
             this.needsUpdate = false;
             this.needsDelete = false;
+
+            PreparedStatement statement = null;
+
             try
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM items WHERE id = ?");
+                statement = Emulator.getDatabase().prepare("DELETE FROM items WHERE id = ?");
                 statement.setInt(1, this.getId());
                 statement.execute();
-                statement.close();
-                statement.getConnection().close();
             }
             catch(SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
+            }
+            catch (Exception ex)
+            {
+                Emulator.getLogging().logErrorLine(ex);
+            }
+            finally
+            {
+                if (statement != null)
+                {
+                    try
+                    {
+                        statement.close();
+                        statement.getConnection().close();
+                    }
+                    catch (SQLException e)
+                    {
+                        Emulator.getLogging().logSQLException(e);
+                    }
+                }
             }
         }
     }
@@ -406,5 +431,11 @@ public abstract class HabboItem implements Runnable, IEventTriggers
     public String getDatabaseExtraData()
     {
         return this.getExtradata();
+    }
+
+    @Override
+    public String toString()
+    {
+        return "ID: " + this.id + ", BaseID: " + this.getBaseItem().getId() + ", X: " + this.x + ", Y: " + this.y + ", Z: " + this.z + ", Extradata: " + this.extradata;
     }
 }

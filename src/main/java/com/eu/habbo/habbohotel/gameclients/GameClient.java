@@ -71,7 +71,7 @@ public class GameClient
             if (Emulator.getConfig().getBoolean("debug.show.packets"))
                 Emulator.getLogging().logPacketLine("[" + Logging.ANSI_PURPLE + "SERVER" + Logging.ANSI_RESET + "] => [" + response.getHeader() + "] -> " + response.getBodyString());
 
-            this.channel.write(response.get().copy(), this.channel.voidPromise());
+            this.channel.write(response.get(), this.channel.voidPromise());
             this.channel.flush();
         }
     }
@@ -98,7 +98,6 @@ public class GameClient
 
                 buffer.writeBytes(response.get());
             }
-
             this.channel.write(buffer.copy(), this.channel.voidPromise());
             this.channel.flush();
         }

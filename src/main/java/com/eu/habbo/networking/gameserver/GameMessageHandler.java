@@ -2,6 +2,7 @@ package com.eu.habbo.networking.gameserver;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.threading.runnables.ChannelReadHandler;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

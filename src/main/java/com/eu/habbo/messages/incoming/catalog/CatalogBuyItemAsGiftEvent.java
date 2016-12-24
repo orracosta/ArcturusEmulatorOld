@@ -216,8 +216,19 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
 
                         for (int j = 0; j < item.getAmount(); j++)
                         {
+                            if (item.getAmount() > 1 || item.getBaseItems().size() > 1)
+                            {
+                                this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR).compose());
+                                return;
+                            }
                             for (Item baseItem : item.getBaseItems())
                             {
+                                if (item.getItemAmount(baseItem.getId()) > 1)
+                                {
+                                    this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR).compose());
+                                    return;
+                                }
+
                                 for(int k = 0; k < item.getItemAmount(baseItem.getId()); k++)
                                 {
                                     cBaseItem = baseItem;

@@ -64,14 +64,14 @@ public class HTTPVersionCheck implements Runnable
     @Override
     public void run()
     {
-        try
-        {
-            this.sendPost();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        Emulator.getThreading().run(this, 1000);
+//        try
+//        {
+//            this.sendPost();
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+//        Emulator.getThreading().run(this, 1000);
     }
 }

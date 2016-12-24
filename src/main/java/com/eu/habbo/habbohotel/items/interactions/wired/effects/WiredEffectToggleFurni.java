@@ -3,6 +3,9 @@ package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
+import com.eu.habbo.habbohotel.items.interactions.games.InteractionGameTimer;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeBlock;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeTile;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -19,7 +22,7 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.TOGGLE_STATE;
 
-    private THashSet<HabboItem> items;
+    private final THashSet<HabboItem> items;
 
     public WiredEffectToggleFurni(ResultSet set, Item baseItem) throws SQLException
     {
@@ -112,7 +115,7 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
 
             for (HabboItem item : items)
             {
-                if (item.getRoomId() == 0)
+                if (item.getRoomId() == 0 || item instanceof InteractionFreezeBlock || item instanceof InteractionFreezeTile)
                 {
                     this.items.remove(item);
                     continue;
@@ -125,11 +128,13 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
 
                 try
                 {
-                    item.onClick(habbo != null ? habbo.getClient() : null, room, new Object[]{item.getExtradata().length() == 0 ? 0 : Integer.valueOf(item.getExtradata()), this.getType()});
+                    if (item.getBaseItem().getStateCount() > 1 || item instanceof InteractionGameTimer)
+                    {
+                        item.onClick(habbo != null ? habbo.getClient() : null, room, new Object[]{item.getExtradata().length() == 0 ? 0 : Integer.valueOf(item.getExtradata()), this.getType()});
+                    }
                 }
                 catch (Exception e)
                 {
-                    Emulator.getLogging().logErrorLine(e);
                 }
             }
         }
@@ -160,7 +165,7 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
     {
         synchronized (this.items)
         {
-            this.items = new THashSet<HabboItem>();
+            this.items.clear();
             String[] wiredData = set.getString("wired_data").split("\t");
 
             if (wiredData.length >= 1)

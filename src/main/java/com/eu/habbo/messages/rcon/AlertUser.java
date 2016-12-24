@@ -28,9 +28,9 @@ public class AlertUser extends RCONMessage<AlertUser.JSONAlertUser>
         this.status = RCONMessage.HABBO_NOT_FOUND;
     }
 
-    protected class JSONAlertUser
+    public class JSONAlertUser
     {
-        private String username;
-        private String message;
+        public String username;
+        public String message;
     }
 }

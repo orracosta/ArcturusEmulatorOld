@@ -12,6 +12,7 @@ public abstract class ConsoleCommand
         {
             add(new ConsoleShutdownCommand());
             add(new ConsoleInfoCommand());
+            add(new ConsoleTestCommand());
         }
     };
 

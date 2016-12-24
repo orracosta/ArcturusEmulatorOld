@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.friends;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -16,15 +17,17 @@ public class StalkFriendEvent extends MessageHandler
     {
         int friendId = this.packet.readInt();
 
-        Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(friendId);
+        MessengerBuddy buddy = this.client.getHabbo().getMessenger().getFriend(friendId);
 
-        if(habbo == null)
+        if(buddy == null)
         {
             this.client.sendResponse(new StalkErrorComposer(StalkErrorComposer.NOT_IN_FRIEND_LIST));
             return;
         }
 
-        if(!habbo.isOnline())
+        Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(friendId);
+
+        if(habbo == null || !habbo.isOnline())
         {
             this.client.sendResponse(new StalkErrorComposer(StalkErrorComposer.FRIEND_OFFLINE));
             return;

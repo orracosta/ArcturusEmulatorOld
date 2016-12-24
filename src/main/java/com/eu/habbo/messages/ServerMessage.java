@@ -229,8 +229,26 @@ public class ServerMessage
     
     public ByteBuf get()
     {
-        this.channelBuffer.setInt(0, this.channelBuffer.writerIndex() - 4);
-        
-        return this.channelBuffer.copy();
+        try
+        {
+            this.channelBuffer.setInt(0, this.channelBuffer.writerIndex() - 4);
+            this.stream.close();
+            return this.channelBuffer.copy();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            //this.buffer().release();
+        }
+
+        return this.channelBuffer;
+    }
+
+    public ByteBuf buffer()
+    {
+        return this.channelBuffer;
     }
 }

@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.core.Logging;
 import com.eu.habbo.networking.camera.messages.outgoing.CameraLoginComposer;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.UnpooledByteBufAllocator;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -40,7 +41,7 @@ public class CameraClient
         });
         bootstrap.option(ChannelOption.SO_RCVBUF, 2000000);
         bootstrap.option(ChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(2000000));
-        bootstrap.option(ChannelOption.ALLOCATOR, new UnpooledByteBufAllocator(false));
+        bootstrap.option(ChannelOption.ALLOCATOR, new PooledByteBufAllocator(false));
     }
 
     public void connect()

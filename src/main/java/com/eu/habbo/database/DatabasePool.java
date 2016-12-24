@@ -31,11 +31,11 @@ class DatabasePool
             databaseConfiguration.addDataSourceProperty("dataSource.dumpQueriesOnException", "true");
             databaseConfiguration.addDataSourceProperty("dataSource.logWriter", new PrintWriter(System.out));
             databaseConfiguration.setAutoCommit(true);
-            databaseConfiguration.setConnectionTimeout(340L);
-            databaseConfiguration.setValidationTimeout(339L);
-            databaseConfiguration.setLeakDetectionThreshold(4000L);
-            databaseConfiguration.setMaxLifetime(30000L);
-            databaseConfiguration.setIdleTimeout(10000L);
+            databaseConfiguration.setConnectionTimeout(30000L);
+            databaseConfiguration.setValidationTimeout(5000L);
+            databaseConfiguration.setLeakDetectionThreshold(2000L);
+            databaseConfiguration.setMaxLifetime(1800000L);
+            databaseConfiguration.setIdleTimeout(600000L);
             //databaseConfiguration.setDriverClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
             this.database = new HikariDataSource(databaseConfiguration);
         }

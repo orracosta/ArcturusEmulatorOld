@@ -196,12 +196,4 @@ public class GameClientManager
             }
         }
     }
-
-    public void sendRoomResponse(Room room, MessageComposer message)
-    {
-        for(Habbo habbo : room.getCurrentHabbos().valueCollection())
-        {
-            habbo.getClient().sendResponse(message);
-        }
-    }
 }

@@ -34,7 +34,7 @@ public class GameByteDecoder extends ByteToMessageDecoder
         if (length == 1014001516)
         {
             in.resetReaderIndex();
-            in.readBytes(in.readableBytes());
+            //in.readBytes(in.readableBytes());
 
             ChannelFuture f = ctx.writeAndFlush(Unpooled.copiedBuffer("<?xml version=\"1.0\"?>\n" +
                     "  <!DOCTYPE cross-domain-policy SYSTEM \"/xml/dtds/cross-domain-policy.dtd\">\n" +
@@ -47,6 +47,7 @@ public class GameByteDecoder extends ByteToMessageDecoder
 //                Emulator.getLogging().logErrorLine(f.cause());
 //            }
 
+            //in.release();
             f.channel().close();
             return;
         }

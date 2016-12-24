@@ -18,14 +18,16 @@ public class GuildMembersComposer extends MessageComposer
     private final Habbo session;
     private final int pageId;
     private final int level;
+    private final String searchValue;
 
-    public GuildMembersComposer(Guild guild, ArrayList<GuildMember> members, Habbo session, int pageId, int level)
+    public GuildMembersComposer(Guild guild, ArrayList<GuildMember> members, Habbo session, int pageId, int level, String searchValue)
     {
         this.guild = guild;
         this.members = members;
         this.session = session;
         this.pageId = pageId;
         this.level = level;
+        this.searchValue = searchValue;
     }
 
     @Override
@@ -36,7 +38,7 @@ public class GuildMembersComposer extends MessageComposer
         this.response.appendString(this.guild.getName());
         this.response.appendInt32(this.guild.getRoomId());
         this.response.appendString(this.guild.getBadge());
-        this.response.appendInt32(this.members.size());
+        this.response.appendInt32(this.guild.getMemberCount());
         this.response.appendInt32(this.members.size());
 
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
@@ -54,7 +56,7 @@ public class GuildMembersComposer extends MessageComposer
         this.response.appendInt32(14);
         this.response.appendInt32(this.pageId);
         this.response.appendInt32(this.level);
-        this.response.appendString("");
+        this.response.appendString(this.searchValue);
         return this.response;
     }
 }

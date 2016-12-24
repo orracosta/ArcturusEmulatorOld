@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.gameclients.GameClientManager;
 import com.eu.habbo.messages.PacketManager;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.buffer.UnpooledByteBufAllocator;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -33,7 +34,7 @@ public class GameServer
 
     public GameServer(String host, int port) throws Exception
     {
-        //Emulator.getLogging().logStart("Current Netty Logging Level: " + ResourceLeakDetector.getLevel().name());
+        Emulator.getLogging().logStart("Current Netty Logging Level: " + ResourceLeakDetector.getLevel().name());
         //ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.ADVANCED);
         this.packetManager = new PacketManager();
         this.gameClientManager = new GameClientManager();
@@ -65,6 +66,7 @@ public class GameServer
             @Override
             public void initChannel(SocketChannel ch) throws Exception
             {
+                ch.pipeline().addLast("logger", new LoggingHandler());
                 ch.pipeline().addLast("bytesDecoder", new GameByteDecoder());
                 ch.pipeline().addLast(gameMessageHandler);
             }
