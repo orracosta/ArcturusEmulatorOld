@@ -182,6 +182,17 @@ public class RotateMoveItemEvent extends MessageHandler
             room.sendComposer(new RoomUserStatusComposer(updatedUnits, false).compose());
         }
 
+        if (item.getBaseItem().allowLay())
+        {
+            THashSet<Habbo> habbos = room.getHabbosAt(oldX, oldY);
+            THashSet<RoomUnit> updatedUnits = new THashSet<RoomUnit>();
+            for (Habbo habbo : habbos)
+            {
+                habbo.getRoomUnit().getStatus().remove("lay");
+            }
+            room.sendComposer(new RoomUserStatusComposer(updatedUnits, false).compose());
+        }
+
         item.setX((short) x);
         item.setY((short) y);
 

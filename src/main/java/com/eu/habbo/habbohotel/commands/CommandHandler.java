@@ -58,6 +58,7 @@ public class CommandHandler
         addCommand(new HappyHourCommand());
         addCommand(new HotelAlertCommand());
         addCommand(new IPBanCommand());
+        addCommand(new LayCommand());
         addCommand(new MachineBanCommand());
         addCommand(new MassBadgeCommand());
         addCommand(new MassCreditsCommand());

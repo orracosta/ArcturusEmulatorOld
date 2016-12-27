@@ -4,6 +4,8 @@ INSERT INTO `emulator_texts` (`key`, `value`) VALUES
     ('commands.keys.cmd_roommute', 'roommute;room_mute'),
     ('commands.description.cmd_roommute', ':roommute'),
     ('commands.succes.cmd_roommute.unmuted', 'The room has been unmuted!'),
-    ('commands.succes.cmd_roommute.muted', 'The room has been muted!');
+    ('commands.succes.cmd_roommute.muted', 'The room has been muted!'),
+    ('commands.keys.cmd_lay', 'lay'),
+    ('commands.description.cmd_lay', ':lay');
 
 #END DATABASE UPDATE: 1.1.0 -> 1.2.0
