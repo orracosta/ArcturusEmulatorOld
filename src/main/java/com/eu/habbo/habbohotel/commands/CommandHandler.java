@@ -82,6 +82,7 @@ public class CommandHandler
         addCommand(new RoomEffectCommand());
         addCommand(new RoomItemCommand());
         addCommand(new RoomKickCommand());
+        addCommand(new RoomMuteCommand());
         addCommand(new RoomPixelsCommand());
         addCommand(new RoomPointsCommand());
         addCommand(new SayAllCommand());
