@@ -252,6 +252,8 @@ public class PacketManager
         this.registerHandler(Incoming.HotelViewRequestBonusRareEvent,           HotelViewRequestBonusRareEvent.class);
         this.registerHandler(Incoming.RequestNewsListEvent,                     RequestNewsListEvent.class);
         this.registerHandler(Incoming.HotelViewDataEvent,                       HotelViewDataEvent.class);
+        this.registerHandler(Incoming.HotelViewRequestBadgeRewardEvent,         HotelViewRequestBadgeRewardEvent.class);
+        this.registerHandler(Incoming.HotelViewClaimBadgeRewardEvent,           HotelViewClaimBadgeRewardEvent.class);
     }
 
     private void registerInventory() throws Exception

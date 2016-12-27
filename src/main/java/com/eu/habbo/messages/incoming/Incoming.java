@@ -50,6 +50,8 @@ public class Incoming
     public static final int ToggleWallItemEvent = 3396;//2650
     public static final int RoomUserTalkEvent = 670;//3349
     public static final int HotelViewDataEvent = 3544;//595  //2269 //Updated
+    public static final int HotelViewRequestBadgeRewardEvent = 2318;
+    public static final int HotelViewClaimBadgeRewardEvent = 2388;
     public static final int RoomUserDanceEvent = 645;//1139
     public static final int RequestUserProfileEvent = 3591;//532
     public static final int SearchRoomsFriendsNowEvent = 3281;//3306
@@ -267,7 +269,6 @@ public class Incoming
     public static final int CameraRoomPictureEvent = 2274;
     public static final int CameraRoomThumbnailEvent = 1366;
     public static final int SavePostItStickyPoleEvent = 3155;
-    public static final int HotelViewClaimBadgeEvent = 2388;
     public static final int HotelViewRequestCommunityGoalEvent = 2059;
     public static final int HotelViewRequestConcurrentUsersEvent = 484;
     public static final int HotelViewConcurrentUsersButtonEvent = 2295;
