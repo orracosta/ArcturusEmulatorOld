@@ -396,6 +396,7 @@ public class Outgoing
     public final static int UnknownQuestComposer1 = 1477; //Updated
     public final static int ModToolSanctionDataComposer = 2254; //New In Production20160101
     public final static int CallForHelpTopicsComposer = 2067; //New In Production20160101
+    public final static int RoomEventMessageComposer = 2274;
     /**
      * int << count
      * {

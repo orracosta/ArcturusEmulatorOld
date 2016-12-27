@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.AlertPurchaseFailedComposer;
 import com.eu.habbo.messages.outgoing.catalog.PurchaseOKComposer;
+import com.eu.habbo.messages.outgoing.rooms.promotions.RoomPromotionMessageComposer;
 import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
 
 public class BuyRoomPromotionEvent extends MessageHandler
@@ -14,26 +15,31 @@ public class BuyRoomPromotionEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        //TODO Copy from Azure.
         int pageId = this.packet.readInt();
+        int itemId = this.packet.readInt();
+        int roomId = this.packet.readInt();
+        String title = this.packet.readString();
+        boolean unknown1 = this.packet.readBoolean();
+        String description = this.packet.readString();
+        int categoryId = this.packet.readInt();
 
         CatalogPage page = Emulator.getGameEnvironment().getCatalogManager().getCatalogPage(pageId);
 
         if(page != null)
         {
-            CatalogItem item = page.getCatalogItem(this.packet.readInt());
+            CatalogItem item = page.getCatalogItem(itemId);
             if(item != null)
             {
                 if(this.client.getHabbo().getHabboInfo().canBuy(item))
                 {
-                    Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.packet.readInt());
+                    Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(roomId);
 
                     if (room.isPromoted())
                     {
                         room.getPromotion().addEndTimestamp(120 * 60);
                     } else
                     {
-                        room.createPromotion(this.packet.readString(), this.packet.readString());
+                        room.createPromotion(title, description);
                     }
 
                     if(room.isPromoted())
@@ -41,6 +47,7 @@ public class BuyRoomPromotionEvent extends MessageHandler
                         this.client.getHabbo().giveCredits(-item.getCredits());
                         this.client.getHabbo().givePoints(item.getPointsType(), -item.getPoints());
                         this.client.sendResponse(new PurchaseOKComposer());
+                        room.sendComposer(new RoomPromotionMessageComposer(room, room.getPromotion()).compose());
                     }
                     else
                     {
