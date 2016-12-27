@@ -101,7 +101,9 @@ public class GameMap<T extends AbstractNode>
             for (T currentAdj : adjacentNodes)
             {
                 if (room == null || !room.isLoaded())
-                    return new LinkedList();;
+                    return new LinkedList();
+
+                if (!room.isAllowWalkthrough() && room.hasHabbosAt(currentAdj.getX(), currentAdj.getY())) continue;
 
                 if(!room.getLayout().tileWalkable((short)currentAdj.getX(), (short)currentAdj.getY())) continue;
 
