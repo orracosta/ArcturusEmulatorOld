@@ -24,23 +24,31 @@ public class AchievementProgressComposer extends MessageComposer
     {
         this.response.init(Outgoing.AchievementProgressComposer);
 
-        int achievementProgress = this.habbo.getHabboStats().getAchievementProgress(achievement);
-        AchievementLevel level = achievement.getLevelForProgress(achievementProgress);
-        AchievementLevel oldLevel = achievement.levels.get((level != null) ? level.level - 1 : -1);
+        int achievementProgress;
+        AchievementLevel level;
+        AchievementLevel nextLevel;
+
+        achievementProgress = this.habbo.getHabboStats().getAchievementProgress(achievement);
+        level = achievement.getLevelForProgress(achievementProgress);
+        nextLevel = achievement.levels.get((level.level > 1) ? level.level + 1 : 1);
+        if (nextLevel != null && nextLevel.level == 1)
+        {
+            level = null;
+        }
 
         this.response.appendInt32(achievement.id); //ID
-        this.response.appendInt32(achievementProgress == -1 ? 1 : (level == null) ? 1 : level.level);
-        this.response.appendString("ACH_" + achievement.name + ((oldLevel == null ? level.level : oldLevel.level)));
-        this.response.appendInt32(oldLevel != null ? oldLevel.progress : 0);
-        this.response.appendInt32(level != null ? level.progress : 0);
-        this.response.appendInt32(level != null ? level.pixels : 0);
-        this.response.appendInt32(0);
-        this.response.appendInt32(achievementProgress == -1 ? 0 : this.habbo.getHabboStats().getAchievementProgress(achievement)); //Current Progress
-        this.response.appendBoolean(AchievementManager.hasAchieved(habbo, achievement)); //Achieved? (Current Progress == Level.Progress)
-        this.response.appendString(achievement.category.toString().toLowerCase());
-        this.response.appendString("100");
-        this.response.appendInt32(achievement.levels.size()); //Count of total levels in this achievement.
-        this.response.appendInt32(0); //IDK
+        this.response.appendInt32(achievementProgress == -1 ? 1 : (nextLevel == null) ? level.level : nextLevel.level); //Target level
+        this.response.appendString("ACH_" + achievement.name + ((nextLevel == null) ? level.level : nextLevel.level)); //Target badge code
+        this.response.appendInt32(level != null ? level.progress : 0); //Last level progress needed
+        this.response.appendInt32(nextLevel != null ? nextLevel.progress : 0); //Progress needed
+        this.response.appendInt32(nextLevel != null ? nextLevel.pixels : 0); //Reward amount
+        this.response.appendInt32(0); //Reward currency ID
+        this.response.appendInt32(achievementProgress == -1 ? 0 : achievementProgress); //Current progress
+        this.response.appendBoolean(AchievementManager.hasAchieved(habbo, achievement)); //Achieved? (Current Progress == MaxLevel.Progress)
+        this.response.appendString(achievement.category.toString().toLowerCase()); //Category
+        this.response.appendString(""); //Empty, completly unused in client code
+        this.response.appendInt32(achievement.levels.size()); //Count of total levels in this achievement
+        this.response.appendInt32(0); //1 = Progressbar visible if the achievement is completed
         return this.response;
     }
 }
