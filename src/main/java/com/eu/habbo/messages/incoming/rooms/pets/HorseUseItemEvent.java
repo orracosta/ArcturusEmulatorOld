@@ -36,20 +36,56 @@ public class HorseUseItemEvent extends MessageHandler
                 {
                     int race = Integer.valueOf(item.getBaseItem().getName().split("_")[2]);
                     int raceType = (race * 4) - 2;
-                    if(race >= 13 && race <= 16)
+
+                    if(race >= 13 && race <= 17)
                         raceType = ((2 + race) * 4) + 1;
+
+                    if(race == 0)
+                        raceType = 0;
 
                     pet.setRace(raceType);
                     ((HorsePet) pet).needsUpdate = true;
                 }
                 else if(item.getBaseItem().getName().toLowerCase().startsWith("horse_hairdye"))
                 {
-                    ((HorsePet) pet).setHairColor(48 + Integer.valueOf(item.getBaseItem().getName().toLowerCase().split("_")[2]));
+                    int splittedHairdye = Integer.valueOf(item.getBaseItem().getName().toLowerCase().split("_")[2]);
+                    int newHairdye = 48;
+
+                    if(splittedHairdye == 0)
+                    {
+                        newHairdye = -1;
+                    }
+                    else if(splittedHairdye == 1)
+                    {
+                        newHairdye = 1;
+                    }
+                    else if(splittedHairdye >= 13 && splittedHairdye <= 17)
+                    {
+                        newHairdye = 68 + splittedHairdye;
+                    }
+                    else
+                    {
+                        newHairdye += splittedHairdye;
+                    }
+
+                    ((HorsePet) pet).setHairColor(newHairdye);
                     ((HorsePet) pet).needsUpdate = true;
                 }
                 else if(item.getBaseItem().getName().toLowerCase().startsWith("horse_hairstyle"))
                 {
-                    ((HorsePet) pet).setHairStyle(100 + Integer.valueOf(item.getBaseItem().getName().toLowerCase().split("_")[2]));
+                    int splittedHairstyle = Integer.valueOf(item.getBaseItem().getName().toLowerCase().split("_")[2]);
+                    int newHairstyle = 100;
+
+                    if(splittedHairstyle == 0)
+                    {
+                        newHairstyle = -1;
+                    }
+                    else
+                    {
+                        newHairstyle += splittedHairstyle;
+                    }
+
+                    ((HorsePet) pet).setHairStyle(newHairstyle);
                     ((HorsePet) pet).needsUpdate = true;
                 }
                 else if(item.getBaseItem().getName().toLowerCase().startsWith("horse_saddle"))
