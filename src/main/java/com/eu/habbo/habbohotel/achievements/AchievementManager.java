@@ -242,7 +242,7 @@ public class AchievementManager
             HabboBadge badge = null;
             try
             {
-              badge = habbo.getHabboInventory().getBadgesComponent().getBadge("ACH_" + achievement.name + oldLevel.level);
+                badge = habbo.getHabboInventory().getBadgesComponent().getBadge("ACH_" + achievement.name + oldLevel.level);
             }
             catch (Exception e)
             {
@@ -297,13 +297,14 @@ public class AchievementManager
         }
 
         AchievementLevel level = achievement.getLevelForProgress(currentProgress);
+        AchievementLevel nextLevel = achievement.levels.get(level.level + 1);
 
-        if (level == null)
+        if (nextLevel == null && currentProgress >= level.progress)
         {
-            return false;
+            return true;
         }
 
-        return level.progress <= currentProgress;
+        return false;
     }
 
     /**
