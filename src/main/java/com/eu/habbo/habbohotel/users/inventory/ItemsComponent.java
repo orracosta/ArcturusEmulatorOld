@@ -73,7 +73,7 @@ public class ItemsComponent
     {
         if(item == null)
         {
-            throw new NullPointerException("Tried adding NULL HabboItem to inventory!");
+			return;
         }
 
         synchronized (this.items)
@@ -90,7 +90,7 @@ public class ItemsComponent
             {
                 if(item == null)
                 {
-                    throw new NullPointerException("Tried adding NULL HabboItem to inventory!");
+					continue;
                 }
 
                 this.items.put(item.getId(), item);

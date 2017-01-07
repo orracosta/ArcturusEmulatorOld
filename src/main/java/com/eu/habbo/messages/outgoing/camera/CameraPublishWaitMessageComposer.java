@@ -17,7 +17,6 @@ public class CameraPublishWaitMessageComposer extends MessageComposer
         this.unknownString = unknownString;
     }
 
-    //:test 2612 b:1 i:1 s:derp
     @Override
     public ServerMessage compose()
     {

@@ -34,8 +34,6 @@ public class GameServer
 
     public GameServer(String host, int port) throws Exception
     {
-        Emulator.getLogging().logStart("Current Netty Logging Level: " + ResourceLeakDetector.getLevel().name());
-        //ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.ADVANCED);
         this.packetManager = new PacketManager();
         this.gameClientManager = new GameClientManager();
 

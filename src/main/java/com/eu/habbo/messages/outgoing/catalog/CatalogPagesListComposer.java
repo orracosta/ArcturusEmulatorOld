@@ -13,11 +13,13 @@ public class CatalogPagesListComposer extends MessageComposer
 {
     private final Habbo habbo;
     private final String mode;
+    private final boolean hasPermission;
 
     public CatalogPagesListComposer(Habbo habbo, String mode)
     {
         this.habbo = habbo;
         this.mode = mode;
+        this.hasPermission = this.habbo.hasPermission("acc_catalog_ids");
     }
 
     @Override
@@ -37,42 +39,9 @@ public class CatalogPagesListComposer extends MessageComposer
             this.response.appendInt32(0);
             this.response.appendInt32(pages.size());
 
-            boolean hasPermission = this.habbo.hasPermission("acc_catalog_ids");
-
             for (CatalogPage category : pages)
             {
-                List<CatalogPage> pagesList = Emulator.getGameEnvironment().getCatalogManager().getCatalogPages(category.getId(), this.habbo);
-
-                this.response.appendBoolean(category.isVisible());
-                this.response.appendInt32(category.getIconImage());
-                this.response.appendInt32(category.getId());
-                this.response.appendString(category.getPageName());
-                this.response.appendString(category.getCaption() + (hasPermission ? " (" + category.getId() + ")" : ""));
-                this.response.appendInt32(category.getOfferIds().size());
-
-                for(int i : category.getOfferIds().toArray())
-                {
-                    this.response.appendInt32(i);
-                }
-
-                this.response.appendInt32(pagesList.size());
-
-                for (CatalogPage page : pagesList)
-                {
-                    this.response.appendBoolean(page.isVisible());
-                    this.response.appendInt32(page.getIconImage());
-                    this.response.appendInt32(page.getId());
-                    this.response.appendString(page.getPageName());
-                    this.response.appendString(page.getCaption() + (hasPermission ? " (" + page.getId() + ")" : ""));
-                    this.response.appendInt32(page.getOfferIds().size());
-
-                    for(int i : page.getOfferIds().toArray())
-                    {
-                        this.response.appendInt32(i);
-                    }
-
-                    this.response.appendInt32(0);
-                }
+                append(category);
             }
 
             this.response.appendBoolean(false);
@@ -86,5 +55,29 @@ public class CatalogPagesListComposer extends MessageComposer
         }
 
         return null;
+    }
+
+    private void append(CatalogPage category)
+    {
+        List<CatalogPage> pagesList = Emulator.getGameEnvironment().getCatalogManager().getCatalogPages(category.getId(), this.habbo);
+
+        this.response.appendBoolean(category.isVisible());
+        this.response.appendInt32(category.getIconImage());
+        this.response.appendInt32(category.getId());
+        this.response.appendString(category.getPageName());
+        this.response.appendString(category.getCaption() + (hasPermission ? " (" + category.getId() + ")" : ""));
+        this.response.appendInt32(category.getOfferIds().size());
+
+        for(int i : category.getOfferIds().toArray())
+        {
+            this.response.appendInt32(i);
+        }
+
+        this.response.appendInt32(pagesList.size());
+
+        for (CatalogPage page : pagesList)
+        {
+            append(page);
+        }
     }
 }

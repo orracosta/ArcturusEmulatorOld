@@ -30,6 +30,7 @@ public class CameraRoomPictureEvent extends MessageHandler
             if (seconds < (60 * 2))
             {
                 this.client.sendResponse(new CameraPublishWaitMessageComposer(false, seconds - (60 * 2), ""));
+                return;
             }
 
             this.packet.getBuffer().readFloat();

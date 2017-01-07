@@ -310,6 +310,8 @@ public class CatalogManager
         });
 
         this.catalogPages.putAll(pages);
+
+        Emulator.getLogging().logStart("Loaded " + this.catalogPages.size() + " pages!");
     }
 
     /**
