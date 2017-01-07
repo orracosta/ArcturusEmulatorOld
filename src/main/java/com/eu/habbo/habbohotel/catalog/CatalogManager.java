@@ -133,6 +133,10 @@ public class CatalogManager
                     case room_bundle:                   put(layout.name().toLowerCase(), RoomBundleLayout.class); break;
                     case petcustomization:              put(layout.name().toLowerCase(), PetCustomizationLayout.class); break;
                     case vip_buy:                       put(layout.name().toLowerCase(), VipBuyLayout.class); break;
+                    case frontpage_featured:            put(layout.name().toLowerCase(), FrontPageFeaturedLayout.class); break;
+                    case builders_club_addons:          put(layout.name().toLowerCase(), BuildersClubAddonsLayout.class); break;
+                    case builders_club_frontpage:       put(layout.name().toLowerCase(), BuildersClubFrontPageLayout.class); break;
+                    case builders_club_loyalty:         put(layout.name().toLowerCase(), BuildersClubLoyaltyLayout.class); break;
                     case default_3x3:
                     default:                            put("default_3x3", Default_3x3Layout.class); break;
                 }
@@ -240,8 +244,8 @@ public class CatalogManager
     {
         this.catalogPages.clear();
 
-        this.catalogPages.put(-1, new CatalogRootLayout(null));
-
+        THashMap<Integer, CatalogPage> pages = new THashMap<Integer, CatalogPage>();
+        pages.put(-1, new CatalogRootLayout(null));
         PreparedStatement statement = null;
         try
         {
@@ -261,7 +265,7 @@ public class CatalogManager
                 try
                 {
                     CatalogPage page = pageClazz.getConstructor(ResultSet.class).newInstance(set);
-                    this.catalogPages.put(page.getId(), page);
+                    pages.put(page.getId(), page);
                 }
                 catch (Exception e)
                 {
@@ -282,6 +286,30 @@ public class CatalogManager
                 statement.getConnection().close();
             }
         }
+
+        pages.forEachValue(new TObjectProcedure<CatalogPage>()
+        {
+            @Override
+            public boolean execute(CatalogPage object)
+            {
+                CatalogPage page = pages.get(object.parentId);
+
+                if (page != null)
+                {
+                    if (page.id != object.id)
+                    {
+                        page.addChildPage(object);
+                    }
+                }
+                else
+                {
+                    Emulator.getLogging().logStart("Parent Page not found for " + object.getPageName() + " (ID: " + object.id + ", parent_id: " + object.parentId + ")");
+                }
+                return true;
+            }
+        });
+
+        this.catalogPages.putAll(pages);
     }
 
     /**
@@ -704,24 +732,37 @@ public class CatalogManager
     {
         List<CatalogPage> pages = new ArrayList<CatalogPage>();
 
-        TIntObjectIterator<CatalogPage> pagesIterator = this.catalogPages.iterator();
+//        TIntObjectIterator<CatalogPage> pagesIterator = this.catalogPages.iterator();
+//
+//        for(int i = this.catalogPages.size(); i-- > 0;)
+//        {
+//            try
+//            {
+//                pagesIterator.advance();
+//                if (pagesIterator.value().getParentId() == parentId && pagesIterator.value().getRank() <= habbo.getHabboInfo().getRank())
+//                {
+//                    pages.add(pagesIterator.value());
+//                }
+//            }
+//            catch (NoSuchElementException e)
+//            {
+//                break;
+//            }
+//        }
 
-        for(int i = this.catalogPages.size(); i-- > 0;)
+        this.catalogPages.get(parentId).childPages.forEachValue(new TObjectProcedure<CatalogPage>()
         {
-            try
+            @Override
+            public boolean execute(CatalogPage object)
             {
-                pagesIterator.advance();
-                if (pagesIterator.value().getParentId() == parentId && pagesIterator.value().getRank() <= habbo.getHabboInfo().getRank())
+                if (object.getRank() <= habbo.getHabboInfo().getRank())
                 {
-                    pages.add(pagesIterator.value());
+                    pages.add(object);
                 }
-            }
-            catch (NoSuchElementException e)
-            {
-                break;
-            }
-        }
 
+                return true;
+            }
+        });
         Collections.sort(pages);
 
         return pages;

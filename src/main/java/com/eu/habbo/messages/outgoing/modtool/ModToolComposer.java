@@ -78,30 +78,30 @@ public class ModToolComposer extends MessageComposer implements TObjectProcedure
     public boolean execute(ModToolCategory category)
     {
         this.response.appendString(category.getName());
-        this.response.appendBoolean(false);
-        this.response.appendInt32(category.getPresets().size());
-
-        TIntObjectIterator<ModToolPreset> iterator = category.getPresets().iterator();
-
-        for(int i = category.getPresets().size(); i-- > 0;)
-        {
-            try
-            {
-                iterator.advance();
-            }
-            catch (NoSuchElementException e)
-            {
-                break;
-            }
-            this.response.appendString(iterator.value().name);
-            this.response.appendString(iterator.value().message);
-            this.response.appendInt32(iterator.value().banLength);
-            this.response.appendInt32(1); //avatarban
-            this.response.appendInt32(iterator.value().muteLength);
-            this.response.appendInt32(1); //tradelock
-            this.response.appendString(iterator.value().reminder);
-            this.response.appendBoolean(false); //ShowHabboWay
-        }
+//        this.response.appendBoolean(false);
+//        this.response.appendInt32(category.getPresets().size());
+//
+//        TIntObjectIterator<ModToolPreset> iterator = category.getPresets().iterator();
+//
+//        for(int i = category.getPresets().size(); i-- > 0;)
+//        {
+//            try
+//            {
+//                iterator.advance();
+//            }
+//            catch (NoSuchElementException e)
+//            {
+//                break;
+//            }
+//            this.response.appendString(iterator.value().name);
+//            this.response.appendString(iterator.value().message);
+//            this.response.appendInt32(iterator.value().banLength);
+//            this.response.appendInt32(1); //avatarban
+//            this.response.appendInt32(iterator.value().muteLength);
+//            this.response.appendInt32(1); //tradelock
+//            this.response.appendString(iterator.value().reminder);
+//            this.response.appendBoolean(false); //ShowHabboWay
+//        }
 
         return true;
     }

@@ -175,5 +175,13 @@ public enum CatalogPageLayouts
     /**
      * The page where you can buy Habbo VIP from.
      */
-    vip_buy
+    vip_buy,
+
+    frontpage_featured,
+
+    builders_club_addons,
+
+    builders_club_frontpage,
+
+    builders_club_loyalty
 }

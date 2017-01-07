@@ -21,7 +21,7 @@ public class MessengerInitComposer extends MessageComposer
         this.response.appendInt32(300);
         this.response.appendInt32(1337);
         this.response.appendInt32(500);
-        this.response.appendInt32(1000);
+        //this.response.appendInt32(1000);
         this.response.appendInt32(0);
         return this.response;
     }

@@ -320,6 +320,8 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
 
         message.appendInt32(this.clubOnly);
         message.appendBoolean(haveOffer(this));
+        message.appendBoolean(false); //unknown
+        message.appendString(this.name + ".png");
     }
 
     @Override

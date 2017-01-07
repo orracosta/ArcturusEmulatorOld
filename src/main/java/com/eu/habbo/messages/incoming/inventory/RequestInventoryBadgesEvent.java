@@ -10,6 +10,5 @@ public class RequestInventoryBadgesEvent extends MessageHandler
     public void handle() throws Exception
     {
         this.client.sendResponse(new InventoryBadgesComposer(this.client.getHabbo()));
-        this.client.sendResponse(new InventoryAchievementsComposer());
     }
 }

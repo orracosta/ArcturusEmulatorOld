@@ -58,7 +58,7 @@ public class UserPerksComposer extends MessageComposer
         this.response.appendString("");
         this.response.appendBoolean(true);
 
-        this.response.appendString("NAVIGATOR_PHASE_ONE_2014");
+        this.response.appendString("CALL_ON_HELPERS");
         this.response.appendString("");
         this.response.appendBoolean(true);
 

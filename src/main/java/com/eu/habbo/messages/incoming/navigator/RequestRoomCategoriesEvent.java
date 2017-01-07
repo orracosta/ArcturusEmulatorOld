@@ -17,6 +17,6 @@ public class RequestRoomCategoriesEvent extends MessageHandler
     {
         List<RoomCategory> roomCategoryList = Emulator.getGameEnvironment().getRoomManager().roomCategoriesForHabbo(this.client.getHabbo());
         this.client.sendResponse(new RoomCategoriesComposer(roomCategoryList));
-        this.client.sendResponse(new NewNavigatorEventCategoriesComposer());
+        //this.client.sendResponse(new NewNavigatorEventCategoriesComposer());
     }
 }

@@ -16,8 +16,8 @@ public class SessionRightsComposer extends MessageComposer
         this.response.init(Outgoing.SessionRightsComposer);
 
         this.response.appendBoolean(unknownBooleanOne);
-        this.response.appendBoolean(unknownBooleanTwo);
-
+        this.response.appendBoolean(true);
+        this.response.appendBoolean(true);
         return this.response;
     }
 }
