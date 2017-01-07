@@ -57,7 +57,7 @@ public class ModToolIssueChatlogComposer extends MessageComposer
             this.response.appendShort(this.chatlog.size());
             for(ModToolChatLog chatLog : this.chatlog)
             {
-                this.response.appendInt32(Emulator.getIntUnixTimestamp() - chatLog.timestamp);
+                this.response.appendString("" + (Emulator.getIntUnixTimestamp() - chatLog.timestamp));
                 this.response.appendInt32(chatLog.habboId);
                 this.response.appendString(chatLog.username);
                 this.response.appendString(chatLog.message);

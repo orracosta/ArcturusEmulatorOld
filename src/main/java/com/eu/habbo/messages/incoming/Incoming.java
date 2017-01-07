@@ -192,7 +192,7 @@ public class Incoming
     public static final int RequestGuildFurniWidgetEvent = 2651; // PRODUCTION-201611291003-338511768
     public static final int RequestOwnItemsEvent = 2105; // PRODUCTION-201611291003-338511768
     public static final int RequestReportRoomEvent = 3267; // PRODUCTION-201611291003-338511768
-    public static final int ReportEvent = 2492; // PRODUCTION-201611291003-338511768
+    public static final int ReportEvent = 1691; // PRODUCTION-201611291003-338511768
     public static final int TriggerOneWayGateEvent = 2765; // PRODUCTION-201611291003-338511768
     public static final int FloorPlanEditorSaveEvent = 875; // PRODUCTION-201611291003-338511768
     public static final int FloorPlanEditorRequestDoorSettingsEvent = 3559; // PRODUCTION-201611291003-338511768
