@@ -6,12 +6,14 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.set.hash.THashSet;
 
+import java.util.ArrayList;
+
 public class UserBadgesComposer extends MessageComposer
 {
-    private final THashSet<HabboBadge> badges;
+    private final ArrayList<HabboBadge> badges;
     private final int habbo;
 
-    public UserBadgesComposer(THashSet<HabboBadge> badges, int habbo)
+    public UserBadgesComposer(ArrayList<HabboBadge> badges, int habbo)
     {
         this.badges = badges;
         this.habbo = habbo;

@@ -7,6 +7,8 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.users.UserBadgesComposer;
 import gnu.trove.set.hash.THashSet;
 
+import java.util.ArrayList;
+
 public class UserWearBadgeEvent extends MessageHandler
 {
     @Override
@@ -14,7 +16,7 @@ public class UserWearBadgeEvent extends MessageHandler
     {
         BadgesComponent.resetSlots(this.client.getHabbo());
 
-        THashSet<HabboBadge> updatedBadges = new THashSet<HabboBadge>();
+        ArrayList<HabboBadge> updatedBadges = new ArrayList<HabboBadge>();
         for(int i = 0; i < 5; i++)
         {
             int slot = this.packet.readInt();

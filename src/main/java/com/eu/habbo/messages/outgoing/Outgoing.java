@@ -77,7 +77,7 @@ public class Outgoing
     public final static int RoomHeightMapComposer = 1301; // PRODUCTION-201611291003-338511768
     public final static int RoomPetHorseFigureComposer = 1924; // PRODUCTION-201611291003-338511768
     public final static int PetErrorComposer = 2913; // PRODUCTION-201611291003-338511768
-    public final static int TradeUpdateComposer = 1373; // PRODUCTION-201611291003-338511768
+    public final static int TradeUpdateComposer = 2024; // PRODUCTION-201611291003-338511768
     public final static int PrivateRoomsComposer = 52; // PRODUCTION-201611291003-338511768
     public final static int RoomModelComposer = 2031; // PRODUCTION-201611291003-338511768
     public final static int RoomScoreComposer = 482; // PRODUCTION-201611291003-338511768
@@ -445,7 +445,7 @@ public class Outgoing
     public final static int SubmitCompetitionRoomComposer = 3841; // PRODUCTION-201611291003-338511768
     public final static int GameAchievementsListComposer = 2265; // PRODUCTION-201611291003-338511768
     public final static int UnknownComposer_1271 = 1660; // PRODUCTION-201611291003-338511768
-    public final static int OtherTradingDisabledComposer = 3058; // PRODUCTION-201611291003-338511768
+    public final static int OtherTradingDisabledComposer = 1254; // PRODUCTION-201611291003-338511768
     public final static int BaseJumpUnloadGameComposer = 1715; // PRODUCTION-201611291003-338511768
     public final static int UnknownComposer_1322 = 1730; // PRODUCTION-201611291003-338511768
     public final static int UnknownComposer_137 = 2897; // PRODUCTION-201611291003-338511768
@@ -496,7 +496,7 @@ public class Outgoing
 //    3519;
 //    3581;
 //    3684;
-    public final static int YouTradingDisabledComposer = 1001; // PRODUCTION-201611291003-338511768
+    public final static int YouTradingDisabledComposer = 3058; // PRODUCTION-201611291003-338511768
 //    3707;
 //    3745;
 //    3759;
@@ -524,5 +524,5 @@ public class Outgoing
     public final static int SimplePollAnswerComposer = 16; //TODO
 
     public final static int SomeConnectionComposer = 3928;
-
+    public final static int TradingWaitingConfirmComposer = 2720;
 }

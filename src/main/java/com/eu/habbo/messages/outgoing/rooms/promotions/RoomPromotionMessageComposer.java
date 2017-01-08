@@ -1,19 +1,17 @@
 package com.eu.habbo.messages.outgoing.rooms.promotions;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomPromotion;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
-import com.sun.istack.internal.Nullable;
 
 public class RoomPromotionMessageComposer extends MessageComposer
 {
     private final Room room;
     private final RoomPromotion roomPromotion;
 
-    public RoomPromotionMessageComposer(@Nullable Room room, @Nullable RoomPromotion roomPromotion)
+    public RoomPromotionMessageComposer(Room room, RoomPromotion roomPromotion)
     {
         this.room = room;
         this.roomPromotion = roomPromotion;

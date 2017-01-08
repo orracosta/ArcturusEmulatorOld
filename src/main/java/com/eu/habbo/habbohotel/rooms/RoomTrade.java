@@ -82,8 +82,7 @@ public class RoomTrade
         }
         if(accepted)
         {
-            this.tradeCompleted = true;
-            sendMessageToUsers(new TradeCompleteComposer());
+            sendMessageToUsers(new TradingWaitingConfirmComposer());
         }
     }
 
@@ -102,6 +101,7 @@ public class RoomTrade
         }
         if(accepted)
         {
+            sendMessageToUsers(new TradeCompleteComposer());
             tradeItems();
             closeWindow();
             this.room.stopTrade(this);

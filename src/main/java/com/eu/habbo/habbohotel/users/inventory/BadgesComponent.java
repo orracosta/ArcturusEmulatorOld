@@ -8,6 +8,9 @@ import gnu.trove.set.hash.THashSet;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class BadgesComponent
 {
@@ -57,11 +60,11 @@ public class BadgesComponent
         }
     }
 
-    public THashSet<HabboBadge> getWearingBadges()
+    public ArrayList<HabboBadge> getWearingBadges()
     {
         synchronized (this.badges)
         {
-            THashSet<HabboBadge> badgesList = new THashSet<HabboBadge>();
+            ArrayList<HabboBadge> badgesList = new ArrayList<HabboBadge>();
             for (HabboBadge badge : this.badges)
             {
                 if (badge.getSlot() == 0)
@@ -69,6 +72,15 @@ public class BadgesComponent
 
                 badgesList.add(badge);
             }
+
+            Collections.sort(badgesList, new Comparator<HabboBadge>()
+            {
+                @Override
+                public int compare(HabboBadge o1, HabboBadge o2)
+                {
+                    return o1.getSlot() - o2.getSlot();
+                }
+            });
             return badgesList;
         }
     }
@@ -78,12 +90,12 @@ public class BadgesComponent
         return this.badges;
     }
 
-    public static THashSet<HabboBadge> getBadgesOfflineHabbo(int userId)
+    public static ArrayList<HabboBadge> getBadgesOfflineHabbo(int userId)
     {
-        THashSet<HabboBadge> badgesList = new THashSet<HabboBadge>();
+        ArrayList<HabboBadge> badgesList = new ArrayList<HabboBadge>();
         try
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM users_badges WHERE slot_id > 0 AND user_id = ?");
+            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM users_badges WHERE slot_id > 0 AND user_id = ? ORDER BY slot_id ASC");
             statement.setInt(1, userId);
             ResultSet set = statement.executeQuery();
             while(set.next())

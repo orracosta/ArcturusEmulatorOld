@@ -41,6 +41,9 @@ public class TradeUpdateComposer extends MessageComposer
                 if(item.getBaseItem().getType().toLowerCase().equals("s"))
                     this.response.appendInt32(0);
             }
+
+            this.response.appendInt32(0);
+            this.response.appendInt32(0);
         }
         return this.response;
     }

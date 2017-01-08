@@ -244,7 +244,7 @@ public class CatalogManager
     {
         this.catalogPages.clear();
 
-        THashMap<Integer, CatalogPage> pages = new THashMap<Integer, CatalogPage>();
+        final THashMap<Integer, CatalogPage> pages = new THashMap<Integer, CatalogPage>();
         pages.put(-1, new CatalogRootLayout(null));
         PreparedStatement statement = null;
         try
@@ -296,7 +296,7 @@ public class CatalogManager
 
                 if (page != null)
                 {
-                    if (page.id != object.id)
+                    if (page.id != object.id && page.id != -1)
                     {
                         page.addChildPage(object);
                     }
@@ -730,9 +730,9 @@ public class CatalogManager
      * @param habbo The Habbo that has access to these pages.
      * @return The selected pages.
      */
-    public List<CatalogPage> getCatalogPages(int parentId, Habbo habbo)
+    public List<CatalogPage> getCatalogPages(int parentId, final Habbo habbo)
     {
-        List<CatalogPage> pages = new ArrayList<CatalogPage>();
+        final List<CatalogPage> pages = new ArrayList<CatalogPage>();
 
 //        TIntObjectIterator<CatalogPage> pagesIterator = this.catalogPages.iterator();
 //
@@ -757,7 +757,7 @@ public class CatalogManager
             @Override
             public boolean execute(CatalogPage object)
             {
-                if (object.getRank() <= habbo.getHabboInfo().getRank())
+                if (object.getRank() <= habbo.getHabboInfo().getRank() && object.visible)
                 {
                     pages.add(object);
                 }

@@ -2,6 +2,7 @@ package com.eu.habbo.messages.incoming.rooms.items;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionCustomValues;
+import com.eu.habbo.habbohotel.items.interactions.InteractionRoomAds;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -31,6 +32,10 @@ public class AdvertisingSaveEvent extends MessageHandler
                 ((InteractionCustomValues) item).values.put(this.packet.readString(), this.packet.readString());
             }
 
+            if (item instanceof InteractionRoomAds)
+            {
+                ((InteractionRoomAds) item).values.put("state", "1");
+            }
             item.setExtradata(((InteractionCustomValues) item).toExtraData());
             item.needsUpdate(true);
             Emulator.getThreading().run(item);
