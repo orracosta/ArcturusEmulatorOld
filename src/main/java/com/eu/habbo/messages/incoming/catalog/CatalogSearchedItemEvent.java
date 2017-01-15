@@ -20,18 +20,21 @@ public class CatalogSearchedItemEvent extends MessageHandler
         {
             CatalogPage page = Emulator.getGameEnvironment().getCatalogManager().getCatalogPage(pageId);
 
-            TIntObjectIterator<CatalogItem> iterator = page.getCatalogItems().iterator();
-
-            while(iterator.hasNext())
+            if (page != null)
             {
-                iterator.advance();
+                TIntObjectIterator<CatalogItem> iterator = page.getCatalogItems().iterator();
 
-                CatalogItem item = iterator.value();
-
-                if(item.getOfferId() == offerId)
+                while (iterator.hasNext())
                 {
-                    this.client.sendResponse(new CatalogSearchResultComposer(item));
-                    return;
+                    iterator.advance();
+
+                    CatalogItem item = iterator.value();
+
+                    if (item.getOfferId() == offerId)
+                    {
+                        this.client.sendResponse(new CatalogSearchResultComposer(item));
+                        return;
+                    }
                 }
             }
         }

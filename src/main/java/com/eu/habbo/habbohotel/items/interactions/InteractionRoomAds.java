@@ -17,7 +17,6 @@ public class InteractionRoomAds extends InteractionCustomValues
         {put("offsetX", "0");}
         {put("offsetY", "0");}
         {put("offsetZ", "0");}
-        {put("state", "1");}
     };
 
     public InteractionRoomAds(ResultSet set, Item baseItem) throws SQLException

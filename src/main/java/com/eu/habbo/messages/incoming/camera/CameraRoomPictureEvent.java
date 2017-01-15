@@ -27,9 +27,9 @@ public class CameraRoomPictureEvent extends MessageHandler
         if (CameraClient.isLoggedIn)
         {
             int seconds = Emulator.getIntUnixTimestamp() - this.client.getHabbo().getHabboInfo().getPhotoTimestamp();
-            if (seconds < (60 * 2))
+            if (seconds < (60))
             {
-                this.client.sendResponse(new CameraPublishWaitMessageComposer(false, seconds - (60 * 2), ""));
+                this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("camera.wait").replace("%seconds%", "" + (60 - seconds))));
                 return;
             }
 

@@ -37,7 +37,16 @@ public class TalentTrackLevel
                 if (achievements[i].isEmpty() || achievementLevels[i].isEmpty())
                     continue;
 
-                this.achievements.put(Emulator.getGameEnvironment().getAchievementManager().getAchievement(Integer.valueOf(achievements[i])), Integer.valueOf(achievementLevels[i]));
+                Achievement achievement = Emulator.getGameEnvironment().getAchievementManager().getAchievement(Integer.valueOf(achievements[i]));
+
+                if (achievement != null)
+                {
+                    this.achievements.put(achievement, Integer.valueOf(achievementLevels[i]));
+                }
+                else
+                {
+                    Emulator.getLogging().logErrorLine("Could not find achievement with ID " + achievements[i] + " for talenttrack level " + this.level + " of type " + this.type);
+                }
             }
         }
 

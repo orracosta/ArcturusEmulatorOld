@@ -32,10 +32,6 @@ public class AdvertisingSaveEvent extends MessageHandler
                 ((InteractionCustomValues) item).values.put(this.packet.readString(), this.packet.readString());
             }
 
-            if (item instanceof InteractionRoomAds)
-            {
-                ((InteractionRoomAds) item).values.put("state", "1");
-            }
             item.setExtradata(((InteractionCustomValues) item).toExtraData());
             item.needsUpdate(true);
             Emulator.getThreading().run(item);

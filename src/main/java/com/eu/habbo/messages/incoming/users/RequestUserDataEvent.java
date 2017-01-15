@@ -91,8 +91,8 @@ public class RequestUserDataEvent extends MessageHandler
             messages.add(new UserDataComposer(this.client.getHabbo()).compose());
             messages.add(new UserPerksComposer(this.client.getHabbo()).compose());
 
-            //if(this.client.getHabbo().getHabboInfo().getHomeRoom() != 0)
-            //    messages.add(new ForwardToRoomComposer(this.client.getHabbo().getHabboInfo().getHomeRoom()).compose());
+            if(this.client.getHabbo().getHabboInfo().getHomeRoom() != 0)
+                messages.add(new ForwardToRoomComposer(this.client.getHabbo().getHabboInfo().getHomeRoom()).compose());
 
 //            messages.add(new UserPerksComposer().compose());
 //            messages.add(new ForwardToRoomComposer(0).compose());

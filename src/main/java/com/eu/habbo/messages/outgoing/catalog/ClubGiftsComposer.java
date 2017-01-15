@@ -21,27 +21,35 @@ public class ClubGiftsComposer extends MessageComposer
         this.response.appendInt32(1); //Gift Selectable
 
         CatalogPage page = Emulator.getGameEnvironment().getCatalogManager().getCatalogPage(Emulator.getConfig().getInt("catalog.page.vipgifts"));
-        this.response.appendInt32(page.getCatalogItems().size());
 
-        TIntObjectIterator<CatalogItem> iterator = page.getCatalogItems().iterator();
-
-        for(int i = page.getCatalogItems().size(); i-- > 0;)
+        if (page != null)
         {
-            try
+            this.response.appendInt32(page.getCatalogItems().size());
+
+            TIntObjectIterator<CatalogItem> iterator = page.getCatalogItems().iterator();
+
+            for (int i = page.getCatalogItems().size(); i-- > 0; )
             {
-                iterator.advance();
-
-                CatalogItem item = iterator.value();
-
-                if (item != null)
+                try
                 {
-                    item.serialize(this.response);
+                    iterator.advance();
+
+                    CatalogItem item = iterator.value();
+
+                    if (item != null)
+                    {
+                        item.serialize(this.response);
+                    }
+                }
+                catch (NoSuchElementException e)
+                {
+                    break;
                 }
             }
-            catch (NoSuchElementException e)
-            {
-                break;
-            }
+        }
+        else
+        {
+            this.response.appendInt32(0);
         }
 
         this.response.appendInt32(1);

@@ -35,7 +35,7 @@ public class ModToolRoomChatlogComposer extends MessageComposer
         this.response.appendShort(this.chatlog.size());
         for(ModToolChatLog line : this.chatlog)
         {
-            this.response.appendInt32(line.timestamp);
+            this.response.appendString("" + line.timestamp);
             this.response.appendInt32(line.habboId);
             this.response.appendString(line.username);
             this.response.appendString(line.message);

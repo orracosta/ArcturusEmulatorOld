@@ -296,14 +296,17 @@ public class CatalogManager
 
                 if (page != null)
                 {
-                    if (page.id != object.id && page.id != -1)
+                    if (page.id != object.id)
                     {
                         page.addChildPage(object);
                     }
                 }
                 else
                 {
-                    Emulator.getLogging().logStart("Parent Page not found for " + object.getPageName() + " (ID: " + object.id + ", parent_id: " + object.parentId + ")");
+                    if (object.parentId != -2)
+                    {
+                        Emulator.getLogging().logStart("Parent Page not found for " + object.getPageName() + " (ID: " + object.id + ", parent_id: " + object.parentId + ")");
+                    }
                 }
                 return true;
             }
@@ -757,6 +760,7 @@ public class CatalogManager
             @Override
             public boolean execute(CatalogPage object)
             {
+                System.out.println(object.getCaption());
                 if (object.getRank() <= habbo.getHabboInfo().getRank() && object.visible)
                 {
                     pages.add(object);
@@ -980,6 +984,12 @@ public class CatalogManager
         if(item.isClubOnly() && !habbo.getClient().getHabbo().getHabboStats().hasActiveClub())
         {
             habbo.getClient().sendResponse(new AlertPurchaseUnavailableComposer(AlertPurchaseUnavailableComposer.REQUIRES_CLUB));
+            return;
+        }
+
+        if (amount <= 0)
+        {
+            habbo.getClient().sendResponse(new AlertPurchaseUnavailableComposer(AlertPurchaseUnavailableComposer.ILLEGAL));
             return;
         }
 

@@ -229,7 +229,7 @@ public class RoomChatMessage implements Runnable, ISerialize
 
         if (!this.getBubble().getPermission().isEmpty())
         {
-            if (!this.habbo.hasPermission(this.getBubble().getPermission()))
+            if (this.habbo != null && !this.habbo.hasPermission(this.getBubble().getPermission()))
             {
                 this.bubble = RoomChatMessageBubbles.NORMAL;
             }

@@ -208,7 +208,7 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                             //item.getPointsType() == 0 && item.getPoints() <= this.client.getHabbo().getHabboInfo().getPixels() - totalPoints ||
                             //        item.getPoints() <= this.client.getHabbo().getHabboInfo().getPoints())
                     {
-                        if ((i + 1) % 6 != 0 && item.isHaveOffer())
+                        if ((i + 1) % 6 != 0 && item.isHaveOffer()  || !item.isHaveOffer())
                         {
                             totalCredits += item.getCredits();
                             totalPoints += item.getPoints();

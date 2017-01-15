@@ -87,35 +87,47 @@ public class TalentTrackComposer extends MessageComposer
                         @Override
                         public boolean execute(Achievement achievement, int b)
                         {
-                            response.appendInt32(achievement.id);
-
-                            //TODO Move this to TalenTrackLevel class
-                            response.appendInt32(1); //idk
-                            response.appendString("ACH_" + achievement.name + b);
-
-                            int progress = habbo.getHabboStats().getAchievementProgress(achievement);
-                            AchievementLevel achievementLevel = achievement.getLevelForProgress(progress);
-
-                            if (progress > 0)
+                            if (achievement != null)
                             {
-                                if (achievementLevel.progress <= progress)
+                                response.appendInt32(achievement.id);
+
+                                //TODO Move this to TalenTrackLevel class
+                                response.appendInt32(1); //idk
+                                response.appendString("ACH_" + achievement.name + b);
+
+                                int progress = habbo.getHabboStats().getAchievementProgress(achievement);
+                                AchievementLevel achievementLevel = achievement.getLevelForProgress(progress);
+
+                                if (progress > 0)
                                 {
-                                    response.appendInt32(2);
+                                    if (achievementLevel.progress <= progress)
+                                    {
+                                        response.appendInt32(2);
+                                    }
+                                    else
+                                    {
+                                        response.appendInt32(1);
+                                        allCompleted[0] = false;
+                                    }
                                 }
                                 else
                                 {
-                                    response.appendInt32(1);
+                                    response.appendInt32(0);
                                     allCompleted[0] = false;
                                 }
+                                response.appendInt32(progress);
+                                response.appendInt32(achievementLevel.progress);
                             }
                             else
                             {
                                 response.appendInt32(0);
-                                allCompleted[0] = false;
+                                response.appendInt32(0);
+                                response.appendString("");
+                                response.appendString("");
+                                response.appendInt32(0);
+                                response.appendInt32(0);
+                                response.appendInt32(0);
                             }
-                            response.appendInt32(progress);
-                            response.appendInt32(achievementLevel.progress);
-
                             return true;
                         }
                     });
