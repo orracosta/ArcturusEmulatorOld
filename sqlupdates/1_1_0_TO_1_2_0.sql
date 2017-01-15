@@ -17,4 +17,5 @@ INSERT INTO `catalog_pages` (`id`, `parent_id`, `caption_save`, `caption`, `icon
 UPDATE catalog_pages, (SELECT id FROM catalog_pages ORDER BY id DESC LIMIT 1) new_id SET parent_id = new_id.id WHERE parent_id = -1;
 UPDATE catalog_pages SET parent_id = -1, page_layout = 'frontpage_featured' WHERE caption LIKE 'frontpage';
 UPDATE catalog_pages SET parent_id = -1 ORDER BY id DESC LIMIT 1;
+
 #END DATABASE UPDATE: 1.1.0 -> 1.2.0

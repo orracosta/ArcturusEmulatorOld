@@ -2025,7 +2025,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void setName(String name)
     {
-        this.name = name;
+        this.name = name.substring(0, 50);
 
         if (this.hasGuild())
         {
@@ -2040,12 +2040,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void setDescription(String description)
     {
-        this.description = description;
+        this.description = description.substring(0, 250);
     }
 
     public void setPassword(String password)
     {
-        this.password = password;
+        this.password = password.substring(0, 20);
     }
 
     public void setState(RoomState state)
