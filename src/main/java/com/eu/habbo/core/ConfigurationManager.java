@@ -173,7 +173,7 @@ public class ConfigurationManager
         }
         catch (Exception e)
         {
-            Emulator.getLogging().logErrorLine(e);
+            Emulator.getLogging().logErrorLine("Failed to parse key " + key + " with value " + getValue(key) + " to type boolean.");
         }
         return defaultValue;
     }
@@ -204,7 +204,7 @@ public class ConfigurationManager
             return Integer.parseInt(getValue(key, defaultValue.toString()));
         } catch (Exception e)
         {
-            Emulator.getLogging().logErrorLine(e);
+            Emulator.getLogging().logErrorLine("Failed to parse key " + key + " with value " + getValue(key) + " to type integer.");
         }
         return defaultValue;
     }
@@ -236,7 +236,7 @@ public class ConfigurationManager
         }
         catch (Exception e)
         {
-            Emulator.getLogging().logErrorLine(e);
+            Emulator.getLogging().logErrorLine("Failed to parse key " + key + " with value " + getValue(key) + " to type double.");
         }
 
         return defaultValue;
