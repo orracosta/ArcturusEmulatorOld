@@ -7,6 +7,7 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.achievements.AchievementListComposer;
 import com.eu.habbo.messages.outgoing.friends.FriendsComposer;
 import com.eu.habbo.messages.outgoing.friends.MessengerInitComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.handshake.*;
 import com.eu.habbo.messages.outgoing.inventory.InventoryAchievementsComposer;
 import com.eu.habbo.messages.outgoing.modtool.CfhTopicsMessageComposer;
@@ -107,6 +108,11 @@ public class SecureLoginEvent extends MessageHandler
                 this.client.sendResponse(new AchievementListComposer(this.client.getHabbo()));
 
                 Emulator.getPluginManager().fireEvent(new UserLoginEvent(habbo, this.client.getChannel().localAddress()));
+
+                if (Emulator.getConfig().getBoolean("hotel.welcome.alert.enabled"))
+                {
+                    this.client.sendResponse(new GenericAlertComposer(Emulator.getConfig().getValue("hotel.welcome.alert.message").replace("%username%", habbo.getHabboInfo().getUsername())));
+                }
 
             }
             else
