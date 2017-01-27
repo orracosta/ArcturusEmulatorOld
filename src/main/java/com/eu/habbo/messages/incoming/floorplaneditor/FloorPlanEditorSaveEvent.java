@@ -105,21 +105,13 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
                     {
                         room.dispose();
 
-                        try
-                        {
-                            Thread.sleep(1000);
-                        }
-                        catch (InterruptedException e)
-                        {
-                        }
-
                         ServerMessage message = new ForwardToRoomComposer(room.getId()).compose();
                         for(Habbo habbo : habbos)
                         {
                             habbo.getClient().sendResponse(message);
                         }
                     }
-                });
+                }, 1000);
             }
             else
             {

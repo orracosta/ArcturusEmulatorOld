@@ -6,4 +6,6 @@ ALTER TABLE  `rooms` CHANGE  `name`  `name` VARCHAR( 50 ) CHARACTER SET utf8 COL
 ALTER TABLE  `rooms` CHANGE  `description`  `description` VARCHAR( 512 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  '';
 ALTER TABLE  `rooms` CHANGE  `password`  `password` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  '';
 
+UPDATE `items_base` SET `interaction_type` = 'switch' WHERE `item_name` LIKE 'wf_floor_switch%';
+
 #END DATABASE UPDATE: 1.2.0 -> 1.3.0

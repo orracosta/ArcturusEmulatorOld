@@ -52,7 +52,7 @@ public class InteractionDefault extends HabboItem
     @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
-        if(room != null && (client == null || room.hasRights(client.getHabbo())))
+        if(room != null && (client == null || canToggle(client.getHabbo(), room)))
         {
             super.onClick(client, room, objects);
 
@@ -154,5 +154,10 @@ public class InteractionDefault extends HabboItem
                 }
             }
         }
+    }
+
+    public boolean canToggle(Habbo habbo, Room room)
+    {
+        return room.hasRights(habbo);
     }
 }

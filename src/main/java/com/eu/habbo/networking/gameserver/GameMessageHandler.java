@@ -61,6 +61,6 @@ public class GameMessageHandler extends ChannelInboundHandlerAdapter
             }
         }
 
-        ctx.close();
+        Emulator.getGameServer().getGameClientManager().disposeClient(ctx.channel());
     }
 }
