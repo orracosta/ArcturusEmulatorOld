@@ -63,6 +63,7 @@ public class HabboInfo implements Runnable
             this.mail = set.getString("mail");
             this.sso = set.getString("auth_ticket");
             this.ipRegister = set.getString("ip_register");
+            this.ipLogin = set.getString("ip_current");
             this.rank = set.getInt("rank");
             this.accountCreated = set.getInt("account_created");
             this.credits = set.getInt("credits");
@@ -236,6 +237,7 @@ public class HabboInfo implements Runnable
         return this.ipLogin;
     }
 
+    @Deprecated
     public void setIpLogin(String ipLogin)
     {
         this.ipLogin = ipLogin;

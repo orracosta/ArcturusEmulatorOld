@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 
 public class GameClientManager
 {
@@ -130,32 +131,12 @@ public class GameClientManager
 
     public List<Habbo> getHabbosWithIP(String ip)
     {
-        List<Habbo> habbos = new ArrayList<Habbo>();
-
-        for (GameClient client : this.clients.values())
-        {
-            if (client.getChannel().remoteAddress().toString().contains(ip))
-            {
-                habbos.add(client.getHabbo());
-            }
-        }
-
-        return habbos;
+        return this.clients.values().stream().filter(client -> client.getHabbo().getHabboInfo().getIpLogin().equalsIgnoreCase(ip)).map(GameClient::getHabbo).collect(Collectors.toList());
     }
 
     public List<Habbo> getHabbosWithMachineId(String machineId)
     {
-        List<Habbo> habbos = new ArrayList<Habbo>();
-
-        for (GameClient client : this.clients.values())
-        {
-            if (client.getMachineId().equalsIgnoreCase(machineId))
-            {
-                habbos.add(client.getHabbo());
-            }
-        }
-
-        return habbos;
+        return this.clients.values().stream().filter(client -> client.getMachineId().equalsIgnoreCase(machineId)).map(GameClient::getHabbo).collect(Collectors.toList());
     }
 
     public void sendBroadcastResponse(MessageComposer composer)

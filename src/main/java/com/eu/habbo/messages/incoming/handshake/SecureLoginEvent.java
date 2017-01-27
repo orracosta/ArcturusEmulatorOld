@@ -111,7 +111,7 @@ public class SecureLoginEvent extends MessageHandler
 
                 if (Emulator.getConfig().getBoolean("hotel.welcome.alert.enabled"))
                 {
-                    this.client.sendResponse(new GenericAlertComposer(Emulator.getConfig().getValue("hotel.welcome.alert.message").replace("%username%", habbo.getHabboInfo().getUsername())));
+                    this.client.sendResponse(new GenericAlertComposer(Emulator.getConfig().getValue("hotel.welcome.alert.message").replace("%username%", habbo.getHabboInfo().getUsername()).replace("%user%", habbo.getHabboInfo().getUsername())));
                 }
 
             }

@@ -69,7 +69,13 @@ public class BotSaveSettingsEvent extends MessageHandler
                         }
                     }
 
-                    BotSavedChatEvent chatEvent = new BotSavedChatEvent(bot, Boolean.valueOf(data[data.length - 3]), Boolean.valueOf(data[data.length - 1]), Integer.valueOf(data[data.length - 2]), chat);
+                    int chatSpeed = Integer.valueOf(data[data.length -2]);
+                    if (chatSpeed < Emulator.getConfig().getInt("hotel.bot.chat.minimum.interval"))
+                    {
+                        chatSpeed = Emulator.getConfig().getInt("hotel.bot.chat.minimum.interval");
+                    }
+
+                    BotSavedChatEvent chatEvent = new BotSavedChatEvent(bot, Boolean.valueOf(data[data.length - 3]), Boolean.valueOf(data[data.length - 1]), chatSpeed, chat);
                     Emulator.getPluginManager().fireEvent(chatEvent);
 
                     if(chatEvent.isCancelled())

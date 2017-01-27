@@ -121,7 +121,7 @@ public class Habbo implements Runnable
      */
     public void connect()
     {
-        this.habboInfo.setIpLogin(((InetSocketAddress)this.client.getChannel().remoteAddress()).getAddress().getHostAddress());
+        //this.habboInfo.setIpLogin(((InetSocketAddress)this.client.getChannel().remoteAddress()).getAddress().getHostAddress());
         this.isOnline(true);
 
         this.messenger.connectionChanged(this, true, false);
