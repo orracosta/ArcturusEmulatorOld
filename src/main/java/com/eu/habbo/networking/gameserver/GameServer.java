@@ -12,6 +12,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.timeout.IdleStateEvent;
+import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.ResourceLeakDetector;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
@@ -67,6 +69,14 @@ public class GameServer
                 ch.pipeline().addLast("logger", new LoggingHandler());
                 ch.pipeline().addLast("bytesDecoder", new GameByteDecoder());
                 ch.pipeline().addLast(gameMessageHandler);
+                ch.pipeline().addLast("idlehandler", new IdleStateHandler(0, 0, 60)
+                {
+                    @Override
+                    protected void channelIdle(ChannelHandlerContext ctx, IdleStateEvent evt) throws Exception
+                    {
+                        ctx.close();
+                    }
+                });
             }
         });
         this.serverBootstrap.childOption(ChannelOption.TCP_NODELAY, true);

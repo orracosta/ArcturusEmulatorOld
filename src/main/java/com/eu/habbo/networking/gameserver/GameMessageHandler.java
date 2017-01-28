@@ -20,7 +20,7 @@ public class GameMessageHandler extends ChannelInboundHandlerAdapter
     {
         if (!Emulator.getGameServer().getGameClientManager().addClient(ctx))
         {
-            ctx.channel().disconnect();
+            ctx.close();
             return;
         }
     }
@@ -28,7 +28,7 @@ public class GameMessageHandler extends ChannelInboundHandlerAdapter
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx)
     {
-        Emulator.getGameServer().getGameClientManager().disposeClient(ctx.channel());
+        ctx.close();
     }
 
     @Override
@@ -47,7 +47,7 @@ public class GameMessageHandler extends ChannelInboundHandlerAdapter
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception
     {
-        Emulator.getGameServer().getGameClientManager().disposeClient(ctx.channel());
+        ctx.close();
     }
 
     @Override
@@ -61,6 +61,6 @@ public class GameMessageHandler extends ChannelInboundHandlerAdapter
             }
         }
 
-        Emulator.getGameServer().getGameClientManager().disposeClient(ctx.channel());
+        ctx.close();
     }
 }

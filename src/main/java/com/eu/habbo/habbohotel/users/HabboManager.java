@@ -63,30 +63,60 @@ public class HabboManager
     {
         Habbo habbo = null;
         PreparedStatement statement = null;
+        ResultSet set = null;
         try
         {
-            statement = Emulator.getDatabase().prepare("SELECT * FROM users WHERE auth_ticket = ? LIMIT 1");
+            statement = Emulator.getDatabase().prepare("SELECT id FROM users WHERE auth_ticket = ? LIMIT 1");
             statement.setString(1, sso);
-            ResultSet set = statement.executeQuery();
-            if(set.next())
+            set = statement.executeQuery();
+            if (set.next())
             {
                 habbo = cloneCheck(set.getInt("id"));
-                if(habbo != null)
+                if (habbo != null)
                 {
-                    habbo.getClient().sendResponse(new GenericAlertComposer("You logged in from somewhere else."));
-                    habbo.getClient().getChannel().close();
+                    habbo.getClient().sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("loggedin.elsewhere")));
+                    Emulator.getGameServer().getGameClientManager().disposeClient(habbo.getClient().getChannel());
                     habbo = null;
                 }
 
                 ModToolBan ban = Emulator.getGameEnvironment().getModToolManager().checkForBan(set.getInt("id"));
-                if(ban != null)
+                if (ban != null)
+                {
+                    return null;
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+        finally
+        {
+            if (statement != null)
+            {
+                try
                 {
                     set.close();
                     statement.close();
                     statement.getConnection().close();
-                    return null;
                 }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            }
+        }
 
+
+        habbo = null;
+        statement = Emulator.getDatabase().prepare("SELECT * FROM users WHERE auth_ticket = ? LIMIT 1");
+        try
+        {
+            statement.setString(1, sso);
+            set = statement.executeQuery();
+
+            if (set.next())
+            {
                 habbo = new Habbo(set);
 
                 if (habbo.firstVisit)
@@ -125,9 +155,9 @@ public class HabboManager
                         }
                     }
                 }
-            }
 
-            set.close();
+                set.close();
+            }
 
         }
         catch(SQLException e)

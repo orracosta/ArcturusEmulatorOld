@@ -54,7 +54,6 @@ public class RoomLayout
         {
             if(modelTemp[y].isEmpty() || modelTemp[y].equalsIgnoreCase("\r"))
             {
-                Emulator.getLogging().logDebugLine("Model " + name + ", Y = empty || equals \\r");
                 continue;
             }
 
@@ -62,8 +61,6 @@ public class RoomLayout
             {
                 if(modelTemp[y].length() != this.mapSizeX)
                 {
-                    Emulator.getLogging().logDebugLine("Model " + name + ", Y != mapSizeX (" + modelTemp[y].length() + " != " + this.mapSizeX + ")");
-
                     break;
                 }
 

@@ -5,9 +5,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelId;
+import io.netty.channel.*;
 import io.netty.util.AttributeKey;
 
 import java.util.ArrayList;
@@ -59,6 +57,14 @@ public class GameClientManager
     public boolean addClient(ChannelHandlerContext ctx)
     {
         GameClient client = new GameClient(ctx.channel());
+        ctx.channel().closeFuture().addListener(new ChannelFutureListener()
+        {
+            @Override
+            public void operationComplete(ChannelFuture channelFuture) throws Exception
+            {
+                disposeClient(ctx.channel());
+            }
+        });
 
         ctx.attr(CLIENT).set(client);
         ctx.fireChannelRegistered();

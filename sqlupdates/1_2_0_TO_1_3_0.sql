@@ -12,5 +12,5 @@ DELETE FROM `emulator_settings` WHERE `key` LIKE 'hotel.home.room';
 INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.home.room', '0');
 
 ALTER TABLE  `users` CHANGE  `ip_current`  `ip_current` VARCHAR( 45 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT  'Have your CMS update this IP. If you do not do this IP banning won''t work!';
-
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('loggedin.elsewhere', 'You have been disconnected as you logged in from somewhere else.');
 #END DATABASE UPDATE: 1.2.0 -> 1.3.0

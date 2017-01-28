@@ -760,7 +760,6 @@ public class CatalogManager
             @Override
             public boolean execute(CatalogPage object)
             {
-                System.out.println(object.getCaption());
                 if (object.getRank() <= habbo.getHabboInfo().getRank() && object.visible)
                 {
                     pages.add(object);
