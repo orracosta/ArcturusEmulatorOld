@@ -791,7 +791,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                 getPetsComponent().
                                 addPet((Pet) pet);
 
-                        this.sendComposer(new RemovePetComposer(pet).compose());
+                        this.sendComposer(new RoomUserRemoveComposer(pet.getRoomUnit()).compose());
                         habbo.getClient().sendResponse(new AddPetComposer(pet));
                     }
                 }
