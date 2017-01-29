@@ -185,6 +185,30 @@ public class ServerMessage
         }
     }
 
+    public void appendDouble(double d)
+    {
+        try
+        {
+            this.stream.writeDouble(d);
+        }
+        catch (IOException e)
+        {
+            Emulator.getLogging().logPacketError(e);
+        }
+    }
+
+    public void appendDouble(Double obj)
+    {
+        try
+        {
+            this.stream.writeDouble(obj.doubleValue());
+        }
+        catch (IOException e)
+        {
+            Emulator.getLogging().logPacketError(e);
+        }
+    }
+
     public ServerMessage appendResponse(ServerMessage obj)
     {
         try

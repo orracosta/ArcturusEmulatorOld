@@ -13,20 +13,34 @@ public class WordQuizCommand extends Command
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
-        String question = "";
-
-        if (params.length >= 2)
+        if (!gameClient.getHabbo().getHabboInfo().getCurrentRoom().hasActiveWordQuiz())
         {
-            for (int i = 1; i < params.length; i++)
+            String question = "";
+            int duration = 60;
+
+            if (params.length > 2)
             {
-                question += " " + params[1];
+                for (int i = 1; i < params.length - 1; i++)
+                {
+                    question += " " + params[i];
+                }
+
+                try
+                {
+                    duration = Integer.valueOf(params[params.length - 1]);
+                }
+                catch (Exception e)
+                {
+                    question += " " + params[params.length -1];
+                }
+            }
+            else
+            {
+                question = params[1];
             }
 
-            gameClient.getHabbo().getHabboInfo().getCurrentRoom().startWordQuiz(question, 30000);
-
-            return true;
+            gameClient.getHabbo().getHabboInfo().getCurrentRoom().startWordQuiz(question, duration * 1000);
         }
-
-        return false;
+        return true;
     }
 }

@@ -26,6 +26,7 @@ import com.eu.habbo.habbohotel.wired.*;
 import com.eu.habbo.messages.ISerialize;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericErrorMessagesComposer;
 import com.eu.habbo.messages.outgoing.guilds.GuildInfoComposer;
 import com.eu.habbo.messages.outgoing.hotelview.HotelViewComposer;
@@ -169,6 +170,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public String wordQuiz = "";
     public int noVotes = 0;
     public int yesVotes = 0;
+    public int wordQuizEnd = 0;
 
     public Room(ResultSet set) throws SQLException
     {
@@ -368,7 +370,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
     }
 
-    private synchronized void loadHeightmap()
+    public synchronized void loadHeightmap()
     {
         if (this.layout != null)
         {
@@ -1093,7 +1095,17 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         if(this.loaded)
         {
             Emulator.getThreading().run(this, 500);
-            this.cycle();
+
+            try
+            {
+                this.cycle();
+            }
+            catch (Exception e)
+            {
+                sendComposer(new GenericAlertComposer("Room Crashed.").compose());
+                dispose();
+                Emulator.getLogging().logErrorLine(e);
+            }
         }
 
         this.save();
@@ -2028,7 +2040,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void setName(String name)
     {
-        this.name = name.substring(0, 50);
+        this.name = name;
+
+        if (this.name.length() > 50)
+        {
+            this.name = this.name.substring(0, 50);
+        }
 
         if (this.hasGuild())
         {
@@ -2043,12 +2060,22 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void setDescription(String description)
     {
-        this.description = description.substring(0, 250);
+        this.description = description;
+
+        if (this.description.length() > 250)
+        {
+            this.description = this.description.substring(0, 250);
+        }
     }
 
     public void setPassword(String password)
     {
-        this.password = password.substring(0, 20);
+        this.password = password;
+
+        if (this.password.length() > 20)
+        {
+            this.password = this.password.substring(0, 20);
+        }
     }
 
     public void setState(RoomState state)
@@ -4775,9 +4802,18 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void startWordQuiz(String question, int duration)
     {
-        this.wordQuiz = question;
-        this.noVotes = 0;
-        this.yesVotes = 0;
-        this.sendComposer(new SimplePollStartComposer(duration, question).compose());
+        if (!hasActiveWordQuiz())
+        {
+            this.wordQuiz = question;
+            this.noVotes = 0;
+            this.yesVotes = 0;
+            this.wordQuizEnd = Emulator.getIntUnixTimestamp() + (duration / 1000);
+            this.sendComposer(new SimplePollStartComposer(duration, question).compose());
+        }
+    }
+
+    public boolean hasActiveWordQuiz()
+    {
+        return Emulator.getIntUnixTimestamp() < this.wordQuizEnd;
     }
 }

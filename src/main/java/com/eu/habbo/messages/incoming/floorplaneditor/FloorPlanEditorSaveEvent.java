@@ -9,6 +9,7 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
+import com.eu.habbo.threading.runnables.LoadCustomHeightMap;
 import gnu.trove.set.hash.THashSet;
 
 public class FloorPlanEditorSaveEvent extends MessageHandler
@@ -22,7 +23,7 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
             return;
         }
 
-        final Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
+        Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
 
         if(room == null)
             return;
@@ -97,25 +98,13 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
                 room.setWallSize(wallSize);
                 room.setFloorSize(floorSize);
                 room.setWallHeight(wallHeight);
-
-                Emulator.getThreading().run(new Runnable()
+                Emulator.getGameEnvironment().getRoomManager().unloadRoom(room);
+                room = Emulator.getGameEnvironment().getRoomManager().loadRoom(room.getId());
+                ServerMessage message = new ForwardToRoomComposer(room.getId()).compose();
+                for(Habbo habbo : habbos)
                 {
-                    @Override
-                    public void run()
-                    {
-                        room.dispose();
-
-                        ServerMessage message = new ForwardToRoomComposer(room.getId()).compose();
-                        for(Habbo habbo : habbos)
-                        {
-                            habbo.getClient().sendResponse(message);
-                        }
-                    }
-                }, 1000);
-            }
-            else
-            {
-                this.client.sendResponse(new GenericAlertComposer("Oh boi. Saving Failed! Please try again in a few minutes!"));
+                    habbo.getClient().sendResponse(message);
+                }
             }
         }
     }

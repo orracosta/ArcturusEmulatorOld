@@ -205,7 +205,7 @@ public class Outgoing
     public final static int AchievementListComposer = 305; // PRODUCTION-201611291003-338511768
     public final static int AchievementProgressComposer = 2107; // PRODUCTION-201611291003-338511768
     public final static int AchievementUnlockedComposer = 806; // PRODUCTION-201611291003-338511768
-    public final static int ClubGiftsComposer = 3164; // PRODUCTION-201611291003-338511768
+    public final static int ClubGiftsComposer = 619; // PRODUCTION-201611291003-338511768
     public final static int MachineIDComposer = 1488; // PRODUCTION-201611291003-338511768
     public final static int PongComposer = 10; // PRODUCTION-201611291003-338511768
     public final static int ModToolIssueHandlerDimensionsComposer = 1576; // PRODUCTION-201611291003-338511768
@@ -521,8 +521,10 @@ public class Outgoing
 //    982;
 
 
-    public final static int SimplePollAnswerComposer = 16; //TODO
+    public final static int SimplePollAnswerComposer = 2589;
 
     public final static int SomeConnectionComposer = 3928;
     public final static int TradingWaitingConfirmComposer = 2720;
+
+    public final static int ClubCenterDataComposer = 3277;
 }

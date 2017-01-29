@@ -20,7 +20,7 @@ public class RoomSettingsSaveEvent extends MessageHandler
 
         if(room != null)
         {
-            if(room.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || this.client.getHabbo().hasPermission("acc_anyroomowner"))
+            if(room.isOwner(this.client.getHabbo()))
             {
                 room.setName(this.packet.readString());
                 room.setDescription(this.packet.readString());

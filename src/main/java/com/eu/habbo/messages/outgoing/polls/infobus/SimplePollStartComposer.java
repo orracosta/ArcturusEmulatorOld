@@ -24,7 +24,7 @@ public class SimplePollStartComposer extends MessageComposer
         this.response.appendInt32(0);
         this.response.appendInt32(0);
         this.response.appendInt32(this.duration); //duration
-        this.response.appendInt32(0); //Id
+        this.response.appendInt32(-1); //Id
         this.response.appendInt32(0); //Number
         this.response.appendInt32(3); //Type
         this.response.appendString(this.question);
