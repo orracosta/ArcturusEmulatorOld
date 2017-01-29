@@ -147,7 +147,11 @@ public class PathFinder
 
         for(int i = 0; i < 8; i++)
         {
-            tiles.add(getSquareInFront(roomLayout, x, y, i));
+            RoomTile t = getSquareInFront(roomLayout, x, y, i);
+            if (t != null)
+            {
+                tiles.add(t);
+            }
         }
 
         return tiles;

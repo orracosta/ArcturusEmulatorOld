@@ -16,6 +16,8 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
 public class TestCommand extends Command
 {
+    public static boolean stopThreads = true;
+
     public TestCommand()
     {
         super("acc_debug", new String[]{ "test" });
@@ -115,24 +117,37 @@ public class TestCommand extends Command
         }
         else if (params[1].equalsIgnoreCase("threads"))
         {
-            for (int i = 0; i < 30; i++)
+            if (stopThreads)
             {
-                Emulator.getThreading().run(new Runnable()
+                stopThreads = false;
+                for (int i = 0; i < 30; i++)
                 {
-                    @Override
-                    public void run()
+                    final int finalI = i;
+                    Emulator.getThreading().run(new Runnable()
                     {
-                        try
+                        @Override
+                        public void run()
                         {
-                            Thread.sleep(500);
-                            Emulator.getThreading().run(this);
+                            try
+                            {
+                                Thread.sleep(500);
+                                Emulator.getLogging().logStart("Started " + finalI + " on " + Thread.currentThread().getName());
+                                if (!TestCommand.stopThreads)
+                                {
+                                    Emulator.getThreading().run(this);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
                         }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
-                }, i * 10);
+                    }, i * 10);
+                }
+            }
+            else
+            {
+                stopThreads = true;
             }
         }
         else if(params[1].equalsIgnoreCase("st"))

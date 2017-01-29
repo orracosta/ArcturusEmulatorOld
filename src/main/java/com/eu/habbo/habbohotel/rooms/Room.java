@@ -1536,7 +1536,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                 if (pet instanceof Pet)
                                 {
                                     if (pet instanceof MonsterplantPet)
-                                        return;
+                                        continue;
 
 //                                    if (pet.getRoomUnit().getStatus().containsKey("mv") && pet.getRoomUnit().isAtGoal())
 //                                    {
@@ -1549,7 +1549,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                     {
                                         pet.getRoomUnit().getStatus().remove("mv");
                                         updatedUnit.add(pet.getRoomUnit());
-                                        return;
+                                        continue;
                                     }
 
                                     if (((Pet) pet).cycle())

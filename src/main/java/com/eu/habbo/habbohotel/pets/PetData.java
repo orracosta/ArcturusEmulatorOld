@@ -218,6 +218,7 @@ public class PetData
 
     public PetVocal randomVocal(PetVocalsType type)
     {
+        //TODO: Remove this useless copying.
         List<PetVocal> vocals = new ArrayList<PetVocal>();
 
         if(this.petVocals.get(type) != null)
@@ -226,10 +227,10 @@ public class PetData
         if(PetData.generalPetVocals.get(type) != null)
             vocals.addAll(PetData.generalPetVocals.get(type));
 
-        if(vocals.isEmpty())
+        if(vocals.isEmpty() || vocals.size() == 0)
             return null;
 
-        return vocals.get(Emulator.getRandom().nextInt(vocals.size() - 1));
+        return vocals.get(Emulator.getRandom().nextInt(vocals.size()));
     }
 
     public void update(ResultSet set) throws SQLException
