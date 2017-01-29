@@ -30,10 +30,7 @@ import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericErrorMessagesComposer;
 import com.eu.habbo.messages.outgoing.guilds.GuildInfoComposer;
 import com.eu.habbo.messages.outgoing.hotelview.HotelViewComposer;
-import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
-import com.eu.habbo.messages.outgoing.inventory.AddPetComposer;
-import com.eu.habbo.messages.outgoing.inventory.InventoryPetsComposer;
-import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
+import com.eu.habbo.messages.outgoing.inventory.*;
 import com.eu.habbo.messages.outgoing.polls.infobus.SimplePollAnswerComposer;
 import com.eu.habbo.messages.outgoing.polls.infobus.SimplePollStartComposer;
 import com.eu.habbo.messages.outgoing.rooms.*;
@@ -789,12 +786,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         pet.needsUpdate = true;
                         pets.add((Pet) pet);
 
-
                         habbo.
                                 getHabboInventory().
                                 getPetsComponent().
                                 addPet((Pet) pet);
 
+                        this.sendComposer(new RemovePetComposer(pet).compose());
                         habbo.getClient().sendResponse(new AddPetComposer(pet));
                     }
                 }
