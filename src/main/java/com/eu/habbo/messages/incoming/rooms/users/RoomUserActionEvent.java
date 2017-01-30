@@ -11,7 +11,7 @@ public class RoomUserActionEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        if(this.client.getHabbo().getRoomUnit().isInRoom())
+        if(this.client.getHabbo().getHabboInfo().getCurrentRoom() != null)
         {
             Habbo habbo = this.client.getHabbo();
 

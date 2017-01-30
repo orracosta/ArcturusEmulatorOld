@@ -155,19 +155,23 @@ public class WiredEffectBotTeleport extends InteractionWiredEffect
     {
         this.items = new THashSet<HabboItem>();
         String[] wiredData = set.getString("wired_data").split("\t");
-        this.setDelay(Integer.valueOf(wiredData[0]));
-        String[] data = wiredData[1].split(((char) 9) + "");
 
-        if(data.length > 1)
+        if (wiredData.length >= 2)
         {
-            this.botName = data[0];
+            this.setDelay(Integer.valueOf(wiredData[0]));
+            String[] data = wiredData[1].split(((char) 9) + "");
 
-            for(int i = 1; i < data.length; i++)
+            if (data.length > 1)
             {
-                HabboItem item = room.getHabboItem(Integer.valueOf(data[i]));
+                this.botName = data[0];
 
-                if (item != null)
-                    this.items.add(item);
+                for (int i = 1; i < data.length; i++)
+                {
+                    HabboItem item = room.getHabboItem(Integer.valueOf(data[i]));
+
+                    if (item != null)
+                        this.items.add(item);
+                }
             }
         }
     }
