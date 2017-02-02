@@ -102,7 +102,7 @@ public class RCONServer
 
     public String handle(ChannelHandlerContext ctx, String key, String body) throws Exception
     {
-        Class<? extends RCONMessage> message = this.messages.get(key.replace("_", ""));
+        Class<? extends RCONMessage> message = this.messages.get(key.replace("_", "").toLowerCase());
 
         String result = "";
         if(message != null)
