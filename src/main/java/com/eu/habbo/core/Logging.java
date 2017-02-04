@@ -3,6 +3,7 @@ package com.eu.habbo.core;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.util.callback.HTTPPostError;
 import gnu.trove.set.hash.THashSet;
+import sun.rmi.runtime.Log;
 
 import java.io.*;
 import java.sql.PreparedStatement;
@@ -38,7 +39,7 @@ public class Logging
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
-    private final THashSet<ErrorLog> errorLogs = new THashSet<ErrorLog>();
+    private final THashSet<Loggable> errorLogs = new THashSet<Loggable>();
 
     public Logging()
     {
@@ -233,34 +234,33 @@ public class Logging
         }
     }
 
+    public void addLog(Loggable log)
+    {
+        synchronized (this.errorLogs)
+        {
+            this.errorLogs.add(log);
+        }
+    }
+
     public void saveLogs()
     {
         synchronized (this.errorLogs)
         {
             PreparedStatement statement = Emulator.getDatabase().prepare(ErrorLog.insertQuery);
 
-            for(ErrorLog log : this.errorLogs)
+            for (Loggable log : this.errorLogs)
             {
                 try
                 {
                     log.log(statement);
-                } catch (SQLException e)
+                }
+                catch (SQLException e)
                 {
                     e.printStackTrace();
                 }
             }
 
             this.errorLogs.clear();
-
-            try
-            {
-                statement.close();
-                statement.getConnection().close();
-            }
-            catch (SQLException e)
-            {
-                e.printStackTrace();
-            }
         }
     }
 }

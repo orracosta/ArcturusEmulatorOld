@@ -44,4 +44,15 @@ INSERT INTO `emulator_texts` (`key`, `value`) VALUES
 
 INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.daily.respect', '3'), ('hotel.daily.respect.pets', '3'),  ('hotel.refill.daily', '86400');
 
+CREATE TABLE  `commandlogs` (
+    `user_id` INT NOT NULL ,
+    `timestamp` INT NOT NULL ,
+    `command` VARCHAR( 32 ) NOT NULL DEFAULT  '',
+    `params` VARCHAR( 100 ) NOT NULL DEFAULT  '',
+    `succes` ENUM(  'no',  'yes' ) NOT NULL DEFAULT  'yes',
+INDEX (  `user_id` )
+) ENGINE = MYISAM ;
+
+ALTER TABLE  `permissions` ADD  `log_commands` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `room_effect`;
+
 #END DATABASE UPDATE: 1.2.0 -> 1.3.0

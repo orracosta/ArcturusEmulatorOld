@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.commands;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.core.CommandLog;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.Pet;
@@ -185,6 +186,7 @@ public class CommandHandler
                         {
                             if (s.toLowerCase().equals(parts[0].toLowerCase()))
                             {
+                                boolean succes = false;
                                 if (command.permission == null || gameClient.getHabbo().hasPermission(command.permission))
                                 {
                                     try
@@ -197,15 +199,18 @@ public class CommandHandler
                                         UserCommandEvent event = new UserCommandEvent(gameClient.getHabbo(), parts, command.handle(gameClient, parts));
                                         Emulator.getPluginManager().fireEvent(event);
 
-                                        return event.succes;
+                                        succes = event.succes;
                                     }
                                     catch (Exception e)
                                     {
                                         e.printStackTrace();
-                                        return false;
                                     }
                                 }
-                                return false;
+
+                                if (gameClient.getHabbo().hasPermission("log_commands"))
+                                {
+                                    Emulator.getLogging().addLog(new CommandLog(gameClient.getHabbo().getHabboInfo().getId(), command, commandLine, succes));
+                                }
                             }
                         }
                     }

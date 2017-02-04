@@ -11,7 +11,7 @@ import java.sql.SQLException;
 /**
  * Created on 12-11-2015 19:16.
  */
-public class ErrorLog
+public class ErrorLog implements Loggable
 {
     public final static String insertQuery = "INSERT INTO emulator_errors (timestamp, type, stacktrace) VALUES (?, ?, ?)";
     public final int timeStamp;
@@ -45,6 +45,7 @@ public class ErrorLog
         this.stackTrace = message;
     }
 
+    @Override
     public void log(PreparedStatement statement) throws SQLException
     {
         statement.setInt(1, this.timeStamp);
