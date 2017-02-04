@@ -1,6 +1,7 @@
 package com.eu.habbo.core;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.util.callback.HTTPPostStatus;
 import com.eu.habbo.util.callback.HTTPVersionCheck;
 
@@ -80,6 +81,11 @@ public class CleanerThread implements Runnable {
      */
     private static int LAST_ERROR_LOGS_SAVED = Emulator.getIntUnixTimestamp();
 
+    /**
+     * Last time dailys where refilled.
+     */
+    private static int LAST_DAILY_REFILL = Emulator.getIntUnixTimestamp();
+
     private static int LAST_CALLBACK = Emulator.getIntUnixTimestamp();
 
     public CleanerThread()
@@ -97,47 +103,52 @@ public class CleanerThread implements Runnable {
 
         int time = Emulator.getIntUnixTimestamp();
 
-        if(time - LAST_HOF_RELOAD > RELOAD_HALL_OF_FAME)
+        if (time - LAST_HOF_RELOAD > RELOAD_HALL_OF_FAME)
         {
             Emulator.getGameEnvironment().getHotelViewManager().getHallOfFame().reload();
             LAST_HOF_RELOAD = time;
         }
 
-        if(time - LAST_NL_RELOAD > RELOAD_NEWS_LIST)
+        if (time - LAST_NL_RELOAD > RELOAD_NEWS_LIST)
         {
             Emulator.getGameEnvironment().getHotelViewManager().getNewsList().reload();
             LAST_NL_RELOAD = time;
         }
 
-        if(time - LAST_INACTIVE_ROOMS_CLEARED > REMOVE_INACTIVE_ROOMS)
+        if (time - LAST_INACTIVE_ROOMS_CLEARED > REMOVE_INACTIVE_ROOMS)
         {
             Emulator.getGameEnvironment().getRoomManager().clearInactiveRooms();
             LAST_INACTIVE_ROOMS_CLEARED = time;
         }
 
-        if(time - LAST_INACTIVE_GUILDS_CLEARED > REMOVE_INACTIVE_GUILDS)
+        if (time - LAST_INACTIVE_GUILDS_CLEARED > REMOVE_INACTIVE_GUILDS)
         {
             Emulator.getGameEnvironment().getGuildManager().clearInactiveGuilds();
             Emulator.getGameEnvironment().getGuildForumManager().clearInactiveForums();
             LAST_INACTIVE_GUILDS_CLEARED = time;
         }
 
-        if(time - LAST_INACTIVE_TOURS_CLEARED > REMOVE_INACTIVE_TOURS)
+        if (time - LAST_INACTIVE_TOURS_CLEARED > REMOVE_INACTIVE_TOURS)
         {
             Emulator.getGameEnvironment().getGuideManager().cleanup();
             LAST_INACTIVE_TOURS_CLEARED = time;
         }
 
-        if(time - LAST_ERROR_LOGS_SAVED > SAVE_ERROR_LOGS)
+        if (time - LAST_ERROR_LOGS_SAVED > SAVE_ERROR_LOGS)
         {
             Emulator.getLogging().saveLogs();
             LAST_ERROR_LOGS_SAVED = time;
         }
 
-        if(time - LAST_CALLBACK > CALLBACK_TIME)
+        if (time - LAST_CALLBACK > CALLBACK_TIME)
         {
             Emulator.getThreading().run(new HTTPPostStatus());
             LAST_CALLBACK = time;
+        }
+
+        if (time - LAST_DAILY_REFILL > Emulator.getConfig().getInt("hotel.refill.daily"))
+        {
+            refillDailyRespects();
         }
     }
 
@@ -146,6 +157,8 @@ public class CleanerThread implements Runnable {
      */
     void databaseCleanup()
     {
+        refillDailyRespects();
+
         try
         {
             PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users SET online = ?");
@@ -211,5 +224,28 @@ public class CleanerThread implements Runnable {
         }
 
         Emulator.getLogging().logStart("Database -> Cleaned!");
+    }
+
+    public void refillDailyRespects()
+    {
+        try
+        {
+            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users_settings SET daily_respect_points = ?, daily_pet_respect_points = ?");
+            statement.setInt(1, Emulator.getConfig().getInt("hotel.daily.respect"));
+            statement.setInt(2, Emulator.getConfig().getInt("hotel.daily.respect.pets"));
+            statement.executeUpdate();
+            statement.close();
+            statement.getConnection().close();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
+        for (Habbo habbo : Emulator.getGameEnvironment().getHabboManager().getOnlineHabbos().values())
+        {
+            habbo.getHabboStats().petRespectPointsToGive = 3;
+            habbo.getHabboStats().respectPointsToGive = 3;
+        }
     }
 }

@@ -42,4 +42,6 @@ INSERT INTO `emulator_texts` (`key`, `value`) VALUES
     ('commands.succes.cmd_mute_bots.ignored', 'You are now ignoring bots.'),
     ('commands.succes.cmd_mute_bots.unignored', 'You are no longer ignoring bots.');
 
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.daily.respect', '3'), ('hotel.daily.respect.pets', '3'),  ('hotel.refill.daily', '86400');
+
 #END DATABASE UPDATE: 1.2.0 -> 1.3.0
