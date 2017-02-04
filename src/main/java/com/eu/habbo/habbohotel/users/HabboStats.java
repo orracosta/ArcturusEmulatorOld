@@ -54,6 +54,8 @@ public class HabboStats implements Runnable
     public int rentedItemId;
     public int rentedTimeEnd;
     public int hofPoints;
+    public boolean ignorePets;
+    public boolean ignoreBots;
 
     private final THashMap<Achievement, Integer> achievementProgress;
     private final THashMap<Achievement, Integer> achievementCache;
@@ -107,6 +109,8 @@ public class HabboStats implements Runnable
         this.blockStaffAlerts = set.getString("block_alerts").equals("1");
         this.citizenshipLevel = set.getInt("talent_track_citizenship_level");
         this.helpersLevel = set.getInt("talent_track_helpers_level");
+        this.ignoreBots = set.getString("ignore_bots").equalsIgnoreCase("1");
+        this.ignorePets = set.getString("ignore_pets").equalsIgnoreCase("1");
 
         PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM user_window_settings WHERE user_id = ? LIMIT 1");
         statement.setInt(1, this.habbo.getHabboInfo().getId());
@@ -176,7 +180,7 @@ public class HabboStats implements Runnable
     {
         try
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users_settings SET achievement_score = ?, respects_received = ?, respects_given = ?, daily_respect_points = ?, block_following = ?, block_friendrequests = ?, online_time = online_time + ?, guild_id = ?, daily_pet_respect_points = ?, club_expire_timestamp = ?, login_streak = ?, rent_space_id = ?, rent_space_endtime = ?, volume_system = ?, volume_furni = ?, volume_trax = ?, block_roominvites = ?, old_chat = ?, block_camera_follow = ?, chat_color = ?, hof_points = ?, block_alerts = ?, talent_track_citizenship_level = ?, talent_track_helpers_level = ? WHERE user_id = ? LIMIT 1");
+            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users_settings SET achievement_score = ?, respects_received = ?, respects_given = ?, daily_respect_points = ?, block_following = ?, block_friendrequests = ?, online_time = online_time + ?, guild_id = ?, daily_pet_respect_points = ?, club_expire_timestamp = ?, login_streak = ?, rent_space_id = ?, rent_space_endtime = ?, volume_system = ?, volume_furni = ?, volume_trax = ?, block_roominvites = ?, old_chat = ?, block_camera_follow = ?, chat_color = ?, hof_points = ?, block_alerts = ?, talent_track_citizenship_level = ?, talent_track_helpers_level = ?, ignore_bots = ?, ignore_pets = ? WHERE user_id = ? LIMIT 1");
             statement.setInt(1, this.achievementScore);
             statement.setInt(2, this.respectPointsReceived);
             statement.setInt(3, this.respectPointsGiven);
@@ -201,7 +205,9 @@ public class HabboStats implements Runnable
             statement.setString(22, this.blockStaffAlerts ? "1" : "0");
             statement.setInt(23, this.citizenshipLevel);
             statement.setInt(24, this.helpersLevel);
-            statement.setInt(25, this.habbo.getHabboInfo().getId());
+            statement.setString(25, this.ignoreBots ? "1" : "0");
+            statement.setString(26, this.ignorePets ? "1" : "0");
+            statement.setInt(27, this.habbo.getHabboInfo().getId());
             statement.executeUpdate();
             statement.close();
             statement.getConnection().close();

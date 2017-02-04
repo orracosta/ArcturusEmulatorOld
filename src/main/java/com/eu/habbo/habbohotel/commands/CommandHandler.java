@@ -68,7 +68,9 @@ public class CommandHandler
         addCommand(new MimicCommand());
         addCommand(new MoonwalkCommand());
         addCommand(new MultiCommand());
+        addCommand(new MuteBotsCommand());
         addCommand(new MuteCommand());
+        addCommand(new MutePetsCommand());
         addCommand(new PetInfoCommand());
         addCommand(new PickallCommand());
         addCommand(new PixelCommand());

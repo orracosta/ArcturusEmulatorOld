@@ -4051,6 +4051,56 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
     }
 
+    public void petChat(ServerMessage message)
+    {
+        synchronized (this.currentHabbos)
+        {
+            TIntObjectIterator<Habbo> iterator = this.currentHabbos.iterator();
+
+            for (int i = this.currentHabbos.size(); i-- > 0; )
+            {
+                try
+                {
+                    iterator.advance();
+                    if (iterator.value().getHabboStats().ignorePets)
+                        continue;
+
+                    iterator.value().getClient().sendResponse(message);
+                }
+                catch (NoSuchElementException e)
+                {
+                    Emulator.getLogging().logErrorLine(e);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void botChat(ServerMessage message)
+    {
+        synchronized (this.currentHabbos)
+        {
+            TIntObjectIterator<Habbo> iterator = this.currentHabbos.iterator();
+
+            for (int i = this.currentHabbos.size(); i-- > 0; )
+            {
+                try
+                {
+                    iterator.advance();
+                    if (iterator.value().getHabboStats().ignoreBots)
+                        continue;
+
+                    iterator.value().getClient().sendResponse(message);
+                }
+                catch (NoSuchElementException e)
+                {
+                    Emulator.getLogging().logErrorLine(e);
+                    break;
+                }
+            }
+        }
+    }
+
     void loadRights()
     {
         this.rights.clear();

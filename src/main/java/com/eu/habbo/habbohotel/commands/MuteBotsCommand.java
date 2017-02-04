@@ -1,0 +1,23 @@
+package com.eu.habbo.habbohotel.commands;
+
+import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
+import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
+import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
+
+public class MuteBotsCommand extends Command
+{
+    public MuteBotsCommand()
+    {
+        super(null, Emulator.getTexts().getValue("commands.keys.cmd_mute_bots").split(";"));
+    }
+
+    @Override
+    public boolean handle(GameClient gameClient, String[] params) throws Exception
+    {
+        gameClient.getHabbo().getHabboStats().ignoreBots = !gameClient.getHabbo().getHabboStats().ignoreBots;
+        gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_mute_bots." +(gameClient.getHabbo().getHabboStats().ignoreBots ? "ignored" : "unignored")), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+        return true;
+    }
+}

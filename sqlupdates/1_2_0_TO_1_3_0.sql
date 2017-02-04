@@ -30,4 +30,16 @@ INSERT INTO `catalog_featured_pages` (`slot_id`, `image`, `caption`, `type`, `ex
 ('2', 'catalogue/feature_cata_hort_habbergerbundle.png', 'Get your own Habbo FASTFOOD restaurant!', 'page_name', '-1', 'fastfood', '0', ''),
 ('3', 'catalogue/feature_cata_hort_olympic16.png', 'HabboLympix are here!', 'page_name', '-1', 'habbo_lympix', '0', ''),
 ('4', 'catalogue/feature_cata_hort_HC_b.png', 'Obtain Habbo Club Today!', 'page_name', '-1', 'habbo_club', '0', '');
+
+ALTER TABLE  `users_settings` ADD  `ignore_bots` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0',
+ADD  `ignore_pets` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0';
+
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES
+    ('commands.keys.cmd_mute_pets', 'mutepets;ignorepets;mute_pets;ignore_pets'),
+    ('commands.succes.cmd_mute_pets.ignored', 'You''re now ignoring pets.'),
+    ('commands.succes.cmd_mute_pets.unignored', 'You''re no longer ignoring pets.'),
+    ('commands.keys.cmd_mute_bots', 'mutebots;ignorebots;mute_bots;ignore_bots'),
+    ('commands.succes.cmd_mute_bots.ignored', 'You are now ignoring bots.'),
+    ('commands.succes.cmd_mute_bots.unignored', 'You are no longer ignoring bots.');
+
 #END DATABASE UPDATE: 1.2.0 -> 1.3.0

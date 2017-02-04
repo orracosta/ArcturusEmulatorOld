@@ -41,7 +41,7 @@ public abstract class AbstractPet implements ISerialize, Runnable
             PetTalkEvent talkEvent = new PetTalkEvent(this, chatMessage);
             if (!Emulator.getPluginManager().fireEvent(talkEvent).isCancelled())
             {
-                this.room.sendComposer(new RoomUserTalkComposer(chatMessage).compose());
+                this.room.petChat(new RoomUserTalkComposer(chatMessage).compose());
             }
         }
     }

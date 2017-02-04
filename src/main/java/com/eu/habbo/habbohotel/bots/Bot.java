@@ -305,7 +305,7 @@ public class Bot implements Runnable
             if(Emulator.getPluginManager().fireEvent(event).isCancelled())
                 return;
 
-            this.room.sendComposer(new RoomUserTalkComposer(new RoomChatMessage(event.message, this.roomUnit, RoomChatMessageBubbles.BOT)).compose());
+            this.room.botChat(new RoomUserTalkComposer(new RoomChatMessage(event.message, this.roomUnit, RoomChatMessageBubbles.BOT)).compose());
         }
     }
 
@@ -321,7 +321,7 @@ public class Bot implements Runnable
             if(Emulator.getPluginManager().fireEvent(event).isCancelled())
                 return;
 
-            this.room.sendComposer(new RoomUserShoutComposer(new RoomChatMessage(event.message, this.roomUnit, RoomChatMessageBubbles.BOT)).compose());
+            this.room.botChat(new RoomUserShoutComposer(new RoomChatMessage(event.message, this.roomUnit, RoomChatMessageBubbles.BOT)).compose());
         }
     }
 
