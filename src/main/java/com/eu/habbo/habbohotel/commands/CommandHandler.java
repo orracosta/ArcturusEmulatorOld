@@ -211,6 +211,8 @@ public class CommandHandler
                                 {
                                     Emulator.getLogging().addLog(new CommandLog(gameClient.getHabbo().getHabboInfo().getId(), command, commandLine, succes));
                                 }
+
+                                return succes;
                             }
                         }
                     }
