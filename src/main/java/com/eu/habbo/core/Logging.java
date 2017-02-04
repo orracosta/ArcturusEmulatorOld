@@ -40,6 +40,7 @@ public class Logging
     public static final String ANSI_WHITE = "\u001B[37m";
 
     private final THashSet<Loggable> errorLogs = new THashSet<Loggable>();
+    private final THashSet<Loggable> commandLogs = new THashSet<Loggable>();
 
     public Logging()
     {
@@ -236,9 +237,19 @@ public class Logging
 
     public void addLog(Loggable log)
     {
-        synchronized (this.errorLogs)
+        if (log instanceof ErrorLog)
         {
-            this.errorLogs.add(log);
+            synchronized (this.errorLogs)
+            {
+                this.errorLogs.add(log);
+            }
+        }
+        else if (log instanceof CommandLog)
+        {
+            synchronized (this.commandLogs)
+            {
+                this.commandLogs.add(log);
+            }
         }
     }
 
@@ -246,10 +257,7 @@ public class Logging
     {
         synchronized (this.errorLogs)
         {
-            PreparedStatement statement = null;
-
-            Emulator.getDatabase().prepare(ErrorLog.insertQuery);
-
+            PreparedStatement statement = Emulator.getDatabase().prepare(ErrorLog.insertQuery);
             for (Loggable log : this.errorLogs)
             {
                 try
@@ -262,6 +270,36 @@ public class Logging
                 }
             }
             this.errorLogs.clear();
+
+            if (statement != null)
+            {
+                try
+                {
+                    statement.close();
+                    statement.getConnection().close();
+                }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            }
+        }
+
+        synchronized (this.commandLogs)
+        {
+            PreparedStatement statement = Emulator.getDatabase().prepare(CommandLog.insertQuery);
+            for (Loggable log : this.commandLogs)
+            {
+                try
+                {
+                    log.log(statement);
+                }
+                catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            this.commandLogs.clear();
 
             if (statement != null)
             {
