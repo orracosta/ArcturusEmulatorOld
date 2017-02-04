@@ -30,6 +30,7 @@ public class RoomSpecialTypes
     private final THashMap<Integer, InteractionNest> nests;
     private final THashMap<Integer, InteractionPetDrink> petDrinks;
     private final THashMap<Integer, InteractionPetFood> petFoods;
+    private final THashMap<Integer, InteractionPetToy> petToys;
     private final THashMap<Integer, InteractionRoller> rollers;
 
     private final THashMap<WiredTriggerType, THashSet<InteractionWiredTrigger>> wiredTriggers;
@@ -49,6 +50,7 @@ public class RoomSpecialTypes
         this.nests = new THashMap<Integer, InteractionNest>();
         this.petDrinks = new THashMap<Integer, InteractionPetDrink>();
         this.petFoods = new THashMap<Integer, InteractionPetFood>();
+        this.petToys = new THashMap<Integer, InteractionPetToy>();
         this.rollers = new THashMap<Integer, InteractionRoller>();
 
         this.wiredTriggers = new THashMap<WiredTriggerType, THashSet<InteractionWiredTrigger>>();
@@ -184,6 +186,35 @@ public class RoomSpecialTypes
             petFoods.addAll(this.petFoods.values());
 
             return petFoods;
+        }
+    }
+
+    /*
+        Pet Toys.
+     */
+    public InteractionPetToy getPetToy(int itemId)
+    {
+        return this.petToys.get(itemId);
+    }
+
+    public void addPetToy(InteractionPetToy item)
+    {
+        this.petToys.put(item.getId(), item);
+    }
+
+    public void removePetToy(InteractionPetToy petToy)
+    {
+        this.petToys.remove(petToy.getId());
+    }
+
+    public THashSet<InteractionPetToy> getPetToys()
+    {
+        synchronized (this.petToys)
+        {
+            THashSet<InteractionPetToy> petToys = new THashSet<InteractionPetToy>();
+            petToys.addAll(this.petToys.values());
+
+            return petToys;
         }
     }
 

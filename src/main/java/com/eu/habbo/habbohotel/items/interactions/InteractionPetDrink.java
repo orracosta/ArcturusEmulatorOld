@@ -6,7 +6,7 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.Pet;
-import com.eu.habbo.habbohotel.pets.PetTask;
+import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
@@ -76,7 +76,7 @@ public class InteractionPetDrink extends HabboItem
             {
                 if (((Pet) pet).levelThirst >= 35)
                 {
-                    ((Pet) pet).setTask(PetTask.EAT);
+                    ((Pet) pet).setTask(PetTasks.EAT);
                     pet.getRoomUnit().setGoalLocation(room.getLayout().getTile(this.getX(), this.getY()));
                     pet.getRoomUnit().setRotation(RoomUserRotation.values()[this.getRotation()]);
                     pet.getRoomUnit().getStatus().clear();

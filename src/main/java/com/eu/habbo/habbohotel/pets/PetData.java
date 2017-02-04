@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionNest;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPetDrink;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPetFood;
+import com.eu.habbo.habbohotel.items.interactions.InteractionPetToy;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
@@ -34,10 +35,12 @@ public class PetData
     private List<Item> nestItems;
     private List<Item> foodItems;
     private List<Item> drinkItems;
+    private List<Item> toyItems;
 
     public static final List<Item> generalDrinkItems = new ArrayList<Item>();
     public static final List<Item> generalFoodItems = new ArrayList<Item>();
     public static final List<Item> generalNestItems = new ArrayList<Item>();
+    public static final List<Item> generalToyItems = new ArrayList<Item>();
 
     public THashMap<PetVocalsType, THashSet<PetVocal>> petVocals;
     public static final THashMap<PetVocalsType, THashSet<PetVocal>> generalPetVocals = new THashMap<PetVocalsType, THashSet<PetVocal>>();
@@ -54,6 +57,7 @@ public class PetData
         this.nestItems = new ArrayList<Item>();
         this.foodItems = new ArrayList<Item>();
         this.drinkItems = new ArrayList<Item>();
+        this.toyItems = new ArrayList<Item>();
 
         this.petVocals = new THashMap<PetVocalsType, THashSet<PetVocal>>();
 
@@ -211,6 +215,47 @@ public class PetData
         {
             Collections.shuffle(drinkList);
             return drinkList.get(0);
+        }
+
+        return null;
+    }
+
+    public void addToyItem(Item item)
+    {
+        this.toyItems.add(item);
+    }
+
+    public List<Item> getToyItems()
+    {
+        return this.toyItems;
+    }
+
+    public boolean haveToyItem(HabboItem item)
+    {
+        return this.haveToyItem(item.getBaseItem());
+    }
+
+    public boolean haveToyItem(Item item)
+    {
+        return this.toyItems.contains(item) || PetData.generalToyItems.contains(item);
+    }
+
+    public HabboItem randomToyItem(THashSet<InteractionPetToy> items)
+    {
+        List<HabboItem> toyList = new ArrayList<HabboItem>();
+
+        for(InteractionPetToy toy : items)
+        {
+            if(this.haveToyItem(toy))
+            {
+                toyList.add(toy);
+            }
+        }
+
+        if(!toyList.isEmpty())
+        {
+            Collections.shuffle(toyList);
+            return toyList.get(0);
         }
 
         return null;

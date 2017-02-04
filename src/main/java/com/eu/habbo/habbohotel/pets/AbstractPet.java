@@ -15,19 +15,19 @@ import java.util.TimeZone;
 
 public abstract class AbstractPet implements ISerialize, Runnable
 {
-    int id;
-    int userId;
-    Room room;
-    String name;
-    PetData petData;
-    int race;
-    String color;
-    int happyness;
-    int experience;
-    int energy;
-    int respect;
-    int created;
-    int level;
+    protected int id;
+    protected int userId;
+    protected Room room;
+    protected String name;
+    protected PetData petData;
+    protected int race;
+    protected String color;
+    protected int happyness;
+    protected int experience;
+    protected int energy;
+    protected int respect;
+    protected int created;
+    protected int level;
     public boolean needsUpdate = false;
 
     RoomUnit roomUnit;
@@ -152,7 +152,7 @@ public abstract class AbstractPet implements ISerialize, Runnable
         this.energy = energy;
     }
 
-    synchronized void addEnergy(int amount)
+    public synchronized void addEnergy(int amount)
     {
         this.energy += amount;
 
@@ -163,7 +163,7 @@ public abstract class AbstractPet implements ISerialize, Runnable
             this.energy = 0;
     }
 
-    synchronized void addHappyness(int amount)
+    public synchronized void addHappyness(int amount)
     {
         this.happyness += amount;
 

@@ -5,7 +5,7 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.HorsePet;
 import com.eu.habbo.habbohotel.pets.Pet;
-import com.eu.habbo.habbohotel.pets.PetTask;
+import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -79,7 +79,7 @@ public class InteractionNest extends HabboItem
             {
                 if (pet.getEnergy() <= 85)
                 {
-                    ((Pet) pet).setTask(PetTask.NEST);
+                    ((Pet) pet).setTask(PetTasks.NEST);
                     pet.getRoomUnit().setGoalLocation(room.getLayout().getTile(this.getX(), this.getY()));
                     pet.getRoomUnit().getStatus().clear();
                     pet.getRoomUnit().getStatus().remove("mv");

@@ -4,8 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPetFood;
 import com.eu.habbo.habbohotel.pets.Pet;
-import com.eu.habbo.habbohotel.pets.PetTask;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
+import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 
@@ -28,7 +27,7 @@ public class PetEatAction implements Runnable
             if (this.pet.levelHunger >= 20 && this.food != null && Integer.valueOf(this.food.getExtradata()) < this.food.getBaseItem().getStateCount())
             {
                 this.pet.addHunger(-20);
-                this.pet.setTask(PetTask.EAT);
+                this.pet.setTask(PetTasks.EAT);
                 this.pet.getRoomUnit().setCanWalk(false);
 
                 this.food.setExtradata(Integer.valueOf(this.food.getExtradata()) + 1 + "");

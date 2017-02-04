@@ -2,7 +2,7 @@ package com.eu.habbo.threading.runnables;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.pets.HorsePet;
-import com.eu.habbo.habbohotel.pets.PetTask;
+import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.util.pathfinding.PathFinder;
@@ -34,7 +34,7 @@ public class RoomUnitRideHorse implements Runnable
                 this.habbo.getHabboInfo().getCurrentRoom().giveEffect(this.habbo, 77);
                 this.habbo.getHabboInfo().setRiding(this.pet);
                 this.pet.setRider(this.habbo);
-                this.pet.setTask(PetTask.RIDE);
+                this.pet.setTask(PetTasks.RIDE);
             }
             else
             {

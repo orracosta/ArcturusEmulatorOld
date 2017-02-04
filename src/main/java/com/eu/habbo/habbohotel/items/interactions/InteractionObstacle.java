@@ -6,14 +6,13 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.HorsePet;
-import com.eu.habbo.habbohotel.pets.PetTask;
+import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.threading.runnables.HabboItemNewState;
 
 import java.sql.ResultSet;
@@ -81,7 +80,7 @@ public class InteractionObstacle extends HabboItem
         {
             AbstractPet pet = room.getPet(roomUnit);
 
-            if(pet != null && pet instanceof HorsePet && ((HorsePet) pet).getRider() != null && ((HorsePet) pet).getTask().equals(PetTask.RIDE))
+            if(pet != null && pet instanceof HorsePet && ((HorsePet) pet).getRider() != null && ((HorsePet) pet).getTask().equals(PetTasks.RIDE))
             {
                 if(pet.getRoomUnit().getStatus().containsKey("jmp"))
                 {

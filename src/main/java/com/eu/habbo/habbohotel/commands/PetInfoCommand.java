@@ -51,6 +51,7 @@ public class PetInfoCommand extends Command implements TIntObjectProcedure<Abstr
 
             this.client.sendResponse(new GenericAlertComposer("" +
                     Emulator.getTexts().getValue("commands.generic.cmd_pet_info.title") + ": " + pet.getName() + "\r\n" +
+                    Emulator.getTexts().getValue("generic.pet.id") + ": " + pet.getId() + "\r" +
                     Emulator.getTexts().getValue("generic.pet.name") + ": " + pet.getName() + "\r" +
                     Emulator.getTexts().getValue("generic.pet.age") + ": " + pet.daysAlive() + " " + Emulator.getTexts().getValue("generic.pet.days.alive") + "\r" +
                     Emulator.getTexts().getValue("generic.pet.level") + ": " + pet.getLevel() + "\r" +
@@ -62,7 +63,7 @@ public class PetInfoCommand extends Command implements TIntObjectProcedure<Abstr
                     Emulator.getTexts().getValue("generic.pet.level.thirst") + ": " + ((Pet) pet).levelThirst + "\r" +
                     Emulator.getTexts().getValue("generic.pet.level.hunger") + ": " + ((Pet) pet).levelHunger + "\r" +
                     Emulator.getTexts().getValue("generic.pet.current_action") + ": " + (((Pet) pet).getTask() == null ? Emulator.getTexts().getValue("generic.nothing") :  ((Pet) pet).getTask().name()) + "\r" +
-                    Emulator.getTexts().getValue("generic.can.walk") + ": " + (((Pet) pet).canWalk() ? Emulator.getTexts().getValue("generic.yes") : Emulator.getTexts().getValue("generic.no")) + ""
+                    Emulator.getTexts().getValue("generic.can.walk") + ": " + (pet.getRoomUnit().canWalk() ? Emulator.getTexts().getValue("generic.yes") : Emulator.getTexts().getValue("generic.no")) + ""
             ));
         }
 

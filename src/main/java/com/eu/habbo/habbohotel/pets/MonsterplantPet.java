@@ -66,10 +66,8 @@ public class MonsterplantPet extends Pet
     }
 
     @Override
-    public boolean cycle()
+    public void cycle()
     {
-
-        return true;
     }
 
     public int getType()

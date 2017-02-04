@@ -1,16 +1,16 @@
 package com.eu.habbo.threading.runnables;
 
 import com.eu.habbo.habbohotel.pets.Pet;
-import com.eu.habbo.habbohotel.pets.PetTask;
+import com.eu.habbo.habbohotel.pets.PetTasks;
 
 public class PetClearPosture implements Runnable
 {
     private final Pet pet;
     private final String key;
-    private final PetTask newTask;
+    private final PetTasks newTask;
     private final boolean clearTask;
 
-    public PetClearPosture(Pet pet, String key, PetTask newTask, boolean clearTask)
+    public PetClearPosture(Pet pet, String key, PetTasks newTask, boolean clearTask)
     {
         this.pet = pet;
         this.key = key;

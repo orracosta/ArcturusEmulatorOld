@@ -34,8 +34,9 @@ public class Pet extends AbstractPet
     private int randomActionTickTimeout = Emulator.getIntUnixTimestamp();
     private int postureTimeout = Emulator.getIntUnixTimestamp();
     private int idleCommandTicks = 0;
+    private int freeCommandTicks = -1;
 
-    private PetTask task;
+    private PetTasks task;
 
     private boolean muted = false;
 
@@ -154,12 +155,12 @@ public class Pet extends AbstractPet
         }
     }
 
-    public boolean cycle()
+    public void cycle()
     {
         this.idleCommandTicks++;
 
         int time = Emulator.getIntUnixTimestamp();
-        if(this.roomUnit != null && this.task != PetTask.RIDE)
+        if(this.roomUnit != null && this.task != PetTasks.RIDE)
         {
             if(time - this.gestureTickTimeout > 5)
             {
@@ -173,6 +174,16 @@ public class Pet extends AbstractPet
                 this.postureTimeout = time;
             }
 
+            if (this.freeCommandTicks > 0)
+            {
+                this.freeCommandTicks--;
+
+                if (this.freeCommandTicks == 0)
+                {
+                    freeCommand();
+                }
+            }
+
             if(!this.roomUnit.isWalking())
             {
                 this.roomUnit.getStatus().remove("mv");
@@ -182,7 +193,7 @@ public class Pet extends AbstractPet
                     this.roomUnit.setGoalLocation(this.room.getRandomWalkableTile());
                 }
 
-                if (this.task == PetTask.NEST || this.task == PetTask.DOWN)
+                if (this.task == PetTasks.NEST || this.task == PetTasks.DOWN)
                 {
                     if (this.levelHunger > 0)
                         this.levelHunger--;
@@ -204,7 +215,7 @@ public class Pet extends AbstractPet
                         this.gestureTickTimeout = time;
                     }
                 }
-                else if(this.canWalk() && time - this.tickTimeout >= 5)
+                else if(this.tickTimeout >= 5)
                 {
                     if(this.levelHunger < 100)
                         this.levelHunger++;
@@ -223,22 +234,19 @@ public class Pet extends AbstractPet
                 int timeout = Emulator.getRandom().nextInt(20) * 2;
                 this.roomUnit.setWalkTimeOut(timeout < 20 ? 20 + time : timeout + time);
 
-                if(this.canWalk())
+                if(this.energy >= 2)
+                    this.addEnergy(-1);
+
+                if(this.levelHunger < 100)
+                    this.levelHunger++;
+
+                if(this.levelThirst < 100)
+                    this.levelThirst++;
+
+                if(this.happyness > 0 && time - this.happynessDelay >= 30)
                 {
-                    if(this.energy >= 2)
-                        this.addEnergy(-1);
-
-                    if(this.levelHunger < 100)
-                        this.levelHunger++;
-
-                    if(this.levelThirst < 100)
-                        this.levelThirst++;
-
-                    if(this.happyness > 0 && time - this.happynessDelay >= 30)
-                    {
-                        this.happyness--;
-                        this.happynessDelay = time;
-                    }
+                    this.happyness--;
+                    this.happynessDelay = time;
                 }
             }
 
@@ -280,7 +288,7 @@ public class Pet extends AbstractPet
             else if(time - this.randomActionTickTimeout > 30)
             {
                 this.randomAction();
-                this.randomActionTickTimeout = time;
+                this.randomActionTickTimeout = time + (10 * Emulator.getRandom().nextInt(60));
             }
 
             if(!this.muted)
@@ -317,7 +325,6 @@ public class Pet extends AbstractPet
                 }
             }
         }
-        return false;
     }
 
     public void handleCommand(PetCommand command, Habbo habbo)
@@ -336,10 +343,7 @@ public class Pet extends AbstractPet
         {
             case 0:
             {
-                this.task = null;
-                this.roomUnit.getStatus().clear();
-                this.roomUnit.setCanWalk(true);
-                super.say(this.petData.randomVocal(PetVocalsType.GENERIC_NEUTRAL));
+                freeCommand();
             }
             break;
 
@@ -347,7 +351,7 @@ public class Pet extends AbstractPet
             {
                 this.getRoomUnit().getStatus().put("sit", room.getStackHeight(this.getRoomUnit().getX(), this.getRoomUnit().getY(), false) - 0.50 + "");
                 this.getRoomUnit().setGoalLocation(this.room.getLayout().getTile(this.getRoomUnit().getX(), this.getRoomUnit().getY()));
-                this.task = PetTask.SIT;
+                this.task = PetTasks.SIT;
                 this.packetUpdate = true;
 
                 if(this.happyness > 75)
@@ -359,14 +363,14 @@ public class Pet extends AbstractPet
 
             case 2:
             {
-                if(this.task == PetTask.DOWN)
+                if(this.task == PetTasks.DOWN)
                     return;
 
                 this.getRoomUnit().setGoalLocation(this.room.getLayout().getTile(this.getRoomUnit().getX(), this.getRoomUnit().getY()));
                 this.getRoomUnit().getStatus().remove("mv");
                 this.getRoomUnit().getStatus().remove("sit");
                 this.getRoomUnit().getStatus().put("lay", room.getStackHeight(this.getRoomUnit().getX(), this.getRoomUnit().getY(), false) + "");
-                this.task = PetTask.DOWN;
+                this.task = PetTasks.DOWN;
                 this.packetUpdate = true;
 
                 if(this.happyness > 50)
@@ -378,11 +382,8 @@ public class Pet extends AbstractPet
 
             case 3:
             {
-                if(this.task == PetTask.HERE)
-                    return;
-
                 this.getRoomUnit().setGoalLocation(PathFinder.getSquareInFront(this.room.getLayout(), habbo.getRoomUnit().getX(), habbo.getRoomUnit().getY(), habbo.getRoomUnit().getBodyRotation().getValue()));
-                this.task = PetTask.HERE;
+                this.task = PetTasks.HERE;
                 this.roomUnit.setCanWalk(true);
 
                 if(this.happyness > 75)
@@ -395,11 +396,11 @@ public class Pet extends AbstractPet
             case 4:
             {
                 clearPosture();
-                if(this.task == PetTask.BEG)
+                if(this.task == PetTasks.BEG)
                     return;
 
                 this.getRoomUnit().getStatus().put("beg", "0");
-                this.task = PetTask.BEG;
+                this.task = PetTasks.BEG;
                 this.packetUpdate = true;
 
                 if(this.happyness > 90)
@@ -412,14 +413,14 @@ public class Pet extends AbstractPet
             case 5:
             {
                 clearPosture();
-                if(this.task == PetTask.PLAY_DEAD)
+                if(this.task == PetTasks.PLAY_DEAD)
                     return;
 
                 this.getRoomUnit().getStatus().remove("mv");
                 this.getRoomUnit().getStatus().remove("lay");
                 this.getRoomUnit().getStatus().remove("ded");
                 this.getRoomUnit().getStatus().put("ded", room.getStackHeight(this.roomUnit.getX(), this.roomUnit.getY(), false) + "");
-                this.task = PetTask.PLAY_DEAD;
+                this.task = PetTasks.PLAY_DEAD;
                 this.packetUpdate = true;
 
                 if(this.happyness > 50)
@@ -432,14 +433,14 @@ public class Pet extends AbstractPet
             case 6:
             {
                 clearPosture();
-                if(this.task == PetTask.STAY)
+                if(this.task == PetTasks.STAY)
                     return;
 
                 this.getRoomUnit().setCanWalk(false);
                 this.getRoomUnit().getStatus().remove("mv");
                 this.getRoomUnit().getStatus().remove("lay");
                 this.getRoomUnit().getStatus().remove("ded");
-                this.task = PetTask.STAY;
+                this.task = PetTasks.STAY;
 
                 super.say(this.petData.randomVocal(PetVocalsType.GENERIC_NEUTRAL));
             }
@@ -448,14 +449,14 @@ public class Pet extends AbstractPet
             case 7:
             {
                 clearPosture();
-                if(this.task == PetTask.FOLLOW)
+                if(this.task == PetTasks.FOLLOW)
                     return;
 
                 Emulator.getThreading().run(new PetFollowHabbo(this, habbo, 0));
                 this.getRoomUnit().getStatus().remove("mv");
                 this.getRoomUnit().getStatus().remove("lay");
                 this.getRoomUnit().getStatus().remove("ded");
-                this.task = PetTask.FOLLOW;
+                this.task = PetTasks.FOLLOW;
 
                 if(this.happyness > 75)
                     super.say(this.petData.randomVocal(PetVocalsType.PLAYFUL));
@@ -468,10 +469,10 @@ public class Pet extends AbstractPet
             case 8:
             {
                 clearPosture();
-                if(this.task == PetTask.STAND)
+                if(this.task == PetTasks.STAND)
                     return;
 
-                this.task = PetTask.STAND;
+                this.task = PetTasks.STAND;
                 this.roomUnit.getStatus().remove("lay");
                 this.getRoomUnit().getStatus().remove("mv");
                 this.getRoomUnit().getStatus().remove("lay");
@@ -487,11 +488,11 @@ public class Pet extends AbstractPet
             case 9:
             {
                 clearPosture();
-                if(this.task == PetTask.JUMP)
+                if(this.task == PetTasks.JUMP)
                     return;
 
                 this.roomUnit.getStatus().put("jmp", "");
-                this.task = PetTask.JUMP;
+                this.task = PetTasks.JUMP;
                 this.packetUpdate = true;
                 Emulator.getThreading().run(new PetClearPosture(this, "jmp", null, false), 2000);
 
@@ -518,7 +519,7 @@ public class Pet extends AbstractPet
                     super.say(this.petData.randomVocal(PetVocalsType.THIRSTY));
                 else if(this.energy < 25)
                     super.say(this.petData.randomVocal(PetVocalsType.TIRED));
-                else if(this.task == PetTask.NEST || this.task == PetTask.DOWN)
+                else if(this.task == PetTasks.NEST || this.task == PetTasks.DOWN)
                     super.say(this.petData.randomVocal(PetVocalsType.SLEEPING));
             }
             break;
@@ -528,6 +529,10 @@ public class Pet extends AbstractPet
                 //Play
                 if(this.happyness > 75)
                     super.say(this.petData.randomVocal(PetVocalsType.PLAYFUL));
+                else
+                {
+                    super.say(this.petData.randomVocal(PetVocalsType.DISOBEY));
+                }
             }
             break;
 
@@ -546,7 +551,6 @@ public class Pet extends AbstractPet
                 if(this.energy < 65)
                 {
                     this.findNest();
-
 
                     if (this.energy < 30)
                         super.say(this.petData.randomVocal(PetVocalsType.TIRED));
@@ -580,11 +584,11 @@ public class Pet extends AbstractPet
             {
                 //Follow left.
                 clearPosture();
-                if(this.task == PetTask.FOLLOW)
+                if(this.task == PetTasks.FOLLOW)
                     return;
 
                 Emulator.getThreading().run(new PetFollowHabbo(this, habbo, - 2));
-                this.task = PetTask.FOLLOW;
+                this.task = PetTasks.FOLLOW;
 
                 if(this.happyness > 75)
                     super.say(this.petData.randomVocal(PetVocalsType.PLAYFUL));
@@ -597,11 +601,11 @@ public class Pet extends AbstractPet
             {
                 //Follow right.
                 clearPosture();
-                if(this.task == PetTask.FOLLOW)
+                if(this.task == PetTasks.FOLLOW)
                     return;
 
                 Emulator.getThreading().run(new PetFollowHabbo(this, habbo, + 2));
-                this.task = PetTask.FOLLOW;
+                this.task = PetTasks.FOLLOW;
 
                 if(this.happyness > 75)
                     super.say(this.petData.randomVocal(PetVocalsType.PLAYFUL));
@@ -766,7 +770,7 @@ public class Pet extends AbstractPet
             case 35:
             {
                 //Spread wings
-                if(this.task == PetTask.SPREAD_WINGS)
+                if(this.task == PetTasks.SPREAD_WINGS)
                     return;
 
                 this.roomUnit.getStatus().put("wng", "0");
@@ -895,11 +899,14 @@ public class Pet extends AbstractPet
 
         switch(this.task)
         {
+            case FREE:
             case DOWN:
             case FLAT:
             case HERE:
             case SIT:
             case BEG:
+            case PLAY:
+            case PLAY_FOOTBALL:
             case PLAY_DEAD:
             case FOLLOW:
             case JUMP:
@@ -951,7 +958,7 @@ public class Pet extends AbstractPet
         message.appendInt32(0);
     }
 
-    void findNest()
+    public void findNest()
     {
         HabboItem item = this.petData.randomNest(this.room.getRoomSpecialTypes().getNests());
         this.roomUnit.setCanWalk(true);
@@ -963,11 +970,11 @@ public class Pet extends AbstractPet
         {
             this.roomUnit.getStatus().put("lay", this.room.getStackHeight(this.roomUnit.getX(), this.roomUnit.getY(), false) + "");
             super.say(this.petData.randomVocal(PetVocalsType.SLEEPING));
-            this.task = PetTask.DOWN;
+            this.task = PetTasks.DOWN;
         }
     }
 
-    void drink()
+    public void drink()
     {
         HabboItem item = this.petData.randomDrinkItem(this.room.getRoomSpecialTypes().getPetDrinks());
         if(item != null)
@@ -977,7 +984,7 @@ public class Pet extends AbstractPet
         }
     }
 
-    void eat()
+    public void eat()
     {
         HabboItem item = this.petData.randomFoodItem(this.room.getRoomSpecialTypes().getPetFoods());
         {
@@ -989,17 +996,29 @@ public class Pet extends AbstractPet
         }
     }
 
-    void randomHappyAction()
+    public void findToy()
+    {
+        HabboItem item = this.petData.randomToyItem(this.room.getRoomSpecialTypes().getPetToys());
+        {
+            if(item != null)
+            {
+                this.roomUnit.setCanWalk(true);
+                this.roomUnit.setGoalLocation(this.room.getLayout().getTile(item.getX(), item.getY()));
+            }
+        }
+    }
+
+    public void randomHappyAction()
     {
         this.roomUnit.getStatus().put(this.petData.actionsHappy[Emulator.getRandom().nextInt(this.petData.actionsHappy.length)], "");
     }
 
-    void randomSadAction()
+    public void randomSadAction()
     {
         this.roomUnit.getStatus().put(this.petData.actionsTired[Emulator.getRandom().nextInt(this.petData.actionsTired.length)], "");
     }
 
-    void randomAction()
+    public void randomAction()
     {
         this.roomUnit.getStatus().put(this.petData.actionsRandom[Emulator.getRandom().nextInt(this.petData.actionsRandom.length)], "");
     }
@@ -1047,13 +1066,21 @@ public class Pet extends AbstractPet
             this.levelHunger = 0;
     }
 
-    public PetTask getTask()
+    public PetTasks getTask()
     {
         return this.task;
     }
 
-    public void setTask(PetTask newTask)
+    public void setTask(PetTasks newTask)
     {
         this.task = newTask;
+    }
+
+    public void freeCommand()
+    {
+        this.task = null;
+        this.roomUnit.getStatus().clear();
+        this.roomUnit.setCanWalk(true);
+        super.say(this.petData.randomVocal(PetVocalsType.GENERIC_NEUTRAL));
     }
 }

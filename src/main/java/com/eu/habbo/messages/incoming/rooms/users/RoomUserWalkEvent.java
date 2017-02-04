@@ -1,7 +1,7 @@
 package com.eu.habbo.messages.incoming.rooms.users;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.pets.PetTask;
+import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -47,7 +47,7 @@ public class RoomUserWalkEvent extends MessageHandler
                 {
                     if (!roomUnit.cmdTeleport)
                     {
-                        if (habbo.getHabboInfo().getRiding() != null && habbo.getHabboInfo().getRiding().getTask().equals(PetTask.JUMP))
+                        if (habbo.getHabboInfo().getRiding() != null && habbo.getHabboInfo().getRiding().getTask().equals(PetTasks.JUMP))
                             return;
 
                         if (x == roomUnit.getX() && y == roomUnit.getY())

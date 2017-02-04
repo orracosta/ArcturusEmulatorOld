@@ -3,7 +3,7 @@ package com.eu.habbo.messages.incoming.rooms.pets;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.HorsePet;
-import com.eu.habbo.habbohotel.pets.PetTask;
+import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserEffectComposer;
@@ -52,7 +52,7 @@ public class HorseRideEvent extends MessageHandler
                     this.client.getHabbo().getHabboInfo().setRiding((HorsePet) pet);
                     ((HorsePet) pet).setRider(this.client.getHabbo());
                     this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserEffectComposer(this.client.getHabbo().getRoomUnit()).compose());
-                    ((HorsePet) pet).setTask(PetTask.RIDE);
+                    ((HorsePet) pet).setTask(PetTasks.RIDE);
                 } else
                 {
                     pet.getRoomUnit().setGoalLocation(goalTile);

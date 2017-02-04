@@ -61,7 +61,6 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.procedure.TIntObjectProcedure;
 import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
-import javafx.util.Pair;
 
 import java.awt.*;
 import java.sql.PreparedStatement;
@@ -1554,12 +1553,15 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                         continue;
                                     }
 
-                                    if (((Pet) pet).cycle())
+                                    ((Pet) pet).cycle();
+
+                                    if (((Pet) pet).packetUpdate)
                                     {
                                         updatedUnit.add(pet.getRoomUnit());
+                                        ((Pet) pet).packetUpdate = false;
                                     }
 
-                                    if (((Pet) pet).getTask() == PetTask.RIDE)
+                                    if (((Pet) pet).getTask() == PetTasks.RIDE)
                                     {
                                         if (pet instanceof HorsePet)
                                         {

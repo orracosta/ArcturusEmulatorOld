@@ -94,6 +94,7 @@ public class ItemManager {
         this.interactionsList.add(new ItemInteraction("nest",                   InteractionNest.class));
         this.interactionsList.add(new ItemInteraction("pet_drink",              InteractionPetDrink.class));
         this.interactionsList.add(new ItemInteraction("pet_food",               InteractionPetFood.class));
+        this.interactionsList.add(new ItemInteraction("pet_toy",                InteractionPetToy.class));
         this.interactionsList.add(new ItemInteraction("breeding_nest",          InteractionPetBreedingNest.class));
         this.interactionsList.add(new ItemInteraction("obstacle",               InteractionObstacle.class));
         this.interactionsList.add(new ItemInteraction("monsterplant_seed",      InteractionMonsterPlantSeed.class));

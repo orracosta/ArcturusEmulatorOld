@@ -2,7 +2,7 @@ package com.eu.habbo.threading.runnables;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.pets.Pet;
-import com.eu.habbo.habbohotel.pets.PetTask;
+import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.util.pathfinding.PathFinder;
@@ -25,7 +25,7 @@ public class PetFollowHabbo implements Runnable
     {
         if (this.pet != null)
         {
-            if (this.pet.getTask() != PetTask.FOLLOW)
+            if (this.pet.getTask() != PetTasks.FOLLOW)
                 return;
 
             if (this.habbo != null)
@@ -47,7 +47,7 @@ public class PetFollowHabbo implements Runnable
                                 this.pet.getRoomUnit().setCanWalk(true);
                                 if (this.pet instanceof Pet)
                                 {
-                                    this.pet.setTask(PetTask.FOLLOW);
+                                    this.pet.setTask(PetTasks.FOLLOW);
                                 }
                             }
                         }

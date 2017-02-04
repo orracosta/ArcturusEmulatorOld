@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionNest;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPetDrink;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPetFood;
+import com.eu.habbo.habbohotel.items.interactions.InteractionPetToy;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -84,6 +85,7 @@ public class PetManager
         {
             data.getDrinkItems().clear();
             data.getFoodItems().clear();
+            data.getToyItems().clear();
             data.getNests().clear();
             data.petVocals.clear();
         }
@@ -168,6 +170,7 @@ public class PetManager
                         if(baseItem.getInteractionType().getType() == InteractionNest.class) PetData.generalNestItems.add(baseItem);
                         else if(baseItem.getInteractionType().getType() == InteractionPetFood.class) PetData.generalFoodItems.add(baseItem);
                         else if(baseItem.getInteractionType().getType() == InteractionPetDrink.class) PetData.generalDrinkItems.add(baseItem);
+                        else if(baseItem.getInteractionType().getType() == InteractionPetToy.class) PetData.generalToyItems.add(baseItem);
                     }
                     else
                     {
@@ -178,6 +181,7 @@ public class PetManager
                             if(baseItem.getInteractionType().getType() == InteractionNest.class) data.addNest(baseItem);
                             else if(baseItem.getInteractionType().getType() == InteractionPetFood.class) data.addFoodItem(baseItem);
                             else if(baseItem.getInteractionType().getType() == InteractionPetDrink.class) data.addDrinkItem(baseItem);
+                            else if(baseItem.getInteractionType().getType() == InteractionPetToy.class) data.addToyItem(baseItem);
                         }
                     }
                 }

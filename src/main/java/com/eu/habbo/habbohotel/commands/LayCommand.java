@@ -19,7 +19,7 @@ public class LayCommand extends Command
         gameClient.getHabbo().getHabboInfo().getCurrentRoom().updateHabbo(gameClient.getHabbo());
         gameClient.getHabbo().getRoomUnit().cmdSit = true;
         gameClient.getHabbo().getRoomUnit().setBodyRotation(RoomUserRotation.values()[gameClient.getHabbo().getRoomUnit().getBodyRotation().getValue() - gameClient.getHabbo().getRoomUnit().getBodyRotation().getValue() % 2]);
-        gameClient.getHabbo().getRoomUnit().getStatus().put("lay", 0 + "");
+        gameClient.getHabbo().getRoomUnit().getStatus().put("lay", 0.5 + "");
         gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserStatusComposer(gameClient.getHabbo().getRoomUnit()).compose());
         return true;
     }

@@ -102,11 +102,11 @@ public class TestCommand extends Command
                 if(params[3] != null)
                 {
                     a = params[3];
-                    if(params.length >= 4)
+                    if(params.length > 4)
                     {
                         b = params[4];
                     }
-                    if(params.length >= 5)
+                    if(params.length > 5)
                     {
                         c = params[5];
                     }
