@@ -246,7 +246,9 @@ public class Logging
     {
         synchronized (this.errorLogs)
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare(ErrorLog.insertQuery);
+            PreparedStatement statement = null;
+
+            Emulator.getDatabase().prepare(ErrorLog.insertQuery);
 
             for (Loggable log : this.errorLogs)
             {
@@ -259,8 +261,20 @@ public class Logging
                     e.printStackTrace();
                 }
             }
-
             this.errorLogs.clear();
+
+            if (statement != null)
+            {
+                try
+                {
+                    statement.close();
+                    statement.getConnection().close();
+                }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            }
         }
     }
 }

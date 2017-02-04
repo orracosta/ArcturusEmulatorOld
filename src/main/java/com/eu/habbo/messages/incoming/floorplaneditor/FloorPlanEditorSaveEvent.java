@@ -98,6 +98,7 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
                 room.setWallSize(wallSize);
                 room.setFloorSize(floorSize);
                 room.setWallHeight(wallHeight);
+                room.save();
                 Emulator.getGameEnvironment().getRoomManager().unloadRoom(room);
                 room = Emulator.getGameEnvironment().getRoomManager().loadRoom(room.getId());
                 ServerMessage message = new ForwardToRoomComposer(room.getId()).compose();

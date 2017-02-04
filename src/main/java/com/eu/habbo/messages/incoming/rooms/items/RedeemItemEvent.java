@@ -93,6 +93,7 @@ public class RedeemItemEvent extends MessageHandler
                         }
                         catch (Exception e)
                         {
+                            Emulator.getLogging().logErrorLine(e);
                             return;
                         }
 
@@ -102,6 +103,7 @@ public class RedeemItemEvent extends MessageHandler
                         }
                         catch (Exception e)
                         {
+                            Emulator.getLogging().logErrorLine(e);
                             return;
                         }
 
@@ -114,8 +116,7 @@ public class RedeemItemEvent extends MessageHandler
                                 return;
                         }
 
-                        this.client.getHabbo().getHabboInfo().addCurrencyAmount(pointsType, points);
-                        this.client.sendResponse(new UserPointsComposer(this.client.getHabbo().getHabboInfo().getCurrencyAmount(pointsType), points, pointsType));
+                        this.client.getHabbo().givePoints(pointsType, points);
                     }
 
                     room.removeHabboItem(item);

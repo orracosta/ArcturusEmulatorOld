@@ -242,10 +242,13 @@ public class CleanerThread implements Runnable {
             Emulator.getLogging().logSQLException(e);
         }
 
-        for (Habbo habbo : Emulator.getGameEnvironment().getHabboManager().getOnlineHabbos().values())
+        if (Emulator.isReady)
         {
-            habbo.getHabboStats().petRespectPointsToGive = 3;
-            habbo.getHabboStats().respectPointsToGive = 3;
+            for (Habbo habbo : Emulator.getGameEnvironment().getHabboManager().getOnlineHabbos().values())
+            {
+                habbo.getHabboStats().petRespectPointsToGive = 3;
+                habbo.getHabboStats().respectPointsToGive = 3;
+            }
         }
     }
 }
