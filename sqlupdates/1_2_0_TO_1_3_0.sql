@@ -14,7 +14,7 @@ INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.home.room', '0')
 ALTER TABLE  `users` CHANGE  `ip_current`  `ip_current` VARCHAR( 45 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT  'Have your CMS update this IP. If you do not do this IP banning won''t work!';
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('loggedin.elsewhere', 'You have been disconnected as you logged in from somewhere else.');
 
-CREATE TABLE  `habbo`.`catalog_featured_pages` (
+CREATE TABLE  `catalog_featured_pages` (
     `slot_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
     `image` VARCHAR( 64 ) NOT NULL DEFAULT  '',
     `caption` VARCHAR( 128 ) NOT NULL DEFAULT  '',
