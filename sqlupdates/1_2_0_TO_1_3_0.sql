@@ -13,4 +13,21 @@ INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.home.room', '0')
 
 ALTER TABLE  `users` CHANGE  `ip_current`  `ip_current` VARCHAR( 45 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT  'Have your CMS update this IP. If you do not do this IP banning won''t work!';
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('loggedin.elsewhere', 'You have been disconnected as you logged in from somewhere else.');
+
+CREATE TABLE  `habbo`.`catalog_featured_pages` (
+    `slot_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+    `image` VARCHAR( 64 ) NOT NULL DEFAULT  '',
+    `caption` VARCHAR( 128 ) NOT NULL DEFAULT  '',
+    `type` ENUM(  'page_name',  'page_id',  'product_name' ) NOT NULL DEFAULT  'page_name',
+    `expire_timestamp` INT NOT NULL DEFAULT  '-1',
+    `page_name` VARCHAR( 16 ) NOT NULL DEFAULT  '',
+    `page_id` INT NOT NULL DEFAULT  '0',
+    `product_name` VARCHAR( 32 ) NOT NULL DEFAULT  ''
+) ENGINE = MYISAM ;
+
+INSERT INTO `catalog_featured_pages` (`slot_id`, `image`, `caption`, `type`, `expire_timestamp`, `page_name`, `page_id`, `product_name`) VALUES
+('1', 'catalogue/feature_cata_vert_oly16bundle4.png', 'New Olympic 2016 bundle!', 'page_name', '-1', 'olympic_2016', '0', ''),
+('2', 'catalogue/feature_cata_hort_habbergerbundle.png', 'Get your own Habbo FASTFOOD restaurant!', 'page_name', '-1', 'fastfood', '0', ''),
+('3', 'catalogue/feature_cata_hort_olympic16.png', 'HabboLympix are here!', 'page_name', '-1', 'habbo_lympix', '0', ''),
+('4', 'catalogue/feature_cata_hort_HC_b.png', 'Obtain Habbo Club Today!', 'page_name', '-1', 'habbo_club', '0', '');
 #END DATABASE UPDATE: 1.2.0 -> 1.3.0

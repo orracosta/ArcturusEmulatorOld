@@ -1,5 +1,7 @@
 package com.eu.habbo.habbohotel.catalog.layouts;
 
+import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.catalog.CatalogFeaturedPage;
 import com.eu.habbo.habbohotel.catalog.CatalogPage;
 import com.eu.habbo.messages.ServerMessage;
 
@@ -35,5 +37,46 @@ public class FrontPageFeaturedLayout extends CatalogPage
         message.appendString(super.getTextOne());
         message.appendString(super.getTextDetails());
         message.appendString(super.getTextTeaser());
+    }
+
+    public void serializeExtra(ServerMessage message)
+    {
+
+        message.appendInt32(Emulator.getGameEnvironment().getCatalogManager().getCatalogFeaturedPages().size()); // count
+
+        for (CatalogFeaturedPage page : Emulator.getGameEnvironment().getCatalogManager().getCatalogFeaturedPages().valueCollection())
+        {
+            page.serialize(message);
+        }
+        message.appendInt32(1); //Position
+        message.appendString("NUOVO: Affare Stanza di Rilassamento"); // Text
+        message.appendString("catalogue/feature_cata_vert_oly16bundle4.png"); // Image
+        message.appendInt32(0); //Type
+        //0 : String //Page Name
+        //1 : Int //Page ID
+        //2 : String //Productdata
+        message.appendString(""); // page link?
+        message.appendInt32(-1); // page id?
+
+        message.appendInt32(2);
+        message.appendString("Il RITORNO di Habburgers! (TUTTI furni nuovi)");
+        message.appendString("catalogue/feature_cata_hort_habbergerbundle.png");
+        message.appendInt32(0);
+        message.appendString("");
+        message.appendInt32(-1);
+
+        message.appendInt32(3);
+        message.appendString("Habbolympics");
+        message.appendString("catalogue/feature_cata_hort_olympic16.png");
+        message.appendInt32(0);
+        message.appendString("");
+        message.appendInt32(-1);
+
+        message.appendInt32(4);
+        message.appendString("Diventa un Membro HC");
+        message.appendString("catalogue/feature_cata_hort_HC_b.png");
+        message.appendInt32(0);
+        message.appendString("habbo_club");
+        message.appendInt32(-1);
     }
 }

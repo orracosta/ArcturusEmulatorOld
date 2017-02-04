@@ -45,6 +45,11 @@ public class CatalogManager
     public final TIntObjectMap<CatalogPage> catalogPages;
 
     /**
+     * All featured items on the frontpage.
+     */
+    public final TIntObjectMap<CatalogFeaturedPage> catalogFeaturedPages;
+
+    /**
      * All the recycler prizes are stored in here.
      */
     public final THashMap<Integer, THashSet<Item>> prizes;
@@ -146,16 +151,17 @@ public class CatalogManager
 
     public CatalogManager()
     {
-        long millis         = System.currentTimeMillis();
-        this.catalogPages   = TCollections.synchronizedMap(new TIntObjectHashMap<CatalogPage>());
-        this.prizes         = new THashMap<Integer, THashSet<Item>>();
-        this.giftWrappers   = new THashMap<Integer, Integer>();
-        this.giftFurnis     = new THashMap<Integer, Integer>();
-        this.clubItems      = new THashSet<CatalogItem>();
-        this.clothing       = new THashMap<Integer, ClothItem>();
-        this.offerDefs      = new TIntIntHashMap();
-        this.vouchers       = new ArrayList<Voucher>();
-        this.limitedNumbers = new THashMap<Integer, CatalogLimitedConfiguration>();
+        long millis                 = System.currentTimeMillis();
+        this.catalogPages           = TCollections.synchronizedMap(new TIntObjectHashMap<CatalogPage>());
+        this.catalogFeaturedPages   = new TIntObjectHashMap<CatalogFeaturedPage>();
+        this.prizes                 = new THashMap<Integer, THashSet<Item>>();
+        this.giftWrappers           = new THashMap<Integer, Integer>();
+        this.giftFurnis             = new THashMap<Integer, Integer>();
+        this.clubItems              = new THashSet<CatalogItem>();
+        this.clothing               = new THashMap<Integer, ClothItem>();
+        this.offerDefs              = new TIntIntHashMap();
+        this.vouchers               = new ArrayList<Voucher>();
+        this.limitedNumbers         = new THashMap<Integer, CatalogLimitedConfiguration>();
 
         this.initialize();
 
@@ -175,6 +181,7 @@ public class CatalogManager
         {
             loadLimitedNumbers();
             loadCatalogPages();
+            loadCatalogFeaturedPages();
             loadCatalogItems();
             loadVouchers();
             loadClothing();
@@ -317,6 +324,57 @@ public class CatalogManager
         Emulator.getLogging().logStart("Loaded " + this.catalogPages.size() + " pages!");
     }
 
+    private synchronized void loadCatalogFeaturedPages() throws SQLException
+    {
+        this.catalogFeaturedPages.clear();
+
+        PreparedStatement statement = null;
+
+        try
+        {
+            statement = Emulator.getDatabase().prepare("SELECT * FROM catalog_featured_pages ORDER BY slot_id ASC");
+            ResultSet set = statement.executeQuery();
+
+            while (set.next())
+            {
+                this.catalogFeaturedPages.put(set.getInt("slot_id"), new CatalogFeaturedPage(
+                        set.getInt("slot_id"),
+                        set.getString("caption"),
+                        set.getString("image"),
+                        CatalogFeaturedPage.Type.valueOf(set.getString("type").toUpperCase()),
+                        set.getInt("expire_timestamp"),
+                        set.getString("page_name"),
+                        set.getInt("page_id"),
+                        set.getString("product_name")
+                        ));
+            }
+
+            set.close();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+        catch (Exception e)
+        {
+            Emulator.getLogging().logErrorLine(e);
+        }
+        finally
+        {
+            if (statement != null)
+            {
+                try
+                {
+                    statement.close();
+                    statement.getConnection().close();
+                }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            }
+        }
+    }
     /**
      * Load all CatalogItems
      * @throws SQLException
@@ -771,6 +829,11 @@ public class CatalogManager
         Collections.sort(pages);
 
         return pages;
+    }
+
+    public TIntObjectMap<CatalogFeaturedPage> getCatalogFeaturedPages()
+    {
+        return this.catalogFeaturedPages;
     }
 
     /**

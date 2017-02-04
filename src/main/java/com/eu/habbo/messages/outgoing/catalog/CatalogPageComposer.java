@@ -1,8 +1,12 @@
 package com.eu.habbo.messages.outgoing.catalog;
 
+import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.catalog.CatalogFeaturedPage;
 import com.eu.habbo.habbohotel.catalog.CatalogItem;
 import com.eu.habbo.habbohotel.catalog.CatalogPage;
 import com.eu.habbo.habbohotel.catalog.CatalogPageType;
+import com.eu.habbo.habbohotel.catalog.layouts.FrontPageFeaturedLayout;
+import com.eu.habbo.habbohotel.catalog.layouts.FrontpageLayout;
 import com.eu.habbo.habbohotel.catalog.layouts.RecentPurchasesLayout;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
@@ -57,6 +61,22 @@ public class CatalogPageComposer extends MessageComposer
         }
         this.response.appendInt32(0);
         this.response.appendBoolean(false); //acceptSeasonCurrencyAsCredits
+
+        if (this.page instanceof FrontPageFeaturedLayout || this.page instanceof FrontpageLayout)
+        {
+            serializeExtra(this.response);
+        }
+
         return this.response;
+    }
+
+    public void serializeExtra(ServerMessage message)
+    {
+        message.appendInt32(Emulator.getGameEnvironment().getCatalogManager().getCatalogFeaturedPages().size()); // count
+
+        for (CatalogFeaturedPage page : Emulator.getGameEnvironment().getCatalogManager().getCatalogFeaturedPages().valueCollection())
+        {
+            page.serialize(message);
+        }
     }
 }
