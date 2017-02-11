@@ -65,7 +65,7 @@ public class InteractionPuzzleBox extends HabboItem
 
         if(item == null || (item.getZ() <= this.getZ() && item.getBaseItem().allowWalk()))
         {
-            room.sendComposer(new FloorItemOnRollerComposer(this, null, tile, offset, room).compose());
+            room.scheduledComposers.add(new FloorItemOnRollerComposer(this, null, tile, offset, room).compose());
             client.getHabbo().getRoomUnit().setGoalLocation(boxLocation);
             this.needsUpdate(true);
         }

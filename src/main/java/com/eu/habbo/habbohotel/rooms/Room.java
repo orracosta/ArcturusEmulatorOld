@@ -61,6 +61,7 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.procedure.TIntObjectProcedure;
 import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
+import io.netty.util.internal.ConcurrentSet;
 
 import java.awt.*;
 import java.sql.PreparedStatement;
@@ -165,6 +166,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public volatile boolean preventUncaching = false;
     public THashMap<Integer, TIntArrayList> waterTiles;
     public final ConcurrentHashMap<RoomTile, THashSet<HabboItem>> tileCache = new ConcurrentHashMap<RoomTile, THashSet<HabboItem>>();
+    public final ConcurrentSet<ServerMessage> scheduledComposers = new ConcurrentSet<ServerMessage>();
     public String wordQuiz = "";
     public int noVotes = 0;
     public int yesVotes = 0;
@@ -1791,6 +1793,16 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                 this.habboQueue.clear();
             }
+        }
+
+        synchronized (this.scheduledComposers)
+        {
+            for (ServerMessage message : scheduledComposers)
+            {
+                this.sendComposer(message);
+            }
+
+            this.scheduledComposers.clear();
         }
     }
 

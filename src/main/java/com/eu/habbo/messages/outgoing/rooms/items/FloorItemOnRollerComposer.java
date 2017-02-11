@@ -29,8 +29,8 @@ public class FloorItemOnRollerComposer extends MessageComposer
     @Override
     public ServerMessage compose()
     {
-        int oldX = this.item.getX();
-        int oldY = this.item.getY();
+        short oldX = this.item.getX();
+        short oldY = this.item.getY();
 
         this.response.init(Outgoing.ObjectOnRollerComposer);
         this.response.appendInt32(this.item.getX());
@@ -48,6 +48,8 @@ public class FloorItemOnRollerComposer extends MessageComposer
         this.item.setY(this.newLocation.y);
         this.item.setZ(this.item.getZ() + this.heightOffset);
         this.item.needsUpdate(true);
+        this.room.updateTiles(PathFinder.getTilesAt(room.getLayout(), oldX, oldY, this.item.getBaseItem().getWidth(), this.item.getBaseItem().getLength(), this.item.getRotation()));
+        this.room.updateTiles(PathFinder.getTilesAt(room.getLayout(), this.item.getX(), this.item.getY(), this.item.getBaseItem().getWidth(), this.item.getBaseItem().getLength(), this.item.getRotation()));
 
         this.room.sendComposer(new UpdateStackHeightComposer(oldX, oldY, this.room.getStackHeight(oldX, oldY, true)).compose());
 

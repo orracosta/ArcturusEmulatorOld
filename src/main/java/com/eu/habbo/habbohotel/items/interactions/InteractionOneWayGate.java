@@ -76,8 +76,9 @@ public class InteractionOneWayGate extends HabboItem
                 {
                     client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[(this.getRotation() + 4) % 8]);
                     client.getHabbo().getRoomUnit().getStatus().put("mv", this.getX() + "," + this.getY() + "," + this.getZ());
-                    client.getHabbo().getRoomUnit().animateWalk = true;
+                    client.getHabbo().getRoomUnit().animateWalk = false;
                     room.sendComposer(new RoomUserStatusComposer(client.getHabbo().getRoomUnit()).compose());
+                    client.getHabbo().getRoomUnit().getStatus().remove("mv");
                     client.getHabbo().getRoomUnit().setLocation(room.getLayout().getTile(this.getX(), this.getY()));
 
                     this.setExtradata("1");

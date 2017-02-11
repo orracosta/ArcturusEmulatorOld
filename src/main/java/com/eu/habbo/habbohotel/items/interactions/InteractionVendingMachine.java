@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.messages.ServerMessage;
+import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.threading.runnables.RoomUnitGiveHanditem;
 import com.eu.habbo.threading.runnables.RoomUnitVendingMachineAction;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
@@ -56,10 +57,10 @@ public class InteractionVendingMachine extends HabboItem
                     if (!client.getHabbo().getRoomUnit().getStatus().containsKey("sit"))
                     {
                         client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[Rotation.Calculate(client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY(), this.getX(), this.getY())]);
-                        room.sendComposer(new RoomUserStatusComposer(client.getHabbo().getRoomUnit()).compose());
+                        room.scheduledComposers.add(new RoomUserStatusComposer(client.getHabbo().getRoomUnit()).compose());
                     }
                     this.setExtradata("1");
-                    room.updateItem(this);
+                    room.scheduledComposers.add(new FloorItemUpdateComposer(this).compose());
                     Emulator.getThreading().run(this, 1000);
                     Emulator.getThreading().run(new RoomUnitGiveHanditem(client.getHabbo().getRoomUnit(), room, this.getBaseItem().getRandomVendingItem()));
                 }
