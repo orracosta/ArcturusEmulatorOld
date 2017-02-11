@@ -46,10 +46,7 @@ public class InteractionGate extends HabboItem
     {
         super.onClick(client, room, objects);
 
-        if (client == null)
-            return;
-        
-        if (!room.hasRights(client.getHabbo()))
+        if (client != null && !room.hasRights(client.getHabbo()))
             return;
 
         if(!room.getHabbosAt(this.getX(), this.getY()).isEmpty())
