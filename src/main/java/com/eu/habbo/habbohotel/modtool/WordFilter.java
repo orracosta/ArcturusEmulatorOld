@@ -86,7 +86,7 @@ public class WordFilter
     public String normalise(String message)
     {
         return Normalizer.normalize(message, Normalizer.Form.NFD)
-                .replaceAll("[^\\p{ASCII}]", "");
+                .replaceAll("[^\\p{ASCII}]", "").replaceAll("\\p{M}", "").replace("1", "i").replace("2", "z").replace("3", "e").replace("4","a").replace("5", "s").replace("8", "b").replace("0", "o");
     }
 
 
@@ -173,7 +173,7 @@ public class WordFilter
 
     public void filter (RoomChatMessage roomChatMessage, Habbo habbo)
     {
-        String message = roomChatMessage.getMessage();
+        String message = roomChatMessage.getMessage().toLowerCase();
 
         if(Emulator.getConfig().getBoolean("hotel.wordfilter.normalise"))
         {
