@@ -17,6 +17,8 @@ import java.sql.SQLException;
 public class InteractionCrackable extends HabboItem
 {
     public boolean cracked = false;
+    private final Object lock = new Object();
+
     public InteractionCrackable(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
@@ -57,38 +59,41 @@ public class InteractionCrackable extends HabboItem
     @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
-        super.onClick(client, room, objects);
-
-        if (!room.hasRights(client.getHabbo()))
-            return;
-
-        if(client == null)
-            return;
-
-        if (this.getRoomId() == 0)
-            return;
-
-        if(this.getExtradata().length() == 0)
-            this.setExtradata("0");
-
-        this.setExtradata(Integer.valueOf(this.getExtradata()) + 1 + "");
-        this.needsUpdate(true);
-        room.updateItem(this);
-
-        CrackableReward rewardData = Emulator.getGameEnvironment().getItemManager().getCrackableData(this.getBaseItem().getId());
-
-        if(rewardData != null && !rewardData.achievementTick.isEmpty())
+        synchronized (this.lock)
         {
-            AchievementManager.progressAchievement(client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement(rewardData.achievementTick));
-        }
-        if(!this.cracked && Integer.valueOf(this.getExtradata()) == Emulator.getGameEnvironment().getItemManager().getCrackableCount(this.getBaseItem().getId()))
-        {
-            this.cracked = true;
-            Emulator.getThreading().run(new CrackableExplode(room, this), 1500);
+            super.onClick(client, room, objects);
 
-            if(rewardData != null && !rewardData.achievementCracked.isEmpty())
+            if (!room.hasRights(client.getHabbo()))
+                return;
+
+            if (client == null)
+                return;
+
+            if (this.getRoomId() == 0)
+                return;
+
+            if (this.getExtradata().length() == 0)
+                this.setExtradata("0");
+
+            this.setExtradata(Integer.valueOf(this.getExtradata()) + 1 + "");
+            this.needsUpdate(true);
+            room.updateItem(this);
+
+            CrackableReward rewardData = Emulator.getGameEnvironment().getItemManager().getCrackableData(this.getBaseItem().getId());
+
+            if (rewardData != null && !rewardData.achievementTick.isEmpty())
             {
-                AchievementManager.progressAchievement(client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement(rewardData.achievementCracked));
+                AchievementManager.progressAchievement(client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement(rewardData.achievementTick));
+            }
+            if (!this.cracked && Integer.valueOf(this.getExtradata()) == Emulator.getGameEnvironment().getItemManager().getCrackableCount(this.getBaseItem().getId()))
+            {
+                this.cracked = true;
+                Emulator.getThreading().run(new CrackableExplode(room, this), 1500);
+
+                if (rewardData != null && !rewardData.achievementCracked.isEmpty())
+                {
+                    AchievementManager.progressAchievement(client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement(rewardData.achievementCracked));
+                }
             }
         }
     }
