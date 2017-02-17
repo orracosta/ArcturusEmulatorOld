@@ -33,7 +33,7 @@ public class RedeemItemEvent extends MessageHandler
 
                 if(item.getBaseItem().getName().startsWith("CF_") || item.getBaseItem().getName().startsWith("CFC_") || item.getBaseItem().getName().startsWith("DF_") || item.getBaseItem().getName().startsWith("PF_"))
                 {
-                    if (item.getBaseItem().getName().startsWith("CF_") || item.getBaseItem().getName().startsWith("CFC_"))
+                    if ((item.getBaseItem().getName().startsWith("CF_") || item.getBaseItem().getName().startsWith("CFC_")) && !item.getBaseItem().getName().contains("_diamond_"))
                     {
                         int credits;
                         try
@@ -117,6 +117,10 @@ public class RedeemItemEvent extends MessageHandler
                         }
 
                         this.client.getHabbo().givePoints(pointsType, points);
+                    }
+                    else if (item.getBaseItem().getName().startsWith("CF_diamond_"))
+                    {
+                        this.client.getHabbo().givePoints(Integer.valueOf(item.getBaseItem().getName().split("_")[2]));
                     }
 
                     room.removeHabboItem(item);

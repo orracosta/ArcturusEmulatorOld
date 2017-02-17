@@ -38,7 +38,7 @@ public class RedeemCommand extends Command
             if (item.getBaseItem().getName().startsWith("CF_") || item.getBaseItem().getName().startsWith("CFC_") || item.getBaseItem().getName().startsWith("DF_") || item.getBaseItem().getName().startsWith("PF_"))
             {
                 items.add(item);
-                if (item.getBaseItem().getName().startsWith("CF_") || item.getBaseItem().getName().startsWith("CFC_"))
+                if ((item.getBaseItem().getName().startsWith("CF_") || item.getBaseItem().getName().startsWith("CFC_")) && !item.getBaseItem().getName().contains("_diamond_"))
                 {
                     try
                     {
@@ -55,7 +55,7 @@ public class RedeemCommand extends Command
                     } catch (Exception e)
                     {
                     }
-                } else if (item.getBaseItem().getName().startsWith("PF_"))
+                } else if (item.getBaseItem().getName().startsWith("DF_"))
                 {
                     int pointsType = 0;
                     int pointsAmount = 0;
@@ -64,6 +64,17 @@ public class RedeemCommand extends Command
                     pointsAmount = Integer.valueOf(item.getBaseItem().getName().split("_")[2]);
 
                     points.adjustOrPutValue(pointsType, pointsAmount, pointsAmount);
+                }
+                else if (item.getBaseItem().getName().startsWith("CF_diamond_"))
+                {
+                    try
+                    {
+                        int amount = Integer.valueOf(item.getBaseItem().getName().split("_")[2]);
+                        points.adjustOrPutValue(5, amount, amount);
+                    }
+                    catch (Exception e)
+                    {
+                    }
                 }
             }
         }
