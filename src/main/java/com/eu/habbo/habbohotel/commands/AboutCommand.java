@@ -11,7 +11,7 @@ public class AboutCommand extends Command
 {
     public AboutCommand()
     {
-        super(null, new String[]{ "about" });
+        super(null, new String[]{ "about", "info", "online", "server" });
     }
 
     @Override

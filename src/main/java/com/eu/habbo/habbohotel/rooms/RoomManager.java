@@ -873,6 +873,8 @@ public class RoomManager {
                     {
                         habbo.getClient().sendResponse(new RoomUserDanceComposer(bot.getRoomUnit()));
                     }
+
+                    habbo.getClient().sendResponse(new RoomUserStatusComposer(bot.getRoomUnit()));
                 }
             }
 

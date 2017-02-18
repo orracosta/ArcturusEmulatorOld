@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.commands;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
+import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.MonsterplantPet;
@@ -92,6 +93,19 @@ public class TestCommand extends Command
                 }
             }
 
+            return true;
+        }
+
+        if (params[1].equalsIgnoreCase("bots"))
+        {
+            String message = "";
+
+            for (Bot bot : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentBots().valueCollection())
+            {
+                message += "Name: " + bot.getName() + ", ID: " + bot.getId() + ", RID: " + bot.getRoomUnit().getId() + ", Rot: " + bot.getRoomUnit().getBodyRotation() + "\r";
+            }
+
+            gameClient.sendResponse(new MessagesForYouComposer(new String[]{message}));
             return true;
         }
 
