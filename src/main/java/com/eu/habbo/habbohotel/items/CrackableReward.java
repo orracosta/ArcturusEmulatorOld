@@ -45,7 +45,7 @@ public class CrackableReward
                     itemId = Integer.valueOf(data[i].replace(":", ""));
                 }
 
-                this.prizes.put(itemId, new AbstractMap.SimpleEntry<Integer, Integer>(this.totalChance, chance));
+                this.prizes.put(itemId, new AbstractMap.SimpleEntry<Integer, Integer>(this.totalChance, this.totalChance + chance));
                 this.totalChance += chance;
             }
             catch (Exception e)
@@ -63,7 +63,7 @@ public class CrackableReward
         for (Map.Entry<Integer, Map.Entry<Integer, Integer>> set : this.prizes.entrySet())
         {
             notFound = set.getKey();
-            if (set.getValue().getKey() >= random && set.getValue().getValue() < random)
+            if (random >= set.getValue().getKey() && random < set.getValue().getValue())
             {
                 return set.getKey();
             }
