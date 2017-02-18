@@ -50,6 +50,7 @@ public class InteractionVendingMachine extends HabboItem
         if (client != null)
         {
             RoomTile tile = getSquareInFront(room.getLayout(), this);
+
             if (tile.equals(client.getHabbo().getRoomUnit().getCurrentLocation()))
             {
                 if (this.getExtradata().equals("0") || this.getExtradata().length() == 0)
@@ -57,6 +58,7 @@ public class InteractionVendingMachine extends HabboItem
                     if (!client.getHabbo().getRoomUnit().getStatus().containsKey("sit"))
                     {
                         client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[Rotation.Calculate(client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY(), this.getX(), this.getY())]);
+                        client.getHabbo().getRoomUnit().getStatus().remove("mv");
                         room.scheduledComposers.add(new RoomUserStatusComposer(client.getHabbo().getRoomUnit()).compose());
                     }
                     this.setExtradata("1");
