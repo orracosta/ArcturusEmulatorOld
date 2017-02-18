@@ -502,6 +502,22 @@ public class Messenger
         }
     }
 
+    public FriendRequest findFriendRequest(String username)
+    {
+        synchronized (this.friendRequests)
+        {
+            for (FriendRequest friendRequest : this.friendRequests)
+            {
+                if (friendRequest.getUsername().equalsIgnoreCase(username))
+                {
+                    return friendRequest;
+                }
+            }
+        }
+
+        return null;
+    }
+
     public MessengerBuddy getFriend(int id)
     {
         return this.friends.get(id);

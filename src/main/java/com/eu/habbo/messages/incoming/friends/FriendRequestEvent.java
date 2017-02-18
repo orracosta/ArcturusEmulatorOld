@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.friends;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.messenger.FriendRequest;
 import com.eu.habbo.habbohotel.messenger.Messenger;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -31,6 +32,13 @@ public class FriendRequestEvent extends MessageHandler
 
         int id = 0;
         boolean allowFriendRequests = true;
+
+        FriendRequest friendRequest = this.client.getHabbo().getMessenger().findFriendRequest(username);
+        if (friendRequest != null)
+        {
+            this.client.getHabbo().getMessenger().acceptFriendRequest(friendRequest.getId(), this.client.getHabbo().getHabboInfo().getId());
+            return;
+        }
 
         if(!Messenger.canFriendRequest(this.client.getHabbo(), username))
         {
