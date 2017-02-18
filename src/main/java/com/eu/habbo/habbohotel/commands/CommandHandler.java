@@ -80,6 +80,7 @@ public class CommandHandler
         addCommand(new PullCommand());
         addCommand(new PushCommand());
         addCommand(new RedeemCommand());
+        addCommand(new RoomAlertCommand());
         addCommand(new RoomBundleCommand());
         addCommand(new RoomCreditsCommand());
         addCommand(new RoomDanceCommand());
@@ -187,7 +188,7 @@ public class CommandHandler
                             if (s.toLowerCase().equals(parts[0].toLowerCase()))
                             {
                                 boolean succes = false;
-                                if (command.permission == null || gameClient.getHabbo().hasPermission(command.permission))
+                                if (command.permission == null || gameClient.getHabbo().hasPermission(command.permission, gameClient.getHabbo().getHabboInfo().getCurrentRoom() != null && gameClient.getHabbo().getHabboInfo().getCurrentRoom().hasRights(gameClient.getHabbo())))
                                 {
                                     try
                                     {
@@ -288,7 +289,7 @@ public class CommandHandler
      */
     public List<Command> getCommandsForRank(int rankId)
     {
-        THashSet<String> permissions = Emulator.getGameEnvironment().getPermissionsManager().getPermissionsForRank(rankId);
+        Collection<String> permissions = Emulator.getGameEnvironment().getPermissionsManager().getPermissionsForRank(rankId);
         List<Command> allowedCommands = new ArrayList<Command>();
 
         for(Command command : commands)

@@ -4,15 +4,26 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.MonsterplantPet;
 import com.eu.habbo.habbohotel.pets.Pet;
+import com.eu.habbo.habbohotel.pets.PetManager;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
+import com.eu.habbo.messages.incoming.Incoming;
+import com.eu.habbo.messages.incoming.rooms.pets.MovePetEvent;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.MessagesForYouComposer;
+import com.eu.habbo.messages.outgoing.rooms.pets.PetInformationComposer;
+import com.eu.habbo.messages.outgoing.rooms.pets.PetStatusUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
+
+import java.text.Normalizer;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TestCommand extends Command
 {
@@ -47,15 +58,46 @@ public class TestCommand extends Command
 
             for(Habbo habbo : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentHabbos().valueCollection())
             {
-                s += "Habbo ID: " + habbo.getHabboInfo().getId() + ", RoomUnit ID: " + habbo.getRoomUnit().getId() + "<br>";
+                s += "Habbo ID: " + habbo.getHabboInfo().getId() + ", RoomUnit ID: " + habbo.getRoomUnit().getId() + "\r";
             }
 
             for (AbstractPet pet : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentPets().valueCollection())
             {
-                s += "Pet ID: " + pet.getId() + ", RoomUnit ID: " + pet.getRoomUnit().getId() + "<br>";
+                s += "Pet ID: " + pet.getId() + ", RoomUnit ID: " + pet.getRoomUnit().getId() + ", Name: " + pet.getName();
+
+                if (pet instanceof MonsterplantPet)
+                {
+                    s += ", B:" + (((MonsterplantPet) pet).canBreed() ? "Y" : "N") +
+                            ", PB: " + (((MonsterplantPet)pet).isPubliclyBreedable() ? "Y" : "N" ) +
+                            ", D: " + (((MonsterplantPet) pet).isDead() ? "Y" : "N");
+                }
+
+                s += "\r";
             }
 
-            gameClient.sendResponse(new GenericAlertComposer(s));
+            gameClient.sendResponse(new MessagesForYouComposer(new String[]{s}));
+            return true;
+        }
+
+        if (params[1].equalsIgnoreCase("rebr"))
+        {
+            for (AbstractPet pet : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentPets().valueCollection())
+            {
+                if (pet instanceof MonsterplantPet)
+                {
+                    ((MonsterplantPet) pet).setPubliclyBreedable(false);
+                    ((MonsterplantPet) pet).setCanBreed(true);
+                    gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new PetStatusUpdateComposer((Pet) pet).compose());
+                    gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new PetInformationComposer(pet).compose());
+                }
+            }
+
+            return true;
+        }
+
+        if (params[1].equalsIgnoreCase("packu"))
+        {
+            Emulator.getGameServer().getPacketManager().registerHandler(Incoming.MovePetEvent, MovePetEvent.class);
             return true;
         }
 
@@ -115,6 +157,41 @@ public class TestCommand extends Command
                 }
             }
         }
+        else if (params[1].equalsIgnoreCase("petc"))
+        {
+            AbstractPet pet = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getPet(Integer.valueOf(params[2]));
+
+            if (pet != null)
+            {
+                pet.getRoomUnit().getStatus().clear();
+                gameClient.sendResponse(new RoomUserStatusComposer(pet.getRoomUnit()));
+            }
+        }
+        else if (params[1].equalsIgnoreCase("rand"))
+        {
+            Map<Integer, Integer> results = new HashMap<Integer, Integer>();
+
+            for (int i = 0; i < Integer.valueOf(params[2]); i++)
+            {
+                int random = PetManager.random(0, 12, Double.valueOf(params[3]));
+
+                if (!results.containsKey(random))
+                {
+                    results.put(random, 0);
+                }
+
+                results.put(random, results.get(random) + 1);
+            }
+
+            String result = "Results : " + params[2] + "<br/><br/>";
+
+            for (Map.Entry<Integer, Integer> set : results.entrySet())
+            {
+                result += set.getKey() + " -> " + set.getValue() + "<br/>";
+            }
+
+            gameClient.sendResponse(new GenericAlertComposer(result));
+        }
         else if (params[1].equalsIgnoreCase("threads"))
         {
             if (stopThreads)
@@ -154,6 +231,10 @@ public class TestCommand extends Command
         {
             gameClient.getHabbo().getRoomUnit().getStatus().put(params[2], params[3]);
             gameClient.sendResponse(new RoomUserStatusComposer(gameClient.getHabbo().getRoomUnit()));
+        }
+        else if (params[1].equalsIgnoreCase("filt"))
+        {
+            gameClient.sendResponse(new GenericAlertComposer(Normalizer.normalize(params[2], Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").replaceAll("\\p{M}", "")));
         }
         else
         {

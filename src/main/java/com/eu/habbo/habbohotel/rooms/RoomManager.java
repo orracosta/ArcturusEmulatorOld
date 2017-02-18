@@ -727,6 +727,7 @@ public class RoomManager {
         }
 
         habbo.getRoomUnit().getStatus().clear();
+        habbo.getRoomUnit().cmdTeleport = false;
 
         habbo.getClient().sendResponse(new RoomOpenComposer());
 

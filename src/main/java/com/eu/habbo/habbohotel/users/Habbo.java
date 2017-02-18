@@ -195,9 +195,15 @@ public class Habbo implements Runnable
         }
     }
 
+    @Deprecated
     public boolean hasPermission(String key)
     {
-        return Emulator.getGameEnvironment().getPermissionsManager().hasPermission(this, key);
+        return hasPermission(key, false);
+    }
+
+    public boolean hasPermission(String key, boolean hasRoomRights)
+    {
+        return Emulator.getGameEnvironment().getPermissionsManager().hasPermission(this, key, hasRoomRights);
     }
 
     public void giveCredits(int credits)

@@ -14,3 +14,11 @@ UPDATE emulator_settings SET `value` = (SELECT id FROM items_base WHERE item_nam
 UPDATE `items_base` SET `interaction_type` = 'monsterplant_seed' WHERE `items_base`.`item_name` LIKE 'mnstr_seed%';
 
 INSERT INTO `pet_actions` (`pet_type`, `pet_name`, `happy_actions`, `tired_actions`, `random_actions`) VALUES ('0', '', '', '', '');
+
+ALTER TABLE  `permissions` CHANGE  `cmd_word_quiz`  `cmd_word_quiz` ENUM(  '0',  '1',  '2' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  '0';
+ALTER TABLE  `permissions` ADD  `cmd_roomalert` ENUM(  '0',  '1',  '2' ) NOT NULL DEFAULT  '0' AFTER  `cmd_redeem`;
+
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES
+    ('commands.description.cmd_roomalert', ':roomalert <message>'),
+    ('commands.error.cmd_roomalert.empty', 'Please specify an message!'),
+    ('commands.keys.cmd_roomalert', 'roomalert;room_alert;ra');

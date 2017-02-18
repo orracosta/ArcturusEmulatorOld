@@ -11,11 +11,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 public class PermissionsManager
 {
-    private final THashMap<Integer, THashSet<String>> permissions;
+    private final THashMap<Integer, THashMap<String, Integer>> permissions;
     private final THashMap<Integer, String> rankNames;
     private final TIntIntHashMap enables;
     private final TIntIntHashMap roomEffect;
@@ -23,7 +25,7 @@ public class PermissionsManager
     public PermissionsManager()
     {
         long millis      = System.currentTimeMillis();
-        this.permissions = new THashMap<Integer, THashSet<String>>();
+        this.permissions = new THashMap<Integer, THashMap<String, Integer>>();
         this.rankNames   = new THashMap<Integer, String>();
         this.enables     = new TIntIntHashMap();
         this.roomEffect  = new TIntIntHashMap();
@@ -53,15 +55,15 @@ public class PermissionsManager
 
                 while (set.next())
                 {
-                    THashSet<String> names = new THashSet<String>();
+                    THashMap<String, Integer> names = new THashMap<String, Integer>();
 
                     for (int i = 1; i < meta.getColumnCount() + 1; i++)
                     {
                         if (meta.getColumnName(i).startsWith("cmd_") || meta.getColumnName(i).startsWith("acc_"))
                         {
-                            if (set.getString(i).equals("1"))
+                            if (set.getString(i).equals("1") || set.getString(i).equals("2"))
                             {
-                                names.add(meta.getColumnName(i));
+                                names.put(meta.getColumnName(i), Integer.valueOf(set.getString(i)));
                             }
                         }
                         else if(meta.getColumnName(i).equalsIgnoreCase("rank_name"))
@@ -115,11 +117,11 @@ public class PermissionsManager
         }
     }
 
-    public THashSet<String> getPermissionsForRank(int rankId)
+    public Collection<String> getPermissionsForRank(int rankId)
     {
         if(this.permissions.containsKey(rankId))
         {
-            return this.permissions.get(rankId);
+            return this.permissions.get(rankId).keySet();
         }
 
         return new THashSet<String>();
@@ -153,7 +155,12 @@ public class PermissionsManager
 
     public boolean hasPermission(Habbo habbo, String permission)
     {
-        boolean result = this.hasPermission(habbo.getHabboInfo().getRank(), permission);
+        return this.hasPermission(habbo, permission, false);
+    }
+
+    public boolean hasPermission(Habbo habbo, String permission, boolean withRoomRights)
+    {
+        boolean result = this.hasPermission(habbo.getHabboInfo().getRank(), permission, withRoomRights);
 
         if (!result)
         {
@@ -171,8 +178,22 @@ public class PermissionsManager
         return result;
     }
 
-    public boolean hasPermission(int rankId, String permission)
+    public boolean hasPermission(int rankId, String permission, boolean withRoomRights)
     {
-        return this.permissions.containsKey(rankId) && this.permissions.get(rankId).contains(permission);
+        if (this.permissions.containsKey(rankId))
+        {
+            if (this.permissions.get(rankId).containsKey(permission))
+            {
+                int rightsLevel = this.permissions.get(rankId).get(permission);
+
+                if (rightsLevel == 1)
+                    return true;
+
+                else if (rightsLevel == 2 && withRoomRights)
+                    return true;
+            }
+        }
+
+        return false;
     }
 }
