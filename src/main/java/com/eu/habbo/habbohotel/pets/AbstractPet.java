@@ -147,6 +147,11 @@ public abstract class AbstractPet implements ISerialize, Runnable
         return energy;
     }
 
+    public int getMaxEnergy()
+    {
+        return this.level * 100;
+    }
+
     public synchronized void setEnergy(int energy)
     {
         this.energy = energy;

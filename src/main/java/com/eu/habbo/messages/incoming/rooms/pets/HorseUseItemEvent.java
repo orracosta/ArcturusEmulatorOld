@@ -3,12 +3,16 @@ package com.eu.habbo.messages.incoming.rooms.pets;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.HorsePet;
+import com.eu.habbo.habbohotel.pets.MonsterplantPet;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
+import com.eu.habbo.messages.outgoing.rooms.pets.PetStatusUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetHorseFigureComposer;
+import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;
+import com.eu.habbo.util.pathfinding.PathFinder;
 
 public class HorseUseItemEvent extends MessageHandler
 {
@@ -100,6 +104,76 @@ public class HorseUseItemEvent extends MessageHandler
                     this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomPetHorseFigureComposer((HorsePet) pet).compose());
                     this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RemoveFloorItemComposer(item).compose());
                     Emulator.getThreading().run(new QueryDeleteHabboItem(item));
+                }
+            }
+            else if (pet instanceof MonsterplantPet)
+            {
+                System.out.println(item.getBaseItem().getName());
+                if (item.getBaseItem().getName().equalsIgnoreCase("mnstr_revival"))
+                {
+                    if (((MonsterplantPet) pet).isDead())
+                    {
+                        ((MonsterplantPet) pet).setDeathTimestamp(Emulator.getIntUnixTimestamp() + MonsterplantPet.timeToLive);
+                        pet.getRoomUnit().getStatus().clear();
+                        pet.getRoomUnit().getStatus().put("gst", "rev");
+                        ((MonsterplantPet) pet).packetUpdate = true;
+
+                        this.client.getHabbo().getHabboInfo().getCurrentRoom().removeHabboItem(item);
+                        this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RemoveFloorItemComposer(item).compose());
+                        this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserStatusComposer(pet.getRoomUnit()).compose());
+                        this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new PetStatusUpdateComposer((Pet)pet).compose());
+                        this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTiles(PathFinder.getTilesAt(this.client.getHabbo().getHabboInfo().getCurrentRoom().getLayout(), item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
+                        pet.getRoomUnit().getStatus().remove("gst");
+                        Emulator.getThreading().run(new QueryDeleteHabboItem(item));
+                    }
+                }
+                else if (item.getBaseItem().getName().equalsIgnoreCase("mnstr_fert"))
+                {
+                    if (!((MonsterplantPet) pet).isFullyGrown())
+                    {
+                        pet.setCreated(pet.getCreated() - MonsterplantPet.growTime);
+                        pet.getRoomUnit().getStatus().clear();
+                        ((MonsterplantPet) pet).cycle();
+                        pet.getRoomUnit().getStatus().put("gst", "spd");
+                        pet.getRoomUnit().getStatus().put("grw" + ((MonsterplantPet) pet).getGrowthStage(), "");
+                        this.client.getHabbo().getHabboInfo().getCurrentRoom().removeHabboItem(item);
+                        this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RemoveFloorItemComposer(item).compose());
+                        this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserStatusComposer(pet.getRoomUnit()).compose());
+                        this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new PetStatusUpdateComposer((Pet)pet).compose());
+                        this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTiles(PathFinder.getTilesAt(this.client.getHabbo().getHabboInfo().getCurrentRoom().getLayout(), item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
+                        pet.getRoomUnit().getStatus().remove("gst");
+                        ((MonsterplantPet) pet).cycle();
+                        Emulator.getThreading().run(new QueryDeleteHabboItem(item));
+                    }
+                }
+                else if (item.getBaseItem().getName().startsWith("mnstr_rebreed"))
+                {
+                    if (((MonsterplantPet) pet).isFullyGrown() && !((MonsterplantPet) pet).canBreed())
+                    {
+                        if (
+                                (item.getBaseItem().getName().equalsIgnoreCase("mnstr_rebreed")   && ((MonsterplantPet) pet).getRarity() <= 5) ||
+                                (item.getBaseItem().getName().equalsIgnoreCase("mnstr_rebreed_2") && ((MonsterplantPet) pet).getRarity() >= 6 && ((MonsterplantPet) pet).getRarity() <= 8) ||
+                                (item.getBaseItem().getName().equalsIgnoreCase("mnstr_rebreed_3") && ((MonsterplantPet) pet).getRarity() >= 9)
+                            )
+
+                        {
+                            ((MonsterplantPet) pet).setCanBreed(true);
+                            pet.getRoomUnit().getStatus().clear();
+                            pet.getRoomUnit().getStatus().put("gst", "reb");
+
+                            this.client.getHabbo().getHabboInfo().getCurrentRoom().removeHabboItem(item);
+                            this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RemoveFloorItemComposer(item).compose());
+                            this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserStatusComposer(pet.getRoomUnit()).compose());
+                            this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new PetStatusUpdateComposer((Pet)pet).compose());
+                            this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTiles(PathFinder.getTilesAt(this.client.getHabbo().getHabboInfo().getCurrentRoom().getLayout(), item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
+                            pet.getRoomUnit().getStatus().remove("gst");
+                            Emulator.getThreading().run(new QueryDeleteHabboItem(item));
+                        }
+                        else
+                        {
+                            System.out.println(item.getBaseItem().getName() + " | " + ((MonsterplantPet) pet).getRarity());
+                        }
+                    }
                 }
             }
         }

@@ -2,6 +2,7 @@ package com.eu.habbo.messages.incoming.rooms.pets;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
+import com.eu.habbo.habbohotel.pets.MonsterplantPet;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetRespectComposer;
@@ -22,13 +23,7 @@ public class ScratchPetEvent extends MessageHandler
 
             if(pet != null)
             {
-                this.client.getHabbo().getHabboStats().petRespectPointsToGive--;
-                pet.addExperience(10);
-                pet.addRespect();
-                this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomPetRespectComposer(pet).compose());
-                AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("PetRespectGiver"));
-                AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(pet.getUserId()), Emulator.getGameEnvironment().getAchievementManager().getAchievement("PetRespectReceiver"));
-
+                pet.scratched(this.client.getHabbo());
             }
         }
     }

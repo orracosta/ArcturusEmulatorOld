@@ -9,6 +9,7 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionPetFood;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPetToy;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
+import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.TIntIntMap;
@@ -16,6 +17,8 @@ import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.set.hash.THashSet;
+import javafx.util.Pair;
+import org.apache.commons.math.distribution.ExponentialDistribution;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -399,6 +402,68 @@ public class PetManager
 
     public MonsterplantPet createMonsterplant(Room room, Habbo habbo, boolean rare, RoomTile t)
     {
-        return new MonsterplantPet(habbo.getHabboInfo().getId(), 0, 0, 0, 0, 0);
+        MonsterplantPet pet = new MonsterplantPet(
+                habbo.getHabboInfo().getId(),   //Owner ID
+                randomBody(rare ? 4 : 0),                              // Type
+                randomColor(rare ? 4 : 0),                                  // Color
+                Emulator.getRandom().nextInt(12) + 1,                              // Mouth
+                Emulator.getRandom().nextInt(11),                                  // Mouthcolor
+                Emulator.getRandom().nextInt(12) + 1,                              // Nose
+                Emulator.getRandom().nextInt(11),                                  // NoseColor
+                Emulator.getRandom().nextInt(12) + 1,                              // Eyes
+                Emulator.getRandom().nextInt(11)                                   // EyesColor
+        );
+
+        pet.setUserId(habbo.getHabboInfo().getId());
+        pet.setRoom(room);
+        pet.setRoomUnit(new RoomUnit());
+        pet.needsUpdate = true;
+        pet.run();
+        return pet;
+    }
+
+    public static int randomBody(int minimumRarity)
+    {
+        //int rarity = MonsterplantPet.indexedBody.get(random(0, MonsterplantPet.bodyRarity.size(), 2.0)).getValue();
+
+        int rarity = -1;
+        Integer bodyType = 0;
+        while (rarity < minimumRarity)
+        {
+            bodyType = (Integer) MonsterplantPet.bodyRarity.keySet().toArray()[random(0, MonsterplantPet.bodyRarity.size(), 2.0)];
+            rarity = MonsterplantPet.bodyRarity.get(bodyType).getValue();
+        }
+
+        return bodyType;
+    }
+
+    public static int randomColor(int minimumRarity)
+    {
+        int rarity = -1;
+        Integer colorType = 0;
+        while (rarity < minimumRarity)
+        {
+            colorType = (Integer) MonsterplantPet.colorRarity.keySet().toArray()[random(0, MonsterplantPet.colorRarity.size(), 2.0)];
+            rarity = MonsterplantPet.colorRarity.get(colorType).getValue();
+        }
+
+        return colorType;
+    }
+
+    public static int random(int low, int high, double bias)
+    {
+        double r = Math.random();    // random between 0 and 1
+        r = Math.pow(r, bias);
+        return (int) (low + (high - low) * r);
+    }
+
+    public static Pet loadPet(ResultSet set) throws SQLException
+    {
+        if(set.getInt("type") == 15)
+            return new HorsePet(set);
+        else if(set.getInt("type") == 16)
+            return new MonsterplantPet(set);
+        else
+            return new Pet(set);
     }
 }

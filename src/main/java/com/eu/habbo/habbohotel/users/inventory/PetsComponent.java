@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.users.inventory;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.Pet;
+import com.eu.habbo.habbohotel.pets.PetManager;
 import com.eu.habbo.habbohotel.users.Habbo;
 import gnu.trove.TCollections;
 import gnu.trove.iterator.TIntObjectIterator;
@@ -36,7 +37,7 @@ public class PetsComponent
 
                 while (set.next())
                 {
-                    this.pets.put(set.getInt("id"), new Pet(set));
+                    this.pets.put(set.getInt("id"), PetManager.loadPet(set));
                 }
 
                 set.close();

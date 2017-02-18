@@ -2,7 +2,7 @@ package com.eu.habbo.messages.outgoing;
 
 public class Outgoing
 {
-    public static final int PetStatusUpdateComposer =-1;//error 404
+    public static final int PetStatusUpdateComposer = 1907;//error 404
 
     public final static int FavoriteRoomsCountComposer = 151; // PRODUCTION-201611291003-338511768
     public final static int UserCurrencyComposer = 2018; // PRODUCTION-201611291003-338511768

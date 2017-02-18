@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.guilds.Guild;
 import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
 import com.eu.habbo.habbohotel.navigation.NavigatorFilterComparator;
 import com.eu.habbo.habbohotel.navigation.NavigatorFilterField;
+import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.polls.Poll;
 import com.eu.habbo.habbohotel.polls.PollManager;
 import com.eu.habbo.habbohotel.users.*;
@@ -909,6 +910,10 @@ public class RoomManager {
             if (!room.getCurrentPets().isEmpty())
             {
                 habbo.getClient().sendResponse(new RoomPetComposer(room.getCurrentPets()));
+                for (AbstractPet pet : room.getCurrentPets().valueCollection())
+                {
+                    habbo.getClient().sendResponse(new RoomUserStatusComposer(pet.getRoomUnit()));
+                }
             }
 
             if (habbo.getRoomUnit().isModMuted())

@@ -11,6 +11,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetExperienceComposer;
+import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetRespectComposer;
 import com.eu.habbo.threading.runnables.PetClearPosture;
 import com.eu.habbo.threading.runnables.PetFollowHabbo;
 import com.eu.habbo.util.pathfinding.PathFinder;
@@ -252,38 +253,7 @@ public class Pet extends AbstractPet
 
             if(time - this.gestureTickTimeout > 15)
             {
-                this.gestureTickTimeout = time;
-                if (this.energy < 30)
-                {
-                    this.roomUnit.getStatus().put("gst", PetGestures.TIRED.getKey());
-                    this.findNest();
-                }
-                else if(this.happyness == 100)
-                {
-                    this.roomUnit.getStatus().put("gst", PetGestures.LOVE.getKey());
-                } else if (this.happyness >= 90)
-                {
-                    this.randomHappyAction();
-                    this.roomUnit.getStatus().put("gst", PetGestures.HAPPY.getKey());
-                } else if (this.happyness <= 5)
-                {
-                    this.randomSadAction();
-                    this.roomUnit.getStatus().put("gst", PetGestures.SAD.getKey());
-                } else if (this.levelHunger > 80)
-                {
-                    this.roomUnit.getStatus().put("gst", PetGestures.HUNGRY.getKey());
-                    this.eat();
-                } else if (this.levelThirst > 80)
-                {
-                    this.roomUnit.getStatus().put("gst", PetGestures.THIRSTY.getKey());
-                    this.drink();
-                }
-                else if(this.idleCommandTicks > 240)
-                {
-                    this.idleCommandTicks = 0;
-
-                    this.roomUnit.getStatus().put("gst", PetGestures.QUESTION.getKey());
-                }
+                updateGesture(time);
             }
             else if(time - this.randomActionTickTimeout > 30)
             {
@@ -945,6 +915,41 @@ public class Pet extends AbstractPet
         this.packetUpdate = true;
     }
 
+    public void updateGesture(int time)
+    {
+        this.gestureTickTimeout = time;
+        if (this.getEnergy() < 30)
+        {
+            this.roomUnit.getStatus().put("gst", PetGestures.TIRED.getKey());
+            this.findNest();
+        }
+        else if(this.getHappyness() == 100)
+        {
+            this.roomUnit.getStatus().put("gst", PetGestures.LOVE.getKey());
+        } else if (this.happyness >= 90)
+        {
+            this.randomHappyAction();
+            this.roomUnit.getStatus().put("gst", PetGestures.HAPPY.getKey());
+        } else if (this.happyness <= 5)
+        {
+            this.randomSadAction();
+            this.roomUnit.getStatus().put("gst", PetGestures.SAD.getKey());
+        } else if (this.levelHunger > 80)
+        {
+            this.roomUnit.getStatus().put("gst", PetGestures.HUNGRY.getKey());
+            this.eat();
+        } else if (this.levelThirst > 80)
+        {
+            this.roomUnit.getStatus().put("gst", PetGestures.THIRSTY.getKey());
+            this.drink();
+        }
+        else if(this.idleCommandTicks > 240)
+        {
+            this.idleCommandTicks = 0;
+
+            this.roomUnit.getStatus().put("gst", PetGestures.QUESTION.getKey());
+        }
+    }
     @Override
     public void serialize(ServerMessage message)
     {
@@ -1082,5 +1087,21 @@ public class Pet extends AbstractPet
         this.roomUnit.getStatus().clear();
         this.roomUnit.setCanWalk(true);
         super.say(this.petData.randomVocal(PetVocalsType.GENERIC_NEUTRAL));
+    }
+
+    public void scratched(Habbo habbo)
+    {
+        this.addExperience(10);
+        this.addRespect();
+
+        if (habbo != null)
+        {
+            habbo.getHabboStats().petRespectPointsToGive--;
+            habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomPetRespectComposer(this).compose());
+
+            AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("PetRespectGiver"));
+        }
+
+        AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(this.getUserId()), Emulator.getGameEnvironment().getAchievementManager().getAchievement("PetRespectReceiver"));
     }
 }

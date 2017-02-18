@@ -3,10 +3,13 @@ package com.eu.habbo.messages.incoming.rooms.items;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionMonsterPlantSeed;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWired;
+import com.eu.habbo.habbohotel.pets.MonsterplantPet;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
+import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetComposer;
+import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;
 import gnu.trove.set.hash.THashSet;
 
@@ -90,11 +93,17 @@ public class ToggleFloorItemEvent extends MessageHandler
                 }
             }
 
+            //Do not move to onClick(). Wired could trigger it.
             if(item instanceof InteractionMonsterPlantSeed)
             {
                 Emulator.getThreading().run(new QueryDeleteHabboItem(item));
-                Emulator.getGameEnvironment().getPetManager().createMonsterplant(room, this.client.getHabbo(), false, room.getLayout().getTile(item.getX(), item.getY()));
+                MonsterplantPet pet = Emulator.getGameEnvironment().getPetManager().createMonsterplant(room, this.client.getHabbo(), item.getBaseItem().getName().contains("rare"), room.getLayout().getTile(item.getX(), item.getY()));
                 room.sendComposer(new RemoveFloorItemComposer(item, true).compose());
+                room.removeHabboItem(item);
+                room.placePet(pet, item.getX(), item.getY(), item.getZ(), item.getRotation());
+                room.sendComposer(new RoomPetComposer(pet).compose());
+                pet.cycle();
+                room.sendComposer(new RoomUserStatusComposer(pet.getRoomUnit()).compose());
                 return;
             }
 

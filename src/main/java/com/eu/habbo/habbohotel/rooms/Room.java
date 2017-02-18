@@ -35,6 +35,7 @@ import com.eu.habbo.messages.outgoing.polls.infobus.SimplePollAnswerComposer;
 import com.eu.habbo.messages.outgoing.polls.infobus.SimplePollStartComposer;
 import com.eu.habbo.messages.outgoing.rooms.*;
 import com.eu.habbo.messages.outgoing.rooms.items.*;
+import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.*;
 import com.eu.habbo.messages.outgoing.users.MutedWhisperComposer;
 import com.eu.habbo.plugin.Event;
@@ -513,25 +514,32 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM users_pets WHERE room_id = ?");
         statement.setInt(1, this.id);
         ResultSet set = statement.executeQuery();
-        AbstractPet pet;
         while(set.next())
         {
-            if(set.getInt("type") == 15)
-                pet = new HorsePet(set);
-            else if(set.getInt("type") == 16)
-                pet = new MonsterplantPet(set);
-            else
-                pet = new Pet(set);
-            pet.setRoom(this);
-            pet.setRoomUnit(new RoomUnit());
-            pet.getRoomUnit().getPathFinder().setRoom(this);
-            pet.getRoomUnit().setLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
-            pet.getRoomUnit().setZ(set.getDouble("z"));
-            pet.getRoomUnit().setRotation(RoomUserRotation.values()[set.getInt("rot")]);
-            pet.getRoomUnit().setGoalLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
-            pet.getRoomUnit().setRoomUnitType(RoomUnitType.PET);
-            pet.getRoomUnit().setCanWalk(true);
-            this.addPet(pet);
+            try
+            {
+                AbstractPet pet;
+                if (set.getInt("type") == 15)
+                    pet = new HorsePet(set);
+                else if (set.getInt("type") == 16)
+                    pet = new MonsterplantPet(set);
+                else
+                    pet = new Pet(set);
+                pet.setRoom(this);
+                pet.setRoomUnit(new RoomUnit());
+                pet.getRoomUnit().getPathFinder().setRoom(this);
+                pet.getRoomUnit().setLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
+                pet.getRoomUnit().setZ(set.getDouble("z"));
+                pet.getRoomUnit().setRotation(RoomUserRotation.values()[set.getInt("rot")]);
+                pet.getRoomUnit().setGoalLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
+                pet.getRoomUnit().setRoomUnitType(RoomUnitType.PET);
+                pet.getRoomUnit().setCanWalk(true);
+                this.addPet(pet);
+            }
+            catch (SQLException e)
+            {
+                Emulator.getLogging().logSQLException(e);
+            }
         }
         set.close();
         statement.close();
@@ -1538,9 +1546,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                 AbstractPet pet = petIterator.value();
                                 if (pet instanceof Pet)
                                 {
-                                    if (pet instanceof MonsterplantPet)
-                                        continue;
-
 //                                    if (pet.getRoomUnit().getStatus().containsKey("mv") && pet.getRoomUnit().isAtGoal())
 //                                    {
 //                                        System.out.println("Clearing Pet Walking Animation...");
@@ -3025,6 +3030,24 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         this.currentBots.get(botId).getRoomUnit().setInRoom(false);
         return this.currentBots.remove(botId);
+    }
+
+    public void placePet(AbstractPet pet, short x, short y, double z, int rot)
+    {
+        synchronized (this.currentPets)
+        {
+            RoomTile tile = this.layout.getTile(x, y);
+
+            if (tile == null)
+            {
+                tile = this.layout.getDoorTile();
+            }
+
+            pet.setRoomUnit(new RoomUnit());
+            pet.getRoomUnit().setLocation(tile);
+            pet.getRoomUnit().setRoomUnitType(RoomUnitType.PET);
+            this.addPet(pet);
+        }
     }
 
     public AbstractPet removePet(int petId)

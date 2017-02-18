@@ -42,11 +42,7 @@ public class RoomPetComposer extends MessageComposer implements TIntObjectProced
         this.response.appendString("");
         if(pet instanceof MonsterplantPet)
         {
-            //Shape (Name 1)
-            //Color (Name 2)
-
-            String look = "16 0 ffffff 5 2 1 2 1 1 1 1 1 1 1 1 1 1 1 1";
-            this.response.appendString(look);
+            this.response.appendString(((MonsterplantPet)pet).getLook());
         }
         else
         {
@@ -61,14 +57,14 @@ public class RoomPetComposer extends MessageComposer implements TIntObjectProced
         this.response.appendInt32(pet.getPetData().getType());
         this.response.appendInt32(pet.getUserId());
         this.response.appendString(""); //TODO Owner name
-        this.response.appendInt32(pet instanceof MonsterplantPet ? 0 : 1);
+        this.response.appendInt32(pet instanceof MonsterplantPet ? ((MonsterplantPet) pet).getRarity() : 1);
         this.response.appendBoolean(pet instanceof HorsePet && ((HorsePet) pet).hasSaddle());
-        this.response.appendBoolean(true);
-        this.response.appendBoolean(true); //Can toggle breeding permissions.
-        this.response.appendBoolean(true);
-        this.response.appendBoolean(true); //Can treat?
-        this.response.appendBoolean(true); //Can breed
-        this.response.appendInt32(pet.getLevel());
+        this.response.appendBoolean(false);
+        this.response.appendBoolean((pet instanceof MonsterplantPet && ((MonsterplantPet) pet).canBreed())); //Has breeasasd//
+        this.response.appendBoolean(!(pet instanceof MonsterplantPet && ((MonsterplantPet) pet).isFullyGrown())); //unknown 1
+        this.response.appendBoolean(pet instanceof MonsterplantPet && ((MonsterplantPet) pet).isDead()); //Can revive // //Also disables fertilize when dead?
+        this.response.appendBoolean(pet instanceof MonsterplantPet && ((MonsterplantPet) pet).isPubliclyBreedable()); //Breedable checkbox //Toggle breeding permission
+        this.response.appendInt32(pet instanceof MonsterplantPet ? ((MonsterplantPet) pet).getGrowthStage() : pet.getLevel());
         this.response.appendString("");
 
         return true;

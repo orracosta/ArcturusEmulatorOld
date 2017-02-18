@@ -34,7 +34,7 @@ public class Incoming
     public static final int TradeCloseEvent = 2551; // PRODUCTION-201611291003-338511768
     public static final int CatalogBuyItemEvent = 3492; // PRODUCTION-201611291003-338511768
     public static final int RequestGuildMembersEvent = 312; // PRODUCTION-201611291003-338511768
-    public static final int RequestPetInformationEvent = 549; // PRODUCTION-201611291003-338511768
+    public static final int RequestPetInformationEvent = 2934; // PRODUCTION-201611291003-338511768
     public static final int RoomUserWhisperEvent = 1543; // PRODUCTION-201611291003-338511768
     public static final int ModToolRequestUserInfoEvent = 3295; // PRODUCTION-201611291003-338511768
     public static final int RotateMoveItemEvent = 248; // PRODUCTION-201611291003-338511768
@@ -299,4 +299,8 @@ public class Incoming
     public static final int HotelViewClaimBadgeRewardEvent = -1;
 
     public static final int JukeBoxAddSoundTrackEvent = 1878;
+    public static final int ToggleMonsterplantBreedableEvent = 3379;
+    public static final int CompostMonsterplantEvent = 3835;
+    public static final int BreedPetsEvent = 1638;
+    public static final int MovePetEvent = 3449;
 }

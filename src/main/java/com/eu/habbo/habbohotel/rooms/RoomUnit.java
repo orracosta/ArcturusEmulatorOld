@@ -49,8 +49,8 @@ public class RoomUnit
 
     private final THashMap<String, String> status;
     private final THashMap<String, Object> cacheable;
-    private RoomUserRotation bodyRotation;
-    private RoomUserRotation headRotation;
+    private RoomUserRotation bodyRotation = RoomUserRotation.NORTH;
+    private RoomUserRotation headRotation = RoomUserRotation.NORTH;
     private DanceType danceType;
     private RoomUnitType roomUnitType;
     private PathFinder pathFinder;

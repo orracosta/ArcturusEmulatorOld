@@ -434,6 +434,10 @@ public class PacketManager
         this.registerHandler(Incoming.HorseUseItemEvent,                        HorseUseItemEvent.class);
         this.registerHandler(Incoming.HorseRideSettingsEvent,                   HorseRideSettingsEvent.class);
         this.registerHandler(Incoming.HorseRideEvent,                           HorseRideEvent.class);
+        this.registerHandler(Incoming.ToggleMonsterplantBreedableEvent,         ToggleMonsterplantBreedableEvent.class);
+        this.registerHandler(Incoming.CompostMonsterplantEvent,                 CompostMonsterplantEvent.class);
+        this.registerHandler(Incoming.BreedPetsEvent,                           BreedPetsEvent.class);
+        this.registerHandler(Incoming.MovePetEvent,                             MovePetEvent.class);
     }
 
     void registerWired() throws Exception

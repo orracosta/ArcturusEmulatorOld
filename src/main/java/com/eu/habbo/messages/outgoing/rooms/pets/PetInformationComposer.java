@@ -27,8 +27,8 @@ public class PetInformationComposer extends MessageComposer
         this.response.appendString(this.pet.getName());
         if(this.pet instanceof MonsterplantPet)
         {
-            this.response.appendInt32(3);
-            this.response.appendInt32(7);
+            this.response.appendInt32(((MonsterplantPet) this.pet).getGrowthStage()); //This equal
+            this.response.appendInt32(7);                                             //... to this means breedable
         }
         else
         {
@@ -38,26 +38,47 @@ public class PetInformationComposer extends MessageComposer
         this.response.appendInt32(this.pet.getExperience());
         this.response.appendInt32(PetManager.experiences[this.pet.getLevel() - 1]); //XP Goal
         this.response.appendInt32(this.pet.getEnergy());
-        this.response.appendInt32(this.pet.getLevel() * 100); //Max energy
+        this.response.appendInt32(this.pet.getMaxEnergy()); //Max energy
         this.response.appendInt32(this.pet.getHappyness()); //this.pet.getHappyness()
         this.response.appendInt32(100);
         this.response.appendInt32(this.pet.getRespect());
         this.response.appendInt32(this.pet.getUserId());
         this.response.appendInt32((int)days + 1);
         this.response.appendString(""); //Owner name
-        this.response.appendInt32(this.pet instanceof MonsterplantPet ? 1 : 0);
+
+        this.response.appendInt32(this.pet instanceof MonsterplantPet ? ((MonsterplantPet) this.pet).getRarity() : 0);
         this.response.appendBoolean(this.pet instanceof HorsePet && ((HorsePet) this.pet).hasSaddle());
         this.response.appendBoolean(this.pet instanceof HorsePet && ((HorsePet) this.pet).getRider() != null);
         this.response.appendInt32(0);
         this.response.appendInt32(this.pet instanceof HorsePet && ((HorsePet) this.pet).anyoneCanRide() ? 1 : 0);
-        this.response.appendBoolean(false); //State Grown
-        this.response.appendBoolean(true); //unknown 1
-        this.response.appendBoolean(false); //Dead
-        this.response.appendInt32(this.pet instanceof MonsterplantPet ? ((MonsterplantPet) this.pet).getType() : 0);
-        this.response.appendInt32(129600);
-        this.response.appendInt32(128000);
-        this.response.appendInt32(1000);
-        this.response.appendBoolean(true); //unknown 3
+        this.response.appendBoolean(this.pet instanceof MonsterplantPet && ((MonsterplantPet) this.pet).canBreed()); //State Grown
+        this.response.appendBoolean(!(this.pet instanceof MonsterplantPet && ((MonsterplantPet) this.pet).isFullyGrown())); //unknown 1
+        this.response.appendBoolean(this.pet instanceof MonsterplantPet && ((MonsterplantPet) this.pet).isDead()); //Dead
+        this.response.appendInt32(this.pet instanceof MonsterplantPet ? ((MonsterplantPet) this.pet).getRarity() : 0);
+        this.response.appendInt32(MonsterplantPet.timeToLive); //Maximum wellbeing
+        this.response.appendInt32(this.pet instanceof MonsterplantPet ? ((MonsterplantPet) this.pet).remainingTimeToLive() : 0); //Remaining Wellbeing
+        this.response.appendInt32(this.pet instanceof MonsterplantPet ? ((MonsterplantPet) this.pet).remainingGrowTime() : 0);
+        this.response.appendBoolean(this.pet instanceof MonsterplantPet && ((MonsterplantPet) this.pet).isPubliclyBreedable()); //Breedable checkbox
+
+
+        /*
+        public function get _SafeStr_6187():Boolean
+        {
+            return (this._SafeStr_10925);
+        }
+        public function get _SafeStr_6188():Boolean
+        {
+            return (this._SafeStr_10926);
+        }
+        public function get _SafeStr_6189():Boolean
+        {
+            return (this._SafeStr_10927);
+        }
+        public function get _SafeStr_6190():Boolean
+        {
+            return (this._SafeStr_10928);
+        }
+         */
         return this.response;
     }
 }
