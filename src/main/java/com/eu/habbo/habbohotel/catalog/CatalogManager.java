@@ -1165,7 +1165,6 @@ public class CatalogManager
                                             {
                                                 bot.setOwnerId(habbo.getClient().getHabbo().getHabboInfo().getId());
                                                 bot.setOwnerName(habbo.getClient().getHabbo().getHabboInfo().getUsername());
-                                                bot.setFigure(item.getExtradata());
                                                 bot.needsUpdate(true);
                                                 Emulator.getThreading().run(bot);
                                                 habbo.getClient().getHabbo().getHabboInventory().getBotsComponent().addBot(bot);

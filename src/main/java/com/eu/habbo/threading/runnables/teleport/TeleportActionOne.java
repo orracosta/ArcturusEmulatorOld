@@ -2,7 +2,7 @@ package com.eu.habbo.threading.runnables.teleport;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
-import com.eu.habbo.habbohotel.items.interactions.InteractionInstantTeleporter;
+import com.eu.habbo.habbohotel.items.interactions.InteractionTeleportTile;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -25,7 +25,7 @@ public class TeleportActionOne implements Runnable
     @Override
     public void run()
     {
-        if (!(this.currentTeleport instanceof InteractionInstantTeleporter))
+        if (!(this.currentTeleport instanceof InteractionTeleportTile))
         {
             this.client.getHabbo().getRoomUnit().setGoalLocation(this.room.getLayout().getTile(this.currentTeleport.getX(), this.currentTeleport.getY()));
             this.client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[(this.currentTeleport.getRotation() + 4) % 8]);
