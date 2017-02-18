@@ -70,7 +70,7 @@ public class Item {
         this.effectM = set.getShort("effect_id_male");
         this.effectF = set.getShort("effect_id_female");
 
-        if(this.interactionType.getType() == InteractionVendingMachine.class)
+        if(!set.getString("vending_ids").isEmpty())
         {
             this.vendingItems = new TIntArrayList();
             String[] vendingIds = set.getString("vending_ids").replace(";", ",").split(",");
