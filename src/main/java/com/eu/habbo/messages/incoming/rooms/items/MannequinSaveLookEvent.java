@@ -27,7 +27,7 @@ public class MannequinSaveLookEvent extends MessageHandler
 
         for (String s : this.client.getHabbo().getHabboInfo().getLook().split("\\."))
         {
-            if (s.startsWith("ch") || s.startsWith("ha") || s.startsWith("lg") || s.startsWith("sh"))
+            if (!s.contains("hr") && !s.contains("hd") && !s.contains("he") && !s.contains("ea") && !s.contains("ha") && !s.contains("fa"))
             {
                 look += s + ".";
             }
@@ -35,7 +35,7 @@ public class MannequinSaveLookEvent extends MessageHandler
 
         if (!look.isEmpty())
         {
-            look = look.substring(0, look.length() - 2);
+            look = look.substring(0, look.length() - 1);
         }
 
         if(data.length == 3)
@@ -46,6 +46,7 @@ public class MannequinSaveLookEvent extends MessageHandler
         {
             item.setExtradata(this.client.getHabbo().getHabboInfo().getGender().name().toLowerCase() + ":" + look + ":" + this.client.getHabbo().getHabboInfo().getUsername() + "'s look.");
         }
+
         item.needsUpdate(true);
         Emulator.getThreading().run(item);
         room.updateItem(item);

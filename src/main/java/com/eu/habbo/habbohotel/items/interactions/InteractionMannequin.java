@@ -36,7 +36,7 @@ public class InteractionMannequin extends HabboItem
             serverMessage.appendString("GENDER");
             serverMessage.appendString(data[0].toLowerCase());
             serverMessage.appendString("FIGURE");
-            serverMessage.appendString(data[1].replace(" ", ""));
+            serverMessage.appendString(data[1]);
             serverMessage.appendString("OUTFIT_NAME");
             serverMessage.appendString((data.length >= 3 ?  data[2] : ""));
         }
@@ -70,10 +70,30 @@ public class InteractionMannequin extends HabboItem
     @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
-        super.onClick(client, room, objects);
+        String[] lookCode = this.getExtradata().split(":")[1].split("\\.");
 
-        String lookCode = this.getExtradata().split(":")[1];
-        client.getHabbo().getHabboInfo().setLook(lookCode);
+        String look = "";
+        for (String part : client.getHabbo().getHabboInfo().getLook().split("\\."))
+        {
+            String type = part.split("-")[0];
+
+            boolean found = false;
+            for (String s : lookCode)
+            {
+                if (s.contains(type))
+                {
+                    found = true;
+                    look += s + ".";
+                }
+            }
+
+            if (!found)
+            {
+                look += part + ".";
+            }
+        }
+
+        client.getHabbo().getHabboInfo().setLook(look.substring(0, look.length() - 1));
         room.sendComposer(new RoomUserDataComposer(client.getHabbo()).compose());
         client.sendResponse(new UserDataComposer(client.getHabbo()));
     }
