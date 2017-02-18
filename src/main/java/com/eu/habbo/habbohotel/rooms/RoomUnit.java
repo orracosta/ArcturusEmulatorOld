@@ -291,7 +291,7 @@ public class RoomUnit
 
             if (habbo != null)
             {
-                if (next.getX() == room.getLayout().getDoorX() && next.getY() == room.getLayout().getDoorY())
+                if (next.getX() == room.getLayout().getDoorX() && next.getY() == room.getLayout().getDoorY() && (!room.isPublicRoom()) || (room.isPublicRoom() && Emulator.getConfig().getBoolean("hotel.room.public.doortile.kick")))
                 {
                     Emulator.getThreading().run(new RoomUnitKick(habbo, room, false), 500);
                 }

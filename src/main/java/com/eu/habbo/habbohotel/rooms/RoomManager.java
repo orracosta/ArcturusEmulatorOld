@@ -1029,7 +1029,6 @@ public class RoomManager {
         }
     }
 
-    //TODO: Param room makes no sense.
     public void leaveRoom(Habbo habbo, Room room)
     {
         if(habbo.getHabboInfo().getCurrentRoom() != null && habbo.getHabboInfo().getCurrentRoom() == room)
