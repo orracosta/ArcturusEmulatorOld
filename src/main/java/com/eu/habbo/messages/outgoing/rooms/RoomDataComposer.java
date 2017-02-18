@@ -55,7 +55,7 @@ public class RoomDataComposer extends MessageComposer
             this.response.appendString(s);
         }
 
-        int base = 8 | 16;
+        int base = 16;
 
         if(this.room.getGuildId() > 0)
         {
