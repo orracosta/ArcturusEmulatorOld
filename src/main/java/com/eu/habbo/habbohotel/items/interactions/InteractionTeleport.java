@@ -6,8 +6,10 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
+import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.threading.runnables.teleport.TeleportActionOne;
 
 import java.sql.ResultSet;
@@ -54,7 +56,6 @@ public class InteractionTeleport extends HabboItem
     {
         super.onClick(client, room, objects);
 
-
         if(room != null)
         {
             RoomTile loc = HabboItem.getSquareInFront(room.getLayout(), this);
@@ -77,7 +78,6 @@ public class InteractionTeleport extends HabboItem
     @Override
     public void onWalk(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
-
     }
 
     @Override

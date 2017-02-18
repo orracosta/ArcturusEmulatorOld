@@ -2,6 +2,7 @@ package com.eu.habbo.threading.runnables.teleport;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.habbohotel.items.interactions.InteractionInstantTeleporter;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.threading.runnables.HabboItemNewState;
@@ -24,7 +25,11 @@ class TeleportActionFive implements Runnable
     public void run()
     {
         this.client.getHabbo().getRoomUnit().isTeleporting = false;
-        this.client.getHabbo().getRoomUnit().setGoalLocation(PathFinder.getSquareInFront(this.room.getLayout(), this.currentTeleport.getX(), this.currentTeleport.getY(), this.currentTeleport.getRotation()));
+
+        if (!(this.currentTeleport instanceof InteractionInstantTeleporter))
+        {
+            this.client.getHabbo().getRoomUnit().setGoalLocation(PathFinder.getSquareInFront(this.room.getLayout(), this.currentTeleport.getX(), this.currentTeleport.getY(), this.currentTeleport.getRotation()));
+        }
 
         Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "0"), 1000);
     }
