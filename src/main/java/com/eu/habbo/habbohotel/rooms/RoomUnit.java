@@ -432,10 +432,14 @@ public class RoomUnit
         }
 
         this.startLocation = this.currentLocation;
-        this.goalLocation = goalLocation;
-        this.tilesWalked = 0;
-        this.pathFinder.findPath();
-        this.cmdSit = false;
+
+        if (goalLocation != null)
+        {
+            this.goalLocation = goalLocation;
+            this.tilesWalked = 0;
+            this.pathFinder.findPath();
+            this.cmdSit = false;
+        }
     }
 
     public void setLocation(RoomTile location)
