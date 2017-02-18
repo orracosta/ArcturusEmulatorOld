@@ -18,6 +18,7 @@ import com.eu.habbo.messages.outgoing.inventory.AddBotComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddPetComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
+import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
 import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
 import com.eu.habbo.messages.outgoing.users.UserPointsComposer;
 import com.eu.habbo.plugin.Event;
@@ -1314,6 +1315,7 @@ public class CatalogManager
                     HabboBadge badge = new HabboBadge(0, item.getBadge(), 0, habbo);
                     Emulator.getThreading().run(badge);
                     habbo.getHabboInventory().getBadgesComponent().addBadge(badge);
+                    habbo.getClient().sendResponse(new AddUserBadgeComposer(badge));
                 }
                 else
                 {
