@@ -832,26 +832,30 @@ public class RoomManager {
             }
             habbo.getRoomUnit().setPathFinderRoom(room);
             habbo.getRoomUnit().resetIdleTimer();
-            room.addHabbo(habbo);
 
-            if (!room.getCurrentHabbos().isEmpty())
+            synchronized (room.getCurrentHabbos())
             {
-                // ServerMessage m = new RoomUsersComposer(habbo).compose().appendResponse(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
-                room.sendComposer(new RoomUsersComposer(habbo).compose());
-
-                if (habbo.getHabboStats().guild != 0)
+                room.addHabbo(habbo);
+                if (!room.getCurrentHabbos().isEmpty())
                 {
-                    Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(habbo.getHabboStats().guild);
+                    // ServerMessage m = new RoomUsersComposer(habbo).compose().appendResponse(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
 
-                    if (guild != null)
+                    room.sendComposer(new RoomUsersComposer(habbo).compose());
+                    room.sendComposer(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
+
+                    habbo.getClient().sendResponse(new RoomUsersComposer(room.getCurrentHabbos()));
+                    habbo.getClient().sendResponse(new RoomUserStatusComposer(room.getCurrentHabbos()));
+
+                    if (habbo.getHabboStats().guild != 0)
                     {
-                        room.sendComposer(new RoomUsersAddGuildBadgeComposer(guild).compose());
+                        Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(habbo.getHabboStats().guild);
+
+                        if (guild != null)
+                        {
+                            room.sendComposer(new RoomUsersAddGuildBadgeComposer(guild).compose());
+                        }
                     }
                 }
-
-                room.sendComposer(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
-                habbo.getClient().sendResponse(new RoomUsersComposer(room.getCurrentHabbos()));
-                habbo.getClient().sendResponse(new RoomUserStatusComposer(room.getCurrentHabbos()));
             }
 
             habbo.getClient().sendResponse(new RoomUsersComposer(room.getCurrentBots().valueCollection(), true));
