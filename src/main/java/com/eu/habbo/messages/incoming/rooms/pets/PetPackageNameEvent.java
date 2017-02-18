@@ -32,6 +32,12 @@ public class PetPackageNameEvent extends MessageHandler
                     if (name.matches("^[a-zA-Z0-9]*$"))
                     {
                         Pet pet = null;
+
+                        if (item.getBaseItem().getName().equalsIgnoreCase("val11_present"))
+                        {
+                            pet = Emulator.getGameEnvironment().getPetManager().createPet(11, name, this.client);
+                        }
+
                         if (item.getBaseItem().getName().equalsIgnoreCase("gnome_box"))
                         {
                             pet = Emulator.getGameEnvironment().getPetManager().createGnome(name, room, this.client.getHabbo());
@@ -54,13 +60,14 @@ public class PetPackageNameEvent extends MessageHandler
 
                         if (pet != null)
                         {
-                            room.placePet((AbstractPet)pet, item.getX(), item.getY(), item.getZ(), item.getRotation());
+                            room.placePet((AbstractPet) pet, item.getX(), item.getY(), item.getZ(), item.getRotation());
                             pet.setUserId(this.client.getHabbo().getHabboInfo().getId());
                             pet.needsUpdate = true;
                             pet.getRoomUnit().setLocation(room.getLayout().getTile(item.getX(), item.getY()));
                             pet.getRoomUnit().setZ(item.getZ());
                             Emulator.getThreading().run(new QueryDeleteHabboItem(item));
                             room.removeHabboItem(item);
+                            room.updateTile(room.getLayout().getTile(item.getX(), item.getY()));
                             item.setUserId(0);
                             room.sendComposer(new RemoveFloorItemComposer(item).compose());
                         }

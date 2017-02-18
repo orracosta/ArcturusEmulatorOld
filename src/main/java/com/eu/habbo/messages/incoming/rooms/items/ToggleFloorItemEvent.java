@@ -101,13 +101,16 @@ public class ToggleFloorItemEvent extends MessageHandler
                 MonsterplantPet pet = Emulator.getGameEnvironment().getPetManager().createMonsterplant(room, this.client.getHabbo(), item.getBaseItem().getName().contains("rare"), room.getLayout().getTile(item.getX(), item.getY()));
                 room.sendComposer(new RemoveFloorItemComposer(item, true).compose());
                 room.removeHabboItem(item);
+                room.updateTile(room.getLayout().getTile(item.getX(), item.getY()));
                 room.placePet(pet, item.getX(), item.getY(), item.getZ(), item.getRotation());
                 pet.cycle();
                 room.sendComposer(new RoomUserStatusComposer(pet.getRoomUnit()).compose());
                 return;
             }
 
-            if (item.getBaseItem().getName().equalsIgnoreCase("gnome_box") ||
+            if (
+                    item.getBaseItem().getName().equalsIgnoreCase("val11_present") ||
+                    item.getBaseItem().getName().equalsIgnoreCase("gnome_box") ||
                     item.getBaseItem().getName().equalsIgnoreCase("leprechaun_box") ||
                     item.getBaseItem().getName().equalsIgnoreCase("velociraptor_egg") ||
                     item.getBaseItem().getName().equalsIgnoreCase("pterosaur_egg"))
