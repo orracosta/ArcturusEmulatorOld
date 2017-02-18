@@ -1039,14 +1039,19 @@ public class Pet extends AbstractPet
 
             if(this.experience >= PetManager.experiences[this.level - 1])
             {
-                this.level++;
-                super.say(this.petData.randomVocal(PetVocalsType.LEVEL_UP));
-                this.addHappyness(100);
-                this.getRoomUnit().getStatus().put("gst", "exp");
-                this.gestureTickTimeout = Emulator.getIntUnixTimestamp();
-                AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(this.userId), Emulator.getGameEnvironment().getAchievementManager().getAchievement("PetLevelUp"));
+                this.levelUp();
             }
         }
+    }
+
+    protected void levelUp()
+    {
+        this.level++;
+        super.say(this.petData.randomVocal(PetVocalsType.LEVEL_UP));
+        this.addHappyness(100);
+        this.getRoomUnit().getStatus().put("gst", "exp");
+        this.gestureTickTimeout = Emulator.getIntUnixTimestamp();
+        AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(this.userId), Emulator.getGameEnvironment().getAchievementManager().getAchievement("PetLevelUp"));
     }
 
     public synchronized void addThirst(int amount)

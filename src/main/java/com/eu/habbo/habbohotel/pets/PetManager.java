@@ -24,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class PetManager
 {
@@ -400,6 +401,14 @@ public class PetManager
         return pet;
     }
 
+    public Pet createPet(int type, String name, GameClient client)
+    {
+        Pet pet = new Pet(type, Emulator.getRandom().nextInt(this.petRaces.get(type).size() + 1), "FFFFFF", name, client.getHabbo().getHabboInfo().getId());
+        pet.needsUpdate = true;
+        pet.run();
+        return pet;
+    }
+
     public MonsterplantPet createMonsterplant(Room room, Habbo habbo, boolean rare, RoomTile t)
     {
         MonsterplantPet pet = new MonsterplantPet(
@@ -420,6 +429,69 @@ public class PetManager
         pet.needsUpdate = true;
         pet.run();
         return pet;
+    }
+
+    public Pet createGnome(String name, Room room, Habbo habbo)
+    {
+        Pet pet = new GnomePet(26, 0, "FFFFFF", name, habbo.getHabboInfo().getId(),
+                "5 " +
+                "0 -1 " + randomGnomeSkinColor() + " " +
+                "1 10" + (1 + Emulator.getRandom().nextInt(2)) + " " + randomGnomeColor() + " " +
+                "2 201 " + randomGnomeColor() + " " +
+                "3 30" + (1 + Emulator.getRandom().nextInt(2)) + " " + randomGnomeColor() + " " +
+                "4 40" + Emulator.getRandom().nextInt(2) + " " + randomGnomeColor()
+                );
+
+        pet.setUserId(habbo.getHabboInfo().getId());
+        pet.setRoom(room);
+        pet.setRoomUnit(new RoomUnit());
+        pet.needsUpdate = true;
+        pet.run();
+
+        return pet;
+    }
+
+    public Pet createLeprechaun(String name, Room room, Habbo habbo)
+    {
+        Pet pet = new GnomePet(27, 0, "FFFFFF", name, habbo.getHabboInfo().getId(),
+                "5 " +
+                        "0 -1 0 " +
+                        "1 102 19 " +
+                        "2 201 27 " +
+                        "3 302 23 " +
+                        "4 401 27"
+        );
+
+        pet.setUserId(habbo.getHabboInfo().getId());
+        pet.setRoom(room);
+        pet.setRoomUnit(new RoomUnit());
+        pet.needsUpdate = true;
+        pet.run();
+
+        return pet;
+    }
+
+    private int randomGnomeColor()
+    {
+        int color = 19;
+
+        while (color == 19 || color == 27)
+        {
+            color = Emulator.getRandom().nextInt(34);
+        }
+
+        return color;
+    }
+
+    private int randomLeprechaunColor()
+    {
+        return Emulator.getRandom().nextInt(2) == 1 ? 19 : 27;
+    }
+
+    static int[] skins = new int[]{0, 1, 6, 7};
+    private int randomGnomeSkinColor()
+    {
+        return skins[Emulator.getRandom().nextInt(skins.length)];
     }
 
     public static int randomBody(int minimumRarity)
@@ -463,6 +535,8 @@ public class PetManager
             return new HorsePet(set);
         else if(set.getInt("type") == 16)
             return new MonsterplantPet(set);
+        else if (set.getInt("type") == 26 || set.getInt("type") == 27)
+            return new GnomePet(set);
         else
             return new Pet(set);
     }

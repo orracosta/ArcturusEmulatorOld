@@ -8,6 +8,7 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
+import com.eu.habbo.messages.outgoing.rooms.pets.PetPackageComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;
@@ -101,9 +102,17 @@ public class ToggleFloorItemEvent extends MessageHandler
                 room.sendComposer(new RemoveFloorItemComposer(item, true).compose());
                 room.removeHabboItem(item);
                 room.placePet(pet, item.getX(), item.getY(), item.getZ(), item.getRotation());
-                room.sendComposer(new RoomPetComposer(pet).compose());
                 pet.cycle();
                 room.sendComposer(new RoomUserStatusComposer(pet.getRoomUnit()).compose());
+                return;
+            }
+
+            if (item.getBaseItem().getName().equalsIgnoreCase("gnome_box") ||
+                    item.getBaseItem().getName().equalsIgnoreCase("leprechaun_box") ||
+                    item.getBaseItem().getName().equalsIgnoreCase("velociraptor_egg") ||
+                    item.getBaseItem().getName().equalsIgnoreCase("pterosaur_egg"))
+            {
+                this.client.sendResponse(new PetPackageComposer(item));
                 return;
             }
 

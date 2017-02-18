@@ -1,6 +1,8 @@
 package com.eu.habbo.habbohotel.pets;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.achievements.Achievement;
+import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.ItemManager;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -18,7 +20,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class MonsterplantPet extends Pet
+public class MonsterplantPet extends Pet implements IPetLook
 {
     public static int growTime = (30 * 60); // 30 minutes
     public static int timeToLive = (3 * 24 * 60 * 60); //3 days
@@ -167,6 +169,11 @@ public class MonsterplantPet extends Pet
             if (isDead())
             {
                 this.roomUnit.getStatus().remove("gst");
+
+                if (!this.roomUnit.getStatus().containsKey("rip"))
+                {
+                    AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(this.userId), Emulator.getGameEnvironment().getAchievementManager().getAchievement("MonsterPlantGardenOfDeath"));
+                }
                 if (this.roomUnit.getStatus().size() != 1)
                 {
                     this.roomUnit.getStatus().clear();
@@ -227,6 +234,7 @@ public class MonsterplantPet extends Pet
         return bodyRarity.get(this.type).getValue() + colorRarity.get(this.hue).getValue();
     }
 
+    @Override
     public String getLook()
     {
         String look = "16 0 FFFFFF " +
@@ -345,6 +353,7 @@ public class MonsterplantPet extends Pet
                 HabboItem seed = null;
                 if (ownerOne != null)
                 {
+                    AchievementManager.progressAchievement(ownerOne, Emulator.getGameEnvironment().getAchievementManager().getAchievement("MonsterPlantBreeder"), 5);
                     seed = Emulator.getGameEnvironment().getItemManager().createItem(ownerOne.getHabboInfo().getId(), seedBase, 0, 0, "");
                     ownerOne.getHabboInventory().getItemsComponent().addItem(seed);
                     ownerOne.getClient().sendResponse(new AddHabboItemComposer(seed));
@@ -353,6 +362,7 @@ public class MonsterplantPet extends Pet
 
                 if (ownerTwo != null)
                 {
+                    AchievementManager.progressAchievement(ownerTwo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("MonsterPlantBreeder"), 5);
                     seed = Emulator.getGameEnvironment().getItemManager().createItem(ownerTwo.getHabboInfo().getId(), seedBase, 0, 0, "");
                     ownerTwo.getHabboInventory().getItemsComponent().addItem(seed);
                     ownerTwo.getClient().sendResponse(new AddHabboItemComposer(seed));
@@ -381,6 +391,7 @@ public class MonsterplantPet extends Pet
     @Override
     public void scratched(Habbo habbo)
     {
+        AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("MonsterPlantTreater"), 5);
         this.setDeathTimestamp(Emulator.getIntUnixTimestamp() + MonsterplantPet.timeToLive);
         this.addExperience(10);
         this.room.sendComposer(new PetStatusUpdateComposer(this).compose());

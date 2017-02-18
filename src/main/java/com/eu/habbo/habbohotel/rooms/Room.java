@@ -518,13 +518,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         {
             try
             {
-                AbstractPet pet;
-                if (set.getInt("type") == 15)
-                    pet = new HorsePet(set);
-                else if (set.getInt("type") == 16)
-                    pet = new MonsterplantPet(set);
-                else
-                    pet = new Pet(set);
+                //TODO fix this shitty code
+                AbstractPet pet = PetManager.loadPet(set);
                 pet.setRoom(this);
                 pet.setRoomUnit(new RoomUnit());
                 pet.getRoomUnit().getPathFinder().setRoom(this);
@@ -3044,9 +3039,14 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             }
 
             pet.setRoomUnit(new RoomUnit());
+            pet.setRoom(this);
             pet.getRoomUnit().setLocation(tile);
             pet.getRoomUnit().setRoomUnitType(RoomUnitType.PET);
+            pet.getRoomUnit().setCanWalk(true);
+            pet.getRoomUnit().getPathFinder().setRoom(this);
+            pet.needsUpdate = true;
             this.addPet(pet);
+            this.sendComposer(new RoomPetComposer(pet).compose());
         }
     }
 

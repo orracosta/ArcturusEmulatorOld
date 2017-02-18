@@ -2,6 +2,7 @@ package com.eu.habbo.messages.outgoing.rooms.pets;
 
 import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.HorsePet;
+import com.eu.habbo.habbohotel.pets.IPetLook;
 import com.eu.habbo.habbohotel.pets.MonsterplantPet;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
@@ -40,9 +41,9 @@ public class RoomPetComposer extends MessageComposer implements TIntObjectProced
         this.response.appendInt32(pet.getId());
         this.response.appendString(pet.getName());
         this.response.appendString("");
-        if(pet instanceof MonsterplantPet)
+        if(pet instanceof IPetLook)
         {
-            this.response.appendString(((MonsterplantPet)pet).getLook());
+            this.response.appendString(((IPetLook)pet).getLook());
         }
         else
         {

@@ -303,4 +303,5 @@ public class Incoming
     public static final int CompostMonsterplantEvent = 3835;
     public static final int BreedPetsEvent = 1638;
     public static final int MovePetEvent = 3449;
+    public static final int PetPackageNameEvent = 3698;
 }

@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.rooms.pets;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.HorsePet;
 import com.eu.habbo.habbohotel.pets.MonsterplantPet;
@@ -123,6 +124,7 @@ public class HorseUseItemEvent extends MessageHandler
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserStatusComposer(pet.getRoomUnit()).compose());
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new PetStatusUpdateComposer((Pet)pet).compose());
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTiles(PathFinder.getTilesAt(this.client.getHabbo().getHabboInfo().getCurrentRoom().getLayout(), item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
+                        AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("MonsterPlantHealer"));
                         pet.getRoomUnit().getStatus().remove("gst");
                         Emulator.getThreading().run(new QueryDeleteHabboItem(item));
                     }

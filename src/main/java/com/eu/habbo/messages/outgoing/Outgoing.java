@@ -316,7 +316,7 @@ public class Outgoing
     public final static int LoveLockFurniStartComposer = 3753; // PRODUCTION-201611291003-338511768
     public final static int LoveLockFurniFriendConfirmedComposer = 382; // PRODUCTION-201611291003-338511768
     public final static int LoveLockFurniFinishedComposer = 770; // PRODUCTION-201611291003-338511768
-    public final static int OpenPetPackageNameValidationComposer = 546; // PRODUCTION-201611291003-338511768
+    public final static int PetPackageNameValidationComposer = 546; // PRODUCTION-201611291003-338511768
     public final static int GameCenterFeaturedPlayersComposer = 3097; // PRODUCTION-201611291003-338511768
     public final static int HabboMallComposer = 1237; // PRODUCTION-201611291003-338511768
     public final static int TargetedOfferComposer = 119; // PRODUCTION-201611291003-338511768

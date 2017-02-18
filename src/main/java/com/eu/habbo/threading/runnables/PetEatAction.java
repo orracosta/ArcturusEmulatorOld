@@ -3,6 +3,7 @@ package com.eu.habbo.threading.runnables;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPetFood;
+import com.eu.habbo.habbohotel.pets.GnomePet;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
@@ -33,7 +34,21 @@ public class PetEatAction implements Runnable
                 this.food.setExtradata(Integer.valueOf(this.food.getExtradata()) + 1 + "");
                 this.pet.getRoom().updateItem(this.food);
 
-                AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(this.pet.getUserId()), Emulator.getGameEnvironment().getAchievementManager().getAchievement("PetFeeding"), 20);
+                if (this.pet instanceof GnomePet)
+                {
+                    if (this.pet.getPetData().getType() == 26)
+                    {
+                        AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(this.pet.getUserId()), Emulator.getGameEnvironment().getAchievementManager().getAchievement("GnomeFeedingFeeding"), 20);
+                    }
+                    else
+                    {
+                        AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(this.pet.getUserId()), Emulator.getGameEnvironment().getAchievementManager().getAchievement("LeprechaunFeedingFeeding"), 20);
+                    }
+                }
+                else
+                {
+                    AchievementManager.progressAchievement(Emulator.getGameEnvironment().getHabboManager().getHabbo(this.pet.getUserId()), Emulator.getGameEnvironment().getAchievementManager().getAchievement("PetFeeding"), 20);
+                }
 
                 Emulator.getThreading().run(this, 1000);
             } else

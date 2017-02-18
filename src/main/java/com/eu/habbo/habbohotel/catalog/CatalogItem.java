@@ -288,9 +288,17 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
                 {
                     message.appendString(this.getName().split("_")[2]);
                 }
-                else if(item.getName().equalsIgnoreCase("rentable_bot"))
+                else if(item.getName().equals("rentable_bot"))
                 {
-                    message.appendString(this.getExtradata());
+                    for (String s : this.getExtradata().split(";"))
+                    {
+                        if (s.startsWith("figure:"))
+                        {
+                            message.appendString(s.replace("figure:", ""));
+                            break;
+                        }
+                    }
+                    //message.appendString(this.getExtradata());
                 }
                 else if(item.getType().toLowerCase().equals("r"))
                 {
