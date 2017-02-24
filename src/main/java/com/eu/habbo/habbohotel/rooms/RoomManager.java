@@ -24,6 +24,7 @@ import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetComposer;
 import com.eu.habbo.messages.outgoing.rooms.promotions.RoomPromotionMessageComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.*;
 import com.eu.habbo.plugin.events.navigator.NavigatorRoomCreatedEvent;
+import com.eu.habbo.plugin.events.rooms.RoomUncachedEvent;
 import com.eu.habbo.plugin.events.users.UserEnterRoomEvent;
 import com.eu.habbo.util.pathfinding.PathFinder;
 import gnu.trove.iterator.TIntObjectIterator;
@@ -434,6 +435,9 @@ public class RoomManager {
 
         for(Room room : roomsToDispose)
         {
+            if (Emulator.getPluginManager().fireEvent(new RoomUncachedEvent(room)).isCancelled())
+                continue;
+
             this.activeRooms.remove(room.getId());
             room.dispose();
         }

@@ -41,6 +41,9 @@ import com.eu.habbo.messages.outgoing.users.MutedWhisperComposer;
 import com.eu.habbo.plugin.Event;
 import com.eu.habbo.plugin.events.furniture.FurniturePickedUpEvent;
 import com.eu.habbo.plugin.events.furniture.FurnitureRolledEvent;
+import com.eu.habbo.plugin.events.rooms.RoomLoadedEvent;
+import com.eu.habbo.plugin.events.rooms.RoomUnloadedEvent;
+import com.eu.habbo.plugin.events.rooms.RoomUnloadingEvent;
 import com.eu.habbo.plugin.events.users.UserExitRoomEvent;
 import com.eu.habbo.plugin.events.users.UserIdleEvent;
 import com.eu.habbo.plugin.events.users.UserRightsTakenEvent;
@@ -369,6 +372,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 Emulator.getLogging().logErrorLine(e);
             }
         }
+
+        Emulator.getPluginManager().fireEvent(new RoomLoadedEvent(this));
     }
 
     public synchronized void loadHeightmap()
@@ -847,6 +852,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         if(this.preventUnloading)
             return;
 
+        if (Emulator.getPluginManager().fireEvent(new RoomUnloadingEvent(this)).isCancelled())
+            return;
+
         try
         {
             this.loaded = false;
@@ -970,6 +978,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.noVotes = 0;
         this.updateDatabaseUserCount();
         this.preLoaded = true;
+
+        Emulator.getPluginManager().fireEvent(new RoomUnloadedEvent(this));
     }
 
     @SuppressWarnings("NullableProblems")
@@ -1124,7 +1134,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             PreparedStatement statement = null;
             try
             {
-                statement = Emulator.getDatabase().prepare("UPDATE rooms SET name = ?, description = ?, password = ?, state = ?, users_max = ?, category = ?, score = ?, paper_floor = ?, paper_wall = ?, paper_landscape = ?, thickness_wall = ?, wall_height = ?, thickness_floor = ?, moodlight_data = ?, tags = ?, allow_other_pets = ?, allow_other_pets_eat = ?, allow_walkthrough = ?, allow_hidewall = ?, chat_mode = ?, chat_weight = ?, chat_speed = ?, chat_hearing_distance = ?, chat_protection =?, who_can_mute = ?, who_can_kick = ?, who_can_ban = ?, poll_id = ?, guild_id = ?, roller_speed = ?, override_model = ?, is_staff_picked = ?, promoted = ?, trade_mode = ?, move_diagonally = ? WHERE id = ?");
+                statement = Emulator.getDatabase().prepare("UPDATE rooms SET name = ?, description = ?, password = ?, state = ?, users_max = ?, category = ?, score = ?, paper_floor = ?, paper_wall = ?, paper_landscape = ?, thickness_wall = ?, wall_height = ?, thickness_floor = ?, moodlight_data = ?, tags = ?, allow_other_pets = ?, allow_other_pets_eat = ?, allow_walkthrough = ?, allow_hidewall = ?, chat_mode = ?, chat_weight = ?, chat_speed = ?, chat_hearing_distance = ?, chat_protection =?, who_can_mute = ?, who_can_kick = ?, who_can_ban = ?, poll_id = ?, guild_id = ?, roller_speed = ?, override_model = ?, is_staff_picked = ?, promoted = ?, trade_mode = ?, move_diagonally = ?, owner_id = ?, owner_name = ? WHERE id = ?");
                 statement.setString(1, this.name);
                 statement.setString(2, this.description);
                 statement.setString(3, this.password);
@@ -1170,7 +1180,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 statement.setString(33, this.promoted ? "1" : "0");
                 statement.setInt(34, this.tradeMode);
                 statement.setString(35, this.moveDiagonally ? "1" : "0");
-                statement.setInt(36, this.id);
+                statement.setInt(36, this.ownerId);
+                statement.setString(37, this.ownerName);
+                statement.setInt(38, this.id);
                 statement.executeUpdate();
                 statement.close();
                 statement.getConnection().close();
@@ -1816,9 +1828,19 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         return this.ownerId;
     }
 
+    public void setOwnerId(int ownerId)
+    {
+        this.ownerId = ownerId;
+    }
+
     public String getOwnerName()
     {
         return this.ownerName;
+    }
+
+    public void setOwnerName(String ownerName)
+    {
+        this.ownerName = ownerName;
     }
 
     public String getName()
