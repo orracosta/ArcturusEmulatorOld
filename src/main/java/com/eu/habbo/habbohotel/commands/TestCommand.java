@@ -14,6 +14,8 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.Incoming;
+import com.eu.habbo.messages.incoming.gamecenter.GameCenterRequestAccountStatusEvent;
+import com.eu.habbo.messages.incoming.gamecenter.GameCenterRequestGamesEvent;
 import com.eu.habbo.messages.incoming.rooms.pets.MovePetEvent;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.MessagesForYouComposer;
@@ -44,6 +46,14 @@ public class TestCommand extends Command
         if (params[1].equals("ach"))
         {
             AchievementManager.progressAchievement(gameClient.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("PetLover"), 1000);
+        }
+
+        if (params[1].equals("gc"))
+        {
+
+            //Emulator.getGameServer().getPacketManager().registerHandler(Incoming.GameCenterRequestGamesEvent, GameCenterRequestGamesEvent.class);
+            Emulator.getGameServer().getPacketManager().registerHandler(Incoming.GameCenterRequestAccountStatusEvent, GameCenterRequestAccountStatusEvent.class);
+            return true;
         }
         //Emulator.getGameEnvironment().getRoomManager().clearInactiveRooms();
         //gameClient.sendResponse(new RoomDataComposer(gameClient.getHabbo().getHabboInfo().getCurrentRoom(), gameClient.getHabbo(), true, false));

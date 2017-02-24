@@ -19,6 +19,8 @@ import com.eu.habbo.messages.incoming.events.calendar.AdventCalendarForceOpenEve
 import com.eu.habbo.messages.incoming.events.calendar.AdventCalendarOpenDayEvent;
 import com.eu.habbo.messages.incoming.floorplaneditor.*;
 import com.eu.habbo.messages.incoming.friends.*;
+import com.eu.habbo.messages.incoming.gamecenter.GameCenterRequestAccountStatusEvent;
+import com.eu.habbo.messages.incoming.gamecenter.GameCenterRequestGamesEvent;
 import com.eu.habbo.messages.incoming.guardians.*;
 import com.eu.habbo.messages.incoming.guides.*;
 import com.eu.habbo.messages.incoming.guilds.*;
@@ -79,6 +81,7 @@ public class PacketManager
         this.registerGuides();
         this.registerCrafting();
         this.registerCamera();
+        this.registerGameCenter();
     }
 
     public void registerHandler(Integer header, Class<? extends MessageHandler> handler) throws Exception
@@ -502,5 +505,11 @@ public class PacketManager
         this.registerHandler(Incoming.RequestCameraConfigurationEvent,          RequestCameraConfigurationEvent.class);
         this.registerHandler(Incoming.CameraPurchaseEvent,                      CameraPurchaseEvent.class);
         this.registerHandler(Incoming.CameraRoomThumbnailEvent,                 CameraRoomThumbnailEvent.class);
+    }
+
+    void registerGameCenter() throws Exception
+    {
+        this.registerHandler(Incoming.GameCenterRequestGamesEvent,              GameCenterRequestGamesEvent.class);
+//        this.registerHandler(Incoming.GameCenterRequestAccountStatusEvent,      GameCenterRequestAccountStatusEvent.class);
     }
 }

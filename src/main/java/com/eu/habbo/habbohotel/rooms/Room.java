@@ -3862,7 +3862,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         return height;
     }
 
-    public double getStackHeight(int x, int y, boolean calculateHeightmap, HabboItem i)
+    public double getStackHeight(int x, int y, boolean calculateHeightmap, HabboItem exclude)
     {
         if(x < 0 || y < 0)
             return 0.0;
@@ -3872,7 +3872,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         for(HabboItem item : this.getItemsAt(x, y))
         {
-            if(item == i)
+            if(item == exclude)
                 continue;
 
             if(item.getBaseItem().allowSit())

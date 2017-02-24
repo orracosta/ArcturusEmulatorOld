@@ -449,7 +449,7 @@ public class Outgoing
     public final static int BaseJumpUnloadGameComposer = 1715; // PRODUCTION-201611291003-338511768
     public final static int UnknownComposer_1322 = 1730; // PRODUCTION-201611291003-338511768
     public final static int UnknownComposer_137 = 2897; // PRODUCTION-201611291003-338511768
-    public final static int GameCenterSetPromotedGameComposer = 2893; // PRODUCTION-201611291003-338511768
+    public final static int GameCenterAccountInfoComposer = 2893; // PRODUCTION-201611291003-338511768
     public final static int UnknowComposer_1390 = 2270; // PRODUCTION-201611291003-338511768
     public final static int BaseJumpLoadGameComposer = 2270; // PRODUCTION-201611291003-338511768
     public final static int UnknowComposer_1427 = 3319; // PRODUCTION-201611291003-338511768
@@ -469,7 +469,7 @@ public class Outgoing
     public final static int BaseJumpLeaveQueueComposer = 1477; // PRODUCTION-201611291003-338511768
     public final static int Game2WeeklySmallLeaderboardComposer = 3512; // PRODUCTION-201611291003-338511768
     public final static int CatalogBuyVIPSMSComposer = 3315; // PRODUCTION-201611291003-338511768
-    public final static int GameListMessageComposer = 222; // PRODUCTION-201611291003-338511768
+    public final static int GameCenterGameListComposer = 222; // PRODUCTION-201611291003-338511768
     public final static int RoomUsersGuildBadgesComposer = 2402; // PRODUCTION-201611291003-338511768
     public final static int UnknownComposer_2563 = 1774; // PRODUCTION-201611291003-338511768
     public final static int UnknownComposer_2601 = 1663; // PRODUCTION-201611291003-338511768

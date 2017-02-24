@@ -304,4 +304,7 @@ public class Incoming
     public static final int BreedPetsEvent = 1638;
     public static final int MovePetEvent = 3449;
     public static final int PetPackageNameEvent = 3698;
+
+    public static final int GameCenterRequestGamesEvent = 741;
+    public static final int GameCenterRequestAccountStatusEvent = 2399;
 }

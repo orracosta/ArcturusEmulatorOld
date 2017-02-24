@@ -50,8 +50,9 @@ public class CameraLoginStatusEvent extends CameraIncomingMessage
         else if (status == NO_CAMERA_SUBSCRIPTION)
         {
             System.out.println("[" + Logging.ANSI_RED + "CAMERA" + Logging.ANSI_RESET + "] You don't have a Camera Subscription and therefor cannot use the camera!");
-            System.out.println("[" + Logging.ANSI_RED + "CAMERA" + Logging.ANSI_RESET + "] A trial version is available for $1. A year subscription is only $10 and a permanent subscription is $25.");
-            System.out.println("[" + Logging.ANSI_RED + "CAMERA" + Logging.ANSI_RESET + "] By buying this subscription you support the development of the emulator you are using :)");
+            System.out.println("[" + Logging.ANSI_RED + "CAMERA" + Logging.ANSI_RESET + "] Please consider making a donation to keep this project going. The emulator can be used free of charge!");
+            System.out.println("[" + Logging.ANSI_RED + "CAMERA" + Logging.ANSI_RESET + "] A trial version is available for $2.5. A year subscription is only $10 and a permanent subscription is $25.");
+            System.out.println("[" + Logging.ANSI_RED + "CAMERA" + Logging.ANSI_RESET + "] By donating this subscription you support the development of the emulator you are using :)");
             System.out.println("[" + Logging.ANSI_RED + "CAMERA" + Logging.ANSI_RESET + "] Visit http://arcturus.wf/mysubscriptions.php to buy your subscription!");
             System.out.println("");
             System.out.println("\t\t\t\t Please Consider getting a subscription. Regards: The General");
