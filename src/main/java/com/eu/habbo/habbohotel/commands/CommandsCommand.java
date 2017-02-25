@@ -26,7 +26,7 @@ public class CommandsCommand extends Command
             message += Emulator.getTexts().getValue("commands.description." + c.permission, "commands.description." + c.permission) + "\r";
         }
 
-        gameClient.sendResponse(new MessagesForYouComposer(new String[]{message}));
+        gameClient.getHabbo().alert(new String[]{message});
 
         return true;
     }

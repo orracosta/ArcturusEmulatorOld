@@ -6,6 +6,9 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.messenger.Messenger;
 import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.MessagesForYouComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.StaffAlertWithLinkComposer;
+import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserTalkComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
@@ -195,44 +198,89 @@ public class Habbo implements Runnable
         }
     }
 
+    /**
+     * Checks if the Habbo has the allowed permission.
+     *
+     * @param key The permission to check.
+     * @return True if the Habbo has the permission.
+     */
     public boolean hasPermission(String key)
     {
         return hasPermission(key, false);
     }
 
+    /**
+     * Checks if the Habbo has the allowed permission.
+     *
+     * @param key The permission to check.
+     * @param hasRoomRights True if the Habbo is the room owner.
+     * @return True if the Habbo has the permission.
+     */
     public boolean hasPermission(String key, boolean hasRoomRights)
     {
         return Emulator.getGameEnvironment().getPermissionsManager().hasPermission(this, key, hasRoomRights);
     }
 
+    /**
+     * Gives credits to the Habbo and updates the credits balance in game.
+     *
+     * @param credits The amount of credits to give.
+     */
     public void giveCredits(int credits)
     {
         this.getHabboInfo().addCredits(credits);
         this.client.sendResponse(new UserCreditsComposer(this.client.getHabbo()));
     }
 
+    /**
+     * Gives pixels to the Habbo and updates the pixels balance in game.
+     *
+     * @param pixels The amount of pixels to give.
+     */
     public void givePixels(int pixels)
     {
         this.getHabboInfo().addPixels(pixels);
         this.client.sendResponse(new UserCurrencyComposer(this.client.getHabbo()));
     }
 
+    /**
+     * Gives points to the Habbo and updates the points balance in game.
+     *
+     * @param points The amount of points to give.
+     */
     public void givePoints(int points)
     {
         this.givePoints(Emulator.getConfig().getInt("seasonal.primary.type"), points);
     }
 
+    /**
+     * Gives points to the Habbo and updates the points balance in game.
+     *
+     * @param type The points type to give.
+     * @param points The amount of points to give.
+     */
     public void givePoints(int type, int points)
     {
         this.getHabboInfo().addCurrencyAmount(type, points);
         this.client.sendResponse(new UserPointsComposer(this.client.getHabbo().getHabboInfo().getCurrencyAmount(type), points, type));
     }
 
+    /**
+     * Whispers a message to the Habbo.
+     *
+     * @param message The message to whisper.
+     */
     public void whisper(String message)
     {
         this.whisper(message, this.habboStats.chatColor);
     }
 
+    /**
+     * Whispers a message to the Habbo.
+     *
+     * @param message The message to whisper.
+     * @param bubble The chat bubble type to use.
+     */
     public void whisper(String message, RoomChatMessageBubbles bubble)
     {
         if (this.getRoomUnit().isInRoom())
@@ -241,6 +289,22 @@ public class Habbo implements Runnable
         }
     }
 
+    /**
+     * Makes the Habbo talk in the room.
+     *
+     * @param message The message to say.
+     */
+    public void talk(String message)
+    {
+        this.talk(message, this.habboStats.chatColor);
+    }
+
+    /**
+     * Makes the Habbo talk in the room.
+     *
+     * @param message The message to say.
+     * @param bubble The chat bubble type to use.
+     */
     public void talk(String message, RoomChatMessageBubbles bubble)
     {
         if (this.getRoomUnit().isInRoom())
@@ -249,8 +313,68 @@ public class Habbo implements Runnable
         }
     }
 
+    /**
+     * Makes the Habbo shout in the room.
+     *
+     * @param message The message to shout.
+     */
+    public void shout(String message)
+    {
+        this.shout(message, this.habboStats.chatColor);
+    }
+
+    /**
+     * Makes the Habbo shout in the room.
+     *
+     * @param message The message to shout.
+     * @param bubble The chat bubble type to use.
+     */
+    public void shout(String message, RoomChatMessageBubbles bubble)
+    {
+        if (this.getRoomUnit().isInRoom())
+        {
+            this.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserTalkComposer(new RoomChatMessage(message, client.getHabbo().getRoomUnit(), bubble)).compose());
+        }
+    }
+
+    /**
+     * Sends an alert to the Habbo.
+     *
+     * @param message The message the alert contains.
+     */
     public void alert(String message)
     {
         this.client.sendResponse(new GenericAlertComposer(message));
+    }
+
+    /**
+     * Sends an old style alert to the Habbo.
+     *
+     * @param messages The messages the alert contains.
+     */
+    public void alert(String[] messages)
+    {
+        this.client.sendResponse(new MessagesForYouComposer(messages));
+    }
+
+    /**
+     * Sends an alert with url to the Habbo.
+     *
+     * @param message The message the alert contains.
+     * @param url The URL the alert contains.
+     */
+    public void alertWithUrl(String message, String url)
+    {
+        this.client.sendResponse(new StaffAlertWithLinkComposer(message, url));
+    }
+
+    /**
+     * Forwards the Habbo to a room.
+     *
+     * @param id The id of the room to go to.
+     */
+    public void goToRoom(int id)
+    {
+        this.client.sendResponse(new ForwardToRoomComposer(id));
     }
 }

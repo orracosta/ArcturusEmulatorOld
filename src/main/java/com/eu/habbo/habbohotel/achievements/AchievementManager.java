@@ -242,7 +242,7 @@ public class AchievementManager
             HabboBadge badge = null;
             try
             {
-                badge = habbo.getHabboInventory().getBadgesComponent().getBadge("ACH_" + achievement.name + oldLevel.level);
+                badge = habbo.getHabboInventory().getBadgesComponent().getBadge(("ACH_" + achievement.name + oldLevel.level).toLowerCase());
             }
             catch (Exception e)
             {
@@ -260,6 +260,7 @@ public class AchievementManager
                 habbo.getClient().sendResponse(new AddUserBadgeComposer(badge));
                 badge.needsInsert(true);
                 badge.needsUpdate(true);
+                habbo.getHabboInventory().getBadgesComponent().addBadge(badge);
             }
 
             Emulator.getThreading().run(badge);
