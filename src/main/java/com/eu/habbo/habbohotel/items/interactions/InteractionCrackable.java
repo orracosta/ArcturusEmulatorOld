@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.items.CrackableReward;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.users.HabboGender;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.threading.runnables.CrackableExplode;
@@ -74,6 +75,14 @@ public class InteractionCrackable extends HabboItem
 
             if (this.getExtradata().length() == 0)
                 this.setExtradata("0");
+
+            if (this.getBaseItem().getEffectF() > 0)
+                if (client.getHabbo().getHabboInfo().getGender().equals(HabboGender.F) && this.getBaseItem().getEffectF() == client.getHabbo().getRoomUnit().getEffectId())
+                    return;
+
+            if (this.getBaseItem().getEffectM() > 0)
+                if (client.getHabbo().getHabboInfo().getGender().equals(HabboGender.M) && this.getBaseItem().getEffectM() == client.getHabbo().getRoomUnit().getEffectId())
+                    return;
 
             this.setExtradata(Integer.valueOf(this.getExtradata()) + 1 + "");
             this.needsUpdate(true);
