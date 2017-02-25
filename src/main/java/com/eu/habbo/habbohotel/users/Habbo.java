@@ -195,7 +195,6 @@ public class Habbo implements Runnable
         }
     }
 
-    @Deprecated
     public boolean hasPermission(String key)
     {
         return hasPermission(key, false);
@@ -248,5 +247,10 @@ public class Habbo implements Runnable
         {
             this.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserTalkComposer(new RoomChatMessage(message, client.getHabbo().getRoomUnit(), bubble)).compose());
         }
+    }
+
+    public void alert(String message)
+    {
+        this.client.sendResponse(new GenericAlertComposer(message));
     }
 }

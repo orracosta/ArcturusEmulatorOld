@@ -4728,6 +4728,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
     }
 
+    public void idle(Habbo habbo)
+    {
+        habbo.getRoomUnit().setIdle();
+        this.sendComposer(new RoomUnitIdleComposer(habbo.getRoomUnit()).compose());
+    }
+
     public void unIdle(Habbo habbo)
     {
         habbo.getRoomUnit().resetIdleTimer();
@@ -4928,5 +4934,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public boolean hasActiveWordQuiz()
     {
         return Emulator.getIntUnixTimestamp() < this.wordQuizEnd;
+    }
+
+    public void alert(String message)
+    {
+        this.sendComposer(new GenericAlertComposer(message).compose());
     }
 }
