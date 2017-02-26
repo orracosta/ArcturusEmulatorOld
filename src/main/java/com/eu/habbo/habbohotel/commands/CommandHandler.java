@@ -136,7 +136,7 @@ public class CommandHandler
      * Adds a new command to the commands list.
      * @param command The command to be added.
      */
-    private static void addCommand(Command command)
+    public static void addCommand(Command command)
     {
         if(command == null)
             return;
@@ -152,7 +152,7 @@ public class CommandHandler
     {
         try
         {
-            command.getConstructor().setAccessible(true);
+            //command.getConstructor().setAccessible(true);
             addCommand(command.newInstance());
             Emulator.getLogging().logDebugLine("Added command: " + command.getName());
         }

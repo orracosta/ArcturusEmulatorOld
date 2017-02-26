@@ -104,7 +104,7 @@ public class Outgoing
     public final static int InventoryRefreshComposer = 3151; // PRODUCTION-201611291003-338511768
     public final static int RemovePetComposer = 3253; // PRODUCTION-201611291003-338511768
     public final static int RemoveWallItemComposer = 3208; // PRODUCTION-201611291003-338511768
-    public final static int TradeCompleteComposer = 1001; // PRODUCTION-201611291003-338511768
+    public final static int TradeCompleteComposer = 2369; // PRODUCTION-201611291003-338511768
     public final static int NewsWidgetsComposer = 286; // PRODUCTION-201611291003-338511768
     public final static int WiredEffectDataComposer = 1434; // PRODUCTION-201611291003-338511768
     public final static int BubbleAlertComposer = 1992; // PRODUCTION-201611291003-338511768
