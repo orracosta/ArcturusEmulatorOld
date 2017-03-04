@@ -39,7 +39,6 @@ public class InteractionVikingCotie extends InteractionDefault
                 {
                     state++;
                     this.setExtradata(state + "");
-                    this.needsDelete(true);
                     room.updateItem(this);
 
                     if (state == 5)
