@@ -105,6 +105,7 @@ public class ItemManager {
         this.interactionsList.add(new ItemInteraction("costume_hopper",         InteractionCostumeHopper.class));
         this.interactionsList.add(new ItemInteraction("club_hopper",            InteractionHabboClubHopper.class));
         this.interactionsList.add(new ItemInteraction("club_gate",              InteractionHabboClubGate.class));
+        this.interactionsList.add(new ItemInteraction("club_teleporttile",      InteractionHabboClubTeleportTile.class));
         this.interactionsList.add(new ItemInteraction("onewaygate",             InteractionOneWayGate.class));
         this.interactionsList.add(new ItemInteraction("love_lock",              InteractionLoveLock.class));
         this.interactionsList.add(new ItemInteraction("clothing",               InteractionClothing.class));

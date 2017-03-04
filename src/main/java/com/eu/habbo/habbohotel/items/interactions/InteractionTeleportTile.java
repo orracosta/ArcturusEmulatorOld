@@ -52,7 +52,7 @@ public class InteractionTeleportTile extends InteractionTeleport
         client.getHabbo().getRoomUnit().setGoalLocation(room.getLayout().getTile(this.getX(), this.getY()));
     }
 
-    private boolean canUseTeleport(GameClient client, Room room)
+    protected boolean canUseTeleport(GameClient client, Room room)
     {
         if(client.getHabbo().getRoomUnit().isTeleporting)
             return false;
