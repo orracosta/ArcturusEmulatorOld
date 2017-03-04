@@ -29,7 +29,7 @@ public class InteractionFXBox extends InteractionDefault
     {
         super.onClick(client, room, objects);
 
-        if (client != null)
+        if (client != null && room.hasRights(client.getHabbo()))
         {
             if (client.getHabbo().getHabboInfo().getGender().equals(HabboGender.M))
             {
