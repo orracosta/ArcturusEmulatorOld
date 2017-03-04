@@ -80,4 +80,7 @@ INSERT INTO `pet_breeds` (`race`, `color_one`, `color_two`, `has_color_one`, `ha
     ('34', '18', '18', '1', '0'),
     ('34', '19', '19', '1', '0');
 
+DELETE FROM emulator_texts WHERE `key` LIKE 'commands.keys.cmd_roompoints';
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.keys.cmd_roompoints', 'roompoints;room_points');
+
 #END DATABASE UPDATE: 1.3.0 -> 1.4.0

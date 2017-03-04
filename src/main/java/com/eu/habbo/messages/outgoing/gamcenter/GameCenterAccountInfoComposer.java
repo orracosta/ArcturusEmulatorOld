@@ -9,10 +9,11 @@ public class GameCenterAccountInfoComposer extends MessageComposer
     @Override
     public ServerMessage compose()
     {
-        this.response.init(Outgoing.GameCenterAccountInfoComposer);
-        this.response.appendInt32(3);
-        this.response.appendInt32(-1);
-        this.response.appendInt32(0);
-        return this.response;
+        return null;
+//        this.response.init(Outgoing.GameCenterAccountInfoComposer);
+//        this.response.appendInt32(3);
+//        this.response.appendInt32(-1);
+//        this.response.appendInt32(0);
+//        return this.response;
     }
 }

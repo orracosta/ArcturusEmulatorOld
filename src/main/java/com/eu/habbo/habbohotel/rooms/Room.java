@@ -2900,23 +2900,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         synchronized (this.currentHabbos)
         {
-            TIntObjectIterator<Habbo> iterator = this.currentHabbos.iterator();
-
-            for(int i = this.currentHabbos.size(); i-- > 0;)
-            {
-                try
-                {
-                    iterator.advance();
-                }
-                catch (NoSuchElementException e)
-                {
-                    Emulator.getLogging().logErrorLine(e);
-                    break;
-                }
-
-                if (iterator.value() == habbo)
-                    iterator.remove();
-            }
+            this.currentHabbos.remove(habbo.getHabboInfo().getId());
         }
 
         if(habbo.getHabboInfo().getCurrentGame() != null)

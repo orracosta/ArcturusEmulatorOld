@@ -425,7 +425,7 @@ public class HabboInfo implements Runnable
 
         try
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users SET motto = ?, online = ?, look = ?, gender = ?, credits = ?, last_login = ?, last_online = ?, home_room = ?, ip_current = ? WHERE id = ?");
+            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users SET motto = ?, online = ?, look = ?, gender = ?, credits = ?, last_login = ?, last_online = ?, home_room = ?, ip_current = ?, rank = ? WHERE id = ?");
             statement.setString(1, this.motto);
             statement.setString(2, this.online ? "1" : "0");
             statement.setString(3, this.look);
@@ -435,7 +435,8 @@ public class HabboInfo implements Runnable
             statement.setInt(6, Emulator.getIntUnixTimestamp());
             statement.setInt(8, this.homeRoom);
             statement.setString(9, this.ipLogin);
-            statement.setInt(10, this.id);
+            statement.setInt(10, this.rank);
+            statement.setInt(11, this.id);
             statement.executeUpdate();
             statement.close();
             statement.getConnection().close();
