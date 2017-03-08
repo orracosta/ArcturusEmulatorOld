@@ -35,7 +35,7 @@ public class CameraHandler extends ChannelInboundHandlerAdapter
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception
     {
-        Emulator.getThreading().run(new CameraClientAutoReconnect(), 2000);
+        CameraClient.attemptReconnect = true;
     }
 
     @Override
@@ -43,5 +43,4 @@ public class CameraHandler extends ChannelInboundHandlerAdapter
     {
         cause.printStackTrace();
     }
-
 }

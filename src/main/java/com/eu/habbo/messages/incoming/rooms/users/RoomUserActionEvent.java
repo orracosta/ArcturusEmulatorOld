@@ -38,11 +38,11 @@ public class RoomUserActionEvent extends MessageHandler
                 {
                     if (event.idle)
                     {
-                        this.client.getHabbo().getRoomUnit().setIdle();
+                        this.client.getHabbo().getHabboInfo().getCurrentRoom().idle(habbo);
                     }
                     else
                     {
-                        this.client.getHabbo().getRoomUnit().resetIdleTimer();
+                        this.client.getHabbo().getHabboInfo().getCurrentRoom().unIdle(habbo);
                     }
                 }
             }

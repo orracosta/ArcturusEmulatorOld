@@ -63,8 +63,6 @@ public class InteractionPressurePlate extends HabboItem
         super.onWalkOn(roomUnit, room, objects);
 
         this.setExtradata("1");
-        this.needsUpdate(true);
-        Emulator.getThreading().run(this);
         room.updateItem(this);
     }
 
@@ -74,8 +72,6 @@ public class InteractionPressurePlate extends HabboItem
         super.onWalkOff(roomUnit, room, objects);
 
         this.setExtradata("0");
-        this.needsUpdate(true);
-        Emulator.getThreading().run(this);
         room.updateItem(this);
     }
 
@@ -83,8 +79,6 @@ public class InteractionPressurePlate extends HabboItem
     public void onMove(Room room, RoomTile oldLocation, RoomTile newLocation)
     {
         this.setExtradata("0");
-        this.needsUpdate(true);
-        Emulator.getThreading().run(this);
         room.updateItem(this);
     }
 }

@@ -21,10 +21,10 @@ public class CameraClient
     public static boolean attemptReconnect = true;
 
     private Bootstrap bootstrap = new Bootstrap();
+    private EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
 
     public CameraClient()
     {
-        EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
 
         bootstrap.group(eventLoopGroup);
         bootstrap.channel(NioSocketChannel.class);
@@ -39,28 +39,33 @@ public class CameraClient
                 ch.pipeline().addLast(new CameraHandler());
             }
         });
-        bootstrap.option(ChannelOption.SO_RCVBUF, 2000000);
-        bootstrap.option(ChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(2000000));
-        bootstrap.option(ChannelOption.ALLOCATOR, new PooledByteBufAllocator(false));
+        bootstrap.option(ChannelOption.SO_RCVBUF, 5120);
+        bootstrap.option(ChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(5120));
+        bootstrap.option(ChannelOption.ALLOCATOR, new UnpooledByteBufAllocator(false));
     }
 
     public void connect()
     {
-        channelFuture = this.bootstrap.connect(host, port);
+        CameraClient.channelFuture = this.bootstrap.connect(host, port);
 
-        while (!channelFuture.isDone())
+        while (!CameraClient.channelFuture.isDone())
         {
         }
 
-        if (channelFuture.isSuccess())
+        if (CameraClient.channelFuture.isSuccess())
         {
-            channel = channelFuture.channel();
+            CameraClient.attemptReconnect = false;
+            CameraClient.channel = channelFuture.channel();
             System.out.println("[" + Logging.ANSI_GREEN + "CAMERA" + Logging.ANSI_RESET + "] Connected to the Camera Server. Attempting to login...");
             sendMessage(new CameraLoginComposer());
         }
         else
         {
             System.out.println("[" + Logging.ANSI_RED + "CAMERA" + Logging.ANSI_RESET + "] Failed to connect to the Camera Server. Server unreachable.");
+            CameraClient.channel = null;
+            CameraClient.channelFuture.channel().close();
+            CameraClient.channelFuture = null;
+            CameraClient.attemptReconnect = true;
         }
     }
 

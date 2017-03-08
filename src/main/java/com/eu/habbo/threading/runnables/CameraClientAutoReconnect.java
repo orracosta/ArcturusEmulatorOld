@@ -11,27 +11,34 @@ public class CameraClientAutoReconnect implements Runnable
     {
         if (CameraClient.attemptReconnect && !Emulator.isShuttingDown)
         {
-            CameraClient.attemptReconnect = false;
-            System.out.println("[" + Logging.ANSI_YELLOW + "CAMERA" + Logging.ANSI_RESET + "] Attempting to connect to the Camera server.");
-            if (Emulator.getCameraClient() != null)
+            if (!(CameraClient.channelFuture != null && CameraClient.channelFuture.channel().isActive()))
             {
-                Emulator.getCameraClient().disconnect();
-            }
+                System.out.println("[" + Logging.ANSI_YELLOW + "CAMERA" + Logging.ANSI_RESET + "] Attempting to connect to the Camera server.");
+                if (Emulator.getCameraClient() != null)
+                {
+                    Emulator.getCameraClient().disconnect();
+                }
+                else
+                {
+                    Emulator.setCameraClient(new CameraClient());
+                }
 
-            try
-            {
-                Emulator.setCameraClient(new CameraClient());
-                Emulator.getCameraClient().connect();
+                try
+                {
+                    Emulator.getCameraClient().connect();
+                }
+                catch (Exception e)
+                {
+                    System.out.println("[" + Logging.ANSI_RED + "CAMERA" + Logging.ANSI_RESET + "] Failed to start the camera client.");
+                }
             }
-            catch (Exception e)
+            else
             {
-                System.out.println("[" + Logging.ANSI_RED + "CAMERA" + Logging.ANSI_RESET + "] Failed to start the camera client.");
-            }
-
-            if (CameraClient.channel == null)
-            {
-                Emulator.getThreading().run(this, 5000);
+                CameraClient.attemptReconnect = false;
+                System.out.println("[" + Logging.ANSI_RED + "CAMERA" + Logging.ANSI_RESET + "] Already connected to the camera. Reconnecting not needed!");
             }
         }
+
+        Emulator.getThreading().run(this, 5000);
     }
 }
