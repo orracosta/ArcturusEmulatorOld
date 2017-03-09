@@ -146,7 +146,7 @@ public class HabboInventory
         {
             if(offer.getState().equals(MarketPlaceState.SOLD))
             {
-                i+= (offer.getPrice() - (int)Math.ceil(offer.getPrice() / 100.0));
+                i+= offer.getPrice();
             }
         }
         return i;

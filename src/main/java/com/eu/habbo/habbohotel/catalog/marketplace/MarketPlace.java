@@ -150,11 +150,11 @@ public class MarketPlace
 
         if(minPrice > 0)
         {
-            query += " AND price >= " + minPrice;
+            query += " AND CEIL(price + (price / 100)) >= " + minPrice;
         }
         if(maxPrice > 0 && maxPrice > minPrice)
         {
-            query += " AND price <= " + maxPrice;
+            query += " AND CEIL(price + (price / 100)) <= " + maxPrice;
         }
         if(search.length() > 0)
         {
@@ -223,7 +223,7 @@ public class MarketPlace
             while(set.next())
             {
                 message.appendInt32(-set.getInt("day"));
-                message.appendInt32(set.getInt("price"));
+                message.appendInt32(MarketPlace.calculateCommision(set.getInt("price")));
                 message.appendInt32(set.getInt("sold"));
             }
 
@@ -318,12 +318,13 @@ public class MarketPlace
 
                 if(itemSet.getRow() > 0)
                 {
+                    int price = MarketPlace.calculateCommision(set.getInt("price"));
                     if (set.getInt("state") != 1)
                     {
                         sendErrorMessage(client, set.getInt("item_id"), offerId);
-                    } else if (set.getInt("price") > client.getHabbo().getHabboInfo().getCredits())
+                    } else if (price > client.getHabbo().getHabboInfo().getCredits())
                     {
-                        client.sendResponse(new MarketplaceBuyErrorComposer(MarketplaceBuyErrorComposer.NOT_ENOUGH_CREDITS, 0, offerId, set.getInt("price")));
+                        client.sendResponse(new MarketplaceBuyErrorComposer(MarketplaceBuyErrorComposer.NOT_ENOUGH_CREDITS, 0, offerId, price));
                     }
                     else
                     {
@@ -337,11 +338,11 @@ public class MarketPlace
                         item.needsUpdate(true);
                         Emulator.getThreading().run(item);
                         client.getHabbo().getHabboInventory().getItemsComponent().addItem(item);
-                        client.getHabbo().getHabboInfo().addCredits(-set.getInt("price"));
+                        client.getHabbo().getHabboInfo().addCredits(-price);
                         client.sendResponse(new UserCreditsComposer(client.getHabbo()));
                         client.sendResponse(new AddHabboItemComposer(item));
                         client.sendResponse(new InventoryRefreshComposer());
-                        client.sendResponse(new MarketplaceBuyErrorComposer(MarketplaceBuyErrorComposer.REFRESH, 0, offerId, set.getInt("price")));
+                        client.sendResponse(new MarketplaceBuyErrorComposer(MarketplaceBuyErrorComposer.REFRESH, 0, offerId, price));
 
                         Habbo habbo = Emulator.getGameServer().getGameClientManager().getHabbo(set.getInt("user_id"));
                         if (habbo != null)
@@ -397,7 +398,7 @@ public class MarketPlace
         else
         {
             countSet.first();
-            client.sendResponse(new MarketplaceBuyErrorComposer(MarketplaceBuyErrorComposer.UPDATES, countSet.getInt("count"), countSet.getInt("id"), countSet.getInt("price")));
+            client.sendResponse(new MarketplaceBuyErrorComposer(MarketplaceBuyErrorComposer.UPDATES, countSet.getInt("count"), countSet.getInt("id"), MarketPlace.calculateCommision(countSet.getInt("price"))));
         }
         countSet.close();
         statement.close();
@@ -421,7 +422,7 @@ public class MarketPlace
 
         try
         {
-            MarketPlaceOffer offer = new MarketPlaceOffer(item, calculateCommision(price), client.getHabbo());
+            MarketPlaceOffer offer = new MarketPlaceOffer(item, price, client.getHabbo());
 
             if(offer != null)
             {
@@ -459,7 +460,7 @@ public class MarketPlace
             if(offer.getState().equals(MarketPlaceState.SOLD))
             {
                 client.getHabbo().getHabboInventory().removeMarketplaceOffer(offer);
-                credits += (offer.getPrice() - (int)(Math.ceil(offer.getPrice() / 100.0)));
+                credits += offer.getPrice();
                 removeUser(offer);
                 offer.needsUpdate(true);
                 Emulator.getThreading().run(offer);

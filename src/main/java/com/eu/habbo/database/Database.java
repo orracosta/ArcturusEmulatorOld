@@ -81,5 +81,15 @@ public class Database
             this.databasePool.getDatabase().close();
         }
     }
+
+    public HikariDataSource getDataSource()
+    {
+        return this.dataSource;
+    }
+
+    public DatabasePool getDatabasePool()
+    {
+        return this.databasePool;
+    }
 }
 

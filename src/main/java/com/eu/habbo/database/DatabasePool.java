@@ -1,5 +1,6 @@
 package com.eu.habbo.database;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.core.ConfigurationManager;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -18,8 +19,8 @@ class DatabasePool
         try
         {
             HikariConfig databaseConfiguration = new HikariConfig();
-            databaseConfiguration.setMaximumPoolSize(20);
-            databaseConfiguration.setInitializationFailFast(true);
+            databaseConfiguration.setMaximumPoolSize(10);
+            databaseConfiguration.setMinimumIdle(10);
             databaseConfiguration.setJdbcUrl("jdbc:mysql://" + config.getValue("db.hostname", "localhost") + ":" + config.getValue("db.port", "3306") + "/" + config.getValue("db.database", "habbo"));
             databaseConfiguration.addDataSourceProperty("serverName", config.getValue("db.hostname", "localhost"));
             databaseConfiguration.addDataSourceProperty("port", config.getValue("db.port", "3306"));
@@ -29,7 +30,7 @@ class DatabasePool
             databaseConfiguration.addDataSourceProperty("dataSource.logger", "com.mysql.jdbc.log.StandardLogger");
             databaseConfiguration.addDataSourceProperty("dataSource.logSlowQueries", "true");
             databaseConfiguration.addDataSourceProperty("dataSource.dumpQueriesOnException", "true");
-            databaseConfiguration.addDataSourceProperty("dataSource.logWriter", new PrintWriter(System.out));
+            databaseConfiguration.addDataSourceProperty("dataSource.logWriter", System.out);
             databaseConfiguration.setAutoCommit(true);
             databaseConfiguration.setConnectionTimeout(30000L);
             databaseConfiguration.setValidationTimeout(5000L);

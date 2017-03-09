@@ -80,7 +80,7 @@ public class MarketPlaceOffer implements Runnable
         PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO marketplace_items (item_id, user_id, price, timestamp, state) VALUES (?, ?, ?, ?, ?)");
         statement.setInt(1, item.getId());
         statement.setInt(2, habbo.getHabboInfo().getId());
-        statement.setInt(3, this.price);
+        statement.setInt(3, MarketPlace.calculateCommision(this.price));
         statement.setInt(4, this.timestamp);
         statement.setString(5, this.state.getState() + "");
         statement.execute();

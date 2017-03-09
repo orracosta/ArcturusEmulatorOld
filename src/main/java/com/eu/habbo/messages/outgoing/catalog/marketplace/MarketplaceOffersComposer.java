@@ -1,5 +1,6 @@
 package com.eu.habbo.messages.outgoing.catalog.marketplace;
 
+import com.eu.habbo.habbohotel.catalog.marketplace.MarketPlace;
 import com.eu.habbo.habbohotel.catalog.marketplace.MarketPlaceOffer;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
@@ -38,7 +39,7 @@ public class MarketplaceOffersComposer extends MessageComposer
                 this.response.appendInt32(0);
                 this.response.appendString("");
             }
-            this.response.appendInt32(offer.getPrice());
+            this.response.appendInt32(MarketPlace.calculateCommision(offer.getPrice()));
             this.response.appendInt32(0);
             this.response.appendInt32(offer.avarage);
             this.response.appendInt32(offer.count);

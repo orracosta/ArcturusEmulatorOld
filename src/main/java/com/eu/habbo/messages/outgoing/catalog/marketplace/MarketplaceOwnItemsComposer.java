@@ -52,7 +52,7 @@ public class MarketplaceOwnItemsComposer extends MessageComposer
                     this.response.appendString("");
                 }
 
-                this.response.appendInt32(offer.getPrice() - (int) Math.ceil(offer.getPrice() / 100.0));
+                this.response.appendInt32(offer.getPrice());
 
                 if (offer.getState() == MarketPlaceState.OPEN)
                     this.response.appendInt32((((offer.getTimestamp() + 172800) - Emulator.getIntUnixTimestamp()) / 60));

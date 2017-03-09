@@ -130,6 +130,8 @@ public final class Emulator
             Emulator.config.loaded = true;
             Emulator.config.loadFromDatabase();
             Emulator.threading = new ThreadPooling(Emulator.getConfig().getInt("runtime.threads"));
+            Emulator.getDatabase().getDataSource().setMaximumPoolSize(Emulator.getThreading().threads * 4);
+            Emulator.getDatabase().getDataSource().setMinimumIdle(10);
             Emulator.pluginManager = new PluginManager();
             Emulator.pluginManager.reload();
             Emulator.texts = new TextsManager();
