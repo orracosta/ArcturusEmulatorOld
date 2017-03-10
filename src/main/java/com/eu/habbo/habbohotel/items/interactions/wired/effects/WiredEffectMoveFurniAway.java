@@ -73,7 +73,7 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
 
                 if(PathFinder.tilesAdjecent(target.getRoomUnit().getX(), target.getRoomUnit().getY(), item.getX(), item.getY()) && (target.getRoomUnit().getX() == item.getX() || target.getRoomUnit().getY() == item.getY()))
                 {
-                    WiredHandler.handle(WiredTriggerType.COLLISION, roomUnit, room, new Object[]{item});
+                    WiredHandler.handle(WiredTriggerType.COLLISION, target.getRoomUnit(), room, new Object[]{item});
                     continue;
                 }
 
