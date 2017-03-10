@@ -185,6 +185,11 @@ public class RoomChatMessage implements Runnable, ISerialize
         return this.message;
     }
 
+    public String getUnfilteredMessage()
+    {
+        return this.unfilteredMessage;
+    }
+
     public void setMessage(String message)
     {
         this.message = message;

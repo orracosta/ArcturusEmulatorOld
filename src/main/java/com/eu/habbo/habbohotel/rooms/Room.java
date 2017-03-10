@@ -3271,7 +3271,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         if (chatType != RoomChatType.WHISPER)
         {
-            if (CommandHandler.handleCommand(habbo.getClient(), roomChatMessage.getMessage()))
+            if (CommandHandler.handleCommand(habbo.getClient(), roomChatMessage.getUnfilteredMessage()))
             {
                 WiredHandler.handle(WiredTriggerType.SAY_COMMAND, habbo.getRoomUnit(), habbo.getHabboInfo().getCurrentRoom(), new Object[]{roomChatMessage.getMessage()});
                 roomChatMessage.isCommand = true;
