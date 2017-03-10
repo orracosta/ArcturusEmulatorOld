@@ -48,7 +48,8 @@ public class Database
 
         Emulator.getLogging().logStart("Database -> Connected! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
-    
+
+    @Deprecated
     public PreparedStatement prepare(String query)
     {
         PreparedStatement statement = null;
@@ -60,15 +61,6 @@ public class Database
         catch (Exception e)
         {
             Emulator.getLogging().logErrorLine(e);
-        }
-
-        if(statement == null)
-        {
-            dispose();
-            this.databasePool.getStoragePooling(config);
-            this.dataSource = this.databasePool.getDatabase();
-
-            return this.prepare(query);
         }
 
         return statement;

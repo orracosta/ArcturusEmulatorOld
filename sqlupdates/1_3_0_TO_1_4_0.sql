@@ -32,7 +32,7 @@ INSERT INTO `emulator_texts` (`key`, `value`) VALUES
 ALTER TABLE  `users_pets` ADD  `gnome_data` VARCHAR( 80 ) NOT NULL DEFAULT  '';
 
 #This configuration option defines whether players will get kicked from public rooms when they walk on the door tile.
-INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.room.public.doortile.kick', '0');
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.room.public.doortile.kick', '0'), ('info.shown', '1');;
 
 INSERT INTO `pet_actions` (`pet_type`, `pet_name`, `happy_actions`, `tired_actions`, `random_actions`) VALUES ('33', '', '', '', ''), ('34', '', '', '', '');
 INSERT INTO `pet_breeds` (`race`, `color_one`, `color_two`, `has_color_one`, `has_color_two`) VALUES

@@ -23,10 +23,20 @@ import com.eu.habbo.messages.outgoing.rooms.pets.PetInformationComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.PetStatusUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class TestCommand extends Command
 {
@@ -260,6 +270,31 @@ public class TestCommand extends Command
         {
             gameClient.sendResponse(new GenericAlertComposer(Normalizer.normalize(params[2], Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").replaceAll("\\p{M}", "")));
         }
+        else if (params[1].equals("datb"))
+        {
+                    long millis = 1;
+                    long diff = 1;
+                    try(Connection conn = Emulator.getDatabase().getDataSource().getConnection())
+                    {
+                        millis = System.currentTimeMillis();
+                        for (long i = 0; i < 1000000; i++)
+                        {
+                            try (PreparedStatement stmt = conn.prepareStatement("SELECT 1"))
+                            {
+                                //PreparedStatement stmt2 = conn.prepareStatement("SELECT 2");
+                                stmt.close();
+                            }
+                            //stmt2.close();
+                        }
+                        diff = System.currentTimeMillis() - millis;
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                    System.out.println("Difference " + (diff) + "MS. ops: "  + ((long)1000000 / diff) + " ops/MS");
+
+        }
         else
         {
             try
@@ -489,5 +524,41 @@ public class TestCommand extends Command
         response.appendBoolean(true);
         }*/
         return true;
+    }
+
+    public void testConcurrentClose() throws Exception
+    {
+        HikariConfig config = new HikariConfig();
+        config.setDataSourceClassName("com.zaxxer.hikari.mocks.StubDataSource");
+
+        try (HikariDataSource ds = new HikariDataSource(config);
+             final Connection connection = ds.getConnection()) {
+
+            ExecutorService executorService = Executors.newFixedThreadPool(10);
+
+            List<Future<?>> futures = new ArrayList<>();
+
+            for (int i = 0; i < 500; i++) {
+                final PreparedStatement preparedStatement =
+                        connection.prepareStatement("");
+
+                futures.add(executorService.submit(new Callable<Void>() {
+
+                    @Override
+                    public Void call() throws Exception {
+                        preparedStatement.close();
+
+                        return null;
+                    }
+
+                }));
+            }
+
+            executorService.shutdown();
+
+            for (Future<?> future : futures) {
+                future.get();
+            }
+        }
     }
 }

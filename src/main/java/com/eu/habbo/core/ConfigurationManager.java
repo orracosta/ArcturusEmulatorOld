@@ -45,7 +45,6 @@ public class ConfigurationManager
         try {
             File f = new File("config.ini");
             input = new FileInputStream(f);
-
             this.properties.load(input);
 
         } catch (IOException ex) {

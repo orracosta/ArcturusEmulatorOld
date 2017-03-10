@@ -156,11 +156,13 @@ public class HabboInfo implements Runnable
     public void addCurrencyAmount(int type, int amount)
     {
         this.currencies.adjustOrPutValue(type, amount, amount);
+        this.run();
     }
 
     public void setCurrencyAmount(int type, int amount)
     {
         this.currencies.put(type, amount);
+        this.run();
     }
 
     public int getId()
@@ -188,7 +190,8 @@ public class HabboInfo implements Runnable
         return this.rank;
     }
 
-    public void setRank(int rank) {
+    public void setRank(int rank)
+    {
         this.rank = rank;
     }
 
@@ -271,11 +274,13 @@ public class HabboInfo implements Runnable
     public void setCredits(int credits)
     {
         this.credits = credits;
+        this.run();
     }
 
     public void addCredits(int credits)
     {
         this.credits += credits;
+        this.run();
     }
 
     public int getPixels()
@@ -286,11 +291,13 @@ public class HabboInfo implements Runnable
     public void setPixels(int pixels)
     {
         this.setCurrencyAmount(0, pixels);
+        this.run();
     }
 
     public void addPixels(int pixels)
     {
         this.addCurrencyAmount(0, pixels);
+        this.run();
     }
 
     public int getLastOnline()

@@ -315,4 +315,34 @@ public class Logging
             }
         }
     }
+
+    public static PrintWriter getPacketsWriter()
+    {
+        return packetsWriter;
+    }
+
+    public static PrintWriter getPacketsUndefinedWriter()
+    {
+        return packetsUndefinedWriter;
+    }
+
+    public static PrintWriter getErrorsPacketsWriter()
+    {
+        return errorsPacketsWriter;
+    }
+
+    public static PrintWriter getErrorsSQLWriter()
+    {
+        return errorsSQLWriter;
+    }
+
+    public static PrintWriter getErrorsRuntimeWriter()
+    {
+        return errorsRuntimeWriter;
+    }
+
+    public static PrintWriter getDebugFileWriter()
+    {
+        return debugFileWriter;
+    }
 }

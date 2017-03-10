@@ -337,30 +337,24 @@ public class AchievementManager
      */
     public static void saveAchievements(Habbo habbo)
     {
-        long startTime = System.currentTimeMillis();
         try
         {
             PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users_achievements SET progress = ? WHERE achievement_name = ? AND user_id = ? LIMIT 1");
 
+            statement.setInt(3, habbo.getHabboInfo().getId());
             for(Map.Entry<Achievement, Integer> map : habbo.getHabboStats().getAchievementProgress().entrySet())
             {
                 statement.setInt(1, map.getValue());
                 statement.setString(2, map.getKey().name);
-                statement.setInt(3, habbo.getHabboInfo().getId());
-                statement.execute();
+                statement.addBatch();
             }
-
+            statement.execute();
             statement.close();
             statement.getConnection().close();
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
-        }
-
-        if (Emulator.debugging)
-        {
-            Emulator.getLogging().logDebugLine("Saving achievements took: " + (System.currentTimeMillis() - startTime) + " for " + habbo.getHabboStats().getAchievementProgress().size() + "Achievements!");
         }
     }
 

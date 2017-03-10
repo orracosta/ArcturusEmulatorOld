@@ -26,23 +26,12 @@ public class CameraRoomPictureEvent extends MessageHandler
 
         if (CameraClient.isLoggedIn)
         {
-            int seconds = Emulator.getIntUnixTimestamp() - this.client.getHabbo().getHabboInfo().getPhotoTimestamp();
-            if (seconds < (60))
-            {
-                this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("camera.wait").replace("%seconds%", "" + (60 - seconds))));
-                return;
-            }
-
             this.packet.getBuffer().readFloat();
 
             byte[] data = this.packet.getBuffer().readBytes(this.packet.getBuffer().readableBytes()).array();
 
             String content = new String(ZIP.inflate(data));
-
-            Emulator.getLogging().logDebugLine(content);
-
             CameraRenderImageComposer composer = new CameraRenderImageComposer(this.client.getHabbo().getHabboInfo().getId(), this.client.getHabbo().getHabboInfo().getCurrentRoom().getBackgroundTonerColor().getRGB(), 320, 320, content);
-
             this.client.getHabbo().getHabboInfo().setPhotoJSON(Emulator.getConfig().getValue("camera.extradata").replace("%timestamp%", composer.timestamp + ""));
             this.client.getHabbo().getHabboInfo().setPhotoTimestamp(composer.timestamp);
 

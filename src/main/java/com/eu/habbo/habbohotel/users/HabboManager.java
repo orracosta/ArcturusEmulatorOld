@@ -10,6 +10,7 @@ import com.eu.habbo.messages.rcon.RCONMessage;
 import com.eu.habbo.plugin.events.users.UserRegisteredEvent;
 import gnu.trove.set.hash.THashSet;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -62,59 +63,59 @@ public class HabboManager
     public Habbo loadHabbo(String sso)
     {
         Habbo habbo = null;
-        PreparedStatement statement = null;
         ResultSet set = null;
-        try
+
+        int userId = 0;
+        try(Connection connection = Emulator.getDatabase().getDataSource().getConnection();
+            PreparedStatement statement = connection.prepareStatement("SELECT id FROM users WHERE auth_ticket = ? LIMIT 1"))
         {
-            statement = Emulator.getDatabase().prepare("SELECT id FROM users WHERE auth_ticket = ? LIMIT 1");
             statement.setString(1, sso);
             set = statement.executeQuery();
             if (set.next())
             {
-                habbo = cloneCheck(set.getInt("id"));
-                if (habbo != null)
-                {
-                    habbo.getClient().sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("loggedin.elsewhere")));
-                    Emulator.getGameServer().getGameClientManager().disposeClient(habbo.getClient().getChannel());
-                    habbo = null;
-                }
-
-                ModToolBan ban = Emulator.getGameEnvironment().getModToolManager().checkForBan(set.getInt("id"));
-                if (ban != null)
-                {
-                    return null;
-                }
+                userId = set.getInt("id");
             }
+
+            set.close();
+            statement.close();
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
         }
-        finally
+
+        habbo = cloneCheck(userId);
+        if (habbo != null)
         {
-            if (statement != null)
-            {
-                try
-                {
-                    set.close();
-                    statement.close();
-                    statement.getConnection().close();
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                }
-            }
+            habbo.getClient().sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("loggedin.elsewhere")));
+            Emulator.getGameServer().getGameClientManager().disposeClient(habbo.getClient().getChannel());
+            habbo = null;
         }
 
+        ModToolBan ban = Emulator.getGameEnvironment().getModToolManager().checkForBan(userId);
+        if (ban != null)
+        {
+            return null;
+        }
 
-        habbo = null;
-        statement = Emulator.getDatabase().prepare("SELECT * FROM users WHERE auth_ticket = ? LIMIT 1");
-        try
+        try(Connection connection = Emulator.getDatabase().getDataSource().getConnection();
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE auth_ticket = ? LIMIT 1"))
         {
             statement.setString(1, sso);
             set = statement.executeQuery();
 
+        }
+        catch(SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+        catch (Exception ex)
+        {
+            Emulator.getLogging().logErrorLine(ex);
+        }
+
+        try
+        {
             if (set.next())
             {
                 habbo = new Habbo(set);
@@ -131,7 +132,7 @@ public class HabboManager
                     try
                     {
                         ssoStatement = Emulator.getDatabase().prepare("UPDATE users SET auth_ticket = ? WHERE auth_ticket = ? AND users.id = ? LIMIT 1");
-                        ssoStatement.setString(1, new String(""));
+                        ssoStatement.setString(1, "");
                         ssoStatement.setString(2, sso);
                         ssoStatement.setInt(3, habbo.getHabboInfo().getId());
                     }
@@ -155,33 +156,13 @@ public class HabboManager
                         }
                     }
                 }
-
-                set.close();
             }
 
+            set.close();
         }
-        catch(SQLException e)
+        catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
-        }
-        catch (Exception e)
-        {
-            Emulator.getLogging().logErrorLine(e);
-        }
-        finally
-        {
-            if (statement != null)
-            {
-                try
-                {
-                    statement.close();
-                    statement.getConnection().close();
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                }
-            }
         }
 
         return habbo;

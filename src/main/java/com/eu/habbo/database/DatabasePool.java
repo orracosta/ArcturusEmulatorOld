@@ -2,6 +2,7 @@ package com.eu.habbo.database;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.core.ConfigurationManager;
+import com.eu.habbo.core.Logging;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
@@ -19,8 +20,8 @@ class DatabasePool
         try
         {
             HikariConfig databaseConfiguration = new HikariConfig();
-            databaseConfiguration.setMaximumPoolSize(10);
-            databaseConfiguration.setMinimumIdle(10);
+            databaseConfiguration.setMaximumPoolSize(config.getInt("db.pool.maxsize", 50));
+            databaseConfiguration.setMinimumIdle(config.getInt("db.pool.minsize", 10));
             databaseConfiguration.setJdbcUrl("jdbc:mysql://" + config.getValue("db.hostname", "localhost") + ":" + config.getValue("db.port", "3306") + "/" + config.getValue("db.database", "habbo"));
             databaseConfiguration.addDataSourceProperty("serverName", config.getValue("db.hostname", "localhost"));
             databaseConfiguration.addDataSourceProperty("port", config.getValue("db.port", "3306"));
@@ -30,11 +31,15 @@ class DatabasePool
             databaseConfiguration.addDataSourceProperty("dataSource.logger", "com.mysql.jdbc.log.StandardLogger");
             databaseConfiguration.addDataSourceProperty("dataSource.logSlowQueries", "true");
             databaseConfiguration.addDataSourceProperty("dataSource.dumpQueriesOnException", "true");
-            databaseConfiguration.addDataSourceProperty("dataSource.logWriter", System.out);
-            databaseConfiguration.setAutoCommit(true);
-            databaseConfiguration.setConnectionTimeout(30000L);
+            databaseConfiguration.addDataSourceProperty("prepStmtCacheSize", "500");
+            databaseConfiguration.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+            databaseConfiguration.addDataSourceProperty("dataSource.logWriter", Logging.getErrorsSQLWriter());
+            databaseConfiguration.addDataSourceProperty("cachePrepStmts", "true");
+            databaseConfiguration.addDataSourceProperty("useServerPrepStmts", "true");
+            databaseConfiguration.setAutoCommit(false);
+            databaseConfiguration.setConnectionTimeout(300000L);
             databaseConfiguration.setValidationTimeout(5000L);
-            databaseConfiguration.setLeakDetectionThreshold(2000L);
+            databaseConfiguration.setLeakDetectionThreshold(20000L);
             databaseConfiguration.setMaxLifetime(1800000L);
             databaseConfiguration.setIdleTimeout(600000L);
             //databaseConfiguration.setDriverClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
