@@ -95,4 +95,28 @@ CREATE TABLE `camera_web` (
 
 INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('camera.publish.delay', '180');
 
+CREATE TABLE  `room_trade_log` (
+    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+    `user_one_id` INT NOT NULL ,
+    `user_two_id` INT NOT NULL ,
+    `user_one_ip` VARCHAR( 45 ) NOT NULL ,
+    `user_two_ip` VARCHAR( 45 ) NOT NULL ,
+    `timestamp` INT NOT NULL ,
+    `user_one_item_count`  INT NOT NULL ,
+    `user_two_item_count`  INT NOT NULL ,
+    INDEX (  `user_one_id`) , INDEX (  `user_two_id` )
+) ENGINE = INNODB ;
+
+CREATE TABLE  `room_trade_log_items` (
+    `id` INT NOT NULL ,
+    `item_id` INT NOT NULL ,
+    `user_id` INT NOT NULL ,
+    UNIQUE (`id` , `item_id` , `user_id` ),
+    INDEX (`id`),
+    INDEX (`user_id`),
+    INDEX (`id`, `user_id`)
+) ENGINE = INNODB ;
+
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.log.trades', '1');
+
 #END DATABASE UPDATE: 1.3.0 -> 1.4.0

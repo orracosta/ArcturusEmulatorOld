@@ -70,13 +70,13 @@ public class HabboManager
             PreparedStatement statement = connection.prepareStatement("SELECT id FROM users WHERE auth_ticket = ? LIMIT 1"))
         {
             statement.setString(1, sso);
-            set = statement.executeQuery();
-            if (set.next())
+            try (ResultSet s = statement.executeQuery())
             {
-                userId = set.getInt("id");
+                if (s.next())
+                {
+                    userId = s.getInt("id");
+                }
             }
-
-            set.close();
             statement.close();
         }
         catch (SQLException e)

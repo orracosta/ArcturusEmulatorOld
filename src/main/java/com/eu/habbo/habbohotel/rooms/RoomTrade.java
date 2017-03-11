@@ -6,9 +6,11 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
+import com.eu.habbo.messages.outgoing.inventory.RemoveHabboItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.messages.outgoing.trading.*;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,22 +127,89 @@ public class RoomTrade
         RoomTradeUser userOne = this.users.get(0);
         RoomTradeUser userTwo = this.users.get(1);
 
-        for(HabboItem item : userOne.getItems())
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
-            item.setUserId(userTwo.getHabbo().getHabboInfo().getId());
-            userOne.getHabbo().getHabboInventory().getItemsComponent().removeHabboItem(item);
-            userTwo.getHabbo().getHabboInventory().getItemsComponent().addItem(item);
-            item.needsUpdate(true);
-            Emulator.getThreading().run(item);
-        }
 
-        for(HabboItem item : userTwo.getItems())
+            int tradeId = 0;
+
+            boolean logTrades = Emulator.getConfig().getBoolean("hotel.log.trades");
+            if (logTrades)
+            {
+                try (PreparedStatement statement = connection.prepareStatement("INSERT INTO room_trade_log (user_one_id, user_two_id, user_one_ip, user_two_ip, timestamp, user_one_item_count, user_two_item_count) VALUES (?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
+                {
+                    statement.setInt(1, userOne.getHabbo().getHabboInfo().getId());
+                    statement.setInt(2, userTwo.getHabbo().getHabboInfo().getId());
+                    statement.setString(3, userOne.getHabbo().getHabboInfo().getIpLogin());
+                    statement.setString(4, userTwo.getHabbo().getHabboInfo().getIpLogin());
+                    statement.setInt(5, Emulator.getIntUnixTimestamp());
+                    statement.setInt(6, userOne.getItems().size());
+                    statement.setInt(7, userTwo.getItems().size());
+                    statement.executeUpdate();
+                    try (ResultSet generatedKeys = statement.getGeneratedKeys())
+                    {
+                        if (generatedKeys.next())
+                        {
+                            tradeId = generatedKeys.getInt(1);
+                        }
+                    }
+                }
+            }
+
+            int userOneId = userOne.getHabbo().getHabboInfo().getId();
+            int userTwoId = userTwo.getHabbo().getHabboInfo().getId();
+
+            try (PreparedStatement statement = connection.prepareStatement("UPDATE items SET user_id = ? WHERE id = ? LIMIT 1"))
+            {
+                try (PreparedStatement stmt = connection.prepareStatement("INSERT INTO room_trade_log_items (id, item_id, user_id) VALUES (?, ?, ?)"))
+                {
+                    for (HabboItem item : userOne.getItems())
+                    {
+                        item.setUserId(userTwoId);
+                        statement.setInt(1, userTwoId);
+                        statement.setInt(2, item.getId());
+                        userOne.getHabbo().getHabboInventory().getItemsComponent().removeHabboItem(item);
+                        userTwo.getHabbo().getHabboInventory().getItemsComponent().addItem(item);
+                        statement.addBatch();
+
+                        if (logTrades)
+                        {
+                            stmt.setInt(1, tradeId);
+                            stmt.setInt(2, item.getId());
+                            stmt.setInt(3, userOneId);
+                            stmt.addBatch();
+                        }
+                    }
+
+                    for (HabboItem item : userTwo.getItems())
+                    {
+                        item.setUserId(userOneId);
+                        statement.setInt(1, userOneId);
+                        statement.setInt(2, item.getId());
+                        userTwo.getHabbo().getHabboInventory().getItemsComponent().removeHabboItem(item);
+                        userOne.getHabbo().getHabboInventory().getItemsComponent().addItem(item);
+                        statement.addBatch();
+
+                        if (logTrades)
+                        {
+                            stmt.setInt(1, tradeId);
+                            stmt.setInt(2, item.getId());
+                            stmt.setInt(3, userTwoId);
+                            stmt.addBatch();
+                        }
+                    }
+
+                    if (logTrades)
+                    {
+                        stmt.executeBatch();
+                    }
+                }
+
+                statement.executeBatch();
+            }
+        }
+        catch (SQLException e)
         {
-            item.setUserId(userOne.getHabbo().getHabboInfo().getId());
-            userTwo.getHabbo().getHabboInventory().getItemsComponent().removeHabboItem(item);
-            userOne.getHabbo().getHabboInventory().getItemsComponent().addItem(item);
-            item.needsUpdate(true);
-            Emulator.getThreading().run(item);
+            Emulator.getLogging().logSQLException(e);
         }
 
         userOne.getHabbo().getClient().sendResponse(new AddHabboItemComposer(userTwo.getItems()));
@@ -148,7 +217,6 @@ public class RoomTrade
 
         userOne.getHabbo().getClient().sendResponse(new InventoryRefreshComposer());
         userTwo.getHabbo().getClient().sendResponse(new InventoryRefreshComposer());
-
     }
 
     void clearAccepted()

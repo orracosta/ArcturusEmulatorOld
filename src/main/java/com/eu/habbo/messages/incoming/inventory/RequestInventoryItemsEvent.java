@@ -47,10 +47,7 @@ public class RequestInventoryItemsEvent extends MessageHandler
                 }
             }
 
-            if (!items.isEmpty())
-            {
-                this.client.sendResponse(new InventoryItemsComposer(page, pages, items));
-            }
+            this.client.sendResponse(new InventoryItemsComposer(page, pages, items));
         }
     }
 }
