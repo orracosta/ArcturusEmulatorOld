@@ -83,4 +83,17 @@ INSERT INTO `pet_breeds` (`race`, `color_one`, `color_two`, `has_color_one`, `ha
 DELETE FROM emulator_texts WHERE `key` LIKE 'commands.keys.cmd_roompoints';
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.keys.cmd_roompoints', 'roompoints;room_points');
 
+DROP TABLE camera_web;
+CREATE TABLE `camera_web` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `user_id` INT NOT NULL,
+    `timestamp` INT NOT NULL,
+    `url` VARCHAR(128) NOT NULL DEFAULT '',
+    PRIMARY KEY (`id`),
+    INDEX (`user_id`),
+    UNIQUE (`id`)
+) ENGINE = INNODB;
+
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('camera.publish.delay', '180');
+
 #END DATABASE UPDATE: 1.3.0 -> 1.4.0

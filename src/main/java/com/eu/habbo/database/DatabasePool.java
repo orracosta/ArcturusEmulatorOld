@@ -36,7 +36,7 @@ class DatabasePool
             databaseConfiguration.addDataSourceProperty("dataSource.logWriter", Logging.getErrorsSQLWriter());
             databaseConfiguration.addDataSourceProperty("cachePrepStmts", "true");
             databaseConfiguration.addDataSourceProperty("useServerPrepStmts", "true");
-            databaseConfiguration.setAutoCommit(false);
+            databaseConfiguration.setAutoCommit(true);
             databaseConfiguration.setConnectionTimeout(300000L);
             databaseConfiguration.setValidationTimeout(5000L);
             databaseConfiguration.setLeakDetectionThreshold(20000L);

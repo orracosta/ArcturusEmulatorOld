@@ -7,10 +7,7 @@ import com.eu.habbo.messages.incoming.Incoming;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.incoming.achievements.*;
 import com.eu.habbo.messages.incoming.ambassadors.*;
-import com.eu.habbo.messages.incoming.camera.CameraRoomPictureEvent;
-import com.eu.habbo.messages.incoming.camera.CameraPurchaseEvent;
-import com.eu.habbo.messages.incoming.camera.CameraRoomThumbnailEvent;
-import com.eu.habbo.messages.incoming.camera.RequestCameraConfigurationEvent;
+import com.eu.habbo.messages.incoming.camera.*;
 import com.eu.habbo.messages.incoming.catalog.*;
 import com.eu.habbo.messages.incoming.catalog.marketplace.*;
 import com.eu.habbo.messages.incoming.catalog.recycler.*;
@@ -505,6 +502,7 @@ public class PacketManager
         this.registerHandler(Incoming.RequestCameraConfigurationEvent,          RequestCameraConfigurationEvent.class);
         this.registerHandler(Incoming.CameraPurchaseEvent,                      CameraPurchaseEvent.class);
         this.registerHandler(Incoming.CameraRoomThumbnailEvent,                 CameraRoomThumbnailEvent.class);
+        this.registerHandler(Incoming.CameraPublishToWebEvent,                  CameraPublishToWebEvent.class);
     }
 
     void registerGameCenter() throws Exception

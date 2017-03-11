@@ -344,7 +344,12 @@ public class HabboStats implements Runnable
 
                 while(set.next())
                 {
-                    stats.achievementProgress.put(Emulator.getGameEnvironment().getAchievementManager().getAchievement(set.getString("achievement_name")), set.getInt("progress"));
+                    Achievement achievement = Emulator.getGameEnvironment().getAchievementManager().getAchievement(set.getString("achievement_name"));
+
+                    if (achievement != null)
+                    {
+                        stats.achievementProgress.put(achievement, set.getInt("progress"));
+                    }
                 }
 
                 set.close();

@@ -52,6 +52,7 @@ public class CameraResultURLEvent extends CameraIncomingMessage
                     AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("CameraPhotoCount"), 1);
                     habbo.getClient().sendResponse(new CameraURLComposer(URL));
                     habbo.getHabboInfo().setPhotoJSON(habbo.getHabboInfo().getPhotoJSON().replace("%room_id%", roomId + "").replace("%url%", URL));
+                    habbo.getHabboInfo().setPhotoURL(URL);
                 }
             }
         }

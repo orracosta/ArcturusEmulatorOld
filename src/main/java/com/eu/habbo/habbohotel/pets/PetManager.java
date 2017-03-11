@@ -20,9 +20,7 @@ import gnu.trove.set.hash.THashSet;
 import javafx.util.Pair;
 import org.apache.commons.math.distribution.ExponentialDistribution;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -376,7 +374,46 @@ public class PetManager
 
     public PetData getPetData(int type)
     {
-        return this.petData.get(type);
+        synchronized (this.petData)
+        {
+            if (this.petData.containsKey(type))
+            {
+                return this.petData.get(type);
+            }
+            else
+            {
+                try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
+                {
+                    Emulator.getLogging().logErrorLine("Missing petdata for type " + type + ". Adding this to the database...");
+                    try (PreparedStatement statement = connection.prepareStatement("INSERT INTO pet_actions (pet_type) VALUES (?)"))
+                    {
+                        statement.setInt(1, type);
+                        statement.execute();
+                    }
+
+                    try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM pet_actions WHERE pet_type = ? LIMIT 1"))
+                    {
+                        statement.setInt(1, type);
+                        try (ResultSet set = statement.executeQuery())
+                        {
+                            if (set.next())
+                            {
+                                PetData petData = new PetData(set);
+                                this.petData.put(type, petData);
+                                Emulator.getLogging().logErrorLine("Missing petdata for type " + type + " added to the database!");
+                                return petData;
+                            }
+                        }
+                    }
+                }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            }
+        }
+
+        return null;
     }
 
     public Pet createPet(Item item, String name, String race, String color, GameClient client)

@@ -50,6 +50,7 @@ public class HabboInfo implements Runnable
     private int photoTimestamp;
     private String photoURL;
     private String photoJSON;
+    private int webPublishTimestamp;
 
     public HabboInfo(ResultSet set)
     {
@@ -423,6 +424,16 @@ public class HabboInfo implements Runnable
     public void setPhotoJSON(String photoJSON)
     {
         this.photoJSON = photoJSON;
+    }
+
+    public int getWebPublishTimestamp()
+    {
+        return this.webPublishTimestamp;
+    }
+
+    public void setWebPublishTimestamp(int webPublishTimestamp)
+    {
+        this.webPublishTimestamp = webPublishTimestamp;
     }
 
     @Override

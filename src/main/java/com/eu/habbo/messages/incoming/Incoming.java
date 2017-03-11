@@ -307,4 +307,5 @@ public class Incoming
 
     public static final int GameCenterRequestGamesEvent = 741;
     public static final int GameCenterRequestAccountStatusEvent = 2399;
+    public static final int CameraPublishToWebEvent = 2068;
 }
