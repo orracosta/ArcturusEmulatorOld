@@ -348,7 +348,7 @@ public class AchievementManager
                 statement.setString(2, map.getKey().name);
                 statement.addBatch();
             }
-            statement.execute();
+            statement.executeBatch();
             statement.close();
             statement.getConnection().close();
         }
