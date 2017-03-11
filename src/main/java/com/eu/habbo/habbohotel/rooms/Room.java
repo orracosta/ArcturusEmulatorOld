@@ -3470,7 +3470,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                             {
                                 for(short x = 0; x < iterator.value().getBaseItem().getWidth(); x++)
                                 {
-                                    lockedTiles.add(this.layout.getTile((short) (iterator.value().getX() + x), (short) (iterator.value().getY() + y)));
+                                    RoomTile tile = this.layout.getTile((short) (iterator.value().getX() + x), (short) (iterator.value().getY() + y));
+
+                                    if (tile != null)
+                                    {
+                                        lockedTiles.add(tile);
+                                    }
                                 }
                             }
                         }
@@ -3480,7 +3485,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                             {
                                 for(short x = 0; x < iterator.value().getBaseItem().getLength(); x++)
                                 {
-                                    lockedTiles.add(this.layout.getTile((short) (iterator.value().getX() + x), (short) (iterator.value().getY() + y)));
+                                    RoomTile tile = this.layout.getTile((short) (iterator.value().getX() + x), (short) (iterator.value().getY() + y));
+
+                                    if (tile != null)
+                                    {
+                                        lockedTiles.add(tile);
+                                    }
                                 }
                             }
                         }
