@@ -199,6 +199,49 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
 
             THashSet<HabboItem> itemsList = new THashSet<HabboItem>();
 
+            boolean badgeFound = false;
+            for (Item baseItem : item.getBaseItems())
+            {
+                if (baseItem.getType().equalsIgnoreCase("b"))
+                {
+                    if (habbo != null)
+                    {
+                        if(habbo.getHabboInventory().getBadgesComponent().hasBadge(baseItem.getName()))
+                        {
+                            badgeFound = true;
+                        }
+                    }
+                    else
+                    {
+                        int c = 0;
+                        PreparedStatement s = Emulator.getDatabase().prepare("SELECT COUNT(*) as c FROM users_badges WHERE user_id = ? AND badge_code LIKE ?");
+                        s.setInt(1, userId);
+                        s.setString(2, baseItem.getName());
+                        ResultSet rSet = s.executeQuery();
+
+                        if (rSet.next())
+                        {
+                            c = rSet.getInt("c");
+                        }
+
+                        rSet.close();
+                        s.close();
+                        s.getConnection().close();
+
+                        if (c != 0)
+                        {
+                            badgeFound = true;
+                        }
+                    }
+                }
+            }
+
+            if (badgeFound)
+            {
+                this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.ALREADY_HAVE_BADGE));
+                return;
+            }
+
             for(int i = 0; i < count; i++)
             {
                 if (item.getCredits() <= this.client.getHabbo().getHabboInfo().getCredits() - totalCredits)
@@ -234,7 +277,30 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                                     cBaseItem = baseItem;
                                     if (!baseItem.getName().contains("avatar_effect"))
                                     {
-                                        if(item.getName().startsWith("rentable_bot_"))
+                                        if (baseItem.getType().equalsIgnoreCase("b"))
+                                        {
+                                            if (!badgeFound)
+                                            {
+                                                if (habbo != null)
+                                                {
+                                                    HabboBadge badge = new HabboBadge(0, baseItem.getName(), 0, habbo);
+                                                    Emulator.getThreading().run(badge);
+                                                    habbo.getHabboInventory().getBadgesComponent().addBadge(badge);
+                                                }
+                                                else
+                                                {
+                                                    PreparedStatement stmt = Emulator.getDatabase().prepare("INSERT INTO users_badges (user_id, badge_code) VALUES (?, ?)");
+                                                    stmt.setInt(1, userId);
+                                                    stmt.setString(2, baseItem.getName());
+                                                    stmt.execute();
+                                                    stmt.close();
+                                                    stmt.getConnection().close();
+                                                }
+
+                                                badgeFound = true;
+                                            }
+                                        }
+                                        else if(item.getName().startsWith("rentable_bot_"))
                                         {
                                             this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR).compose());
                                             return;
@@ -331,51 +397,6 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                 habbo.getClient().getHabbo().getHabboInventory().getItemsComponent().addItem(gift);
                 habbo.getClient().sendResponse(new InventoryRefreshComposer());
                 AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("GiftReceiver"));
-
-                if(item.hasBadge())
-                {
-                    if(!habbo.getHabboInventory().getBadgesComponent().hasBadge(item.getBadge()))
-                    {
-                        HabboBadge badge = new HabboBadge(0, item.getBadge(), 0, habbo);
-                        Emulator.getThreading().run(badge);
-                        habbo.getHabboInventory().getBadgesComponent().addBadge(badge);
-                    }
-                    else
-                    {
-                        this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.ALREADY_HAVE_BADGE));
-                    }
-                }
-            }
-            else
-            {
-                //TODO; Mooier maken :$
-                if(item.hasBadge())
-                {
-                    int c = 0;
-                    PreparedStatement s = Emulator.getDatabase().prepare("SELECT COUNT(*) as c FROM users_badges WHERE user_id = ? AND badge_code LIKE ?");
-                    s.setInt(1, userId);
-                    s.setString(2, item.getBadge());
-                    ResultSet rSet = s.executeQuery();
-
-                    if(rSet.next())
-                    {
-                        c = rSet.getInt("c");
-                    }
-
-                    rSet.close();
-                    s.close();
-                    s.getConnection().close();
-
-                    if(c == 0)
-                    {
-                        PreparedStatement stmt = Emulator.getDatabase().prepare("INSERT INTO users_badges (user_id, badge_code) VALUES (?, ?)");
-                        stmt.setInt(1, userId);
-                        stmt.setString(2, item.getBadge());
-                        stmt.execute();
-                        stmt.close();
-                        stmt.getConnection().close();
-                    }
-                }
             }
 
             if(!this.client.getHabbo().hasPermission("acc_infinite_credits"))

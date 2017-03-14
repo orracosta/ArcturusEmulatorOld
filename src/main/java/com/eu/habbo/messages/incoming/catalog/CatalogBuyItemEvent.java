@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.catalog.layouts.ClubBuyLayout;
 import com.eu.habbo.habbohotel.catalog.layouts.RecentPurchasesLayout;
 import com.eu.habbo.habbohotel.catalog.layouts.RoomBundleLayout;
 import com.eu.habbo.habbohotel.catalog.layouts.VipBuyLayout;
+import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.*;
@@ -108,18 +109,24 @@ public class CatalogBuyItemEvent extends MessageHandler
 
                 this.client.sendResponse(new PurchaseOKComposer());
 
-                if(item[0].hasBadge())
-                {
-                    if(!this.client.getHabbo().getHabboInventory().getBadgesComponent().hasBadge(item[0].getBadge()))
+                final boolean[] badgeFound = {false};
+                item[0].getBaseItems().stream().filter(i -> i.getType().equalsIgnoreCase("b")).forEach(i -> {
+                    if (!this.client.getHabbo().getHabboInventory().getBadgesComponent().hasBadge(i.getName()))
                     {
-                        HabboBadge badge = new HabboBadge(0, item[0].getBadge(), 0, this.client.getHabbo());
+                        HabboBadge badge = new HabboBadge(0, i.getName(), 0, this.client.getHabbo());
                         Emulator.getThreading().run(badge);
                         this.client.getHabbo().getHabboInventory().getBadgesComponent().addBadge(badge);
+                        this.client.sendResponse(new AddUserBadgeComposer(badge));
                     }
                     else
                     {
-                        this.client.getHabbo().getClient().sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.ALREADY_HAVE_BADGE));
+                        badgeFound[0] = true;
                     }
+                });
+
+                if (badgeFound[0])
+                {
+                    this.client.getHabbo().getClient().sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.ALREADY_HAVE_BADGE));
                 }
 
                 return;

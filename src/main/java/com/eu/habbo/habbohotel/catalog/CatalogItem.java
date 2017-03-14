@@ -24,13 +24,11 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
     protected int limitedStack;
     protected int limitedSells;
     protected String extradata;
-    protected String badge;
     protected boolean clubOnly;
     protected boolean haveOffer;
     protected int offerId;
 
     protected boolean needsUpdate;
-    protected boolean hasBadge;
 
     protected HashMap<Integer, Integer> bundle;
 
@@ -58,14 +56,12 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
         this.limitedStack = set.getInt("limited_stack");
         this.limitedSells = set.getInt("limited_sells");
         this.extradata = set.getString("extradata");
-        this.badge = set.getString("badge");
         this.clubOnly = set.getBoolean("club_only");
         this.haveOffer = set.getBoolean("have_offer");
         this.offerId = set.getInt("offer_id");
 
         this.bundle = new HashMap<Integer, Integer>();
         this.loadBundle();
-        this.hasBadge = !this.badge.isEmpty();
     }
 
     public int getId()
@@ -132,13 +128,6 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
     {
         return extradata;
     }
-
-    public String getBadge()
-    {
-        return this.badge;
-    }
-
-    public boolean hasBadge() { return this.hasBadge; }
 
     public boolean isClubOnly()
     {
@@ -262,23 +251,15 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
 
         THashSet<Item> items = this.getBaseItems();
 
-        if(this.badge.isEmpty() || this.badge.length() == 0)
-        {
-            message.appendInt32(items.size());
-        }
-        else
-        {
-            message.appendInt32(items.size() + 1);
-            message.appendString("b");
-            message.appendString(this.getBadge());
-        }
+        message.appendInt32(items.size());
+
         for(Item item : items)
         {
             message.appendString(item.getType());
 
             if(item.getType().equals("b"))
             {
-                message.appendString("RADZZ");
+                message.appendString(item.getName());
             }
             else
             {

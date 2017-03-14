@@ -1122,7 +1122,7 @@ public class CatalogManager
                 limitedStack = limitedConfiguration.getTotalSet();
             }
 
-
+            boolean badgeFound = false;
             for(int i = 0; i < amount; i++)
             {
                 if (item.getCredits() <= habbo.getClient().getHabbo().getHabboInfo().getCredits() - totalCredits)
@@ -1205,6 +1205,20 @@ public class CatalogManager
                                             habbo.getClient().sendResponse(new PetBoughtNotificationComposer(pet, false));
 
                                             AchievementManager.progressAchievement(habbo.getClient().getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("PetLover"));
+                                        }
+                                        else if (baseItem.getType().equalsIgnoreCase("b"))
+                                        {
+                                            if(!habbo.getHabboInventory().getBadgesComponent().hasBadge(baseItem.getName()))
+                                            {
+                                                HabboBadge badge = new HabboBadge(0, baseItem.getName(), 0, habbo);
+                                                Emulator.getThreading().run(badge);
+                                                habbo.getHabboInventory().getBadgesComponent().addBadge(badge);
+                                                habbo.getClient().sendResponse(new AddUserBadgeComposer(badge));
+                                            }
+                                            else
+                                            {
+                                                badgeFound = true;
+                                            }
                                         }
                                         else
                                         {
@@ -1308,22 +1322,9 @@ public class CatalogManager
                 }
             }
 
-            if(item.hasBadge())
+            if (badgeFound)
             {
-                if(!habbo.getHabboInventory().getBadgesComponent().hasBadge(item.getBadge()))
-                {
-                    HabboBadge badge = new HabboBadge(0, item.getBadge(), 0, habbo);
-                    Emulator.getThreading().run(badge);
-                    habbo.getHabboInventory().getBadgesComponent().addBadge(badge);
-                    habbo.getClient().sendResponse(new AddUserBadgeComposer(badge));
-                }
-                else
-                {
-                    if (item.getBaseItems().size() > 1)
-                    {
-                        habbo.getClient().sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.ALREADY_HAVE_BADGE));
-                    }
-                }
+                habbo.getClient().sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.ALREADY_HAVE_BADGE));
             }
 
             habbo.getClient().sendResponse(new AddHabboItemComposer(itemsList));
