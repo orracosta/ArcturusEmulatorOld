@@ -37,16 +37,16 @@ public class RoomUserLookAtPoint extends MessageHandler
         if(roomUnit.isWalking() || roomUnit.getStatus().containsKey("mv"))
             return;
 
+        if (roomUnit.cmdLay || roomUnit.getStatus().containsKey("lay"))
+            return;
+
         int x = this.packet.readInt();
         int y = this.packet.readInt();
 
         if(x == roomUnit.getX() && y == roomUnit.getY())
             return;
 
-        if(!roomUnit.getStatus().containsKey("sit"))
-        {
-            roomUnit.lookAtPoint(habbo.getHabboInfo().getCurrentRoom().getLayout().getTile((short) x, (short) y));
-        }
+        roomUnit.lookAtPoint(habbo.getHabboInfo().getCurrentRoom().getLayout().getTile((short) x, (short) y));
 
         UserIdleEvent event = new UserIdleEvent(this.client.getHabbo(), UserIdleEvent.IdleReason.WALKED, false);
         Emulator.getPluginManager().fireEvent(event);

@@ -601,7 +601,16 @@ public class RoomUnit
                 return;
         }
 
-        this.bodyRotation = (RoomUserRotation.values()[Rotation.Calculate(this.getX(), this.getY(), location.x, location.y)]);
+        if (this.status.containsKey("lay"))
+        {
+            return;
+        }
+        
+        if (!this.status.containsKey("sit"))
+        {
+            this.bodyRotation = (RoomUserRotation.values()[Rotation.Calculate(this.getX(), this.getY(), location.x, location.y)]);
+        }
+
         this.headRotation = (RoomUserRotation.values()[Rotation.Calculate(this.getX(), this.getY(), location.x, location.y)]);
     }
 }
