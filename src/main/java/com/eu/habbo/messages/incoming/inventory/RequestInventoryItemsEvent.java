@@ -16,7 +16,12 @@ public class RequestInventoryItemsEvent extends MessageHandler
     public void handle() throws Exception
     {
         int totalItems = this.client.getHabbo().getHabboInventory().getItemsComponent().getItems().size();
-        int pages = (int)Math.ceil((double)totalItems / 1000.0);
+        int pages = (int) Math.ceil((double) totalItems / 1000.0);
+
+        if (pages == 0)
+        {
+            pages = 1;
+        }
 
         synchronized (this.client.getHabbo().getHabboInventory().getItemsComponent().getItems())
         {
