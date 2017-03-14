@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.modtool.ModToolIssue;
 import com.eu.habbo.habbohotel.modtool.ModToolTicketType;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
+import com.eu.habbo.messages.outgoing.catalog.AlertPurchaseFailedComposer;
 import com.eu.habbo.messages.outgoing.catalog.PurchaseOKComposer;
 import com.eu.habbo.messages.outgoing.guilds.GuildBoughtComposer;
 import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
@@ -20,8 +21,17 @@ public class RequestGuildBuyEvent extends MessageHandler
     {
         if (!this.client.getHabbo().hasPermission("acc_infinite_credits"))
         {
-            this.client.getHabbo().getHabboInfo().addCredits(-10);
-            this.client.sendResponse(new UserCreditsComposer(this.client.getHabbo()));
+            int guildPrice = Emulator.getConfig().getInt("catalog.guild.price");
+            if (this.client.getHabbo().getHabboInfo().getCredits() >= guildPrice)
+            {
+                this.client.getHabbo().getHabboInfo().addCredits(-guildPrice);
+                this.client.sendResponse(new UserCreditsComposer(this.client.getHabbo()));
+            }
+            else
+            {
+                this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR));
+                return;
+            }
         }
 
         String name = this.packet.readString();
