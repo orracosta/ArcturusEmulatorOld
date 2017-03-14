@@ -900,12 +900,12 @@ public class CatalogManager
         return (Item)this.prizes.get(level).toArray()[Emulator.getRandom().nextInt(this.prizes.get(level).size())];
     }
 
-    public CatalogPage createCatalogPage(String caption, String captionSave, int icon, CatalogPageLayouts layout, int minRank, int parentId)
+    public CatalogPage createCatalogPage(String caption, String captionSave, int roomId, int icon, CatalogPageLayouts layout, int minRank, int parentId)
     {
         CatalogPage catalogPage = null;
         try
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO catalog_pages (parent_id, caption, caption_save, icon_image, visible, enabled, min_rank, page_layout) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO catalog_pages (parent_id, caption, caption_save, icon_image, visible, enabled, min_rank, page_layout, room_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             statement.setInt(1, parentId);
             statement.setString(2, caption);
             statement.setString(3, captionSave);
@@ -914,6 +914,7 @@ public class CatalogManager
             statement.setString(6, "1");
             statement.setInt(7, minRank);
             statement.setString(8, layout.name());
+            statement.setInt(9, roomId);
             statement.execute();
             ResultSet set = statement.getGeneratedKeys();
 
