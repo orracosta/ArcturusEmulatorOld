@@ -605,7 +605,7 @@ public class RoomUnit
         {
             return;
         }
-        
+
         if (!this.status.containsKey("sit"))
         {
             this.bodyRotation = (RoomUserRotation.values()[Rotation.Calculate(this.getX(), this.getY(), location.x, location.y)]);
