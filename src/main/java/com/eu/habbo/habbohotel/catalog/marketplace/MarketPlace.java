@@ -91,36 +91,39 @@ public class MarketPlace
                 }
 
                 habbo.getHabboInventory().removeMarketplaceOffer(offer);
-                PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM marketplace_items WHERE id = ?");
+                PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM marketplace_items WHERE id = ? WHERE state != 2");
                 statement.setInt(1, offer.getOfferId());
-                statement.execute();
+                int count = statement.executeUpdate();
                 statement.close();
                 statement.getConnection().close();
 
-                PreparedStatement updateItems = Emulator.getDatabase().prepare("UPDATE items SET user_id = ? WHERE id = ? LIMIT 1");
-                updateItems.setInt(1, habbo.getHabboInfo().getId());
-                updateItems.setInt(2, offer.getSoldItemId());
-                updateItems.execute();
-                updateItems.close();
-                updateItems.getConnection().close();
-
-                PreparedStatement selectItem = Emulator.getDatabase().prepare("SELECT * FROM items WHERE id = ? LIMIT 1");
-                selectItem.setInt(1, offer.getSoldItemId());
-                ResultSet set = selectItem.executeQuery();
-                while(set.next())
+                if (count != 0)
                 {
-                    HabboItem item = Emulator.getGameEnvironment().getItemManager().loadHabboItem(set);
-                    habbo.getHabboInventory().getItemsComponent().addItem(item);
-                    habbo.getClient().sendResponse(new MarketplaceCancelSaleComposer(offer, true));
-                    habbo.getClient().sendResponse(new AddHabboItemComposer(item));
-                    habbo.getClient().sendResponse(new InventoryRefreshComposer());
-                }
-                set.close();
-                selectItem.close();
-                selectItem.getConnection().close();
+                    PreparedStatement updateItems = Emulator.getDatabase().prepare("UPDATE items SET user_id = ? WHERE id = ? LIMIT 1");
+                    updateItems.setInt(1, habbo.getHabboInfo().getId());
+                    updateItems.setInt(2, offer.getSoldItemId());
+                    updateItems.execute();
+                    updateItems.close();
+                    updateItems.getConnection().close();
 
-                ownerCheck.close();
-                ownerCheck.getConnection().close();
+                    PreparedStatement selectItem = Emulator.getDatabase().prepare("SELECT * FROM items WHERE id = ? LIMIT 1");
+                    selectItem.setInt(1, offer.getSoldItemId());
+                    ResultSet set = selectItem.executeQuery();
+                    while (set.next())
+                    {
+                        HabboItem item = Emulator.getGameEnvironment().getItemManager().loadHabboItem(set);
+                        habbo.getHabboInventory().getItemsComponent().addItem(item);
+                        habbo.getClient().sendResponse(new MarketplaceCancelSaleComposer(offer, true));
+                        habbo.getClient().sendResponse(new AddHabboItemComposer(item));
+                        habbo.getClient().sendResponse(new InventoryRefreshComposer());
+                    }
+                    set.close();
+                    selectItem.close();
+                    selectItem.getConnection().close();
+
+                    ownerCheck.close();
+                    ownerCheck.getConnection().close();
+                }
             }
             catch(SQLException e)
             {
