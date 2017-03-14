@@ -14,7 +14,7 @@ SWF: http://arcturus.wf/mirrors/PRODUCTION-201611291003-338511768.swf
 
 SCRIPTS: http://arcturus.wf/mirrors/PRODUCTION-201611291003-338511768_scripts.txt
 
-# **Compiled version (Including Database): http://arcturus.wf/mirrors/ArcturusEmulator_1.3.0.zip** #
+# **Compiled version (Including Database): http://arcturus.wf/mirrors/ArcturusEmulator_1.4.0.zip** #
 
 Latest Compiled Version: http://arcturus.wf:8080
 
