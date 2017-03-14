@@ -415,11 +415,6 @@ public final class Emulator
         return isnumeric;
     }
 
-    public static boolean validString(String string)
-    {
-        return Pattern.compile("[^a-zA-Z0-9]").matcher(string).find();
-    }
-
     public int getUserCount()
     {
         return gameEnvironment.getHabboManager().getOnlineCount();

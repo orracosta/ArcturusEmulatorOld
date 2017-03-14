@@ -58,7 +58,7 @@ public class RequestCreateRoomEvent extends MessageHandler {
             return;
         }
 
-        final Room room = Emulator.getGameEnvironment().getRoomManager().createRoom(this.client.getHabbo(), name, description, modelName, maxUsers, categoryId);
+        final Room room = Emulator.getGameEnvironment().getRoomManager().createRoomForHabbo(this.client.getHabbo(), name, description, modelName, maxUsers, categoryId);
 
         if(room != null)
         {

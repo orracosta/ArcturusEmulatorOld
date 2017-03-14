@@ -33,6 +33,7 @@ import gnu.trove.procedure.TIntProcedure;
 import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -364,35 +365,58 @@ public class RoomManager {
         return room;
     }
 
-    public Room createRoom(Habbo habbo, String name, String description, String modelName, int usersMax, int categoryId)
+    /**
+     * Creates and preloads a room.
+     * @param ownerId
+     * @param ownerName
+     * @param name
+     * @param description
+     * @param modelName
+     * @param usersMax
+     * @param categoryId
+     * @return
+     */
+    public Room createRoom(int ownerId, String ownerName, String name, String description, String modelName, int usersMax, int categoryId)
     {
         Room room = null;
-        try
+
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO rooms (owner_id, owner_name, name, description, model, users_max, category) VALUES (?, ?, ?, ?, ?, ?, ?)"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO rooms (owner_id, owner_name, name, description, model, users_max, category) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            statement.setInt(1, habbo.getHabboInfo().getId());
-            statement.setString(2, habbo.getHabboInfo().getUsername());
+            statement.setInt(1, ownerId);
+            statement.setString(2, ownerName);
             statement.setString(3, name);
             statement.setString(4, description);
             statement.setString(5, modelName);
             statement.setInt(6, usersMax);
             statement.setInt(7, categoryId);
             statement.execute();
-            ResultSet set = statement.getGeneratedKeys();
-            if(set.next())
-                room = this.loadRoom(set.getInt(1));
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
+            try (ResultSet set = statement.getGeneratedKeys())
+            {
+                if (set.next())
+                    room = this.loadRoom(set.getInt(1));
+            }
         }
-        catch(SQLException e)
+        catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
         }
 
-        if(room != null)
-            this.activeRooms.put(room.getId(), room);
+        return room;
+    }
+
+    /**
+     * Creates a room for the given Habbo and also preloads the room.
+     * @param habbo
+     * @param name
+     * @param description
+     * @param modelName
+     * @param usersMax
+     * @param categoryId
+     * @return
+     */
+    public Room createRoomForHabbo(Habbo habbo, String name, String description, String modelName, int usersMax, int categoryId)
+    {
+        Room room = this.createRoom(habbo.getHabboInfo().getId(), habbo.getHabboInfo().getUsername(), name, description, modelName, usersMax, categoryId);
 
         Emulator.getPluginManager().fireEvent(new NavigatorRoomCreatedEvent(habbo, room));
 
