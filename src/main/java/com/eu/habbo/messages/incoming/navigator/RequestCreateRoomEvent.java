@@ -46,15 +46,12 @@ public class RequestCreateRoomEvent extends MessageHandler {
         if(tradeType > 2)
             return;
 
-        int currentRoomCount = Emulator.getGameEnvironment().getRoomManager().getRoomsForHabbo(this.client.getHabbo()).size();
-        if(currentRoomCount >= Emulator.getConfig().getInt("hotel.max.rooms.vip") && this.client.getHabbo().getHabboStats().hasActiveClub())
+        int count = Emulator.getGameEnvironment().getRoomManager().getRoomsForHabbo(this.client.getHabbo()).size();
+        int max = this.client.getHabbo().getHabboStats().hasActiveClub() ? Emulator.getConfig().getInt("hotel.max.rooms.vip") : Emulator.getConfig().getInt("hotel.max.rooms.user");
+        
+        if(count >= max)
         {
-            this.client.sendResponse(new CanCreateRoomComposer(currentRoomCount));
-            return;
-        }
-        else if(currentRoomCount >= Emulator.getConfig().getInt("hotel.max.rooms.user"))
-        {
-            this.client.sendResponse(new CanCreateRoomComposer(currentRoomCount));
+            this.client.sendResponse(new CanCreateRoomComposer(count, max));
             return;
         }
 
