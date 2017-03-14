@@ -32,7 +32,7 @@ public class RoomRelativeMapComposer extends MessageComposer
                 if (t != null)
                     this.response.appendShort(t.relativeHeight());
                 else
-                    this.response.appendShort(0);
+                    this.response.appendShort(Short.MAX_VALUE);
 
             }
         }
