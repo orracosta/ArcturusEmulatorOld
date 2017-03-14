@@ -19,6 +19,7 @@ public class WiredEffectGiveDiamonds extends InteractionWiredEffect
     public static final WiredEffectType type = WiredEffectType.SHOW_MESSAGE;
 
     private int points = 0;
+    private int pointsType = -1;
 
     public WiredEffectGiveDiamonds(ResultSet set, Item baseItem) throws SQLException
     {
@@ -38,7 +39,7 @@ public class WiredEffectGiveDiamonds extends InteractionWiredEffect
         message.appendInt32(0);
         message.appendInt32(this.getBaseItem().getSpriteId());
         message.appendInt32(this.getId());
-        message.appendString(this.points + "");
+        message.appendString(this.points + (this.pointsType == -1 ? "" : ":" + this.pointsType));
         message.appendInt32(0);
         message.appendInt32(0);
         message.appendInt32(type.code);
@@ -53,7 +54,7 @@ public class WiredEffectGiveDiamonds extends InteractionWiredEffect
 
         try
         {
-            this.points = Integer.valueOf(packet.readString());
+            loadFromString(packet.readString());
         }
         catch (Exception e)
         {
@@ -80,8 +81,8 @@ public class WiredEffectGiveDiamonds extends InteractionWiredEffect
         if(habbo == null)
             return false;
 
-        habbo.getHabboInfo().addCurrencyAmount(Emulator.getConfig().getInt("seasonal.primary.type"), this.points);
-        habbo.getClient().sendResponse(new UserPointsComposer(habbo.getHabboInfo().getCurrencyAmount(Emulator.getConfig().getInt("seasonal.primary.type")), this.points, Emulator.getConfig().getInt("seasonal.primary.type")));
+        habbo.getHabboInfo().addCurrencyAmount(this.pointsType == -1 ? Emulator.getConfig().getInt("seasonal.primary.type") : this.pointsType, this.points);
+        habbo.getClient().sendResponse(new UserPointsComposer(habbo.getHabboInfo().getCurrencyAmount(this.pointsType == -1 ? Emulator.getConfig().getInt("seasonal.primary.type") : this.pointsType), this.points, Emulator.getConfig().getInt("seasonal.primary.type")));
 
         return true;
     }
@@ -89,7 +90,7 @@ public class WiredEffectGiveDiamonds extends InteractionWiredEffect
     @Override
     protected String getWiredData()
     {
-        return this.getDelay() + "\t" + this.points;
+        return this.getDelay() + "\t" + this.points + (this.pointsType == -1 ? "" : ":" + this.pointsType);
     }
 
     @Override
@@ -105,7 +106,7 @@ public class WiredEffectGiveDiamonds extends InteractionWiredEffect
 
             try
             {
-                this.points = Integer.valueOf(data[1]);
+                loadFromString(data[1]);
             }
             catch (Exception e)
             {
@@ -119,5 +120,21 @@ public class WiredEffectGiveDiamonds extends InteractionWiredEffect
     {
         this.points = 0;
         this.setDelay(0);
+    }
+
+    private void loadFromString(String data)
+    {
+        String[] pointsData = data.split(":");
+
+        this.pointsType = -1;
+        if (pointsData.length >= 1)
+        {
+            this.points = Integer.valueOf(pointsData[0]);
+        }
+
+        if (pointsData.length == 2)
+        {
+            this.pointsType = Integer.valueOf(pointsData[1]);
+        }
     }
 }
