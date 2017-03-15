@@ -23,7 +23,7 @@ public class RoomChatMessage implements Runnable, ISerialize
     private byte emotion;
     public boolean isCommand = false;
     public boolean filtered = false;
-    private final List<String> chatColors = Arrays.asList("@red@", "@cyan@", "@blue@", "@green@", "@purple@");
+    private static final List<String> chatColors = Arrays.asList("@red@", "@cyan@", "@blue@", "@green@", "@purple@");
 
     public RoomChatMessage(MessageHandler message)
     {
