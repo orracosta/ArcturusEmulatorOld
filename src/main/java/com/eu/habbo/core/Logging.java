@@ -6,6 +6,8 @@ import gnu.trove.set.hash.THashSet;
 import sun.rmi.runtime.Log;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -44,10 +46,10 @@ public class Logging
 
     public Logging()
     {
-        packets = new File("logging//packets//packets.txt");
-        packetsUndefined = new File("logging//packets//undefined.txt");
-        errorsPackets = new File("logging//errors/packets.txt");
-        errorsSQL = new File("logging//errors/sql.txt");
+        packets = new File("logging//packets//defined.txt");
+        packetsUndefined = new File("logging//packets//packets.txt");
+        errorsPackets = new File("logging//errors//packets.txt");
+        errorsSQL = new File("logging//errors//sql.txt");
         errorsRuntime = new File("logging//errors//runtime.txt");
 
         debugFile = new File("logging//debug.txt");
@@ -55,22 +57,64 @@ public class Logging
         try
         {
             if (!packets.exists())
+            {
+                if (!packets.getParentFile().exists())
+                {
+                    packets.getParentFile().mkdirs();
+                }
+
                 packets.createNewFile();
+            }
 
             if (!packetsUndefined.exists())
+            {
+                if (!packetsUndefined.getParentFile().exists())
+                {
+                    packetsUndefined.getParentFile().mkdirs();
+                }
+
                 packetsUndefined.createNewFile();
+            }
 
             if (!errorsPackets.exists())
+            {
+                if (!errorsPackets.getParentFile().exists())
+                {
+                    errorsPackets.getParentFile().mkdirs();
+                }
+
                 errorsPackets.createNewFile();
+            }
 
             if (!errorsSQL.exists())
+            {
+                if (!errorsSQL.getParentFile().exists())
+                {
+                    errorsSQL.getParentFile().mkdirs();
+                }
+
                 errorsSQL.createNewFile();
+            }
 
             if (!errorsRuntime.exists())
+            {
+                if (!errorsRuntime.getParentFile().exists())
+                {
+                    errorsRuntime.getParentFile().mkdirs();
+                }
+
                 errorsRuntime.createNewFile();
+            }
 
             if (!debugFile.exists())
+            {
+                if (!debugFile.getParentFile().exists())
+                {
+                    debugFile.getParentFile().mkdirs();
+                }
+
                 debugFile.createNewFile();
+            }
         }
         catch(Exception e)
         {
@@ -255,64 +299,38 @@ public class Logging
 
     public void saveLogs()
     {
-        synchronized (this.errorLogs)
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare(ErrorLog.insertQuery);
-            for (Loggable log : this.errorLogs)
+            synchronized (this.errorLogs)
             {
-                try
+                try (PreparedStatement statement = connection.prepareStatement(ErrorLog.insertQuery))
                 {
-                    log.log(statement);
+                    for (Loggable log : this.errorLogs)
+                    {
+                        log.log(statement);
+                    }
+                    statement.executeBatch();
                 }
-                catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
+                this.errorLogs.clear();
             }
-            this.errorLogs.clear();
 
-            if (statement != null)
+            synchronized (this.commandLogs)
             {
-                try
+                try (PreparedStatement statement = connection.prepareStatement(CommandLog.insertQuery))
                 {
-                    statement.close();
-                    statement.getConnection().close();
+                    for (Loggable log : this.commandLogs)
+                    {
+                        log.log(statement);
+                    }
+
+                    statement.executeBatch();
                 }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                }
+                this.commandLogs.clear();
             }
         }
-
-        synchronized (this.commandLogs)
+        catch (SQLException e)
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare(CommandLog.insertQuery);
-            for (Loggable log : this.commandLogs)
-            {
-                try
-                {
-                    log.log(statement);
-                }
-                catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            this.commandLogs.clear();
-
-            if (statement != null)
-            {
-                try
-                {
-                    statement.close();
-                    statement.getConnection().close();
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                }
-            }
+            Emulator.getLogging().logSQLException(e);
         }
     }
 
