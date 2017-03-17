@@ -23,15 +23,6 @@ public class InteractionPressurePlate extends InteractionDefault
     }
 
     @Override
-    public void serializeExtradata(ServerMessage serverMessage)
-    {
-        serverMessage.appendInt32((this.isLimited() ? 256 : 0));
-        serverMessage.appendString(this.getExtradata());
-
-        super.serializeExtradata(serverMessage);
-    }
-
-    @Override
     public boolean canWalkOn(RoomUnit roomUnit, Room room, Object[] objects)
     {
         return true;

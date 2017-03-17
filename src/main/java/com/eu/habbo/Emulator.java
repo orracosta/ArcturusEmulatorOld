@@ -36,7 +36,7 @@ public final class Emulator
     /**
      * Minor version of the emulator.
      */
-    public final static int MINOR = 4;
+    public final static int MINOR = 5;
 
     /**
      * Stable build version of the emulator.

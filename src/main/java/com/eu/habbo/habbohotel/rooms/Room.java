@@ -53,6 +53,7 @@ import com.eu.habbo.threading.runnables.YouAreAPirate;
 import com.eu.habbo.util.pathfinding.GameMap;
 import com.eu.habbo.util.pathfinding.Node;
 import com.eu.habbo.util.pathfinding.PathFinder;
+import com.mysql.jdbc.Statement;
 import gnu.trove.TCollections;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.iterator.hash.TObjectHashIterator;
@@ -1234,8 +1235,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                         if (habbo.getRoomUnit().getHandItem() > 0 && System.currentTimeMillis() - habbo.getRoomUnit().getHandItemTimestamp() > (Emulator.getConfig().getInt("hotel.rooms.handitem.time") * 1000))
                         {
-                            habbo.getRoomUnit().setHandItem(0);
-                            this.sendComposer(new RoomUserHandItemComposer(habbo.getRoomUnit()).compose());
+                            this.giveHandItem(habbo, 0);
                         }
 
                         if (Emulator.getConfig().getBoolean("hotel.rooms.auto.idle"))
@@ -4459,6 +4459,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         roomUnit.setEffectId(effectId);
         this.sendComposer(new RoomUserEffectComposer(roomUnit).compose());
+    }
+
+    public void giveHandItem(Habbo habbo, int handItem)
+    {
+        habbo.getRoomUnit().setHandItem(handItem);
+        this.sendComposer(new RoomUserHandItemComposer(habbo.getRoomUnit()).compose());
     }
 
     public void updateItem(HabboItem item)
