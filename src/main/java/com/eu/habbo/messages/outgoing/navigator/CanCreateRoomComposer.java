@@ -1,6 +1,5 @@
 package com.eu.habbo.messages.outgoing.navigator;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
@@ -8,10 +7,12 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 public class CanCreateRoomComposer extends MessageComposer
 {
     private final int count;
+    private final int max;
 
-    public CanCreateRoomComposer(int count)
+    public CanCreateRoomComposer(int count, int max)
     {
         this.count = count;
+        this.max = max;
     }
 
     @Override
@@ -19,13 +20,8 @@ public class CanCreateRoomComposer extends MessageComposer
     {
         this.response.init(Outgoing.CanCreateRoomComposer);
 
-        int maxRooms = Emulator.getConfig().getInt("hotel.max.rooms.per.user");
-        this.response.appendInt32(this.count >= maxRooms ? 1 : 0);
-        this.response.appendInt32(maxRooms);
-        this.response.appendString("");
-        this.response.appendInt32(0);
-        this.response.appendInt32(0);
-        this.response.appendInt32(0);
+        this.response.appendInt32(this.count >= this.max ? 1 : 0);
+        this.response.appendInt32(this.max);
 
         return this.response;
     }
