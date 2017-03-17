@@ -5,7 +5,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 
 import java.util.Map;
 
-public class CreditsScheduler implements Runnable
+public class CreditsScheduler extends Scheduler
 {
     public static boolean IGNORE_HOTEL_VIEW;
     public static boolean IGNORE_IDLED;
@@ -13,29 +13,27 @@ public class CreditsScheduler implements Runnable
     public static int CREDITS;
     public static int INTERVAL;
 
-    public boolean disposed = false;
-
     public CreditsScheduler()
     {
+        super(Emulator.getConfig().getInt("hotel.auto.credits.interval"));
+
         if(Emulator.getConfig().getBoolean("hotel.auto.credits.enabled"))
         {
             IGNORE_HOTEL_VIEW   = Emulator.getConfig().getBoolean("hotel.auto.credits.ignore.hotelview");
             IGNORE_IDLED        = Emulator.getConfig().getBoolean("hotel.auto.credits.ignore.idled");
 
             CREDITS             = Emulator.getConfig().getInt("hotel.auto.credits.amount");
-            INTERVAL            = Emulator.getConfig().getInt("hotel.auto.credits.interval");
-
-            Emulator.getThreading().run(this);
+        }
+        else
+        {
+            this.disposed = true;
         }
     }
 
     @Override
     public void run()
     {
-        if(this.disposed)
-            return;
-
-        Emulator.getThreading().run(this, INTERVAL * 1000);
+        super.run();
 
         Habbo habbo;
         for(Map.Entry<Integer, Habbo> map : Emulator.getGameEnvironment().getHabboManager().getOnlineHabbos().entrySet())

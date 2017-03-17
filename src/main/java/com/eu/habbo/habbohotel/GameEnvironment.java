@@ -44,9 +44,9 @@ public class GameEnvironment
     private CraftingManager craftingManager;
     private PollManager pollManager;
 
-    private CreditsScheduler creditsScheduler;
-    private PixelScheduler pixelScheduler;
-    private PointsScheduler pointsScheduler;
+    public CreditsScheduler creditsScheduler;
+    public PixelScheduler pixelScheduler;
+    public PointsScheduler pointsScheduler;
 
     public void load()
     {
@@ -76,8 +76,11 @@ public class GameEnvironment
         this.roomManager.loadPublicRooms();
 
         this.creditsScheduler   = new CreditsScheduler();
+        Emulator.getThreading().run(this.creditsScheduler);
         this.pixelScheduler     = new PixelScheduler();
+        Emulator.getThreading().run(this.pixelScheduler);
         this.pointsScheduler    = new PointsScheduler();
+        Emulator.getThreading().run(this.pointsScheduler);
 
         Emulator.getLogging().logStart("GameEnvironment -> Loaded!");
     }
@@ -85,8 +88,8 @@ public class GameEnvironment
     public void dispose()
     {
         this.pointsScheduler.disposed = true;
-        this.pixelScheduler.disposed = true;
-        this.creditsScheduler.disposed = true;
+        this.pixelScheduler.setDisposed(true);
+        this.creditsScheduler.setDisposed(true);
         this.craftingManager.dispose();
         this.habboManager.dispose();
         this.commandHandler.dispose();

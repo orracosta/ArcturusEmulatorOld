@@ -2565,6 +2565,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             {
                 this.roomSpecialTypes.addUndefined(item);
             }
+            else if (item instanceof InteractionBlackHole)
+            {
+                this.roomSpecialTypes.addUndefined(item);
+            }
         }
     }
 
@@ -2746,6 +2750,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     this.roomSpecialTypes.removeUndefined(item);
                 }
                 else if (item instanceof InteractionPetBreedingNest)
+                {
+                    this.roomSpecialTypes.removeUndefined(item);
+                }
+                else if (item instanceof InteractionBlackHole)
                 {
                     this.roomSpecialTypes.removeUndefined(item);
                 }

@@ -1,6 +1,8 @@
 package com.eu.habbo.messages.incoming.rooms.items;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.achievements.Achievement;
+import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.items.interactions.*;
 import com.eu.habbo.habbohotel.items.interactions.games.InteractionGameGate;
 import com.eu.habbo.habbohotel.rooms.Room;
@@ -227,6 +229,26 @@ public class RoomPlaceItemEvent extends MessageHandler
 
             item.setWallPosition(values[1] + " " + values[2] + " " + values[3]);
             room.sendComposer(new AddWallItemComposer(item).compose());
+        }
+
+        Achievement roomDecoAchievement = Emulator.getGameEnvironment().getAchievementManager().getAchievement("RoomDecoFurniCount");
+        int furniCollecterProgress = this.client.getHabbo().getHabboStats().getAchievementProgress(roomDecoAchievement);
+        int difference = room.getUserFurniCount(this.client.getHabbo().getHabboInfo().getId()) - furniCollecterProgress;
+        if (difference > 0)
+        {
+            AchievementManager.progressAchievement(this.client.getHabbo(), roomDecoAchievement, difference);
+        }
+
+        if (item instanceof InteractionBlackHole)
+        {
+            Achievement holeCountAchievement = Emulator.getGameEnvironment().getAchievementManager().getAchievement("RoomDecoHoleFurniCount");
+            int holesCountProgress = this.client.getHabbo().getHabboStats().getAchievementProgress(holeCountAchievement);
+            int holeDifference = room.getRoomSpecialTypes().getItemsOfType(InteractionBlackHole.class).size() - holesCountProgress;
+
+            if (holeDifference > 0)
+            {
+                AchievementManager.progressAchievement(this.client.getHabbo(), holeCountAchievement, holeDifference);
+            }
         }
 
         this.client.sendResponse(new RemoveHabboItemComposer(item.getId()));

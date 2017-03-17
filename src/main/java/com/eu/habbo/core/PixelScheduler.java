@@ -5,7 +5,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 
 import java.util.Map;
 
-public class PixelScheduler implements Runnable
+public class PixelScheduler extends Scheduler
 {
     private static boolean IGNORE_HOTEL_VIEW;
     private static boolean IGNORE_IDLED;
@@ -13,29 +13,27 @@ public class PixelScheduler implements Runnable
     private static int PIXELS;
     private static int INTERVAL;
 
-    public boolean disposed = false;
-
     public PixelScheduler()
     {
+        super(Emulator.getConfig().getInt("hotel.auto.pixels.interval"));
+
         if(Emulator.getConfig().getBoolean("hotel.auto.pixels.enabled"))
         {
             IGNORE_HOTEL_VIEW   = Emulator.getConfig().getBoolean("hotel.auto.pixels.ignore.hotelview");
             IGNORE_IDLED        = Emulator.getConfig().getBoolean("hotel.auto.pixels.ignore.idled");
 
             PIXELS              = Emulator.getConfig().getInt("hotel.auto.pixels.amount");
-            INTERVAL            = Emulator.getConfig().getInt("hotel.auto.pixels.interval");
-
-            Emulator.getThreading().run(this);
+        }
+        else
+        {
+            this.disposed = true;
         }
     }
 
     @Override
     public void run()
     {
-        if(this.disposed)
-            return;
-
-        Emulator.getThreading().run(this, INTERVAL * 1000);
+        super.run();
 
         Habbo habbo = null;
         for(Map.Entry<Integer, Habbo> map : Emulator.getGameEnvironment().getHabboManager().getOnlineHabbos().entrySet())
