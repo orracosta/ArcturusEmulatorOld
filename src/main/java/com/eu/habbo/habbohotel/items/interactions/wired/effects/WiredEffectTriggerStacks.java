@@ -90,6 +90,11 @@ public class WiredEffectTriggerStacks extends InteractionWiredEffect
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
+        if (stuff.length >= 1 && stuff[stuff.length - 1] instanceof WiredEffectTriggerStacks)
+        {
+            return false;
+        }
+
         THashSet<RoomTile> usedTiles = new THashSet<RoomTile>();
 
         boolean found;
@@ -114,6 +119,13 @@ public class WiredEffectTriggerStacks extends InteractionWiredEffect
                 }
             }
         }
+
+        Object[] newStuff = new Object[stuff.length + 1];
+        for (int i = 0; i < stuff.length; i++)
+        {
+            newStuff[i] = stuff[i];
+        }
+        newStuff[newStuff.length - 1] = this;
         WiredHandler.executeEffectsAtTiles(usedTiles, roomUnit, room, stuff);
 
         return true;
