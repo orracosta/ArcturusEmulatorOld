@@ -22,6 +22,7 @@ import com.eu.habbo.messages.outgoing.users.UserPointsComposer;
 import com.eu.habbo.threading.runnables.ShutdownEmulator;
 import gnu.trove.set.hash.THashSet;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -85,82 +86,79 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
             }
         }
 
-        Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(username);
-
-        if(habbo == null)
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
-            try
+            Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(username);
+
+            if(habbo == null)
             {
-                PreparedStatement s = Emulator.getDatabase().prepare("SELECT id FROM users WHERE username = ?");
-                s.setString(1, username);
-
-                ResultSet set = s.executeQuery();
-
-                if (set.next())
+                try (PreparedStatement statement = connection.prepareStatement("SELECT id FROM users WHERE username = ?"))
                 {
-                    userId = set.getInt(1);
+                    statement.setString(1, username);
+
+                    try (ResultSet set = statement.executeQuery())
+                    {
+                        if (set.next())
+                        {
+                            userId = set.getInt(1);
+                        }
+                    }
                 }
-
-                set.close();
-                s.close();
-                s.getConnection().close();
-            } catch (SQLException e)
-            {
-                Emulator.getLogging().logSQLException(e);
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
             }
-        }
-        else
-        {
-            userId = habbo.getHabboInfo().getId();
-        }
+            else
+            {
+                userId = habbo.getHabboInfo().getId();
+            }
 
-        if(userId == 0)
-        {
-            this.client.sendResponse(new GiftReceiverNotFoundComposer());
-            return;
-        }
+            if(userId == 0)
+            {
+                this.client.sendResponse(new GiftReceiverNotFoundComposer());
+                return;
+            }
 
-        CatalogPage page = Emulator.getGameEnvironment().getCatalogManager().catalogPages.get(pageId);
+            CatalogPage page = Emulator.getGameEnvironment().getCatalogManager().catalogPages.get(pageId);
 
-        if(page == null)
-        {
-            this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR).compose());
-            return;
-        }
+            if(page == null)
+            {
+                this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR).compose());
+                return;
+            }
 
-        if(page.getRank() > this.client.getHabbo().getHabboInfo().getRank() || !page.isEnabled() || !page.isVisible())
-        {
-            this.client.sendResponse(new AlertPurchaseUnavailableComposer(AlertPurchaseUnavailableComposer.ILLEGAL));
-            return;
-        }
-
-        CatalogItem item = page.getCatalogItem(itemId);
-
-        Item cBaseItem = null;
-
-        if(item == null)
-        {
-            this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR).compose());
-            return;
-        }
-
-        if(item.isClubOnly() && !this.client.getHabbo().getHabboStats().hasActiveClub())
-        {
-            this.client.sendResponse(new AlertPurchaseUnavailableComposer(AlertPurchaseUnavailableComposer.REQUIRES_CLUB));
-            return;
-        }
-
-        for(Item baseItem : item.getBaseItems())
-        {
-            if(!baseItem.allowGift())
+            if(page.getRank() > this.client.getHabbo().getHabboInfo().getRank() || !page.isEnabled() || !page.isVisible())
             {
                 this.client.sendResponse(new AlertPurchaseUnavailableComposer(AlertPurchaseUnavailableComposer.ILLEGAL));
                 return;
             }
-        }
 
-        try
-        {
+            CatalogItem item = page.getCatalogItem(itemId);
+
+            Item cBaseItem = null;
+
+            if(item == null)
+            {
+                this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR).compose());
+                return;
+            }
+
+            if(item.isClubOnly() && !this.client.getHabbo().getHabboStats().hasActiveClub())
+            {
+                this.client.sendResponse(new AlertPurchaseUnavailableComposer(AlertPurchaseUnavailableComposer.REQUIRES_CLUB));
+                return;
+            }
+
+            for(Item baseItem : item.getBaseItems())
+            {
+                if(!baseItem.allowGift())
+                {
+                    this.client.sendResponse(new AlertPurchaseUnavailableComposer(AlertPurchaseUnavailableComposer.ILLEGAL));
+                    return;
+                }
+            }
+
             if (item.isLimited())
             {
                 if (item.getLimitedStack() == item.getLimitedSells())
@@ -214,19 +212,18 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                     else
                     {
                         int c = 0;
-                        PreparedStatement s = Emulator.getDatabase().prepare("SELECT COUNT(*) as c FROM users_badges WHERE user_id = ? AND badge_code LIKE ?");
-                        s.setInt(1, userId);
-                        s.setString(2, baseItem.getName());
-                        ResultSet rSet = s.executeQuery();
-
-                        if (rSet.next())
+                        try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) as c FROM users_badges WHERE user_id = ? AND badge_code LIKE ?"))
                         {
-                            c = rSet.getInt("c");
+                            statement.setInt(1, userId);
+                            statement.setString(2, baseItem.getName());
+                            try (ResultSet rSet = statement.executeQuery())
+                            {
+                                if (rSet.next())
+                                {
+                                    c = rSet.getInt("c");
+                                }
+                            }
                         }
-
-                        rSet.close();
-                        s.close();
-                        s.getConnection().close();
 
                         if (c != 0)
                         {
@@ -289,12 +286,12 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                                                 }
                                                 else
                                                 {
-                                                    PreparedStatement stmt = Emulator.getDatabase().prepare("INSERT INTO users_badges (user_id, badge_code) VALUES (?, ?)");
-                                                    stmt.setInt(1, userId);
-                                                    stmt.setString(2, baseItem.getName());
-                                                    stmt.execute();
-                                                    stmt.close();
-                                                    stmt.getConnection().close();
+                                                    try (PreparedStatement statement = connection.prepareStatement("INSERT INTO users_badges (user_id, badge_code) VALUES (?, ?)"))
+                                                    {
+                                                        statement.setInt(1, userId);
+                                                        statement.setString(2, baseItem.getName());
+                                                        statement.execute();
+                                                    }
                                                 }
 
                                                 badgeFound = true;

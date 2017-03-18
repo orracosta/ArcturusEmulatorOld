@@ -3,6 +3,7 @@ package com.eu.habbo.threading.runnables;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -19,14 +20,11 @@ class QueryDeleteHabboBadge implements Runnable
     @Override
     public void run()
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM user_badges WHERE users_id = ? AND badge_code = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM user_badges WHERE users_id = ? AND badge_code = ?");
             statement.setInt(1, this.habbo.getHabboInfo().getId());
             statement.setString(2, this.name);
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {

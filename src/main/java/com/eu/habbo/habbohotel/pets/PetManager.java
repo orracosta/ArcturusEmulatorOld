@@ -42,72 +42,77 @@ public class PetManager
         this.breedingPetType = new TIntIntHashMap();
         this.breedingReward = new THashMap<Integer, TIntObjectHashMap<ArrayList<PetBreedingReward>>>();
 
-        this.loadRaces();
-        this.loadPetData();
-        this.loadPetCommands();
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
+        {
+            this.loadRaces(connection);
+            this.loadPetData(connection);
+            this.loadPetCommands(connection);
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+            Emulator.getLogging().logErrorLine("Pet Manager -> Failed to load!");
+            return;
+        }
 
         Emulator.getLogging().logStart("Pet Manager -> Loaded! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
 
     public void reloadPetData()
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM pet_actions ORDER BY pet_type ASC");
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM pet_actions ORDER BY pet_type ASC"))
             {
-                PetData petData = this.petData.get(set.getInt("pet_type"));
+                try (ResultSet set = statement.executeQuery())
+                {
+                    while (set.next())
+                    {
+                        PetData petData = this.petData.get(set.getInt("pet_type"));
 
-                if (petData != null)
-                {
-                    petData.update(set);
-                }
-                else
-                {
-                    this.petData.put(set.getInt("pet_type"), new PetData(set));
+                        if (petData != null)
+                        {
+                            petData.update(set);
+                        }
+                        else
+                        {
+                            this.petData.put(set.getInt("pet_type"), new PetData(set));
+                        }
+                    }
                 }
             }
 
-            set.close();
-            statement.close();
-            statement.getConnection().close();
+            PetData.generalNestItems.clear();
+            PetData.generalFoodItems.clear();
+            PetData.generalDrinkItems.clear();
+
+            for(PetData data : this.petData.values())
+            {
+                data.getDrinkItems().clear();
+                data.getFoodItems().clear();
+                data.getToyItems().clear();
+                data.getNests().clear();
+                data.petVocals.clear();
+            }
+
+            this.loadPetItems(connection);
+
+            this.loadPetVocals(connection);
+
+            this.loadRaces(connection);
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
         }
-
-        PetData.generalNestItems.clear();
-        PetData.generalFoodItems.clear();
-        PetData.generalDrinkItems.clear();
-
-        for(PetData data : this.petData.values())
-        {
-            data.getDrinkItems().clear();
-            data.getFoodItems().clear();
-            data.getToyItems().clear();
-            data.getNests().clear();
-            data.petVocals.clear();
-        }
-
-        this.loadPetItems();
-
-        this.loadPetVocals();
-
-        this.loadRaces();
     }
 
-    void loadRaces()
+    private void loadRaces(Connection connection) throws SQLException
     {
         this.petRaces.clear();
 
-        try
+        try (Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM pet_breeds ORDER BY race, color_one, color_two ASC"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM pet_breeds ORDER BY race, color_one, color_two ASC");
-            ResultSet set = statement.executeQuery();
-
             while(set.next())
             {
                 if(this.petRaces.get(set.getInt("race")) == null)
@@ -115,55 +120,31 @@ public class PetManager
 
                 this.petRaces.get(set.getInt("race")).add(new PetRace(set));
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
         }
     }
 
-    void loadPetData()
+    private void loadPetData(Connection connection) throws SQLException
     {
-        try
+        try (Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM pet_actions ORDER BY pet_type ASC"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM pet_actions ORDER BY pet_type ASC");
-            ResultSet set = statement.executeQuery();
-
             while(set.next())
             {
                 this.petData.put(set.getInt("pet_type"), new PetData(set));
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
         }
 
-        this.loadPetItems();
+        this.loadPetItems(connection);
 
-        this.loadPetVocals();
+        this.loadPetVocals(connection);
     }
 
-    void loadPetItems()
+    private void loadPetItems(Connection connection) throws SQLException
     {
-        try
+        try (Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM pet_items"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM pet_items");
-            ResultSet set = statement.executeQuery();
-
-            Item baseItem;
-
             while(set.next())
             {
-                baseItem = Emulator.getGameEnvironment().getItemManager().getItem(set.getInt("item_id"));
+                Item baseItem = Emulator.getGameEnvironment().getItemManager().getItem(set.getInt("item_id"));
 
                 if(baseItem != null)
                 {
@@ -188,24 +169,13 @@ public class PetManager
                     }
                 }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
         }
     }
 
-    void loadPetVocals()
+    private void loadPetVocals(Connection connection) throws SQLException
     {
-        try
+        try (Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM pet_vocals"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM pet_vocals");
-            ResultSet set = statement.executeQuery();
-
             while(set.next())
             {
                 if(set.getInt("pet_id") > 0)
@@ -220,44 +190,22 @@ public class PetManager
                     PetData.generalPetVocals.get(PetVocalsType.valueOf(set.getString("type").toUpperCase())).add(new PetVocal(set.getString("message")));
                 }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
         }
     }
 
-    void loadPetCommands()
+    private void loadPetCommands(Connection connection) throws SQLException
     {
         THashMap<Integer, PetCommand> commandsList = new THashMap<Integer, PetCommand>();
-        try
+        try (Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM pet_commands_data"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM pet_commands_data");
-            ResultSet set = statement.executeQuery();
-
             while(set.next())
             {
                commandsList.put(set.getInt("command_id"), new PetCommand(set));
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
         }
 
-        try
+        try (Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM pet_commands ORDER BY pet_id ASC"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM pet_commands ORDER BY pet_id ASC");
-            ResultSet set = statement.executeQuery();
-
             while(set.next())
             {
                 PetData data = this.petData.get(set.getInt("pet_id"));
@@ -267,43 +215,21 @@ public class PetManager
                     data.getPetCommands().add(commandsList.get(set.getInt("command_id")));
                 }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
         }
     }
 
-    void loadPetBreeding()
+    private void loadPetBreeding(Connection connection) throws SQLException
     {
-        try
+        try (Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM pet_breeding"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM pet_breeding");
-            ResultSet set = statement.executeQuery();
-
             while (set.next())
             {
                 this.breedingPetType.put(set.getInt("pet_id"), set.getInt("offspring_id"));
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
         }
 
-        try
+        try (Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM pet_breeding_races"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM pet_breeding_races");
-            ResultSet set = statement.executeQuery();
-
             while (set.next())
             {
                 PetBreedingReward reward = new PetBreedingReward(set);
@@ -319,16 +245,9 @@ public class PetManager
 
                 this.breedingReward.get(reward.petType).get(reward.rarityLevel).add(reward);
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
         }
     }
+
     public THashSet<PetRace> getBreeds(String petName)
     {
         if(!petName.startsWith("a0 pet"))

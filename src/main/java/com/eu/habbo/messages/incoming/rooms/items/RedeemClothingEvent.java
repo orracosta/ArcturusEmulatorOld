@@ -10,6 +10,7 @@ import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
 import com.eu.habbo.messages.outgoing.users.UserClothesComposer;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -40,14 +41,11 @@ public class RedeemClothingEvent extends MessageHandler
                             this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RemoveFloorItemComposer(item, true).compose());
                             Emulator.getThreading().run(new QueryDeleteHabboItem(item));
 
-                            try
+                            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO users_clothing (user_id, clothing_id) VALUES (?, ?)"))
                             {
-                                PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO users_clothing (user_id, clothing_id) VALUES (?, ?)");
                                 statement.setInt(1, this.client.getHabbo().getHabboInfo().getId());
                                 statement.setInt(2, clothing.id);
                                 statement.execute();
-                                statement.close();
-                                statement.getConnection().close();
                             }
                             catch (SQLException e)
                             {

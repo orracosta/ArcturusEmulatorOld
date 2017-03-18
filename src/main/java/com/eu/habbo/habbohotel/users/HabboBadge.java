@@ -2,9 +2,7 @@ package com.eu.habbo.habbohotel.users;
 
 import com.eu.habbo.Emulator;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class HabboBadge implements Runnable
 {
@@ -67,33 +65,32 @@ public class HabboBadge implements Runnable
         {
             if(this.needsInsert)
             {
-
-                PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO users_badges (user_id, slot_id, badge_code) VALUES (?, ?, ?)");
-                statement.setInt(1, this.habbo.getHabboInfo().getId());
-                statement.setInt(2, this.slot);
-                statement.setString(3, this.code);
-                statement.execute();
-                ResultSet set = statement.getGeneratedKeys();
-                if(set.next())
+                try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO users_badges (user_id, slot_id, badge_code) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
                 {
-                    this.id = set.getInt(1);
+                    statement.setInt(1, this.habbo.getHabboInfo().getId());
+                    statement.setInt(2, this.slot);
+                    statement.setString(3, this.code);
+                    statement.execute();
+                    try (ResultSet set = statement.getGeneratedKeys())
+                    {
+                        if (set.next())
+                        {
+                            this.id = set.getInt(1);
+                        }
+                    }
                 }
-                set.close();
-                statement.close();
-                statement.getConnection().close();
                 this.needsInsert = false;
             }
-
-            if(this.needsUpdate)
+            else if(this.needsUpdate)
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users_badges SET slot_id = ?, badge_code = ? WHERE id = ? AND user_id = ?");
-                statement.setInt(1, this.slot);
-                statement.setString(2, this.code);
-                statement.setInt(3, this.id);
-                statement.setInt(4, this.habbo.getHabboInfo().getId());
-                statement.execute();
-                statement.close();
-                statement.getConnection().close();
+                try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users_badges SET slot_id = ?, badge_code = ? WHERE id = ? AND user_id = ?"))
+                {
+                    statement.setInt(1, this.slot);
+                    statement.setString(2, this.code);
+                    statement.setInt(3, this.id);
+                    statement.setInt(4, this.habbo.getHabboInfo().getId());
+                    statement.execute();
+                }
                 this.needsUpdate = false;
             }
         }

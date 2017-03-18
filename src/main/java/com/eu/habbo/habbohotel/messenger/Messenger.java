@@ -12,6 +12,7 @@ import com.eu.habbo.plugin.events.users.friends.UserAcceptFriendRequestEvent;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,27 +32,25 @@ public class Messenger
 
     public void loadFriends(Habbo habbo)
     {
-        try
-        {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT " +
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection();
+            PreparedStatement statement = connection.prepareStatement("SELECT " +
                     "users.id, " +
                     "users.username, " +
                     "users.gender, " +
                     "users.online, " +
                     "users.look, " +
                     "users.motto, " +
-                    "messenger_friendships.* FROM messenger_friendships INNER JOIN users ON messenger_friendships.user_two_id = users.id WHERE user_one_id = ?");
+                    "messenger_friendships.* FROM messenger_friendships INNER JOIN users ON messenger_friendships.user_two_id = users.id WHERE user_one_id = ?"))
+        {
             statement.setInt(1, habbo.getHabboInfo().getId());
 
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                this.friends.putIfAbsent(set.getInt("id"), new MessengerBuddy(set));
+                while (set.next())
+                {
+                    this.friends.putIfAbsent(set.getInt("id"), new MessengerBuddy(set));
+                }
             }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {
@@ -62,29 +61,26 @@ public class Messenger
     public MessengerBuddy loadFriend(Habbo habbo, int userId)
     {
         MessengerBuddy buddy = null;
-        try
-        {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT " +
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT " +
                     "users.id, " +
                     "users.username, " +
                     "users.gender, " +
                     "users.online, " +
                     "users.look, " +
                     "users.motto, " +
-                    "messenger_friendships.* FROM messenger_friendships INNER JOIN users ON messenger_friendships.user_two_id = users.id WHERE user_one_id = ? AND user_two_id = ? LIMIT 1");
+                    "messenger_friendships.* FROM messenger_friendships INNER JOIN users ON messenger_friendships.user_two_id = users.id WHERE user_one_id = ? AND user_two_id = ? LIMIT 1"))
+        {
             statement.setInt(1, habbo.getHabboInfo().getId());
             statement.setInt(2, userId);
 
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                buddy = new MessengerBuddy(set);
-                this.friends.putIfAbsent(set.getInt("id"), buddy);
+                while (set.next())
+                {
+                    buddy = new MessengerBuddy(set);
+                    this.friends.putIfAbsent(set.getInt("id"), buddy);
+                }
             }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -96,19 +92,16 @@ public class Messenger
 
     public void loadFriendRequests(Habbo habbo)
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.id, users.username, users.look FROM messenger_friendrequests INNER JOIN users ON user_from_id = users.id WHERE user_to_id = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT users.id, users.username, users.look FROM messenger_friendrequests INNER JOIN users ON user_from_id = users.id WHERE user_to_id = ?");
             statement.setInt(1, habbo.getHabboInfo().getId());
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                friendRequests.add(new FriendRequest(set));
+                while(set.next())
+                {
+                    friendRequests.add(new FriendRequest(set));
+                }
             }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {
@@ -128,16 +121,13 @@ public class Messenger
 
     public static void unfriend(int userOne, int userTwo)
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM messenger_friendships WHERE (user_one_id = ? AND user_two_id = ?) OR (user_one_id = ? AND user_two_id = ?)"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM messenger_friendships WHERE (user_one_id = ? AND user_two_id = ?) OR (user_one_id = ? AND user_two_id = ?)");
             statement.setInt(1, userOne);
             statement.setInt(2, userTwo);
             statement.setInt(3, userTwo);
             statement.setInt(4, userOne);
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {
@@ -162,19 +152,16 @@ public class Messenger
     public static THashSet<MessengerBuddy> searchUsers(String username)
     {
         THashSet<MessengerBuddy> users = new THashSet<MessengerBuddy>();
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE username LIKE ? ORDER BY username DESC LIMIT 50"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM users WHERE username LIKE ? ORDER BY username DESC LIMIT 50");
             statement.setString(1, "%" + username + "%");
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                users.add(new MessengerBuddy(set, false));
+                while (set.next())
+                {
+                    users.add(new MessengerBuddy(set, false));
+                }
             }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {
@@ -214,11 +201,8 @@ public class Messenger
 
     public void deleteAllFriendRequests(int userTo)
     {
-        PreparedStatement statement = null;
-
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM messenger_friendrequests WHERE user_to_id = ?"))
         {
-            statement = Emulator.getDatabase().prepare("DELETE FROM messenger_friendrequests WHERE user_to_id = ?");
             statement.setInt(1, userTo);
             statement.executeUpdate();
         }
@@ -226,52 +210,21 @@ public class Messenger
         {
             Emulator.getLogging().logSQLException(e);
         }
-        finally
-        {
-            if (statement != null)
-            {
-                try
-                {
-                    statement.close();
-                    statement.getConnection().close();
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                }
-            }
-        }
     }
 
     public int deleteFriendRequests(int userFrom, int userTo)
     {
-        PreparedStatement statement = null;
-
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM messenger_friendrequests WHERE (user_to_id = ? AND user_from_id = ?) OR (user_to_id = ? AND user_from_id = ?)"))
         {
-            statement = Emulator.getDatabase().prepare("DELETE FROM messenger_friendrequests WHERE (user_to_id = ? AND user_from_id = ?)");
             statement.setInt(1, userTo);
             statement.setInt(2, userFrom);
+            statement.setInt(4, userTo);
+            statement.setInt(3, userFrom);
             return statement.executeUpdate();
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
-        }
-        finally
-        {
-            if (statement != null)
-            {
-                try
-                {
-                    statement.close();
-                    statement.getConnection().close();
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                }
-            }
         }
 
         return 0;
@@ -279,13 +232,12 @@ public class Messenger
     //TODO Needs redesign. userFrom is redundant.
     public void acceptFriendRequest(int userFrom, int userTo)
     {
-        try
-        {
-            int count = deleteFriendRequests(userFrom, userTo);
+        int count = deleteFriendRequests(userFrom, userTo);
 
-            if(count > 0)
+        if(count > 0)
+        {
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO messenger_friendships (user_one_id, user_two_id, friends_since) VALUES (?, ?, ?)"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO messenger_friendships (user_one_id, user_two_id, friends_since) VALUES (?, ?, ?)");
                 statement.setInt(1, userFrom);
                 statement.setInt(2, userTo);
                 statement.setInt(3, Emulator.getIntUnixTimestamp());
@@ -295,50 +247,46 @@ public class Messenger
                 statement.setInt(2, userFrom);
                 statement.setInt(3, Emulator.getIntUnixTimestamp());
                 statement.execute();
-
-                statement.close();
-                statement.getConnection().close();
-
-                Habbo habboTo = Emulator.getGameServer().getGameClientManager().getHabbo(userTo);
-                Habbo habboFrom = Emulator.getGameServer().getGameClientManager().getHabbo(userFrom);
-
-                if(habboTo != null && habboFrom != null)
-                {
-                    MessengerBuddy to = new MessengerBuddy(habboFrom, habboTo.getHabboInfo().getId());
-                    MessengerBuddy from = new MessengerBuddy(habboTo, habboFrom.getHabboInfo().getId());
-
-
-                    habboTo.getMessenger().friends.putIfAbsent(habboFrom.getHabboInfo().getId(), to);
-                    habboFrom.getMessenger().friends.putIfAbsent(habboTo.getHabboInfo().getId(), from);
-
-                    if(Emulator.getPluginManager().fireEvent(new UserAcceptFriendRequestEvent(habboTo, from)).isCancelled())
-                    {
-                        this.removeBuddy(userTo);
-                        return;
-                    }
-
-                    Emulator.getGameServer().getGameClientManager().getClient(habboTo).sendResponse(new UpdateFriendComposer(to));
-                    Emulator.getGameServer().getGameClientManager().getClient(habboFrom).sendResponse(new UpdateFriendComposer(from));
-                }
-                else if (habboTo != null)
-                {
-                    habboTo.getClient().sendResponse(new UpdateFriendComposer(loadFriend(habboTo, userFrom)));
-                }
-                else if (habboFrom != null)
-                {
-                    habboFrom.getClient().sendResponse(new UpdateFriendComposer(loadFriend(habboFrom, userTo)));
-                }
             }
-        }
-        catch(SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
+            catch(SQLException e)
+            {
+                Emulator.getLogging().logSQLException(e);
+            }
+
+            Habbo habboTo = Emulator.getGameServer().getGameClientManager().getHabbo(userTo);
+            Habbo habboFrom = Emulator.getGameServer().getGameClientManager().getHabbo(userFrom);
+
+            if(habboTo != null && habboFrom != null)
+            {
+                MessengerBuddy to = new MessengerBuddy(habboFrom, habboTo.getHabboInfo().getId());
+                MessengerBuddy from = new MessengerBuddy(habboTo, habboFrom.getHabboInfo().getId());
+
+
+                habboTo.getMessenger().friends.putIfAbsent(habboFrom.getHabboInfo().getId(), to);
+                habboFrom.getMessenger().friends.putIfAbsent(habboTo.getHabboInfo().getId(), from);
+
+                if(Emulator.getPluginManager().fireEvent(new UserAcceptFriendRequestEvent(habboTo, from)).isCancelled())
+                {
+                    this.removeBuddy(userTo);
+                    return;
+                }
+
+                Emulator.getGameServer().getGameClientManager().getClient(habboTo).sendResponse(new UpdateFriendComposer(to));
+                Emulator.getGameServer().getGameClientManager().getClient(habboFrom).sendResponse(new UpdateFriendComposer(from));
+            }
+            else if (habboTo != null)
+            {
+                habboTo.getClient().sendResponse(new UpdateFriendComposer(loadFriend(habboTo, userFrom)));
+            }
+            else if (habboFrom != null)
+            {
+                habboFrom.getClient().sendResponse(new UpdateFriendComposer(loadFriend(habboFrom, userTo)));
+            }
         }
     }
 
     public static boolean canFriendRequest(Habbo habbo, String friend)
     {
-        boolean found = false;
         Habbo user = Emulator.getGameEnvironment().getHabboManager().getHabbo(friend);
         HabboInfo habboInfo;
 
@@ -353,74 +301,61 @@ public class Messenger
 
         if(habboInfo == null)
         {
-            return found;
+            return false;
         }
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM messenger_friendrequests WHERE (user_to_id = ? AND user_from_id = ?) OR (user_to_id = ? AND user_from_id = ?) LIMIT 1"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM messenger_friendrequests WHERE (user_to_id = ? AND user_from_id = ?) OR (user_to_id = ? AND user_from_id = ?) LIMIT 1");
             statement.setInt(1, habbo.getHabboInfo().getId());
             statement.setInt(2, habboInfo.getId());
             statement.setInt(3, habboInfo.getId());
             statement.setInt(4, habbo.getHabboInfo().getId());
-            ResultSet set = statement.executeQuery();
-
-            if (!set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                found = true;
+                if (!set.next())
+                {
+                    return true;
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
         }
 
-        return found;
+        return false;
     }
 
     public static boolean friendRequested(int userFrom, int userTo)
     {
-        boolean found = false;
-
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM messenger_friendrequests WHERE user_to_id = ? AND user_from_id = ? LIMIT 1"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM messenger_friendrequests WHERE user_to_id = ? AND user_from_id = ? LIMIT 1");
             statement.setInt(1, userFrom);
             statement.setInt(2, userTo);
 
-            ResultSet set = statement.executeQuery();
-
-            if (set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                found = true;
+                if (set.next())
+                {
+                    return true;
+                }
             }
-
-            set.close();
-            statement.getConnection().close();
-            statement.close();
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
         }
 
-        return found;
+        return false;
     }
 
     public static void makeFriendRequest(int userFrom, int userTo)
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO messenger_friendrequests (user_to_id, user_from_id) VALUES (?, ?)"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO messenger_friendrequests (user_to_id, user_from_id) VALUES (?, ?)");
             statement.setInt(1, userTo);
             statement.setInt(2, userFrom);
             statement.executeUpdate();
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {
@@ -437,17 +372,14 @@ public class Messenger
 
         int count = 0;
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT count(id) as count FROM messenger_friendships WHERE user_one_id = ?"))
         {
-
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT count(id) as count FROM messenger_friendships WHERE user_one_id = ?");
             statement.setInt(1, userId);
-            ResultSet set = statement.executeQuery();
-            if(set.next())
-                count = set.getInt("count");
-            set.close();
-            statement.close();
-            statement.getConnection().close();
+            try (ResultSet set = statement.executeQuery())
+            {
+                if (set.next())
+                    count = set.getInt("count");
+            }
         }
         catch(SQLException e)
         {
@@ -464,23 +396,20 @@ public class Messenger
         map.put(2, new THashSet<MessengerBuddy>());
         map.put(3, new THashSet<MessengerBuddy>());
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.id, users.look, users.username, messenger_friendships.relation FROM messenger_friendships INNER JOIN users ON users.id = messenger_friendships.user_two_id WHERE user_one_id = ? ORDER BY RAND() LIMIT 50"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT users.id, users.look, users.username, messenger_friendships.relation FROM messenger_friendships INNER JOIN users ON users.id = messenger_friendships.user_two_id WHERE user_one_id = ? ORDER BY RAND() LIMIT 50");
             statement.setInt(1, userId);
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                if(set.getInt("relation") == 0)
-                    continue;
+                while (set.next())
+                {
+                    if (set.getInt("relation") == 0)
+                        continue;
 
-                MessengerBuddy buddy = new MessengerBuddy(set.getInt("id"), set.getString("username"), set.getString("look"), (short) set.getInt("relation"), userId);
-                map.get((int) buddy.getRelation()).add(buddy);
+                    MessengerBuddy buddy = new MessengerBuddy(set.getInt("id"), set.getString("username"), set.getString("look"), (short) set.getInt("relation"), userId);
+                    map.get((int) buddy.getRelation()).add(buddy);
+                }
             }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {

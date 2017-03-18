@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.ISerialize;
 import com.eu.habbo.messages.ServerMessage;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -161,15 +162,12 @@ public class GuildForumComment implements ISerialize, Runnable
     @Override
     public void run()
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE guilds_forums_comments SET state = ?, admin_id = ? WHERE id = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE guilds_forums_comments SET state = ?, admin_id = ? WHERE id = ?");
             statement.setString(1, this.state.name());
             statement.setInt(2, this.adminId);
             statement.setInt(3, this.getId());
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {

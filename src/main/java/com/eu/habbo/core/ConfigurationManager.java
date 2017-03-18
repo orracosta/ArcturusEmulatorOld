@@ -8,9 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -83,36 +81,22 @@ public class ConfigurationManager
         Emulator.getLogging().logStart("Loading configuration from database...");
 
         long millis = System.currentTimeMillis();
-        PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM emulator_settings");
-
-        ResultSet set = null;
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement())
         {
-            set = statement.executeQuery();
-
-            while(set.next())
+            if (statement.execute("SELECT * FROM emulator_settings"))
             {
-                this.properties.put(set.getString("key"), set.getString("value"));
+                try (ResultSet set = statement.getResultSet())
+                {
+                    while (set.next())
+                    {
+                        this.properties.put(set.getString("key"), set.getString("value"));
+                    }
+                }
             }
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
-        }
-        finally
-        {
-            try
-            {
-                if(set != null)
-                    set.close();
-
-                statement.close();
-                statement.getConnection().close();
-            }
-            catch (SQLException e)
-            {
-                Emulator.getLogging().logSQLException(e);
-            }
         }
 
         Emulator.getLogging().logStart("Configuration -> loaded! (" + (System.currentTimeMillis() - millis) + " MS)");

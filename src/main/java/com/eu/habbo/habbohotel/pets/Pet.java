@@ -18,9 +18,7 @@ import com.eu.habbo.util.pathfinding.PathFinder;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class Pet extends AbstractPet
 {
@@ -91,65 +89,58 @@ public class Pet extends AbstractPet
     {
         if(this.needsUpdate)
         {
-            if(this.id > 0)
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
             {
-                try
+                if (this.id > 0)
                 {
-                    PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users_pets SET room_id = ?, experience = ?, energy = ?, respect = ?, x = ?, y = ?, z = ?, rot = ?, hunger = ?, thirst = ?, happyness = ? WHERE id = ?");
-                    statement.setInt(1, (this.room == null ? 0 : this.room.getId()));
-                    statement.setInt(2, this.experience);
-                    statement.setInt(3, this.energy);
-                    statement.setInt(4, this.respect);
-                    statement.setInt(5, this.getRoomUnit() != null ? this.getRoomUnit().getX() : 0);
-                    statement.setInt(6, this.getRoomUnit() != null ? this.getRoomUnit().getY() : 0);
-                    statement.setDouble(7, this.getRoomUnit() != null ? this.getRoomUnit().getZ() : 0.0);
-                    statement.setInt(8, this.getRoomUnit() != null ? this.getRoomUnit().getBodyRotation().getValue() : 0);
-                    statement.setInt(9, this.levelHunger);
-                    statement.setInt(10, this.levelThirst);
-                    statement.setInt(11, this.happyness);
-                    statement.setInt(12, this.id);
-                    statement.execute();
-                    statement.close();
-                    statement.getConnection().close();
+                    try (PreparedStatement statement = connection.prepareStatement("UPDATE users_pets SET room_id = ?, experience = ?, energy = ?, respect = ?, x = ?, y = ?, z = ?, rot = ?, hunger = ?, thirst = ?, happyness = ? WHERE id = ?"))
+                    {
+                        statement.setInt(1, (this.room == null ? 0 : this.room.getId()));
+                        statement.setInt(2, this.experience);
+                        statement.setInt(3, this.energy);
+                        statement.setInt(4, this.respect);
+                        statement.setInt(5, this.getRoomUnit() != null ? this.getRoomUnit().getX() : 0);
+                        statement.setInt(6, this.getRoomUnit() != null ? this.getRoomUnit().getY() : 0);
+                        statement.setDouble(7, this.getRoomUnit() != null ? this.getRoomUnit().getZ() : 0.0);
+                        statement.setInt(8, this.getRoomUnit() != null ? this.getRoomUnit().getBodyRotation().getValue() : 0);
+                        statement.setInt(9, this.levelHunger);
+                        statement.setInt(10, this.levelThirst);
+                        statement.setInt(11, this.happyness);
+                        statement.setInt(12, this.id);
+                        statement.execute();
+                    }
                 }
-                catch (SQLException e)
+                else if (this.id == 0)
                 {
-                    Emulator.getLogging().logSQLException(e);
+                    try (PreparedStatement statement = connection.prepareStatement("INSERT INTO users_pets (user_id, room_id, name, race, type, color, experience, energy, respect, created) VALUES (?, 0, ?, ?, ?, ?, 0, 0, 0, ?)", Statement.RETURN_GENERATED_KEYS))
+                    {
+                        statement.setInt(1, this.userId);
+                        statement.setString(2, this.name);
+                        statement.setInt(3, this.race);
+                        statement.setInt(4, 0);
+
+                        if (this.petData != null)
+                        {
+                            statement.setInt(4, this.petData.getType());
+                        }
+
+                        statement.setString(5, this.color);
+                        statement.setInt(6, this.created);
+                        statement.execute();
+
+                        try (ResultSet set = statement.getGeneratedKeys())
+                        {
+                            if (set.next())
+                            {
+                                this.id = set.getInt(1);
+                            }
+                        }
+                    }
                 }
             }
-            else if(this.id == 0)
+            catch (SQLException e)
             {
-                try
-                {
-                    PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO users_pets (user_id, room_id, name, race, type, color, experience, energy, respect, created) VALUES (?, 0, ?, ?, ?, ?, 0, 0, 0, ?)");
-                    statement.setInt(1, this.userId);
-                    statement.setString(2, this.name);
-                    statement.setInt(3, this.race);
-
-                    statement.setInt(4, 0);
-                    if(this.petData != null)
-                    {
-                        statement.setInt(4, this.petData.getType());
-                    }
-                    statement.setString(5, this.color);
-                    statement.setInt(6, this.created);
-                    statement.execute();
-
-                    ResultSet set = statement.getGeneratedKeys();
-
-                    if(set.next())
-                    {
-                        this.id = set.getInt(1);
-                    }
-
-                    set.close();
-                    statement.close();
-                    statement.getConnection().close();
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                }
+                Emulator.getLogging().logSQLException(e);
             }
 
             this.needsUpdate = false;

@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collections;
@@ -36,17 +37,14 @@ public class CatalogLimitedConfiguration implements Runnable
     {
         synchronized (this.limitedNumbers)
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE catalog_items_limited SET user_id = ?, timestamp = ?, item_id = ? WHERE catalog_item_id = ? AND number = ? AND user_id = 0 LIMIT 1"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE catalog_items_limited SET user_id = ?, timestamp = ?, item_id = ? WHERE catalog_item_id = ? AND number = ? AND user_id = 0 LIMIT 1");
                 statement.setInt(1, habbo.getHabboInfo().getId());
                 statement.setInt(2, Emulator.getIntUnixTimestamp());
                 statement.setInt(3, item.getId());
                 statement.setInt(4, catalogItemId);
                 statement.setInt(5, item.getLimitedSells());
                 statement.execute();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {
@@ -59,20 +57,18 @@ public class CatalogLimitedConfiguration implements Runnable
     {
         synchronized (this.limitedNumbers)
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO catalog_items_limited (catalog_item_id, number) VALUES (?, ?)"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO catalog_items_limited (catalog_item_id, number) VALUES (?, ?)");
                 statement.setInt(1, this.itemId);
 
                 for (int i = starting; i <= amount; i++)
                 {
                     statement.setInt(2, i);
-                    statement.execute();
+                    statement.addBatch();
                     this.limitedNumbers.push(i);
                 }
 
-                statement.close();
-                statement.getConnection().close();
+                statement.executeBatch();
             }
             catch (SQLException e)
             {
@@ -102,15 +98,12 @@ public class CatalogLimitedConfiguration implements Runnable
     @Override
     public void run()
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE catalog_items SET limited_stack = ?, limited_sells = ? WHERE id = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE catalog_items SET limited_stack = ?, limited_sells = ? WHERE id = ?");
             statement.setInt(1, this.totalSet);
             statement.setInt(2, this.totalSet - this.available());
             statement.setInt(3, this.itemId);
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {

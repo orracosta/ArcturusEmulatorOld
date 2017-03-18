@@ -8,7 +8,9 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.plugin.events.navigator.NavigatorRoomDeletedEvent;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class RequestDeleteRoomEvent extends MessageHandler
 {
@@ -41,42 +43,49 @@ public class RequestDeleteRoomEvent extends MessageHandler
                     }
                 }
 
-                PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM rooms WHERE id = ? LIMIT 1");
-                statement.setInt(1, roomId);
-                statement.execute();
-                statement.getConnection().close();
-                statement.close();
-
-                room.preventUnloading = false;
-
-                if(room.hasCustomLayout())
+                try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
                 {
-                    PreparedStatement stmt = Emulator.getDatabase().prepare("DELETE FROM room_models_custom WHERE id = ? LIMIT 1");
-                    stmt.setInt(1, roomId);
-                    stmt.execute();
-                    stmt.getConnection().close();
-                    stmt.close();
+                    try (PreparedStatement statement = connection.prepareStatement("DELETE FROM rooms WHERE id = ? LIMIT 1"))
+                    {
+                        statement.setInt(1, roomId);
+                        statement.execute();
+                    }
+
+                    room.preventUnloading = false;
+
+                    if (room.hasCustomLayout())
+                    {
+                        try (PreparedStatement stmt = connection.prepareStatement("DELETE FROM room_models_custom WHERE id = ? LIMIT 1"))
+                        {
+                            stmt.setInt(1, roomId);
+                            stmt.execute();
+                        }
+                    }
+
+                    Emulator.getGameEnvironment().getRoomManager().unloadRoom(room);
+
+                    try (PreparedStatement rights = connection.prepareStatement("DELETE FROM room_rights WHERE room_id = ?"))
+                    {
+                        rights.setInt(1, roomId);
+                        rights.execute();
+                    }
+
+                    try (PreparedStatement votes = connection.prepareStatement("DELETE FROM room_votes WHERE room_id = ?"))
+                    {
+                        votes.setInt(1, roomId);
+                        votes.execute();
+                    }
+
+                    try (PreparedStatement filter = connection.prepareStatement("DELETE FROM room_wordfilter WHERE room_id = ?"))
+                    {
+                        filter.setInt(1, roomId);
+                        filter.execute();
+                    }
                 }
-
-                Emulator.getGameEnvironment().getRoomManager().unloadRoom(room);
-
-                PreparedStatement rights = Emulator.getDatabase().prepare("DELETE FROM room_rights WHERE room_id = ?");
-                rights.setInt(1, roomId);
-                rights.execute();
-                rights.getConnection().close();
-                rights.close();
-
-                PreparedStatement votes = Emulator.getDatabase().prepare("DELETE FROM room_votes WHERE room_id = ?");
-                votes.setInt(1, roomId);
-                votes.execute();
-                votes.getConnection().close();
-                votes.close();
-
-                PreparedStatement filter = Emulator.getDatabase().prepare("DELETE FROM room_wordfilter WHERE room_id = ?");
-                filter.setInt(1, roomId);
-                filter.execute();
-                filter.getConnection().close();
-                filter.close();
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
             }
             else
             {

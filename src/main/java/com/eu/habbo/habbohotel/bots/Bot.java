@@ -19,6 +19,7 @@ import com.eu.habbo.threading.runnables.BotFollowHabbo;
 import com.eu.habbo.util.pathfinding.PathFinder;
 
 import java.lang.reflect.Array;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -199,10 +200,8 @@ public class Bot implements Runnable
     {
         if(this.needsUpdate)
         {
-            PreparedStatement statement = null;
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE bots SET name = ?, motto = ?, figure = ?, gender = ?, user_id = ?, room_id = ?, x = ?, y = ?, z = ?, rot = ?, dance = ?, freeroam = ?, chat_lines = ?, chat_auto = ?, chat_random = ?, chat_delay = ? WHERE id = ?"))
             {
-                statement = Emulator.getDatabase().prepare("UPDATE bots SET name = ?, motto = ?, figure = ?, gender = ?, user_id = ?, room_id = ?, x = ?, y = ?, z = ?, rot = ?, dance = ?, freeroam = ?, chat_lines = ?, chat_auto = ?, chat_random = ?, chat_delay = ? WHERE id = ?");
                 statement.setString(1, this.name);
                 statement.setString(2, this.motto);
                 statement.setString(3, this.figure);
@@ -231,20 +230,6 @@ public class Bot implements Runnable
             catch(SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
-            }
-            finally
-            {
-                if(statement != null)
-                {
-                    try
-                    {
-                        statement.close();
-                        statement.getConnection().close();
-                    } catch (SQLException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
             }
         }
     }

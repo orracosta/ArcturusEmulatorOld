@@ -27,6 +27,7 @@ import com.eu.habbo.plugin.events.users.UserWiredRewardReceived;
 import com.eu.habbo.threading.runnables.HabboItemNewState;
 import gnu.trove.set.hash.THashSet;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -159,13 +160,10 @@ public class WiredHandler
 
     public static void dropRewards(int wiredId)
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM wired_rewards_given WHERE wired_item = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM wired_rewards_given WHERE wired_item = ?");
             statement.setInt(1, wiredId);
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -178,16 +176,13 @@ public class WiredHandler
         if(wiredBox.limit > 0)
             wiredBox.given++;
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO wired_rewards_given (wired_item, user_id, reward_id, timestamp) VALUES ( ?, ?, ?, ?)"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO wired_rewards_given (wired_item, user_id, reward_id, timestamp) VALUES ( ?, ?, ?, ?)");
             statement.setInt(1, wiredBox.getId());
             statement.setInt(2, habbo.getHabboInfo().getId());
             statement.setInt(3, reward.id);
             statement.setInt(4, Emulator.getIntUnixTimestamp());
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -276,98 +271,97 @@ public class WiredHandler
             }
         }
 
-        PreparedStatement statement = null;
-        ResultSet set = null;
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) as rows, wired_rewards_given.* FROM wired_rewards_given WHERE user_id = ? AND wired_item = ? ORDER BY timestamp DESC LIMIT ?"))
         {
-            statement = Emulator.getDatabase().prepare("SELECT COUNT(*) as rows, wired_rewards_given.* FROM wired_rewards_given WHERE user_id = ? AND wired_item = ? ORDER BY timestamp DESC LIMIT ?");
             statement.setInt(1, habbo.getHabboInfo().getId());
             statement.setInt(2, wiredBox.getId());
             statement.setInt(3, wiredBox.rewardItems.size());
 
-            set = statement.executeQuery();
-
-            if(set.first())
+            try (ResultSet set = statement.executeQuery())
             {
-                if (set.getInt("rows") >= 1)
+                if (set.first())
                 {
-                    if (wiredBox.rewardTime == 0)
+                    if (set.getInt("rows") >= 1)
                     {
-                        habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_ALREADY_RECEIVED));
-                        return false;
+                        if (wiredBox.rewardTime == 0)
+                        {
+                            habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_ALREADY_RECEIVED));
+                            return false;
+                        }
                     }
-                }
 
-                set.beforeFirst();
-                if (set.next())
-                {
-                    if (Emulator.getIntUnixTimestamp() - set.getInt("timestamp") <= 60)
+                    set.beforeFirst();
+                    if (set.next())
                     {
-                        habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_ALREADY_RECEIVED_THIS_MINUTE));
-                        return false;
+                        if (Emulator.getIntUnixTimestamp() - set.getInt("timestamp") <= 60)
+                        {
+                            habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_ALREADY_RECEIVED_THIS_MINUTE));
+                            return false;
+                        }
+
+                        if (wiredBox.uniqueRewards)
+                        {
+                            if (set.getInt("rows") == wiredBox.rewardItems.size())
+                            {
+                                habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_ALL_COLLECTED));
+                                return false;
+                            }
+                        }
+
+                        if (wiredBox.rewardTime == 1)
+                        {
+                            if (!(Emulator.getIntUnixTimestamp() - set.getInt("timestamp") >= 3600))
+                            {
+                                habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_ALREADY_RECEIVED_THIS_HOUR));
+                                return false;
+                            }
+                        }
+
+                        if (wiredBox.rewardTime == 2)
+                        {
+                            if (!(Emulator.getIntUnixTimestamp() - set.getInt("timestamp") >= 86400))
+                            {
+                                habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_ALREADY_RECEIVED_THIS_TODAY));
+                                return false;
+                            }
+                        }
                     }
 
                     if (wiredBox.uniqueRewards)
                     {
-                        if (set.getInt("rows") == wiredBox.rewardItems.size())
+                        for (WiredGiveRewardItem item : wiredBox.rewardItems)
                         {
-                            habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_ALL_COLLECTED));
-                            return false;
+                            set.beforeFirst();
+                            boolean found = false;
+
+                            while (set.next())
+                            {
+                                if (set.getInt("reward_id") == item.id)
+                                    found = true;
+                            }
+
+                            if (!found)
+                            {
+                                giveReward(habbo, wiredBox, item);
+                                return true;
+                            }
                         }
                     }
-
-                    if (wiredBox.rewardTime == 1)
+                    else
                     {
-                        if (!(Emulator.getIntUnixTimestamp() - set.getInt("timestamp") >= 3600))
+                        int randomNumber = Emulator.getRandom().nextInt(101);
+
+                        int count = 0;
+                        for (WiredGiveRewardItem item : wiredBox.rewardItems)
                         {
-                            habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_ALREADY_RECEIVED_THIS_HOUR));
-                            return false;
+                            if (randomNumber >= count && randomNumber <= (count + item.probability))
+                            {
+                                giveReward(habbo, wiredBox, item);
+                                return true;
+                            }
+
+                            count += item.probability;
                         }
-                    }
-
-                    if (wiredBox.rewardTime == 2)
-                    {
-                        if (!(Emulator.getIntUnixTimestamp() - set.getInt("timestamp") >= 86400))
-                        {
-                            habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_ALREADY_RECEIVED_THIS_TODAY));
-                            return false;
-                        }
-                    }
-                }
-
-                if (wiredBox.uniqueRewards)
-                {
-                    for (WiredGiveRewardItem item : wiredBox.rewardItems)
-                    {
-                        set.beforeFirst();
-                        boolean found = false;
-
-                        while (set.next())
-                        {
-                            if (set.getInt("reward_id") == item.id)
-                                found = true;
-                        }
-
-                        if (!found)
-                        {
-                            giveReward(habbo, wiredBox, item);
-                            return true;
-                        }
-                    }
-                } else
-                {
-                    int randomNumber = Emulator.getRandom().nextInt(101);
-
-                    int count = 0;
-                    for (WiredGiveRewardItem item : wiredBox.rewardItems)
-                    {
-                        if (randomNumber >= count && randomNumber <= (count + item.probability))
-                        {
-                            giveReward(habbo, wiredBox, item);
-                            return true;
-                        }
-
-                        count += item.probability;
                     }
                 }
             }
@@ -375,33 +369,6 @@ public class WiredHandler
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
-        }
-        finally
-        {
-            if(set != null)
-            {
-                try
-                {
-                    set.close();
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                }
-            }
-
-            if(statement != null)
-            {
-                try
-                {
-                    statement.close();
-                    statement.getConnection().close();
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                }
-            }
         }
 
         return false;

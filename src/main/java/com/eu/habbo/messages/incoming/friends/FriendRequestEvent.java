@@ -9,6 +9,7 @@ import com.eu.habbo.messages.outgoing.friends.FriendRequestComposer;
 import com.eu.habbo.messages.outgoing.friends.FriendRequestErrorComposer;
 import com.eu.habbo.plugin.events.users.friends.UserRequestFriendshipEvent;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,20 +49,19 @@ public class FriendRequestEvent extends MessageHandler
 
         if(habbo == null)
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users_settings.block_friendrequests, users.id FROM users INNER JOIN users_settings ON users.id = users_settings.user_id WHERE username = ? LIMIT 1"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT users_settings.block_friendrequests, users.id FROM users INNER JOIN users_settings ON users.id = users_settings.user_id WHERE username = ? LIMIT 1");
                 statement.setString(1, username);
-                ResultSet set = statement.executeQuery();
-                while(set.next())
+                try (ResultSet set = statement.executeQuery())
                 {
-                    id = set.getInt("id");
-                    allowFriendRequests = set.getString("block_friendrequests").equalsIgnoreCase("0");
+                    while (set.next())
+                    {
+                        id = set.getInt("id");
+                        allowFriendRequests = set.getString("block_friendrequests").equalsIgnoreCase("0");
+                    }
                 }
-                set.close();
-                statement.close();
-                statement.getConnection().close();
-            } catch (SQLException e)
+            }
+            catch (SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
                 return;

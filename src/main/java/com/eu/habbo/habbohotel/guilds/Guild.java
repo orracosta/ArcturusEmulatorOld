@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.guilds;
 
 import com.eu.habbo.Emulator;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -76,34 +77,31 @@ public class Guild implements Runnable
 
     public void loadMemberCount()
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
-
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT COUNT(id) as count FROM guilds_members WHERE level_id < 3 AND guild_id = ?");
-            statement.setInt(1, this.id);
-            ResultSet set = statement.executeQuery();
-
-            if(set.next())
+            try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(id) as count FROM guilds_members WHERE level_id < 3 AND guild_id = ?"))
             {
-                this.memberCount = set.getInt(1);
+                statement.setInt(1, this.id);
+                try (ResultSet set = statement.executeQuery())
+                {
+                    if (set.next())
+                    {
+                        this.memberCount = set.getInt(1);
+                    }
+                }
             }
 
-            set.close();
-            statement.close();
-            statement.getConnection().close();
-
-            statement = Emulator.getDatabase().prepare("SELECT COUNT(id) as count FROM guilds_members WHERE level_id = 3 AND guild_id = ?");
-            statement.setInt(1, this.id);
-            set = statement.executeQuery();
-
-            if(set.next())
+            try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(id) as count FROM guilds_members WHERE level_id = 3 AND guild_id = ?"))
             {
-                this.requestCount = set.getInt(1);
+                statement.setInt(1, this.id);
+                try (ResultSet set = statement.executeQuery())
+                {
+                    if (set.next())
+                    {
+                        this.requestCount = set.getInt(1);
+                    }
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -116,9 +114,8 @@ public class Guild implements Runnable
     {
         if(this.needsUpdate)
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE guilds SET name = ?, description = ?, state = ?, rights = ?, color_one = ?, color_two = ?, badge = ?, read_forum = ?, post_messages = ?, post_threads = ?, mod_forum = ? WHERE id = ?"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE guilds SET name = ?, description = ?, state = ?, rights = ?, color_one = ?, color_two = ?, badge = ?, read_forum = ?, post_messages = ?, post_threads = ?, mod_forum = ? WHERE id = ?");
                 statement.setString(1, this.name);
                 statement.setString(2, this.description);
                 statement.setInt(3, this.state.state);
@@ -132,14 +129,13 @@ public class Guild implements Runnable
                 statement.setString(11, this.modForum.name());
                 statement.setInt(12, this.id);
                 statement.execute();
-                statement.close();
-                statement.getConnection().close();
+
+                this.needsUpdate = false;
             }
             catch (SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
             }
-            this.needsUpdate = false;
         }
     }
 

@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.games.Game;
 import com.eu.habbo.habbohotel.games.GamePlayer;
 import com.eu.habbo.habbohotel.games.GameTeam;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -22,9 +23,7 @@ public class SaveScoreForTeam implements Runnable
     @Override
     public void run()
     {
-        PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO room_game_scores (room_id, game_start_timestamp, game_name, user_id, team_id, score, team_score) VALUES (?, ?, ?, ?, ?, ?, ?)");
-
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO room_game_scores (room_id, game_start_timestamp, game_name, user_id, team_id, score, team_score) VALUES (?, ?, ?, ?, ?, ?, ?)"))
         {
             for(GamePlayer player : this.team.getMembers())
             {
@@ -35,24 +34,14 @@ public class SaveScoreForTeam implements Runnable
                 statement.setInt(5, player.getTeamColor().type);
                 statement.setInt(6, player.getScore());
                 statement.setInt(7, this.team.getTeamScore());
-                statement.execute();
+                statement.addBatch();
             }
+
+            statement.executeBatch();
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
-        }
-        finally
-        {
-            try
-            {
-                statement.close();
-                statement.getConnection().close();
-            }
-            catch (SQLException e)
-            {
-                Emulator.getLogging().logSQLException(e);
-            }
         }
     }
 }

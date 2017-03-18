@@ -7,10 +7,7 @@ import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.set.hash.THashSet;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -47,41 +44,38 @@ public class PermissionsManager
         {
             this.permissions.clear();
 
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM permissions ORDER BY id ASC"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM permissions ORDER BY id ASC");
-                ResultSet set = statement.executeQuery();
-                ResultSetMetaData meta = set.getMetaData();
-
-                while (set.next())
+                try (ResultSet set = statement.executeQuery())
                 {
-                    THashMap<String, Integer> names = new THashMap<String, Integer>();
+                    ResultSetMetaData meta = set.getMetaData();
 
-                    for (int i = 1; i < meta.getColumnCount() + 1; i++)
+                    while (set.next())
                     {
-                        if (meta.getColumnName(i).startsWith("cmd_") || meta.getColumnName(i).startsWith("acc_"))
+                        THashMap<String, Integer> names = new THashMap<String, Integer>();
+
+                        for (int i = 1; i < meta.getColumnCount() + 1; i++)
                         {
-                            if (set.getString(i).equals("1") || set.getString(i).equals("2"))
+                            if (meta.getColumnName(i).startsWith("cmd_") || meta.getColumnName(i).startsWith("acc_"))
                             {
-                                names.put(meta.getColumnName(i), Integer.valueOf(set.getString(i)));
+                                if (set.getString(i).equals("1") || set.getString(i).equals("2"))
+                                {
+                                    names.put(meta.getColumnName(i), Integer.valueOf(set.getString(i)));
+                                }
+                            }
+                            else if (meta.getColumnName(i).equalsIgnoreCase("rank_name"))
+                            {
+                                this.rankNames.put(set.getInt("id"), set.getString(i));
+                            }
+                            else if (meta.getColumnName(i).equalsIgnoreCase("room_effect"))
+                            {
+                                this.roomEffect.put(set.getInt("id"), set.getInt(i));
                             }
                         }
-                        else if(meta.getColumnName(i).equalsIgnoreCase("rank_name"))
-                        {
-                            this.rankNames.put(set.getInt("id"), set.getString(i));
-                        }
-                        else if (meta.getColumnName(i).equalsIgnoreCase("room_effect"))
-                        {
-                            this.roomEffect.put(set.getInt("id"), set.getInt(i));
-                        }
+
+                        this.permissions.put(set.getInt("id"), names);
                     }
-
-                    this.permissions.put(set.getInt("id"), names);
                 }
-
-                set.close();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {
@@ -96,19 +90,12 @@ public class PermissionsManager
         {
             this.enables.clear();
 
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM special_enables"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM special_enables");
-                ResultSet set = statement.executeQuery();
-
                 while(set.next())
                 {
                     this.enables.put(set.getInt("effect_id"), set.getInt("min_rank"));
                 }
-
-                set.close();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {

@@ -3,6 +3,7 @@ package com.eu.habbo.threading.runnables;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.HabboItem;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -18,13 +19,10 @@ public class QueryDeleteHabboItem implements Runnable
     @Override
     public void run()
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM items WHERE id = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM items WHERE id = ?");
             statement.setInt(1, item.getId());
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {

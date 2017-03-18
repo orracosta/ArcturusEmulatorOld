@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.rooms;
 
 import com.eu.habbo.Emulator;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,9 +26,7 @@ public class CustomRoomLayout extends RoomLayout implements Runnable
         {
             this.needsUpdate = false;
 
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE room_models_custom SET door_x = ?, door_y = ?, door_dir = ?, heightmap = ? WHERE id = ? LIMIT 1");
-
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE room_models_custom SET door_x = ?, door_y = ?, door_dir = ?, heightmap = ? WHERE id = ? LIMIT 1"))
             {
                 statement.setInt(1, this.getDoorX());
                 statement.setInt(2, this.getDoorY());
@@ -35,16 +34,10 @@ public class CustomRoomLayout extends RoomLayout implements Runnable
                 statement.setString(4, this.getHeightmap());
                 statement.setInt(5, this.room.getId());
                 statement.execute();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
-            }
-            catch (Exception e)
-            {
-                Emulator.getLogging().logErrorLine(e);
             }
         }
     }

@@ -8,6 +8,7 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.generic.alerts.WiredRewardAlertComposer;
 import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -38,16 +39,13 @@ public class AnswerPollEvent extends MessageHandler
 
         if(poll != null)
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO polls_answers(poll_id, user_id, question_id, answer) VALUES(?, ?, ?, ?) ON DUPLICATE KEY UPDATE answer=VALUES(answer)"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO polls_answers(poll_id, user_id, question_id, answer) VALUES(?, ?, ?, ?) ON DUPLICATE KEY UPDATE answer=VALUES(answer)");
                 statement.setInt(1, pollId);
                 statement.setInt(2, this.client.getHabbo().getHabboInfo().getId());
                 statement.setInt(3, questionId);
                 statement.setString(4, answer);
                 statement.execute();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {

@@ -219,21 +219,23 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.promoted = set.getInt("promoted") == 1;
         if(this.promoted)
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM room_promotions WHERE room_id = ? AND end_timestamp > ? LIMIT 1");
-            statement.setInt(1, this.id);
-            statement.setInt(2, Emulator.getIntUnixTimestamp());
-
-            ResultSet promotionSet = statement.executeQuery();
-            this.promoted = false;
-            while(promotionSet.next())
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM room_promotions WHERE room_id = ? AND end_timestamp > ? LIMIT 1"))
             {
-                this.promoted = true;
-                this.promotion = new RoomPromotion(this, promotionSet);
-            }
+                statement.setInt(1, this.id);
+                statement.setInt(2, Emulator.getIntUnixTimestamp());
 
-            promotionSet.close();
-            statement.close();
-            statement.getConnection().close();
+                try (ResultSet promotionSet = statement.executeQuery())
+                {
+                    this.promoted = false;
+                    if (promotionSet.next())
+                    {
+                        this.promoted = true;
+                        this.promotion = new RoomPromotion(this, promotionSet);
+                    }
+                }
+
+                this.loadBans(connection);
+            }
         }
 
         this.tradeMode = set.getInt("trade_mode");
@@ -269,14 +271,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         {
             this.layout = Emulator.getGameEnvironment().getRoomManager().getLayout(set.getString("model"));
         }
-        try
-        {
-            this.loadBans();
-        }
-        catch (Exception e)
-        {
-            Emulator.getLogging().logErrorLine(e);
-        }
     }
 
     public synchronized void loadData()
@@ -286,7 +280,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             if (!this.preLoaded || this.loaded)
                 return;
 
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
             {
                 this.unitCounter = 0;
                 this.currentHabbos.clear();
@@ -297,7 +291,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                 try
                 {
-                    this.loadRights();
+                    this.loadRights(connection);
                 }
                 catch (Exception e)
                 {
@@ -306,7 +300,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                 try
                 {
-                    this.loadItems();
+                    this.loadItems(connection);
                 }
                 catch (Exception e)
                 {
@@ -329,7 +323,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                 try
                 {
-                    this.loadBots();
+                    this.loadBots(connection);
                 }
                 catch (Exception e)
                 {
@@ -338,7 +332,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                 try
                 {
-                    this.loadPets();
+                    this.loadPets(connection);
                 }
                 catch (Exception e)
                 {
@@ -347,7 +341,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                 try
                 {
-                    this.loadWordFilter();
+                    this.loadWordFilter(connection);
                 }
                 catch (Exception e)
                 {
@@ -356,7 +350,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                 try
                 {
-                    this.loadWiredData();
+                    this.loadWiredData(connection);
                 }
                 catch (Exception e)
                 {
@@ -406,45 +400,47 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
     }
 
-    private synchronized void loadItems() throws SQLException
+    private synchronized void loadItems(Connection connection) throws SQLException
     {
         this.roomItems.clear();
 
-        PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM items WHERE room_id = ?");
-        statement.setInt(1, this.id);
-        ResultSet set = statement.executeQuery();
-        while(set.next())
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM items WHERE room_id = ?"))
         {
-            this.addHabboItem(Emulator.getGameEnvironment().getItemManager().loadHabboItem(set));
+            statement.setInt(1, this.id);
+            try (ResultSet set = statement.executeQuery())
+            {
+                while (set.next())
+                {
+                    this.addHabboItem(Emulator.getGameEnvironment().getItemManager().loadHabboItem(set));
+                }
+            }
         }
-        set.close();
-        statement.close();
-        statement.getConnection().close();
     }
 
-    private synchronized void loadWiredData() throws SQLException
+    private synchronized void loadWiredData(Connection connection) throws SQLException
     {
-        PreparedStatement statement = Emulator.getDatabase().prepare("SELECT id, wired_data FROM items WHERE room_id = ? AND wired_data<>?");
-        statement.setInt(1, this.id);
-        statement.setString(2, "");
-        ResultSet set = statement.executeQuery();
-
-        try
+        try (PreparedStatement statement = connection.prepareStatement("SELECT id, wired_data FROM items WHERE room_id = ? AND wired_data<>?"))
         {
-            while (set.next())
-            {
-                try
-                {
-                    HabboItem item = this.getHabboItem(set.getInt("id"));
+            statement.setInt(1, this.id);
+            statement.setString(2, "");
 
-                    if (item != null && item instanceof InteractionWired)
-                    {
-                        ((InteractionWired) item).loadWiredData(set, this);
-                    }
-                }
-                catch (SQLException e)
+            try (ResultSet set = statement.executeQuery())
+            {
+                while (set.next())
                 {
-                    Emulator.getLogging().logSQLException(e);
+                    try
+                    {
+                        HabboItem item = this.getHabboItem(set.getInt("id"));
+
+                        if (item != null && item instanceof InteractionWired)
+                        {
+                            ((InteractionWired) item).loadWiredData(set, this);
+                        }
+                    }
+                    catch (SQLException e)
+                    {
+                        Emulator.getLogging().logSQLException(e);
+                    }
                 }
             }
         }
@@ -452,118 +448,95 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         {
             Emulator.getLogging().logErrorLine(e);
         }
-
-        set.close();
-        statement.close();
-        statement.getConnection().close();
     }
 
-    private synchronized void loadBots() throws SQLException
+    private synchronized void loadBots(Connection connection) throws SQLException
     {
         this.currentBots.clear();
 
-        PreparedStatement statement = null;
-
-        try
+        try (PreparedStatement statement = connection.prepareStatement("SELECT users.username AS owner_name, bots.* FROM bots INNER JOIN users ON bots.user_id = users.id WHERE room_id = ?"))
         {
-            statement = Emulator.getDatabase().prepare("SELECT users.username AS owner_name, bots.* FROM bots INNER JOIN users ON bots.user_id = users.id WHERE room_id = ?");
             statement.setInt(1, this.id);
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                //Bot b = new Bot(set);
-                Bot b = Emulator.getGameEnvironment().getBotManager().loadBot(set);
-
-                if(b != null)
+                while (set.next())
                 {
-                    b.setRoom(this);
-                    b.setRoomUnit(new RoomUnit());
-                    b.getRoomUnit().getPathFinder().setRoom(this);
-                    b.getRoomUnit().setLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
-                    b.getRoomUnit().setZ(set.getDouble("z"));
-                    b.getRoomUnit().setRotation(RoomUserRotation.values()[set.getInt("rot")]);
-                    b.getRoomUnit().setGoalLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
-                    b.getRoomUnit().setRoomUnitType(RoomUnitType.BOT);
-                    b.getRoomUnit().setDanceType(DanceType.values()[set.getInt("dance")]);
-                    b.getRoomUnit().setCanWalk(set.getBoolean("freeroam"));
-                    b.getRoomUnit().setInRoom(true);
-                    this.addBot(b);
+                    Bot b = Emulator.getGameEnvironment().getBotManager().loadBot(set);
+
+                    if (b != null)
+                    {
+                        b.setRoom(this);
+                        b.setRoomUnit(new RoomUnit());
+                        b.getRoomUnit().getPathFinder().setRoom(this);
+                        b.getRoomUnit().setLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
+                        b.getRoomUnit().setZ(set.getDouble("z"));
+                        b.getRoomUnit().setRotation(RoomUserRotation.values()[set.getInt("rot")]);
+                        b.getRoomUnit().setGoalLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
+                        b.getRoomUnit().setRoomUnitType(RoomUnitType.BOT);
+                        b.getRoomUnit().setDanceType(DanceType.values()[set.getInt("dance")]);
+                        b.getRoomUnit().setCanWalk(set.getBoolean("freeroam"));
+                        b.getRoomUnit().setInRoom(true);
+                        this.addBot(b);
+                    }
                 }
             }
-            set.close();
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
         }
-        finally
-        {
-            if (statement != null)
-            {
-                try
-                {
-                    statement.close();
-                    statement.getConnection().close();
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                }
-            }
-        }
     }
 
-    synchronized void loadPets() throws SQLException
+    private synchronized void loadPets(Connection connection) throws SQLException
     {
         this.currentPets.clear();
 
-        PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM users_pets WHERE room_id = ?");
-        statement.setInt(1, this.id);
-        ResultSet set = statement.executeQuery();
-        while(set.next())
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM users_pets WHERE room_id = ?"))
         {
-            try
+            statement.setInt(1, this.id);
+            try (ResultSet set = statement.executeQuery())
             {
-                //TODO fix this shitty code
-                AbstractPet pet = PetManager.loadPet(set);
-                pet.setRoom(this);
-                pet.setRoomUnit(new RoomUnit());
-                pet.getRoomUnit().getPathFinder().setRoom(this);
-                pet.getRoomUnit().setLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
-                pet.getRoomUnit().setZ(set.getDouble("z"));
-                pet.getRoomUnit().setRotation(RoomUserRotation.values()[set.getInt("rot")]);
-                pet.getRoomUnit().setGoalLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
-                pet.getRoomUnit().setRoomUnitType(RoomUnitType.PET);
-                pet.getRoomUnit().setCanWalk(true);
-                this.addPet(pet);
-            }
-            catch (SQLException e)
-            {
-                Emulator.getLogging().logSQLException(e);
+                while (set.next())
+                {
+                    try
+                    {
+                        //TODO fix this shitty code
+                        AbstractPet pet = PetManager.loadPet(set);
+                        pet.setRoom(this);
+                        pet.setRoomUnit(new RoomUnit());
+                        pet.getRoomUnit().getPathFinder().setRoom(this);
+                        pet.getRoomUnit().setLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
+                        pet.getRoomUnit().setZ(set.getDouble("z"));
+                        pet.getRoomUnit().setRotation(RoomUserRotation.values()[set.getInt("rot")]);
+                        pet.getRoomUnit().setGoalLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
+                        pet.getRoomUnit().setRoomUnitType(RoomUnitType.PET);
+                        pet.getRoomUnit().setCanWalk(true);
+                        this.addPet(pet);
+                    }
+                    catch (SQLException e)
+                    {
+                        Emulator.getLogging().logSQLException(e);
+                    }
+                }
             }
         }
-        set.close();
-        statement.close();
-        statement.getConnection().close();
     }
 
-    synchronized void loadWordFilter() throws SQLException
+    private synchronized void loadWordFilter(Connection connection) throws SQLException
     {
         this.wordFilterWords.clear();
 
-        PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM room_wordfilter WHERE room_id = ?");
-        statement.setInt(1, this.id);
-        ResultSet set = statement.executeQuery();
-
-        while(set.next())
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM room_wordfilter WHERE room_id = ?"))
         {
-            this.wordFilterWords.add(set.getString("word"));
+            statement.setInt(1, this.id);
+            try (ResultSet set = statement.executeQuery())
+            {
+                while (set.next())
+                {
+                    this.wordFilterWords.add(set.getString("word"));
+                }
+            }
         }
-
-        set.close();
-        statement.close();
-        statement.getConnection().close();
     }
 
     public void updateTile(RoomTile tile)
@@ -4124,10 +4097,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
     }
 
-    void loadRights()
+    private void loadRights(Connection connection)
     {
         this.rights.clear();
-        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT user_id FROM room_rights WHERE room_id = ?"))
+        try (PreparedStatement statement = connection.prepareStatement("SELECT user_id FROM room_rights WHERE room_id = ?"))
         {
             statement.setInt(1, this.id);
             try (ResultSet set = statement.executeQuery())
@@ -4144,28 +4117,24 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
     }
 
-    void loadBans()
+    private void loadBans(Connection connection)
     {
         this.bannedHabbos.clear();
 
-        try
+        try (PreparedStatement statement = connection.prepareStatement("SELECT users.username, users.id, room_bans.* FROM room_bans INNER JOIN users ON room_bans.user_id = users.id WHERE ends > ? AND room_bans.room_id = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT users.username, users.id, room_bans.* FROM room_bans INNER JOIN users ON room_bans.user_id = users.id WHERE ends > ? AND room_bans.room_id = ?");
             statement.setInt(1, Emulator.getIntUnixTimestamp());
             statement.setInt(2, this.id);
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                if(this.bannedHabbos.containsKey(set.getInt("user_id")))
-                    continue;
+                while (set.next())
+                {
+                    if (this.bannedHabbos.containsKey(set.getInt("user_id")))
+                        continue;
 
-                this.bannedHabbos.put(set.getInt("user_id"), new RoomBan(set));
+                    this.bannedHabbos.put(set.getInt("user_id"), new RoomBan(set));
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -4216,14 +4185,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         if(this.rights.add(userId))
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO room_rights VALUES (?, ?)"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO room_rights VALUES (?, ?)");
                 statement.setInt(1, this.id);
                 statement.setInt(2, userId);
                 statement.execute();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {
@@ -4266,14 +4232,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         if(this.rights.remove(userId))
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM room_rights WHERE room_id = ? AND user_id = ?"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM room_rights WHERE room_id = ? AND user_id = ?");
                 statement.setInt(1, this.id);
                 statement.setInt(2, userId);
                 statement.execute();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {
@@ -4291,13 +4254,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         this.rights.clear();
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM room_rights WHERE room_id = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM room_rights WHERE room_id = ?");
             statement.setInt(1, this.id);
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -4385,20 +4345,16 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         if(!this.rights.isEmpty())
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username AS username, users.id as user_id FROM room_rights INNER JOIN users ON room_rights.user_id = users.id WHERE room_id = ?"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT users.username AS username, users.id as user_id FROM room_rights INNER JOIN users ON room_rights.user_id = users.id WHERE room_id = ?");
                 statement.setInt(1, this.id);
-                ResultSet set = statement.executeQuery();
-
-                while (set.next())
+                try (ResultSet set = statement.executeQuery())
                 {
-                    rightsMap.put(set.getInt("user_id"), set.getString("username"));
+                    while (set.next())
+                    {
+                        rightsMap.put(set.getInt("user_id"), set.getString("username"));
+                    }
                 }
-
-                set.close();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {
@@ -4716,10 +4672,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
             this.wordFilterWords.add(word);
 
-            PreparedStatement statement = null;
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO room_wordfilter VALUES (?, ?)"))
             {
-                statement = Emulator.getDatabase().prepare("INSERT INTO room_wordfilter VALUES (?, ?)");
                 statement.setInt(1, this.getId());
                 statement.setString(2, word);
                 statement.execute();
@@ -4727,20 +4681,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             catch (SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
-            }
-            finally
-            {
-                if (statement != null)
-                {
-                    try
-                    {
-                        statement.close();
-                        statement.getConnection().close();
-                    } catch (SQLException e)
-                    {
-                        Emulator.getLogging().logSQLException(e);
-                    }
-                }
             }
         }
     }
@@ -4751,10 +4691,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         {
             this.wordFilterWords.remove(word);
 
-            PreparedStatement statement = null;
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM room_wordfilter WHERE room_id = ? AND word = ?"))
             {
-                statement = Emulator.getDatabase().prepare("DELETE FROM room_wordfilter WHERE room_id = ? AND word = ?");
                 statement.setInt(1, this.getId());
                 statement.setString(2, word);
                 statement.execute();
@@ -4762,20 +4700,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             catch (SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
-            }
-            finally
-            {
-                if (statement != null)
-                {
-                    try
-                    {
-                        statement.close();
-                        statement.getConnection().close();
-                    } catch (SQLException e)
-                    {
-                        Emulator.getLogging().logSQLException(e);
-                    }
-                }
             }
         }
     }
@@ -4841,20 +4765,19 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
             query += " LIMIT " + Emulator.getConfig().getValue("wired.highscores.displaycount");
 
-            PreparedStatement statement = Emulator.getDatabase().prepare(query);
-            statement.setInt(1, this.id);
-            statement.setInt(2, timestamp);
-
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement(query))
             {
-                wiredData.add(new WiredHighscoreData(set.getString("usernames").split(","), set.getInt("score"), set.getInt("team_score"), set.getInt("total_score")));
-            }
+                statement.setInt(1, this.id);
+                statement.setInt(2, timestamp);
 
-            set.close();
-            statement.close();
-            statement.getConnection().close();
+                try (ResultSet set = statement.executeQuery())
+                {
+                    while (set.next())
+                    {
+                        wiredData.add(new WiredHighscoreData(set.getString("usernames").split(","), set.getInt("score"), set.getInt("team_score"), set.getInt("total_score")));
+                    }
+                }
+            }
         }
         catch (SQLException e)
         {

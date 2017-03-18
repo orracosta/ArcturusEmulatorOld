@@ -3,9 +3,7 @@ package com.eu.habbo.habbohotel.hotelview;
 import com.eu.habbo.Emulator;
 import gnu.trove.set.hash.THashSet;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class NewsList
 {
@@ -22,28 +20,20 @@ public class NewsList
      */
     public void reload()
     {
-        this.newsWidgets.clear();
-
-        THashSet<NewsWidget> news = new THashSet<NewsWidget>();
-        try
+        synchronized (this.newsWidgets)
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM hotelview_news ORDER BY id DESC LIMIT 10");
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            this.newsWidgets.clear();
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM hotelview_news ORDER BY id DESC LIMIT 10"))
             {
-                news.add(new NewsWidget(set));
+                while (set.next())
+                {
+                    this.newsWidgets.add(new NewsWidget(set));
+                }
             }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
-
-            this.newsWidgets.addAll(news);
-            news.clear();
-        }
-        catch(SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
+            catch (SQLException e)
+            {
+                Emulator.getLogging().logSQLException(e);
+            }
         }
     }
 

@@ -10,6 +10,7 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.items.AddFloorItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserRemoveComposer;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -50,32 +51,14 @@ public class CompostMonsterplantEvent extends MessageHandler
                         room.sendComposer(new RoomUserRemoveComposer(pet.getRoomUnit()).compose());
                         pet.setRoomUnit(null);
 
-                        PreparedStatement statement = null;
-
-                        try
+                        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM users_pets WHERE id = ? LIMIT 1"))
                         {
-                            statement = Emulator.getDatabase().prepare("DELETE FROM users_pets WHERE id = ? LIMIT 1");
                             statement.setInt(1, pet.getId());
                             statement.executeUpdate();
                         }
                         catch (SQLException e)
                         {
                             Emulator.getLogging().logSQLException(e);
-                        }
-                        finally
-                        {
-                            if (statement != null)
-                            {
-                                try
-                                {
-                                    statement.close();
-                                    statement.getConnection().close();
-                                }
-                                catch (SQLException e)
-                                {
-                                    Emulator.getLogging().logSQLException(e);
-                                }
-                            }
                         }
                     }
                 }

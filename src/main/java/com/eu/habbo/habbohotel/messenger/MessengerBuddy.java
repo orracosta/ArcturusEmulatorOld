@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.messenger;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -151,15 +152,12 @@ public class MessengerBuddy implements Runnable {
     @Override
     public void run() {
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE messenger_friendships SET relation = ? WHERE user_one_id = ? AND user_two_id = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE messenger_friendships SET relation = ? WHERE user_one_id = ? AND user_two_id = ?");
             statement.setInt(1, this.relation);
             statement.setInt(2, this.userOne);
             statement.setInt(3, this.id);
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {

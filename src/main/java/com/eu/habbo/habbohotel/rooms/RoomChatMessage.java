@@ -7,6 +7,7 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.Incoming;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -141,17 +142,18 @@ public class RoomChatMessage implements Runnable, ISerialize
                 }
             }
 
-            PreparedStatement statement = null;
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO chatlogs_room (user_from_id, user_to_id, message, timestamp, room_id) VALUES (?, ?, ?, ?, ?)"))
             {
-                statement = Emulator.getDatabase().prepare("INSERT INTO chatlogs_room (user_from_id, user_to_id, message, timestamp, room_id) VALUES (?, ?, ?, ?, ?)");
                 statement.setInt(1,this.habbo.getHabboInfo().getId());
+
                 if(this.targetHabbo != null)
                     statement.setInt(2, this.targetHabbo.getHabboInfo().getId());
                 else
                     statement.setInt(2, 0);
+
                 statement.setString(3, this.unfilteredMessage);
                 statement.setInt(4, Emulator.getIntUnixTimestamp());
+
                 if(this.habbo.getHabboInfo().getCurrentRoom() != null)
                 {
                     statement.setInt(5, this.habbo.getHabboInfo().getCurrentRoom().getId());
@@ -160,26 +162,12 @@ public class RoomChatMessage implements Runnable, ISerialize
                 {
                     statement.setInt(5, 0);
                 }
+
                 statement.executeUpdate();
             }
             catch(SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
-            }
-            finally
-            {
-                if (statement != null)
-                {
-                    try
-                    {
-                        statement.close();
-                        statement.getConnection().close();
-                    }
-                    catch (SQLException e)
-                    {
-                        Emulator.getLogging().logSQLException(e);
-                    }
-                }
             }
         }
     }

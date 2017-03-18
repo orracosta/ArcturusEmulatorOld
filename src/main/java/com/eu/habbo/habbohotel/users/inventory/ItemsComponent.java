@@ -12,6 +12,7 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,36 +31,33 @@ public class ItemsComponent
     {
         THashMap<Integer, HabboItem> itemsList = new THashMap<Integer, HabboItem>();
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM items WHERE room_id = ? AND user_id = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM items WHERE room_id = ? AND user_id = ?");
             statement.setInt(1, 0);
             statement.setInt(2, habbo.getHabboInfo().getId());
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                try
+                while (set.next())
                 {
-                    HabboItem item = Emulator.getGameEnvironment().getItemManager().loadHabboItem(set);
+                    try
+                    {
+                        HabboItem item = Emulator.getGameEnvironment().getItemManager().loadHabboItem(set);
 
-                    if (item != null)
-                    {
-                        itemsList.put(set.getInt("id"), item);
+                        if (item != null)
+                        {
+                            itemsList.put(set.getInt("id"), item);
+                        }
+                        else
+                        {
+                            Emulator.getLogging().logErrorLine("Failed to load HabboItem: " + set.getInt("id"));
+                        }
                     }
-                    else
+                    catch (SQLException e)
                     {
-                        Emulator.getLogging().logErrorLine("Failed to load HabboItem: " + set.getInt("id"));
+                        Emulator.getLogging().logSQLException(e);
                     }
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
                 }
             }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {

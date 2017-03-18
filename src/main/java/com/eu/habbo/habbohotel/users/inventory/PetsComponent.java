@@ -10,6 +10,7 @@ import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,21 +30,19 @@ public class PetsComponent
     {
         synchronized (this.pets)
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM users_pets WHERE user_id = ? AND room_id = 0"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM users_pets WHERE user_id = ? AND room_id = 0");
                 statement.setInt(1, habbo.getHabboInfo().getId());
-                ResultSet set = statement.executeQuery();
 
-                while (set.next())
+                try (ResultSet set = statement.executeQuery())
                 {
-                    this.pets.put(set.getInt("id"), PetManager.loadPet(set));
+                    while (set.next())
+                    {
+                        this.pets.put(set.getInt("id"), PetManager.loadPet(set));
+                    }
                 }
-
-                set.close();
-                statement.close();
-                statement.getConnection().close();
-            } catch (SQLException e)
+            }
+            catch (SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
             }

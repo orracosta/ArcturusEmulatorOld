@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.pets;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,18 +43,16 @@ public class HorsePet extends Pet
     {
         if(this.needsUpdate)
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users_pets SET hair_style = ?, hair_color = ?, saddle = ?, ride = ? WHERE id = ?"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users_pets SET hair_style = ?, hair_color = ?, saddle = ?, ride = ? WHERE id = ?");
                 statement.setInt(1, this.hairStyle);
                 statement.setInt(2, this.hairColor);
                 statement.setString(3, this.hasSaddle ? "1" : "0");
                 statement.setString(4, this.anyoneCanRide ? "1" : "0");
                 statement.setInt(5, super.getId());
                 statement.execute();
-                statement.close();
-                statement.getConnection().close();
-            } catch (SQLException e)
+            }
+            catch (SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
             }

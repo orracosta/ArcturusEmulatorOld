@@ -58,18 +58,12 @@ public class RoomManager {
     private void loadRoomModels()
     {
         this.roomLayouts.clear();
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM room_models"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM room_models");
-            ResultSet set = statement.executeQuery();
-
             while(set.next())
             {
                 this.roomLayouts.add(new RoomLayout(set));
             }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {
@@ -80,26 +74,22 @@ public class RoomManager {
     public CustomRoomLayout loadCustomLayout(Room room)
     {
         RoomLayout layout = null;
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM room_models_custom WHERE id = ? LIMIT 1"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM room_models_custom WHERE id = ? LIMIT 1");
             statement.setInt(1, room.getId());
-            ResultSet set = statement.executeQuery();
-
-            if(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                layout = new CustomRoomLayout(set, room);
+                if (set.next())
+                {
+                    layout = new CustomRoomLayout(set, room);
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
-            e.printStackTrace();
             Emulator.getLogging().logSQLException(e);
         }
+
         return (CustomRoomLayout) layout;
     }
 
@@ -107,18 +97,12 @@ public class RoomManager {
     {
         this.roomCategories.clear();
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM navigator_flatcats"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM navigator_flatcats");
-            ResultSet set = statement.executeQuery();
-
             while(set.next())
             {
                 this.roomCategories.put(set.getInt("id"), new RoomCategory(set));
             }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {
@@ -128,21 +112,17 @@ public class RoomManager {
 
     public void loadPublicRooms()
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM rooms WHERE is_public = ? OR is_staff_picked = ? ORDER BY id DESC"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM rooms WHERE is_public = ? OR is_staff_picked = ? ORDER BY id DESC");
             statement.setString(1, "1");
             statement.setString(2, "1");
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                this.activeRooms.put(set.getInt("id"), new Room(set));
+                while (set.next())
+                {
+                    this.activeRooms.put(set.getInt("id"), new Room(set));
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -153,34 +133,31 @@ public class RoomManager {
     public THashMap<Integer, List<Room>> findRooms(NavigatorFilterField filterField, String value)
     {
         THashMap<Integer, List<Room>> rooms = new THashMap<Integer, List<Room>>();
-        try
+        String query = filterField.databaseQuery + " AND rooms.state != 'invisible' ORDER BY rooms.users, rooms.id DESC LIMIT " + Emulator.getConfig().getValue("hotel.navigator.search.maxresults");
+
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement(query))
         {
-            String query = filterField.databaseQuery + " AND rooms.state != 'invisible' ORDER BY rooms.users, rooms.id DESC LIMIT " + Emulator.getConfig().getValue("hotel.navigator.search.maxresults");
-            PreparedStatement statement = Emulator.getDatabase().prepare(query);
             statement.setString(1, (filterField.comparator == NavigatorFilterComparator.EQUALS ? value : "%" + value + "%"));
-            ResultSet set = statement.executeQuery();
-
-            while (set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                Room room = this.activeRooms.get(set.getInt("id"));
-
-                if (room == null)
+                while (set.next())
                 {
-                    room = new Room(set);
-                    this.activeRooms.put(set.getInt("id"), room);
-                }
+                    Room room = this.activeRooms.get(set.getInt("id"));
 
-                if (!rooms.containsKey(set.getInt("category")))
-                {
-                    rooms.put(set.getInt("category"), new ArrayList<Room>());
-                }
+                    if (room == null)
+                    {
+                        room = new Room(set);
+                        this.activeRooms.put(set.getInt("id"), room);
+                    }
 
-                rooms.get(set.getInt("category")).add(room);
+                    if (!rooms.containsKey(set.getInt("category")))
+                    {
+                        rooms.put(set.getInt("category"), new ArrayList<Room>());
+                    }
+
+                    rooms.get(set.getInt("category")).add(room);
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -296,20 +273,16 @@ public class RoomManager {
 
         List<Room> rooms = new ArrayList<Room>();
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM rooms WHERE owner_name = ? ORDER BY id DESC LIMIT 25"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM rooms WHERE owner_name = ? ORDER BY id DESC LIMIT 25");
             statement.setString(1, username);
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                rooms.add(this.loadRoom(set.getInt("id")));
+                while (set.next())
+                {
+                    rooms.add(this.loadRoom(set.getInt("id")));
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -335,19 +308,18 @@ public class RoomManager {
             return room;
         }
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM rooms WHERE id = ? LIMIT 1"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM rooms WHERE id = ? LIMIT 1");
             statement.setInt(1, id);
-            ResultSet set = statement.executeQuery();
-            while(set.next())
+
+            try (ResultSet set = statement.executeQuery())
             {
-                room = new Room(set);
-                room.loadData();
+                while (set.next())
+                {
+                    room = new Room(set);
+                    room.loadData();
+                }
             }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
 
             if(room != null)
             {
@@ -422,20 +394,17 @@ public class RoomManager {
 
     public void loadRoomsForHabbo(Habbo habbo)
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM rooms WHERE owner_id = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM rooms WHERE owner_id = ?");
             statement.setInt(1, habbo.getHabboInfo().getId());
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                if(!this.activeRooms.containsKey(set.getInt("id")))
-                    this.activeRooms.put(set.getInt("id"), new Room(set));
+                while (set.next())
+                {
+                    if (!this.activeRooms.containsKey(set.getInt("id")))
+                        this.activeRooms.put(set.getInt("id"), new Room(set));
+                }
             }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {
@@ -516,38 +485,20 @@ public class RoomManager {
     public RoomLayout loadLayout(String name)
     {
         RoomLayout layout = null;
-        PreparedStatement statement = null;
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM room_models WHERE name LIKE ? LIMIT 1"))
         {
-            statement = Emulator.getDatabase().prepare("SELECT * FROM room_models WHERE name LIKE ? LIMIT 1");
             statement.setString(1, name);
-            ResultSet set = statement.executeQuery();
-
-            if (set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                layout = new RoomLayout(set);
+                if (set.next())
+                {
+                    layout = new RoomLayout(set);
+                }
             }
-
-            set.close();
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
-        }
-        finally
-        {
-            if (statement != null)
-            {
-                try
-                {
-                    statement.close();
-                    statement.getConnection().close();
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                }
-            }
         }
 
         return layout;
@@ -574,14 +525,11 @@ public class RoomManager {
                 h.getClient().sendResponse(new RoomScoreComposer(room.getScore(), !this.hasVotedForRoom(h, room)));
             }
 
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO room_votes VALUES (?, ?)"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO room_votes VALUES (?, ?)");
                 statement.setInt(1, habbo.getHabboInfo().getId());
                 statement.setInt(2, room.getId());
                 statement.execute();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {
@@ -1041,15 +989,12 @@ public class RoomManager {
 
     void logEnter(Habbo habbo, Room room)
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO room_enter_log (room_id, user_id, timestamp) VALUES(?, ?, ?)"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO room_enter_log (room_id, user_id, timestamp) VALUES(?, ?, ?)");
             statement.setInt(1, room.getId());
             statement.setInt(2, habbo.getHabboInfo().getId());
             statement.setInt(3, Emulator.getIntUnixTimestamp());
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -1094,15 +1039,12 @@ public class RoomManager {
         Room room = habbo.getHabboInfo().getCurrentRoom();
         if(room != null)
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE room_enter_log SET exit_timestamp = ? WHERE user_id = ? AND room_id = ? ORDER BY timestamp DESC LIMIT 1"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE room_enter_log SET exit_timestamp = ? WHERE user_id = ? AND room_id = ? ORDER BY timestamp DESC LIMIT 1");
                 statement.setInt(1, Emulator.getIntUnixTimestamp());
                 statement.setInt(2, habbo.getHabboInfo().getId());
                 statement.setInt(3, room.getId());
                 statement.execute();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {
@@ -1246,25 +1188,21 @@ public class RoomManager {
     {
         ArrayList<Room> rooms = new ArrayList<Room>();
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username AS owner_name, rooms.* FROM rooms INNER JOIN users ON owner_id = users.id WHERE name LIKE ? ORDER BY id DESC LIMIT 25"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT users.username AS owner_name, rooms.* FROM rooms INNER JOIN users ON owner_id = users.id WHERE name LIKE ? ORDER BY id DESC LIMIT 25");
             statement.setString(1, "%"+name+"%");
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                if(this.activeRooms.containsKey(set.getInt("id")))
-                    continue;
+                while (set.next())
+                {
+                    if (this.activeRooms.containsKey(set.getInt("id")))
+                        continue;
 
-                Room r = new Room(set);
-                rooms.add(r);
-                this.activeRooms.put(r.getId(), r);
+                    Room r = new Room(set);
+                    rooms.add(r);
+                    this.activeRooms.put(r.getId(), r);
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -1322,26 +1260,22 @@ public class RoomManager {
     {
         ArrayList<Room> rooms = new ArrayList<Room>();
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username AS owner_name, rooms.* FROM rooms INNER JOIN users ON rooms.owner_id = users.id WHERE name LIKE ? AND guild_id != 0 ORDER BY id DESC LIMIT 25"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT users.username AS owner_name, rooms.* FROM rooms INNER JOIN users ON rooms.owner_id = users.id WHERE name LIKE ? AND guild_id != 0 ORDER BY id DESC LIMIT 25");
             statement.setString(1, "%"+name+"%");
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                if(this.activeRooms.containsKey(set.getInt("id")))
-                    continue;
+                while (set.next())
+                {
+                    if (this.activeRooms.containsKey(set.getInt("id")))
+                        continue;
 
-                Room r = new Room(set);
-                rooms.add(r);
+                    Room r = new Room(set);
+                    rooms.add(r);
 
-                this.activeRooms.put(r.getId(), r);
+                    this.activeRooms.put(r.getId(), r);
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -1399,40 +1333,35 @@ public class RoomManager {
     {
         ArrayList<Room> rooms = new ArrayList<Room>();
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT rooms.* FROM room_enter_log INNER JOIN rooms ON room_enter_log.room_id = rooms.id WHERE user_id = ? AND timestamp >= ? GROUP BY rooms.id ORDER BY timestamp DESC LIMIT 25"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT rooms.* FROM room_enter_log INNER JOIN rooms ON room_enter_log.room_id = rooms.id WHERE user_id = ? AND timestamp >= ? GROUP BY rooms.id ORDER BY timestamp DESC LIMIT 25");
             statement.setInt(1, habbo.getHabboInfo().getId());
             statement.setInt(2, Emulator.getIntUnixTimestamp() - 259200);
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                Room room = this.activeRooms.get(set.getInt("id"));
-
-                if(room == null)
+                while (set.next())
                 {
-                    room = new Room(set);
+                    Room room = this.activeRooms.get(set.getInt("id"));
 
-                    this.activeRooms.put(room.getId(), room);
+                    if (room == null)
+                    {
+                        room = new Room(set);
+
+                        this.activeRooms.put(room.getId(), room);
+                    }
+
+                    rooms.add(room);
                 }
-
-                rooms.add(room);
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
-
-            Collections.sort(rooms);
-
-            return rooms;
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
         }
-        return new ArrayList<Room>();
+
+        Collections.sort(rooms);
+
+        return rooms;
     }
 
     public ArrayList<Room> getRoomsFavourite(Habbo habbo)
@@ -1461,27 +1390,23 @@ public class RoomManager {
     {
         ArrayList<Room> rooms = new ArrayList<Room>();
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT rooms.* FROM rooms INNER JOIN room_rights ON room_rights.room_id = rooms.id WHERE room_rights.user_id = ? LIMIT 30 ORDER BY room.id DESC"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT rooms.* FROM rooms INNER JOIN room_rights ON room_rights.room_id = rooms.id WHERE room_rights.user_id = ? LIMIT 30 ORDER BY room.id DESC");
             statement.setInt(1, habbo.getHabboInfo().getId());
-            ResultSet set = statement.executeQuery();
-
-            while (set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                if (this.activeRooms.containsKey(set.getInt("id")))
+                while (set.next())
                 {
-                    rooms.add(this.activeRooms.get(set.getInt("id")));
-                }
-                else
-                {
-                    rooms.add(new Room(set));
+                    if (this.activeRooms.containsKey(set.getInt("id")))
+                    {
+                        rooms.add(this.activeRooms.get(set.getInt("id")));
+                    }
+                    else
+                    {
+                        rooms.add(new Room(set));
+                    }
                 }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -1599,9 +1524,8 @@ public class RoomManager {
 
     public CustomRoomLayout insertCustomLayout(Room room, String map, int doorX, int doorY, int doorDirection)
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO room_models_custom (id, name, door_x, door_y, door_dir, heightmap) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE door_x = ?, door_y = ?, door_dir = ?, heightmap = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO room_models_custom (id, name, door_x, door_y, door_dir, heightmap) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE door_x = ?, door_y = ?, door_dir = ?, heightmap = ?");
             statement.setInt(1, room.getId());
             statement.setString(2, "custom_" + room.getId());
             statement.setInt(3, doorX);
@@ -1613,8 +1537,6 @@ public class RoomManager {
             statement.setInt(9, doorDirection);
             statement.setString(10, map);
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {

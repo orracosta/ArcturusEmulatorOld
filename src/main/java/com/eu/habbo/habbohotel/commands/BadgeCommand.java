@@ -9,6 +9,7 @@ import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -63,18 +64,19 @@ public class BadgeCommand extends Command
             }
             else
             {
-                try
+                try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
                 {
-                    PreparedStatement statement = Emulator.getDatabase().prepare("SELECT COUNT(slot_id) FROM users_badges INNER JOIN users ON users.id = user_id WHERE users.username = ? AND badge_code = ? LIMIT 1");
-                    statement.setString(1, params[1]);
-                    statement.setString(2, params[2]);
-                    ResultSet set = statement.executeQuery();
+                    boolean found = false;
 
-                    boolean found = set.next();
-
-                    set.close();
-                    statement.close();
-                    statement.getConnection().close();
+                    try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(slot_id) FROM users_badges INNER JOIN users ON users.id = user_id WHERE users.username = ? AND badge_code = ? LIMIT 1"))
+                    {
+                        statement.setString(1, params[1]);
+                        statement.setString(2, params[2]);
+                        try (ResultSet set = statement.executeQuery())
+                        {
+                            found = set.next();
+                        }
+                    }
 
                     if(found)
                     {
@@ -83,12 +85,12 @@ public class BadgeCommand extends Command
                     }
                     else
                     {
-                        PreparedStatement s = Emulator.getDatabase().prepare("INSERT INTO users_badges VALUES (null, (SELECT id FROM users WHERE username = ? LIMIT 1), 0, ?)");
-                        s.setString(1, params[1]);
-                        s.setString(2, params[2]);
-                        s.execute();
-                        s.close();
-                        s.getConnection().close();
+                        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO users_badges VALUES (null, (SELECT id FROM users WHERE username = ? LIMIT 1), 0, ?)"))
+                        {
+                            statement.setString(1, params[1]);
+                            statement.setString(2, params[2]);
+                            statement.execute();
+                        }
 
                         gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_badge.given").replace("%user%", params[1]).replace("%badge%", params[2]), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
                         return true;

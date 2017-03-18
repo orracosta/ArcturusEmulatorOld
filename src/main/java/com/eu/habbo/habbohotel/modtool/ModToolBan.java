@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.modtool;
 
 import com.eu.habbo.Emulator;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -47,10 +48,8 @@ public class ModToolBan implements Runnable
     {
         if(this.needsInsert)
         {
-            PreparedStatement statement = null;
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO bans (user_id, ip, machine_id, user_staff_id, timestamp, ban_expire, ban_reason, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"))
             {
-                statement = Emulator.getDatabase().prepare("INSERT INTO bans (user_id, ip, machine_id, user_staff_id, timestamp, ban_expire, ban_reason, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
                 statement.setInt(1, this.userId);
                 statement.setString(2, this.ip);
                 statement.setString(3, this.machineId);
@@ -60,27 +59,10 @@ public class ModToolBan implements Runnable
                 statement.setString(7, this.reason);
                 statement.setString(8, this.type);
                 statement.execute();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
-            }
-            finally
-            {
-                if (statement != null)
-                {
-                    try
-                    {
-                        statement.close();
-                        statement.getConnection().close();
-                    }
-                    catch (SQLException e)
-                    {
-                        Emulator.getLogging().logSQLException(e);
-                    }
-                }
             }
         }
     }

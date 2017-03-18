@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.items.Item;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.procedure.TObjectProcedure;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,56 +34,52 @@ public class CraftingManager
         synchronized (this.altars)
         {
 
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM crafting_altars_recipes " +
+                    "INNER JOIN crafting_recipes ON crafting_altars_recipes.recipe_id = crafting_recipes.id " +
+                    "INNER JOIN crafting_recipes_ingredients ON crafting_recipes.id = crafting_recipes_ingredients.recipe_id " +
+                    "WHERE crafting_recipes.enabled = ? ORDER BY altar_id ASC"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM crafting_altars_recipes " +
-                        "INNER JOIN crafting_recipes ON crafting_altars_recipes.recipe_id = crafting_recipes.id " +
-                        "INNER JOIN crafting_recipes_ingredients ON crafting_recipes.id = crafting_recipes_ingredients.recipe_id " +
-                        "WHERE crafting_recipes.enabled = ? ORDER BY altar_id ASC");
-
                 statement.setString(1, "1");
-                ResultSet set = statement.executeQuery();
-
-                while (set.next())
+                try (ResultSet set = statement.executeQuery())
                 {
-                    Item item = Emulator.getGameEnvironment().getItemManager().getItem(set.getInt("altar_id"));
-
-                    if (item != null)
+                    while (set.next())
                     {
-                        if (!this.altars.containsKey(item))
+                        Item item = Emulator.getGameEnvironment().getItemManager().getItem(set.getInt("altar_id"));
+
+                        if (item != null)
                         {
-                            this.altars.put(item, new CraftingAltar(item));
-                        }
-
-                        CraftingAltar altar = this.altars.get(item);
-
-                        if (altar != null)
-                        {
-                            CraftingRecipe recipe = altar.getRecipe(set.getInt("crafting_recipes_ingredients.recipe_id"));
-
-                            if (recipe == null)
+                            if (!this.altars.containsKey(item))
                             {
-                                recipe = new CraftingRecipe(set);
-                                altar.addRecipe(recipe);
+                                this.altars.put(item, new CraftingAltar(item));
                             }
 
-                            Item ingredientItem = Emulator.getGameEnvironment().getItemManager().getItem(set.getInt("crafting_recipes_ingredients.item_id"));
+                            CraftingAltar altar = this.altars.get(item);
 
-                            if (ingredientItem != null)
+                            if (altar != null)
                             {
-                                recipe.addIngredient(ingredientItem, set.getInt("crafting_recipes_ingredients.amount"));
-                                altar.addIngredient(ingredientItem);
-                            }
-                            else
-                            {
-                                Emulator.getLogging().logErrorLine("Unknown ingredient item " + set.getInt("crafting_recipes_ingredients.item_id"));
+                                CraftingRecipe recipe = altar.getRecipe(set.getInt("crafting_recipes_ingredients.recipe_id"));
+
+                                if (recipe == null)
+                                {
+                                    recipe = new CraftingRecipe(set);
+                                    altar.addRecipe(recipe);
+                                }
+
+                                Item ingredientItem = Emulator.getGameEnvironment().getItemManager().getItem(set.getInt("crafting_recipes_ingredients.item_id"));
+
+                                if (ingredientItem != null)
+                                {
+                                    recipe.addIngredient(ingredientItem, set.getInt("crafting_recipes_ingredients.amount"));
+                                    altar.addIngredient(ingredientItem);
+                                }
+                                else
+                                {
+                                    Emulator.getLogging().logErrorLine("Unknown ingredient item " + set.getInt("crafting_recipes_ingredients.item_id"));
+                                }
                             }
                         }
                     }
                 }
-                set.close();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {
@@ -144,28 +141,29 @@ public class CraftingManager
 
     public void dispose()
     {
-        try
+        synchronized (this.altars)
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE crafting_recipes SET remaining = ? WHERE id = ? LIMIT 1");
-            for (CraftingAltar altar : this.altars.values())
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE crafting_recipes SET remaining = ? WHERE id = ? LIMIT 1"))
             {
-                for (CraftingRecipe recipe : altar.getRecipes())
+                for (CraftingAltar altar : this.altars.values())
                 {
-                    if (recipe.isLimited())
+                    for (CraftingRecipe recipe : altar.getRecipes())
                     {
-                        statement.setInt(1, recipe.getRemaining());
-                        statement.setInt(2, recipe.getId());
+                        if (recipe.isLimited())
+                        {
+                            statement.setInt(1, recipe.getRemaining());
+                            statement.setInt(2, recipe.getId());
 
-                        statement.execute();
+                            statement.addBatch();
+                        }
                     }
                 }
+                statement.executeBatch();
             }
-            statement.close();
-            statement.getConnection().close();
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
+            catch (SQLException e)
+            {
+                Emulator.getLogging().logSQLException(e);
+            }
         }
 
         this.altars.clear();

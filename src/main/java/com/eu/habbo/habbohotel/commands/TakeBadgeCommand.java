@@ -9,6 +9,7 @@ import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.messages.outgoing.inventory.InventoryBadgesComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 public class TakeBadgeCommand extends Command
@@ -54,12 +55,12 @@ public class TakeBadgeCommand extends Command
 
             gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_take_badge"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
 
-            PreparedStatement statement = Emulator.getDatabase().prepare("DELETE users_badges FROM users_badges INNER JOIN users ON users_badges.user_id = users.id WHERE users.username LIKE ? AND badge_code LIKE ?");
-            statement.setString(1, username);
-            statement.setString(2, badge);
-            statement.execute();
-            statement.close();
-            statement.getConnection().close();
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE users_badges FROM users_badges INNER JOIN users ON users_badges.user_id = users.id WHERE users.username LIKE ? AND badge_code LIKE ?"))
+            {
+                statement.setString(1, username);
+                statement.setString(2, badge);
+                statement.execute();
+            }
         }
 
         return true;

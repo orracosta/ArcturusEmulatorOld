@@ -6,9 +6,8 @@ import com.eu.habbo.messages.ISerialize;
 import com.eu.habbo.messages.ServerMessage;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.procedure.TObjectProcedure;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 
 public class GuildForum implements ISerialize
 {
@@ -22,23 +21,19 @@ public class GuildForum implements ISerialize
 
         this.threads = new TIntObjectHashMap<GuildForumThread>();
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT author.username as author_name, author.look as look, COALESCE(admin.username, '') as admin_name, guilds_forums.id as thread_id, 0 as row_number, guilds_forums.* FROM guilds_forums " +
+                "INNER JOIN users AS author ON author.id = user_id " +
+                "LEFT JOIN users AS admin ON guilds_forums.admin_id = admin.id " +
+                "WHERE guild_id = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT author.username as author_name, author.look as look, COALESCE(admin.username, '') as admin_name, guilds_forums.id as thread_id, 0 as row_number, guilds_forums.* FROM guilds_forums " +
-                                                                         "INNER JOIN users AS author ON author.id = user_id " +
-                                                                         "LEFT JOIN users AS admin ON guilds_forums.admin_id = admin.id " +
-                                                                         "WHERE guild_id = ?");
             statement.setInt(1, this.guild);
-            ResultSet set = statement.executeQuery();
-
-            while (set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                this.threads.put(set.getInt("id"), new GuildForumThread(set));
+                while (set.next())
+                {
+                    this.threads.put(set.getInt("id"), new GuildForumThread(set));
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -55,27 +50,24 @@ public class GuildForum implements ISerialize
     {
         int timestamp = Emulator.getIntUnixTimestamp();
         GuildForumThread thread = null;
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO guilds_forums (guild_id, user_id, subject, message, timestamp) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO guilds_forums (guild_id, user_id, subject, message, timestamp) VALUES (?, ?, ?, ?, ?)");
             statement.setInt(1, this.guild);
             statement.setInt(2, habbo.getClient().getHabbo().getHabboInfo().getId());
             statement.setString(3, subject);
             statement.setString(4, message);
             statement.setInt(5, timestamp);
             statement.execute();
-            ResultSet set = statement.getGeneratedKeys();
 
-            if(set.next())
+            try (ResultSet set = statement.getGeneratedKeys())
             {
-                thread = new GuildForumThread(habbo, set.getInt(1), this.guild, subject, message, timestamp);
-                this.threads.put(set.getInt(1),  //Thread id
-                        thread);
+                if (set.next())
+                {
+                    thread = new GuildForumThread(habbo, set.getInt(1), this.guild, subject, message, timestamp);
+                    this.threads.put(set.getInt(1),  //Thread id
+                            thread);
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {

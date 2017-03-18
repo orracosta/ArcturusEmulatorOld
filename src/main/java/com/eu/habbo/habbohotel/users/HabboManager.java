@@ -125,36 +125,15 @@ public class HabboManager
                     Emulator.getPluginManager().fireEvent(new UserRegisteredEvent(habbo));
                 }
 
-                if (!Emulator.debugging)
+                try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET auth_ticket = ? WHERE auth_ticket = ? AND users.id = ? LIMIT 1"))
                 {
-                    PreparedStatement ssoStatement = null;
-
-                    try
-                    {
-                        ssoStatement = Emulator.getDatabase().prepare("UPDATE users SET auth_ticket = ? WHERE auth_ticket = ? AND users.id = ? LIMIT 1");
-                        ssoStatement.setString(1, "");
-                        ssoStatement.setString(2, sso);
-                        ssoStatement.setInt(3, habbo.getHabboInfo().getId());
-                    }
-                    catch (SQLException e)
-                    {
-                        Emulator.getLogging().logSQLException(e);
-                    }
-                    finally
-                    {
-                        if (ssoStatement != null)
-                        {
-                            try
-                            {
-                                ssoStatement.close();
-                                ssoStatement.getConnection().close();
-                            }
-                            catch (SQLException e)
-                            {
-                                Emulator.getLogging().logSQLException(e);
-                            }
-                        }
-                    }
+                    statement.setString(1, "");
+                    statement.setString(2, sso);
+                    statement.setInt(3, habbo.getHabboInfo().getId());
+                }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
                 }
             }
 
@@ -171,20 +150,16 @@ public class HabboManager
     public static HabboInfo getOfflineHabboInfo(int id)
     {
         HabboInfo info = null;
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE id = ? LIMIT 1"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM users WHERE id = ? LIMIT 1");
             statement.setInt(1, id);
-            ResultSet set = statement.executeQuery();
-
-            if(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                info = new HabboInfo(set);
+                if (set.next())
+                {
+                    info = new HabboInfo(set);
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {
@@ -198,21 +173,17 @@ public class HabboManager
     {
         HabboInfo info = null;
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE username = ? LIMIT 1"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM users WHERE username = ? LIMIT 1");
             statement.setString(1, username);
 
-            ResultSet set = statement.executeQuery();
-
-            if(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                info = new HabboInfo(set);
+                if (set.next())
+                {
+                    info = new HabboInfo(set);
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {
@@ -274,23 +245,21 @@ public class HabboManager
     public ArrayList<HabboInfo> getCloneAccounts(Habbo habbo, int limit)
     {
         ArrayList<HabboInfo> habboInfo = new ArrayList<HabboInfo>();
-        try
+
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE ip_register = ? OR ip_current = ? AND id != ? ORDER BY id DESC LIMIT ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM users WHERE ip_register = ? OR ip_current = ? AND id != ? ORDER BY id DESC LIMIT ?");
             statement.setString(1, habbo.getHabboInfo().getIpRegister());
             statement.setString(2, habbo.getClient().getChannel().remoteAddress().toString());
             statement.setInt(3, habbo.getHabboInfo().getId());
             statement.setInt(4, limit);
-            ResultSet set = statement.executeQuery();
 
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                habboInfo.add(new HabboInfo(set));
+                while (set.next())
+                {
+                    habboInfo.add(new HabboInfo(set));
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -323,9 +292,7 @@ public class HabboManager
         }
         else
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users SET rank = ? WHERE id = ? LIMIT 1");
-
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET rank = ? WHERE id = ? LIMIT 1"))
             {
                 statement.setInt(1, rankId);
                 statement.setInt(2, userId);
@@ -334,21 +301,6 @@ public class HabboManager
             catch (SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
-            }
-            finally
-            {
-                if (statement != null)
-                {
-                    try
-                    {
-                        statement.close();
-                        statement.getConnection().close();
-                    }
-                    catch (SQLException e)
-                    {
-                        Emulator.getLogging().logSQLException(e);
-                    }
-                }
             }
         }
     }

@@ -15,9 +15,7 @@ import com.eu.habbo.plugin.events.bots.BotPlacedEvent;
 import gnu.trove.map.hash.THashMap;
 
 import java.lang.reflect.Method;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Map;
 
 public class BotManager
@@ -75,79 +73,43 @@ public class BotManager
      */
     public Bot createBot(THashMap<String, String> data, String type)
     {
-        PreparedStatement statement = null;
-        try
+        Bot bot = null;
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO bots (user_id, room_id, name, motto, figure, gender, type) VALUES (0, 0, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
         {
-            Bot bot = null;
-            statement = Emulator.getDatabase().prepare("INSERT INTO bots (user_id, room_id, name, motto, figure, gender, type) VALUES (0, 0, ?, ?, ?, ?, ?)");
             statement.setString(1, data.get("name"));
             statement.setString(2, data.get("motto"));
             statement.setString(3, data.get("figure"));
             statement.setString(4, data.get("gender").toUpperCase());
             statement.setString(5, type);
             statement.execute();
-            ResultSet set = statement.getGeneratedKeys();
-            while(set.next())
+            try (ResultSet set = statement.getGeneratedKeys())
             {
-                PreparedStatement stmt = null;
-
-                try
+                if (set.next())
                 {
-                    stmt = Emulator.getDatabase().prepare("SELECT users.username AS owner_name, bots.* FROM bots LEFT JOIN users ON bots.user_id = users.id WHERE bots.id = ? LIMIT 1");
-
-                    stmt.setInt(1, set.getInt(1));
-                    ResultSet resultSet = stmt.executeQuery();
-
-                    if (resultSet.next())
+                    try (PreparedStatement stmt = connection.prepareStatement("SELECT users.username AS owner_name, bots.* FROM bots LEFT JOIN users ON bots.user_id = users.id WHERE bots.id = ? LIMIT 1"))
                     {
-                        bot = this.loadBot(resultSet);
+                        stmt.setInt(1, set.getInt(1));
+                        try (ResultSet resultSet = stmt.executeQuery())
+                        {
+                            if (resultSet.next())
+                            {
+                                bot = this.loadBot(resultSet);
+                            }
+                        }
                     }
-                    resultSet.close();
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                }
-                finally
-                {
-                    if (stmt != null)
+                    catch (SQLException e)
                     {
-                        try
-                        {
-                            stmt.close();
-                            stmt.getConnection().close();
-                        }
-                        catch (SQLException e)
-                        {
-                            Emulator.getLogging().logSQLException(e);
-                        }
+                        Emulator.getLogging().logSQLException(e);
                     }
                 }
             }
-            set.close();
-
-            return bot;
         }
         catch(SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
         }
-        finally
-        {
-            if (statement != null)
-            {
-                try
-                {
-                    statement.close();
-                    statement.getConnection().close();
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                }
-            }
-        }
-        return null;
+
+        return bot;
     }
 
     /**

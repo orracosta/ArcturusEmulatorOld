@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.google.gson.Gson;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -29,14 +30,11 @@ public class GiveCredits extends RCONMessage<GiveCredits.JSONGiveCredits>
         }
         else
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users SET credits = credits + ? WHERE username = ? LIMIT 1");
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET credits = credits + ? WHERE username = ? LIMIT 1"))
             {
                 statement.setInt(1, object.credits);
                 statement.setString(2, object.username);
                 statement.execute();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {

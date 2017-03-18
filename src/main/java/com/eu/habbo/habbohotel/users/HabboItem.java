@@ -11,6 +11,7 @@ import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.util.pathfinding.PathFinder;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -234,89 +235,48 @@ public abstract class HabboItem implements Runnable, IEventTriggers
     @Override
     public void run()
     {
-        if(this.needsUpdate)
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
-            PreparedStatement statement = null;
-            try
+            if (this.needsDelete)
             {
-                statement = Emulator.getDatabase().prepare("UPDATE items SET user_id = ?, room_id = ?, wall_pos = ?, x = ?, y = ?, z = ?, rot = ?, extra_data = ?, limited_data = ? WHERE id = ?");
-                statement.setInt(1, this.userId);
-                statement.setInt(2, this.roomId);
-                statement.setString(3, this.wallPosition);
-                statement.setInt(4, this.x);
-                statement.setInt(5, this.y);
-                statement.setDouble(6, this.z);
-                statement.setInt(7, this.rotation);
-                statement.setString(8, this instanceof InteractionGuildGate ? "" : this.getDatabaseExtraData());
-                statement.setString(9, this.limitedStack + ":" + this.limitedSells);
-                statement.setInt(10, this.id);
-                statement.execute();
-                statement.close();
-                statement.getConnection().close();
-            }
-            catch(SQLException e)
-            {
-                Emulator.getLogging().logSQLException(e);
-                Emulator.getLogging().logErrorLine("SQLException trying to save HabboItem: " + this.toString());
-            }
-            catch (Exception ex)
-            {
-                Emulator.getLogging().logErrorLine(ex);
-            }
-            finally
-            {
-                try
+                this.needsUpdate = false;
+                this.needsDelete = false;
+
+                try (PreparedStatement statement = connection.prepareStatement("DELETE FROM items WHERE id = ?"))
                 {
-                    if (statement != null)
-                    {
-                        statement.close();
-                        statement.getConnection().close();
-                    }
+                    statement.setInt(1, this.getId());
+                    statement.execute();
+                }
+            }
+            else if (this.needsUpdate)
+            {
+                try (PreparedStatement statement = connection.prepareStatement("UPDATE items SET user_id = ?, room_id = ?, wall_pos = ?, x = ?, y = ?, z = ?, rot = ?, extra_data = ?, limited_data = ? WHERE id = ?"))
+                {
+                    statement.setInt(1, this.userId);
+                    statement.setInt(2, this.roomId);
+                    statement.setString(3, this.wallPosition);
+                    statement.setInt(4, this.x);
+                    statement.setInt(5, this.y);
+                    statement.setDouble(6, this.z);
+                    statement.setInt(7, this.rotation);
+                    statement.setString(8, this instanceof InteractionGuildGate ? "" : this.getDatabaseExtraData());
+                    statement.setString(9, this.limitedStack + ":" + this.limitedSells);
+                    statement.setInt(10, this.id);
+                    statement.execute();
                 }
                 catch (SQLException e)
                 {
                     Emulator.getLogging().logSQLException(e);
+                    Emulator.getLogging().logErrorLine("SQLException trying to save HabboItem: " + this.toString());
                 }
+
+                this.needsUpdate = false;
             }
 
-            this.needsUpdate = false;
         }
-        if(this.needsDelete)
+        catch (SQLException e)
         {
-            this.needsUpdate = false;
-            this.needsDelete = false;
-
-            PreparedStatement statement = null;
-
-            try
-            {
-                statement = Emulator.getDatabase().prepare("DELETE FROM items WHERE id = ?");
-                statement.setInt(1, this.getId());
-                statement.execute();
-            }
-            catch(SQLException e)
-            {
-                Emulator.getLogging().logSQLException(e);
-            }
-            catch (Exception ex)
-            {
-                Emulator.getLogging().logErrorLine(ex);
-            }
-            finally
-            {
-                if (statement != null)
-                {
-                    try
-                    {
-                        statement.close();
-                        statement.getConnection().close();
-                    }
-                    catch (SQLException e)
-                    {
-                        Emulator.getLogging().logSQLException(e);
-                    }
-                }
-            }
+            Emulator.getLogging().logSQLException(e);
         }
     }
 

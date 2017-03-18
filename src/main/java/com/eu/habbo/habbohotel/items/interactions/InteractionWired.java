@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -65,9 +66,8 @@ public abstract class InteractionWired extends HabboItem
                 wiredData = "";
             }
 
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE items SET wired_data = ? WHERE id = ?"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE items SET wired_data = ? WHERE id = ?");
                 if(this.getRoomId() != 0)
                 {
                     statement.setString(1, wiredData);
@@ -78,9 +78,8 @@ public abstract class InteractionWired extends HabboItem
                 }
                 statement.setInt(2, this.getId());
                 statement.execute();
-                statement.close();
-                statement.getConnection().close();
-            } catch (SQLException e)
+            }
+            catch (SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
             }

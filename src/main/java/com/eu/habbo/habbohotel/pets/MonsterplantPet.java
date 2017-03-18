@@ -13,6 +13,7 @@ import com.eu.habbo.messages.outgoing.rooms.pets.PetStatusUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import javafx.util.Pair;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -135,9 +136,8 @@ public class MonsterplantPet extends Pet implements IPetLook
         {
             super.run();
 
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users_pets SET mp_type = ?, mp_color = ?, mp_nose = ?, mp_eyes = ?, mp_mouth = ?, mp_nose_color = ?, mp_eyes_color = ?, mp_mouth_color = ?, mp_death_timestamp = ?, mp_breedable = ?, mp_allow_breed = ? WHERE id = ?"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users_pets SET mp_type = ?, mp_color = ?, mp_nose = ?, mp_eyes = ?, mp_mouth = ?, mp_nose_color = ?, mp_eyes_color = ?, mp_mouth_color = ?, mp_death_timestamp = ?, mp_breedable = ?, mp_allow_breed = ? WHERE id = ?");
                 statement.setInt(1, this.type);
                 statement.setInt(2, this.hue);
                 statement.setInt(3, this.nose);
@@ -151,8 +151,6 @@ public class MonsterplantPet extends Pet implements IPetLook
                 statement.setString(11, this.publiclyBreedable ? "1" : "0");
                 statement.setInt(12, this.id);
                 statement.execute();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {

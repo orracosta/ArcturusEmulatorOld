@@ -5,9 +5,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ISerialize;
 import com.eu.habbo.messages.ServerMessage;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,39 +74,35 @@ public class GuildForumThread implements ISerialize, Runnable
         this.addComment(new GuildForumComment(set, 0));
 
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT " +
+                "author.username AS author_name, " +
+                "COALESCE(admin.username, '') as admin_name, " +
+                "author.look, " +
+                "guilds_forums_comments.*" +
+                "FROM guilds_forums_comments " +
+                "INNER JOIN users AS author ON guilds_forums_comments.user_id = author.id " +
+                "LEFT JOIN users AS admin  ON guilds_forums_comments.admin_id = admin.id " +
+                "WHERE thread_id = ? " +
+                "ORDER BY id ASC"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT " +
-                                                                            "author.username AS author_name, " +
-                                                                            "COALESCE(admin.username, '') as admin_name, " +
-                                                                            "author.look, " +
-                                                                            "guilds_forums_comments.*" +
-                                                                        "FROM guilds_forums_comments " +
-                                                                        "INNER JOIN users AS author ON guilds_forums_comments.user_id = author.id " +
-                                                                        "LEFT JOIN users AS admin  ON guilds_forums_comments.admin_id = admin.id " +
-                                                                        "WHERE thread_id = ? " +
-                                                                        "ORDER BY id ASC");
             statement.setInt(1, this.threadId);
-            ResultSet commentSet = statement.executeQuery();
-
-            int index = 1;
-            while (commentSet.next())
+            try (ResultSet commentSet = statement.executeQuery())
             {
-                if (!commentSet.isLast())
+                int index = 1;
+                while (commentSet.next())
                 {
-                    this.comments.add(new GuildForumComment(commentSet, index));
-                }
-                else
-                {
-                    this.addComment(new GuildForumComment(commentSet, index));
-                }
+                    if (!commentSet.isLast())
+                    {
+                        this.comments.add(new GuildForumComment(commentSet, index));
+                    }
+                    else
+                    {
+                        this.addComment(new GuildForumComment(commentSet, index));
+                    }
 
-              ++index;
+                    ++index;
+                }
             }
-
-            commentSet.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -147,25 +141,21 @@ public class GuildForumThread implements ISerialize, Runnable
 
         GuildForumComment comment = new GuildForumComment(this.threadId, habbo.getHabboInfo().getId(), habbo.getHabboInfo().getUsername(), habbo.getHabboInfo().getLook(), message);
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO guilds_forums_comments (thread_id, user_id, timestamp, message) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO guilds_forums_comments (thread_id, user_id, timestamp, message) VALUES (?, ?, ?, ?)");
             statement.setInt(1, this.threadId);
             statement.setInt(2, habbo.getHabboInfo().getId());
             int nowTimestamp = Emulator.getIntUnixTimestamp();
             statement.setInt(3, nowTimestamp);
             statement.setString(4, message);
             statement.execute();
-            ResultSet set = statement.getGeneratedKeys();
-
-            if (set.next())
+            try (ResultSet set = statement.getGeneratedKeys())
             {
-                commentId = set.getInt(1);
+                if (set.next())
+                {
+                    commentId = set.getInt(1);
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -305,9 +295,8 @@ public class GuildForumThread implements ISerialize, Runnable
     @Override
     public void run()
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE guilds_forums SET message = ?, state = ?, pinned = ?, locked = ?, admin_id = ? WHERE id = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE guilds_forums SET message = ?, state = ?, pinned = ?, locked = ?, admin_id = ? WHERE id = ?");
             statement.setString(1, this.message);
             statement.setString(2, this.state.name());
             statement.setString(3, this.pinned ? "1" : "0");
@@ -315,8 +304,6 @@ public class GuildForumThread implements ISerialize, Runnable
             statement.setInt(5, this.adminId);
             statement.setInt(6, this.getId());
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {

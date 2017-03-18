@@ -87,7 +87,7 @@ public class GameEnvironment
 
     public void dispose()
     {
-        this.pointsScheduler.disposed = true;
+        this.pointsScheduler.setDisposed(true);
         this.pixelScheduler.setDisposed(true);
         this.creditsScheduler.setDisposed(true);
         this.craftingManager.dispose();

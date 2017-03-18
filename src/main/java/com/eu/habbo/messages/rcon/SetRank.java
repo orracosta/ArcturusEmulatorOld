@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.users.UserPermissionsComposer;
 import com.google.gson.Gson;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 public class SetRank extends RCONMessage<SetRank.JSONSetRank>
@@ -36,15 +37,11 @@ public class SetRank extends RCONMessage<SetRank.JSONSetRank>
         }
         else
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users SET rank = ? WHERE id = ? LIMIT 1");
-
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET rank = ? WHERE id = ? LIMIT 1"))
             {
                 statement.setInt(1, object.rank);
                 statement.setInt(2, object.userid);
                 statement.execute();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (Exception e)
             {

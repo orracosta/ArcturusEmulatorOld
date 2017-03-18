@@ -32,9 +32,7 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.set.hash.THashSet;
 
 import java.lang.reflect.Constructor;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -366,13 +364,13 @@ public class ItemManager {
      */
     public void loadItems()
     {
-        // proxyItem;
-        try
+        try (
+                Connection connection = Emulator.getDatabase().getDataSource().getConnection();
+                Statement statement = connection.createStatement();
+                ResultSet set = statement.executeQuery(("SELECT * FROM items_base ORDER BY id DESC"))
+            )
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM items_base ORDER BY id DESC");
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            while (set.next())
             {
                 try
                 {
@@ -388,9 +386,6 @@ public class ItemManager {
                     Emulator.getLogging().logErrorLine(e);
                 }
             }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {
@@ -404,11 +399,8 @@ public class ItemManager {
     public void loadCrackable()
     {
         this.crackableRewards.clear();
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM items_crackable"); ResultSet set = statement.executeQuery())
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM items_crackable");
-            ResultSet set = statement.executeQuery();
-
             while(set.next())
             {
                 try
@@ -420,9 +412,6 @@ public class ItemManager {
                     Emulator.getLogging().logErrorLine("Failed to load items_crackable item_id = " + set.getInt("ïtem_id"));
                 }
             }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -475,19 +464,12 @@ public class ItemManager {
     {
         this.soundTracks.clear();
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM soundtracks"); ResultSet set = statement.executeQuery())
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM soundtracks");
-            ResultSet set = statement.executeQuery();
-
             while(set.next())
             {
                 this.soundTracks.put(set.getString("code"), new SoundTrack(set));
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -513,32 +495,31 @@ public class ItemManager {
 
     public HabboItem createItem(int habboId, Item item, int limitedStack, int limitedSells, String extraData)
     {
-        PreparedStatement statement = null;
-        ResultSet set = null;
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO items (user_id, item_id, extra_data, limited_data) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
         {
-            statement = Emulator.getDatabase().prepare("INSERT INTO items (user_id, item_id, extra_data, limited_data) VALUES (?, ?, ?, ?)");
             statement.setInt(1, habboId);
             statement.setInt(2, item.getId());
             statement.setString(3, extraData);
             statement.setString(4, limitedStack + ":" + limitedSells);
             statement.execute();
 
-            set = statement.getGeneratedKeys();
-            if(set.next())
+            try (ResultSet set = statement.getGeneratedKeys())
             {
-                Class<? extends HabboItem> itemClass = item.getInteractionType().getType();
-
-                if(itemClass != null)
+                if (set.next())
                 {
-                    try
+                    Class<? extends HabboItem> itemClass = item.getInteractionType().getType();
+
+                    if (itemClass != null)
                     {
-                        return itemClass.getDeclaredConstructor(int.class, int.class, Item.class, String.class, int.class, int.class).newInstance(set.getInt(1), habboId, item, extraData, limitedStack, limitedSells);
-                    }
-                    catch (Exception e)
-                    {
-                        Emulator.getLogging().logDebugLine(e);
-                        return new InteractionDefault(set.getInt(1), habboId, item, extraData, limitedStack, limitedSells);
+                        try
+                        {
+                            return itemClass.getDeclaredConstructor(int.class, int.class, Item.class, String.class, int.class, int.class).newInstance(set.getInt(1), habboId, item, extraData, limitedStack, limitedSells);
+                        }
+                        catch (Exception e)
+                        {
+                            Emulator.getLogging().logDebugLine(e);
+                            return new InteractionDefault(set.getInt(1), habboId, item, extraData, limitedStack, limitedSells);
+                        }
                     }
                 }
             }
@@ -551,39 +532,15 @@ public class ItemManager {
         {
             Emulator.getLogging().logErrorLine(e);
         }
-        finally
-        {
-            if(set != null)
-                try
-                {
-                    set.close();
-                } catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-
-            if(statement != null)
-                try
-                {
-                    statement.close();
-                    statement.getConnection().close();
-                } catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-        }
         return null;
     }
 
     public void deleteItem(HabboItem item)
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM items WHERE id = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM items WHERE id = ?");
             statement.setInt(1, item.getId());
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -596,30 +553,28 @@ public class ItemManager {
         String extradata = Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "-" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "-" + Calendar.getInstance().get(Calendar.YEAR);
 
         HabboItem item = null;
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO items (user_id, item_id, extra_data) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO items (user_id, item_id, extra_data) VALUES (?, ?, ?)");
             statement.setInt(1, habbo.getHabboInfo().getId());
             statement.setInt(2, Emulator.getGameEnvironment().getCatalogManager().ecotronItem.getId());
             statement.setString(3, extradata);
             statement.execute();
 
-            ResultSet set = statement.getGeneratedKeys();
-
-            while(set.next() && item == null)
+            try (ResultSet set = statement.getGeneratedKeys())
             {
-                PreparedStatement preparedStatement = Emulator.getDatabase().prepare("INSERT INTO items_presents VALUES (?, ?)");
-                preparedStatement.setInt(1, set.getInt(1));
-                preparedStatement.setInt(2, Integer.valueOf(itemId));
-                preparedStatement.execute();
-                preparedStatement.close();
-                preparedStatement.getConnection().close();
+                try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO items_presents VALUES (?, ?)"))
+                {
+                    while (set.next() && item == null)
+                    {
+                        preparedStatement.setInt(1, set.getInt(1));
+                        preparedStatement.setInt(2, Integer.valueOf(itemId));
+                        preparedStatement.addBatch();
+                        item = new InteractionDefault(set.getInt(1), habbo.getHabboInfo().getId(), Emulator.getGameEnvironment().getCatalogManager().ecotronItem, extradata, 0, 0);
+                    }
 
-                item = new InteractionDefault(set.getInt(1), habbo.getHabboInfo().getId(), Emulator.getGameEnvironment().getCatalogManager().ecotronItem, extradata, 0, 0);
+                    preparedStatement.executeBatch();
+                }
             }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {
@@ -633,49 +588,46 @@ public class ItemManager {
     {
         Emulator.getThreading().run(new QueryDeleteHabboItem(box));
         HabboItem item = null;
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM items_presents WHERE item_id = ? LIMIT 1"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM items_presents WHERE item_id = ? LIMIT 1");
             statement.setInt(1, box.getId());
-            ResultSet rewardSet = statement.executeQuery();
-
-            if(rewardSet.next())
+            try (ResultSet rewardSet = statement.executeQuery())
             {
-                PreparedStatement preparedStatement = Emulator.getDatabase().prepare("INSERT INTO items (user_id, item_id) VALUES(?, ?)");
-                preparedStatement.setInt(1, habbo.getHabboInfo().getId());
-                preparedStatement.setInt(2, rewardSet.getInt("base_item_reward"));
-                preparedStatement.execute();
-
-                ResultSet set = preparedStatement.getGeneratedKeys();
-
-                if (set.next())
+                if (rewardSet.next())
                 {
-                    PreparedStatement request = Emulator.getDatabase().prepare("SELECT * FROM items WHERE id = ? LIMIT 1");
-                    request.setInt(1, set.getInt(1));
-
-                    ResultSet resultSet = request.executeQuery();
-
-                    if (resultSet.next())
+                    try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO items (user_id, item_id) VALUES(?, ?)", Statement.RETURN_GENERATED_KEYS))
                     {
-                        PreparedStatement deleteStatement = Emulator.getDatabase().prepare("DELETE FROM items_presents WHERE item_id = ? LIMIT 1");
-                        deleteStatement.setInt(1, box.getId());
-                        deleteStatement.execute();
+                        preparedStatement.setInt(1, habbo.getHabboInfo().getId());
+                        preparedStatement.setInt(2, rewardSet.getInt("base_item_reward"));
+                        preparedStatement.execute();
 
-                        item = loadHabboItem(resultSet);
-                        deleteStatement.close();
-                        deleteStatement.getConnection().close();
+                        try (ResultSet set = preparedStatement.getGeneratedKeys())
+                        {
+                            if (set.next())
+                            {
+                                try (PreparedStatement request = connection.prepareStatement("SELECT * FROM items WHERE id = ? LIMIT 1"))
+                                {
+                                    request.setInt(1, set.getInt(1));
+
+                                    try (ResultSet resultSet = request.executeQuery())
+                                    {
+                                        if (resultSet.next())
+                                        {
+                                            try (PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM items_presents WHERE item_id = ? LIMIT 1"))
+                                            {
+                                                deleteStatement.setInt(1, box.getId());
+                                                deleteStatement.execute();
+
+                                                item = loadHabboItem(resultSet);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
-                    resultSet.close();
-                    request.close();
-                    request.getConnection().close();
                 }
-                set.close();
-                preparedStatement.close();
-                preparedStatement.getConnection().close();
             }
-            rewardSet.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {
@@ -691,14 +643,11 @@ public class ItemManager {
 
     public void insertTeleportPair(int itemOneId, int itemTwoId)
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO items_teleports VALUES (?, ?)"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO items_teleports VALUES (?, ?)");
             statement.setInt(1, itemOneId);
             statement.setInt(2, itemTwoId);
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -708,14 +657,11 @@ public class ItemManager {
 
     public void insertHopper(HabboItem hopper)
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO items_hoppers VALUES (?, ?)"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO items_hoppers VALUES (?, ?)");
             statement.setInt(1, hopper.getId());
             statement.setInt(2, hopper.getBaseItem().getId());
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -727,19 +673,16 @@ public class ItemManager {
     {
         int[] a = new int[]{};
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT items.id, items.room_id FROM items_teleports INNER JOIN items ON items_teleports.teleport_one_id = items.id OR items_teleports.teleport_two_id = items.id WHERE items.id != ? AND items.room_id > 0 LIMIT 1"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT items.id, items.room_id FROM items_teleports INNER JOIN items ON items_teleports.teleport_one_id = items.id OR items_teleports.teleport_two_id = items.id WHERE items.id != ? AND items.room_id > 0 LIMIT 1");
             statement.setInt(1, item.getId());
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                 a = new int[]{set.getInt("room_id"), set.getInt("id")};
+                if (set.next())
+                {
+                    a = new int[]{set.getInt("room_id"), set.getInt("id")};
+                }
             }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -752,21 +695,16 @@ public class ItemManager {
     public HabboItem loadHabboItem(int itemId)
     {
         HabboItem item = null;
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM items WHERE id = ? LIMIT 1"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM items WHERE id = ? LIMIT 1");
             statement.setInt(1, itemId);
-
-            ResultSet set = statement.executeQuery();
-
-            if(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                item = this.loadHabboItem(set);
+                if (set.next())
+                {
+                    item = this.loadHabboItem(set);
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -819,21 +757,16 @@ public class ItemManager {
         }
         else
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT id FROM users WHERE username = ?"))
             {
-                PreparedStatement s = Emulator.getDatabase().prepare("SELECT id FROM users WHERE username = ?");
-                s.setString(1, username);
-
-                ResultSet set = s.executeQuery();
-
-                if(set.next())
+                statement.setString(1, username);
+                try (ResultSet set = statement.executeQuery())
                 {
-                    userId = set.getInt(1);
+                    if (set.next())
+                    {
+                        userId = set.getInt(1);
+                    }
                 }
-
-                set.close();
-                s.close();
-                s.getConnection().close();
             }
             catch (SQLException e)
             {
@@ -844,51 +777,31 @@ public class ItemManager {
         if(userId == 0)
             return null;
 
-        PreparedStatement statement = null;
-        try
+        if (extraData.length() > 1000)
         {
-            if (extraData.length() > 1000)
-            {
-                Emulator.getLogging().logErrorLine("Extradata exceeds maximum length of 1000 characters:" + extraData);
-                extraData = extraData.substring(0, 1000);
-            }
+            Emulator.getLogging().logErrorLine("Extradata exceeds maximum length of 1000 characters:" + extraData);
+            extraData = extraData.substring(0, 1000);
+        }
 
-            statement = Emulator.getDatabase().prepare("INSERT INTO items (user_id, item_id, extra_data, limited_data) VALUES (?, ?, ?, ?)");
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO items (user_id, item_id, extra_data, limited_data) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
+        {
             statement.setInt(1, userId);
             statement.setInt(2, item.getId());
             statement.setString(3, extraData);
             statement.setString(4, limitedStack + ":" + limitedSells);
             statement.execute();
 
-            ResultSet set = statement.getGeneratedKeys();
-
-            if(set.next())
+            try (ResultSet set = statement.getGeneratedKeys())
             {
-                gift = new InteractionGift(set.getInt(1), userId, item, extraData, limitedStack, limitedSells);
+                if (set.next())
+                {
+                    gift = new InteractionGift(set.getInt(1), userId, item, extraData, limitedStack, limitedSells);
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
-        }
-        finally
-        {
-            if (statement != null)
-            {
-                try
-                {
-                    statement.close();
-                    statement.getConnection().close();
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                }
-            }
         }
 
         if(gift != null)

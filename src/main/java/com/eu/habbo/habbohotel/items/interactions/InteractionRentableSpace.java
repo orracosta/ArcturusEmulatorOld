@@ -14,6 +14,7 @@ import com.eu.habbo.util.pathfinding.PathFinder;
 import gnu.trove.set.hash.THashSet;
 
 import java.awt.*;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,21 +49,18 @@ public class InteractionRentableSpace extends HabboItem
                         this.renterName = habbo.getHabboInfo().getUsername();
                     } else
                     {
-                        try
+                        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT username FROM users WHERE id = ? LIMIT 1"))
                         {
-                            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT username FROM users WHERE id = ? LIMIT 1");
                             statement.setInt(1, this.renterId);
-                            ResultSet row = statement.executeQuery();
-
-                            if (row.next())
+                            try (ResultSet row = statement.executeQuery())
                             {
-                                this.renterName = row.getString("username");
+                                if (row.next())
+                                {
+                                    this.renterName = row.getString("username");
+                                }
                             }
-
-                            row.close();
-                            statement.close();
-                            statement.getConnection().close();
-                        } catch (SQLException e)
+                        }
+                        catch (SQLException e)
                         {
                             Emulator.getLogging().logSQLException(e);
                         }
@@ -211,13 +209,10 @@ public class InteractionRentableSpace extends HabboItem
         {
             int zero = 0;
 
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users_settings SET rent_space_id = ?, rent_space_endtime = ? WHERE user_id = ? LIMIT 1"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users_settings SET rent_space_id = ?, rent_space_endtime = ? WHERE user_id = ? LIMIT 1");
                 statement.setInt(1, zero);
                 statement.setInt(2, zero);
-                statement.execute();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {

@@ -3,9 +3,7 @@ package com.eu.habbo.threading.runnables;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.modtool.ModToolIssue;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class InsertModToolIssue implements Runnable
 {
@@ -19,9 +17,8 @@ public class InsertModToolIssue implements Runnable
     @Override
     public void run()
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO support_tickets (state, timestamp, score, sender_id, reported_id, room_id, mod_id, issue) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO support_tickets (state, timestamp, score, sender_id, reported_id, room_id, mod_id, issue) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             statement.setInt(1, this.issue.state.getState());
             statement.setInt(2, this.issue.timestamp);
             statement.setInt(3, this.issue.priority);
@@ -32,14 +29,13 @@ public class InsertModToolIssue implements Runnable
             statement.setString(8, this.issue.message);
             statement.execute();
 
-            ResultSet key = statement.getGeneratedKeys();
-            key.first();
-
-            this.issue.id = key.getInt(1);
-
-            key.close();
-            statement.close();
-            statement.getConnection().close();
+            try (ResultSet key = statement.getGeneratedKeys())
+            {
+                if (key.first())
+                {
+                    this.issue.id = key.getInt(1);
+                }
+            }
         }
         catch (SQLException e)
         {

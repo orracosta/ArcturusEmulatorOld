@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.users.Habbo;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,10 +34,8 @@ public class GnomePet extends Pet implements IPetLook
         {
             super.run();
 
-            PreparedStatement statement = null;
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users_pets SET gnome_data = ? WHERE id = ? LIMIT 1"))
             {
-                statement = Emulator.getDatabase().prepare("UPDATE users_pets SET gnome_data = ? WHERE id = ? LIMIT 1");
                 statement.setString(1, this.gnomeData);
                 statement.setInt(2, this.id);
                 statement.executeUpdate();
@@ -44,21 +43,6 @@ public class GnomePet extends Pet implements IPetLook
             catch (SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
-            }
-            finally
-            {
-                if (statement != null)
-                {
-                    try
-                    {
-                        statement.close();
-                        statement.getConnection().close();
-                    }
-                    catch (SQLException e)
-                    {
-                        Emulator.getLogging().logSQLException(e);
-                    }
-                }
             }
         }
     }

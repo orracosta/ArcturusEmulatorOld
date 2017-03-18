@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.rooms;
 
 import com.eu.habbo.Emulator;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,20 +35,18 @@ public class RoomPromotion
     {
         if(this.needsUpdate)
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE room_promotions SET title = ?, description = ? WHERE room_id = ?"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE room_promotions SET title = ?, description = ? WHERE room_id = ?");
                 statement.setString(1, this.title);
                 statement.setString(2, this.description);
                 statement.setInt(3, this.room.getId());
                 statement.executeUpdate();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
             }
+
             this.needsUpdate = false;
         }
     }

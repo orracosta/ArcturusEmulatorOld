@@ -5,9 +5,7 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import gnu.trove.map.hash.THashMap;
 
 import java.lang.reflect.Method;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Map;
 
 public class NavigatorManager
@@ -32,108 +30,94 @@ public class NavigatorManager
 
     public void loadNavigator()
     {
-        synchronized (this.publicCategories)
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
-            this.publicCategories.clear();
-
-            try
+            synchronized (this.publicCategories)
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM navigator_publiccats WHERE visible = '1'");
-                ResultSet set = statement.executeQuery();
+                this.publicCategories.clear();
 
-                while(set.next())
+                try (Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM navigator_publiccats WHERE visible = '1'"))
                 {
-                    this.publicCategories.put(set.getInt("id"), new NavigatorPublicCategory(set));
-                }
-
-                set.close();
-                statement.getConnection().close();
-                statement.close();
-            }
-            catch (SQLException e)
-            {
-                Emulator.getLogging().logSQLException(e);
-            }
-
-            try
-            {
-                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM navigator_publics WHERE visible = '1'");
-                ResultSet set = statement.executeQuery();
-
-                while (set.next())
-                {
-                    NavigatorPublicCategory category = this.publicCategories.get(set.getInt("public_cat_id"));
-
-                    if (category != null)
+                    while(set.next())
                     {
-                        category.addRoom(Emulator.getGameEnvironment().getRoomManager().loadRoom(set.getInt("room_id")));
+                        this.publicCategories.put(set.getInt("id"), new NavigatorPublicCategory(set));
                     }
                 }
-
-                set.close();
-                statement.getConnection().close();
-                statement.close();
-            }
-            catch (SQLException e)
-            {
-                Emulator.getLogging().logSQLException(e);
-            }
-        }
-
-        synchronized (this.filterSettings)
-        {
-            try
-            {
-                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM navigator_filter");
-                ResultSet set = statement.executeQuery();
-
-                while(set.next())
+                catch (SQLException e)
                 {
-                    Method field = null;
-                    Class clazz = Room.class;
+                    Emulator.getLogging().logSQLException(e);
+                }
 
-                    if (set.getString("field").contains("."))
+                try (Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM navigator_publics WHERE visible = '1'"))
+                {
+                    while (set.next())
                     {
-                        for (String s : (set.getString("field")).split("."))
+                        NavigatorPublicCategory category = this.publicCategories.get(set.getInt("public_cat_id"));
+
+                        if (category != null)
+                        {
+                            category.addRoom(Emulator.getGameEnvironment().getRoomManager().loadRoom(set.getInt("room_id")));
+                        }
+                    }
+                }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            }
+
+            synchronized (this.filterSettings)
+            {
+                try (Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM navigator_filter"))
+                {
+                    while(set.next())
+                    {
+                        Method field = null;
+                        Class clazz = Room.class;
+
+                        if (set.getString("field").contains("."))
+                        {
+                            for (String s : (set.getString("field")).split("."))
+                            {
+                                try
+                                {
+                                    field = clazz.getDeclaredMethod(s);
+                                    clazz = field.getReturnType();
+                                }
+                                catch (Exception e)
+                                {
+                                    e.printStackTrace();
+                                    break;
+                                }
+                            }
+                        }
+                        else
                         {
                             try
                             {
-                                field = clazz.getDeclaredMethod(s);
-                                clazz = field.getReturnType();
+                                field = clazz.getDeclaredMethod(set.getString("field"));
                             }
                             catch (Exception e)
                             {
-                                e.printStackTrace();
-                                break;
+                                continue;
                             }
                         }
-                    }
-                    else
-                    {
-                        try
-                        {
-                            field = clazz.getDeclaredMethod(set.getString("field"));
-                        }
-                        catch (Exception e)
-                        {
-                            continue;
-                        }
-                    }
 
-                    if (field != null)
-                    {
-                        this.filterSettings.put(set.getString("key"), new NavigatorFilterField(set.getString("key"), field, set.getString("database_query"), NavigatorFilterComparator.valueOf(set.getString("compare").toUpperCase())));
+                        if (field != null)
+                        {
+                            this.filterSettings.put(set.getString("key"), new NavigatorFilterField(set.getString("key"), field, set.getString("database_query"), NavigatorFilterComparator.valueOf(set.getString("compare").toUpperCase())));
+                        }
                     }
                 }
-
-                set.close();
-                statement.getConnection().close();
-                statement.close();
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
             }
-            catch (SQLException e)
-            {
-                Emulator.getLogging().logSQLException(e);
-            }
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
         }
     }
 

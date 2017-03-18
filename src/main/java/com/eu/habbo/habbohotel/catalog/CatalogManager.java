@@ -33,9 +33,7 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 
 public class CatalogManager
@@ -199,43 +197,31 @@ public class CatalogManager
     {
         this.limitedNumbers.clear();
 
-        PreparedStatement statement = null;
-
         THashMap<Integer, LinkedList<Integer>> limiteds = new THashMap<Integer, LinkedList<Integer>>();
         TIntIntHashMap totals = new TIntIntHashMap();
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM catalog_items_limited"))
         {
-            statement = Emulator.getDatabase().prepare("SELECT * FROM catalog_items_limited");
-            ResultSet set = statement.executeQuery();
-
-            while (set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                if (!limiteds.containsKey(set.getInt("catalog_item_id")))
+                while (set.next())
                 {
-                    limiteds.put(set.getInt("catalog_item_id"), new LinkedList<Integer>());
-                }
+                    if (!limiteds.containsKey(set.getInt("catalog_item_id")))
+                    {
+                        limiteds.put(set.getInt("catalog_item_id"), new LinkedList<Integer>());
+                    }
 
-                totals.adjustOrPutValue(set.getInt("catalog_item_id"), 1, 1);
+                    totals.adjustOrPutValue(set.getInt("catalog_item_id"), 1, 1);
 
-                if (set.getInt("user_id") == 0)
-                {
-                    limiteds.get(set.getInt("catalog_item_id")).push(set.getInt("number"));
+                    if (set.getInt("user_id") == 0)
+                    {
+                        limiteds.get(set.getInt("catalog_item_id")).push(set.getInt("number"));
+                    }
                 }
             }
-
-            set.close();
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
-        }
-        finally
-        {
-            if (statement != null)
-            {
-                statement.close();
-                statement.getConnection().close();
-            }
         }
 
         for (Map.Entry<Integer, LinkedList<Integer>> set : limiteds.entrySet())
@@ -254,46 +240,38 @@ public class CatalogManager
 
         final THashMap<Integer, CatalogPage> pages = new THashMap<Integer, CatalogPage>();
         pages.put(-1, new CatalogRootLayout(null));
-        PreparedStatement statement = null;
-        try
+        ResultSet set = null;
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM catalog_pages ORDER BY parent_id, id"))
         {
-            statement = Emulator.getDatabase().prepare("SELECT * FROM catalog_pages ORDER BY parent_id, id");
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
-            {
-                Class<? extends CatalogPage> pageClazz = pageDefinitions.get(set.getString("page_layout"));
-
-                if (pageClazz == null)
-                {
-                    Emulator.getLogging().logStart("Unknown Page Layout: " + set.getString("page_layout"));
-                    continue;
-                }
-
-                try
-                {
-                    CatalogPage page = pageClazz.getConstructor(ResultSet.class).newInstance(set);
-                    pages.put(page.getId(), page);
-                }
-                catch (Exception e)
-                {
-                    Emulator.getLogging().logErrorLine("Failed to load layout: " + set.getString("page_layout"));
-                }
-            }
-            set.close();
+            set = statement.executeQuery();
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
         }
-        finally
+
+        while(set.next())
         {
-            if(statement != null)
+            Class<? extends CatalogPage> pageClazz = pageDefinitions.get(set.getString("page_layout"));
+
+            if (pageClazz == null)
             {
-                statement.close();
-                statement.getConnection().close();
+                Emulator.getLogging().logStart("Unknown Page Layout: " + set.getString("page_layout"));
+                continue;
+            }
+
+            try
+            {
+                CatalogPage page = pageClazz.getConstructor(ResultSet.class).newInstance(set);
+                pages.put(page.getId(), page);
+            }
+            catch (Exception e)
+            {
+                Emulator.getLogging().logErrorLine("Failed to load layout: " + set.getString("page_layout"));
             }
         }
+
+        set.close();
 
         pages.forEachValue(new TObjectProcedure<CatalogPage>()
         {
@@ -322,20 +300,15 @@ public class CatalogManager
 
         this.catalogPages.putAll(pages);
 
-        Emulator.getLogging().logStart("Loaded " + this.catalogPages.size() + " pages!");
+        Emulator.getLogging().logStart("Loaded " + this.catalogPages.size() + " Catalog Pages!");
     }
 
     private synchronized void loadCatalogFeaturedPages() throws SQLException
     {
         this.catalogFeaturedPages.clear();
 
-        PreparedStatement statement = null;
-
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM catalog_featured_pages ORDER BY slot_id ASC"))
         {
-            statement = Emulator.getDatabase().prepare("SELECT * FROM catalog_featured_pages ORDER BY slot_id ASC");
-            ResultSet set = statement.executeQuery();
-
             while (set.next())
             {
                 this.catalogFeaturedPages.put(set.getInt("slot_id"), new CatalogFeaturedPage(
@@ -349,31 +322,10 @@ public class CatalogManager
                         set.getString("product_name")
                         ));
             }
-
-            set.close();
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
-        }
-        catch (Exception e)
-        {
-            Emulator.getLogging().logErrorLine(e);
-        }
-        finally
-        {
-            if (statement != null)
-            {
-                try
-                {
-                    statement.close();
-                    statement.getConnection().close();
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                }
-            }
         }
     }
     /**
@@ -383,16 +335,10 @@ public class CatalogManager
     private synchronized void loadCatalogItems() throws SQLException
     {
         this.clubItems.clear();
-
-        PreparedStatement statement = null;
-
         catalogItemAmount = 0;
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM catalog_items"))
         {
-            statement = Emulator.getDatabase().prepare("SELECT * FROM catalog_items");
-            ResultSet set = statement.executeQuery();
-
             CatalogItem item;
             while (set.next())
             {
@@ -433,20 +379,10 @@ public class CatalogManager
                     this.createOrUpdateLimitedConfig(item);
                 }
             }
-
-            set.close();
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
-        }
-        finally
-        {
-            if(statement != null)
-            {
-                statement.close();
-                statement.getConnection().close();
-            }
         }
 
         for (CatalogPage page : this.catalogPages.valueCollection())
@@ -473,15 +409,13 @@ public class CatalogManager
         {
             this.vouchers.clear();
 
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM vouchers");
-            ResultSet set = statement.executeQuery();
-            while (set.next())
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM vouchers"))
             {
-                this.vouchers.add(new Voucher(set));
+                while (set.next())
+                {
+                    this.vouchers.add(new Voucher(set));
+                }
             }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
     }
 
@@ -494,11 +428,8 @@ public class CatalogManager
         synchronized (this.prizes)
         {
             this.prizes.clear();
-            PreparedStatement statement = null;
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM recycler_prizes"))
             {
-                statement = Emulator.getDatabase().prepare("SELECT * FROM recycler_prizes");
-                ResultSet set = statement.executeQuery();
                 while (set.next())
                 {
                     Item item = Emulator.getGameEnvironment().getItemManager().getItem(set.getInt("item_id"));
@@ -517,23 +448,10 @@ public class CatalogManager
                         Emulator.getLogging().logErrorLine("Cannot load item with ID:" + set.getInt("item_id") + " as recycler reward!");
                     }
                 }
-                set.close();
             }
             catch (SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-            finally
-            {
-                if (statement != null)
-                {
-                    statement.close();
-                    statement.getConnection().close();
-                }
             }
         }
     }
@@ -546,73 +464,25 @@ public class CatalogManager
     {
         synchronized (this.giftWrappers)
         {
-            this.giftWrappers.clear();
-
-            PreparedStatement statement = null;
-            try
+            synchronized (this.giftFurnis)
             {
-                statement = Emulator.getDatabase().prepare("SELECT * FROM gift_wrappers WHERE type = ? ORDER BY sprite_id DESC");
-                statement.setString(1, "wrapper");
-                ResultSet set = statement.executeQuery();
+                this.giftWrappers.clear();
+                this.giftFurnis.clear();
 
-                while (set.next())
+                try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM gift_wrappers ORDER BY sprite_id DESC"))
                 {
-                    this.giftWrappers.put(set.getInt("sprite_id"), set.getInt("item_id"));
-                }
-
-                set.close();
-            }
-            catch (SQLException e)
-            {
-                Emulator.getLogging().logSQLException(e);
-            }
-            finally
-            {
-                try
-                {
-                    if (statement != null)
+                    while (set.next())
                     {
-                        statement.close();
-                        statement.getConnection().close();
-                    }
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                }
-            }
-        }
+                        switch (set.getString("type"))
+                        {
+                            case "wrapper":
+                                this.giftWrappers.put(set.getInt("sprite_id"), set.getInt("item_id"));
+                                break;
 
-        synchronized (this.giftFurnis)
-        {
-            this.giftFurnis.clear();
-
-            PreparedStatement statement = null;
-            try
-            {
-                statement = Emulator.getDatabase().prepare("SELECT * FROM gift_wrappers WHERE type = ? ORDER BY sprite_id DESC");
-                statement.setString(1, "gift");
-                ResultSet set = statement.executeQuery();
-
-                while (set.next())
-                {
-                    this.giftFurnis.put(set.getInt("sprite_id"), set.getInt("item_id"));
-                }
-
-                set.close();
-            }
-            catch (SQLException e)
-            {
-                Emulator.getLogging().logSQLException(e);
-            }
-            finally
-            {
-                try
-                {
-                    if (statement != null)
-                    {
-                        statement.close();
-                        statement.getConnection().close();
+                            case "gift":
+                                this.giftFurnis.put(set.getInt("sprite_id"), set.getInt("item_id"));
+                                break;
+                        }
                     }
                 }
                 catch (SQLException e)
@@ -629,20 +499,12 @@ public class CatalogManager
         {
             this.clothing.clear();
 
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM catalog_clothing"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM catalog_clothing");
-                ResultSet set = statement.executeQuery();
-
                 while (set.next())
                 {
                     this.clothing.put(set.getInt("id"), new ClothItem(set));
                 }
-
-                set.close();
-                statement.close();
-                statement.getConnection().close();
-
             }
             catch (SQLException e)
             {
@@ -727,9 +589,8 @@ public class CatalogManager
      */
     public boolean deleteVoucher(Voucher voucher)
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM vouchers WHERE code = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM vouchers WHERE code = ?");
             statement.setString(1, voucher.code);
 
             synchronized (this.vouchers)
@@ -737,11 +598,7 @@ public class CatalogManager
                 this.vouchers.remove(voucher);
             }
 
-            int affected = statement.executeUpdate();
-            statement.close();
-            statement.getConnection().close();
-
-            return affected >= 1;
+            return statement.executeUpdate() >= 1;
         }
         catch(SQLException e)
         {
@@ -795,24 +652,6 @@ public class CatalogManager
     public List<CatalogPage> getCatalogPages(int parentId, final Habbo habbo)
     {
         final List<CatalogPage> pages = new ArrayList<CatalogPage>();
-
-//        TIntObjectIterator<CatalogPage> pagesIterator = this.catalogPages.iterator();
-//
-//        for(int i = this.catalogPages.size(); i-- > 0;)
-//        {
-//            try
-//            {
-//                pagesIterator.advance();
-//                if (pagesIterator.value().getParentId() == parentId && pagesIterator.value().getRank() <= habbo.getHabboInfo().getRank())
-//                {
-//                    pages.add(pagesIterator.value());
-//                }
-//            }
-//            catch (NoSuchElementException e)
-//            {
-//                break;
-//            }
-//        }
 
         this.catalogPages.get(parentId).childPages.forEachValue(new TObjectProcedure<CatalogPage>()
         {
@@ -903,9 +742,8 @@ public class CatalogManager
     public CatalogPage createCatalogPage(String caption, String captionSave, int roomId, int icon, CatalogPageLayouts layout, int minRank, int parentId)
     {
         CatalogPage catalogPage = null;
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO catalog_pages (parent_id, caption, caption_save, icon_image, visible, enabled, min_rank, page_layout, room_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO catalog_pages (parent_id, caption, caption_save, icon_image, visible, enabled, min_rank, page_layout, room_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             statement.setInt(1, parentId);
             statement.setString(2, caption);
             statement.setString(3, captionSave);
@@ -916,43 +754,39 @@ public class CatalogManager
             statement.setString(8, layout.name());
             statement.setInt(9, roomId);
             statement.execute();
-            ResultSet set = statement.getGeneratedKeys();
-
-            if(set.next())
+            try (ResultSet set = statement.getGeneratedKeys())
             {
-                PreparedStatement stmt = Emulator.getDatabase().prepare("SELECT * FROM catalog_pages WHERE id = ?");
-                stmt.setInt(1, set.getInt(1));
-                ResultSet page = stmt.executeQuery();
-
-                if(page.next())
+                if (set.next())
                 {
-                    Class<? extends CatalogPage> pageClazz = pageDefinitions.get(page.getString("page_layout"));
-
-                    if(pageClazz != null)
+                    try (PreparedStatement stmt = connection.prepareStatement("SELECT * FROM catalog_pages WHERE id = ?"))
                     {
-                        try
+                        stmt.setInt(1, set.getInt(1));
+                        try (ResultSet page = stmt.executeQuery())
                         {
-                            catalogPage = pageClazz.getConstructor(ResultSet.class).newInstance(page);
-                        }
-                        catch (Exception e)
-                        {
-                            Emulator.getLogging().logErrorLine(e);
+                            if (page.next())
+                            {
+                                Class<? extends CatalogPage> pageClazz = pageDefinitions.get(page.getString("page_layout"));
+
+                                if (pageClazz != null)
+                                {
+                                    try
+                                    {
+                                        catalogPage = pageClazz.getConstructor(ResultSet.class).newInstance(page);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Emulator.getLogging().logErrorLine(e);
+                                    }
+                                }
+                                else
+                                {
+                                    Emulator.getLogging().logErrorLine("Unknown Page Layout: " + page.getString("page_layout"));
+                                }
+                            }
                         }
                     }
-                    else
-                    {
-                        Emulator.getLogging().logErrorLine("Unknown Page Layout: " + page.getString("page_layout"));
-                    }
-
-                    page.close();
-                    stmt.close();
-                    stmt.getConnection().close();
                 }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {

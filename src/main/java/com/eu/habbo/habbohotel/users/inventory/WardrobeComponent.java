@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.users.HabboGender;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,48 +19,38 @@ public class WardrobeComponent
     public WardrobeComponent(Habbo habbo)
     {
         this.looks = new THashMap<Integer, WardrobeItem>();
-
-        try
-        {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM users_wardrobe WHERE user_id = ?");
-            statement.setInt(1, habbo.getHabboInfo().getId());
-            ResultSet set = statement.executeQuery();
-
-            while (set.next())
-            {
-                this.looks.put(set.getInt("slot_id"), new WardrobeItem(set, habbo));
-            }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
-        }
-        catch(SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
-        }
-
         this.clothing = new THashSet<Integer>();
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM users_clothing WHERE user_id = ?");
-            statement.setInt(1, habbo.getHabboInfo().getId());
-            ResultSet set = statement.executeQuery();
-
-            while (set.next())
+            try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM users_wardrobe WHERE user_id = ?"))
             {
-                Integer value = set.getInt("clothing_id");
-
-                if (value != null)
+                statement.setInt(1, habbo.getHabboInfo().getId());
+                try (ResultSet set = statement.executeQuery())
                 {
-                    this.clothing.add(value);
+                    while (set.next())
+                    {
+                        this.looks.put(set.getInt("slot_id"), new WardrobeItem(set, habbo));
+                    }
                 }
             }
 
-            set.close();
-            statement.close();
-            statement.getConnection().close();
+            try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM users_clothing WHERE user_id = ?"))
+            {
+                statement.setInt(1, habbo.getHabboInfo().getId());
+                try (ResultSet set = statement.executeQuery())
+                {
+                    while (set.next())
+                    {
+                        Integer value = set.getInt("clothing_id");
+
+                        if (value != null)
+                        {
+                            this.clothing.add(value);
+                        }
+                    }
+                }
+            }
         }
         catch (SQLException e)
         {
@@ -101,8 +92,8 @@ public class WardrobeComponent
         private HabboGender gender;
         private Habbo habbo;
         private String look;
-        private boolean needsInsert;
-        private boolean needsUpdate;
+        private boolean needsInsert = false;
+        private boolean needsUpdate = false;
 
         private WardrobeItem(ResultSet set, Habbo habbo) throws SQLException
         {
@@ -110,8 +101,6 @@ public class WardrobeComponent
             this.look = set.getString("look");
             this.slotId = set.getInt("slot_id");
             this.habbo = habbo;
-            this.needsInsert = false;
-            this.needsUpdate = false;
         }
 
         private WardrobeItem(HabboGender gender, String look, int slotId, Habbo habbo)
@@ -120,8 +109,6 @@ public class WardrobeComponent
             this.look = look;
             this.slotId = slotId;
             this.habbo = habbo;
-            this.needsInsert = false;
-            this.needsUpdate = false;
         }
 
         public synchronized HabboGender getGender()
@@ -170,30 +157,32 @@ public class WardrobeComponent
         @Override
         public void run()
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
             {
                 if(this.needsInsert)
                 {
                     this.needsInsert = false;
                     this.needsUpdate = false;
-                    PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO users_wardrobe (slot_id, look, user_id, gender) VALUES (?, ?, ?, ?)");
-                    statement.setInt(1, this.slotId);
-                    statement.setString(2, this.look);
-                    statement.setInt(3, this.habbo.getHabboInfo().getId());
-                    statement.setString(4, this.gender.name());
-                    statement.execute();
-                    statement.close();
-                    statement.getConnection().close();
+                    try (PreparedStatement statement = connection.prepareStatement("INSERT INTO users_wardrobe (slot_id, look, user_id, gender) VALUES (?, ?, ?, ?)"))
+                    {
+                        statement.setInt(1, this.slotId);
+                        statement.setString(2, this.look);
+                        statement.setInt(3, this.habbo.getHabboInfo().getId());
+                        statement.setString(4, this.gender.name());
+                        statement.execute();
+                    }
                 }
-                if(this.needsUpdate) {
+
+                if(this.needsUpdate)
+                {
                     this.needsUpdate = false;
-                    PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users_wardrobe SET look = ? WHERE slot_id = ? AND user_id = ?");
-                    statement.setString(1, this.look);
-                    statement.setInt(2, this.slotId);
-                    statement.setInt(3, this.habbo.getHabboInfo().getId());
-                    statement.execute();
-                    statement.close();
-                    statement.getConnection().close();
+                    try (PreparedStatement statement = connection.prepareStatement("UPDATE users_wardrobe SET look = ? WHERE slot_id = ? AND user_id = ?"))
+                    {
+                        statement.setString(1, this.look);
+                        statement.setInt(2, this.slotId);
+                        statement.setInt(3, this.habbo.getHabboInfo().getId());
+                        statement.execute();
+                    }
                 }
             }
             catch(SQLException e)

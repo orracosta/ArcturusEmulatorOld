@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.polls.Poll;
 import com.eu.habbo.habbohotel.polls.PollManager;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -20,16 +21,13 @@ public class CancelPollEvent extends MessageHandler
 
         if(poll != null)
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO polls_answers (poll_id, user_id, question_id, answer) VALUES (?, ?, ?, ?)"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO polls_answers (poll_id, user_id, question_id, answer) VALUES (?, ?, ?, ?)");
                 statement.setInt(1, pollId);
                 statement.setInt(2, this.client.getHabbo().getHabboInfo().getId());
                 statement.setInt(3, 0);
                 statement.setString(4, "");
                 statement.execute();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {

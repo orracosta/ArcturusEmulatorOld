@@ -5,8 +5,10 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.util.callback.HTTPPostStatus;
 import com.eu.habbo.util.callback.HTTPVersionCheck;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class CleanerThread implements Runnable {
 
@@ -149,6 +151,7 @@ public class CleanerThread implements Runnable {
         if (time - LAST_DAILY_REFILL > Emulator.getConfig().getInt("hotel.refill.daily"))
         {
             refillDailyRespects();
+            LAST_DAILY_REFILL = time;
         }
     }
 
@@ -159,64 +162,16 @@ public class CleanerThread implements Runnable {
     {
         refillDailyRespects();
 
-        try
+        int time = Emulator.getIntUnixTimestamp();
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users SET online = ?");
-            statement.setString(1, "0");
-            statement.execute();
-            statement.close();
-            statement.getConnection().close();
-        }
-        catch(SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
-        }
+            Statement statement = connection.createStatement();
 
-        try
-        {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE rooms SET users = ?");
-            statement.setString(1, "0");
-            statement.execute();
-            statement.close();
-            statement.getConnection().close();
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
-        }
-
-        try
-        {
-            PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM room_mutes WHERE ends < ?");
-            statement.setInt(1, Emulator.getIntUnixTimestamp());
-            statement.execute();
-            statement.close();
-            statement.getConnection().close();
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
-        }
-
-        try
-        {
-            PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM room_bans WHERE ends < ?");
-            statement.setInt(1, Emulator.getIntUnixTimestamp());
-            statement.execute();
-            statement.close();
-            statement.getConnection().close();
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
-        }
-
-        try
-        {
-            PreparedStatement statement = Emulator.getDatabase().prepare("DELETE users_favorite_rooms FROM users_favorite_rooms LEFT JOIN rooms ON room_id = rooms.id WHERE rooms.id IS NULL");
-            statement.execute();
-            statement.close();
-            statement.getConnection().close();
+            statement.execute("UPDATE users SET online = '0'");
+            statement.execute("UPDATE rooms SET users = '0'");
+            statement.execute("DELETE FROM room_mutes WHERE ends < " + time);
+            statement.execute("DELETE FROM room_bans WHERE ends < " + time);
+            statement.execute("DELETE users_favorite_rooms FROM users_favorite_rooms LEFT JOIN rooms ON room_id = rooms.id WHERE rooms.id IS NULL");
         }
         catch (SQLException e)
         {
@@ -228,14 +183,11 @@ public class CleanerThread implements Runnable {
 
     public void refillDailyRespects()
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users_settings SET daily_respect_points = ?, daily_pet_respect_points = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users_settings SET daily_respect_points = ?, daily_pet_respect_points = ?");
             statement.setInt(1, Emulator.getConfig().getInt("hotel.daily.respect"));
             statement.setInt(2, Emulator.getConfig().getInt("hotel.daily.respect.pets"));
             statement.executeUpdate();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {

@@ -51,6 +51,6 @@ public class ErrorLog implements Loggable
         statement.setInt(1, this.timeStamp);
         statement.setString(2, this.type);
         statement.setString(3, this.stackTrace);
-        statement.execute();
+        statement.addBatch();
     }
 }

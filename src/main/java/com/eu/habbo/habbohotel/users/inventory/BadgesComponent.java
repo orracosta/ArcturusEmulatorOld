@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboBadge;
 import gnu.trove.set.hash.THashSet;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,20 +25,17 @@ public class BadgesComponent
     private static THashSet<HabboBadge> loadBadges(Habbo habbo)
     {
         THashSet<HabboBadge> badgesList = new THashSet<HabboBadge>();
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM users_badges WHERE user_id = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM users_badges WHERE user_id = ?");
             statement.setInt(1, habbo.getHabboInfo().getId());
 
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                badgesList.add(new HabboBadge(set, habbo));
+                while (set.next())
+                {
+                    badgesList.add(new HabboBadge(set, habbo));
+                }
             }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {
@@ -93,18 +91,16 @@ public class BadgesComponent
     public static ArrayList<HabboBadge> getBadgesOfflineHabbo(int userId)
     {
         ArrayList<HabboBadge> badgesList = new ArrayList<HabboBadge>();
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM users_badges WHERE slot_id > 0 AND user_id = ? ORDER BY slot_id ASC"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM users_badges WHERE slot_id > 0 AND user_id = ? ORDER BY slot_id ASC");
             statement.setInt(1, userId);
-            ResultSet set = statement.executeQuery();
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                badgesList.add(new HabboBadge(set, null));
+                while (set.next())
+                {
+                    badgesList.add(new HabboBadge(set, null));
+                }
             }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {

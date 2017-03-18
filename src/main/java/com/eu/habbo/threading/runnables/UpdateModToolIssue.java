@@ -3,6 +3,7 @@ package com.eu.habbo.threading.runnables;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.modtool.ModToolIssue;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -18,16 +19,13 @@ public class UpdateModToolIssue implements Runnable
     @Override
     public void run()
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE support_tickets SET state = ?, type = ?, mod_id = ? WHERE id = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE support_tickets SET state = ?, type = ?, mod_id = ? WHERE id = ?");
             statement.setInt(1, this.issue.state.getState());
             statement.setInt(2, this.issue.type.getType());
             statement.setInt(3, this.issue.modId);
             statement.setInt(4, this.issue.id);
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {

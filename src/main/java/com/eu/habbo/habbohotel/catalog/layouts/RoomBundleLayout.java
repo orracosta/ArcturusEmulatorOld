@@ -15,9 +15,7 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Map;
 
 public class RoomBundleLayout extends SingleBundle
@@ -149,104 +147,89 @@ public class RoomBundleLayout extends SingleBundle
         this.getCatalogItems();
         int roomId = 0;
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO rooms (owner_id, owner_name, name, description, model, password, state, users_max, category, paper_floor, paper_wall, paper_landscape, thickness_wall, thickness_floor, moodlight_data, override_model)  (SELECT ?, ?, name, description, model, password, state, users_max, category, paper_floor, paper_wall, paper_landscape, thickness_wall, thickness_floor, moodlight_data, override_model FROM rooms WHERE id = ?)");
-            statement.setInt(1, habbo.getHabboInfo().getId());
-            statement.setString(2, habbo.getHabboInfo().getUsername());
-            statement.setInt(3, this.room.getId());
-            statement.execute();
-            ResultSet set = statement.getGeneratedKeys();
-
-            if(set.next())
+            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO rooms (owner_id, owner_name, name, description, model, password, state, users_max, category, paper_floor, paper_wall, paper_landscape, thickness_wall, thickness_floor, moodlight_data, override_model)  (SELECT ?, ?, name, description, model, password, state, users_max, category, paper_floor, paper_wall, paper_landscape, thickness_wall, thickness_floor, moodlight_data, override_model FROM rooms WHERE id = ?)", Statement.RETURN_GENERATED_KEYS))
             {
-                roomId = set.getInt(1);
-            }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
-        }
-
-        if(roomId == 0)
-            return;
-
-        try
-        {
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO items (user_id, room_id, item_id, wall_pos, x, y, z, rot, extra_data, wired_data, limited_data, guild_id) (SELECT ?, ?, item_id, wall_pos, x, y, z, rot, extra_data, wired_data, ?, ? FROM items WHERE room_id = ?)");
-            statement.setInt(1, habbo.getHabboInfo().getId());
-            statement.setInt(2, roomId);
-            statement.setString(3, "0:0");
-            statement.setInt(4, 0);
-            statement.setInt(5, this.room.getId());
-            statement.execute();
-            statement.close();
-            statement.getConnection().close();
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
-        }
-
-        if(this.room.hasCustomLayout())
-        {
-            try
-            {
-                PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO room_models_custom (id, name, door_x, door_y, door_dir, heightmap) (SELECT ?, ?, door_x, door_y, door_dir, heightmap FROM room_models_custom WHERE id = ? LIMIT 1)");
-                statement.setInt(1, roomId);
-                statement.setString(2, "custom_" + roomId);
+                statement.setInt(1, habbo.getHabboInfo().getId());
+                statement.setString(2, habbo.getHabboInfo().getUsername());
                 statement.setInt(3, this.room.getId());
                 statement.execute();
-                statement.close();
-                statement.getConnection().close();
+                try (ResultSet set = statement.getGeneratedKeys())
+                {
+                    if (set.next())
+                    {
+                        roomId = set.getInt(1);
+                    }
+                }
             }
-            catch (SQLException e)
-            {
-                Emulator.getLogging().logSQLException(e);
-            }
-        }
 
-        if(Emulator.getConfig().getBoolean("bundle.bots.enabled"))
-        {
-            try
+            if (roomId == 0)
+                return;
+
+            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO items (user_id, room_id, item_id, wall_pos, x, y, z, rot, extra_data, wired_data, limited_data, guild_id) (SELECT ?, ?, item_id, wall_pos, x, y, z, rot, extra_data, wired_data, ?, ? FROM items WHERE room_id = ?)", Statement.RETURN_GENERATED_KEYS))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO bots (user_id, room_id, name, motto, figure, gender, x, y, z, chat_lines, chat_auto, chat_random, chat_delay, dance, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 statement.setInt(1, habbo.getHabboInfo().getId());
                 statement.setInt(2, roomId);
+                statement.setString(3, "0:0");
+                statement.setInt(4, 0);
+                statement.setInt(5, this.room.getId());
+                statement.execute();
+            }
 
-                for(Bot bot : this.room.getCurrentBots().valueCollection())
+            if (this.room.hasCustomLayout())
+            {
+                try (PreparedStatement statement = connection.prepareStatement("INSERT INTO room_models_custom (id, name, door_x, door_y, door_dir, heightmap) (SELECT ?, ?, door_x, door_y, door_dir, heightmap FROM room_models_custom WHERE id = ? LIMIT 1)", Statement.RETURN_GENERATED_KEYS))
                 {
-                    statement.setString(3, bot.getName());
-                    statement.setString(4, bot.getMotto());
-                    statement.setString(5, bot.getFigure());
-                    statement.setString(6, bot.getGender().name());
-                    statement.setInt(7, bot.getRoomUnit().getX());
-                    statement.setInt(8, bot.getRoomUnit().getY());
-                    statement.setDouble(9, bot.getRoomUnit().getZ());
-                    String text = "";
-                    for(String s : bot.getChatLines())
-                    {
-                        text += s + "\r";
-                    }
-                    statement.setString(10, text);
-                    statement.setString(11, bot.isChatAuto() ? "1" : "0");
-                    statement.setString(12, bot.isChatRandom() ? "1" : "0");
-                    statement.setInt(13, bot.getChatDelay());
-                    statement.setInt(14, bot.getRoomUnit().getDanceType().getType());
-                    statement.setString(15, bot.getType());
+                    statement.setInt(1, roomId);
+                    statement.setString(2, "custom_" + roomId);
+                    statement.setInt(3, this.room.getId());
                     statement.execute();
                 }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            }
 
-                statement.close();
-                statement.getConnection().close();
-            }
-            catch (SQLException e)
+            if (Emulator.getConfig().getBoolean("bundle.bots.enabled"))
             {
-                Emulator.getLogging().logSQLException(e);
+                try (PreparedStatement statement = connection.prepareStatement("INSERT INTO bots (user_id, room_id, name, motto, figure, gender, x, y, z, chat_lines, chat_auto, chat_random, chat_delay, dance, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
+                {
+                    synchronized (this.room.getCurrentBots())
+                    {
+                        statement.setInt(1, habbo.getHabboInfo().getId());
+                        statement.setInt(2, roomId);
+                        for (Bot bot : this.room.getCurrentBots().valueCollection())
+                        {
+                            statement.setString(3, bot.getName());
+                            statement.setString(4, bot.getMotto());
+                            statement.setString(5, bot.getFigure());
+                            statement.setString(6, bot.getGender().name());
+                            statement.setInt(7, bot.getRoomUnit().getX());
+                            statement.setInt(8, bot.getRoomUnit().getY());
+                            statement.setDouble(9, bot.getRoomUnit().getZ());
+                            String text = "";
+                            for (String s : bot.getChatLines())
+                            {
+                                text += s + "\r";
+                            }
+                            statement.setString(10, text);
+                            statement.setString(11, bot.isChatAuto() ? "1" : "0");
+                            statement.setString(12, bot.isChatRandom() ? "1" : "0");
+                            statement.setInt(13, bot.getChatDelay());
+                            statement.setInt(14, bot.getRoomUnit().getDanceType().getType());
+                            statement.setString(15, bot.getType());
+                            statement.addBatch();
+                        }
+                    }
+                    statement.executeBatch();
+                }
             }
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
         }
 
         Emulator.getLogging().logUserLine(habbo.getHabboInfo().getUsername() + " bought room bundle: " + this.room.getId());

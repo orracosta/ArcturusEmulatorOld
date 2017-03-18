@@ -14,9 +14,7 @@ import com.eu.habbo.plugin.events.users.achievements.UserAchievementProgressEven
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -50,75 +48,57 @@ public class AchievementManager
         {
             this.achievements.clear();
 
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM achievements");
-                ResultSet set = statement.executeQuery();
-
-                while (set.next())
+                try (Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM achievements"))
                 {
-                    if (!this.achievements.containsKey(set.getString("name")))
+                    while (set.next())
                     {
-                        this.achievements.put(set.getString("name"), new Achievement(set));
-                    } else
-                    {
-                        this.achievements.get(set.getString("name")).addLevel(new AchievementLevel(set));
+                        if (!this.achievements.containsKey(set.getString("name")))
+                        {
+                            this.achievements.put(set.getString("name"), new Achievement(set));
+                        }
+                        else
+                        {
+                            this.achievements.get(set.getString("name")).addLevel(new AchievementLevel(set));
+                        }
                     }
                 }
-
-                set.close();
-                statement.close();
-                statement.getConnection().close();
-            } catch (SQLException e)
-            {
-                Emulator.getLogging().logSQLException(e);
-            } catch (Exception e)
-            {
-                Emulator.getLogging().logErrorLine(e);
-            }
-        }
-
-        synchronized (this.talentTrackLevels)
-        {
-            this.talentTrackLevels.clear();
-
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM achievements_talents ORDER BY level ASC");
-
-            try
-            {
-                ResultSet set = statement.executeQuery();
-                while (set.next())
+                catch (SQLException e)
                 {
-                    TalentTrackLevel level = new TalentTrackLevel(set);
-
-                    if (!this.talentTrackLevels.containsKey(level.type))
-                    {
-                        this.talentTrackLevels.put(level.type, new LinkedHashMap<Integer, TalentTrackLevel>());
-                    }
-
-                    this.talentTrackLevels.get(level.type).put(level.level, level);
+                    Emulator.getLogging().logSQLException(e);
+                }
+                catch (Exception e)
+                {
+                    Emulator.getLogging().logErrorLine(e);
                 }
 
-                set.close();
+
+                synchronized (this.talentTrackLevels)
+                {
+                    this.talentTrackLevels.clear();
+
+                    try (Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM achievements_talents ORDER BY level ASC"))
+                    {
+                        while (set.next())
+                        {
+                            TalentTrackLevel level = new TalentTrackLevel(set);
+
+                            if (!this.talentTrackLevels.containsKey(level.type))
+                            {
+                                this.talentTrackLevels.put(level.type, new LinkedHashMap<Integer, TalentTrackLevel>());
+                            }
+
+                            this.talentTrackLevels.get(level.type).put(level.level, level);
+                        }
+                    }
+                }
             }
             catch (SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
-            }
-            finally
-            {
-                if (statement != null)
-                {
-                    try
-                    {
-                        statement.close();
-                        statement.getConnection().close();
-                    }
-                    catch (SQLException e)
-                    {
-                        Emulator.getLogging().logSQLException(e);
-                    }
-                }
+                Emulator.getLogging().logErrorLine("Achievement Manager -> Failed to load!");
+                return;
             }
         }
 
@@ -315,15 +295,12 @@ public class AchievementManager
      */
     public static void createUserEntry(Habbo habbo, Achievement achievement)
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO users_achievements (user_id, achievement_name, progress) VALUES (?, ?, ?)"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO users_achievements (user_id, achievement_name, progress) VALUES (?, ?, ?)");
             statement.setInt(1, habbo.getHabboInfo().getId());
             statement.setString(2, achievement.name);
             statement.setInt(3, 1);
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -337,10 +314,8 @@ public class AchievementManager
      */
     public static void saveAchievements(Habbo habbo)
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users_achievements SET progress = ? WHERE achievement_name = ? AND user_id = ? LIMIT 1"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users_achievements SET progress = ? WHERE achievement_name = ? AND user_id = ? LIMIT 1");
-
             statement.setInt(3, habbo.getHabboInfo().getId());
             for(Map.Entry<Achievement, Integer> map : habbo.getHabboStats().getAchievementProgress().entrySet())
             {
@@ -349,8 +324,6 @@ public class AchievementManager
                 statement.addBatch();
             }
             statement.executeBatch();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {

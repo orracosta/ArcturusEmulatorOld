@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,23 +32,19 @@ class HopperActionTwo implements Runnable
         int targetRoomId = 0;
         int targetItemId = 0;
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT items.id, items.room_id FROM items_hoppers INNER JOIN items ON items_hoppers.item_id = items.id WHERE base_item = ? AND items.id != ? AND room_id > 0 ORDER BY RAND() LIMIT 1"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT items.id, items.room_id FROM items_hoppers INNER JOIN items ON items_hoppers.item_id = items.id WHERE base_item = ? AND items.id != ? AND room_id > 0 ORDER BY RAND() LIMIT 1");
             statement.setInt(1, this.teleportOne.getBaseItem().getId());
             statement.setInt(2, this.teleportOne.getId());
 
-            ResultSet set = statement.executeQuery();
-
-            if(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                targetItemId = set.getInt("id");
-                targetRoomId = set.getInt("room_id");
+                if (set.next())
+                {
+                    targetItemId = set.getInt("id");
+                    targetRoomId = set.getInt("room_id");
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {

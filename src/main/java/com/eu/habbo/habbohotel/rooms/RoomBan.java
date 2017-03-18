@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.rooms;
 
 import com.eu.habbo.Emulator;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,15 +32,12 @@ public class RoomBan
 
     public void insert()
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO room_bans (room_id, user_id, ends) VALUES (?, ?, ?)"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO room_bans (room_id, user_id, ends) VALUES (?, ?, ?)");
             statement.setInt(1, this.roomId);
             statement.setInt(2, this.userId);
             statement.setInt(3, this.endTimestamp);
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -49,14 +47,11 @@ public class RoomBan
 
     public void delete()
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM room_bans WHERE room_id = ? AND user_id = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM room_bans WHERE room_id = ? AND user_id = ?");
             statement.setInt(1, this.roomId);
             statement.setInt(2, this.userId);
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {

@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.users.Habbo;
 import gnu.trove.map.hash.THashMap;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,25 +24,23 @@ public class BotsComponent {
     {
         synchronized (this.userBots)
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username AS owner_name, bots.* FROM bots INNER JOIN users ON users.id = bots.user_id WHERE user_id = ? AND room_id = 0 ORDER BY id ASC"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT users.username AS owner_name, bots.* FROM bots INNER JOIN users ON users.id = bots.user_id WHERE user_id = ? AND room_id = 0 ORDER BY id ASC");
                 statement.setInt(1, habbo.getHabboInfo().getId());
-                ResultSet set = statement.executeQuery();
-                while (set.next())
+                try (ResultSet set = statement.executeQuery())
                 {
-                    Bot bot = Emulator.getGameEnvironment().getBotManager().loadBot(set);
-                    if (bot != null)
+                    while (set.next())
                     {
-                        //bot = new Bot(set);
-                        bot.setOwnerName(habbo.getHabboInfo().getUsername());
-                        this.userBots.put(set.getInt("id"), bot);
+                        Bot bot = Emulator.getGameEnvironment().getBotManager().loadBot(set);
+                        if (bot != null)
+                        {
+                            bot.setOwnerName(habbo.getHabboInfo().getUsername());
+                            this.userBots.put(set.getInt("id"), bot);
+                        }
                     }
                 }
-                set.close();
-                statement.close();
-                statement.getConnection().close();
-            } catch (SQLException e)
+            }
+            catch (SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
             }

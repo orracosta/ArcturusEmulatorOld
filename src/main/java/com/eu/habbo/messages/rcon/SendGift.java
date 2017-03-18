@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.google.gson.Gson;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -61,9 +62,8 @@ public class SendGift extends RCONMessage<SendGift.SendGiftJSON>
         userFound = habbo != null;
         if (!userFound)
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE " + (json.username.isEmpty() ? "id = ?" : "username = ?") + " LIMIT 1"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM users WHERE " + (json.username.isEmpty() ? "id = ?" : "username = ?") + " LIMIT 1");
                 if (json.username.isEmpty())
                 {
                     statement.setInt(1, json.userid);
@@ -73,18 +73,15 @@ public class SendGift extends RCONMessage<SendGift.SendGiftJSON>
                     statement.setString(1, json.username);
                 }
 
-                ResultSet set = statement.executeQuery();
-
-                if (set.next())
+                try (ResultSet set = statement.executeQuery())
                 {
-                    json.username = set.getString("username");
-                    json.userid = set.getInt("id");
-                    userFound = true;
+                    if (set.next())
+                    {
+                        json.username = set.getString("username");
+                        json.userid = set.getInt("id");
+                        userFound = true;
+                    }
                 }
-
-                set.close();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {

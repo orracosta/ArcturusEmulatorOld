@@ -33,6 +33,6 @@ public class CommandLog implements Loggable
         statement.setString(3, this.command.getClass().getName());
         statement.setString(4, this.params);
         statement.setString(5, this.succes ? "1" : "0");
-        statement.execute();
+        statement.addBatch();
     }
 }

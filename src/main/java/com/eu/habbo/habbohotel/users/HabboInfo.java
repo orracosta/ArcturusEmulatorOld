@@ -9,6 +9,7 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.procedure.TIntIntProcedure;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -86,20 +87,16 @@ public class HabboInfo implements Runnable
     {
         this.currencies = new TIntIntHashMap();
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM users_currency WHERE user_id = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM users_currency WHERE user_id = ?");
             statement.setInt(1, this.id);
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                this.currencies.put(set.getInt("type"), set.getInt("amount"));
+                while (set.next())
+                {
+                    this.currencies.put(set.getInt("type"), set.getInt("amount"));
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -109,10 +106,8 @@ public class HabboInfo implements Runnable
 
     private void saveCurrencies()
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO users_currency (user_id, type, amount) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE amount = ?"))
         {
-            final PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO users_currency (user_id, type, amount) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE amount = ? ");
-
             this.currencies.forEachEntry(new TIntIntProcedure()
             {
                 @Override
@@ -124,19 +119,16 @@ public class HabboInfo implements Runnable
                         statement.setInt(2, a);
                         statement.setInt(3, b);
                         statement.setInt(4, b);
-                        statement.execute();
+                        statement.addBatch();
                     }
                     catch (SQLException e)
                     {
                         Emulator.getLogging().logSQLException(e);
                     }
-
                     return true;
                 }
             });
-
-            statement.close();
-            statement.getConnection().close();
+            statement.executeBatch();
         }
         catch (SQLException e)
         {
@@ -258,13 +250,7 @@ public class HabboInfo implements Runnable
 
     public boolean canBuy(CatalogItem item)
     {
-        if(this.credits < item.getCredits())
-            return false;
-
-        if(this.getCurrencies().get(item.getPointsType()) < item.getPoints())
-            return false;
-
-        return true;
+        return this.credits >= item.getCredits() && this.getCurrencies().get(item.getPointsType()) >= item.getPoints();
     }
 
     public int getCredits()
@@ -441,9 +427,8 @@ public class HabboInfo implements Runnable
     {
         this.saveCurrencies();
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET motto = ?, online = ?, look = ?, gender = ?, credits = ?, last_login = ?, last_online = ?, home_room = ?, ip_current = ?, rank = ? WHERE id = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE users SET motto = ?, online = ?, look = ?, gender = ?, credits = ?, last_login = ?, last_online = ?, home_room = ?, ip_current = ?, rank = ? WHERE id = ?");
             statement.setString(1, this.motto);
             statement.setString(2, this.online ? "1" : "0");
             statement.setString(3, this.look);
@@ -456,8 +441,6 @@ public class HabboInfo implements Runnable
             statement.setInt(10, this.rank);
             statement.setInt(11, this.id);
             statement.executeUpdate();
-            statement.close();
-            statement.getConnection().close();
         }
         catch(SQLException e)
         {

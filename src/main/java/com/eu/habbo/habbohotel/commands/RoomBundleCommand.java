@@ -10,9 +10,7 @@ import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class RoomBundleCommand extends Command
 {
@@ -50,9 +48,8 @@ public class RoomBundleCommand extends Command
 
         if(page instanceof RoomBundleLayout)
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO catalog_items (page_id, item_ids, catalog_name, cost_credits, cost_points, points_type ) VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO catalog_items (page_id, item_ids, catalog_name, cost_credits, cost_points, points_type ) VALUES (?, ?, ?, ?, ?, ?)");
                 statement.setInt(1, page.getId());
                 statement.setString(2, "");
                 statement.setString(3, "room_bundle");
@@ -60,25 +57,24 @@ public class RoomBundleCommand extends Command
                 statement.setInt(5, points);
                 statement.setInt(6, pointsType);
                 statement.execute();
-                ResultSet set = statement.getGeneratedKeys();
 
-                if(set.next())
+                try (ResultSet set = statement.getGeneratedKeys())
                 {
-                    PreparedStatement stmt = Emulator.getDatabase().prepare("SELECT * FROM catalog_items WHERE id = ?");
-                    stmt.setInt(1, set.getInt(1));
-                    ResultSet st = stmt.executeQuery();
-
-                    if(st.next())
+                    if (set.next())
                     {
-                        page.addItem(new CatalogItem(st));
+                        try (PreparedStatement stmt = connection.prepareStatement("SELECT * FROM catalog_items WHERE id = ?"))
+                        {
+                            stmt.setInt(1, set.getInt(1));
+                            try (ResultSet st = stmt.executeQuery())
+                            {
+                                if (st.next())
+                                {
+                                    page.addItem(new CatalogItem(st));
+                                }
+                            }
+                        }
                     }
-                    st.close();
-                    stmt.close();
-                    stmt.getConnection().close();
                 }
-                set.close();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {

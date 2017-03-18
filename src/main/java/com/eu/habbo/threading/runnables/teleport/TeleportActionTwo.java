@@ -8,6 +8,7 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -56,33 +57,29 @@ class TeleportActionTwo implements Runnable
         }
         if(((InteractionTeleport)this.currentTeleport).getTargetId() == 0)
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT items_teleports.*, A.room_id as a_room_id, A.id as a_id, B.room_id as b_room_id, B.id as b_id FROM items_teleports INNER JOIN items AS A ON items_teleports.teleport_one_id = A.id INNER JOIN items AS B ON items_teleports.teleport_two_id = B.id  WHERE (teleport_one_id = ? OR teleport_two_id = ?)"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT items_teleports.*, A.room_id as a_room_id, A.id as a_id, B.room_id as b_room_id, B.id as b_id FROM items_teleports INNER JOIN items AS A ON items_teleports.teleport_one_id = A.id INNER JOIN items AS B ON items_teleports.teleport_two_id = B.id  WHERE (teleport_one_id = ? OR teleport_two_id = ?)");
                 statement.setInt(1, this.currentTeleport.getId());
                 statement.setInt(2, this.currentTeleport.getId());
 
-                ResultSet set = statement.executeQuery();
-
-                if(set.next())
+                try (ResultSet set = statement.executeQuery())
                 {
-                    if(set.getInt("a_id") != this.currentTeleport.getId())
+                    if (set.next())
                     {
-                        ((InteractionTeleport) this.currentTeleport).setTargetId(set.getInt("a_id"));
-                        ((InteractionTeleport) this.currentTeleport).setTargetRoomId(set.getInt("a_room_id"));
-                    }
-                    else
-                    {
-                        ((InteractionTeleport) this.currentTeleport).setTargetId(set.getInt("b_id"));
-                        ((InteractionTeleport) this.currentTeleport).setTargetRoomId(set.getInt("b_room_id"));
+                        if (set.getInt("a_id") != this.currentTeleport.getId())
+                        {
+                            ((InteractionTeleport) this.currentTeleport).setTargetId(set.getInt("a_id"));
+                            ((InteractionTeleport) this.currentTeleport).setTargetRoomId(set.getInt("a_room_id"));
+                        }
+                        else
+                        {
+                            ((InteractionTeleport) this.currentTeleport).setTargetId(set.getInt("b_id"));
+                            ((InteractionTeleport) this.currentTeleport).setTargetRoomId(set.getInt("b_room_id"));
+                        }
                     }
                 }
-
-                set.close();
-                statement.close();
-                statement.getConnection().close();
-
-            } catch (SQLException e)
+            }
+            catch (SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
             }

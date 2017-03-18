@@ -5,9 +5,7 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class MarketPlaceOffer implements Runnable
 {
@@ -77,23 +75,23 @@ public class MarketPlaceOffer implements Runnable
             this.limitedStack = item.getLimitedStack();
         }
 
-        PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO marketplace_items (item_id, user_id, price, timestamp, state) VALUES (?, ?, ?, ?, ?)");
-        statement.setInt(1, item.getId());
-        statement.setInt(2, habbo.getHabboInfo().getId());
-        statement.setInt(3, MarketPlace.calculateCommision(this.price));
-        statement.setInt(4, this.timestamp);
-        statement.setString(5, this.state.getState() + "");
-        statement.execute();
-
-        ResultSet id = statement.getGeneratedKeys();
-        while(id.next())
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO marketplace_items (item_id, user_id, price, timestamp, state) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
         {
-            this.offerId = id.getInt(1);
-        }
-        id.close();
-        statement.close();
-        statement.getConnection().close();
+            statement.setInt(1, item.getId());
+            statement.setInt(2, habbo.getHabboInfo().getId());
+            statement.setInt(3, MarketPlace.calculateCommision(this.price));
+            statement.setInt(4, this.timestamp);
+            statement.setString(5, this.state.getState() + "");
+            statement.execute();
 
+            try (ResultSet id = statement.getGeneratedKeys())
+            {
+                while (id.next())
+                {
+                    this.offerId = id.getInt(1);
+                }
+            }
+        }
     }
 
     public int getOfferId()
@@ -161,14 +159,11 @@ public class MarketPlaceOffer implements Runnable
         if(this.needsUpdate)
         {
             this.needsUpdate = false;
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE marketplace_items SET state = ? WHERE id = ?"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE marketplace_items SET state = ? WHERE id = ?");
                 statement.setInt(1, this.state.getState());
                 statement.setInt(2, this.offerId);
                 statement.execute();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {
@@ -179,9 +174,8 @@ public class MarketPlaceOffer implements Runnable
 
     public static void insert(MarketPlaceOffer offer, Habbo habbo)
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO marketplace_items VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO marketplace_items VALUES (?, ?, ?, ?, ?)");
             statement.setInt(1, offer.getItemId());
             statement.setInt(2, habbo.getHabboInfo().getId());
             statement.setInt(3, offer.getPrice());
@@ -189,15 +183,13 @@ public class MarketPlaceOffer implements Runnable
             statement.setString(5, offer.getState().getState() + "");
             statement.execute();
 
-            ResultSet id = statement.getGeneratedKeys();
-            while(id.next())
+            try (ResultSet id = statement.getGeneratedKeys())
             {
-                offer.setOfferId(id.getInt(1));
+                while (id.next())
+                {
+                    offer.setOfferId(id.getInt(1));
+                }
             }
-            id.close();
-            statement.close();
-            statement.getConnection().close();
-
         }
         catch (SQLException e)
         {

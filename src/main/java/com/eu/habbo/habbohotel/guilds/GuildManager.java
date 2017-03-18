@@ -13,9 +13,7 @@ import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.set.hash.THashSet;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -55,18 +53,14 @@ public class GuildManager
             this.guildParts.put(t, new THashMap<Integer, GuildPart>());
         }
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet set = statement.executeQuery("SELECT * FROM guilds_elements"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM guilds_elements");
-            ResultSet set = statement.executeQuery();
-
             while (set.next())
             {
                 this.guildParts.get(GuildPartType.valueOf(set.getString("type").toUpperCase())).put(set.getInt("id"), new GuildPart(set));
             }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -89,53 +83,48 @@ public class GuildManager
     {
         Guild guild = new Guild(habbo.getHabboInfo().getId(), habbo.getHabboInfo().getUsername(), roomId, roomName, name, description, colorOne, colorTwo, badge);
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO guilds (name, description, room_id, user_id, color_one, color_two, badge, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-            statement.setString(1, name);
-            statement.setString(2, description);
-            statement.setInt(3, roomId);
-            statement.setInt(4, guild.getOwnerId());
-            statement.setInt(5, colorOne);
-            statement.setInt(6, colorTwo);
-            statement.setString(7, badge);
-            statement.setInt(8, Emulator.getIntUnixTimestamp());
-            statement.execute();
-
-            ResultSet set = statement.getGeneratedKeys();
-
-            if (set.next())
+            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO guilds (name, description, room_id, user_id, color_one, color_two, badge, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
             {
-                guild.setId(set.getInt(1));
+                statement.setString(1, name);
+                statement.setString(2, description);
+                statement.setInt(3, roomId);
+                statement.setInt(4, guild.getOwnerId());
+                statement.setInt(5, colorOne);
+                statement.setInt(6, colorTwo);
+                statement.setString(7, badge);
+                statement.setInt(8, Emulator.getIntUnixTimestamp());
+                statement.execute();
+
+                try (ResultSet set = statement.getGeneratedKeys())
+                {
+                    if (set.next())
+                    {
+                        guild.setId(set.getInt(1));
+                    }
+                }
             }
 
-            set.close();
-            statement.close();
-            statement.getConnection().close();
-        } catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
+            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO guilds_members (guild_id, user_id, level_id, member_since) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
+            {
+                statement.setInt(1, guild.getId());
+                statement.setInt(2, habbo.getHabboInfo().getId());
+                statement.setInt(3, 0);
+                statement.setInt(4, Emulator.getIntUnixTimestamp());
+                statement.execute();
+
+                try (ResultSet set = statement.getGeneratedKeys())
+                {
+                    if (set.next())
+                    {
+                        guild.increaseMemberCount();
+                        //guild.addMember(new GuildMember(habbo.getHabboInfo().getId(), habbo.getHabboInfo().getUsername(), habbo.getHabboInfo().getLook(), Emulator.getIntUnixTimestamp(), 2));
+                    }
+                }
+            }
         }
-
-        try
-        {
-            PreparedStatement statement = Emulator.getDatabase().prepare("INSERT INTO guilds_members (guild_id, user_id, level_id, member_since) VALUES (?, ?, ?, ?)");
-            statement.setInt(1, guild.getId());
-            statement.setInt(2, habbo.getHabboInfo().getId());
-            statement.setInt(3, 0);
-            statement.setInt(4, Emulator.getIntUnixTimestamp());
-            statement.execute();
-            ResultSet set = statement.getGeneratedKeys();
-            if (set.next())
-            {
-                guild.increaseMemberCount();
-                //guild.addMember(new GuildMember(habbo.getHabboInfo().getId(), habbo.getHabboInfo().getUsername(), habbo.getHabboInfo().getLook(), Emulator.getIntUnixTimestamp(), 2));
-            }
-            set.close();
-            statement.close();
-            statement.getConnection().close();
-
-        } catch (SQLException e)
+        catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
         }
@@ -151,110 +140,55 @@ public class GuildManager
      */
     public void deleteGuild(Guild guild)
     {
-        PreparedStatement deleteFavourite = Emulator.getDatabase().prepare("UPDATE users_settings SET guild_id = ? WHERE guild_id = ?");
-
-        try
-        {
-            deleteFavourite.setInt(1, 0);
-            deleteFavourite.setInt(2, guild.getId());
-            deleteFavourite.execute();
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
-        }
-        finally
-        {
-            if (deleteFavourite != null)
-            {
-                try
-                {
-                    deleteFavourite.close();
-                    deleteFavourite.getConnection().close();
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                }
-            }
-        }
-
         THashSet<GuildMember> members = this.getGuildMembers(guild);
 
-        for(GuildMember member : members)
+        for (GuildMember member : members)
         {
             Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(member.getUserId());
 
-            if(habbo != null)
+            if (habbo != null)
             {
                 habbo.getHabboStats().removeGuild(guild.getId());
 
-                if(habbo.getHabboStats().guild == guild.getId())
+                if (habbo.getHabboStats().guild == guild.getId())
                 {
                     habbo.getHabboStats().guild = 0;
                 }
             }
         }
 
-        PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM guilds_members WHERE guild_id = ?");
-
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
-            statement.setInt(1, guild.getId());
-            statement.execute();
+            try (PreparedStatement deleteFavourite = connection.prepareStatement("UPDATE users_settings SET guild_id = ? WHERE guild_id = ?"))
+            {
+                deleteFavourite.setInt(1, 0);
+                deleteFavourite.setInt(2, guild.getId());
+                deleteFavourite.execute();
+            }
+
+
+            try (PreparedStatement statement = connection.prepareStatement("DELETE FROM guilds_members WHERE guild_id = ?"))
+            {
+                statement.setInt(1, guild.getId());
+                statement.execute();
+            }
+
+            try (PreparedStatement statement = connection.prepareStatement("DELETE FROM guilds WHERE id = ?"))
+            {
+                statement.setInt(1, guild.getId());
+                statement.execute();
+            }
+
+            Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(guild.getRoomId());
+
+            if (room != null)
+            {
+                room.setGuild(0);
+            }
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
-        }
-        finally
-        {
-            if (statement != null)
-            {
-                try
-                {
-                    statement.close();
-                    statement.getConnection().close();
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                }
-            }
-        }
-
-        PreparedStatement stmt = Emulator.getDatabase().prepare("DELETE FROM guilds WHERE id = ?");
-
-        try
-        {
-            stmt.setInt(1, guild.getId());
-            stmt.execute();
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
-        }
-        finally
-        {
-            if (stmt != null)
-            {
-                try
-                {
-                    stmt.close();
-                    stmt.getConnection().close();
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                }
-            }
-        }
-
-        Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(guild.getRoomId());
-
-        if(room != null)
-        {
-            room.setGuild(0);
         }
     }
 
@@ -292,117 +226,110 @@ public class GuildManager
     public void joinGuild(Guild guild, GameClient client, int userId, boolean acceptRequest)
     {
         boolean error = false;
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT COUNT(id) as total FROM guilds_members WHERE user_id = ?");
-
-            if(userId == 0)
-                statement.setInt(1, client.getHabbo().getHabboInfo().getId());
-            else
-                statement.setInt(1, userId);
-
-            ResultSet set = statement.executeQuery();
-
-            if(set.next())
+            try(PreparedStatement statement = connection.prepareStatement("SELECT COUNT(id) as total FROM guilds_members WHERE user_id = ?"))
             {
-                if(set.getInt(1) >= 100)
-                {
-                    //TODO Add non acceptRequest errors. See Outgoing.GroupEditFailComposer
-                    if(userId == 0)
-                        client.sendResponse(new GuildJoinErrorComposer(GuildJoinErrorComposer.GROUP_LIMIT_EXCEED));
-                    else
-                        client.sendResponse(new GuildJoinErrorComposer(GuildJoinErrorComposer.MEMBER_FAIL_JOIN_LIMIT_EXCEED_NON_HC));
+                if (userId == 0)
+                    statement.setInt(1, client.getHabbo().getHabboInfo().getId());
+                else
+                    statement.setInt(1, userId);
 
-                    error = true;
+                try (ResultSet set = statement.executeQuery())
+                {
+                    if (set.next())
+                    {
+                        if (set.getInt(1) >= 100)
+                        {
+                            //TODO Add non acceptRequest errors. See Outgoing.GroupEditFailComposer
+                            if (userId == 0)
+                                client.sendResponse(new GuildJoinErrorComposer(GuildJoinErrorComposer.GROUP_LIMIT_EXCEED));
+                            else
+                                client.sendResponse(new GuildJoinErrorComposer(GuildJoinErrorComposer.MEMBER_FAIL_JOIN_LIMIT_EXCEED_NON_HC));
+
+                            error = true;
+                        }
+                    }
                 }
             }
 
-            set.close();
-            statement.close();
-            statement.getConnection().close();
-
             if(!error)
             {
-                statement = Emulator.getDatabase().prepare("SELECT COUNT(id) as total FROM guilds_members WHERE guild_id = ? AND level_id < 3");
-                statement.setInt(1, guild.getId());
-                set = statement.executeQuery();
-
-                if (set.next())
+                try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(id) as total FROM guilds_members WHERE guild_id = ? AND level_id < 3"))
                 {
-                    if (set.getInt(1) >= 50000)
+                    statement.setInt(1, guild.getId());
+                    try (ResultSet set = statement.executeQuery())
                     {
-                        client.sendResponse(new GuildJoinErrorComposer(GuildJoinErrorComposer.GROUP_FULL));
-                        error = true;
+                        if (set.next())
+                        {
+                            if (set.getInt(1) >= 50000)
+                            {
+                                client.sendResponse(new GuildJoinErrorComposer(GuildJoinErrorComposer.GROUP_FULL));
+                                error = true;
+                            }
+                        }
                     }
                 }
-
-                set.close();
-                statement.close();
-                statement.getConnection().close();
 
                 if (userId == 0 && !error)
                 {
                     if (guild.getState() == GuildState.LOCKED)
                     {
-                        statement = Emulator.getDatabase().prepare("SELECT COUNT(id) as total FROM guilds_members WHERE guild_id = ? AND level_id = 3");
-                        statement.setInt(1, guild.getId());
-                        set = statement.executeQuery();
-
-                        if (set.next())
+                        try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(id) as total FROM guilds_members WHERE guild_id = ? AND level_id = 3"))
                         {
-                            if (set.getInt(1) >= 100)
+                            statement.setInt(1, guild.getId());
+                            try (ResultSet set = statement.executeQuery())
                             {
-                                client.sendResponse(new GuildJoinErrorComposer(GuildJoinErrorComposer.GROUP_NOT_ACCEPT_REQUESTS));
-                                error = true;
+                                if (set.next())
+                                {
+                                    if (set.getInt(1) >= 100)
+                                    {
+                                        client.sendResponse(new GuildJoinErrorComposer(GuildJoinErrorComposer.GROUP_NOT_ACCEPT_REQUESTS));
+                                        error = true;
+                                    }
+                                }
                             }
                         }
 
-                        set.close();
-                        statement.close();
-                        statement.getConnection().close();
-
                         if(!error)
                         {
-
-                            statement = Emulator.getDatabase().prepare("SELECT COUNT(id) as total FROM guilds_members WHERE guild_id = ? AND user_id = ? LIMIT 1");
-                            statement.setInt(1, guild.getId());
-                            statement.setInt(2, client.getHabbo().getHabboInfo().getId());
-                            set = statement.executeQuery();
-
-                            if (set.next())
+                            try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(id) as total FROM guilds_members WHERE guild_id = ? AND user_id = ? LIMIT 1"))
                             {
-                                error = true;
+                                statement.setInt(1, guild.getId());
+                                statement.setInt(2, client.getHabbo().getHabboInfo().getId());
+                                try (ResultSet set = statement.executeQuery())
+                                {
+                                    if (set.next())
+                                    {
+                                        error = true;
+                                    }
+                                }
                             }
-
-                            set.close();
-                            statement.close();
-                            statement.getConnection().close();
                         }
                     }
 
                     if(!error)
                     {
-
-                        statement = Emulator.getDatabase().prepare("INSERT INTO guilds_members (guild_id, user_id, member_since, level_id) VALUES (?, ?, ?, ?)");
-                        statement.setInt(1, guild.getId());
-                        statement.setInt(2, client.getHabbo().getHabboInfo().getId());
-                        statement.setInt(3, Emulator.getIntUnixTimestamp());
-                        statement.setInt(4, guild.getState() == GuildState.LOCKED ? GuildRank.REQUESTED.type : GuildRank.MEMBER.type);
-                        statement.execute();
-                        statement.close();
-                        statement.getConnection().close();
+                        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO guilds_members (guild_id, user_id, member_since, level_id) VALUES (?, ?, ?, ?)"))
+                        {
+                            statement.setInt(1, guild.getId());
+                            statement.setInt(2, client.getHabbo().getHabboInfo().getId());
+                            statement.setInt(3, Emulator.getIntUnixTimestamp());
+                            statement.setInt(4, guild.getState() == GuildState.LOCKED ? GuildRank.REQUESTED.type : GuildRank.MEMBER.type);
+                            statement.execute();
+                        }
                     }
                 }
                 else if(!error)
                 {
-                    statement = Emulator.getDatabase().prepare("UPDATE guilds_members SET level_id = ?, member_since = ? WHERE user_id = ? AND guild_id = ?");
-                    statement.setInt(1, 2);
-                    statement.setInt(2, Emulator.getIntUnixTimestamp());
-                    statement.setInt(3, userId);
-                    statement.setInt(4, guild.getId());
-                    statement.execute();
-                    statement.close();
-                    statement.getConnection().close();
+                    try (PreparedStatement statement = connection.prepareStatement("UPDATE guilds_members SET level_id = ?, member_since = ? WHERE user_id = ? AND guild_id = ?"))
+                    {
+                        statement.setInt(1, 2);
+                        statement.setInt(2, Emulator.getIntUnixTimestamp());
+                        statement.setInt(3, userId);
+                        statement.setInt(4, guild.getId());
+                        statement.execute();
+                    }
                 }
 
                 if(!error)
@@ -430,15 +357,12 @@ public class GuildManager
      */
     public void setAdmin(Guild guild, int userId)
     {
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE guilds_members SET level_id = ? WHERE user_id = ? AND guild_id = ? LIMIT 1"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE guilds_members SET level_id = ? WHERE user_id = ? AND guild_id = ? LIMIT 1");
             statement.setInt(1, 1);
             statement.setInt(2, userId);
             statement.setInt(3, guild.getId());
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -456,15 +380,12 @@ public class GuildManager
         if(guild.getOwnerId() == userId)
             return;
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE guilds_members SET level_id = ? WHERE user_id = ? AND guild_id = ? LIMIT 1"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE guilds_members SET level_id = ? WHERE user_id = ? AND guild_id = ? LIMIT 1");
             statement.setInt(1, 2);
             statement.setInt(2, userId);
             statement.setInt(3, guild.getId());
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -491,14 +412,11 @@ public class GuildManager
             habbo.getHabboStats().run();
         }
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM guilds_members WHERE user_id = ? AND guild_id = ? LIMIT 1"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM guilds_members WHERE user_id = ? AND guild_id = ? LIMIT 1");
             statement.setInt(1, userId);
             statement.setInt(2, guild.getId());
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -536,21 +454,17 @@ public class GuildManager
     public GuildMember getGuildMember(int guildId, int habboId)
     {
         GuildMember member = null;
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username, users.look, guilds_members.* FROM guilds_members INNER JOIN users ON guilds_members.user_id = users.id WHERE guilds_members.guild_id = ? AND guilds_members.user_id = ? LIMIT 1"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT users.username, users.look, guilds_members.* FROM guilds_members INNER JOIN users ON guilds_members.user_id = users.id WHERE guilds_members.guild_id = ? AND guilds_members.user_id = ? LIMIT 1");
             statement.setInt(1, guildId);
             statement.setInt(2, habboId);
-            ResultSet set = statement.executeQuery();
-
-            if (set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                member = new GuildMember(set);
+                if (set.next())
+                {
+                    member = new GuildMember(set);
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -579,20 +493,16 @@ public class GuildManager
     {
         THashSet<GuildMember> guildMembers = new THashSet<GuildMember>();
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username, users.look, guilds_members.* FROM guilds_members INNER JOIN users ON guilds_members.user_id = users.id WHERE guilds_members.guild_id = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT users.username, users.look, guilds_members.* FROM guilds_members INNER JOIN users ON guilds_members.user_id = users.id WHERE guilds_members.guild_id = ?");
             statement.setInt(1, guild.getId());
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                guildMembers.add(new GuildMember(set));
+                while (set.next())
+                {
+                    guildMembers.add(new GuildMember(set));
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -614,23 +524,20 @@ public class GuildManager
     {
         ArrayList<GuildMember> guildMembers = new ArrayList<GuildMember>();
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username, users.look, guilds_members.* FROM guilds_members INNER JOIN users ON guilds_members.user_id = users.id WHERE guilds_members.guild_id = ?  " + (rankQuery(levelId)) + " AND users.username LIKE ? ORDER BY level_id, member_since ASC LIMIT ?, ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT users.username, users.look, guilds_members.* FROM guilds_members INNER JOIN users ON guilds_members.user_id = users.id WHERE guilds_members.guild_id = ?  " + (rankQuery(levelId)) + " AND users.username LIKE ? ORDER BY level_id, member_since ASC LIMIT ?, ?");
             statement.setInt(1, guild.getId());
             statement.setString(2, "%" + query + "%");
             statement.setInt(3, page * 14);
             statement.setInt(4, (page * 14) + 14);
-            ResultSet set = statement.executeQuery();
 
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                guildMembers.add(new GuildMember(set));
+                while (set.next())
+                {
+                    guildMembers.add(new GuildMember(set));
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -649,20 +556,16 @@ public class GuildManager
     {
         THashMap<Integer, GuildMember> guildAdmins = new THashMap<Integer, GuildMember>();
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username, users.look, guilds_members.* FROM guilds_members INNER JOIN users ON guilds_members.user_id = users.id WHERE guilds_members.guild_id = ?  " + (rankQuery(1))))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT users.username, users.look, guilds_members.* FROM guilds_members INNER JOIN users ON guilds_members.user_id = users.id WHERE guilds_members.guild_id = ?  " + (rankQuery(1)));
             statement.setInt(1, guild.getId());
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                guildAdmins.put(set.getInt("user_id"), new GuildMember(set));
+                while (set.next())
+                {
+                    guildAdmins.put(set.getInt("user_id"), new GuildMember(set));
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
@@ -692,21 +595,18 @@ public class GuildManager
 
         if(g == null)
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username, rooms.name as room_name, guilds.* FROM guilds INNER JOIN users ON guilds.user_id = users.id INNER JOIN rooms ON rooms.id = guilds.room_id WHERE guilds.id = ? LIMIT 1"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("SELECT users.username, rooms.name as room_name, guilds.* FROM guilds INNER JOIN users ON guilds.user_id = users.id INNER JOIN rooms ON rooms.id = guilds.room_id WHERE guilds.id = ? LIMIT 1");
                 statement.setInt(1, guildId);
-                ResultSet set = statement.executeQuery();
-
-                if(set.next())
+                try (ResultSet set = statement.executeQuery())
                 {
-                    g = new Guild(set);
+                    if (set.next())
+                    {
+                        g = new Guild(set);
+                    }
                 }
                 if(g != null)
                     g.loadMemberCount();
-                set.close();
-                statement.close();
-                statement.getConnection().close();
             }
             catch (SQLException e)
             {
@@ -728,25 +628,21 @@ public class GuildManager
     {
         List<Guild> guilds = new ArrayList<Guild>();
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT guild_id FROM guilds_members WHERE user_id = ? ORDER BY member_since ASC"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT guild_id FROM guilds_members WHERE user_id = ? ORDER BY member_since ASC");
             statement.setInt(1, userId);
-            ResultSet set = statement.executeQuery();
-
-            while (set.next())
+            try (ResultSet set = statement.executeQuery())
             {
-                Guild guild = getGuild(set.getInt("guild_id"));
-
-                if (guild != null)
+                while (set.next())
                 {
-                    guilds.add(guild);
+                    Guild guild = getGuild(set.getInt("guild_id"));
+
+                    if (guild != null)
+                    {
+                        guilds.add(guild);
+                    }
                 }
             }
-
-            set.close();
-            statement.getConnection().close();
-            statement.close();
         }
         catch (SQLException e)
         {
@@ -845,14 +741,11 @@ public class GuildManager
     public void setGuild(InteractionGuildFurni furni, int guildId)
     {
         furni.setGuildId(guildId);
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE items SET guild_id = ? WHERE id = ?"))
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE items SET guild_id = ? WHERE id = ?");
             statement.setInt(1, guildId);
             statement.setInt(2, furni.getId());
             statement.execute();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {

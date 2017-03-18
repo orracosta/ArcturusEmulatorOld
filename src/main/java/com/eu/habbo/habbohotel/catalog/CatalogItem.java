@@ -6,6 +6,7 @@ import com.eu.habbo.messages.ISerialize;
 import com.eu.habbo.messages.ServerMessage;
 import gnu.trove.set.hash.THashSet;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -324,15 +325,12 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
     {
         if(this.needsUpdate)
         {
-            try
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE catalog_items SET limited_sells = ?, page_id = ? WHERE id = ?"))
             {
-                PreparedStatement statement = Emulator.getDatabase().prepare("UPDATE catalog_items SET limited_sells = ?, page_id = ? WHERE id = ?");
                 statement.setInt(1, this.getLimitedSells());
                 statement.setInt(2, this.pageId);
                 statement.setInt(3, this.getId());
                 statement.execute();
-                statement.close();
-                statement.getConnection().close();
             }
             catch(SQLException e)
             {

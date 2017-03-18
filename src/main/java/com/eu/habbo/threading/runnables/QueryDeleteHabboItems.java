@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import gnu.trove.map.TIntObjectMap;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -19,26 +20,18 @@ public class QueryDeleteHabboItems implements Runnable
     @Override
     public void run()
     {
-        PreparedStatement statement = Emulator.getDatabase().prepare("DELETE FROM items WHERE id = ?");
-
-        for(HabboItem item : items.valueCollection())
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM items WHERE id = ?"))
         {
-            if(item.getRoomId() > 0)
-                continue;
-
-            try
+            for (HabboItem item : items.valueCollection())
             {
-                statement.setInt(1, item.getId());
-                statement.execute();
-            } catch (Exception e){
-                Emulator.getLogging().logErrorLine(e);
-            }
-        }
+                if (item.getRoomId() > 0)
+                    continue;
 
-        try
-        {
-            statement.close();
-            statement.getConnection().close();
+                statement.setInt(1, item.getId());
+                statement.addBatch();
+            }
+
+            statement.executeBatch();
         }
         catch (SQLException e)
         {

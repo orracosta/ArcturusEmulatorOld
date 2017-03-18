@@ -2,9 +2,7 @@ package com.eu.habbo.core;
 
 import com.eu.habbo.Emulator;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -41,12 +39,8 @@ public class TextsManager
      */
     public void reload() throws Exception
     {
-        PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM emulator_texts");
-
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM emulator_texts"))
         {
-            ResultSet set = statement.executeQuery();
-
             while(set.next())
             {
                 if(this.texts.containsKey(set.getString("key")))
@@ -58,10 +52,6 @@ public class TextsManager
                     this.texts.put(set.getString("key"), set.getString("value"));
                 }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {

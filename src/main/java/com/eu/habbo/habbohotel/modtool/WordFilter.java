@@ -11,9 +11,7 @@ import com.eu.habbo.threading.runnables.InsertModToolIssue;
 import gnu.trove.iterator.hash.TObjectHashIterator;
 import gnu.trove.set.hash.THashSet;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.text.Normalizer;
 
 public class WordFilter
@@ -40,36 +38,32 @@ public class WordFilter
 
         this.words.add(new WordFilterWord("azure ", "poop "));
 
-        try
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement();)
         {
-            PreparedStatement statement = Emulator.getDatabase().prepare("SELECT * FROM wordfilter");
-            ResultSet set = statement.executeQuery();
-
-            while(set.next())
+            try (ResultSet set = statement.executeQuery("SELECT * FROM wordfilter"))
             {
-                WordFilterWord word;
-
-                try
+                while (set.next())
                 {
-                    word = new WordFilterWord(set);
-                }
-                catch (SQLException e)
-                {
-                    Emulator.getLogging().logSQLException(e);
-                    continue;
-                }
+                    WordFilterWord word;
 
-                if(word.autoReport)
-                    this.autoReportWords.add(word);
-                else if(word.hideMessage)
-                    this.hideMessageWords.add(word);
-                else
-                    words.add(word);
+                    try
+                    {
+                        word = new WordFilterWord(set);
+                    }
+                    catch (SQLException e)
+                    {
+                        Emulator.getLogging().logSQLException(e);
+                        continue;
+                    }
+
+                    if (word.autoReport)
+                        this.autoReportWords.add(word);
+                    else if (word.hideMessage)
+                        this.hideMessageWords.add(word);
+                    else
+                        words.add(word);
+                }
             }
-
-            set.close();
-            statement.close();
-            statement.getConnection().close();
         }
         catch (SQLException e)
         {
