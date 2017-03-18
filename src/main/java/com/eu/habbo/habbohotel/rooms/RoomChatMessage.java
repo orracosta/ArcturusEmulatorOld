@@ -55,6 +55,7 @@ public class RoomChatMessage implements Runnable, ISerialize
     public RoomChatMessage(RoomChatMessage chatMessage)
     {
         this.message = chatMessage.getMessage();
+        this.unfilteredMessage = chatMessage.getUnfilteredMessage();
         this.habbo = chatMessage.getHabbo();
         this.targetHabbo = chatMessage.getTargetHabbo();
         this.bubble = chatMessage.getBubble();
@@ -65,6 +66,7 @@ public class RoomChatMessage implements Runnable, ISerialize
     public RoomChatMessage(String message, RoomUnit roomUnit, RoomChatMessageBubbles bubble)
     {
         this.message = message;
+        this.unfilteredMessage = message;
         this.habbo = null;
         this.bubble = bubble;
         this.roomUnit = roomUnit;
@@ -73,6 +75,7 @@ public class RoomChatMessage implements Runnable, ISerialize
     public RoomChatMessage(String message, Habbo habbo, RoomChatMessageBubbles bubble)
     {
         this.message = message;
+        this.unfilteredMessage = message;
         this.habbo = habbo;
         this.bubble = bubble;
         this.checkEmotion();
@@ -86,6 +89,7 @@ public class RoomChatMessage implements Runnable, ISerialize
     public RoomChatMessage(String message, Habbo habbo, Habbo targetHabbo, RoomChatMessageBubbles bubble)
     {
         this.message = message;
+        this.unfilteredMessage = message;
         this.habbo = habbo;
         this.targetHabbo = targetHabbo;
         this.bubble = bubble;
