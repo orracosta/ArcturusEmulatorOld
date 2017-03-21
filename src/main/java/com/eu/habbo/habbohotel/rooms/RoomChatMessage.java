@@ -10,6 +10,8 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 public class RoomChatMessage implements Runnable, ISerialize
 {
@@ -22,6 +24,7 @@ public class RoomChatMessage implements Runnable, ISerialize
     private byte emotion;
     public boolean isCommand = false;
     public boolean filtered = false;
+    private static final List<String> chatColors = Arrays.asList("@red@", "@cyan@", "@blue@", "@green@", "@purple@");
 
     public RoomChatMessage(MessageHandler message)
     {
@@ -249,6 +252,13 @@ public class RoomChatMessage implements Runnable, ISerialize
 
     public void filter()
     {
+        if(!habbo.getHabboStats().hasActiveClub())
+        {
+            for (String chatColor : chatColors) {
+                message = message.replace(chatColor, "");
+            }
+        }
+        
         if(Emulator.getConfig().getBoolean("hotel.wordfilter.enabled") && Emulator.getConfig().getBoolean("hotel.wordfilter.rooms"))
         {
             if(!habbo.hasPermission("acc_chat_no_filter"))
