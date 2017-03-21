@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
@@ -43,6 +44,14 @@ public class WiredTriggerFurniStateToggled extends InteractionWiredTrigger
 
             if (habbo != null)
             {
+                for (Object object : stuff)
+                {
+                    if (object instanceof WiredEffectType)
+                    {
+                        return false;
+                    }
+                }
+                
                 if (stuff[0] instanceof HabboItem)
                 {
                     if(items.contains(stuff[0]))

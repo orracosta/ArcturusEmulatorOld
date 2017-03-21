@@ -120,7 +120,7 @@ CREATE TABLE  `room_trade_log_items` (
 INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.log.trades', '1');
 
 #Dropping the badges column. Badges are now done via the items_base table.
-INSERT INTO items_base (sprite_id, public_name, item_name, type) SELECT DISTINCT '' as e, badge as c, badge as b, 'b' as d FROM catalog_items WHERE badge NOT LIKE '';
+INSERT INTO items_base (sprite_id, public_name, item_name, type) SELECT DISTINCT '0' as e, badge as c, badge as b, 'b' as d FROM catalog_items WHERE badge NOT LIKE '';
 UPDATE catalog_items SET item_ids = CONCAT(item_ids, ';', (SELECT id FROM items_base WHERE item_name LIKE badge)) WHERE badge NOT LIKE '';
 ALTER TABLE catalog_items DROP COLUMN badge;
 

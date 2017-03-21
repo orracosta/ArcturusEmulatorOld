@@ -226,7 +226,7 @@ public class Outgoing
 
     public final static int HotelViewBadgeButtonConfigComposer = 2998; // PRODUCTION-201611291003-338511768
     public final static int EpicPopupFrameComposer = 3945; // PRODUCTION-201611291003-338511768
-    public final static int BaseJumpLoadGameURL = 2624; // PRODUCTION-201611291003-338511768
+    public final static int BaseJumpLoadGameURLComposer = 2624; // PRODUCTION-201611291003-338511768
     public final static int RoomUserTagsComposer = 1255; // PRODUCTION-201611291003-338511768
     public final static int RoomInviteErrorComposer = 462; // PRODUCTION-201611291003-338511768
     public final static int PostItStickyPoleOpenComposer = 2366; // PRODUCTION-201611291003-338511768
@@ -451,7 +451,7 @@ public class Outgoing
     public final static int UnknownComposer_137 = 2897; // PRODUCTION-201611291003-338511768
     public final static int GameCenterAccountInfoComposer = 2893; // PRODUCTION-201611291003-338511768
     public final static int UnknowComposer_1390 = 2270; // PRODUCTION-201611291003-338511768
-    public final static int BaseJumpLoadGameComposer = 2270; // PRODUCTION-201611291003-338511768
+    public final static int BaseJumpLoadGameComposer = 3654; // PRODUCTION-201611291003-338511768
     public final static int UnknowComposer_1427 = 3319; // PRODUCTION-201611291003-338511768
     public final static int AdventCalendarDataComposer = 2531; // PRODUCTION-201611291003-338511768
     public final static int UnknownComposer_152 = 3954; // PRODUCTION-201611291003-338511768
@@ -525,6 +525,6 @@ public class Outgoing
 
     public final static int SomeConnectionComposer = 3928;
     public final static int TradingWaitingConfirmComposer = 2720;
-
+    public final static int BaseJumpJoinQueueComposer = 2260;
     public final static int ClubCenterDataComposer = 3277;
 }

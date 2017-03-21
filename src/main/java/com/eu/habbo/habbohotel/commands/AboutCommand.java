@@ -26,7 +26,7 @@ public class AboutCommand extends Command
 
         String message = "<b>" + Emulator.version + "</b>\r\n";
 
-        if (!Emulator.getConfig().getBoolean("info.shown", true))
+        if (Emulator.getConfig().getBoolean("info.shown", true))
         {
             message += "<b>Hotel Statistics</b>\r" +
                     "- Users: " + Emulator.getGameEnvironment().getHabboManager().getOnlineCount() + "\r" +

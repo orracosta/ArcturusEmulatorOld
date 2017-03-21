@@ -135,6 +135,7 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
                 }
                 catch (Exception e)
                 {
+                    Emulator.getLogging().logErrorLine(e);
                 }
             }
         }

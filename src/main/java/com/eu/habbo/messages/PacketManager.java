@@ -508,6 +508,6 @@ public class PacketManager
     void registerGameCenter() throws Exception
     {
         this.registerHandler(Incoming.GameCenterRequestGamesEvent,              GameCenterRequestGamesEvent.class);
-//        this.registerHandler(Incoming.GameCenterRequestAccountStatusEvent,      GameCenterRequestAccountStatusEvent.class);
+        this.registerHandler(Incoming.GameCenterRequestAccountStatusEvent,      GameCenterRequestAccountStatusEvent.class);
     }
 }

@@ -89,7 +89,7 @@ public class MarketPlace
 
                         habbo.getHabboInventory().removeMarketplaceOffer(offer);
 
-                        try (PreparedStatement statement = connection.prepareStatement("DELETE FROM marketplace_items WHERE id = ? WHERE state != 2"))
+                        try (PreparedStatement statement = connection.prepareStatement("DELETE FROM marketplace_items WHERE id = ? AND state != 2"))
                         {
                             statement.setInt(1, offer.getOfferId());
                             int count = statement.executeUpdate();

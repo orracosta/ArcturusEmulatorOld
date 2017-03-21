@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.items.IEventTriggers;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.*;
 import com.eu.habbo.habbohotel.rooms.*;
+import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.ServerMessage;
@@ -293,7 +294,17 @@ public abstract class HabboItem implements Runnable, IEventTriggers
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
         if(client != null && this.getBaseItem().getType().equalsIgnoreCase("s"))
+        {
+            if (objects != null && objects.length >= 2)
+            {
+                if (objects[1] instanceof WiredEffectType)
+                {
+                    return;
+                }
+            }
+
             WiredHandler.handle(WiredTriggerType.STATE_CHANGED, client.getHabbo().getRoomUnit(), room, new Object[]{this});
+        }
     }
 
     @Override

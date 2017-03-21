@@ -261,7 +261,7 @@ public class Incoming
     public static final int GuardianVoteEvent = 3961; // PRODUCTION-201611291003-338511768
     public static final int GuardianAcceptRequestEvent = 3365; // PRODUCTION-201611291003-338511768
     public static final int RequestGameConfigurationsEvent = 741; // PRODUCTION-201611291003-338511768
-    public static final int RequestAchievementConfigurationEvent = 2399; // PRODUCTION-201611291003-338511768
+    public static final int RequestAchievementConfigurationEvent = -1; // PRODUCTION-201611291003-338511768
     public static final int RequestReportUserBullyingEvent = 3786; // PRODUCTION-201611291003-338511768
     public static final int ReportBullyEvent = 3060; // PRODUCTION-201611291003-338511768
     public static final int CameraRoomPictureEvent = 3226; // PRODUCTION-201611291003-338511768
