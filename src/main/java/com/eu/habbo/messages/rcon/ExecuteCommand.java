@@ -22,7 +22,7 @@ public class ExecuteCommand extends RCONMessage<ExecuteCommand.JSONExecuteComman
         {
             Habbo habbo = Emulator.getGameServer().getGameClientManager().getHabbo(json.user_id);
 
-            if (habbo != null)
+            if (habbo == null)
             {
                 status = HABBO_NOT_FOUND;
                 return;
