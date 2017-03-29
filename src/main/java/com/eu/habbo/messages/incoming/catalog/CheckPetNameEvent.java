@@ -23,7 +23,7 @@ public class CheckPetNameEvent extends MessageHandler
         {
             this.client.sendResponse(new PetNameErrorComposer(PetNameErrorComposer.NAME_TO_LONG, maxLength + ""));
         }
-        else if(StringUtils.isAlphanumeric(petName))
+        else if(!StringUtils.isAlphanumeric(petName))
         {
             this.client.sendResponse(new PetNameErrorComposer(PetNameErrorComposer.FORBIDDEN_CHAR, petName));
         }
