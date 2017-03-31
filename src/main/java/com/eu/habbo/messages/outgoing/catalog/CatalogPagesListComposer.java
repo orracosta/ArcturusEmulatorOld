@@ -63,7 +63,7 @@ public class CatalogPagesListComposer extends MessageComposer
 
         this.response.appendBoolean(category.isVisible());
         this.response.appendInt32(category.getIconImage());
-        this.response.appendInt32(category.getId());
+        this.response.appendInt32(category.isEnabled() ? category.getId() : -1);
         this.response.appendString(category.getPageName());
         this.response.appendString(category.getCaption() + (hasPermission ? " (" + category.getId() + ")" : ""));
         this.response.appendInt32(category.getOfferIds().size());
