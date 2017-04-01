@@ -109,6 +109,7 @@ public class CommandHandler
         addCommand(new SuperPullCommand());
         addCommand(new TakeBadgeCommand());
         addCommand(new TeleportCommand());
+        addCommand(new TransformCommand());
         addCommand(new TrashCommand());
         addCommand(new UnbanCommand());
         addCommand(new UnloadRoomCommand());

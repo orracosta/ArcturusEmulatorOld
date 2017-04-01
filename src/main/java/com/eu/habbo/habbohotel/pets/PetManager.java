@@ -22,7 +22,9 @@ import org.apache.commons.math.distribution.ExponentialDistribution;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 
 public class PetManager
 {
@@ -333,6 +335,27 @@ public class PetManager
         }
 
         return null;
+    }
+
+    public PetData getPetData(String petName)
+    {
+        synchronized (this.petData)
+        {
+            for (Map.Entry<Integer, PetData> entry : this.petData.entrySet())
+            {
+                if (entry.getValue().getName().equalsIgnoreCase(petName))
+                {
+                    return entry.getValue();
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public Collection<PetData> getPetData()
+    {
+        return this.petData.values();
     }
 
     public Pet createPet(Item item, String name, String race, String color, GameClient client)

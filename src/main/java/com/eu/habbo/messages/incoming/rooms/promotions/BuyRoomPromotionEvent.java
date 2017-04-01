@@ -34,6 +34,11 @@ public class BuyRoomPromotionEvent extends MessageHandler
                 {
                     Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(roomId);
 
+                    if (!(room.isOwner(this.client.getHabbo()) || room.hasRights(this.client.getHabbo()) || room.guildRightLevel(this.client.getHabbo()) == 3))
+                    {
+                        return;
+                    }
+                    
                     if (room.isPromoted())
                     {
                         room.getPromotion().addEndTimestamp(120 * 60);

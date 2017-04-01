@@ -10,6 +10,8 @@ public class GameCenterRequestGamesEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        this.client.sendResponse(new GameCenterGameListComposer());
+//        this.client.sendResponse(new GameCenterGameListComposer());
+        this.client.sendResponse(new GameCenterAchievementsConfigurationComposer());
+        this.client.sendResponse(new GameCenterAccountInfoComposer());
     }
 }

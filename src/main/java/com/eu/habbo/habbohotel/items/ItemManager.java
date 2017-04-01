@@ -383,6 +383,7 @@ public class ItemManager {
                 }
                 catch (Exception e)
                 {
+                    Emulator.getLogging().logErrorLine("Failed to load Item (" + set.getInt("id") + ")");
                     Emulator.getLogging().logErrorLine(e);
                 }
             }

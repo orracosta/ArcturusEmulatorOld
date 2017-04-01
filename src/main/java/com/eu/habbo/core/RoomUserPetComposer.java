@@ -5,12 +5,18 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class EasterCrickeyComposer extends MessageComposer
+public class RoomUserPetComposer extends MessageComposer
 {
+    private final int petType;
+    private final int race;
+    private final String color;
     private final Habbo habbo;
 
-    public EasterCrickeyComposer(Habbo habbo)
+    public RoomUserPetComposer(int petType, int race, String color, Habbo habbo)
     {
+        this.petType = petType;
+        this.race = race;
+        this.color = color;
         this.habbo = habbo;
     }
 
@@ -22,16 +28,16 @@ public class EasterCrickeyComposer extends MessageComposer
         this.response.appendInt32(this.habbo.getHabboInfo().getId());
         this.response.appendString(this.habbo.getHabboInfo().getUsername());
         this.response.appendString("");
-        this.response.appendString("2 1 88E70D 2 2 -1 0 3 -1 0");
+        this.response.appendString(this.petType + " " + this.race + " " + this.color + " 2 2 -1 0 3 -1 0");
         this.response.appendInt32(habbo.getRoomUnit().getId());
         this.response.appendInt32(habbo.getRoomUnit().getX());
         this.response.appendInt32(habbo.getRoomUnit().getY());
         this.response.appendString(habbo.getRoomUnit().getZ() + "");
-        this.response.appendInt32(0);
+        this.response.appendInt32(habbo.getRoomUnit().getBodyRotation().getValue());
         this.response.appendInt32(2);
-        this.response.appendInt32(2);
+        this.response.appendInt32(this.petType);
         this.response.appendInt32(this.habbo.getHabboInfo().getId());
-        this.response.appendString("Crickey!"); //TODO Owner name
+        this.response.appendString(this.habbo.getHabboInfo().getUsername()); //TODO Owner name
         this.response.appendInt32(1);
         this.response.appendBoolean(false);
         this.response.appendBoolean(true);

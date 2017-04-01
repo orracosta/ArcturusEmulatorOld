@@ -7,6 +7,8 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.achievements.AchievementListComposer;
 import com.eu.habbo.messages.outgoing.friends.FriendsComposer;
 import com.eu.habbo.messages.outgoing.friends.MessengerInitComposer;
+import com.eu.habbo.messages.outgoing.gamcenter.GameCenterAccountInfoComposer;
+import com.eu.habbo.messages.outgoing.gamcenter.GameCenterGameListComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.handshake.*;
 import com.eu.habbo.messages.outgoing.inventory.InventoryAchievementsComposer;
@@ -87,6 +89,8 @@ public class SecureLoginEvent extends MessageHandler
                 messages.add(new BuildersClubExpiredComposer().compose());
                 messages.add(new CfhTopicsMessageComposer().compose());
                 messages.add(new FavoriteRoomsCountComposer(this.client.getHabbo()).compose());
+                messages.add(new GameCenterGameListComposer().compose());
+                messages.add(new GameCenterAccountInfoComposer().compose());
 
                 //messages.add(new MessengerInitComposer(this.client.getHabbo()).compose());
                 //messages.add(new FriendsComposer(this.client.getHabbo()).compose());

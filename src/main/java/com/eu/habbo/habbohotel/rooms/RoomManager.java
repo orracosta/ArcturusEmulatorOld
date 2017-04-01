@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.rooms;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.core.RoomUserPetComposer;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.guilds.Guild;
@@ -8,6 +9,7 @@ import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
 import com.eu.habbo.habbohotel.navigation.NavigatorFilterComparator;
 import com.eu.habbo.habbohotel.navigation.NavigatorFilterField;
 import com.eu.habbo.habbohotel.pets.AbstractPet;
+import com.eu.habbo.habbohotel.pets.PetData;
 import com.eu.habbo.habbohotel.polls.Poll;
 import com.eu.habbo.habbohotel.polls.PollManager;
 import com.eu.habbo.habbohotel.users.*;
@@ -687,6 +689,7 @@ public class RoomManager {
         if (habbo.getRoomUnit() == null)
             habbo.setRoomUnit(new RoomUnit());
 
+        habbo.getRoomUnit().setRoomUnitType(RoomUnitType.USER);
         if(room.isBanned(habbo))
         {
             habbo.getClient().sendResponse(new RoomEnterErrorComposer(RoomEnterErrorComposer.ROOM_ERROR_BANNED));
@@ -947,6 +950,19 @@ public class RoomManager {
                         if (guild != null)
                         {
                             guildBadges.put(roomHabbo.getHabboStats().guild, guild.getBadge());
+                        }
+                    }
+
+                    if (roomHabbo.getRoomUnit().getRoomUnitType().equals(RoomUnitType.PET))
+                    {
+                        try
+                        {
+                            habbo.getClient().sendResponse(new RoomUserRemoveComposer(roomHabbo.getRoomUnit()));
+                            habbo.getClient().sendResponse(new RoomUserPetComposer(((PetData)roomHabbo.getHabboStats().cache.get("pet_type")).getType(), (Integer)roomHabbo.getHabboStats().cache.get("pet_race"), (String)roomHabbo.getHabboStats().cache.get("pet_color"), roomHabbo));
+                        }
+                        catch (Exception e)
+                        {
+
                         }
                     }
                 }
@@ -1391,6 +1407,37 @@ public class RoomManager {
         ArrayList<Room> rooms = new ArrayList<Room>();
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT rooms.* FROM rooms INNER JOIN room_rights ON room_rights.room_id = rooms.id WHERE room_rights.user_id = ? LIMIT 30 ORDER BY room.id DESC"))
+        {
+            statement.setInt(1, habbo.getHabboInfo().getId());
+            try (ResultSet set = statement.executeQuery())
+            {
+                while (set.next())
+                {
+                    if (this.activeRooms.containsKey(set.getInt("id")))
+                    {
+                        rooms.add(this.activeRooms.get(set.getInt("id")));
+                    }
+                    else
+                    {
+                        rooms.add(new Room(set));
+                    }
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
+        return rooms;
+    }
+
+    public ArrayList<Room> getRoomsWithAdminRights(Habbo habbo)
+    {
+        ArrayList<Room> rooms = new ArrayList<>();
+
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection();
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM rooms INNER JOIN guilds_members ON guilds_members.guild_id = rooms.guild_id WHERE guilds_members.user_id = ? AND level_id = 0"))
         {
             statement.setInt(1, habbo.getHabboInfo().getId());
             try (ResultSet set = statement.executeQuery())

@@ -11,8 +11,8 @@ public class GameCenterAccountInfoComposer extends MessageComposer
     {
         this.response.init(Outgoing.GameCenterAccountInfoComposer);
         this.response.appendInt32(3);
-        this.response.appendInt32(-1);
-        this.response.appendInt32(-1);
+        this.response.appendInt32(2);
+        this.response.appendInt32(1);
         return this.response;
     }
 }

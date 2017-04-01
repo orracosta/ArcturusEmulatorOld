@@ -51,6 +51,14 @@ public class SetStackHelperHeightEvent extends MessageHandler
 
                 for (RoomTile tile : tiles)
                 {
+                    if (height < tile.z)
+                    {
+                        height = tile.z;
+                    }
+                }
+
+                for (RoomTile tile : tiles)
+                {
                     tile.setStackHeight(height);
                 }
 

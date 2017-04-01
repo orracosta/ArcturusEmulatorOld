@@ -9,7 +9,7 @@ public class GameCenterAchievementsConfigurationComposer extends MessageComposer
     @Override
     public ServerMessage compose()
     {
-        this.response.init(Outgoing.AchievementsConfigurationComposer);
+        this.response.init(2265);
         this.response.appendInt32(0);
         this.response.appendInt32(0);
         this.response.appendInt32(0);

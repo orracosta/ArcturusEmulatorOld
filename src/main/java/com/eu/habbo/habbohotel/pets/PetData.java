@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PetData
+public class PetData implements Comparable<PetData>
 {
     private int type;
     private String name;
@@ -284,5 +284,11 @@ public class PetData
         this.actionsHappy = set.getString("happy_actions").split(";");
         this.actionsTired = set.getString("tired_actions").split(";");
         this.actionsRandom = set.getString("random_actions").split(";");
+    }
+
+    @Override
+    public int compareTo(PetData o)
+    {
+        return this.getType() - o.getType();
     }
 }

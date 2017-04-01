@@ -215,11 +215,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.guild = set.getInt("guild_id");
         this.rollerSpeed = set.getInt("roller_speed");
         this.overrideModel = set.getInt("override_model") == 1;
-
         this.promoted = set.getInt("promoted") == 1;
-        if(this.promoted)
+
+        this.bannedHabbos = new TIntObjectHashMap<RoomBan>();
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM room_promotions WHERE room_id = ? AND end_timestamp > ? LIMIT 1"))
         {
-            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM room_promotions WHERE room_id = ? AND end_timestamp > ? LIMIT 1"))
+            if(this.promoted)
             {
                 statement.setInt(1, this.id);
                 statement.setInt(2, Emulator.getIntUnixTimestamp());
@@ -233,11 +234,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         this.promotion = new RoomPromotion(this, promotionSet);
                     }
                 }
-
-                this.loadBans(connection);
             }
-        }
 
+            this.loadBans(connection);
+        }
         this.tradeMode = set.getInt("trade_mode");
         this.moveDiagonally = set.getString("move_diagonally").equals("1");
 
@@ -260,7 +260,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
 
         this.mutedHabbos = new TIntIntHashMap();
-        this.bannedHabbos = new TIntObjectHashMap<RoomBan>();
         this.games = new THashSet<Game>();
 
         this.activeTrades = new THashSet<RoomTrade>();
@@ -4142,6 +4141,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
     }
 
+    //TODO: Return Enum
     public int guildRightLevel(Habbo habbo)
     {
         if(this.guild > 0 && habbo.getHabboStats().hasGuild(this.guild))

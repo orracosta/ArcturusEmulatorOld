@@ -20,7 +20,7 @@ public class Easter
             Room room = event.habbo.getHabboInfo().getCurrentRoom();
 
             room.sendComposer(new RoomUserRemoveComposer(event.habbo.getRoomUnit()).compose());
-            room.sendComposer(new EasterCrickeyComposer(event.habbo).compose());
+            room.sendComposer(new RoomUserPetComposer(2, 1, "FFFFFF", event.habbo).compose());
 
         }
     }
