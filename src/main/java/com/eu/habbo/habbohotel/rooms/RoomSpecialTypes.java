@@ -682,6 +682,14 @@ public class RoomSpecialTypes
         return null;
     }
 
+    public InteractionFreezeExitTile getRandomFreezeExitTile()
+    {
+        synchronized (this.freezeExitTile)
+        {
+            return (InteractionFreezeExitTile) this.freezeExitTile.values().toArray()[Emulator.getRandom().nextInt(this.freezeExitTile.size())];
+        }
+    }
+
     public void addFreezeExitTile(InteractionFreezeExitTile freezeExitTile)
     {
         this.freezeExitTile.put(freezeExitTile.getId(), freezeExitTile);
@@ -695,6 +703,11 @@ public class RoomSpecialTypes
     public void removeFreezeExitTile(InteractionFreezeExitTile freezeExitTile)
     {
         this.freezeExitTile.remove(freezeExitTile.getId());
+    }
+
+    public boolean hasFreezeExitTile()
+    {
+        return !this.freezeExitTile.isEmpty();
     }
 
     public void addUndefined(HabboItem item)

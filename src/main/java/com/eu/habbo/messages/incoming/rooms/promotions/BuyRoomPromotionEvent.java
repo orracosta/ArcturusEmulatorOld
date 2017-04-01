@@ -38,7 +38,7 @@ public class BuyRoomPromotionEvent extends MessageHandler
                     {
                         return;
                     }
-                    
+
                     if (room.isPromoted())
                     {
                         room.getPromotion().addEndTimestamp(120 * 60);

@@ -139,6 +139,13 @@ public class FreezeGamePlayer extends GamePlayer
         this.updateEffect();
     }
 
+    public void unfreeze()
+    {
+        super.getHabbo().getRoomUnit().setCanWalk(true);
+        this.frozenTime = 0;
+        this.addProtection();
+    }
+
     public boolean isFrozen()
     {
         return this.frozenTime > 0;

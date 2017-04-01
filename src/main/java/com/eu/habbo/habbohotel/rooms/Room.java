@@ -625,19 +625,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 return;
         }
 
-        if(item instanceof InteractionFreezeExitTile)
-        {
-            FreezeGame game = (FreezeGame)this.getGame(FreezeGame.class);
-
-            if(this.getGame(FreezeGame.class) != null)
-            {
-                if(game.isRunning && game.exitTile == item)
-                {
-                    return;
-                }
-            }
-        }
-
         this.removeHabboItem(item.getId());
         item.onPickUp(this);
         item.setRoomId(0);

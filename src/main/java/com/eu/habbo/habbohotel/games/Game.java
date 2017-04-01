@@ -279,4 +279,13 @@ public abstract class Game implements Runnable
     {
         return this.endTime;
     }
+
+    /**
+     * Adds time to the current game.
+     * @param time The amount of time to add.
+     */
+    public void addTime(int time)
+    {
+        this.endTime += time;
+    }
 }

@@ -91,7 +91,6 @@ public abstract class InteractionGameTimer extends HabboItem
 
                 case 2:
                 {
-                    stopGame(room);
                     increaseTimer(room);
                 }
                 break;
@@ -141,6 +140,10 @@ public abstract class InteractionGameTimer extends HabboItem
             {
                 game.initialise();
             }
+            else
+            {
+                game.stop();
+            }
         }
         catch (Exception e)
         {
@@ -163,6 +166,13 @@ public abstract class InteractionGameTimer extends HabboItem
 
     private void increaseTimer(Room room)
     {
+        Game game = (this.getGameType().cast(room.getGame(this.getGameType())));
+
+        if(game != null && game.isRunning)
+        {
+            return;
+        }
+
         this.needsUpdate(true);
         switch(this.baseTime)
         {

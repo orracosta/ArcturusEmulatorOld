@@ -23,17 +23,17 @@ class FreezeHandleSnowballExplosion implements Runnable
     @Override
     public void run()
     {
-        if ((this.thrownData.habbo.getHabboInfo().getGamePlayer()) != null)
-        {
-            ((FreezeGamePlayer)this.thrownData.habbo.getHabboInfo().getGamePlayer()).addSnowball();
-        }
-        else
-        {
-            Emulator.getLogging().logDebugLine("Throwing snowball at (" + this.thrownData.targetTile.getX() + ", " + this.thrownData.targetTile.getY() + "): Player not found!");
-        }
-
         try
         {
+            if (this.thrownData.habbo.getHabboInfo().getGamePlayer() != null)
+            {
+                ((FreezeGamePlayer)this.thrownData.habbo.getHabboInfo().getGamePlayer()).addSnowball();
+            }
+            else
+            {
+                Emulator.getLogging().logDebugLine("Throwing snowball at (" + this.thrownData.targetTile.getX() + ", " + this.thrownData.targetTile.getY() + "): Player not found!");
+            }
+
             THashSet<RoomTile> tiles = new THashSet<RoomTile>();
 
             if(this.thrownData == null || this.thrownData.habbo.getHabboInfo().getGamePlayer() == null)

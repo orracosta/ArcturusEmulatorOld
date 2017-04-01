@@ -9,6 +9,7 @@ import com.eu.habbo.networking.camera.CameraClient;
 import com.eu.habbo.networking.gameserver.GameServer;
 import com.eu.habbo.networking.rconserver.RCONServer;
 import com.eu.habbo.plugin.PluginManager;
+import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
 import com.eu.habbo.plugin.events.emulator.EmulatorLoadedEvent;
 import com.eu.habbo.plugin.events.emulator.EmulatorStartShutdownEvent;
 import com.eu.habbo.plugin.events.emulator.EmulatorStoppedEvent;
@@ -134,6 +135,7 @@ public final class Emulator
             Emulator.getDatabase().getDataSource().setMinimumIdle(10);
             Emulator.pluginManager = new PluginManager();
             Emulator.pluginManager.reload();
+            Emulator.getPluginManager().fireEvent(new EmulatorConfigUpdatedEvent());
             Emulator.texts = new TextsManager();
             new CleanerThread();
             Emulator.gameServer = new GameServer(getConfig().getValue("game.host", "127.0.0.1"), getConfig().getInt("game.port", 30000));

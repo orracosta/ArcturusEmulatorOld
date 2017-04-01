@@ -81,7 +81,6 @@ public class InteractionFreezeBlock extends HabboItem
     public boolean isWalkable()
     {
         return !this.getExtradata().isEmpty() && !this.getExtradata().equals("0");
-
     }
 
     @Override
