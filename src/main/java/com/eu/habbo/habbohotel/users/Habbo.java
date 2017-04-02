@@ -228,6 +228,9 @@ public class Habbo implements Runnable
      */
     public void giveCredits(int credits)
     {
+        if (credits == 0)
+            return;
+
         this.getHabboInfo().addCredits(credits);
         this.client.sendResponse(new UserCreditsComposer(this.client.getHabbo()));
     }
@@ -239,6 +242,9 @@ public class Habbo implements Runnable
      */
     public void givePixels(int pixels)
     {
+        if (pixels == 0)
+            return;
+
         this.getHabboInfo().addPixels(pixels);
         this.client.sendResponse(new UserCurrencyComposer(this.client.getHabbo()));
     }
@@ -261,6 +267,9 @@ public class Habbo implements Runnable
      */
     public void givePoints(int type, int points)
     {
+        if (points == 0)
+            return;
+
         this.getHabboInfo().addCurrencyAmount(type, points);
         this.client.sendResponse(new UserPointsComposer(this.client.getHabbo().getHabboInfo().getCurrencyAmount(type), points, type));
     }
