@@ -10,6 +10,7 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredConditionType;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
+import com.eu.habbo.util.pathfinding.PathFinder;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.ResultSet;
@@ -46,7 +47,7 @@ public class WiredConditionNotTriggerOnFurni extends InteractionWiredCondition
 
         for(HabboItem item : this.items)
         {
-            if(item.getX() == roomUnit.getX() && item.getY() == roomUnit.getY())
+            if(PathFinder.getSquare(item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()).contains(roomUnit.getX(), roomUnit.getY()))
                 return false;
         }
 
