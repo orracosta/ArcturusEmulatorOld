@@ -14,6 +14,7 @@ import java.sql.SQLException;
 public class WiredTriggerScoreAchieved extends InteractionWiredTrigger
 {
     private static final WiredTriggerType type = WiredTriggerType.SCORE_ACHIEVED;
+    private int score = 0;
 
     public WiredTriggerScoreAchieved(ResultSet set, Item baseItem) throws SQLException
     {
@@ -28,25 +29,40 @@ public class WiredTriggerScoreAchieved extends InteractionWiredTrigger
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
+        if (stuff.length >= 2)
+        {
+            int points = (Integer)stuff[0];
+            int amountAdded = (Integer)stuff[1];
+
+            if (points - amountAdded < this.score && points >= this.score)
+            {
+                return true;
+            }
+        }
+
         return false;
     }
 
     @Override
     public String getWiredData()
     {
-        return null;
+        return this.score + "";
     }
 
     @Override
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
-
+        try
+        {
+            this.score = Integer.valueOf(set.getString("wired_data"));
+        }
+        catch (Exception e){}
     }
 
     @Override
     public void onPickUp()
     {
-
+        this.score = 0;
     }
 
     @Override
@@ -58,12 +74,25 @@ public class WiredTriggerScoreAchieved extends InteractionWiredTrigger
     @Override
     public void serializeWiredData(ServerMessage message)
     {
-
+        message.appendBoolean(false);
+        message.appendInt32(5);
+        message.appendInt32(0);
+        message.appendInt32(this.getBaseItem().getSpriteId());
+        message.appendInt32(this.getId());
+        message.appendString("");
+        message.appendInt32(1);
+        message.appendInt32(this.score);
+        message.appendInt32(0);
+        message.appendInt32(this.getType().code);
+        message.appendInt32(0);
+        message.appendInt32(0);
     }
 
     @Override
     public boolean saveData(ClientMessage packet)
     {
-        return false;
+        packet.readInt();
+        this.score = packet.readInt();
+        return true;
     }
 }

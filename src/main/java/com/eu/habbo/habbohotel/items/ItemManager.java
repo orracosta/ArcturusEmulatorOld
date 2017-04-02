@@ -149,6 +149,7 @@ public class ItemManager {
             this.interactionsList.add(new ItemInteraction("wf_trg_bot_reached_stf",     WiredTriggerBotReachedFurni.class));
             this.interactionsList.add(new ItemInteraction("wf_trg_bot_reached_avtr",    WiredTriggerBotReachedHabbo.class));
             this.interactionsList.add(new ItemInteraction("wf_trg_says_command",        WiredTriggerHabboSaysCommand.class));
+            this.interactionsList.add(new ItemInteraction("wf_trg_score_achieved",      WiredTriggerScoreAchieved.class));
 
             /*
                 Effects
