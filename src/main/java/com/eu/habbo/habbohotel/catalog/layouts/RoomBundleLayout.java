@@ -8,6 +8,8 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
 import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.THashMap;
@@ -241,6 +243,10 @@ public class RoomBundleLayout extends SingleBundle
         r.setFloorPaint(this.room.getFloorPaint());
         r.setScore(0);
         r.setNeedsUpdate(true);
-        habbo.getClient().sendResponse(new ForwardToRoomComposer(roomId));
+        THashMap<String, String> keys = new THashMap<String, String>();
+        keys.put("ROOMNAME", r.getName());
+        keys.put("ROOMID", r.getId() + "");
+        keys.put("OWNER", r.getOwnerName());
+        habbo.getClient().sendResponse(new BubbleAlertComposer(BubbleAlertKeys.PURCHASING_ROOM.key, keys));
     }
 }
