@@ -48,11 +48,19 @@ public class RoomDataComposer extends MessageComposer
         this.response.appendInt32(2);
         this.response.appendInt32(this.room.getScore());
         this.response.appendInt32(this.room.getCategory());
-        String[] tags = this.room.getTags().split(";");
-        this.response.appendInt32(tags.length);
-        for(String s : tags)
+
+        if (!this.room.getTags().isEmpty())
         {
-            this.response.appendString(s);
+            String[] tags = this.room.getTags().split(";");
+            this.response.appendInt32(tags.length);
+            for(String s : tags)
+            {
+                this.response.appendString(s);
+            }
+        }
+        else
+        {
+            this.response.appendInt32(0);
         }
 
         int base = 16;

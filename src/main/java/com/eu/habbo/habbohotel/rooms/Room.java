@@ -490,7 +490,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         this.currentPets.clear();
 
-        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM users_pets WHERE room_id = ?"))
+        try (PreparedStatement statement = connection.prepareStatement("SELECT users.username as pet_owner_name, users_pets.* FROM users_pets INNER JOIN users ON users_pets.user_id = users.id WHERE room_id = ?"))
         {
             statement.setInt(1, this.id);
             try (ResultSet set = statement.executeQuery())
@@ -511,6 +511,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         pet.getRoomUnit().setRoomUnitType(RoomUnitType.PET);
                         pet.getRoomUnit().setCanWalk(true);
                         this.addPet(pet);
+
+                        this.getFurniOwnerNames().put(pet.getUserId(), set.getString("pet_owner_name"));
                     }
                     catch (SQLException e)
                     {
@@ -2980,6 +2982,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             pet.getRoomUnit().setCanWalk(true);
             pet.getRoomUnit().getPathFinder().setRoom(this);
             pet.needsUpdate = true;
+            this.furniOwnerNames.put(pet.getUserId(), this.getHabbo(pet.getUserId()).getHabboInfo().getUsername());
             this.addPet(pet);
             this.sendComposer(new RoomPetComposer(pet).compose());
         }

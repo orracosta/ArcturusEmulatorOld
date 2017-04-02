@@ -27,10 +27,19 @@ public class RoomSettingsComposer extends MessageComposer
         this.response.appendInt32(this.room.getUsersMax());
         this.response.appendInt32(this.room.getUsersMax());
 
-        this.response.appendInt32(this.room.getTags().split(";").length);
-        for (String tag : this.room.getTags().split(";")) {
-            this.response.appendString(tag);
+        if (!this.room.getTags().isEmpty())
+        {
+            this.response.appendInt32(this.room.getTags().split(";").length);
+            for (String tag : this.room.getTags().split(";"))
+            {
+                this.response.appendString(tag);
+            }
         }
+        else
+        {
+            this.response.appendInt32(0);
+        }
+        
         //this.response.appendInt32(this.room.getRights().size());
         this.response.appendInt32(this.room.getTradeMode()); //Trade Mode
         this.response.appendInt32(this.room.isAllowPets() ? 1 : 0);

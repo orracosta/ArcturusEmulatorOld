@@ -57,7 +57,7 @@ public class RoomPetComposer extends MessageComposer implements TIntObjectProced
         this.response.appendInt32(2);
         this.response.appendInt32(pet.getPetData().getType());
         this.response.appendInt32(pet.getUserId());
-        this.response.appendString(""); //TODO Owner name
+        this.response.appendString(pet.getRoom().getFurniOwnerNames().get(pet.getUserId()));
         this.response.appendInt32(pet instanceof MonsterplantPet ? ((MonsterplantPet) pet).getRarity() : 1);
         this.response.appendBoolean(pet instanceof HorsePet && ((HorsePet) pet).hasSaddle());
         this.response.appendBoolean(false);

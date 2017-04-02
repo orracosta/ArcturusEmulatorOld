@@ -283,9 +283,12 @@ public class RoomUnit
 
             this.previousLocation = this.currentLocation;
             this.getStatus().put("mv", next.getX() + "," + next.getY() + "," + zHeight);
-            if (habbo.getHabboInfo().getRiding() != null)
+            if (habbo != null)
             {
-                habbo.getHabboInfo().getRiding().getRoomUnit().getStatus().put("mv", next.getX() + "," + next.getY() + "," + (zHeight - 1.0));
+                if (habbo.getHabboInfo().getRiding() != null)
+                {
+                    habbo.getHabboInfo().getRiding().getRoomUnit().getStatus().put("mv", next.getX() + "," + next.getY() + "," + (zHeight - 1.0));
+                }
             }
             //room.sendComposer(new RoomUserStatusComposer(this).compose());
 
