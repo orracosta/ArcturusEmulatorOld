@@ -873,7 +873,6 @@ public class Pet extends AbstractPet
             case JUMP:
             case STAND:
             case NEST:
-            case RIDE:
 
                 return false;
         }
