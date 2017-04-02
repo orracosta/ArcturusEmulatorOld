@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class InteractionFreezeScoreboardGreen extends InteractionFreezeScoreboard
 {
-    public static final GameTeamColors TEAM_COLOR = GameTeamColors.BLUE;
+    public static final GameTeamColors TEAM_COLOR = GameTeamColors.GREEN;
 
     public InteractionFreezeScoreboardGreen(ResultSet set, Item baseItem) throws SQLException
     {
