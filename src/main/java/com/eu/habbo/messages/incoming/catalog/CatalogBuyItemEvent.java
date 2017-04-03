@@ -11,11 +11,14 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.*;
+import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.HotelWillCloseInMinutesComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.users.*;
 import com.eu.habbo.threading.runnables.ShutdownEmulator;
+import gnu.trove.map.hash.THashMap;
 import gnu.trove.procedure.TObjectProcedure;
 
 public class CatalogBuyItemEvent extends MessageHandler
@@ -117,6 +120,11 @@ public class CatalogBuyItemEvent extends MessageHandler
                         Emulator.getThreading().run(badge);
                         this.client.getHabbo().getHabboInventory().getBadgesComponent().addBadge(badge);
                         this.client.sendResponse(new AddUserBadgeComposer(badge));
+                        THashMap<String, String> keys = new THashMap<String, String>();
+                        keys.put("display", "BUBBLE");
+                        keys.put("image", "${image.library.url}album1584/" + badge.getCode() + ".gif");
+                        keys.put("message", Emulator.getTexts().getValue("commands.generic.cmd_badge.received"));
+                        this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.RECEIVED_BADGE.key, keys)); //:test 1992 s:npc.gift.received i:2 s:npc_name s:Admin s:image s:${image.library.url}album1584/ADM.gif);
                     }
                     else
                     {

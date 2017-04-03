@@ -13,6 +13,8 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.catalog.*;
+import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddBotComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
@@ -1048,6 +1050,11 @@ public class CatalogManager
                                                 Emulator.getThreading().run(badge);
                                                 habbo.getHabboInventory().getBadgesComponent().addBadge(badge);
                                                 habbo.getClient().sendResponse(new AddUserBadgeComposer(badge));
+                                                THashMap<String, String> keys = new THashMap<String, String>();
+                                                keys.put("display", "BUBBLE");
+                                                keys.put("image", "${image.library.url}album1584/" + badge.getCode() + ".gif");
+                                                keys.put("message", Emulator.getTexts().getValue("commands.generic.cmd_badge.received"));
+                                                habbo.getClient().sendResponse(new BubbleAlertComposer(BubbleAlertKeys.RECEIVED_BADGE.key, keys));
                                             }
                                             else
                                             {

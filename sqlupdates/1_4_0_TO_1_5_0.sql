@@ -97,4 +97,6 @@ ALTER TABLE  `permissions` CHANGE  `acc_unlimited_bots`  `acc_unlimited_bots` EN
 ALTER TABLE  `permissions` CHANGE  `acc_unlimited_pets`  `acc_unlimited_pets` ENUM(  '0',  '1',  '2' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  '0' COMMENT  'Overrides the pet restriction to the inventory and room.';
 
 DROP TABLE support_chatlogs;
+
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('generic.gift.received.anonymous', 'You''ve received a gift!'), ('generic.gift.received', '%username% gave you a gift!');
 #END DATABASE UPDATE: 1.4.0 -> 1.5.0

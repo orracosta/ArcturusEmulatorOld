@@ -7,9 +7,12 @@ import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
 import com.eu.habbo.messages.outgoing.generic.alerts.WiredRewardAlertComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
+import gnu.trove.map.hash.THashMap;
 
 public class GiftCommand extends Command
 {
@@ -74,7 +77,11 @@ public class GiftCommand extends Command
                 gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_gift").replace("%username%", username).replace("%itemname%", item.getBaseItem().getName()), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
                 habbo.getClient().sendResponse(new InventoryRefreshComposer());
 
-                habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_RECEIVED_ITEM));
+                THashMap<String, String> keys = new THashMap<String, String>();
+                keys.put("display", "BUBBLE");
+                keys.put("image", "${image.library.url}notifications/gift.gif");
+                keys.put("message", Emulator.getTexts().getValue("generic.gift.received.anonymous"));
+                habbo.getClient().sendResponse(new BubbleAlertComposer(BubbleAlertKeys.RECEIVED_BADGE.key, keys));
 
                 return true;
             }

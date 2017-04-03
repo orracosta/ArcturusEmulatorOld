@@ -7,9 +7,13 @@ import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.habbohotel.users.inventory.BadgesComponent;
+import com.eu.habbo.messages.ServerMessage;
+import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
 import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
+import gnu.trove.map.hash.THashMap;
 
 import java.util.Collection;
 import java.util.Map;
@@ -32,6 +36,12 @@ public class MassBadgeCommand extends Command
 
             if(!badge.isEmpty())
             {
+                THashMap<String, String> keys = new THashMap<String, String>();
+                keys.put("display", "BUBBLE");
+                keys.put("image", "${image.library.url}album1584/" + badge + ".gif");
+                keys.put("message", Emulator.getTexts().getValue("commands.generic.cmd_badge.received"));
+                ServerMessage message = new BubbleAlertComposer(BubbleAlertKeys.RECEIVED_BADGE.key, keys).compose();
+
                 for(Map.Entry<Integer, Habbo> set : Emulator.getGameEnvironment().getHabboManager().getOnlineHabbos().entrySet())
                 {
                     Habbo habbo = set.getValue();
@@ -46,10 +56,7 @@ public class MassBadgeCommand extends Command
                             {
                                 habbo.getClient().sendResponse(new AddUserBadgeComposer(b));
 
-                                if (habbo.getHabboInfo().getCurrentRoom() != null)
-                                {
-                                    habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.generic.cmd_badge.received"), habbo, habbo, RoomChatMessageBubbles.ALERT)));
-                                }
+                                habbo.getClient().sendResponse(message);
                             }
                         }
                     }

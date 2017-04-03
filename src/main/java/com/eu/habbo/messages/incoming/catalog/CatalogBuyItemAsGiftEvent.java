@@ -12,6 +12,8 @@ import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.*;
+import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.HotelWillCloseInMinutesComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
@@ -20,6 +22,7 @@ import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
 import com.eu.habbo.messages.outgoing.users.UserCurrencyComposer;
 import com.eu.habbo.messages.outgoing.users.UserPointsComposer;
 import com.eu.habbo.threading.runnables.ShutdownEmulator;
+import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.Connection;
@@ -393,6 +396,15 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                 habbo.getClient().sendResponse(new AddHabboItemComposer(gift));
                 habbo.getClient().getHabbo().getHabboInventory().getItemsComponent().addItem(gift);
                 habbo.getClient().sendResponse(new InventoryRefreshComposer());
+                THashMap<String, String> keys = new THashMap<String, String>();
+                keys.put("display", "BUBBLE");
+                keys.put("image", "${image.library.url}notifications/gift.gif");
+                keys.put("message", Emulator.getTexts().getValue("generic.gift.received.anonymous"));
+                if (showName)
+                {
+                    keys.put("message", Emulator.getTexts().getValue("generic.gift.received").replace("%username%", this.client.getHabbo().getHabboInfo().getUsername()));
+                }
+                habbo.getClient().sendResponse(new BubbleAlertComposer(BubbleAlertKeys.RECEIVED_BADGE.key, keys));
                 AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("GiftReceiver"));
             }
 

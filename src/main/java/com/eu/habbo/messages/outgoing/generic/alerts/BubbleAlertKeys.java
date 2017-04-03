@@ -29,7 +29,9 @@ public enum BubbleAlertKeys
     FURNI_PLACE_EMENT_ERROR("furni_placement_error"),
     GIFTING_VALENTINE("gifting.valentine"),
     NUX_POPUP("nux.popup"),
-    PURCHASING_ROOM("purchasing.room");
+    PURCHASING_ROOM("purchasing.room"),
+    RECEIVED_GIFT("received.gift"),
+    RECEIVED_BADGE("received.badge");
 
     public final String key;
 

@@ -7,9 +7,13 @@ import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.messages.ServerMessage;
+import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
 import com.eu.habbo.messages.outgoing.generic.alerts.WiredRewardAlertComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
+import gnu.trove.map.hash.THashMap;
 
 import java.util.Map;
 
@@ -54,6 +58,13 @@ public class MassGiftCommand extends Command
                 }
 
                 final String finalMessage = message;
+
+                THashMap<String, String> keys = new THashMap<String, String>();
+                keys.put("display", "BUBBLE");
+                keys.put("image", "${image.library.url}notifications/gift.gif");
+                keys.put("message", Emulator.getTexts().getValue("generic.gift.received.anonymous"));
+                ServerMessage giftNotificiationMessage = new BubbleAlertComposer(BubbleAlertKeys.RECEIVED_BADGE.key, keys).compose();
+
                 Emulator.getThreading().run(new Runnable()
                 {
                     @Override
@@ -73,8 +84,7 @@ public class MassGiftCommand extends Command
                             Emulator.getGameEnvironment().getItemManager().createGift(habbo.getHabboInfo().getUsername(), giftItem, extraData, 0, 0);
 
                             habbo.getClient().sendResponse(new InventoryRefreshComposer());
-
-                            habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_RECEIVED_ITEM));
+                            habbo.getClient().sendResponse(giftNotificiationMessage);
                         }
                     }
                 });

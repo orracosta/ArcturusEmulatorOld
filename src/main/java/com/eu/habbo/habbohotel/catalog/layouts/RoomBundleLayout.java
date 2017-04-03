@@ -247,6 +247,7 @@ public class RoomBundleLayout extends SingleBundle
         keys.put("ROOMNAME", r.getName());
         keys.put("ROOMID", r.getId() + "");
         keys.put("OWNER", r.getOwnerName());
+        keys.put("image", "${image.library.url}/notifications/room_bundle_" + this.getId() + ".png");
         habbo.getClient().sendResponse(new BubbleAlertComposer(BubbleAlertKeys.PURCHASING_ROOM.key, keys));
     }
 }
