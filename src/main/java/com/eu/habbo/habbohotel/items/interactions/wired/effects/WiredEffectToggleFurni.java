@@ -116,7 +116,7 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
 
             for (HabboItem item : items)
             {
-                if (item.getRoomId() == 0 || item instanceof InteractionFreezeBlock || item instanceof InteractionFreezeTile || item instanceof InteractionCrackable)
+                if (item.getRoomId() == 0 || item instanceof InteractionFreezeBlock || item instanceof InteractionFreezeTile)
                 {
                     this.items.remove(item);
                     continue;
