@@ -28,8 +28,8 @@ public class AchievementUnlockedComposer extends MessageComposer
         this.response.appendInt32(level.level);
         this.response.appendInt32(144);
         this.response.appendString("ACH_" + this.achievement.name + level.level);
-        this.response.appendInt32(level.pixels);
-        this.response.appendInt32(0);
+        this.response.appendInt32(level.rewardAmount);
+        this.response.appendInt32(level.rewardCurrency);
         this.response.appendInt32(0);
         this.response.appendInt32(10);
         this.response.appendInt32(21);
