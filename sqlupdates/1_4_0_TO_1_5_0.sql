@@ -92,7 +92,7 @@ ALTER TABLE  `permissions` CHANGE  `cmd_sitdown` `cmd_sitdown` ENUM('0','1','2')
 ALTER TABLE  `permissions` CHANGE  `cmd_superpull` `cmd_superpull` ENUM('0','1','2') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0';
 ALTER TABLE  `permissions` CHANGE  `cmd_teleport` `cmd_teleport` ENUM('0','1','2') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0';
 ALTER TABLE  `permissions` CHANGE  `cmd_unload` `cmd_unload` ENUM('0','1','2') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0';
-ALTER TABLE  `permissions` CHANGE  `cmd_wordquiz` `cmd_wordquiz` ENUM('0','1','2') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0';
+ALTER TABLE  `permissions` ADD  `cmd_wordquiz` ENUM('0','1','2') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0';
 ALTER TABLE  `permissions` CHANGE  `acc_unlimited_bots`  `acc_unlimited_bots` ENUM(  '0',  '1',  '2' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  '0' COMMENT  'Overrides the bot restriction to the inventory and room.';
 ALTER TABLE  `permissions` CHANGE  `acc_unlimited_pets`  `acc_unlimited_pets` ENUM(  '0',  '1',  '2' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  '0' COMMENT  'Overrides the pet restriction to the inventory and room.';
 
