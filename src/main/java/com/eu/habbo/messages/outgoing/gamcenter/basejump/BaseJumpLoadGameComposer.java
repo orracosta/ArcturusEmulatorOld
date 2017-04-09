@@ -1,5 +1,6 @@
 package com.eu.habbo.messages.outgoing.gamcenter.basejump;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
@@ -21,21 +22,33 @@ public class BaseJumpLoadGameComposer extends MessageComposer
 
         this.response.appendInt32(3);
         this.response.appendString("1344031458870");
-        this.response.appendString("http://images.habbo.com/basejump/693/BaseJump.swf");
+        this.response.appendString("http://localhost/game/BaseJump.swf");
         this.response.appendString("best");
         this.response.appendString("showAll");
         this.response.appendInt32(60);
         this.response.appendInt32(10);
         this.response.appendInt32(0);
-        this.response.appendInt32(4);
-        this.response.appendString("accessToken");
-        this.response.appendString(this.client.getHabbo().getHabboInfo().getUsername() + "-" + this.client.getHabbo().getHabboInfo().getLook());
-        this.response.appendString("gameServerHost");
+        this.response.appendInt32(6);
+        this.response.appendString("assetUrl");
+        this.response.appendString("http://localhost/gamecenter/gamecenter_basejump/BasicAssets.swf");
+        this.response.appendString("habboHost");
         this.response.appendString("localhost");
+        this.response.appendString("accessToken");
+        this.response.appendString(Emulator.getConfig().getValue("username") + "\t" + Emulator.version + "\t" + this.client.getHabbo().getHabboInfo().getId() + "\t" + this.client.getHabbo().getHabboInfo().getUsername() + "\t" + this.client.getHabbo().getHabboInfo().getLook() + "\t" + this.client.getHabbo().getHabboInfo().getCredits());
+        this.response.appendString("gameServerHost");
+        this.response.appendString("127.0.0.1");
         this.response.appendString("gameServerPort");
         this.response.appendString("3002");
         this.response.appendString("socketPolicyPort");
-        this.response.appendString("30843");
+        this.response.appendString("3000");
+//        this.response.appendString("accessToken");
+//        this.response.appendString(this.client.getHabbo().getHabboInfo().getUsername() + "-" + this.client.getHabbo().getHabboInfo().getLook());
+//        this.response.appendString("gameServerHost");
+//        this.response.appendString("localhost");
+//        this.response.appendString("gameServerPort");
+//        this.response.appendString("3002");
+//        this.response.appendString("socketPolicyPort");
+//        this.response.appendString("3003");
         return this.response;
     }
 }

@@ -16,8 +16,7 @@ import com.eu.habbo.messages.incoming.events.calendar.AdventCalendarForceOpenEve
 import com.eu.habbo.messages.incoming.events.calendar.AdventCalendarOpenDayEvent;
 import com.eu.habbo.messages.incoming.floorplaneditor.*;
 import com.eu.habbo.messages.incoming.friends.*;
-import com.eu.habbo.messages.incoming.gamecenter.GameCenterRequestAccountStatusEvent;
-import com.eu.habbo.messages.incoming.gamecenter.GameCenterRequestGamesEvent;
+import com.eu.habbo.messages.incoming.gamecenter.*;
 import com.eu.habbo.messages.incoming.guardians.*;
 import com.eu.habbo.messages.incoming.guides.*;
 import com.eu.habbo.messages.incoming.guilds.*;
@@ -509,5 +508,8 @@ public class PacketManager
     {
         this.registerHandler(Incoming.GameCenterRequestGamesEvent,              GameCenterRequestGamesEvent.class);
         this.registerHandler(Incoming.GameCenterRequestAccountStatusEvent,      GameCenterRequestAccountStatusEvent.class);
+        this.registerHandler(Incoming.GameCenterJoinGameEvent,                  GameCenterJoinGameEvent.class);
+        this.registerHandler(Incoming.GameCenterLoadGameEvent,                  GameCenterLoadGameEvent.class);
+        this.registerHandler(Incoming.GameCenterEvent,                          GameCenterEvent.class);
     }
 }

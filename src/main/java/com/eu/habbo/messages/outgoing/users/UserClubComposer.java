@@ -67,8 +67,8 @@ public class UserClubComposer extends MessageComposer
         }
         this.response.appendBoolean(true);
         this.response.appendBoolean(true);
-        this.response.appendInt32(0);
-        this.response.appendInt32(77);
+        this.response.appendInt32(124);
+        this.response.appendInt32(124);
         this.response.appendInt32(endTimestamp - Emulator.getIntUnixTimestamp());
 
         return this.response;

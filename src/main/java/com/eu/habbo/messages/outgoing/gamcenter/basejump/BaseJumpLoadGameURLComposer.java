@@ -12,7 +12,7 @@ public class BaseJumpLoadGameURLComposer extends MessageComposer
         this.response.init(Outgoing.BaseJumpLoadGameURLComposer);
         this.response.appendInt32(3);
         this.response.appendString("3002");
-        this.response.appendString("localhost");
+        this.response.appendString("127.0.0.1");
         return this.response;
     }
 }
