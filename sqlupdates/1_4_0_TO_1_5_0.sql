@@ -99,4 +99,9 @@ ALTER TABLE  `permissions` CHANGE  `acc_unlimited_pets`  `acc_unlimited_pets` EN
 DROP TABLE support_chatlogs;
 
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('generic.gift.received.anonymous', 'You''ve received a gift!'), ('generic.gift.received', '%username% gave you a gift!');
+
+ALTER TABLE  `emulator_settings` CHANGE  `value`  `value` VARCHAR( 300 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+
+#When changing the query make sure the look, username, id and hof_points are available.
+INSERT INTO `emulator_settings` (`key`,`value`) VALUES ('hotelview.halloffame.query',  'SELECT users.look, users.username, users.id, users_settings.hof_points FROM users_settings INNER JOIN users ON users_settings.user_id = users.id WHERE hof_points > 0 ORDER BY hof_points DESC, users.id ASC LIMIT 10');
 #END DATABASE UPDATE: 1.4.0 -> 1.5.0
