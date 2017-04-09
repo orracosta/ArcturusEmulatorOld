@@ -90,11 +90,11 @@ public class InteractionMultiHeight extends HabboItem
 
                         if (this.getBaseItem().allowSit())
                         {
-                            habbo.getRoomUnit().getStatus().put("sit", this.getBaseItem().getMultiHeights()[Integer.valueOf(this.getExtradata())] * 1.0D + "");
+                            habbo.getRoomUnit().getStatus().put("sit", this.getBaseItem().getMultiHeights()[(this.getExtradata().isEmpty() ? 0 : Integer.valueOf(this.getExtradata()) % (this.getBaseItem().getMultiHeights().length))] * 1.0D + "");
                         }
                         else
                         {
-                            habbo.getRoomUnit().setZ(this.getZ() + this.getBaseItem().getMultiHeights()[Integer.valueOf(this.getExtradata())]);
+                            habbo.getRoomUnit().setZ(this.getZ() + this.getBaseItem().getMultiHeights()[(this.getExtradata().isEmpty() ? 0 : Integer.valueOf(this.getExtradata()) % (this.getBaseItem().getMultiHeights().length))]);
                         }
 
                         updatedUnits.add(habbo.getRoomUnit());
