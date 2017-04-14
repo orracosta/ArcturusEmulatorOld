@@ -6,11 +6,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboGender;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserShoutComposer;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserTalkComposer;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUsersComposer;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserUpdateNameComposer;
+import com.eu.habbo.messages.outgoing.rooms.users.*;
 import com.eu.habbo.plugin.events.bots.BotChatEvent;
 import com.eu.habbo.plugin.events.bots.BotShoutEvent;
 import com.eu.habbo.plugin.events.bots.BotTalkEvent;
@@ -110,6 +106,11 @@ public class Bot implements Runnable
     private String type;
 
     /**
+     * Enable effect id.
+     */
+    private int effect;
+
+    /**
      * Wether the bot has to be saved to the database.
      */
     private boolean needsUpdate;
@@ -138,42 +139,44 @@ public class Bot implements Runnable
 
     public Bot(ResultSet set) throws SQLException
     {
-        this.id = set.getInt("id");
-        this.name = set.getString("name");
-        this.motto = set.getString("motto");
-        this.figure = set.getString("figure");
-        this.gender = HabboGender.valueOf(set.getString("gender"));
-        this.ownerId = set.getInt("user_id");
-        this.ownerName = set.getString("owner_name");
-        this.chatAuto = set.getString("chat_auto").equals("1");
-        this.chatRandom = set.getString("chat_random").equals("1");
-        this.chatDelay = set.getShort("chat_delay");
-        this.chatLines = new ArrayList<String>(Arrays.asList(set.getString("chat_lines").split("\r")));
-        this.type = set.getString("type");
-        this.room = null;
-        this.roomUnit = null;
-        this.chatTimeOut = Emulator.getIntUnixTimestamp() + this.chatDelay;
-        this.needsUpdate = false;
-        this.lastChatIndex = 0;
+        this.id             = set.getInt("id");
+        this.name           = set.getString("name");
+        this.motto          = set.getString("motto");
+        this.figure         = set.getString("figure");
+        this.gender         = HabboGender.valueOf(set.getString("gender"));
+        this.ownerId        = set.getInt("user_id");
+        this.ownerName      = set.getString("owner_name");
+        this.chatAuto       = set.getString("chat_auto").equals("1");
+        this.chatRandom     = set.getString("chat_random").equals("1");
+        this.chatDelay      = set.getShort("chat_delay");
+        this.chatLines      = new ArrayList<String>(Arrays.asList(set.getString("chat_lines").split("\r")));
+        this.type           = set.getString("type");
+        this.effect         = set.getInt("effect");
+        this.room           = null;
+        this.roomUnit       = null;
+        this.chatTimeOut    = Emulator.getIntUnixTimestamp() + this.chatDelay;
+        this.needsUpdate    = false;
+        this.lastChatIndex  = 0;
     }
 
     public Bot(Bot bot)
     {
-        this.name = bot.getName();
-        this.motto = bot.getMotto();
-        this.figure = bot.getFigure();
-        this.gender = bot.getGender();
-        this.ownerId = bot.getOwnerId();
-        this.ownerName = bot.getOwnerName();
-        this.chatAuto = true;
-        this.chatRandom = false;
-        this.chatDelay = 10;
-        this.chatTimeOut = Emulator.getIntUnixTimestamp() + this.chatDelay;
-        this.chatLines = new ArrayList<String>(Arrays.asList(new String[] {"Default Message :D"}));
-        this.type = bot.getType();
-        this.room = null;
-        this.roomUnit = null;
-        this.lastChatIndex = 0;
+        this.name           = bot.getName();
+        this.motto          = bot.getMotto();
+        this.figure         = bot.getFigure();
+        this.gender         = bot.getGender();
+        this.ownerId        = bot.getOwnerId();
+        this.ownerName      = bot.getOwnerName();
+        this.chatAuto       = true;
+        this.chatRandom     = false;
+        this.chatDelay      = 10;
+        this.chatTimeOut    = Emulator.getIntUnixTimestamp() + this.chatDelay;
+        this.chatLines      = new ArrayList<String>(Arrays.asList(new String[] {"Default Message :D"}));
+        this.type           = bot.getType();
+        this.effect         = bot.getEffect();
+        this.room           = null;
+        this.roomUnit       = null;
+        this.lastChatIndex  = 0;
 
         this.needsUpdate = false;
     }
@@ -387,7 +390,8 @@ public class Bot implements Runnable
      */
     public void setName(String name)
     {
-        this.name = name;
+        this.name        = name;
+        this.needsUpdate = true;
 
         if(this.room != null)
             this.room.sendComposer(new RoomUserUpdateNameComposer(this.getRoomUnit(), this.getName()).compose());
@@ -407,7 +411,11 @@ public class Bot implements Runnable
      */
     public void setMotto(String motto)
     {
-        this.motto = motto;
+        this.motto       = motto;
+        this.needsUpdate = true;
+
+        if(this.room != null)
+            this.room.sendComposer(new RoomUsersComposer(this).compose());
     }
 
     /**
@@ -424,7 +432,7 @@ public class Bot implements Runnable
      */
     public void setFigure(String figure)
     {
-        this.figure = figure;
+        this.figure      = figure;
         this.needsUpdate = true;
 
         if(this.room != null)
@@ -445,7 +453,7 @@ public class Bot implements Runnable
      */
     public void setGender(HabboGender gender)
     {
-        this.gender = gender;
+        this.gender      = gender;
         this.needsUpdate = true;
 
         if(this.room != null)
@@ -465,7 +473,11 @@ public class Bot implements Runnable
      */
     public void setOwnerId(int ownerId)
     {
-        this.ownerId = ownerId;
+        this.ownerId     = ownerId;
+        this.needsUpdate = true;
+
+        if(this.room != null)
+            this.room.sendComposer(new RoomUsersComposer(this).compose());
     }
 
     /**
@@ -481,7 +493,11 @@ public class Bot implements Runnable
      */
     public void setOwnerName(String ownerName)
     {
-        this.ownerName = ownerName;
+        this.ownerName   = ownerName;
+        this.needsUpdate = true;
+
+        if(this.room != null)
+            this.room.sendComposer(new RoomUsersComposer(this).compose());
     }
 
     /**
@@ -529,7 +545,8 @@ public class Bot implements Runnable
      */
     public void setChatAuto(boolean chatAuto)
     {
-        this.chatAuto = chatAuto;
+        this.chatAuto    = chatAuto;
+        this.needsUpdate = true;
     }
 
     /**
@@ -545,7 +562,8 @@ public class Bot implements Runnable
      */
     public void setChatRandom(boolean chatRandom)
     {
-        this.chatRandom = chatRandom;
+        this.chatRandom  = chatRandom;
+        this.needsUpdate = true;
     }
 
     /**
@@ -561,7 +579,8 @@ public class Bot implements Runnable
      */
     public void setChatDelay(short chatDelay)
     {
-        this.chatDelay = chatDelay;
+        this.chatDelay   = chatDelay;
+        this.needsUpdate = true;
     }
 
     /**
@@ -569,7 +588,11 @@ public class Bot implements Runnable
      */
     public void clearChat()
     {
-        this.chatLines.clear();
+        synchronized (this.chatLines)
+        {
+            this.chatLines.clear();
+            this.needsUpdate = true;
+        }
     }
 
     /**
@@ -581,6 +604,34 @@ public class Bot implements Runnable
     }
 
     /**
+     * @return The current enable effect.
+     */
+    public int getEffect()
+    {
+        return this.effect;
+    }
+
+    /**
+     * Sets the effect for a bot and also updates it to the room.
+     * @param effect The effect to give to the bot.
+     */
+    public void setEffect(int effect)
+    {
+        this.effect      = effect;
+        this.needsUpdate = true;
+
+        if (this.roomUnit != null)
+        {
+            this.roomUnit.setEffectId(this.effect);
+
+            if (this.room != null)
+            {
+                this.room.sendComposer(new RoomUserEffectComposer(this.roomUnit).compose());
+            }
+        }
+    }
+
+    /**
      * Adds new chatlines to the bot. Does not erase existing chatlines.
      * @param chatLines The chatlines to add.
      */
@@ -589,6 +640,7 @@ public class Bot implements Runnable
         synchronized (this.chatLines)
         {
             this.chatLines.addAll(chatLines);
+            this.needsUpdate = true;
         }
     }
 
@@ -601,6 +653,7 @@ public class Bot implements Runnable
         synchronized (this.chatLines)
         {
             this.chatLines.add(chatLine);
+            this.needsUpdate = true;
         }
     }
 

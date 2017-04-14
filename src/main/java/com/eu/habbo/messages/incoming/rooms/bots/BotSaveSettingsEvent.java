@@ -38,10 +38,10 @@ public class BotSaveSettingsEvent extends MessageHandler
             switch(settingId)
             {
                 case 1:
-                    String look = this.client.getHabbo().getHabboInfo().getLook();
-                    HabboGender gender = this.client.getHabbo().getHabboInfo().getGender();
-
-                    BotSavedLookEvent lookEvent = new BotSavedLookEvent(bot, gender, look);
+                    BotSavedLookEvent lookEvent = new BotSavedLookEvent(bot,
+                                                                        this.client.getHabbo().getHabboInfo().getGender(),
+                                                                        this.client.getHabbo().getHabboInfo().getLook(),
+                                                                        this.client.getHabbo().getRoomUnit().getEffectId());
                     Emulator.getPluginManager().fireEvent(lookEvent);
 
                     if(lookEvent.isCancelled())
@@ -49,6 +49,7 @@ public class BotSaveSettingsEvent extends MessageHandler
 
                     bot.setFigure(lookEvent.newLook);
                     bot.setGender(lookEvent.gender);
+                    bot.setEffect(lookEvent.effect);
                     bot.needsUpdate(true);
                     break;
 

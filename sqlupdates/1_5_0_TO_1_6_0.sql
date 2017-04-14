@@ -19,5 +19,6 @@ ALTER TABLE  `vouchers` ADD  `catalog_item_id` INT NOT NULL DEFAULT  '0';
 
 ALTER TABLE  `permissions` ADD  `cmd_reload_room` ENUM(  '0',  '1',  '2' ) NOT NULL DEFAULT  '2' AFTER  `cmd_redeem`;
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.keys.cmd_reload_room', 'reload_room;reload;reloadroom'), ('commands.description.cmd_reload_room', ':reload_room');
+ALTER TABLE  `bots` ADD  `effect` INT( 3 ) NOT NULL DEFAULT  '0';
 
 #END DATABASE UPDATE: 1.5.0 -> 1.6.0
