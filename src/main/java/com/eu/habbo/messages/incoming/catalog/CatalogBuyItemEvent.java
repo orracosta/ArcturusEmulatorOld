@@ -226,7 +226,7 @@ public class CatalogBuyItemEvent extends MessageHandler
         else
             item = page.getCatalogItem(itemId);
 
-        Emulator.getGameEnvironment().getCatalogManager().purchaseItem(page, item, this.client.getHabbo(), count, extraData);
+        Emulator.getGameEnvironment().getCatalogManager().purchaseItem(page, item, this.client.getHabbo(), count, extraData, false);
 
     }
 }

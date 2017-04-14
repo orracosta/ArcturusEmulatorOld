@@ -31,6 +31,11 @@ public class Voucher
     public final int pointsType;
 
     /**
+     * Item from the catalog.
+     */
+    public final int catalogItemId;
+
+    /**
      * Constructs a new Voucher.
      * @param set The ResultSet to read the data from.
      * @throws SQLException
@@ -42,5 +47,6 @@ public class Voucher
         this.credits = set.getInt("credits");
         this.points = set.getInt("points");
         this.pointsType = set.getInt("points_type");
+        this.catalogItemId = set.getInt("catalog_item_id");
     }
 }

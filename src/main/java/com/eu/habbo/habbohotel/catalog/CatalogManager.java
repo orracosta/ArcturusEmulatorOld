@@ -575,6 +575,11 @@ public class CatalogManager
                     client.sendResponse(new UserCreditsComposer(client.getHabbo()));
                 }
 
+                if (voucher.catalogItemId > 0)
+                {
+                    this.getCatalogItem(voucher.catalogItemId);
+                }
+
                 client.sendResponse(new RedeemVoucherOKComposer());
 
                 return;
@@ -643,6 +648,26 @@ public class CatalogManager
 
             return page[0];
         }
+    }
+
+    public CatalogItem getCatalogItem(int id)
+    {
+        final CatalogItem[] item = {null};
+        synchronized (this.catalogPages)
+        {
+            this.catalogPages.forEachValue(new TObjectProcedure<CatalogPage>()
+            {
+                @Override
+                public boolean execute(CatalogPage object)
+                {
+                    item[0] = object.getCatalogItem(id);
+
+                    return item[0] == null;
+                }
+            });
+        }
+
+        return item[0];
     }
 
     /**
@@ -871,7 +896,7 @@ public class CatalogManager
         Emulator.getLogging().logShutdownLine("Catalog Manager -> Disposed!");
     }
 
-    public void purchaseItem(CatalogPage page, CatalogItem item, Habbo habbo, int amount, String extradata)
+    public void purchaseItem(CatalogPage page, CatalogItem item, Habbo habbo, int amount, String extradata, boolean free)
     {
         Item cBaseItem = null;
 
@@ -961,9 +986,9 @@ public class CatalogManager
             boolean badgeFound = false;
             for(int i = 0; i < amount; i++)
             {
-                if (item.getCredits() <= habbo.getClient().getHabbo().getHabboInfo().getCredits() - totalCredits)
+                if (free || (item.getCredits() <= habbo.getClient().getHabbo().getHabboInfo().getCredits() - totalCredits))
                 {
-                    if(
+                    if(free ||
                             item.getPoints() <= habbo.getClient().getHabbo().getHabboInfo().getCurrencyAmount(item.getPointsType()) - totalPoints)
                     {
                         if (((i + 1) % 6 != 0 && item.isHaveOffer()) || !item.isHaveOffer())
@@ -1145,7 +1170,7 @@ public class CatalogManager
                 }
             }
 
-            if(!habbo.getClient().getHabbo().hasPermission("acc_infinite_credits"))
+            if(!free && !habbo.getClient().getHabbo().hasPermission("acc_infinite_credits"))
             {
                 if (totalCredits > 0)
                 {
@@ -1154,7 +1179,7 @@ public class CatalogManager
                 }
             }
 
-            if(!habbo.getClient().getHabbo().hasPermission("acc_infinite_points"))
+            if(!free && !habbo.getClient().getHabbo().hasPermission("acc_infinite_points"))
             {
                 if (totalPoints > 0)
                 {
