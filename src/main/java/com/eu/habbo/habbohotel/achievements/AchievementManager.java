@@ -141,6 +141,40 @@ public class AchievementManager
         return this.achievements;
     }
 
+    public static void progressAchievement(int habboId, Achievement achievement)
+    {
+        progressAchievement(habboId, achievement, 1);
+    }
+
+    public static void progressAchievement(int habboId, Achievement achievement, int amount)
+    {
+        Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(habboId);
+
+        if (habbo != null)
+        {
+            progressAchievement(habbo, achievement, amount);
+        }
+        else
+        {
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection();
+                 PreparedStatement statement = connection.prepareStatement("" +
+                         "INSERT INTO users_achievement_queue (user_id, achievement_id, amount) VALUES (?, ?, ?) " +
+                         "ON DUPLICATE KEY UPDATE amount = amount + ?"))
+            {
+                statement.setInt(1, habboId);
+                statement.setInt(2, achievement.id);
+                statement.setInt(3, amount);
+                statement.setInt(4, amount);
+                statement.execute();
+            }
+            catch (SQLException e)
+            {
+                Emulator.getLogging().logSQLException(e);
+            }
+        }
+    }
+
+
     /**
      * Progresses an Habbo's achievement by 1.
      * @param habbo The Habbo whose achievement should be progressed.

@@ -405,8 +405,9 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                     keys.put("message", Emulator.getTexts().getValue("generic.gift.received").replace("%username%", this.client.getHabbo().getHabboInfo().getUsername()));
                 }
                 habbo.getClient().sendResponse(new BubbleAlertComposer(BubbleAlertKeys.RECEIVED_BADGE.key, keys));
-                AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("GiftReceiver"));
             }
+
+            AchievementManager.progressAchievement(userId, Emulator.getGameEnvironment().getAchievementManager().getAchievement("GiftReceiver"));
 
             if(!this.client.getHabbo().hasPermission("acc_infinite_credits"))
             {

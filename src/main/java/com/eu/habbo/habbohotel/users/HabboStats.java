@@ -71,6 +71,8 @@ public class HabboStats implements Runnable
     public final HabboNavigatorWindowSettings navigatorWindowSettings;
     public final THashMap<String, Object> cache;
 
+    public int roomEnterTimestamp;
+
     private HabboStats(ResultSet set, Habbo habbo) throws SQLException
     {
         this.cache = new THashMap<String, Object>();

@@ -4,6 +4,9 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -63,5 +66,26 @@ public class UsernameEvent extends MessageHandler
         {
             AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("TraderPass"));
         }
+
+
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement achievementQueueStatement = connection.prepareStatement("SELECT * FROM users_achievements_queue WHERE user_id = ?"))
+        {
+            achievementQueueStatement.setInt(1, this.client.getHabbo().getHabboInfo().getId());
+
+            try (ResultSet achievementSet = achievementQueueStatement.executeQuery())
+            {
+                while (achievementSet.next())
+                {
+                    AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement(achievementSet.getInt("id")), achievementSet.getInt("amount"));
+                }
+            }
+
+            try (PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM users_achievements_queue WHERE user_id = ?"))
+            {
+                deleteStatement.setInt(1, this.client.getHabbo().getHabboInfo().getId());
+                deleteStatement.execute();
+            }
+        }
+
     }
 }

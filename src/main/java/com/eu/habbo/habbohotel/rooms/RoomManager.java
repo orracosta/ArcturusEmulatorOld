@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.rooms;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.core.RoomUserPetComposer;
+import com.eu.habbo.habbohotel.achievements.Achievement;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.guilds.Guild;
@@ -1005,11 +1006,12 @@ public class RoomManager {
 
     void logEnter(Habbo habbo, Room room)
     {
+        habbo.getHabboStats().roomEnterTimestamp = Emulator.getIntUnixTimestamp();
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO room_enter_log (room_id, user_id, timestamp) VALUES(?, ?, ?)"))
         {
             statement.setInt(1, room.getId());
             statement.setInt(2, habbo.getHabboInfo().getId());
-            statement.setInt(3, Emulator.getIntUnixTimestamp());
+            statement.setInt(3, habbo.getHabboStats().roomEnterTimestamp);
             statement.execute();
         }
         catch (SQLException e)
@@ -1042,6 +1044,11 @@ public class RoomManager {
             habbo.getClient().sendResponse(new HotelViewComposer());
             habbo.getHabboInfo().setCurrentRoom(null);
             habbo.getRoomUnit().isKicked = false;
+
+            if (room.getOwnerId() != habbo.getHabboInfo().getId())
+            {
+                AchievementManager.progressAchievement(room.getOwnerId(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("RoomDecoHosting"), (int)Math.floor((Emulator.getIntUnixTimestamp() - habbo.getHabboStats().roomEnterTimestamp) / 60));
+            }
         }
     }
     public void logExit(Habbo habbo)

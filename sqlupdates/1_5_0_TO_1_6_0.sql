@@ -6,4 +6,11 @@ INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.name', 'Habbo Ho
 UPDATE  `emulator_texts` SET  `key` =  'commands.succes.cmd_ban.ban_issued' WHERE  `emulator_texts`.`key` =  'commands.succes.cmd_about.ban_issued';
 INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('catalog.page.vipgifts', '0');
 
+CREATE TABLE `users_achievements_queue` (
+    `user_id` INT NOT NULL ,
+    `achievement_id` INT NOT NULL ,
+    `amount` INT NOT NULL
+) ENGINE = MYISAM ;
+ALTER TABLE users_achievements_queue ADD UNIQUE `unique_index` (`user_id`, `achievement_id`);
+
 #END DATABASE UPDATE: 1.5.0 -> 1.6.0
