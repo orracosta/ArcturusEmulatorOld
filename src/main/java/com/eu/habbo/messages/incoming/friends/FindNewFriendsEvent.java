@@ -33,7 +33,6 @@ public class FindNewFriendsEvent extends MessageHandler
                     if (room != null)
                     {
                         this.client.sendResponse(new ForwardToRoomComposer(room.getId()));
-                        this.client.sendResponse(new FriendFindingRoomComposer(FriendFindingRoomComposer.ROOM_FOUND));
                         return;
                     }
                 }
