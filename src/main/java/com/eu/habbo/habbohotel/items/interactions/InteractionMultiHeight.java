@@ -65,6 +65,8 @@ public class InteractionMultiHeight extends HabboItem
         {
             if (objects[0] instanceof Integer && room != null)
             {
+                this.needsUpdate(true);
+
                 if(this.getExtradata().length() == 0)
                     this.setExtradata("0");
 

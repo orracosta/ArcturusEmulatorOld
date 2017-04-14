@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.items.interactions;
 
 import com.eu.habbo.habbohotel.items.Item;
+import com.eu.habbo.habbohotel.rooms.Room;
 import gnu.trove.map.hash.THashMap;
 
 import java.sql.ResultSet;
@@ -21,5 +22,11 @@ public class InteractionInformationTerminal extends InteractionCustomValues
     public InteractionInformationTerminal(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
     {
         super(id, userId, item, extradata, limitedStack, limitedSells, defaultValues);
+    }
+
+    @Override
+    public void onPickUp(Room room)
+    {
+        values.clear();
     }
 }
