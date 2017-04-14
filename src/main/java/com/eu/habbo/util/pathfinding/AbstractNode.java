@@ -157,4 +157,9 @@ public abstract class AbstractNode
         hash = 17 * hash + this.yPosition;
         return hash;
     }
+
+    public boolean is(short x, short y)
+    {
+        return this.xPosition == x && this.yPosition == y;
+    }
 }

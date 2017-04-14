@@ -25,18 +25,23 @@ public class TeleportActionOne implements Runnable
     @Override
     public void run()
     {
-        if (!(this.currentTeleport instanceof InteractionTeleportTile))
+        int delay = 0;
+        if (this.client.getHabbo().getRoomUnit().getCurrentLocation() != this.room.getLayout().getTile(this.currentTeleport.getX(), this.currentTeleport.getY()))
         {
-            this.client.getHabbo().getRoomUnit().setGoalLocation(this.room.getLayout().getTile(this.currentTeleport.getX(), this.currentTeleport.getY()));
-            this.client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[(this.currentTeleport.getRotation() + 4) % 8]);
-            this.client.getHabbo().getRoomUnit().getStatus().put("mv", this.currentTeleport.getX() + "," + this.currentTeleport.getY() + "," + this.currentTeleport.getZ());
-            this.room.scheduledComposers.add(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()).compose());
-            this.client.getHabbo().getRoomUnit().setLocation(this.room.getLayout().getTile(this.currentTeleport.getX(), this.currentTeleport.getY()));
+            if (!(this.currentTeleport instanceof InteractionTeleportTile))
+            {
+                delay = 1000;
+                this.client.getHabbo().getRoomUnit().setGoalLocation(this.room.getLayout().getTile(this.currentTeleport.getX(), this.currentTeleport.getY()));
+                this.client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[(this.currentTeleport.getRotation() + 4) % 8]);
+                this.client.getHabbo().getRoomUnit().getStatus().put("mv", this.currentTeleport.getX() + "," + this.currentTeleport.getY() + "," + this.currentTeleport.getZ());
+                this.room.scheduledComposers.add(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()).compose());
+                this.client.getHabbo().getRoomUnit().setLocation(this.room.getLayout().getTile(this.currentTeleport.getX(), this.currentTeleport.getY()));
+            }
         }
 
         this.currentTeleport.setExtradata("0");
 
         Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "0"), 500);
-        Emulator.getThreading().run(new TeleportActionTwo(currentTeleport, room, client), 1000);
+        Emulator.getThreading().run(new TeleportActionTwo(currentTeleport, room, client), delay);
     }
 }

@@ -14,6 +14,7 @@ import com.eu.habbo.threading.runnables.teleport.TeleportActionOne;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Set;
 
 public class InteractionTeleport extends HabboItem
 {
@@ -56,10 +57,15 @@ public class InteractionTeleport extends HabboItem
     {
         super.onClick(client, room, objects);
 
-        if(room != null)
+        if(room != null && client != null)
         {
             client.getHabbo().getRoomUnit().cmdTeleport = false;
-            RoomTile loc = HabboItem.getSquareInFront(room.getLayout(), this);
+            RoomTile loc = room.getLayout().getTile(this.getX(), this.getY());
+            if (!this.getBaseItem().allowWalk())
+            {
+                loc = HabboItem.getSquareInFront(room.getLayout(), this);
+            }
+
             if (this.canUseTeleport(client, loc, room))
             {
                 client.getHabbo().getRoomUnit().isTeleporting = true;
@@ -119,19 +125,24 @@ public class InteractionTeleport extends HabboItem
 
     private boolean canUseTeleport(GameClient client, RoomTile front, Room room)
     {
+        if(!this.getExtradata().equals("0"))
+            return false;
+
+        if(client.getHabbo().getRoomUnit().isTeleporting)
+            return false;
+
+        if (client.getHabbo().getRoomUnit().getCurrentLocation().is(this.getX(), this.getY()))
+            return true;
+
         if(client.getHabbo().getRoomUnit().getX() != front.x)
             return false;
 
         if(client.getHabbo().getRoomUnit().getY() != front.y)
             return false;
 
-        if(client.getHabbo().getRoomUnit().isTeleporting)
-            return false;
-
-        if(!room.getHabbosAt(this.getX(), this.getY()).isEmpty())
-            return false;
-
-        if(!this.getExtradata().equals("0"))
+        Set<Habbo> habbos = room.getHabbosAt(this.getX(), this.getY());
+        habbos.remove(client.getHabbo());
+        if(!habbos.isEmpty())
             return false;
 
         return true;
