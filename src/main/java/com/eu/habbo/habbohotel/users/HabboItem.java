@@ -108,9 +108,9 @@ public abstract class HabboItem implements Runnable, IEventTriggers
             serverMessage.appendString(this.extradata.split(" ")[0]);
         else
             serverMessage.appendString(this.extradata);
-        serverMessage.appendInt32(this.getUserId());
+        serverMessage.appendInt32(-1);
         serverMessage.appendInt32(this.getBaseItem().getStateCount() > 1 || this instanceof InteractionCrackable || this instanceof InteractionMultiHeight ? 1 : 0);
-        serverMessage.appendInt32(0);
+        serverMessage.appendInt32(this.getUserId());
     }
 
     public int getId()
