@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
+import com.eu.habbo.habbohotel.rooms.RoomTileState;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -79,7 +80,6 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
 
                 int x = 0;
                 int y = 0;
-                boolean notFound = false;
 
                 if(target.getRoomUnit().getX() == item.getX())
                 {
@@ -87,50 +87,45 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
                         y--;
                     else
                         y++;
-
-                    RoomTile newTile = room.getLayout().getTile((short) (item.getX() + x), (short) (item.getY() + y));
-
-                    if (room.getLayout().tileExists(newTile.x, newTile.y))
-                    {
-                        HabboItem topItem = room.getTopItemAt(newTile.x, newTile.y);
-
-                        if (topItem == null || topItem.getBaseItem().allowStack())
-                        {
-                            double offset = 0;
-                            if (topItem != null)
-                                offset = topItem.getZ() + topItem.getBaseItem().getHeight() - item.getZ();
-
-                            room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, offset, room).compose());
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        y = 0;
-                        notFound = true;
-                    }
                 }
-
-                if(target.getRoomUnit().getY() == item.getY() || notFound)
+                else if(target.getRoomUnit().getY() == item.getY())
                 {
                     if (item.getX() < target.getRoomUnit().getX())
                         x--;
                     else
                         x++;
+                }
+                else if (target.getRoomUnit().getX() - item.getX() > target.getRoomUnit().getY() - item.getY())
+                {
+                    if (target.getRoomUnit().getX() - item.getX() > 0 )
+                        x--;
+                    else
+                        x++;
+                }
+                else
+                {
+                    if (target.getRoomUnit().getY() - item.getY() > 0)
+                        y--;
+                    else
+                        y++;
+                }
 
-                    RoomTile newTile = room.getLayout().getTile((short) (item.getX() + x), (short) (item.getY() + y));
+                RoomTile newTile = room.getLayout().getTile((short) (item.getX() + x), (short) (item.getY() + y));
 
+                if (newTile != null && newTile.state == RoomTileState.OPEN)
+                {
                     if (room.getLayout().tileExists(newTile.x, newTile.y))
                     {
                         HabboItem topItem = room.getTopItemAt(newTile.x, newTile.y);
 
                         if (topItem == null || topItem.getBaseItem().allowStack())
                         {
-                            double offset = 0;
-                            if (topItem != null)
-                                offset = topItem.getZ() + topItem.getBaseItem().getHeight() - item.getZ();
+                            double offsetZ = 0;
 
-                            room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, offset, room).compose());
+                            if (topItem != null)
+                                offsetZ = topItem.getZ() + topItem.getBaseItem().getHeight() - item.getZ();
+
+                            room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, offsetZ, room).compose());
                         }
                     }
                 }
