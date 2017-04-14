@@ -80,6 +80,7 @@ public class CommandHandler
         addCommand(new PullCommand());
         addCommand(new PushCommand());
         addCommand(new RedeemCommand());
+        addCommand(new ReloadRoomCommand());
         addCommand(new RoomAlertCommand());
         addCommand(new RoomBundleCommand());
         addCommand(new RoomCreditsCommand());
