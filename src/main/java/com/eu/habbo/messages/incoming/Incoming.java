@@ -312,4 +312,9 @@ public class Incoming
     public static final int GameCenterJoinGameEvent = 1458;
     public static final int GameCenterLoadGameEvent = 1054;
     public static final int GameCenterEvent = 2914;
+
+    public static final int ModToolSanctionAlertEvent = 229;
+    public static final int ModToolSanctionMuteEvent = 1945;
+    public static final int ModToolSanctionBanEvent = 2766;
+    public static final int ModToolSanctionTradeLockEvent = 3742;
 }

@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.commands;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.modtool.ModToolBan;
+import com.eu.habbo.habbohotel.modtool.ModToolBanType;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -82,9 +83,9 @@ public class BanCommand extends Command
             totalTime = Integer.MAX_VALUE;
         }
 
-        ModToolBan ban = Emulator.getGameEnvironment().getModToolManager().createBan(target, gameClient.getHabbo(), totalTime, reason, "account");
+        ModToolBan ban = Emulator.getGameEnvironment().getModToolManager().createBan(target, gameClient.getHabbo(), totalTime, reason, ModToolBanType.ACCOUNT);
 
-        gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_about.ban_issued").replace("%user%", target.getHabboInfo().getUsername()).replace("%time%", ban.expireDate - Emulator.getIntUnixTimestamp() + "").replace("%reason%", ban.reason), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+        gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_ban.ban_issued").replace("%user%", target.getHabboInfo().getUsername()).replace("%time%", ban.expireDate - Emulator.getIntUnixTimestamp() + "").replace("%reason%", ban.reason), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
         return true;
     }
 }

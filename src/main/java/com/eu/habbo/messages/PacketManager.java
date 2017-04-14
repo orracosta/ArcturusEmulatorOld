@@ -379,6 +379,10 @@ public class PacketManager
         this.registerHandler(Incoming.ModToolRequestRoomVisitsEvent,            ModToolRequestRoomVisitsEvent.class);
         this.registerHandler(Incoming.ModToolRequestIssueChatlogEvent,          ModToolRequestIssueChatlogEvent.class);
         this.registerHandler(Incoming.ModToolRequestRoomUserChatlogEvent,       ModToolRequestRoomUserChatlogEvent.class);
+        this.registerHandler(Incoming.ModToolSanctionAlertEvent,                ModToolSanctionAlertEvent.class);
+        this.registerHandler(Incoming.ModToolSanctionMuteEvent,                 ModToolSanctionMuteEvent.class);
+        this.registerHandler(Incoming.ModToolSanctionBanEvent,                  ModToolSanctionBanEvent.class);
+        this.registerHandler(Incoming.ModToolSanctionTradeLockEvent,            ModToolSanctionTradeLockEvent.class);
 
         this.registerHandler(Incoming.RequestReportRoomEvent,                   RequestReportRoomEvent.class);
         this.registerHandler(Incoming.RequestReportUserBullyingEvent,           RequestReportUserBullyingEvent.class);

@@ -2,7 +2,7 @@ package com.eu.habbo.messages.incoming.modtool;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
+import com.eu.habbo.messages.outgoing.modtool.ModToolIssueHandledComposer;
 
 public class ModToolRoomAlertEvent extends MessageHandler
 {
@@ -12,7 +12,7 @@ public class ModToolRoomAlertEvent extends MessageHandler
         if(this.client.getHabbo().hasPermission("acc_supporttool"))
         {
             this.packet.readInt();
-            this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new GenericAlertComposer(this.packet.readString()).compose());
+            this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new ModToolIssueHandledComposer(this.packet.readString()).compose());
         }
         else
         {

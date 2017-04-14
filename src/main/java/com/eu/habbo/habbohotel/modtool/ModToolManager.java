@@ -323,12 +323,51 @@ public class ModToolManager
         return roomVisits;
     }
 
-    public ModToolBan createBan(Habbo target, Habbo staff, int expireDate, String reason, String type)
+    public ModToolBan createOfflineUserBan(int userId, int staffId, int duration, String reason, ModToolBanType type)
+    {
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO bans (user_id, ip, machine_id, user_staff_id, ban_expire, ban_reason, type) VALUES (?, (SELECT ip_current FROM users WHERE id = ?), (SELECT machine_id FROM users WHERE id = ?), ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
+        {
+            statement.setInt(1, userId);
+            statement.setInt(2, userId);
+            statement.setInt(3, userId);
+            statement.setInt(4, staffId);
+            statement.setInt(5, Emulator.getIntUnixTimestamp() + duration);
+            statement.setString(6, reason);
+            statement.setString(7, type.getType());
+
+            try (ResultSet set = statement.executeQuery())
+            {
+                if (set.next())
+                {
+                    try (PreparedStatement selectBanStatement = connection.prepareStatement("SELECT * FROM bans WHERE id = ? LIMIT 1"))
+                    {
+                        selectBanStatement.setInt(1, set.getInt(1));
+
+                        try (ResultSet selectSet = selectBanStatement.executeQuery())
+                        {
+                            if (selectSet.next())
+                            {
+                                return new ModToolBan(selectSet);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
+        return null;
+    }
+
+    public ModToolBan createBan(Habbo target, Habbo staff, int expireDate, String reason, ModToolBanType type) //TODO Refactor expireData to duration
     {
         return createBan(target.getHabboInfo().getId(), target.getHabboInfo().getIpLogin(), target.getClient().getMachineId(), staff, expireDate, reason, type);
     }
 
-    public ModToolBan createBan(int target, String ip, String machineId, Habbo staff, int expireDate, String reason, String type)
+    public ModToolBan createBan(int target, String ip, String machineId, Habbo staff, int expireDate, String reason, ModToolBanType type) //TODO Refactor expireData to duration
     {
         if(staff.hasPermission("acc_supporttool"))
         {

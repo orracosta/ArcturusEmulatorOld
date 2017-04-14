@@ -3024,7 +3024,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         {
             TIntObjectIterator<AbstractPet> petIterator = this.currentPets.iterator();
 
-            for (int i = this.currentHabbos.size(); i-- > 0; )
+            for (int i = this.currentPets.size(); i-- > 0; )
             {
                 try
                 {

@@ -23,7 +23,7 @@ public class ModToolRoomInfoComposer extends MessageComposer
         this.response.appendBoolean(this.room.getHabbo(this.room.getOwnerId()) != null);
         this.response.appendInt32(this.room.getOwnerId());
         this.response.appendString(this.room.getOwnerName());
-        this.response.appendBoolean(this.room.isPublicRoom());
+        this.response.appendBoolean(!this.room.isPublicRoom());
         if(!this.room.isPublicRoom())
         {
             this.response.appendString(this.room.getName());

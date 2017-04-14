@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.modtool;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.modtool.ModToolBanType;
 import com.eu.habbo.habbohotel.modtool.ModToolManager;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -22,11 +23,11 @@ public class ModToolBanEvent extends MessageHandler
 
                 if (habbo != null)
                 {
-                    Emulator.getGameEnvironment().getModToolManager().createBan(habbo, this.client.getHabbo(), expireDate, message, "account");
+                    Emulator.getGameEnvironment().getModToolManager().createBan(habbo, this.client.getHabbo(), expireDate, message, ModToolBanType.ACCOUNT);
                 }
                 else
                 {
-                    Emulator.getGameEnvironment().getModToolManager().createBan(userId, "offline", "offline", this.client.getHabbo(), expireDate, message, "account");
+                    Emulator.getGameEnvironment().getModToolManager().createBan(userId, "offline", "offline", this.client.getHabbo(), expireDate, message, ModToolBanType.ACCOUNT);
                 }
             }
             else

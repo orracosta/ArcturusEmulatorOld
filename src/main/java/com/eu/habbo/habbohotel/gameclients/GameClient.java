@@ -12,6 +12,9 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 
 import java.net.InetSocketAddress;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class GameClient
@@ -154,5 +157,19 @@ public class GameClient
             throw new NullPointerException("Cannot set machineID to NULL");
         }
         this.machineId = machineId;
+
+        if (this.habbo != null)
+        {
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET machine_id = ? WHERE id = ? LIMIT 1"))
+            {
+                statement.setString(1, this.machineId);
+                statement.setInt(2, this.habbo.getHabboInfo().getId());
+                statement.execute();
+            }
+            catch (SQLException e)
+            {
+                Emulator.getLogging().logSQLException(e);
+            }
+        }
     }
 }

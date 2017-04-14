@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
+import com.eu.habbo.messages.outgoing.modtool.ModToolIssueHandledComposer;
 
 public class ModToolAlertEvent extends MessageHandler
 {
@@ -18,7 +19,7 @@ public class ModToolAlertEvent extends MessageHandler
 
             if(habbo != null)
             {
-                habbo.getClient().sendResponse(new GenericAlertComposer(message));
+                habbo.getClient().sendResponse(new ModToolIssueHandledComposer(message));
             }
         }
         else

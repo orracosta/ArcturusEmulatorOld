@@ -15,7 +15,7 @@ public class ModToolBan implements Runnable
     public int staffId;
     public int expireDate;
     public String reason;
-    public String type;
+    public ModToolBanType type;
 
     private boolean needsInsert;
 
@@ -27,11 +27,11 @@ public class ModToolBan implements Runnable
         this.staffId = set.getInt("user_staff_id");
         this.expireDate = set.getInt("ban_expire");
         this.reason = set.getString("ban_reason");
-        this.type = set.getString("type");
+        this.type = ModToolBanType.fromString(set.getString("type"));
         this.needsInsert = false;
     }
 
-    public ModToolBan(int userId, String ip, String machineId, int staffId, int expireDate, String reason, String type)
+    public ModToolBan(int userId, String ip, String machineId, int staffId, int expireDate, String reason, ModToolBanType type)
     {
         this.userId = userId;
         this.staffId = staffId;
@@ -57,7 +57,7 @@ public class ModToolBan implements Runnable
                 statement.setInt(5, Emulator.getIntUnixTimestamp());
                 statement.setInt(6, this.expireDate);
                 statement.setString(7, this.reason);
-                statement.setString(8, this.type);
+                statement.setString(8, this.type.getType());
                 statement.execute();
             }
             catch (SQLException e)
