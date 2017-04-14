@@ -51,7 +51,7 @@ public class FriendsComposer extends MessageComposer
 
             if(habbo.hasPermission("acc_staff_chat"))
             {
-                this.response.appendInt32(0);
+                this.response.appendInt32(-1);
                 this.response.appendString("Staff Chat");
                 this.response.appendInt32(this.habbo.getHabboInfo().getGender().equals(HabboGender.M) ? 0 : 1);
                 this.response.appendBoolean(true);

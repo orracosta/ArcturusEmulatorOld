@@ -46,7 +46,6 @@ public class ThreadPooling
         catch (Exception e)
         {
             Emulator.getLogging().logErrorLine(e);
-            Emulator.getLogging().logErrorLine(e.getCause());
         }
     }
 

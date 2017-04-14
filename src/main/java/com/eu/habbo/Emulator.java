@@ -115,7 +115,7 @@ public final class Emulator
             Emulator.logging = new Logging();
             Emulator.getLogging().logStart("\r" + Emulator.logo);
             random = new Random();
-            publicChatBuddy = new MessengerBuddy(0, "Staff Chat", "", (short) 0, 0);
+            publicChatBuddy = new MessengerBuddy(-1, "Staff Chat", "", (short) 0, 0);
             long startTime = System.nanoTime();
 
             Emulator.runtime = Runtime.getRuntime();

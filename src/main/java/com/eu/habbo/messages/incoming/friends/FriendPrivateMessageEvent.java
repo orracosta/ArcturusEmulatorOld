@@ -17,7 +17,7 @@ public class FriendPrivateMessageEvent extends MessageHandler
         int userId = this.packet.readInt();
         String message = this.packet.readString();
 
-        if(userId == 0)
+        if(userId == Emulator.publicChatBuddy.getId())
         {
             if(message.startsWith(":"))
             {
