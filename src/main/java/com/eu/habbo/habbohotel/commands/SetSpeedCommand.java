@@ -36,7 +36,7 @@ public class SetSpeedCommand extends Command
                     return true;
                 }
 
-                if(newSpeed < 0 || newSpeed > 100)
+                if(newSpeed < -1 || newSpeed > Emulator.getConfig().getInt("hotel.rollers.speed.maximum"))
                 {
                     gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_setspeed.bounds"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
                     return true;

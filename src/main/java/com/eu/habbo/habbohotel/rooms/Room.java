@@ -1546,7 +1546,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     this.sendComposer(new RoomUserStatusComposer(updatedUnit, true).compose());
                 }
 
-                if(((System.currentTimeMillis() - this.lastRollerCycle) / 500)  > this.rollerSpeed)
+                if(this.rollerSpeed != -1 && ((System.currentTimeMillis() - this.lastRollerCycle) / 500)  > this.rollerSpeed)
                 {
                     this.lastRollerCycle = System.currentTimeMillis();
 

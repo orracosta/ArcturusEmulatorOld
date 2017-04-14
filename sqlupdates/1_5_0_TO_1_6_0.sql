@@ -13,4 +13,6 @@ CREATE TABLE `users_achievements_queue` (
 ) ENGINE = MYISAM ;
 ALTER TABLE users_achievements_queue ADD UNIQUE `unique_index` (`user_id`, `achievement_id`);
 
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.rollers.speed.maximum', '100');
+
 #END DATABASE UPDATE: 1.5.0 -> 1.6.0
