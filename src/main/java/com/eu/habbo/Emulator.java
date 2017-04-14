@@ -37,7 +37,7 @@ public final class Emulator
     /**
      * Minor version of the emulator.
      */
-    public final static int MINOR = 5;
+    public final static int MINOR = 6;
 
     /**
      * Stable build version of the emulator.
@@ -72,7 +72,7 @@ public final class Emulator
     /**
      * The emulator is in debugging mode.
      */
-    public static boolean debugging = false;
+    public static boolean debugging = true;
 
     private static int                      timeStarted = 0;
     private static Runtime                  runtime;
