@@ -58,6 +58,11 @@ public class PetPackageNameEvent extends MessageHandler
                             pet = Emulator.getGameEnvironment().getPetManager().createPet(33, name, this.client);
                         }
 
+                        if (item.getBaseItem().getName().equalsIgnoreCase("petbox_epic"))
+                        {
+                            pet = Emulator.getGameEnvironment().getPetManager().createPet(32, name, this.client);
+                        }
+
                         if (pet != null)
                         {
                             room.placePet((AbstractPet) pet, item.getX(), item.getY(), item.getZ(), item.getRotation());
