@@ -164,8 +164,8 @@ public class Habbo implements Runnable
 
             Emulator.getGameEnvironment().getGuideManager().userLogsOut(this);
             this.needsUpdate(true);
-            this.run();
             this.isOnline(false);
+            this.run();
             this.getHabboInventory().dispose();
             this.messenger.connectionChanged(this, false, false);
             this.messenger.dispose();
