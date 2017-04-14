@@ -87,7 +87,7 @@ public class Incoming
     public static final int GuildChangeNameDescEvent = 3137; // PRODUCTION-201611291003-338511768
     public static final int RequestSellItemEvent = 848; // PRODUCTION-201611291003-338511768
     public static final int ModToolChangeRoomSettingsEvent = 3260; // PRODUCTION-201611291003-338511768
-    public static final int ModToolRequestUserChatlogEvent = -1;//203
+    public static final int ModToolRequestUserChatlogEvent = 1391;//203
     public static final int GuildChangeSettingsEvent = 3435; // PRODUCTION-201611291003-338511768
     public static final int RoomUserDropHandItemEvent = 2814; // PRODUCTION-201611291003-338511768
     public static final int RequestProfileFriendsEvent = 2138; // TODO!!!
@@ -209,7 +209,7 @@ public class Incoming
     public static final int PostItDeleteEvent = 3336; // PRODUCTION-201611291003-338511768
     public static final int MoodLightSaveSettingsEvent = 1648; // PRODUCTION-201611291003-338511768
     public static final int ModToolRequestIssueChatlogEvent = 211; // PRODUCTION-201611291003-338511768
-    public static final int ModToolRequestRoomUserChatlogEvent = 1391; // PRODUCTION-201611291003-338511768
+    public static final int ModToolRequestRoomUserChatlogEvent = -1; // PRODUCTION-201611291003-338511768
     public static final int UsernameEvent = 3878; // PRODUCTION-201611291003-338511768
     public static final int RequestClubGiftsEvent = 487; // PRODUCTION-201611291003-338511768
     public static final int RentSpaceEvent = 2946; // PRODUCTION-201611291003-338511768

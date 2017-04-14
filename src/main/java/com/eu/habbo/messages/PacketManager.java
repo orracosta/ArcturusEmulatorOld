@@ -374,11 +374,11 @@ public class PacketManager
         this.registerHandler(Incoming.ModToolKickEvent,                         ModToolKickEvent.class);
         this.registerHandler(Incoming.ModToolBanEvent,                          ModToolBanEvent.class);
         this.registerHandler(Incoming.ModToolRoomAlertEvent,                    ModToolRoomAlertEvent.class);
-        this.registerHandler(Incoming.ModToolRequestUserChatlogEvent,           ModToolRequestUserChatlogEvent.class);
         this.registerHandler(Incoming.ModToolChangeRoomSettingsEvent,           ModToolChangeRoomSettingsEvent.class);
         this.registerHandler(Incoming.ModToolRequestRoomVisitsEvent,            ModToolRequestRoomVisitsEvent.class);
         this.registerHandler(Incoming.ModToolRequestIssueChatlogEvent,          ModToolRequestIssueChatlogEvent.class);
         this.registerHandler(Incoming.ModToolRequestRoomUserChatlogEvent,       ModToolRequestRoomUserChatlogEvent.class);
+        this.registerHandler(Incoming.ModToolRequestUserChatlogEvent,           ModToolRequestUserChatlogEvent.class);
         this.registerHandler(Incoming.ModToolSanctionAlertEvent,                ModToolSanctionAlertEvent.class);
         this.registerHandler(Incoming.ModToolSanctionMuteEvent,                 ModToolSanctionMuteEvent.class);
         this.registerHandler(Incoming.ModToolSanctionBanEvent,                  ModToolSanctionBanEvent.class);

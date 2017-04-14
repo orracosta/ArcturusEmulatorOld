@@ -140,12 +140,16 @@ public class WordFilter
 
     public String filter(String message, Habbo habbo)
     {
+        String original = message;
+
         if(Emulator.getConfig().getBoolean("hotel.wordfilter.normalise"))
         {
             message = this.normalise(message);
         }
 
         TObjectHashIterator iterator = this.words.iterator();
+
+        boolean foundShit = false;
 
         while(iterator.hasNext())
         {
@@ -159,7 +163,13 @@ public class WordFilter
                         continue;
                 }
                 message = message.replace(word.key, word.replacement);
+                foundShit = true;
             }
+        }
+
+        if (!foundShit)
+        {
+            return original;
         }
 
         return message;
