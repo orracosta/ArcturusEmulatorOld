@@ -21,4 +21,6 @@ ALTER TABLE  `permissions` ADD  `cmd_reload_room` ENUM(  '0',  '1',  '2' ) NOT N
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.keys.cmd_reload_room', 'reload_room;reload;reloadroom'), ('commands.description.cmd_reload_room', ':reload_room');
 ALTER TABLE  `bots` ADD  `effect` INT( 3 ) NOT NULL DEFAULT  '0';
 
+UPDATE  `emulator_texts` SET  `key` =  'commands.error.cmd_ban.forgot_user' WHERE  `emulator_texts`.`key` =  'commands.error.cmd_ban.forgot_message';
+
 #END DATABASE UPDATE: 1.5.0 -> 1.6.0
