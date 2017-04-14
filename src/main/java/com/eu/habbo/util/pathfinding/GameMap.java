@@ -103,14 +103,16 @@ public class GameMap<T extends AbstractNode>
                 if (room == null || !room.isLoaded())
                     return new LinkedList();
 
-                if (!room.isAllowWalkthrough() && room.hasHabbosAt(currentAdj.getX(), currentAdj.getY())) continue;
-
                 if(!room.getLayout().tileWalkable((short)currentAdj.getX(), (short)currentAdj.getY())) continue;
 
                 double height = (room.getLayout().getStackHeightAtSquare(currentAdj.getX(), currentAdj.getY()) - room.getLayout().getStackHeightAtSquare(current.getX(), current.getY()));
 
                 if ((!ALLOW_FALLING && height < -MAXIMUM_STEP_HEIGHT) || height > MAXIMUM_STEP_HEIGHT)
                     continue;
+
+                if (!room.isAllowWalkthrough() && room.hasHabbosAt(currentAdj.getX(), currentAdj.getY())) continue;
+
+                if (room.hasPetsAt(currentAdj.getX(), currentAdj.getY())) continue;
 
                 if (!openList.contains(currentAdj) || (currentAdj.getX() == newX && currentAdj.getY() == newY && (room.canSitOrLayAt(newX, newY) && !room.hasHabbosAt(newX, newY))))
                 {

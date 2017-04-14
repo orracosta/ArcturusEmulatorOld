@@ -3018,6 +3018,32 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         return false;
     }
 
+    public boolean hasPetsAt(int x, int y)
+    {
+        synchronized (this.currentPets)
+        {
+            TIntObjectIterator<AbstractPet> petIterator = this.currentPets.iterator();
+
+            for (int i = this.currentHabbos.size(); i-- > 0; )
+            {
+                try
+                {
+                    petIterator.advance();
+                }
+                catch (NoSuchElementException e)
+                {
+                    Emulator.getLogging().logErrorLine(e);
+                    break;
+                }
+
+                if (petIterator.value().getRoomUnit().getX() == x && petIterator.value().getRoomUnit().getY() == y)
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
     public THashSet<Habbo> getHabbosAt(short x, short y)
     {
         return getHabbosAt(this.layout.getTile(x, y));
