@@ -55,6 +55,7 @@ public class InteractionVendingMachine extends HabboItem
             {
                 if (this.getExtradata().equals("0") || this.getExtradata().length() == 0)
                 {
+                    room.updateHabbo(client.getHabbo());
                     if (!client.getHabbo().getRoomUnit().getStatus().containsKey("sit"))
                     {
                         client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[Rotation.Calculate(client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY(), this.getX(), this.getY())]);
