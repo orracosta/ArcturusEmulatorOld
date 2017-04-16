@@ -106,11 +106,7 @@ public abstract class InteractionGameTimer extends HabboItem
         {
             Game game = (this.getGameType().cast(room.getGame(this.getGameType())));
 
-            if (game != null && game.isRunning)
-            {
-                this.stopGame(room);
-            }
-            else
+            if (game != null && !game.isRunning)
             {
                 this.startGame(room);
             }
