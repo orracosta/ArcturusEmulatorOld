@@ -10,6 +10,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
+import com.eu.habbo.threading.runnables.RoomUnitTeleportWalkToAction;
 import com.eu.habbo.threading.runnables.teleport.TeleportActionOne;
 
 import java.sql.ResultSet;
@@ -78,6 +79,7 @@ public class InteractionTeleport extends HabboItem
             else
             {
                 client.getHabbo().getRoomUnit().setGoalLocation(loc);
+                Emulator.getThreading().run(new RoomUnitTeleportWalkToAction(client.getHabbo(), this, room), client.getHabbo().getRoomUnit().getPathFinder().getPath().size() + 2 * 510);
             }
         }
     }
