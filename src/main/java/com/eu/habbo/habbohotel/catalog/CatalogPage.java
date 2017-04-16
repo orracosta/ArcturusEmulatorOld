@@ -54,7 +54,7 @@ public abstract class CatalogPage implements Comparable<CatalogPage>, ISerialize
         this.iconImage = set.getInt("icon_image");
         this.orderNum = set.getInt("order_num");
         this.visible = set.getBoolean("visible");
-        this.enabled = true;
+        this.enabled = set.getBoolean("enabled");
         this.clubOnly = set.getBoolean("club_only");
         this.layout = set.getString("page_layout");
         this.headerImage = set.getString("page_headline");
