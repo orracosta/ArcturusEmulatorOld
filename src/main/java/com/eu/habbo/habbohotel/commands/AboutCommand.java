@@ -29,10 +29,10 @@ public class AboutCommand extends Command
         if (Emulator.getConfig().getBoolean("info.shown", true))
         {
             message += "<b>Hotel Statistics</b>\r" +
-                    "- Users: " + Emulator.getGameEnvironment().getHabboManager().getOnlineCount() + "\r" +
-                    "- Rooms: " + Emulator.getGameEnvironment().getRoomManager().getActiveRooms().size() + "\r" +
+                    "- Online Users: " + Emulator.getGameEnvironment().getHabboManager().getOnlineCount() + "\r" +
+                    "- Active Rooms: " + Emulator.getGameEnvironment().getRoomManager().getActiveRooms().size() + "\r" +
                     "- Shop:  " + Emulator.getGameEnvironment().getCatalogManager().catalogPages.size() + " pages and " + CatalogManager.catalogItemAmount + " items. \r" +
-                    "- Furni: " + Emulator.getGameEnvironment().getItemManager().getItems().size() + " items." + "\r" +
+                    "- Furni: " + Emulator.getGameEnvironment().getItemManager().getItems().size() + " item definitions" + "\r" +
                     "\n" +
                     "<b>Server Statistics</b>\r" +
                     "- Uptime: " + day + (day > 1 ? " days, " : " day, ") + hours + (hours > 1 ? " hours, " : " hour, ") + minute + (minute > 1 ? " minutes, " : " minute, ") + second + (second > 1 ? " seconds!" : " second!") + "\r" +
@@ -41,12 +41,7 @@ public class AboutCommand extends Command
                     "- Total Memory: " + Emulator.getRuntime().maxMemory() / (1024 * 1024) + "MB" + "\r\n";
         }
 
-        message += "<b>Cool People:</b> \r" +
-                "- Jonas\r" +
-                "- CodeDragon \r" +
-                "- FlyHotel \r" +
-
-                "\r" +
+                message += "\r" +
 
                 "<b>Thanks for using Arcturus. Report issues on the forums. http://arcturus.wf \r\r" +
                 "    - The General";
