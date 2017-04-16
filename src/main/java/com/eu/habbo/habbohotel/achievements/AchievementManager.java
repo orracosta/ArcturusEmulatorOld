@@ -158,7 +158,7 @@ public class AchievementManager
         {
             try (Connection connection = Emulator.getDatabase().getDataSource().getConnection();
                  PreparedStatement statement = connection.prepareStatement("" +
-                         "INSERT INTO users_achievement_queue (user_id, achievement_id, amount) VALUES (?, ?, ?) " +
+                         "INSERT INTO users_achievements_queue (user_id, achievement_id, amount) VALUES (?, ?, ?) " +
                          "ON DUPLICATE KEY UPDATE amount = amount + ?"))
             {
                 statement.setInt(1, habboId);
