@@ -99,7 +99,7 @@ public class Incoming
     public static final int RequestFriendRequestEvent = 2448; // PRODUCTION-201611291003-338511768
     public static final int RoomSettingsSaveEvent = 1969; // PRODUCTION-201611291003-338511768
     public static final int AcceptFriendRequest = 137; // PRODUCTION-201611291003-338511768
-    public static final int DeclineFriendRequest = 835; //TODO
+    public static final int DeclineFriendRequest = 2890; //835; //TODO
     public static final int ReleaseVersionEvent = 4000;//4000 
     public static final int SearchRoomsMyFavoriteEvent = 2578; // PRODUCTION-201611291003-338511768
     public static final int TradeStartEvent = 1481; // PRODUCTION-201611291003-338511768
