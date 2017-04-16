@@ -48,7 +48,7 @@ public class WiredTriggerHabboSaysKeyword extends InteractionWiredTrigger
                         if (this.ownerOnly && room.getOwnerId() != habbo.getHabboInfo().getId())
                             return false;
 
-                        habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(this.key, habbo, habbo, RoomChatMessageBubbles.ALERT)));
+                        habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage((String)stuff[0], habbo, habbo, RoomChatMessageBubbles.NORMAL)));
 
                         return true;
                     }
