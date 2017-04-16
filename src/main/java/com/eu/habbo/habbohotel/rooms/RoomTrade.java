@@ -9,6 +9,7 @@ import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.inventory.RemoveHabboItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.messages.outgoing.trading.*;
+import gnu.trove.set.hash.THashSet;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -51,6 +52,20 @@ public class RoomTrade
             return;
 
         user.getItems().add(item);
+
+        clearAccepted();
+        updateWindow();
+    }
+    
+    public void offerMultipleItems(Habbo habbo, THashSet<HabboItem> items)
+    {
+        RoomTradeUser user = getRoomTradeUserForHabbo(habbo);
+
+        for(HabboItem item : items) {
+            if(!user.getItems().contains(item)) {
+                user.getItems().add(item);
+            }
+        }
 
         clearAccepted();
         updateWindow();

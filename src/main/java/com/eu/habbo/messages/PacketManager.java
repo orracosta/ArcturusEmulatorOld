@@ -394,6 +394,7 @@ public class PacketManager
     {
         this.registerHandler(Incoming.TradeStartEvent,                          TradeStartEvent.class);
         this.registerHandler(Incoming.TradeOfferItemEvent,                      TradeOfferItemEvent.class);
+        this.registerHandler(Incoming.TradeOfferMultipleItemsEvent,             TradeOfferMultipleItemsEvent.class);
         this.registerHandler(Incoming.TradeCancelOfferItemEvent,                TradeCancelOfferItemEvent.class);
         this.registerHandler(Incoming.TradeAcceptEvent,                         TradeAcceptEvent.class);
         this.registerHandler(Incoming.TradeUnAcceptEvent,                       TradeUnAcceptEvent.class);
