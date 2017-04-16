@@ -9,6 +9,7 @@ import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.threading.runnables.CannonKickAction;
+import com.eu.habbo.threading.runnables.CannonResetCooldownAction;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,6 +17,8 @@ import java.sql.SQLException;
 public class InteractionCannon extends HabboItem
 
 {
+    public boolean cooldown = false;
+    
     public InteractionCannon(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
@@ -50,20 +53,22 @@ public class InteractionCannon extends HabboItem
     @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
-        super.onClick(client, room, objects);
+        if(client != null) {
+            super.onClick(client, room, objects);
+        }
+        
         if(room == null)
             return;
 
-        if (client != null)
+        RoomTile tile = room.getLayout().getTile(this.getX(), this.getY());
+        
+        if ((client == null || tile.distance(client.getHabbo().getRoomUnit().getCurrentLocation()) <= 2) && !this.cooldown)
         {
-            RoomTile tile = room.getLayout().getTile(this.getX(), this.getY());
-
-            if (tile.distance(client.getHabbo().getRoomUnit().getCurrentLocation()) <= 2)
-            {
-                this.setExtradata("1");
-                room.updateItem(this);
-                Emulator.getThreading().run(new CannonKickAction(this, room), 1000);
-            }
+            this.cooldown = true;
+            this.setExtradata(this.getExtradata().equals("1") ? "0" : "1");
+            room.updateItem(this);
+            Emulator.getThreading().run(new CannonKickAction(this, room), 750);
+            Emulator.getThreading().run(new CannonResetCooldownAction(this), 2000);
         }
     }
 
@@ -83,5 +88,11 @@ public class InteractionCannon extends HabboItem
     public void onWalkOff(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
         super.onWalkOff(roomUnit, room, objects);
+    }
+    
+    @Override
+    public void onPickUp(Room room)
+    {
+        this.setExtradata("0");
     }
 }
