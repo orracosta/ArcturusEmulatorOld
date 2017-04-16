@@ -46,6 +46,17 @@ public class RoomChatMessage implements Runnable, ISerialize
         {
             this.bubble = RoomChatMessageBubbles.NORMAL;
         }
+        
+        if(message.client != null && message.client.getHabbo() != null && !message.client.getHabbo().hasPermission("acc_anychatcolor"))
+        {
+            for(String s : Emulator.getConfig().getValue("commands.cmd_chatcolor.banned_numbers").split(";"))
+            {
+                if(Integer.valueOf(s) == this.bubble.getType())
+                {
+                    this.bubble = RoomChatMessageBubbles.NORMAL;
+                }
+            }
+        }
 
         this.unfilteredMessage = this.message;
         this.habbo = message.client.getHabbo();
