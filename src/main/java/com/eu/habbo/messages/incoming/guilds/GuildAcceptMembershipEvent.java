@@ -31,23 +31,28 @@ public class GuildAcceptMembershipEvent extends MessageHandler
 
         Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(userId);
         
-        if(habbo != null) {
+        if(habbo != null) 
+        {
             if (habbo.getHabboStats().hasGuild(guild.getId()))
             {
                 this.client.sendResponse(new GuildAcceptMemberErrorComposer(guild.getId(), GuildAcceptMemberErrorComposer.ALREADY_ACCEPTED));
                 return;
             }
-            else {
+            else 
+            {
                 //Check the user has requested
                 GuildMember member = Emulator.getGameEnvironment().getGuildManager().getGuildMember(guild, habbo);
-                if(member == null || member.getRank().type != GuildRank.REQUESTED.type) {
+                if(member == null || member.getRank().type != GuildRank.REQUESTED.type) 
+                {
                     this.client.sendResponse(new GuildAcceptMemberErrorComposer(guild.getId(), GuildAcceptMemberErrorComposer.NO_LONGER_MEMBER));
                     return;
                 }
-                else {
+                else 
+                {
                     GuildAcceptedMembershipEvent event = new GuildAcceptedMembershipEvent(guild, userId, habbo);
                     Emulator.getPluginManager().fireEvent(event);
-                    if(!event.isCancelled()) {
+                    if(!event.isCancelled()) 
+                    {
                         habbo.getHabboStats().addGuild(guild.getId());
                         Emulator.getGameEnvironment().getGuildManager().joinGuild(guild, this.client, habbo.getHabboInfo().getId(), true);
                         guild.decreaseRequestCount();

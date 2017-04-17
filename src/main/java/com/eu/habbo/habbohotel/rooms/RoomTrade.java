@@ -61,8 +61,10 @@ public class RoomTrade
     {
         RoomTradeUser user = getRoomTradeUserForHabbo(habbo);
 
-        for(HabboItem item : items) {
-            if(!user.getItems().contains(item)) {
+        for(HabboItem item : items) 
+        {
+            if(!user.getItems().contains(item)) 
+            {
                 user.getItems().add(item);
             }
         }

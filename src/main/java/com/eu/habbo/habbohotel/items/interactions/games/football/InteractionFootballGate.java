@@ -12,6 +12,7 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDataComposer;
 import com.eu.habbo.messages.outgoing.users.UpdateUserLookComposer;
 import com.eu.habbo.plugin.events.users.UserSavedLookEvent;
+import com.eu.habbo.util.figure.FigureUtil;
 import gnu.trove.map.hash.THashMap;
 
 import java.sql.ResultSet;
@@ -45,7 +46,8 @@ public class InteractionFootballGate extends HabboItem
         this.oldLooks = new THashMap<Habbo, String>();
     }
     
-    public void setFigureM(String look) {
+    public void setFigureM(String look) 
+    {
         figureM = look;
         
         this.setExtradata(this.figureM + ";" + this.figureF);
@@ -53,7 +55,8 @@ public class InteractionFootballGate extends HabboItem
         Emulator.getThreading().run(this);
     }
     
-    public void setFigureF(String look) {
+    public void setFigureF(String look) 
+    {
         figureF = look;
         
         this.setExtradata(this.figureM + ";" + this.figureF);
@@ -92,9 +95,10 @@ public class InteractionFootballGate extends HabboItem
     public void onWalkOn(RoomUnit roomUnit, Room room, Object[] objects)  throws Exception
     {
         Habbo habbo = room.getHabbo(roomUnit);
-        if(habbo != null) {
-            
-            if(this.oldLooks.containsKey(habbo)) {
+        if(habbo != null) 
+        {
+            if(this.oldLooks.containsKey(habbo)) 
+            {
                 String oldlook = this.oldLooks.get(habbo);
                 
                 UserSavedLookEvent lookEvent = new UserSavedLookEvent(habbo, habbo.getHabboInfo().getGender(), oldlook);
@@ -109,30 +113,9 @@ public class InteractionFootballGate extends HabboItem
                 
                 this.oldLooks.remove(habbo);
             }
-            else {
-                THashMap<String, String> habboBits = this.getFigureBits(habbo.getHabboInfo().getLook());
-                THashMap<String, String> gateBits = this.getFigureBits(habbo.getHabboInfo().getGender() == HabboGender.F ? this.figureF : this.figureM);
-
-                String[] allowedHabboBits = new String[] { "hd", "hr", "ha", "he", "ea", "fa" };
-                String[] allowedGateBits = new String[] { "ch", "ca", "cc", "cp", "lg", "wa", "sh" };
-
-                String finalLook = "";
-
-                for (Map.Entry<String, String> keys : habboBits.entrySet()) {
-                    if(ArrayUtils.contains(allowedHabboBits, keys.getKey())) {
-                        finalLook = finalLook + keys.getKey() + "-" + keys.getValue() + ".";
-                    }
-                }
-
-                for (Map.Entry<String, String> keys : gateBits.entrySet()) {
-                    if(ArrayUtils.contains(allowedGateBits, keys.getKey())) {
-                        finalLook = finalLook + keys.getKey() + "-" + keys.getValue() + ".";
-                    }
-                }
-                
-                if(finalLook.endsWith(".")) {
-                    finalLook = finalLook.substring(0, finalLook.length() - 1);
-                }
+            else 
+            {
+                String finalLook = FigureUtil.mergeFigures(habbo.getHabboInfo().getLook(), habbo.getHabboInfo().getGender() == HabboGender.F ? this.figureF : this.figureM, new String[] { "hd", "hr", "ha", "he", "ea", "fa" }, new String[] { "ch", "ca", "cc", "cp", "lg", "wa", "sh" });
                 
                 UserSavedLookEvent lookEvent = new UserSavedLookEvent(habbo, habbo.getHabboInfo().getGender(), finalLook);
                 Emulator.getPluginManager().fireEvent(lookEvent);
@@ -148,18 +131,5 @@ public class InteractionFootballGate extends HabboItem
         }
         
         super.onWalkOn(roomUnit, room, objects);
-    }
-    
-    private THashMap<String, String> getFigureBits(String looks) {
-        THashMap<String, String> bits = new THashMap<String, String>();
-        String[] sets = looks.split("\\.");
-        
-        for(String set : sets)
-        {
-            String[] setBits = set.split("-", 2);
-            bits.put(setBits[0], setBits.length > 1 ? setBits[1] : "");
-        }
-        
-        return bits;
     }
 }

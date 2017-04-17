@@ -53,7 +53,8 @@ public class InteractionCannon extends HabboItem
     @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
-        if(client != null) {
+        if(client != null) 
+        {
             super.onClick(client, room, objects);
         }
         

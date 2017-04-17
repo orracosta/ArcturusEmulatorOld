@@ -80,7 +80,8 @@ public class RequestGuildBuyEvent extends MessageHandler
                     r.setGuild(guild.getId());
                     r.setNeedsUpdate(true);
                     
-                    if (Emulator.getConfig().getBoolean("imager.internal.enabled")) {
+                    if (Emulator.getConfig().getBoolean("imager.internal.enabled")) 
+                    {
                         Emulator.getBadgeImager().generate(guild);
                     }
                     

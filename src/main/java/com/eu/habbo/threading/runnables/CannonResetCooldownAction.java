@@ -23,7 +23,8 @@ public class CannonResetCooldownAction implements Runnable
     @Override
     public void run()
     {
-        if(this.cannon != null) {
+        if(this.cannon != null) 
+        {
             this.cannon.cooldown = false;
         }
     }

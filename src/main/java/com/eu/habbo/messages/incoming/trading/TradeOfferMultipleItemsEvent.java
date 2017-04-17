@@ -21,7 +21,8 @@ public class TradeOfferMultipleItemsEvent extends MessageHandler
         THashSet<HabboItem> items = new THashSet<HabboItem>();
         
         int count = this.packet.readInt();
-        for(int i = 0; i < count; i++) {
+        for(int i = 0; i < count; i++) 
+        {
             HabboItem item = this.client.getHabbo().getHabboInventory().getItemsComponent().getHabboItem(this.packet.readInt());
             if(item != null)
             {

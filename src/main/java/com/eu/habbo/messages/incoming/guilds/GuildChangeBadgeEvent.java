@@ -60,7 +60,8 @@ public class GuildChangeBadgeEvent extends MessageHandler
             guild.setBadge(badgeEvent.badge);
             guild.needsUpdate = true;
 
-            if (Emulator.getConfig().getBoolean("imager.internal.enabled")) {
+            if (Emulator.getConfig().getBoolean("imager.internal.enabled")) 
+            {
                 Emulator.getBadgeImager().generate(guild);
             }
 
