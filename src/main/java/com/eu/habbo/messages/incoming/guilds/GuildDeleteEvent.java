@@ -16,13 +16,13 @@ public class GuildDeleteEvent extends MessageHandler
     {
         int guildId = this.packet.readInt();
 
-        if(this.client.getHabbo().getHabboStats().hasGuild(guildId))
+        if(this.client.getHabbo().getHabboStats().hasGuild(guildId) || this.client.getHabbo().hasPermission("acc_guild_admin"))
         {
             Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(guildId);
 
             if(guild != null)
             {
-                if (guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId()) //TODO Add staff permission override.
+                if (guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || this.client.getHabbo().hasPermission("acc_guild_admin")) //TODO Add staff permission override.
                 {
                     Emulator.getGameEnvironment().getGuildManager().deleteGuild(guild);
                     Emulator.getPluginManager().fireEvent(new GuildDeletedEvent(guild, this.client.getHabbo()));
