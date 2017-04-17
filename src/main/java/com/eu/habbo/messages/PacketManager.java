@@ -284,6 +284,7 @@ public class PacketManager
         this.registerHandler(Incoming.RoomBackgroundEvent,                      RoomBackgroundEvent.class);
         this.registerHandler(Incoming.MannequinSaveNameEvent,                   MannequinSaveNameEvent.class);
         this.registerHandler(Incoming.MannequinSaveLookEvent,                   MannequinSaveLookEvent.class);
+        this.registerHandler(Incoming.FootballGateSaveLookEvent,                FootballGateSaveLookEvent.class);
         this.registerHandler(Incoming.AdvertisingSaveEvent,                     AdvertisingSaveEvent.class);
         this.registerHandler(Incoming.RequestRoomSettingsEvent,                 RequestRoomSettingsEvent.class);
         this.registerHandler(Incoming.MoodLightSettingsEvent,                   MoodLightSettingsEvent.class);
