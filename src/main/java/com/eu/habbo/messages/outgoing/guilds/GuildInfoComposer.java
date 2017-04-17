@@ -51,7 +51,7 @@ public class GuildInfoComposer extends MessageComposer
 
         this.response.appendString(this.guild.getOwnerName());
         this.response.appendBoolean(this.newWindow);
-        this.response.appendBoolean(this.guild.getRights() == 1); //User can place furni.
+        this.response.appendBoolean(this.guild.getRights() == 0); //User can place furni.
         this.response.appendInt32((this.client.getHabbo().hasPermission("acc_guild_admin") || this.guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId()) ? this.guild.getRequestCount() : 0); //Guild invites count.
         this.response.appendBoolean(true); //Unknown
         return this.response;
