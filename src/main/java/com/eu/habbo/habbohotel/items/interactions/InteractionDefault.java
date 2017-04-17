@@ -9,6 +9,7 @@ import com.eu.habbo.habbohotel.rooms.RoomUnitType;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboGender;
 import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.WallItemUpdateComposer;
@@ -52,7 +53,7 @@ public class InteractionDefault extends HabboItem
     @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
-        if(room != null && (client == null || canToggle(client.getHabbo(), room)))
+        if(room != null && (client == null || canToggle(client.getHabbo(), room) || (objects.length > 2 && objects[1] instanceof WiredEffectType && objects[1] == WiredEffectType.TOGGLE_STATE)))
         {
             super.onClick(client, room, objects);
 

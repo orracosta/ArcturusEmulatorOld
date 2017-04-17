@@ -57,7 +57,7 @@ public class InteractionTeleport extends HabboItem
     {
         super.onClick(client, room, objects);
 
-        if(room != null && client != null)
+        if(room != null && client != null && objects.length <= 1)
         {
             client.getHabbo().getRoomUnit().cmdTeleport = false;
             RoomTile loc = room.getLayout().getTile(this.getX(), this.getY());

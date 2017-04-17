@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import com.eu.habbo.messages.ServerMessage;
 
 import java.sql.ResultSet;
@@ -46,7 +47,7 @@ public class InteractionGate extends HabboItem
     {
         super.onClick(client, room, objects);
 
-        if (client != null && !room.hasRights(client.getHabbo()))
+        if (client != null && !room.hasRights(client.getHabbo()) && !(objects.length > 2 && objects[1] instanceof WiredEffectType && objects[1] == WiredEffectType.TOGGLE_STATE))
             return;
 
         if(!room.getHabbosAt(this.getX(), this.getY()).isEmpty())
