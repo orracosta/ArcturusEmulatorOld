@@ -76,7 +76,7 @@ public class UsernameEvent extends MessageHandler
             {
                 while (achievementSet.next())
                 {
-                    AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement(achievementSet.getInt("id")), achievementSet.getInt("amount"));
+                    AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement(achievementSet.getInt("achievement_id")), achievementSet.getInt("amount"));
                 }
             }
 
