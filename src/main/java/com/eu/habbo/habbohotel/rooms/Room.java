@@ -886,11 +886,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 {
                     Emulator.getGameEnvironment().getRoomManager().leaveRoom((Habbo) h, this);
                 }
+
+                this.sendComposer(new HotelViewComposer().compose());
+
+                this.currentHabbos.clear();
             }
 
-            this.sendComposer(new HotelViewComposer().compose());
-
-            this.currentHabbos.clear();
 
             TIntObjectIterator<Bot> botIterator = this.currentBots.iterator();
 
@@ -1187,8 +1188,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 ArrayList<Habbo> toKick = new ArrayList<Habbo>();
                 synchronized (this.currentHabbos)
                 {
-                    for (Habbo habbo : this.currentHabbos.valueCollection())
+                    for (TIntObjectIterator<Habbo> iter = this.currentHabbos.iterator(); iter.hasNext();)
+                    //for (Habbo habbo : this.currentHabbos.valueCollection())
                     {
+                        iter.advance();
+                        Habbo habbo = iter.value();
                         if (!foundRightHolder)
                         {
                             foundRightHolder = hasRights(habbo) || guildRightLevel(habbo) > 2;
@@ -4044,21 +4048,15 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         synchronized (this.currentHabbos)
         {
-            TIntObjectIterator<Habbo> iterator = this.currentHabbos.iterator();
-
-            for (int i = this.currentHabbos.size(); i-- > 0; )
+            this.currentHabbos.forEachValue(new TObjectProcedure<Habbo>()
             {
-                try
+                @Override
+                public boolean execute(Habbo habbo)
                 {
-                    iterator.advance();
-                    iterator.value().getClient().sendResponse(message);
+                    habbo.getClient().sendResponse(message);
+                    return true;
                 }
-                catch (NoSuchElementException e)
-                {
-                    Emulator.getLogging().logErrorLine(e);
-                    break;
-                }
-            }
+            });
         }
     }
 
@@ -4066,24 +4064,18 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         synchronized (this.currentHabbos)
         {
-            TIntObjectIterator<Habbo> iterator = this.currentHabbos.iterator();
-
-            for (int i = this.currentHabbos.size(); i-- > 0; )
+            this.currentHabbos.forEachValue(new TObjectProcedure<Habbo>()
             {
-                try
+                @Override
+                public boolean execute(Habbo habbo)
                 {
-                    iterator.advance();
-                    if (iterator.value().getHabboStats().ignorePets)
-                        continue;
+                    if (!habbo.getHabboStats().ignorePets)
+                        habbo.getClient().sendResponse(message);
 
-                    iterator.value().getClient().sendResponse(message);
+                    return true;
+
                 }
-                catch (NoSuchElementException e)
-                {
-                    Emulator.getLogging().logErrorLine(e);
-                    break;
-                }
-            }
+            });
         }
     }
 
@@ -4091,24 +4083,18 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         synchronized (this.currentHabbos)
         {
-            TIntObjectIterator<Habbo> iterator = this.currentHabbos.iterator();
-
-            for (int i = this.currentHabbos.size(); i-- > 0; )
+            this.currentHabbos.forEachValue(new TObjectProcedure<Habbo>()
             {
-                try
+                @Override
+                public boolean execute(Habbo habbo)
                 {
-                    iterator.advance();
-                    if (iterator.value().getHabboStats().ignoreBots)
-                        continue;
+                    if (!habbo.getHabboStats().ignoreBots)
+                        habbo.getClient().sendResponse(message);
 
-                    iterator.value().getClient().sendResponse(message);
+                    return true;
+
                 }
-                catch (NoSuchElementException e)
-                {
-                    Emulator.getLogging().logErrorLine(e);
-                    break;
-                }
-            }
+            });
         }
     }
 
@@ -4285,12 +4271,22 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     void refreshRightsInRoom()
     {
-        for (Habbo habbo : this.currentHabbos.valueCollection())
+        Room room = this;
+        synchronized (this.currentHabbos)
         {
-            if(habbo.getHabboInfo().getCurrentRoom() != this)
-                continue;
+            this.currentHabbos.forEachValue(new TObjectProcedure<Habbo>()
+            {
+                @Override
+                public boolean execute(Habbo habbo)
+                {
+                    if(habbo.getHabboInfo().getCurrentRoom() == room)
+                    {
+                        refreshRightsForHabbo(habbo);
+                    }
 
-            this.refreshRightsForHabbo(habbo);
+                    return true;
+                }
+            });
         }
     }
 
@@ -4603,12 +4599,18 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         {
             THashMap<Integer, GuildMember> admins = Emulator.getGameEnvironment().getGuildManager().getOnlyAdmins(guild);
 
-            for(Habbo habbo : this.currentHabbos.valueCollection())
+            this.currentHabbos.forEachValue(new TObjectProcedure<Habbo>()
             {
-                GuildMember member = admins.get(habbo.getHabboInfo().getId());
+                @Override
+                public boolean execute(Habbo habbo)
+                {
+                    GuildMember member = admins.get(habbo.getHabboInfo().getId());
 
-                habbo.getClient().sendResponse(new GuildInfoComposer(guild, habbo.getClient(), false, member));
-            }
+                    habbo.getClient().sendResponse(new GuildInfoComposer(guild, habbo.getClient(), false, member));
+
+                    return true;
+                }
+            });
         }
 
         this.refreshGuildRightsInRoom();
@@ -4650,19 +4652,24 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         synchronized (this.currentHabbos)
         {
-            for (Habbo habbo : this.currentHabbos.valueCollection())
+            Room room = this;
+            this.currentHabbos.forEachValue(new TObjectProcedure<Habbo>()
             {
-                if (habbo.getHabboInfo().getCurrentRoom() != this)
-                    continue;
+                @Override
+                public boolean execute(Habbo habbo)
+                {
+                    if (habbo.getHabboInfo().getCurrentRoom() == room)
+                    {
+                        if (habbo.getHabboInfo().getId() != room.ownerId)
+                        {
+                            if (!(habbo.hasPermission("acc_anyroomowner") || habbo.hasPermission("acc_moverotate")))
+                                refreshRightsForHabbo(habbo);
+                        }
+                    }
 
-                if (habbo.getHabboInfo().getId() == this.ownerId)
-                    return;
-
-                if (habbo.hasPermission("acc_anyroomowner") || habbo.hasPermission("acc_moverotate"))
-                    return;
-
-                this.refreshRightsForHabbo(habbo);
-            }
+                    return true;
+                }
+            });
         }
     }
 
