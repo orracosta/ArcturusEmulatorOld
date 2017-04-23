@@ -8,9 +8,9 @@
 ## Current Stable Version: 1.6.0 ##
 Arcturus Emulator is a Habbo emulator written in Java aiming to be an exact clone of the offical server.
 
-Targeting PRODUCTION-201601012205-226667486
+Targeting PRODUCTION-201611291003-338511768
 
-SWF: http://arcturus.wf/mirrors/asmd_PRODUCTION-201611291003-338511768.swf
+Download SWF: http://arcturus.wf/mirrors/asmd_PRODUCTION-201611291003-338511768.swf
 
 SCRIPTS: http://arcturus.wf/mirrors/PRODUCTION-201611291003-338511768_scripts.txt
 
