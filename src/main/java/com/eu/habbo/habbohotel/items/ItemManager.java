@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.*;
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.gates.*;
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.scoreboards.*;
 import com.eu.habbo.habbohotel.items.interactions.games.football.InteractionFootball;
+import com.eu.habbo.habbohotel.items.interactions.games.football.InteractionFootballGate;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.*;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.gates.*;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.scoreboards.*;
@@ -306,6 +307,7 @@ public class ItemManager {
             Football
          */
             this.interactionsList.add(new ItemInteraction("football", InteractionFootball.class));
+            this.interactionsList.add(new ItemInteraction("fball_gate", InteractionFootballGate.class));
     }
 
     /**

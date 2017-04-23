@@ -2,7 +2,9 @@ package com.eu.habbo.habbohotel.items.interactions;
 
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeBlock;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.rooms.RoomUnitType;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -10,7 +12,6 @@ import com.eu.habbo.habbohotel.users.HabboGender;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.UpdateStackHeightComposer;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import gnu.trove.set.hash.THashSet;
 
@@ -69,17 +70,20 @@ public class InteractionMultiHeight extends HabboItem
 
                 if(this.getExtradata().length() == 0)
                     this.setExtradata("0");
-
+                
                 if(this.getBaseItem().getMultiHeights().length > 0)
                 {
                     this.setExtradata("" + (Integer.valueOf(this.getExtradata()) + 1) % (this.getBaseItem().getMultiHeights().length));
                     this.needsUpdate(true);
                     room.updateItem(this);
-                    room.sendComposer(new UpdateStackHeightComposer(this.getX(), this.getY(), this.getBaseItem().getMultiHeights()[Integer.valueOf(this.getExtradata())] * 256.0D).compose());
-                }
-
-                if(this.isWalkable())
-                {
+                    
+                    RoomTile tile = room.getLayout().getTile((short)this.getX(), (short)this.getY());
+                    THashSet<RoomTile> tiles = new THashSet<RoomTile>();
+                    tiles.add(tile);
+                    room.updateTiles(tiles);
+                    
+                    double height = tile.getStackHeight();
+                    
                     THashSet<Habbo> habbos = room.getHabbosOnItem(this);
                     THashSet<RoomUnit> updatedUnits = new THashSet<RoomUnit>();
                     for (Habbo habbo : habbos)
@@ -90,17 +94,17 @@ public class InteractionMultiHeight extends HabboItem
                         if(habbo.getRoomUnit().getStatus().containsKey("mv"))
                             continue;
 
-                        if (this.getBaseItem().allowSit())
+                        if (habbo.getRoomUnit().hasStatus("sit"))
                         {
-                            habbo.getRoomUnit().getStatus().put("sit", this.getBaseItem().getMultiHeights()[(this.getExtradata().isEmpty() ? 0 : Integer.valueOf(this.getExtradata()) % (this.getBaseItem().getMultiHeights().length))] * 1.0D + "");
+                            habbo.getRoomUnit().sitUpdate = true;
                         }
                         else
                         {
-                            habbo.getRoomUnit().setZ(this.getZ() + this.getBaseItem().getMultiHeights()[(this.getExtradata().isEmpty() ? 0 : Integer.valueOf(this.getExtradata()) % (this.getBaseItem().getMultiHeights().length))]);
+                            habbo.getRoomUnit().setZ(height);
                         }
-
                         updatedUnits.add(habbo.getRoomUnit());
                     }
+
                     room.sendComposer(new RoomUserStatusComposer(updatedUnits, true).compose());
                 }
             }

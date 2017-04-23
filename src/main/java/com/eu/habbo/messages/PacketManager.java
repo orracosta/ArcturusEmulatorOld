@@ -284,6 +284,7 @@ public class PacketManager
         this.registerHandler(Incoming.RoomBackgroundEvent,                      RoomBackgroundEvent.class);
         this.registerHandler(Incoming.MannequinSaveNameEvent,                   MannequinSaveNameEvent.class);
         this.registerHandler(Incoming.MannequinSaveLookEvent,                   MannequinSaveLookEvent.class);
+        this.registerHandler(Incoming.FootballGateSaveLookEvent,                FootballGateSaveLookEvent.class);
         this.registerHandler(Incoming.AdvertisingSaveEvent,                     AdvertisingSaveEvent.class);
         this.registerHandler(Incoming.RequestRoomSettingsEvent,                 RequestRoomSettingsEvent.class);
         this.registerHandler(Incoming.MoodLightSettingsEvent,                   MoodLightSettingsEvent.class);
@@ -394,6 +395,7 @@ public class PacketManager
     {
         this.registerHandler(Incoming.TradeStartEvent,                          TradeStartEvent.class);
         this.registerHandler(Incoming.TradeOfferItemEvent,                      TradeOfferItemEvent.class);
+        this.registerHandler(Incoming.TradeOfferMultipleItemsEvent,             TradeOfferMultipleItemsEvent.class);
         this.registerHandler(Incoming.TradeCancelOfferItemEvent,                TradeCancelOfferItemEvent.class);
         this.registerHandler(Incoming.TradeAcceptEvent,                         TradeAcceptEvent.class);
         this.registerHandler(Incoming.TradeUnAcceptEvent,                       TradeUnAcceptEvent.class);
