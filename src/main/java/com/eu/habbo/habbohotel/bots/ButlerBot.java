@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.bots;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
+import com.eu.habbo.plugin.events.bots.BotServerItemEvent;
 import com.eu.habbo.threading.runnables.RoomUnitGiveHanditem;
 import com.eu.habbo.threading.runnables.RoomUnitWalkToRoomUnit;
 import gnu.trove.map.hash.THashMap;
@@ -72,28 +73,36 @@ public class ButlerBot extends Bot
                 {
                     if(message.getUnfilteredMessage().toLowerCase().contains(s))
                     {
-                        List<Runnable> tasks = new ArrayList<Runnable>();
+                        BotServerItemEvent serveEvent = new BotServerItemEvent(this, message.getHabbo(), set.getValue());
+                        if (Emulator.getPluginManager().fireEvent(serveEvent).isCancelled())
+                        {
+                            return;
+                        }
+
                         if (this.getRoomUnit().canWalk())
                         {
-                            tasks.add(new RoomUnitGiveHanditem(message.getHabbo().getRoomUnit(), message.getHabbo().getHabboInfo().getCurrentRoom(), set.getValue()));
-                            tasks.add(new RoomUnitGiveHanditem(this.getRoomUnit(), message.getHabbo().getHabboInfo().getCurrentRoom(), 0));
                             final String key = s;
                             final Bot b = this;
+
+                            List<Runnable> tasks = new ArrayList<Runnable>();
+                            tasks.add(new RoomUnitGiveHanditem(serveEvent.habbo.getRoomUnit(), serveEvent.habbo.getHabboInfo().getCurrentRoom(), serveEvent.itemId));
+                            tasks.add(new RoomUnitGiveHanditem(this.getRoomUnit(), serveEvent.habbo.getHabboInfo().getCurrentRoom(), 0));
+
                             tasks.add(new Runnable()
                             {
                                 @Override
                                 public void run()
                                 {
-                                    b.talk(Emulator.getTexts().getValue("bots.butler.given").replace("%key%", key).replace("%username%", message.getHabbo().getHabboInfo().getUsername()));
+                                    b.talk(Emulator.getTexts().getValue("bots.butler.given").replace("%key%", key).replace("%username%", serveEvent.habbo.getHabboInfo().getUsername()));
                                 }
                             });
-                            Emulator.getThreading().run(new RoomUnitGiveHanditem(this.getRoomUnit(), message.getHabbo().getHabboInfo().getCurrentRoom(), set.getValue()));
-                            Emulator.getThreading().run(new RoomUnitWalkToRoomUnit(this.getRoomUnit(), message.getHabbo().getRoomUnit(), message.getHabbo().getHabboInfo().getCurrentRoom(), tasks, null));
+                            Emulator.getThreading().run(new RoomUnitGiveHanditem(this.getRoomUnit(), serveEvent.habbo.getHabboInfo().getCurrentRoom(), serveEvent.itemId));
+                            Emulator.getThreading().run(new RoomUnitWalkToRoomUnit(this.getRoomUnit(), serveEvent.habbo.getRoomUnit(), serveEvent.habbo.getHabboInfo().getCurrentRoom(), tasks, null));
                         }
                         else
                         {
-                            this.getRoom().giveHandItem(message.getHabbo(), set.getValue());
-                            this.talk(Emulator.getTexts().getValue("bots.butler.given").replace("%key%", s).replace("%username%", message.getHabbo().getHabboInfo().getUsername()));
+                            this.getRoom().giveHandItem(serveEvent.habbo, serveEvent.itemId);
+                            this.talk(Emulator.getTexts().getValue("bots.butler.given").replace("%key%", s).replace("%username%", serveEvent.habbo.getHabboInfo().getUsername()));
                         }
                         return;
                     }
