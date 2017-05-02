@@ -7,7 +7,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RoomUserRemoveComposer extends MessageComposer
 {
-
     private final RoomUnit roomUnit;
 
     public RoomUserRemoveComposer(RoomUnit roomUnit)

@@ -116,6 +116,11 @@ public class WiredTriggerRepeater extends InteractionWiredTrigger
 
         this.repeatTime = packet.readInt() * 500;
 
+        if (this.repeatTime < 500)
+        {
+            this.repeatTime = 500;
+        }
+
         if(this.task == null)
         {
             this.task = new WiredRepeatTask(this, Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()));

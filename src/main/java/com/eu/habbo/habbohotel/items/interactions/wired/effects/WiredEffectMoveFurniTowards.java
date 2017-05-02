@@ -46,14 +46,11 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
 
         for(HabboItem item : this.items)
         {
-            if(Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
+            if (item.getRoomId() == 0)
                 items.add(item);
         }
 
-        for(HabboItem item : items)
-        {
-            this.items.remove(item);
-        }
+        this.items.removeAll(items);
 
         for(HabboItem item : this.items)
         {
@@ -78,7 +75,16 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
             {
                 if(PathFinder.tilesAdjecent(target.getRoomUnit().getX(), target.getRoomUnit().getY(), item.getX(), item.getY()) && (target.getRoomUnit().getX() == item.getX() || target.getRoomUnit().getY() == item.getY()))
                 {
-                    WiredHandler.handle(WiredTriggerType.COLLISION, target.getRoomUnit(), room, new Object[]{item});
+                    final Habbo finalTarget = target;
+                    Emulator.getThreading().run(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            WiredHandler.handle(WiredTriggerType.COLLISION, finalTarget.getRoomUnit(), room, new Object[]{item});
+                        }
+                    }, 500);
+
                     continue;
                 }
 
