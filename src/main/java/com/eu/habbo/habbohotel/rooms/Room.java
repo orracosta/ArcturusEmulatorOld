@@ -1072,19 +1072,22 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     @Override
     public void run()
     {
-        if(this.loaded)
+        synchronized (this.loadLock)
         {
-            Emulator.getThreading().run(this, 500);
+            if (this.loaded)
+            {
+                Emulator.getThreading().run(this, 500);
 
-            try
-            {
-                this.cycle();
-            }
-            catch (Exception e)
-            {
-                sendComposer(new GenericAlertComposer("Room Crashed.").compose());
-                dispose();
-                Emulator.getLogging().logErrorLine(e);
+                try
+                {
+                    this.cycle();
+                }
+                catch (Exception e)
+                {
+                    sendComposer(new GenericAlertComposer("Room Crashed.").compose());
+                    dispose();
+                    Emulator.getLogging().logErrorLine(e);
+                }
             }
         }
 
