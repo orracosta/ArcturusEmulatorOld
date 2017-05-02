@@ -40,18 +40,7 @@ public class ModToolSanctionBanEvent extends MessageHandler
         }
         if (this.client.getHabbo().hasPermission("acc_supporttool"))
         {
-            Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(userId);
-
-            if (habbo != null)
-            {
-                habbo.alert(message);
-
-                Emulator.getGameEnvironment().getModToolManager().createBan(habbo, this.client.getHabbo(), Emulator.getIntUnixTimestamp() + duration, message, ModToolBanType.ACCOUNT);
-            }
-            else
-            {
-                Emulator.getGameEnvironment().getModToolManager().createOfflineUserBan(userId, this.client.getHabbo().getHabboInfo().getId(), Emulator.getIntUnixTimestamp() + duration, message, ModToolBanType.ACCOUNT);
-            }
+            Emulator.getGameEnvironment().getModToolManager().ban(userId, this.client.getHabbo(), message, duration, ModToolBanType.ACCOUNT);
         }
     }
 }

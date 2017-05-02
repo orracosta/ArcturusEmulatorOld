@@ -45,14 +45,14 @@ public class SuperbanCommand extends Command
             }
 
             int time = Emulator.getIntUnixTimestamp() + IPBanCommand.TEN_YEARS;
-            ModToolBan ban = Emulator.getGameEnvironment().getModToolManager().createBan(habbo, gameClient.getHabbo(), time, reason, ModToolBanType.SUPER);
+            ModToolBan ban = Emulator.getGameEnvironment().getModToolManager().ban(habbo.getHabboInfo().getId(), gameClient.getHabbo(), reason, IPBanCommand.TEN_YEARS, ModToolBanType.SUPER);
             count++;
             for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithMachineId(ban.machineId))
             {
                 if (h != null)
                 {
                     count++;
-                    Emulator.getGameEnvironment().getModToolManager().createBan(h, gameClient.getHabbo(), time, reason, ModToolBanType.SUPER);
+                    Emulator.getGameEnvironment().getModToolManager().ban(h.getHabboInfo().getId(), gameClient.getHabbo(), reason, IPBanCommand.TEN_YEARS, ModToolBanType.SUPER);
                 }
             }
 
@@ -61,7 +61,7 @@ public class SuperbanCommand extends Command
                 if (h != null)
                 {
                     count++;
-                    Emulator.getGameEnvironment().getModToolManager().createBan(h, gameClient.getHabbo(), time, reason, ModToolBanType.SUPER);
+                    Emulator.getGameEnvironment().getModToolManager().ban(h.getHabboInfo().getId(), gameClient.getHabbo(), reason, IPBanCommand.TEN_YEARS, ModToolBanType.SUPER);
                 }
             }
         }

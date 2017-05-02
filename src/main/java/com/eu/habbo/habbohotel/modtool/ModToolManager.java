@@ -3,13 +3,19 @@ package com.eu.habbo.habbohotel.modtool;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomState;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ClientMessage;
+import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.modtool.*;
+import com.eu.habbo.plugin.events.support.SupportRoomActionEvent;
+import com.eu.habbo.plugin.events.support.SupportUserAlertedEvent;
+import com.eu.habbo.plugin.events.support.SupportUserBannedEvent;
 import gnu.trove.TCollections;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
+import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 import io.netty.channel.Channel;
 
@@ -362,11 +368,138 @@ public class ModToolManager
         return null;
     }
 
+    public void alert(Habbo moderator, Habbo target, String message)
+    {
+        if(moderator.hasPermission("acc_supporttool"))
+        {
+            SupportUserAlertedEvent alertedEvent = new SupportUserAlertedEvent(moderator, target, message);
+            if (Emulator.getPluginManager().fireEvent(alertedEvent).isCancelled())
+            {
+                return;
+            }
+
+            if(target != null)
+            {
+                alertedEvent.target.getClient().sendResponse(new ModToolIssueHandledComposer(alertedEvent.message));
+            }
+        }
+        else
+        {
+            Emulator.getGameEnvironment().getModToolManager().quickTicket(moderator, "Scripter", Emulator.getTexts().getValue("scripter.warning.modtools.alert").replace("%username%", moderator.getHabboInfo().getUsername()).replace("%message%", message));
+        }
+    }
+
+    public void kick(Habbo moderator, Habbo target, String message)
+    {
+        if (moderator.hasPermission("acc_supporttool"))
+        {
+            if(target.getHabboInfo().getCurrentRoom() != null)
+            {
+                Emulator.getGameEnvironment().getRoomManager().leaveRoom(target, target.getHabboInfo().getCurrentRoom());
+            }
+            this.alert(moderator, target, message);
+        }
+        else
+        {
+            Emulator.getGameEnvironment().getModToolManager().quickTicket(moderator, "Scripter", Emulator.getTexts().getValue("scripter.warning.modtools.kick").replace("%username%", moderator.getHabboInfo().getUsername()));
+        }
+    }
+
+    public ModToolBan ban(int targetUserId, Habbo moderator, String reason, int duration, ModToolBanType type)
+    {
+        if (moderator.hasPermission("acc_supporttool"))
+        {
+            Habbo target = Emulator.getGameEnvironment().getHabboManager().getHabbo(targetUserId);
+            ModToolBan ban = new ModToolBan(targetUserId, target != null ? target.getHabboInfo().getIpLogin() : "offline", target != null ? target.getClient().getMachineId() : "offline", moderator.getHabboInfo().getId(), Emulator.getIntUnixTimestamp() + duration, reason, type);
+            Emulator.getPluginManager().fireEvent(new SupportUserBannedEvent(moderator, target, ban));
+            Emulator.getThreading().run(ban);
+            Emulator.getGameServer().getGameClientManager().disposeClient(target.getClient().getChannel());
+
+            if ((type == ModToolBanType.IP || type == ModToolBanType.SUPER) && target != null)
+            {
+                for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithIP(ban.ip))
+                {
+                    ban = new ModToolBan(h.getHabboInfo().getId(), h != null ? h.getHabboInfo().getIpLogin() : "offline", h != null ? h.getClient().getMachineId() : "offline", moderator.getHabboInfo().getId(), Emulator.getIntUnixTimestamp() + duration, reason, type);
+                    Emulator.getPluginManager().fireEvent(new SupportUserBannedEvent(moderator, h, ban));
+                    Emulator.getThreading().run(ban);
+                    Emulator.getGameServer().getGameClientManager().disposeClient(h.getClient().getChannel());
+                }
+            }
+
+            if ((type == ModToolBanType.MACHINE) && target != null)
+            {
+                for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithMachineId(ban.machineId))
+                {
+                    ban = new ModToolBan(h.getHabboInfo().getId(), h != null ? h.getHabboInfo().getIpLogin() : "offline", h != null ? h.getClient().getMachineId() : "offline", moderator.getHabboInfo().getId(), Emulator.getIntUnixTimestamp() + duration, reason, type);
+                    Emulator.getPluginManager().fireEvent(new SupportUserBannedEvent(moderator, h, ban));
+                    Emulator.getThreading().run(ban);
+                    Emulator.getGameServer().getGameClientManager().disposeClient(h.getClient().getChannel());
+                }
+            }
+
+            return ban;
+        }
+        else
+        {
+            Emulator.getGameEnvironment().getModToolManager().quickTicket(moderator, "Scripter", Emulator.getTexts().getValue("scripter.warning.modtools.ban").replace("%username%", moderator.getHabboInfo().getUsername()));
+        }
+
+        return null;
+    }
+
+    public boolean roomAction(Room room, Habbo moderator, boolean kickUsers, boolean lockDoor, boolean changeTitle)
+    {
+        if(moderator.hasPermission("acc_supporttool"))
+        {
+            SupportRoomActionEvent roomActionEvent = new SupportRoomActionEvent(moderator, room, kickUsers, lockDoor, changeTitle);
+            Emulator.getPluginManager().fireEvent(roomActionEvent);
+
+            if (roomActionEvent.changeTitle)
+            {
+                room.setName(Emulator.getTexts().getValue("hotel.room.inappropriate.title"));
+                room.setNeedsUpdate(true);
+            }
+
+            if (roomActionEvent.lockDoor)
+            {
+                room.setState(RoomState.LOCKED);
+                room.setNeedsUpdate(true);
+            }
+
+            if (roomActionEvent.kickUsers)
+            {
+                room.getCurrentHabbos().forEachValue(new TObjectProcedure<Habbo>()
+                {
+                    @Override
+                    public boolean execute(Habbo object)
+                    {
+                        if (!(object.hasPermission("acc_unkickable") || object.hasPermission("acc_supporttool") || room.isOwner(object)))
+                        {
+                            room.kickHabbo(object, false);
+                        }
+
+                        return true;
+                    }
+                });
+            }
+
+            return true;
+        }
+        else
+        {
+            Emulator.getGameEnvironment().getModToolManager().quickTicket(moderator, "Scripter", Emulator.getTexts().getValue("scripter.warning.modtools.roomsettings").replace("%username%", moderator.getHabboInfo().getUsername()));
+        }
+
+        return false;
+    }
+
+    @Deprecated
     public ModToolBan createBan(Habbo target, Habbo staff, int expireDate, String reason, ModToolBanType type) //TODO Refactor expireData to duration
     {
         return createBan(target.getHabboInfo().getId(), target.getHabboInfo().getIpLogin(), target.getClient().getMachineId(), staff, expireDate, reason, type);
     }
 
+    @Deprecated
     public ModToolBan createBan(int target, String ip, String machineId, Habbo staff, int expireDate, String reason, ModToolBanType type) //TODO Refactor expireData to duration
     {
         if(staff.hasPermission("acc_supporttool"))

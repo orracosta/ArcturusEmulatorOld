@@ -1,7 +1,9 @@
 package com.eu.habbo.messages.incoming.modtool;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
+import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.modtool.ModToolIssueHandledComposer;
 
 public class ModToolRoomAlertEvent extends MessageHandler
@@ -11,8 +13,13 @@ public class ModToolRoomAlertEvent extends MessageHandler
     {
         if(this.client.getHabbo().hasPermission("acc_supporttool"))
         {
-            this.packet.readInt();
-            this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new ModToolIssueHandledComposer(this.packet.readString()).compose());
+            int roomId = this.packet.readInt();
+
+            Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(roomId);
+            if (room != null)
+            {
+                room.alert(this.packet.readString());
+            }
         }
         else
         {

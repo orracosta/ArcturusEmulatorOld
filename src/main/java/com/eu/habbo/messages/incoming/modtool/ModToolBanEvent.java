@@ -11,29 +11,6 @@ public class ModToolBanEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        if (this.client.getHabbo() != null)
-        {
-            if (this.client.getHabbo().hasPermission("acc_supporttool"))
-            {
-                int userId = this.packet.readInt();
-                String message = this.packet.readString();
-                int expireDate = (this.packet.readInt() * 3600) + Emulator.getIntUnixTimestamp();
-
-                Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(userId);
-
-                if (habbo != null)
-                {
-                    Emulator.getGameEnvironment().getModToolManager().createBan(habbo, this.client.getHabbo(), expireDate, message, ModToolBanType.ACCOUNT);
-                }
-                else
-                {
-                    Emulator.getGameEnvironment().getModToolManager().createBan(userId, "offline", "offline", this.client.getHabbo(), expireDate, message, ModToolBanType.ACCOUNT);
-                }
-            }
-            else
-            {
-                Emulator.getGameEnvironment().getModToolManager().quickTicket(this.client.getHabbo(), "Scripter", Emulator.getTexts().getValue("scripter.warning.modtools.ban").replace("%username%", this.client.getHabbo().getHabboInfo().getUsername()));
-            }
-        }
+        Emulator.getGameEnvironment().getModToolManager().ban(this.packet.readInt(), this.client.getHabbo(), this.packet.readString(), this.packet.readInt(), ModToolBanType.ACCOUNT);
     }
 }
