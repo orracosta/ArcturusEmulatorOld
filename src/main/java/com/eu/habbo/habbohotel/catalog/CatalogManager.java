@@ -23,9 +23,9 @@ import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
 import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
 import com.eu.habbo.messages.outgoing.users.UserPointsComposer;
-import com.eu.habbo.plugin.Event;
 import com.eu.habbo.plugin.events.emulator.EmulatorLoadCatalogManagerEvent;
-import com.eu.habbo.plugin.events.furniture.FurnitureBoughtEvent;
+import com.eu.habbo.plugin.events.users.catalog.UserCatalogFurnitureBoughtEvent;
+import com.eu.habbo.plugin.events.users.catalog.UserCatalogItemPurchasedEvent;
 import gnu.trove.TCollections;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.TIntObjectMap;
@@ -1170,21 +1170,24 @@ public class CatalogManager
                 }
             }
 
+            UserCatalogItemPurchasedEvent purchasedEvent = new UserCatalogItemPurchasedEvent(habbo, item, itemsList, totalCredits, totalPoints);
+            Emulator.getPluginManager().fireEvent(purchasedEvent);
+
             if(!free && !habbo.getClient().getHabbo().hasPermission("acc_infinite_credits"))
             {
-                if (totalCredits > 0)
+                if (purchasedEvent.totalCredits > 0)
                 {
-                    habbo.getClient().getHabbo().getHabboInfo().addCredits(-totalCredits);
+                    habbo.getClient().getHabbo().getHabboInfo().addCredits(-purchasedEvent.totalCredits);
                     habbo.getClient().sendResponse(new UserCreditsComposer(habbo.getClient().getHabbo()));
                 }
             }
 
             if(!free && !habbo.getClient().getHabbo().hasPermission("acc_infinite_points"))
             {
-                if (totalPoints > 0)
+                if (purchasedEvent.totalPoints > 0)
                 {
-                    habbo.getClient().getHabbo().getHabboInfo().addCurrencyAmount(item.getPointsType(), -totalPoints);
-                    habbo.getClient().sendResponse(new UserPointsComposer(habbo.getClient().getHabbo().getHabboInfo().getCurrencyAmount(item.getPointsType()), -totalPoints, item.getPointsType()));
+                    habbo.getClient().getHabbo().getHabboInfo().addCurrencyAmount(item.getPointsType(), -purchasedEvent.totalPoints);
+                    habbo.getClient().sendResponse(new UserPointsComposer(habbo.getClient().getHabbo().getHabboInfo().getCurrencyAmount(item.getPointsType()), -purchasedEvent.totalPoints, item.getPointsType()));
                 }
             }
 
@@ -1193,26 +1196,14 @@ public class CatalogManager
                 habbo.getClient().sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.ALREADY_HAVE_BADGE));
             }
 
-            habbo.getClient().sendResponse(new AddHabboItemComposer(itemsList));
-            habbo.getClient().getHabbo().getHabboInventory().getItemsComponent().addItems(itemsList);
-            habbo.getClient().sendResponse(new PurchaseOKComposer(item, cBaseItem));
+
+            habbo.getClient().sendResponse(new AddHabboItemComposer(purchasedEvent.itemsList));
+            habbo.getClient().getHabbo().getHabboInventory().getItemsComponent().addItems(purchasedEvent.itemsList);
+            habbo.getClient().sendResponse(new PurchaseOKComposer(purchasedEvent.catalogItem, cBaseItem));
             habbo.getClient().sendResponse(new InventoryRefreshComposer());
 
-            for(HabboItem itm : itemsList)
-            {
-                if(Emulator.getPluginManager().isRegistered(FurnitureBoughtEvent.class, true))
-                {
-                    Event furnitureBought = new FurnitureBoughtEvent(itm, habbo.getClient().getHabbo());
-                    Emulator.getPluginManager().fireEvent(furnitureBought);
-                }
-
-                if (limitedConfiguration != null)
-                {
-                    limitedConfiguration.limitedSold(item.getId(), habbo, itm);
-                }
-            }
-
-            habbo.getClient().getHabbo().getHabboStats().addPurchase(item);
+            Emulator.getPluginManager().fireEvent(new UserCatalogFurnitureBoughtEvent(habbo, item, purchasedEvent.itemsList));
+            habbo.getClient().getHabbo().getHabboStats().addPurchase(purchasedEvent.catalogItem);
 
         }
         catch(Exception e)
