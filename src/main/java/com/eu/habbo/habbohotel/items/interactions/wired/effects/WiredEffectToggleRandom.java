@@ -2,7 +2,11 @@ package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
+import com.eu.habbo.habbohotel.items.interactions.InteractionCrackable;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
+import com.eu.habbo.habbohotel.items.interactions.games.InteractionGameTimer;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeBlock;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeTile;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -77,7 +81,12 @@ public class WiredEffectToggleRandom extends InteractionWiredEffect
 
             for (int i = 0; i < count; i++)
             {
-                this.items.add(Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(packet.readInt()));
+                HabboItem item = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(packet.readInt());
+
+                if (item instanceof InteractionFreezeBlock || item instanceof InteractionGameTimer || item instanceof InteractionCrackable)
+                    continue;
+
+                this.items.add(item);
             }
 
             this.setDelay(packet.readInt());
@@ -145,6 +154,9 @@ public class WiredEffectToggleRandom extends InteractionWiredEffect
                 for (String s : wiredData[1].split(";"))
                 {
                     HabboItem item = room.getHabboItem(Integer.valueOf(s));
+
+                    if (item instanceof InteractionFreezeBlock || item instanceof InteractionGameTimer || item instanceof InteractionCrackable)
+                        continue;
 
                     if (item != null)
                         this.items.add(item);

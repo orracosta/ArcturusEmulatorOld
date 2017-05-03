@@ -1601,38 +1601,39 @@ public class RoomManager {
         return this.loadCustomLayout(room);
     }
 
-    public void banUserFromRoom(int userId, int roomId, RoomBanTypes length)
+    public void banUserFromRoom(Habbo rights, int userId, int roomId, RoomBanTypes length)
     {
         Room room = this.getRoom(roomId);
+
+        if (room == null)
+            return;
+
+        if (rights != null && !room.hasRights(rights))
+            return;
 
         String name = "";
 
         Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(userId);
-        if (room != null)
+        if (habbo != null)
         {
-            if (habbo != null)
-            {
-                name = habbo.getHabboInfo().getUsername();
-            }
-            else
-            {
-                name = HabboManager.getOfflineHabboInfo(userId).getUsername();
-            }
+            name = habbo.getHabboInfo().getUsername();
         }
+        else
+        {
+            name = HabboManager.getOfflineHabboInfo(userId).getUsername();
+        }
+
         RoomBan roomBan = new RoomBan(roomId, userId, name, Emulator.getIntUnixTimestamp() + length.duration);
         roomBan.insert();
 
-        if (room != null)
-        {
-            room.addRoomBan(roomBan);
+        room.addRoomBan(roomBan);
 
-            if (habbo != null)
+        if (habbo != null)
+        {
+            if (habbo.getHabboInfo().getCurrentRoom() == room)
             {
-                if (habbo.getHabboInfo().getCurrentRoom() == room)
-                {
-                    room.removeHabbo(habbo);
-                    habbo.getClient().sendResponse(new RoomEnterErrorComposer(RoomEnterErrorComposer.ROOM_ERROR_BANNED));
-                }
+                room.removeHabbo(habbo);
+                habbo.getClient().sendResponse(new RoomEnterErrorComposer(RoomEnterErrorComposer.ROOM_ERROR_BANNED));
             }
         }
     }

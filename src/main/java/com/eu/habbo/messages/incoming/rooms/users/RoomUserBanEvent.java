@@ -13,6 +13,6 @@ public class RoomUserBanEvent extends MessageHandler
         int roomId = this.packet.readInt();
         String banName = this.packet.readString();
 
-        Emulator.getGameEnvironment().getRoomManager().banUserFromRoom(userId, roomId, RoomManager.RoomBanTypes.valueOf(banName));
+        Emulator.getGameEnvironment().getRoomManager().banUserFromRoom(this.client.getHabbo(), userId, roomId, RoomManager.RoomBanTypes.valueOf(banName));
     }
 }

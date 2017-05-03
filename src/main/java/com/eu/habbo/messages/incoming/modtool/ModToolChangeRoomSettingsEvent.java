@@ -12,11 +12,18 @@ public class ModToolChangeRoomSettingsEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.packet.readInt());
-
-        if (room != null)
+        if(this.client.getHabbo().hasPermission("acc_supporttool"))
         {
-            Emulator.getGameEnvironment().getModToolManager().roomAction(room, this.client.getHabbo(), this.packet.readInt() == 1, this.packet.readInt() == 1, this.packet.readInt() == 1);
+            Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.packet.readInt());
+
+            if (room != null)
+            {
+                Emulator.getGameEnvironment().getModToolManager().roomAction(room, this.client.getHabbo(), this.packet.readInt() == 1, this.packet.readInt() == 1, this.packet.readInt() == 1);
+            }
+        }
+        else
+        {
+            Emulator.getGameEnvironment().getModToolManager().quickTicket(this.client.getHabbo(), "Scripter", Emulator.getTexts().getValue("scripter.warning.modtools.roomsettings").replace("%username%", this.client.getHabbo().getHabboInfo().getUsername()));
         }
     }
 }

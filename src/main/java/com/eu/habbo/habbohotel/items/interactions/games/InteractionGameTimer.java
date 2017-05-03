@@ -3,13 +3,11 @@ package com.eu.habbo.habbohotel.items.interactions.games;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.games.Game;
-import com.eu.habbo.habbohotel.games.GameTeamColors;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -77,7 +75,14 @@ public abstract class InteractionGameTimer extends HabboItem
             this.setExtradata("0");
         }
 
-        if(objects.length >= 1 && objects[0] instanceof Integer && client != null && !(objects.length >= 2 && objects[1] instanceof WiredEffectType))
+        Game game = (this.getGameType().cast(room.getGame(this.getGameType())));
+        if ((objects.length >= 2 && objects[1] instanceof WiredEffectType))
+        {
+            if (game.isRunning)
+                return;
+        }
+
+        if(objects.length >= 1 && objects[0] instanceof Integer && client != null)
         {
             int state = (Integer)objects[0];
 
@@ -104,7 +109,6 @@ public abstract class InteractionGameTimer extends HabboItem
         }
         else
         {
-            Game game = (this.getGameType().cast(room.getGame(this.getGameType())));
 
             if (game != null && game.isRunning)
             {
@@ -199,5 +203,5 @@ public abstract class InteractionGameTimer extends HabboItem
         return this.getExtradata() + "\t" + this.baseTime;
     }
 
-    protected abstract Class<? extends Game> getGameType();
+    public abstract Class<? extends Game> getGameType();
 }

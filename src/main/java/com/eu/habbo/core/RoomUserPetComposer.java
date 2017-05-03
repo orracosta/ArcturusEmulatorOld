@@ -37,7 +37,7 @@ public class RoomUserPetComposer extends MessageComposer
         this.response.appendInt32(2);
         this.response.appendInt32(this.petType);
         this.response.appendInt32(this.habbo.getHabboInfo().getId());
-        this.response.appendString(this.habbo.getHabboInfo().getUsername()); //TODO Owner name
+        this.response.appendString(this.habbo.getHabboInfo().getUsername());
         this.response.appendInt32(1);
         this.response.appendBoolean(false);
         this.response.appendBoolean(true);

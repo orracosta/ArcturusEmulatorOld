@@ -23,7 +23,7 @@ public class InteractionBattleBanzaiTimer extends InteractionGameTimer
     }
 
     @Override
-    protected Class<? extends Game> getGameType()
+    public Class<? extends Game> getGameType()
     {
         return BattleBanzaiGame.class;
     }

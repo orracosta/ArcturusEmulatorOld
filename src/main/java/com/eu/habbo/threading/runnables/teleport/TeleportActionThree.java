@@ -27,6 +27,9 @@ class TeleportActionThree implements Runnable
     @Override
     public void run()
     {
+        if (this.client.getHabbo().getHabboInfo().getCurrentRoom() != this.room)
+            return;
+
         HabboItem targetTeleport;
         Room targetRoom = room;
 
@@ -43,7 +46,7 @@ class TeleportActionThree implements Runnable
         if(targetTeleport == null)
             return;
 
-        this.client.getHabbo().getRoomUnit().setLocation(room.getLayout().getTile(targetTeleport.getX(), targetTeleport.getY()));
+        this.client.getHabbo().getRoomUnit().setLocation(this.room.getLayout().getTile(targetTeleport.getX(), targetTeleport.getY()));
         this.client.getHabbo().getRoomUnit().setZ(targetTeleport.getZ());
         this.client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[targetTeleport.getRotation() % 8]);
         this.client.getHabbo().getRoomUnit().getStatus().remove("mv");

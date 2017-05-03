@@ -3585,7 +3585,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         THashSet<HabboItem> items = new THashSet<HabboItem>();
 
-        for(HabboItem item : this.getFloorItems())
+        for(HabboItem item : this.getItemsAt(x, y))
         {
             if(item.getZ() < minZ)
                 continue;

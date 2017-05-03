@@ -25,6 +25,9 @@ public class TeleportActionOne implements Runnable
     @Override
     public void run()
     {
+        if (this.client.getHabbo().getHabboInfo().getCurrentRoom() != this.room)
+            return;
+
         int delay = 0;
         if (this.client.getHabbo().getRoomUnit().getCurrentLocation() != this.room.getLayout().getTile(this.currentTeleport.getX(), this.currentTeleport.getY()))
         {

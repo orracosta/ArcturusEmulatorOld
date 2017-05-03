@@ -29,6 +29,9 @@ class TeleportActionTwo implements Runnable
     @Override
     public void run()
     {
+        if (this.client.getHabbo().getHabboInfo().getCurrentRoom() != this.room)
+            return;
+
         this.client.getHabbo().getRoomUnit().getStatus().remove("mv");
         this.room.sendComposer(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()).compose());
         this.currentTeleport.setExtradata("2");

@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.games.Game;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionCrackable;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
@@ -87,7 +88,12 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
 
             for (int i = 0; i < count; i++)
             {
-                this.items.add(Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(packet.readInt()));
+                HabboItem item = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(packet.readInt());
+
+                if (item instanceof InteractionFreezeBlock || item instanceof InteractionFreezeTile || item instanceof InteractionCrackable)
+                    continue;
+
+                this.items.add(item);
             }
         }
 
@@ -116,7 +122,7 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
 
             for (HabboItem item : items)
             {
-                if (item.getRoomId() == 0 || item instanceof InteractionFreezeBlock || item instanceof InteractionFreezeTile || item instanceof InteractionCrackable)
+                if (item.getRoomId() == 0)
                 {
                     this.items.remove(item);
                     continue;
@@ -131,6 +137,15 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
                 {
                     if (item.getBaseItem().getStateCount() > 1 || item instanceof InteractionGameTimer)
                     {
+                        if (item instanceof InteractionGameTimer)
+                        {
+                            Game game = room.getGame(((InteractionGameTimer)item).getGameType());
+                            if (game == null || game.isRunning)
+                            {
+                                continue;
+                            }
+                        }
+
                         item.onClick(habbo != null ? habbo.getClient() : null, room, new Object[]{item.getExtradata().length() == 0 ? 0 : Integer.valueOf(item.getExtradata()), this.getType()});
                     }
                 }
@@ -181,6 +196,9 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
                     for (String s : wiredData[1].split(";"))
                     {
                         HabboItem item = room.getHabboItem(Integer.valueOf(s));
+
+                        if (item instanceof InteractionFreezeBlock || item instanceof InteractionFreezeTile || item instanceof InteractionCrackable)
+                            continue;
 
                         if (item != null)
                             this.items.add(item);

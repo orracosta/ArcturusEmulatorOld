@@ -22,6 +22,9 @@ class TeleportActionFour implements Runnable
     @Override
     public void run()
     {
+        if (this.client.getHabbo().getHabboInfo().getCurrentRoom() != this.room)
+            return;
+
         this.currentTeleport.setExtradata("1");
         this.room.updateItem(this.currentTeleport);
 

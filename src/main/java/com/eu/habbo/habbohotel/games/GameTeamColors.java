@@ -47,4 +47,17 @@ public enum GameTeamColors
     {
         this.type = type;
     }
+
+    public static GameTeamColors fromType(int type)
+    {
+        for (GameTeamColors teamColors : values())
+        {
+            if (teamColors.type == type)
+            {
+                return teamColors;
+            }
+        }
+
+        return RED;
+    }
 }
