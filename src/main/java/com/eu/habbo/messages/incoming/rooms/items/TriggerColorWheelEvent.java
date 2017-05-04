@@ -1,5 +1,6 @@
 package com.eu.habbo.messages.incoming.rooms.items;
 
+import com.eu.habbo.habbohotel.items.interactions.InteractionColorWheel;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -18,7 +19,7 @@ public class TriggerColorWheelEvent extends MessageHandler
 
         HabboItem item = room.getHabboItem(itemId);
 
-        if(item != null)
+        if(item != null && item instanceof InteractionColorWheel)
         {
             item.onClick(this.client, room, null);
         }

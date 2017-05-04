@@ -27,7 +27,7 @@ public class RedeemItemEvent extends MessageHandler
         {
             HabboItem item = room.getHabboItem(itemId);
 
-            if(item != null)
+            if(item != null && this.client.getHabbo().getHabboInfo().getId() == item.getUserId())
             {
                 boolean furnitureRedeemEventRegistered = Emulator.getPluginManager().isRegistered(FurnitureRedeemedEvent.class, true);
 
