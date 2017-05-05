@@ -127,6 +127,8 @@ public class ItemManager {
         this.interactionsList.add(new ItemInteraction("switch",                 InteractionSwitch.class));
         this.interactionsList.add(new ItemInteraction("fx_box",                 InteractionFXBox.class));
         this.interactionsList.add(new ItemInteraction("blackhole",              InteractionBlackHole.class));
+        this.interactionsList.add(new ItemInteraction("effect_toggle",          InteractionEffectToggle.class));
+        this.interactionsList.add(new ItemInteraction("room_o_matic",           InteractionRoomOMatic.class));
 
         /*
             Wireds
