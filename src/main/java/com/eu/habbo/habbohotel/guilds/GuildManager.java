@@ -211,7 +211,7 @@ public class GuildManager
 
             if (guilds.value().lastRequested < Emulator.getIntUnixTimestamp() - 300)
             {
-                this.guilds.remove(guilds.value().getId());
+                this.guilds.remove(guilds.value().getId()); //TODO: ConcMod
             }
         }
     }

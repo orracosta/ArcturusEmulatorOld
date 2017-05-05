@@ -2,7 +2,6 @@ package com.eu.habbo.plugin.events.users;
 
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.util.pathfinding.AbstractNode;
 
 public class UserTakeStepEvent extends UserEvent
 {
@@ -14,7 +13,7 @@ public class UserTakeStepEvent extends UserEvent
     /**
      * The new location of the Habbo.
      */
-    public final AbstractNode toLocation;
+    public final RoomTile toLocation;
 
     /**
      * This event is triggered each time an Habbo walks to the next square.
@@ -22,7 +21,7 @@ public class UserTakeStepEvent extends UserEvent
      * @param fromLocation The old location of the Habbo.
      * @param toLocation The new location of the Habbo.
      */
-    public UserTakeStepEvent(Habbo habbo, RoomTile fromLocation, AbstractNode toLocation)
+    public UserTakeStepEvent(Habbo habbo, RoomTile fromLocation, RoomTile toLocation)
     {
         super(habbo);
 

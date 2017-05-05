@@ -442,7 +442,7 @@ public class FreezeGame extends Game
             FreezeGame game = (FreezeGame) event.habbo.getHabboInfo().getCurrentRoom().getGame(FreezeGame.class);
             if (game != null && game.isRunning)
             {
-                if (!game.room.hasObjectTypeAt(InteractionFreezeTile.class, event.toLocation.getX(), event.toLocation.getY()))
+                if (!game.room.hasObjectTypeAt(InteractionFreezeTile.class, event.toLocation.x, event.toLocation.y))
                 {
                     event.setCancelled(true);
                     event.habbo.getRoomUnit().setGoalLocation(event.habbo.getRoomUnit().getCurrentLocation());

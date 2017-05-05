@@ -8,7 +8,6 @@ import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.items.ItemStateComposer;
-import com.eu.habbo.util.pathfinding.Node;
 import com.eu.habbo.util.pathfinding.PathFinder;
 import com.eu.habbo.util.pathfinding.Rotation;
 
@@ -70,8 +69,7 @@ public class InteractionFootball extends InteractionPushable
     @Override
     public RoomUserRotation getWalkOffDirection(RoomUnit roomUnit, Room room)
     {
-        Node peek = roomUnit.getPathFinder().getPath().peek();
-        RoomTile nextWalkTile = peek != null ? room.getLayout().getTile((short) peek.getX(), (short) peek.getY()) : roomUnit.getGoal();
+        RoomTile nextWalkTile = roomUnit.getPathFinder().getPath().peek();
         return RoomUserRotation.values()[(RoomUserRotation.values().length + Rotation.Calculate(roomUnit.getX(), roomUnit.getY(), nextWalkTile.x, nextWalkTile.y) + 4) % 8];
     }
     

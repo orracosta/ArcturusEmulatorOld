@@ -57,7 +57,6 @@ public class InteractionGate extends HabboItem
             this.setExtradata("0");
 
         this.setExtradata((Integer.valueOf(this.getExtradata()) + 1 ) % 2 + "");
-        room.getGameMap().getNode(this.getX(), this.getY()).setWalkable(room.tileWalkable(this.getX(), this.getY()));
         room.updateTile(room.getLayout().getTile(this.getX(), this.getY()));
         this.needsUpdate(true);
         room.updateItem(this);

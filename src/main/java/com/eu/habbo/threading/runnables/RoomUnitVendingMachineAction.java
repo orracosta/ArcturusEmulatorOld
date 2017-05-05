@@ -41,7 +41,7 @@ public class RoomUnitVendingMachineAction implements Runnable
                     }
                     else
                     {
-                        if(this.room.getGameMap().getNode(tile.x, tile.y).isWalkable())
+                        if(this.room.getLayout().getTile(tile.x, tile.y).isWalkable())
                         {
                             this.habbo.getRoomUnit().setGoalLocation(tile);
                             Emulator.getThreading().run(this, this.habbo.getRoomUnit().getPathFinder().getPath().size() + 2 * 510);

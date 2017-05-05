@@ -14,7 +14,7 @@ public class CustomRoomLayout extends RoomLayout implements Runnable
 
     public CustomRoomLayout(ResultSet set, Room room) throws SQLException
     {
-        super(set);
+        super(set, room);
 
         this.room = room;
     }

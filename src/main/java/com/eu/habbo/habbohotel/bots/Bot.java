@@ -249,7 +249,7 @@ public class Bot implements Runnable
     {
         if(this.roomUnit != null)
         {
-            if(canWalk)
+            if(canWalk && this.getRoomUnit().canWalk())
             {
                 if (!this.roomUnit.isWalking())
                 {

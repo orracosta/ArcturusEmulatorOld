@@ -328,7 +328,7 @@ public class BattleBanzaiGame extends Game
             BattleBanzaiGame game = (BattleBanzaiGame) event.habbo.getHabboInfo().getCurrentRoom().getGame(BattleBanzaiGame.class);
             if (game != null && game.isRunning)
             {
-                if(!event.habbo.getHabboInfo().getCurrentRoom().hasObjectTypeAt(InteractionBattleBanzaiTile.class, event.toLocation.getX(), event.toLocation.getY()))
+                if(!event.habbo.getHabboInfo().getCurrentRoom().hasObjectTypeAt(InteractionBattleBanzaiTile.class, event.toLocation.x, event.toLocation.y))
                 {
                     event.setCancelled(true);
                     event.habbo.getRoomUnit().setGoalLocation(event.habbo.getRoomUnit().getCurrentLocation());

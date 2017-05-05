@@ -8,10 +8,12 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 public class AddWallItemComposer extends MessageComposer
 {
     private final HabboItem item;
+    private final String itemOwnerName;
 
-    public AddWallItemComposer(HabboItem item)
+    public AddWallItemComposer(HabboItem item, String itemOwnerName)
     {
         this.item = item;
+        this.itemOwnerName = itemOwnerName;
     }
 
     @Override
@@ -20,7 +22,7 @@ public class AddWallItemComposer extends MessageComposer
         this.response.init(Outgoing.AddWallItemComposer);
         this.item.serializeWallData(this.response);
         this.response.appendInt32(this.item.getUserId());
-        this.response.appendString("Owner");
+        this.response.appendString(this.itemOwnerName);
         return this.response;
     }
 }

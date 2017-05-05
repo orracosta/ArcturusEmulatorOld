@@ -228,7 +228,7 @@ public class RoomPlaceItemEvent extends MessageHandler
             }
 
             item.setWallPosition(values[1] + " " + values[2] + " " + values[3]);
-            room.sendComposer(new AddWallItemComposer(item).compose());
+            room.sendComposer(new AddWallItemComposer(item, this.client.getHabbo().getHabboInfo().getUsername()).compose());
         }
 
         Achievement roomDecoAchievement = Emulator.getGameEnvironment().getAchievementManager().getAchievement("RoomDecoFurniCount");

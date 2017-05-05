@@ -53,14 +53,14 @@ public class RoomTrashing implements Runnable
                 {
                     THashSet<ServerMessage> messages = new THashSet<ServerMessage>();
 
-                    THashSet<HabboItem> items = INSTANCE.room.getItemsAt(event.toLocation.getX(), event.toLocation.getY());
+                    THashSet<HabboItem> items = INSTANCE.room.getItemsAt(event.toLocation.x, event.toLocation.y);
 
                     int offset = Emulator.getRandom().nextInt(4) + 2;
 
                     RoomTile t = null;
                     while(offset > 0)
                     {
-                        t = PathFinder.getSquareInFront(INSTANCE.room.getLayout(), (short) event.toLocation.getX(), (short) event.toLocation.getY(), event.habbo.getRoomUnit().getBodyRotation().getValue(), (short) offset);
+                        t = PathFinder.getSquareInFront(INSTANCE.room.getLayout(), (short) event.toLocation.x, (short) event.toLocation.y, event.habbo.getRoomUnit().getBodyRotation().getValue(), (short) offset);
 
                         if(!INSTANCE.room.getLayout().tileWalkable(t.x, t.y))
                         {
@@ -85,7 +85,7 @@ public class RoomTrashing implements Runnable
                     t = null;
                     while(offset > 0)
                     {
-                        t = PathFinder.getSquareInFront(INSTANCE.room.getLayout(), (short)event.toLocation.getX(), (short)event.toLocation.getY(), event.habbo.getRoomUnit().getBodyRotation().getValue() + 7, (short) offset);
+                        t = PathFinder.getSquareInFront(INSTANCE.room.getLayout(), (short)event.toLocation.x, (short)event.toLocation.y, event.habbo.getRoomUnit().getBodyRotation().getValue() + 7, (short) offset);
 
                         if(!INSTANCE.room.getLayout().tileWalkable(t.x, t.y))
                         {
@@ -112,7 +112,7 @@ public class RoomTrashing implements Runnable
                     t = null;
                     while(offset > 0)
                     {
-                        t = PathFinder.getSquareInFront(INSTANCE.room.getLayout(), (short)event.toLocation.getX(), (short)event.toLocation.getY(), event.habbo.getRoomUnit().getBodyRotation().getValue() + 1, (short) offset);
+                        t = PathFinder.getSquareInFront(INSTANCE.room.getLayout(), (short)event.toLocation.x, (short)event.toLocation.y, event.habbo.getRoomUnit().getBodyRotation().getValue() + 1, (short) offset);
 
                         if(!INSTANCE.room.getLayout().tileWalkable(t.x, t.y))
                         {

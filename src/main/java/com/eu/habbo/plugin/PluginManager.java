@@ -5,17 +5,14 @@ import com.eu.habbo.core.Easter;
 import com.eu.habbo.habbohotel.games.battlebanzai.BattleBanzaiGame;
 import com.eu.habbo.habbohotel.games.freeze.FreezeGame;
 import com.eu.habbo.habbohotel.games.tag.TagGame;
-import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.messages.incoming.rooms.users.RoomUserLookAtPoint;
+import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
 import com.eu.habbo.plugin.events.roomunit.RoomUnitLookAtPointEvent;
 import com.eu.habbo.plugin.events.users.UserSavedMottoEvent;
 import com.eu.habbo.plugin.events.users.UserTakeStepEvent;
 import com.eu.habbo.threading.runnables.RoomTrashing;
-import com.eu.habbo.util.pathfinding.GameMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.iterator.hash.TObjectHashIterator;
 import gnu.trove.set.hash.THashSet;
 
@@ -292,7 +289,7 @@ public class PluginManager
             this.methods.add(Easter.class.getMethod("onUserChangeMotto", UserSavedMottoEvent.class));
             this.methods.add(TagGame.class.getMethod("onUserLookAtPoint", RoomUnitLookAtPointEvent.class));
             this.methods.add(TagGame.class.getMethod("onUserWalkEvent", UserTakeStepEvent.class));
-            this.methods.add(GameMap.class.getMethod("configurationUpdated", EmulatorConfigUpdatedEvent.class));
+            this.methods.add(RoomLayout.class.getMethod("configurationUpdated", EmulatorConfigUpdatedEvent.class));
             this.methods.add(FreezeGame.class.getMethod("onConfigurationUpdated", EmulatorConfigUpdatedEvent.class));
         }
         catch (NoSuchMethodException e)

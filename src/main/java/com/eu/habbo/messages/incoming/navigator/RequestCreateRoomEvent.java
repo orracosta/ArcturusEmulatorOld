@@ -24,7 +24,7 @@ public class RequestCreateRoomEvent extends MessageHandler {
         int maxUsers = this.packet.readInt();
         int tradeType = this.packet.readInt();
 
-        RoomLayout layout = Emulator.getGameEnvironment().getRoomManager().getLayout(modelName);
+        RoomLayout layout = Emulator.getGameEnvironment().getRoomManager().getLayout(modelName); //TODO Change to layout exists.
 
         if(layout == null)
         {

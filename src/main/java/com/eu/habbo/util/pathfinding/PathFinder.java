@@ -7,16 +7,14 @@ import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import gnu.trove.set.hash.THashSet;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.Queue;
 
 public class PathFinder
 {
     private Room room;
     private RoomUnit roomUnit;
-    private Queue<Node> path;
+    private Deque<RoomTile> path;
 
     public PathFinder(RoomUnit roomUnit)
     {
@@ -35,30 +33,13 @@ public class PathFinder
         this.path = this.calculatePath();
     }
 
-    Queue<Node> calculatePath()
+    Deque<RoomTile> calculatePath()
     {
-        if(this.room != null && this.roomUnit != null) {
-            GameMap<Node> gameMap = this.room.getGameMap();
-            if (gameMap != null) {
-
-                Queue<Node> nodeQueue = gameMap.findPath(this.roomUnit.getX(), this.roomUnit.getY(), this.roomUnit.getGoal().x, this.roomUnit.getGoal().y, room);
-
-                if (!nodeQueue.isEmpty()) {
-                    try {
-                        gameMap.finalize();
-                    } catch (Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    return nodeQueue;
-                } else {
-
-
-                    return new LinkedList<Node>();
-                }
-            }
+        if(this.room != null && this.roomUnit != null)
+        {
+            return this.room.getLayout().findPath(this.roomUnit.getX(), this.roomUnit.getY(), this.roomUnit.getGoal().x, this.roomUnit.getGoal().y);
         }
-        return new LinkedList<Node>();
+        return new LinkedList<RoomTile>();
     }
 
     public RoomUnit getRoomUnit() {
@@ -77,7 +58,7 @@ public class PathFinder
         this.room = room;
     }
 
-    public Queue<Node> getPath() {
+    public Deque<RoomTile> getPath() {
         return path;
     }
 

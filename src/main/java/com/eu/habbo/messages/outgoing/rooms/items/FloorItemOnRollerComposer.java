@@ -8,6 +8,11 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import com.eu.habbo.messages.outgoing.rooms.UpdateStackHeightComposer;
 import com.eu.habbo.util.pathfinding.PathFinder;
+import gnu.trove.set.hash.THashSet;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class FloorItemOnRollerComposer extends MessageComposer
 {
@@ -48,8 +53,9 @@ public class FloorItemOnRollerComposer extends MessageComposer
         this.item.setY(this.newLocation.y);
         this.item.setZ(this.item.getZ() + this.heightOffset);
         this.item.needsUpdate(true);
-        this.room.updateTiles(PathFinder.getTilesAt(room.getLayout(), oldX, oldY, this.item.getBaseItem().getWidth(), this.item.getBaseItem().getLength(), this.item.getRotation()));
-        this.room.updateTiles(PathFinder.getTilesAt(room.getLayout(), this.item.getX(), this.item.getY(), this.item.getBaseItem().getWidth(), this.item.getBaseItem().getLength(), this.item.getRotation()));
+        THashSet<RoomTile> tiles = PathFinder.getTilesAt(this.room.getLayout(), oldX, oldY, this.item.getBaseItem().getWidth(), this.item.getBaseItem().getLength(), this.item.getRotation());
+        tiles.addAll(PathFinder.getTilesAt(this.room.getLayout(), this.item.getX(), this.item.getY(), this.item.getBaseItem().getWidth(), this.item.getBaseItem().getLength(), this.item.getRotation()));
+        this.room.updateTiles(tiles);
 
         this.room.sendComposer(new UpdateStackHeightComposer(oldX, oldY, this.room.getStackHeight(oldX, oldY, true)).compose());
 

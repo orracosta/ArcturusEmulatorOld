@@ -40,7 +40,21 @@ public class ThreadPooling
         {
             if (this.canAdd)
             {
-                this.scheduledPool.schedule(run, delay, TimeUnit.MILLISECONDS);
+                this.scheduledPool.schedule(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        try
+                        {
+                            run.run();
+                        }
+                        catch (Exception e)
+                        {
+                            Emulator.getLogging().logErrorLine(e);
+                        }
+                    }
+                }, delay, TimeUnit.MILLISECONDS);
             }
         }
         catch (Exception e)

@@ -58,20 +58,20 @@ public class RoomManager {
         Emulator.getLogging().logStart("Room Manager -> Loaded! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
 
-    private void loadRoomModels()
+    public void loadRoomModels()
     {
         this.roomLayouts.clear();
-        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM room_models"))
-        {
-            while(set.next())
-            {
-                this.roomLayouts.add(new RoomLayout(set));
-            }
-        }
-        catch(SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
-        }
+//        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM room_models"))
+//        {
+//            while(set.next())
+//            {
+//                this.roomLayouts.add(new RoomLayout(set, null));
+//            }
+//        }
+//        catch(SQLException e)
+//        {
+//            Emulator.getLogging().logSQLException(e);
+//        }
     }
 
     public CustomRoomLayout loadCustomLayout(Room room)
@@ -485,7 +485,7 @@ public class RoomManager {
         return null;
     }
 
-    public RoomLayout loadLayout(String name)
+    public RoomLayout loadLayout(String name, Room room)
     {
         RoomLayout layout = null;
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM room_models WHERE name LIKE ? LIMIT 1"))
@@ -495,7 +495,7 @@ public class RoomManager {
             {
                 if (set.next())
                 {
-                    layout = new RoomLayout(set);
+                    layout = new RoomLayout(set, room);
                 }
             }
         }
