@@ -197,8 +197,9 @@ public class GuildManager
      */
     public void clearInactiveGuilds()
     {
+        List<Integer> toRemove = new ArrayList<Integer>();
         TIntObjectIterator<Guild> guilds = this.guilds.iterator();
-        for(int i = this.guilds.size(); i-- > 0;)
+        for (int i = this.guilds.size(); i-- > 0; )
         {
             try
             {
@@ -211,8 +212,13 @@ public class GuildManager
 
             if (guilds.value().lastRequested < Emulator.getIntUnixTimestamp() - 300)
             {
-                this.guilds.remove(guilds.value().getId()); //TODO: ConcMod
+                toRemove.add(guilds.value().getId());
             }
+        }
+
+        for (Integer i : toRemove)
+        {
+            this.guilds.remove(i);
         }
     }
 
