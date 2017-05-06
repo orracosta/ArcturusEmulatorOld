@@ -58,7 +58,7 @@ public class InteractionMultiHeight extends HabboItem
 
         if (client != null)
         {
-            if (!room.hasRights(client.getHabbo()) && !(objects.length > 2 && objects[1] instanceof WiredEffectType && objects[1] == WiredEffectType.TOGGLE_STATE))
+            if (!room.hasRights(client.getHabbo()) && !(objects.length >= 2 && objects[1] instanceof WiredEffectType && objects[1] == WiredEffectType.TOGGLE_STATE))
                 return;
         }
 

@@ -14,6 +14,7 @@ public enum RoomUserRotation {
     NORTH_WEST(7);
 
     private final int direction;
+
     RoomUserRotation(int direction)
     {
         this.direction = direction;
@@ -22,5 +23,29 @@ public enum RoomUserRotation {
     public int getValue()
     {
         return this.direction;
+    }
+
+    public static RoomUserRotation fromValue(int rotation)
+    {
+        rotation %= 8;
+        for (RoomUserRotation rot : values())
+        {
+            if (rot.getValue() == rotation)
+            {
+                return rot;
+            }
+        }
+
+        return NORTH;
+    }
+
+    public static RoomUserRotation counterClockwise(RoomUserRotation rotation)
+    {
+        return fromValue(rotation.getValue() + 7);
+    }
+
+    public static RoomUserRotation clockwise(RoomUserRotation rotation)
+    {
+        return fromValue(rotation.getValue() + 9);
     }
 }

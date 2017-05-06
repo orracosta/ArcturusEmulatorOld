@@ -383,7 +383,7 @@ public class RoomUnit
         return bodyRotation;
     }
 
-    public synchronized void setBodyRotation(RoomUserRotation bodyRotation) {
+    public void setBodyRotation(RoomUserRotation bodyRotation) {
         this.bodyRotation = bodyRotation;
     }
 
@@ -391,7 +391,8 @@ public class RoomUnit
         return headRotation;
     }
 
-    public synchronized void setHeadRotation(RoomUserRotation headRotation) {
+    public void setHeadRotation(RoomUserRotation headRotation)
+    {
         this.headRotation = headRotation;
     }
 
