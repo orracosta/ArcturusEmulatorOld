@@ -520,10 +520,13 @@ public class ModToolManager
         if (habbo == null)
             return false;
 
+        if (((InetSocketAddress)habbo.remoteAddress()).getAddress() == null)
+            return false;
+
         boolean banned = false;
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM bans WHERE ip = ? AND (type = 'ip' OR type = 'super')  AND ban_expire > ? LIMIT 1"))
         {
-            statement.setString(1, ((InetSocketAddress)habbo.remoteAddress()).getAddress().getHostAddress());
+            statement.setString(1, ((InetSocketAddress) habbo.remoteAddress()).getAddress().getHostAddress());
             statement.setInt(2, Emulator.getIntUnixTimestamp());
 
             try (ResultSet set = statement.executeQuery())
