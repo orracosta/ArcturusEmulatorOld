@@ -31,7 +31,7 @@ public class InteractionFootball extends InteractionPushable
     @Override
     public int getWalkOnVelocity(RoomUnit roomUnit, Room room)
     {
-        if(roomUnit.getPathFinder().getPath().isEmpty() && roomUnit.tilesWalked() == 2)
+        if(roomUnit.getPath().isEmpty() && roomUnit.tilesWalked() == 2)
             return 0;
         
         return 6;
@@ -46,7 +46,7 @@ public class InteractionFootball extends InteractionPushable
     @Override
     public int getDragVelocity(RoomUnit roomUnit, Room room)
     {
-        if(roomUnit.getPathFinder().getPath().isEmpty() && roomUnit.tilesWalked() == 2)
+        if(roomUnit.getPath().isEmpty() && roomUnit.tilesWalked() == 2)
             return 0;
         
         return 1;
@@ -69,7 +69,7 @@ public class InteractionFootball extends InteractionPushable
     @Override
     public RoomUserRotation getWalkOffDirection(RoomUnit roomUnit, Room room)
     {
-        RoomTile nextWalkTile = roomUnit.getPathFinder().getPath().peek();
+        RoomTile nextWalkTile = roomUnit.getPath().peek();
         return RoomUserRotation.values()[(RoomUserRotation.values().length + Rotation.Calculate(roomUnit.getX(), roomUnit.getY(), nextWalkTile.x, nextWalkTile.y) + 4) % 8];
     }
     
@@ -149,6 +149,9 @@ public class InteractionFootball extends InteractionPushable
     @Override
     public boolean validMove(Room room, RoomTile from, RoomTile to)
     {
+        if (to == null)
+            return false;
+
         HabboItem topItem = room.getTopItemAt(to.x, to.y, this);
         return !(!room.getLayout().tileWalkable(to.x, to.y) || (topItem != null && (!topItem.getBaseItem().allowStack() || topItem.getBaseItem().allowSit() || topItem.getBaseItem().allowLay())));
     }
