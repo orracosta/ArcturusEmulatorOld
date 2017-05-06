@@ -469,9 +469,16 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         b.setRoomUnit(new RoomUnit());
                         b.getRoomUnit().setPathFinderRoom(this);
                         b.getRoomUnit().setLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
-                        b.getRoomUnit().setZ(set.getDouble("z"));
-                        b.getRoomUnit().setRotation(RoomUserRotation.values()[set.getInt("rot")]);
-                        b.getRoomUnit().setGoalLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
+                        if (b.getRoomUnit().getCurrentLocation() == null)
+                        {
+                            b.getRoomUnit().setLocation(this.getLayout().getDoorTile());
+                            b.getRoomUnit().setRotation(RoomUserRotation.fromValue(this.getLayout().getDoorDirection()));
+                        }
+                        else
+                        {
+                            b.getRoomUnit().setZ(set.getDouble("z"));
+                            b.getRoomUnit().setRotation(RoomUserRotation.values()[set.getInt("rot")]);
+                        }
                         b.getRoomUnit().setRoomUnitType(RoomUnitType.BOT);
                         b.getRoomUnit().setDanceType(DanceType.values()[set.getInt("dance")]);
                         b.getRoomUnit().setCanWalk(set.getBoolean("freeroam"));
@@ -500,14 +507,21 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 {
                     try
                     {
-                        //TODO fix this shitty code
                         AbstractPet pet = PetManager.loadPet(set);
                         pet.setRoom(this);
                         pet.setRoomUnit(new RoomUnit());
                         pet.getRoomUnit().setPathFinderRoom(this);
                         pet.getRoomUnit().setLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
-                        pet.getRoomUnit().setZ(set.getDouble("z"));
-                        pet.getRoomUnit().setRotation(RoomUserRotation.values()[set.getInt("rot")]);
+                        if (pet.getRoomUnit().getCurrentLocation() == null)
+                        {
+                            pet.getRoomUnit().setLocation(this.getLayout().getDoorTile());
+                            pet.getRoomUnit().setRotation(RoomUserRotation.fromValue(this.getLayout().getDoorDirection()));
+                        }
+                        else
+                        {
+                            pet.getRoomUnit().setZ(set.getDouble("z"));
+                            pet.getRoomUnit().setRotation(RoomUserRotation.values()[set.getInt("rot")]);
+                        }
                         pet.getRoomUnit().setRoomUnitType(RoomUnitType.PET);
                         pet.getRoomUnit().setCanWalk(true);
                         this.addPet(pet);
@@ -2995,6 +3009,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             pet.getRoomUnit().setRoomUnitType(RoomUnitType.PET);
             pet.getRoomUnit().setCanWalk(true);
             pet.getRoomUnit().setPathFinderRoom(this);
+            if (pet.getRoomUnit().getCurrentLocation() == null)
+            {
+                pet.getRoomUnit().setLocation(this.getLayout().getDoorTile());
+                pet.getRoomUnit().setRotation(RoomUserRotation.fromValue(this.getLayout().getDoorDirection()));
+            }
+
             pet.needsUpdate = true;
             this.furniOwnerNames.put(pet.getUserId(), this.getHabbo(pet.getUserId()).getHabboInfo().getUsername());
             this.addPet(pet);

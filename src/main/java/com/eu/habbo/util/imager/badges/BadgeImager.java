@@ -52,12 +52,26 @@ public class BadgeImager
                     {
                         if (!map.getValue().valueA.isEmpty())
                         {
-                            this.cachedImages.put(map.getValue().valueA, ImageIO.read(new File(Emulator.getConfig().getValue("imager.location.badgeparts"), "badgepart_" + map.getValue().valueA.replace(".gif", ".png"))));
+                            try
+                            {
+                                this.cachedImages.put(map.getValue().valueA, ImageIO.read(new File(Emulator.getConfig().getValue("imager.location.badgeparts"), "badgepart_" + map.getValue().valueA.replace(".gif", ".png"))));
+                            }
+                            catch (Exception e)
+                            {
+                                Emulator.getLogging().logStart(("[Badge Imager] Missing Badge Part: " + Emulator.getConfig().getValue("imager.location.badgeparts") + "/badgepart_" + map.getValue().valueA.replace(".gif", ".png")));
+                            }
                         }
 
                         if (!map.getValue().valueB.isEmpty())
                         {
-                            this.cachedImages.put(map.getValue().valueB, ImageIO.read(new File(Emulator.getConfig().getValue("imager.location.badgeparts"), "badgepart_" + map.getValue().valueB.replace(".gif", ".png"))));
+                            try
+                            {
+                                this.cachedImages.put(map.getValue().valueB, ImageIO.read(new File(Emulator.getConfig().getValue("imager.location.badgeparts"), "badgepart_" + map.getValue().valueB.replace(".gif", ".png"))));
+                            }
+                            catch (Exception e)
+                            {
+                                Emulator.getLogging().logStart(("[Badge Imager] Missing Badge Part: " + Emulator.getConfig().getValue("imager.location.badgeparts") + "/badgepart_" + map.getValue().valueB.replace(".gif", ".png")));
+                            }
                         }
                     }
                 }
