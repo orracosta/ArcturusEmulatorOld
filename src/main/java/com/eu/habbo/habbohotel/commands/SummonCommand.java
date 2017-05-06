@@ -57,7 +57,7 @@ public class SummonCommand extends Command
 
             RoomTile t = PathFinder.getSquareInFront(gameClient.getHabbo().getHabboInfo().getCurrentRoom().getLayout(), gameClient.getHabbo().getRoomUnit().getX(), gameClient.getHabbo().getRoomUnit().getY(), gameClient.getHabbo().getRoomUnit().getBodyRotation().getValue());
 
-            if(gameClient.getHabbo().getHabboInfo().getCurrentRoom().tileWalkable(t))
+            if(t != null && gameClient.getHabbo().getHabboInfo().getCurrentRoom().tileWalkable(t))
             {
                 habbo.getRoomUnit().setGoalLocation(t);
             }
