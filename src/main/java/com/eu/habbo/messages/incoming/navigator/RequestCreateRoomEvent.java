@@ -24,9 +24,7 @@ public class RequestCreateRoomEvent extends MessageHandler {
         int maxUsers = this.packet.readInt();
         int tradeType = this.packet.readInt();
 
-        RoomLayout layout = Emulator.getGameEnvironment().getRoomManager().getLayout(modelName); //TODO Change to layout exists.
-
-        if(layout == null)
+        if(!Emulator.getGameEnvironment().getRoomManager().layoutExists(modelName))
         {
             Emulator.getLogging().logErrorLine("[SCRIPTER] Incorrect layout name \""+modelName+"\". " + this.client.getHabbo().getHabboInfo().getUsername());
             return;

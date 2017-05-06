@@ -303,7 +303,10 @@ public abstract class HabboItem implements Runnable, IEventTriggers
                 }
             }
 
-            WiredHandler.handle(WiredTriggerType.STATE_CHANGED, client.getHabbo().getRoomUnit(), room, new Object[]{this});
+            if (objects == null || objects.length == 1 && objects[0] instanceof WiredEffectType)
+            {
+                WiredHandler.handle(WiredTriggerType.STATE_CHANGED, client.getHabbo().getRoomUnit(), room, new Object[]{this});
+            }
         }
     }
 

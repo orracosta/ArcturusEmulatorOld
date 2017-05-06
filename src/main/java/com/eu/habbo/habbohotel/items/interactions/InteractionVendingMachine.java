@@ -71,7 +71,7 @@ public class InteractionVendingMachine extends HabboItem
             else
             {
                 client.getHabbo().getRoomUnit().setGoalLocation(tile);
-                Emulator.getThreading().run(new RoomUnitVendingMachineAction(client.getHabbo(), this, room), client.getHabbo().getRoomUnit().getPathFinder().getPath().size() + 2 * 510);
+                Emulator.getThreading().run(new RoomUnitVendingMachineAction(client.getHabbo(), this, room), client.getHabbo().getRoomUnit().getPath().size() + 2 * 510);
             }
         }
     }

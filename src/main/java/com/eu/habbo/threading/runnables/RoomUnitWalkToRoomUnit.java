@@ -91,7 +91,7 @@ public class RoomUnitWalkToRoomUnit implements Runnable
 
         this.walker.setGoalLocation(this.goalTile);
 
-        if(this.walker.getPathFinder().getPath() == null)
+        if(this.walker.getPath() == null)
         {
             for(Runnable r : this.failedReached)
             {

@@ -38,7 +38,7 @@ public class KickBallAction implements Runnable
         if(this.currentStep < this.totalSteps)
         {            
             RoomTile next = PathFinder.getSquareInFront(this.room.getLayout(), this.ball.getX(), this.ball.getY(), this.currentDirection.getValue());
-            if (!this.ball.validMove(this.room, this.room.getLayout().getTile(this.ball.getX(), this.ball.getY()), next))
+            if (next != null && !this.ball.validMove(this.room, this.room.getLayout().getTile(this.ball.getX(), this.ball.getY()), next))
             {
                 RoomUserRotation oldDirection = this.currentDirection;
                 this.currentDirection = this.ball.getBounceDirection(this.room, this.currentDirection);

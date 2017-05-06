@@ -23,11 +23,11 @@ public class BanzaiRandomTeleport implements Runnable
     @Override
     public void run()
     {
+        this.habbo.getRoomUnit().setCanWalk(true);
         this.item.setExtradata("0");
         this.toItem.setExtradata("0");
         this.room.updateItem(this.item);
         this.room.updateItem(this.toItem);
         this.room.teleportHabboToItem(this.habbo, this.toItem);
-        this.habbo.getRoomUnit().setCanWalk(true);
     }
 }

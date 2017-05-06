@@ -13,7 +13,7 @@ import java.util.Map;
 
 public abstract class InteractionCustomValues extends HabboItem
 {
-    public THashMap<String, String> values = new THashMap<String, String>();
+    public final THashMap<String, String> values = new THashMap<String, String>();
 
     public InteractionCustomValues(ResultSet set, Item baseItem, THashMap<String, String> defaultValues) throws SQLException
     {
@@ -68,9 +68,12 @@ public abstract class InteractionCustomValues extends HabboItem
     public String toExtraData()
     {
         String data = "";
-        for(Map.Entry<String, String> set : this.values.entrySet())
+        synchronized (this.values)
         {
-            data += set.getKey() + "=" + set.getValue() + ";";
+            for (Map.Entry<String, String> set : this.values.entrySet())
+            {
+                data += set.getKey() + "=" + set.getValue() + ";";
+            }
         }
 
         return data;

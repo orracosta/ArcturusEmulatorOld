@@ -8,8 +8,10 @@ import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.MonsterplantPet;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.PetManager;
+import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
@@ -23,8 +25,10 @@ import com.eu.habbo.messages.outgoing.rooms.pets.PetInformationComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.PetStatusUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
+import com.eu.habbo.util.pathfinding.PathFinder;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import gnu.trove.procedure.TObjectProcedure;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,9 +54,6 @@ public class TestCommand extends Command
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
-        if (!Emulator.debugging)
-            return false;
-
         if (params[1].equals("ach"))
         {
             AchievementManager.progressAchievement(gameClient.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("PetLover"), 1000);
@@ -260,6 +261,28 @@ public class TestCommand extends Command
             {
                 stopThreads = true;
             }
+        }
+        else if (params[1].equalsIgnoreCase("pethere"))
+        {
+            Room room = gameClient.getHabbo().getHabboInfo().getCurrentRoom();
+            List<RoomTile> tiles = PathFinder.getTilesAround(room.getLayout(), gameClient.getHabbo().getRoomUnit().getX(), gameClient.getHabbo().getRoomUnit().getY());
+
+            room.getCurrentPets().forEachValue(new TObjectProcedure<AbstractPet>()
+            {
+                @Override
+                public boolean execute(AbstractPet object)
+                {
+                    Emulator.getThreading().run(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            object.getRoomUnit().setGoalLocation(tiles.get(Emulator.getRandom().nextInt(tiles.size())));
+                        }
+                    });
+                    return true;
+                }
+            });
         }
         else if(params[1].equalsIgnoreCase("st"))
         {

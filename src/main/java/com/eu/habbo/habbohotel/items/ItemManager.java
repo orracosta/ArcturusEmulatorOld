@@ -82,6 +82,7 @@ public class ItemManager {
         this.interactionsList.add(new ItemInteraction("trophy",                 InteractionTrophy.class));
         this.interactionsList.add(new ItemInteraction("vendingmachine",         InteractionVendingMachine.class));
         this.interactionsList.add(new ItemInteraction("pressureplate",          InteractionPressurePlate.class));
+        this.interactionsList.add(new ItemInteraction("colorplate",             InteractionColorPlate.class));
         this.interactionsList.add(new ItemInteraction("multiheight",            InteractionMultiHeight.class));
         this.interactionsList.add(new ItemInteraction("dice",                   InteractionDice.class));
         this.interactionsList.add(new ItemInteraction("colorwheel",             InteractionColorWheel.class));

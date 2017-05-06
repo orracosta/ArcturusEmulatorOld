@@ -37,7 +37,6 @@ public class PetPickupEvent extends MessageHandler
             }
             room.sendComposer(new RoomUserRemoveComposer(pet.getRoomUnit()).compose());
             room.removePet(petId);
-            pet.getRoomUnit().setPathFinderRoom(null);
             pet.setRoomUnit(null);
             pet.setRoom(null);
             pet.needsUpdate = true;
