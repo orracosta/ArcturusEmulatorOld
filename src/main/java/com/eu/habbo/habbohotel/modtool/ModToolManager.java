@@ -494,7 +494,7 @@ public class ModToolManager
     public ModToolBan checkForBan(int userId)
     {
         ModToolBan ban = null;
-        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM bans WHERE user_id = ? AND ban_expire >= ? AND (type = 'account' OR type = 'super') LIMIT 1"))
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM bans WHERE user_id = ? AND ban_expire >= ? AND (type = 'account' OR type = 'super') ORDER BY timestamp LIMIT 1"))
         {
             statement.setInt(1, userId);
             statement.setInt(2, Emulator.getIntUnixTimestamp());
@@ -706,5 +706,27 @@ public class ModToolManager
     public ModToolIssue getTicket(int ticketId)
     {
         return this.tickets.get(ticketId);
+    }
+
+    public int totalBans(int id)
+    {
+        int total = 0;
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) as total FROM bans WHERE user_id = ?"))
+        {
+            statement.setInt(1, id);
+            try (ResultSet set = statement.executeQuery())
+            {
+                if (set.next())
+                {
+                    total = set.getInt("total");
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
+        return total;
     }
 }

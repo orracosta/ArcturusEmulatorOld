@@ -144,7 +144,7 @@ public class BotManager
                 roomUnit.setRotation(RoomUserRotation.SOUTH);
                 roomUnit.setLocation(location);
                 roomUnit.setZ(room.getStackHeight(location.x, location.y, false));
-                roomUnit.setGoalLocation(location);
+                roomUnit.setPathFinderRoom(room);
                 roomUnit.setRoomUnitType(RoomUnitType.BOT);
                 roomUnit.setCanWalk(room.isAllowBotsWalk());
                 bot.setRoomUnit(roomUnit);

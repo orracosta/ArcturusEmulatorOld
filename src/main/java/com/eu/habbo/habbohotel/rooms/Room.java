@@ -209,9 +209,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.pollId = set.getInt("poll_id");
         this.guild = set.getInt("guild_id");
         this.rollerSpeed = set.getInt("roller_speed");
-        this.overrideModel = set.getInt("override_model") == 1;
+        this.overrideModel = set.getString("override_model").equals("1");
         this.layoutName = set.getString("model");
-        this.promoted = set.getInt("promoted") == 1;
+        this.promoted = set.getString("promoted").equals("1");
 
         this.bannedHabbos = new TIntObjectHashMap<RoomBan>();
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM room_promotions WHERE room_id = ? AND end_timestamp > ? LIMIT 1"))

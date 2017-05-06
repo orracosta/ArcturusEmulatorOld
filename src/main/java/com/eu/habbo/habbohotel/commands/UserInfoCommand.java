@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.commands;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.habbohotel.modtool.ModToolBan;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -47,17 +48,29 @@ public class UserInfoCommand extends Command
             return true;
         }
 
-        String message = "Userinfo <b>" + habbo.getUsername() + "</b> (<b>" + habbo.getId() + "</b>)\r\n" +
-                        "ID: " + habbo.getId() + "\r" +
-                        "Username: " + habbo.getUsername() + "\r" +
-                        "Motto: " + habbo.getMotto().replace("<", "[").replace(">", "]") + "\r" +
-                        "Rank: " + Emulator.getGameEnvironment().getPermissionsManager().getRankName(habbo.getRank()) + " (" + habbo.getRank() + ") \r" +
-                        "Online: " + (onlineHabbo == null ? Emulator.getTexts().getValue("generic.no") : Emulator.getTexts().getValue("generic.yes")) + "\r" +
-                        "Email: " + habbo.getMail() + "\r" +
-                        ((Emulator.getGameEnvironment().getPermissionsManager().getPermissionsForRank(habbo.getRank()).contains("acc_hide_ip")) ? "" : "Register IP: " + habbo.getIpRegister() + "\r") +
-                        ((Emulator.getGameEnvironment().getPermissionsManager().getPermissionsForRank(habbo.getRank()).contains("acc_hide_ip")) || onlineHabbo == null ? "" : "Current IP: " + onlineHabbo.getClient().getChannel().remoteAddress().toString() + "\r") +
-                        "Credits: " + habbo.getCredits() + "\r";
+        String message = Emulator.getTexts().getValue("command.cmd_userinfo.userinfo") + ": " + " <b>" + habbo.getUsername() + "</b> (<b>" + habbo.getId() + "</b>)\r" +
+                Emulator.getTexts().getValue("command.cmd_userinfo.user_id") + ": " + habbo.getId() + "\r" +
+                Emulator.getTexts().getValue("command.cmd_userinfo.user_name") + ": " + habbo.getUsername() + "\r" +
+                Emulator.getTexts().getValue("command.cmd_userinfo.motto") + ": " + habbo.getMotto().replace("<", "[").replace(">", "]") + "\r" +
+                Emulator.getTexts().getValue("command.cmd_userinfo.rank") + ": " + Emulator.getGameEnvironment().getPermissionsManager().getRankName(habbo.getRank()) + " (" + habbo.getRank() + ") \r" +
+                Emulator.getTexts().getValue("command.cmd_userinfo.online") + ": " + (onlineHabbo == null ? Emulator.getTexts().getValue("generic.no") : Emulator.getTexts().getValue("generic.yes")) + "\r" +
+                Emulator.getTexts().getValue("command.cmd_userinfo.email") + ": " + habbo.getMail() + "\r" +
+                        ((Emulator.getGameEnvironment().getPermissionsManager().getPermissionsForRank(habbo.getRank()).contains("acc_hide_ip")) ? "" : Emulator.getTexts().getValue("command.cmd_userinfo.ip_register") + ": "+ habbo.getIpRegister() + "\r") +
+                        ((Emulator.getGameEnvironment().getPermissionsManager().getPermissionsForRank(habbo.getRank()).contains("acc_hide_ip")) || onlineHabbo == null ? "" : Emulator.getTexts().getValue("command.cmd_userinfo.ip_current") + ": " + onlineHabbo.getClient().getChannel().remoteAddress().toString() + "\r") +
+                        (onlineHabbo != null ? Emulator.getTexts().getValue("command.cmd_userinfo.achievement_score") + ": " + onlineHabbo.getHabboStats().achievementScore + "\r": "");
 
+        ModToolBan ban = Emulator.getGameEnvironment().getModToolManager().checkForBan(habbo.getId());
+
+        message += Emulator.getTexts().getValue("command.cmd_userinfo.total_bans") + ": " + Emulator.getGameEnvironment().getModToolManager().totalBans(habbo.getId()) + "\r";
+        message += Emulator.getTexts().getValue("command.cmd_userinfo.banned") + ": " + Emulator.getTexts().getValue(ban != null ? "generic.yes" : "generic.no") + "\r\r";
+        if (ban != null)
+        {
+            message += "<b>" + Emulator.getTexts().getValue("command.cmd_userinfo.ban_info") + "</b>\r";
+            message += ban.listInfo() + "\r";
+        }
+
+        message += "<b>" + Emulator.getTexts().getValue("command.cmd_userinfo.currencies") + "</b>\r";
+        message += Emulator.getTexts().getValue("command.cmd_userinfo.credits") + ": " + habbo.getCredits() + "\r";
         TIntIntIterator iterator = habbo.getCurrencies().iterator();
 
         for(int i = habbo.getCurrencies().size(); i-- > 0;)
@@ -73,18 +86,15 @@ public class UserInfoCommand extends Command
 
             message += (Emulator.getTexts().getValue("seasonal.name." + iterator.key()) + ": " + iterator.value() + "\r");
         }
+        message += "\r" +
 
-        message +=                (onlineHabbo != null ? "Score: " + onlineHabbo.getHabboStats().achievementScore + "\r": "") +
-                        "\r" +
-
-                        (onlineHabbo != null ? "<b>Current Activity</b>\r" : "") +
-                        (onlineHabbo != null ? "Room: " + onlineHabbo.getHabboInfo().getCurrentRoom().getName() + "("+onlineHabbo.getHabboInfo().getCurrentRoom().getId()+")\r" : "") +
-                        (onlineHabbo != null ? "Respect Left: " + onlineHabbo.getHabboStats().respectPointsToGive + "\r" : "") +
-                        (onlineHabbo != null ? "Pet Respect Left: " + onlineHabbo.getHabboStats().petRespectPointsToGive + "\r" : "") +
-                        (onlineHabbo != null ? "Allow Trade: " + ((onlineHabbo.getHabboStats().allowTrade) ? Emulator.getTexts().getValue("generic.yes") : Emulator.getTexts().getValue("generic.no")) + "\r" : "") +
-                        (onlineHabbo != null ? "Allow Follow: " + ((onlineHabbo.getHabboStats().blockFollowing) ? Emulator.getTexts().getValue("generic.no") : Emulator.getTexts().getValue("generic.yes")) + "\r" : "") +
-                        (onlineHabbo != null ? "Allow Friend Request: " + ((onlineHabbo.getHabboStats().blockFriendRequests) ? Emulator.getTexts().getValue("generic.no") : Emulator.getTexts().getValue("generic.yes")) + "\r" : "");
-
+                (onlineHabbo != null ? "<b>" + Emulator.getTexts().getValue("command.cmd_userinfo.current_activity") + "</b>\r" : "") +
+                (onlineHabbo != null ? Emulator.getTexts().getValue("command.cmd_userinfo.room") + ": " + onlineHabbo.getHabboInfo().getCurrentRoom().getName() + "(" + onlineHabbo.getHabboInfo().getCurrentRoom().getId() + ")\r" : "") +
+                (onlineHabbo != null ? Emulator.getTexts().getValue("command.cmd_userinfo.respect_left") + ": " + onlineHabbo.getHabboStats().respectPointsToGive + "\r" : "") +
+                (onlineHabbo != null ? Emulator.getTexts().getValue("command.cmd_userinfo.pet_respect_left") + ": " + onlineHabbo.getHabboStats().petRespectPointsToGive + "\r" : "") +
+                (onlineHabbo != null ? Emulator.getTexts().getValue("command.cmd_userinfo.allow_trade") + ": " + ((onlineHabbo.getHabboStats().allowTrade) ? Emulator.getTexts().getValue("generic.yes") : Emulator.getTexts().getValue("generic.no")) + "\r" : "") +
+                (onlineHabbo != null ? Emulator.getTexts().getValue("command.cmd_userinfo.allow_follow") + ": " + ((onlineHabbo.getHabboStats().blockFollowing) ? Emulator.getTexts().getValue("generic.no") : Emulator.getTexts().getValue("generic.yes")) + "\r" : "") +
+                (onlineHabbo != null ? Emulator.getTexts().getValue("command.cmd_userinfo.allow_friend_request") + ": " + ((onlineHabbo.getHabboStats().blockFriendRequests) ? Emulator.getTexts().getValue("generic.no") : Emulator.getTexts().getValue("generic.yes")) + "\r" : "");
 
         if(onlineHabbo != null)
         {
@@ -106,7 +116,7 @@ public class UserInfoCommand extends Command
 
             message += "<b>Username,\tID,\tDate register,\tDate last online</b>\r";
 
-            SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             for(HabboInfo info : users)
             {
                 message += info.getUsername() + ",\t" + info.getId() + ",\t" + format.format(new Date((long)info.getAccountCreated() * 1000L)) + ",\t" + format.format(new Date((long)info.getLastOnline() * 1000L)) + "\r";

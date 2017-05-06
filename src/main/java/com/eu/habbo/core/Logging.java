@@ -276,6 +276,8 @@ public class Logging
             {
                 printWriter.write(message.toString() + "\r\n");
             }
+
+            printWriter.flush();
         }
     }
 

@@ -752,6 +752,7 @@ public class RoomManager {
 
             habbo.getHabboInfo().setLoadingRoom(0);
             habbo.getHabboInfo().setCurrentRoom(room);
+            habbo.getRoomUnit().setPathFinderRoom(room);
             habbo.getRoomUnit().setHandItem(0);
 
             if (habbo.getRoomUnit().isKicked && !habbo.getRoomUnit().canWalk())

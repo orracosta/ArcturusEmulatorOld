@@ -206,6 +206,7 @@ public class RoomUnit
                     RoomTile newGoal = path.pop();
                     RoomTile oldGoal = this.goalLocation;
                     this.setGoalLocation(room.getLayout().getTile((short) newGoal.x, (short) newGoal.y));
+                    this.room = room;
                     this.findPath();
                     while (!this.path.isEmpty())
                     {
@@ -502,7 +503,10 @@ public class RoomUnit
 
     public void findPath()
     {
-        this.path = this.room.getLayout().findPath(this.currentLocation, this.goalLocation);
+        if (this.room != null)
+        {
+            this.path = this.room.getLayout().findPath(this.currentLocation, this.goalLocation);
+        }
     }
 
     public boolean isAtGoal()

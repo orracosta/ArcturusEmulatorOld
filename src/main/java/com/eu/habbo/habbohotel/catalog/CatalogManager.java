@@ -1203,6 +1203,15 @@ public class CatalogManager
             habbo.getClient().sendResponse(new InventoryRefreshComposer());
 
             Emulator.getPluginManager().fireEvent(new UserCatalogFurnitureBoughtEvent(habbo, item, purchasedEvent.itemsList));
+
+            if (limitedConfiguration != null)
+            {
+                for (HabboItem itm : purchasedEvent.itemsList)
+                {
+                    limitedConfiguration.limitedSold(item.getId(), habbo, itm);
+                }
+            }
+
             habbo.getClient().getHabbo().getHabboStats().addPurchase(purchasedEvent.catalogItem);
 
         }

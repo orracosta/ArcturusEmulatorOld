@@ -72,7 +72,7 @@ public final class Emulator
     /**
      * The emulator is in debugging mode.
      */
-    public static boolean debugging = true;
+    public static boolean debugging = false;
 
     private static int                      timeStarted = 0;
     private static Runtime                  runtime;

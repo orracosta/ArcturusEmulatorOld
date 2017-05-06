@@ -122,7 +122,7 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
 
             for (HabboItem item : items)
             {
-                if (item.getRoomId() == 0)
+                if (item == null || item.getRoomId() == 0)
                 {
                     this.items.remove(item);
                     continue;
