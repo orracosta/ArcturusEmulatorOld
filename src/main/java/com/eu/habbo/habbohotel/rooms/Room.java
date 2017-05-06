@@ -546,7 +546,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         {
             tile.setStackHeight(this.getStackHeight(tile.x, tile.y, false));
             HabboItem item = this.getTopItemAt(tile.x, tile.y);
-            tile.setWalkable(item == null || item.getBaseItem().allowWalk());
+            tile.setWalkable(item == null || item.getBaseItem().allowWalk() || item.isWalkable());
         }
     }
 
@@ -559,7 +559,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 this.tileCache.remove(tile);
                 tile.setStackHeight(this.getStackHeight(tile.x, tile.y, false));
                 HabboItem item = this.getTopItemAt(tile.x, tile.y);
-                tile.setWalkable(item == null || item.getBaseItem().allowWalk());
+                tile.setWalkable(item == null || item.getBaseItem().allowWalk() || item.isWalkable());
             }
         }
 
