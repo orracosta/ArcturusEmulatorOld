@@ -62,7 +62,7 @@ public class WiredEffectBotClothes extends InteractionWiredEffect
         packet.readInt();
         this.setDelay(packet.readInt());
 
-        return false;
+        return true;
     }
 
     @Override
