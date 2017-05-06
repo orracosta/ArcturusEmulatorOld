@@ -41,6 +41,7 @@ public class BadgeImager
         if (!file.exists())
             return false;
 
+        this.cachedImages.clear();
         try
         {
             for(Map.Entry<GuildPartType, THashMap<Integer, GuildPart>> set : Emulator.getGameEnvironment().getGuildManager().getGuildParts().entrySet())
