@@ -54,7 +54,7 @@ public class RoomUnit
     private RoomUserRotation headRotation = RoomUserRotation.NORTH;
     private DanceType danceType;
     private RoomUnitType roomUnitType;
-    private PathFinder pathFinder;
+    private Deque<RoomTile> path;
     private int handItem;
     private long handItemTimestamp;
     private int walkTimeOut;
@@ -78,7 +78,6 @@ public class RoomUnit
         this.bodyRotation = RoomUserRotation.NORTH;
         this.bodyRotation = RoomUserRotation.NORTH;
         this.danceType = DanceType.NONE;
-        this.pathFinder = new PathFinder(this);
         this.handItem = 0;
         this.handItemTimestamp = 0;
         this.walkTimeOut = Emulator.getIntUnixTimestamp();
@@ -139,16 +138,16 @@ public class RoomUnit
                 this.getStatus().remove("sit");
             }
 
-            if(this.pathFinder == null)
+            if(this.path == null || this.path.isEmpty())
                 return true;
 
-            if(this.fastWalk && this.getPathFinder().getPath().size() >= 3)
+            if(this.fastWalk && this.path.size() >= 3)
             {
-                this.getPathFinder().getPath().poll();
-                this.getPathFinder().getPath().poll();
+                this.path.poll();
+                this.path.poll();
             }
 
-            RoomTile next = this.getPathFinder().getPath().poll();
+            RoomTile next = this.path.poll();
 
             if (next == null)
                 return true;
@@ -199,29 +198,29 @@ public class RoomUnit
                     item = lowestChair;
             }
 
-            if(!(this.getPathFinder().getPath().size() == 1 && canSitNextTile))
+            if(!(this.path.size() == 1 && canSitNextTile))
             {
-                if (!room.tileWalkable((short) next.x, (short) next.y) && !(item instanceof InteractionTeleport))
+                if (!room.tileWalkable((short) next.x, (short) next.y) && !this.path.isEmpty() && !(item instanceof InteractionTeleport))
                 {
-                    Deque<RoomTile> path = this.getPathFinder().getPath();
+                    Deque<RoomTile> path = this.path;
                     RoomTile newGoal = path.pop();
                     RoomTile oldGoal = this.goalLocation;
                     this.setGoalLocation(room.getLayout().getTile((short) newGoal.x, (short) newGoal.y));
-                    this.getPathFinder().findPath();
-                    while (!this.getPathFinder().getPath().isEmpty())
+                    this.findPath();
+                    while (!this.path.isEmpty())
                     {
-                        path.addFirst(this.getPathFinder().getPath().pollLast());
+                        path.addFirst(this.path.pollLast());
                     }
                     this.goalLocation = oldGoal;
-                    this.getPathFinder().getPath().clear();
-                    this.getPathFinder().getPath().addAll(path);
-                    if (this.getPathFinder().getPath().isEmpty())
+                    this.path.clear();
+                    this.path.addAll(path);
+                    if (this.path.isEmpty())
                     {
                         room.sendComposer(new RoomUserStatusComposer(this).compose());
                         return false;
                     }
 
-                    next = this.getPathFinder().getPath().poll();
+                    next = this.path.poll();
                 }
             }
 
@@ -461,7 +460,7 @@ public class RoomUnit
         {
             this.goalLocation = goalLocation;
             this.tilesWalked = 0;
-            this.pathFinder.findPath();
+            this.findPath();
             this.cmdSit = false;
         }
     }
@@ -495,17 +494,14 @@ public class RoomUnit
         this.previousLocation = previousLocation;
     }
 
-    public PathFinder getPathFinder()
-    {
-        return pathFinder;
-    }
-
-    public void setPathFinder(PathFinder pathFinder) { this.pathFinder = pathFinder; }
-
     public void setPathFinderRoom(Room room)
     {
-        this.pathFinder.setRoom(room);
         this.room = room;
+    }
+
+    public void findPath()
+    {
+        this.path = this.room.getLayout().findPath(this.currentLocation, this.goalLocation);
     }
 
     public boolean isAtGoal()
@@ -642,5 +638,10 @@ public class RoomUnit
         {
             this.headRotation = rotation;
         }
+    }
+
+    public Deque<RoomTile> getPath()
+    {
+        return path;
     }
 }

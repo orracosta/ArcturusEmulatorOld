@@ -145,7 +145,6 @@ public class BotManager
                 roomUnit.setLocation(location);
                 roomUnit.setZ(room.getStackHeight(location.x, location.y, false));
                 roomUnit.setGoalLocation(location);
-                roomUnit.setPathFinderRoom(room);
                 roomUnit.setRoomUnitType(RoomUnitType.BOT);
                 roomUnit.setCanWalk(room.isAllowBotsWalk());
                 bot.setRoomUnit(roomUnit);
@@ -201,7 +200,6 @@ public class BotManager
                 if (!habbo.hasPermission("acc_unlimited_bots") && habbo.getHabboInventory().getBotsComponent().getUserBots().size() >= 15)
                     return;
 
-                bot.getRoomUnit().setPathFinderRoom(null);
                 bot.onPickUp(habbo, habbo.getHabboInfo().getCurrentRoom());
                 habbo.getHabboInfo().getCurrentRoom().removeBot(bot.getId());
                 habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserRemoveComposer(bot.getRoomUnit()).compose());

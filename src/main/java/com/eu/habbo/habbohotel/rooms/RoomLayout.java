@@ -4,9 +4,12 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.plugin.EventHandler;
 import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
 import com.eu.habbo.util.pathfinding.PathFinder;
+import gnu.trove.set.hash.THashSet;
 
+import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +18,7 @@ public class RoomLayout
 {
     public static double MAXIMUM_STEP_HEIGHT = 1.1;
     public static boolean ALLOW_FALLING = true;
-    protected static final int BASICMOVEMENTCOST = 5;
+    protected static final int BASICMOVEMENTCOST = 10;
     protected static final int DIAGONALMOVEMENTCOST = 14;
 
     public  boolean CANMOVEDIAGONALY = true;
@@ -279,46 +282,38 @@ public class RoomLayout
         return this.heightmap.replace("\r\n", "\r");
     }
 
-    public final Deque<RoomTile> findPath(int oldX, int oldY, int newX, int newY)
+    public final Deque<RoomTile> findPath(RoomTile oldTile, RoomTile newTile)
     {
         LinkedList<RoomTile> openList = new LinkedList();
         try
         {
-            if (room == null || !room.isLoaded())
-                return openList;
-
-            if ((oldX == newX) && (oldY == newY))
-            {
-                return openList;
-            }
-
-            if (oldX > this.mapSizeX ||
-                    oldY > this.mapSizeY ||
-                    newX > this.mapSizeX ||
-                    newY > this.mapSizeY
-                    )
+            if (this.room == null || !this.room.isLoaded() || oldTile == null || newTile == null || oldTile.equals(newTile))
                 return openList;
 
             List<RoomTile> closedList = new LinkedList();
 
-            openList.add(this.roomTiles[oldX][oldY].copy());
+            openList.add(oldTile.copy());
 
-            boolean done = false;
-            while (!done)
+            long startMillis = System.currentTimeMillis();
+            while (true)
             {
+                if (System.currentTimeMillis() - startMillis > 100)
+                {
+                    return new LinkedList<>();
+                }
                 RoomTile current = lowestFInOpen(openList);
                 closedList.add(current);
                 openList.remove(current);
 
-                List<RoomTile> adjacentNodes = getAdjacent(openList, current, newX, newY);
+                List<RoomTile> adjacentNodes = getAdjacent(openList, current, newTile.x, newTile.y);
 
-                if ((current.x == newX) && (current.y == newY))
+                if ((current.x == newTile.x) && (current.y == newTile.y))
                 {
-                    return calcPath(findTile(openList, (short)oldX, (short)oldY), current, room);
+                    return calcPath(findTile(openList, (short)oldTile.x, (short)oldTile.y), current);
                 }
                 for (RoomTile currentAdj : adjacentNodes)
                 {
-                    if (!currentAdj.isWalkable()){ closedList.add(currentAdj); openList.remove(currentAdj); continue;}
+                    if (!currentAdj.isWalkable() && !(currentAdj.equals(newTile) && room.canSitOrLayAt(currentAdj.x, currentAdj.y))){ closedList.add(currentAdj); openList.remove(currentAdj); continue;}
                     //if (!room.getLayout().tileWalkable((short) currentAdj.x, (short) currentAdj.y)) continue;
 
                     double height = (room.getLayout().getStackHeightAtSquare(currentAdj.x, currentAdj.y) - room.getLayout().getStackHeightAtSquare(current.x, current.y));
@@ -328,12 +323,12 @@ public class RoomLayout
 
                     if (!room.isAllowWalkthrough() && room.hasHabbosAt(currentAdj.x, currentAdj.y)) continue;
 
-                    if (room.hasPetsAt(currentAdj.x, currentAdj.y)) continue;
+                    //if (room.hasPetsAt(currentAdj.x, currentAdj.y)) continue;
 
-                    if (!openList.contains(currentAdj) || (currentAdj.x == newX && currentAdj.y == newY && (room.canSitOrLayAt(newX, newY) && !room.hasHabbosAt(newX, newY))))
+                    if (!openList.contains(currentAdj) || (currentAdj.x == newTile.x && currentAdj.y == newTile.y && (room.canSitOrLayAt(newTile.x, newTile.y) && !room.hasHabbosAt(newTile.x, newTile.y))))
                     {
                         currentAdj.setPrevious(current);
-                        currentAdj.sethCosts(findTile(openList, (short)newX, (short)newY));
+                        currentAdj.sethCosts(findTile(openList, (short)newTile.x, (short)newTile.y));
                         currentAdj.setgCosts(current);
                         openList.add(currentAdj);
                     }
@@ -375,20 +370,19 @@ public class RoomLayout
         return null;
     }
 
-    private Deque<RoomTile> calcPath(RoomTile start, RoomTile goal, Room room)
+    private Deque<RoomTile> calcPath(RoomTile start, RoomTile goal)
     {
         LinkedList<RoomTile> path = new LinkedList();
+        if (start == null)
+            return path;
 
         RoomTile curr = goal;
-        boolean done = false;
-        while (!done) {
-            if (curr != null)
-            {
-                path.addFirst(curr);
-                curr = curr.getPrevious();
-                if ((curr != null) && (start != null) && (curr.equals(start))) {
-                    done = true;
-                }
+        while (curr != null)
+        {
+            path.addFirst(curr);
+            curr = curr.getPrevious();
+            if ((curr != null) && (start != null) && (curr.equals(start))) {
+                return path;
             }
         }
         return path;
@@ -503,5 +497,157 @@ public class RoomLayout
     {
         MAXIMUM_STEP_HEIGHT = Emulator.getConfig().getDouble("pathfinder.step.maximum.height", 1.1);
         ALLOW_FALLING = Emulator.getConfig().getBoolean("pathfinder.step.allow.falling", true);
+    }
+
+    public static boolean squareInSquare(Rectangle outerSquare, Rectangle innerSquare)
+    {
+        if(outerSquare.x > innerSquare.x)
+            return false;
+
+        if(outerSquare.y > innerSquare.y)
+            return false;
+
+        if(outerSquare.x + outerSquare.width < innerSquare.x + innerSquare.width)
+            return false;
+
+        if(outerSquare.y + outerSquare.height < innerSquare.y + innerSquare.height)
+            return false;
+
+        return true;
+    }
+
+    public static boolean pointInSquare(int x1, int y1, int x2, int y2, int pointX, int pointY)
+    {
+        return (pointX >= x1 && pointY >= y1) && (pointX <= x2 && pointY <= y2);
+    }
+
+    public static boolean tilesAdjecent(RoomTile one, RoomTile two)
+    {
+        return !(Math.abs(one.x - two.x) > 1) && !(Math.abs(one.y - two.y) > 1);
+    }
+
+    public RoomTile getTileInFront(RoomTile tile, int rotation, int offset)
+    {
+        int offsetX = 0;
+        int offsetY = 0;
+
+        switch (rotation)
+        {
+            case 0: offsetY--; break;
+            case 1: offsetX++; offsetY--; break;
+            case 2: offsetX++; break;
+            case 3: offsetX++; offsetY++; break;
+            case 4: offsetY++; break;
+            case 5: offsetX--; offsetY++; break;
+            case 6: offsetX--; break;
+            case 7: offsetX--; offsetY--; break;
+        }
+
+        short x = tile.x;
+        short y = tile.y;
+
+        for (int i = 0; i <= offset;)
+        {
+            x += offsetX;
+            y += offsetY;
+        }
+
+        return this.getTile(x, y);
+    }
+
+    public List<RoomTile> getTilesInFront(RoomTile tile, int rotation, int amount)
+    {
+        List<RoomTile> tiles = new ArrayList<>();
+        RoomTile previous = tile;
+        for (int i = 0; i < amount; i++)
+        {
+            RoomTile t = this.getTileInFront(previous, rotation, i);
+
+            if (t != null)
+            {
+                previous = t;
+                tiles.add(t);
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return tiles;
+    }
+
+    public List<RoomTile> getTilesAround(RoomLayout roomLayout, short x, short y)
+    {
+        List<RoomTile> tiles = new ArrayList<RoomTile>();
+
+        for(int i = 0; i < 8; i++)
+        {
+            RoomTile t = this.getTileInFront(this.getTile(x, y), i, 0);
+            if (t != null)
+            {
+                tiles.add(t);
+            }
+        }
+
+        return tiles;
+    }
+
+    public static Rectangle getRectangle(int x, int y, int width, int length, int rotation)
+    {
+        rotation = (rotation % 8);
+
+        if(rotation == 2 || rotation == 6)
+        {
+            return new Rectangle(x, y, length, width);
+        }
+
+        return new Rectangle(x, y, width, length);
+    }
+
+    public THashSet<RoomTile> getTilesAt(RoomLayout layout, RoomTile tile, int width, int length, int rotation)
+    {
+        THashSet<RoomTile> pointList = new THashSet<RoomTile>();
+
+        if(rotation == 0 || rotation == 4)
+        {
+            for (short i = tile.x; i <= (tile.x + (width - 1)); i++)
+            {
+                for (short j = tile.y; j <= (tile.y + (length - 1)); j++)
+                {
+                    RoomTile t = layout.getTile(i, j);
+
+                    if (t != null)
+                    {
+                        pointList.add(t);
+                    }
+                }
+            }
+        }
+        else if(rotation == 2 || rotation == 6)
+        {
+            for (short i = tile.x; i <= (tile.x + (length - 1)); i++)
+            {
+                for (short j = tile.y; j <= (tile.y + (width - 1)); j++)
+                {
+                    RoomTile t = layout.getTile(i, j);
+
+                    if (t != null)
+                    {
+                        pointList.add(t);
+                    }
+                }
+            }
+        }
+
+        return pointList;
+    }
+
+    public static boolean tilesAdjecent(RoomTile tile, RoomTile comparator, int width, int length, int rotation)
+    {
+        Rectangle rectangle = getRectangle(comparator.x, comparator.y, width, length, rotation);
+        rectangle = new Rectangle(rectangle.x - 1, rectangle.y -1, rectangle.width + 2, rectangle.height + 2);
+
+        return rectangle.contains(tile.x, tile.y);
     }
 }

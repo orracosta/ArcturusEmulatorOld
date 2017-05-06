@@ -92,6 +92,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     private String description;
     private RoomLayout layout;
     private boolean overrideModel;
+    private String layoutName;
     private String password;
     private RoomState state;
     private int usersMax;
@@ -209,6 +210,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.guild = set.getInt("guild_id");
         this.rollerSpeed = set.getInt("roller_speed");
         this.overrideModel = set.getInt("override_model") == 1;
+        this.layoutName = set.getString("model");
         this.promoted = set.getInt("promoted") == 1;
 
         this.bannedHabbos = new TIntObjectHashMap<RoomBan>();
@@ -265,7 +267,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         synchronized (this.loadLock)
         {
-            System.out.println("Load");
             if (!this.preLoaded || this.loaded)
                 return;
 
@@ -280,7 +281,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                 try
                 {
-                    this.loadHeightmap();
+                    this.loadLayout();
                 }
                 catch (Exception e)
                 {
@@ -305,9 +306,13 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     Emulator.getLogging().logErrorLine(e);
                 }
 
-                if (this.overrideModel)
+                try
                 {
-                    new LoadCustomHeightMap(this).run();
+                    this.loadHeightmap();
+                }
+                catch (Exception e)
+                {
+                    Emulator.getLogging().logErrorLine(e);
                 }
 
                 try
@@ -361,7 +366,19 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         Emulator.getPluginManager().fireEvent(new RoomLoadedEvent(this));
     }
 
-    public synchronized void loadHeightmap()
+    private synchronized void loadLayout()
+    {
+        if (this.overrideModel && this.layout == null)
+        {
+            this.layout = Emulator.getGameEnvironment().getRoomManager().loadCustomLayout(this);
+        }
+        else
+        {
+            this.layout = Emulator.getGameEnvironment().getRoomManager().loadLayout(this.layoutName, this);
+        }
+    }
+
+    private synchronized void loadHeightmap()
     {
         if (this.layout != null)
         {
@@ -450,7 +467,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     {
                         b.setRoom(this);
                         b.setRoomUnit(new RoomUnit());
-                        b.getRoomUnit().getPathFinder().setRoom(this);
+                        b.getRoomUnit().setPathFinderRoom(this);
                         b.getRoomUnit().setLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
                         b.getRoomUnit().setZ(set.getDouble("z"));
                         b.getRoomUnit().setRotation(RoomUserRotation.values()[set.getInt("rot")]);
@@ -487,7 +504,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         AbstractPet pet = PetManager.loadPet(set);
                         pet.setRoom(this);
                         pet.setRoomUnit(new RoomUnit());
-                        pet.getRoomUnit().getPathFinder().setRoom(this);
+                        pet.getRoomUnit().setPathFinderRoom(this);
                         pet.getRoomUnit().setLocation(this.layout.getTile((short) set.getInt("x"), (short) set.getInt("y")));
                         pet.getRoomUnit().setZ(set.getDouble("z"));
                         pet.getRoomUnit().setRotation(RoomUserRotation.values()[set.getInt("rot")]);
@@ -1258,7 +1275,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                             habbo.getRoomUnit().getStatus().remove("sign");
                         }
 
-                        if (habbo.getRoomUnit().isWalking() && habbo.getRoomUnit().getPathFinder().getPath() != null && !habbo.getRoomUnit().getPathFinder().getPath().isEmpty())
+                        if (habbo.getRoomUnit().isWalking() && habbo.getRoomUnit().getPath() != null && !habbo.getRoomUnit().getPath().isEmpty())
                         {
                             if (!habbo.getRoomUnit().cycle(this))
                             {
@@ -1522,7 +1539,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 //                                        }
 //                                    }
 
-                                    if (pet.getRoomUnit().isWalking() && pet.getRoomUnit().getPathFinder().getPath().size() == 1 && pet.getRoomUnit().getStatus().containsKey("gst"))
+                                    if (pet.getRoomUnit().isWalking() && pet.getRoomUnit().getPath().size() == 1 && pet.getRoomUnit().getStatus().containsKey("gst"))
                                     {
                                         pet.getRoomUnit().getStatus().remove("gst");
                                         updatedUnit.add(pet.getRoomUnit());
@@ -2803,7 +2820,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         habbo.getRoomUnit().isKicked = true;
         habbo.getRoomUnit().setGoalLocation(this.layout.getDoorTile());
 
-        if (habbo.getRoomUnit().getPathFinder().getPath() == null || habbo.getRoomUnit().getPathFinder().getPath().size() <= 1)
+        if (habbo.getRoomUnit().getPath() == null || habbo.getRoomUnit().getPath().size() <= 1)
         {
             habbo.getRoomUnit().setCanWalk(true);
             Emulator.getGameEnvironment().getRoomManager().leaveRoom(habbo, this);
@@ -2977,7 +2994,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             pet.getRoomUnit().setLocation(tile);
             pet.getRoomUnit().setRoomUnitType(RoomUnitType.PET);
             pet.getRoomUnit().setCanWalk(true);
-            pet.getRoomUnit().getPathFinder().setRoom(this);
+            pet.getRoomUnit().setPathFinderRoom(this);
             pet.needsUpdate = true;
             this.furniOwnerNames.put(pet.getUserId(), this.getHabbo(pet.getUserId()).getHabboInfo().getUsername());
             this.addPet(pet);
@@ -3976,17 +3993,18 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public RoomTile getRandomWalkableTile()
     {
-        for (int i = 0; i < 10; i++)
-        {
-            RoomTile tile = this.layout.getTile((short) (Math.random() * this.layout.getMapSizeX()), (short) (Math.random() * this.layout.getMapSizeY()));
-
-            if (this.tileWalkable(tile.x, tile.y) || this.canSitAt(tile.x, tile.y))
-            {
-                return tile;
-            }
-        }
-
-        return null;
+        return this.layout.getTile((short) (Math.random() * this.layout.getMapSizeX()), (short) (Math.random() * this.layout.getMapSizeY()));
+//        for (int i = 0; i < 10; i++)
+//        {
+//            RoomTile tile = this.layout.getTile((short) (Math.random() * this.layout.getMapSizeX()), (short) (Math.random() * this.layout.getMapSizeY()));
+//
+//            if (this.tileWalkable(tile.x, tile.y) || this.canSitAt(tile.x, tile.y))
+//            {
+//                return tile;
+//            }
+//        }
+//
+//        return null;
     }
 
     public Habbo getHabbo(String username)

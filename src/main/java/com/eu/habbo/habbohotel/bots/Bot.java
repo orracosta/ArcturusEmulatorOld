@@ -261,7 +261,7 @@ public class Bot implements Runnable
                     }
                 } else
                 {
-                    for (RoomTile t : PathFinder.getTilesAround(room.getLayout(), this.getRoomUnit().getX(), this.getRoomUnit().getY()))
+                    for (RoomTile t : PathFinder.getTilesAround(this.room.getLayout(), this.getRoomUnit().getX(), this.getRoomUnit().getY()))
                     {
                         WiredHandler.handle(WiredTriggerType.BOT_REACHED_STF, this.roomUnit, this.room, room.getItemsAt(t.x, t.y).toArray());
                     }
@@ -270,8 +270,7 @@ public class Bot implements Runnable
 
             if(!this.chatLines.isEmpty() && this.chatTimeOut <= Emulator.getIntUnixTimestamp() && this.chatAuto)
             {
-                Room room = this.roomUnit.getPathFinder().getRoom();
-                if(room != null)
+                if(this.room != null)
                 {
                     this.lastChatIndex = (this.chatRandom ? (short)Emulator.getRandom().nextInt(this.chatLines.size()) : (this.lastChatIndex == (this.chatLines.size() - 1) ? 0 : this.lastChatIndex++));
                     this.talk(this.chatLines.get(this.lastChatIndex));

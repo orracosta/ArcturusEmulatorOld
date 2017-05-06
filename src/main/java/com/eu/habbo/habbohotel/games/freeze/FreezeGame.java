@@ -179,7 +179,6 @@ public class FreezeGame extends Game
         RoomTile t = this.room.getLayout().getTile(x, y);
 
         tiles.add(t);
-        System.out.println(t);
         for(int i = 0; i < 4; i++)
         {
             for(int j = 0; j < radius; j++)
@@ -188,8 +187,6 @@ public class FreezeGame extends Game
 
                 if(t == null || t.x < 0 || t.y < 0 || t.x >= this.room.getLayout().getMapSizeX() || t.y >= this.room.getLayout().getMapSizeY())
                     continue;
-
-                System.out.println(t.toString());
                 tiles.add(t);
             }
         }
@@ -410,10 +407,13 @@ public class FreezeGame extends Game
 
         for (Map.Entry<Integer, InteractionFreezeGate> set : this.room.getRoomSpecialTypes().getFreezeGates().entrySet())
         {
-            int amount = Math.min(teamMemberCount.get(set.getValue().teamColor), 5);
-            set.getValue().setExtradata(amount + "");
-            teamMemberCount.put(set.getValue().teamColor, teamMemberCount.get(set.getValue().teamColor) - amount);
-            this.room.updateItem(set.getValue());
+            if (teamMemberCount.containsKey(set.getValue()))
+            {
+                int amount = Math.min(teamMemberCount.get(set.getValue().teamColor), 5);
+                set.getValue().setExtradata(amount + "");
+                teamMemberCount.put(set.getValue().teamColor, teamMemberCount.get(set.getValue().teamColor) - amount);
+                this.room.updateItem(set.getValue());
+            }
         }
 
         this.setFreezeTileState("0");

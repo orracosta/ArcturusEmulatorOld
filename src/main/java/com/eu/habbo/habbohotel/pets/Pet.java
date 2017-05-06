@@ -223,7 +223,7 @@ public class Pet extends AbstractPet
             }
             else
             {
-                int timeout = Emulator.getRandom().nextInt(20) * 2;
+                int timeout = Emulator.getRandom().nextInt(10) * 2;
                 this.roomUnit.setWalkTimeOut(timeout < 20 ? 20 + time : timeout + time);
 
                 if(this.energy >= 2)
@@ -256,29 +256,25 @@ public class Pet extends AbstractPet
             {
                 if (super.chatTimeout <= time)
                 {
-                    Room room = this.roomUnit.getPathFinder().getRoom();
-                    if (room != null)
+                    if (this.energy <= 30)
                     {
-                        if (this.energy <= 30)
-                        {
-                            super.say(this.petData.randomVocal(PetVocalsType.TIRED));
-                            if(this.energy <= 10)
-                                this.findNest();
-                        } else if (this.happyness > 85)
-                        {
-                            super.say(this.petData.randomVocal(PetVocalsType.GENERIC_HAPPY));
-                        } else if (this.happyness < 15)
-                        {
-                            super.say(this.petData.randomVocal(PetVocalsType.GENERIC_SAD));
-                        } else if (this.levelHunger > 50)
-                        {
-                            super.say(this.petData.randomVocal(PetVocalsType.HUNGRY));
-                            this.eat();
-                        } else if (this.levelThirst > 50)
-                        {
-                            super.say(this.petData.randomVocal(PetVocalsType.THIRSTY));
-                            this.drink();
-                        }
+                        super.say(this.petData.randomVocal(PetVocalsType.TIRED));
+                        if(this.energy <= 10)
+                            this.findNest();
+                    } else if (this.happyness > 85)
+                    {
+                        super.say(this.petData.randomVocal(PetVocalsType.GENERIC_HAPPY));
+                    } else if (this.happyness < 15)
+                    {
+                        super.say(this.petData.randomVocal(PetVocalsType.GENERIC_SAD));
+                    } else if (this.levelHunger > 50)
+                    {
+                        super.say(this.petData.randomVocal(PetVocalsType.HUNGRY));
+                        this.eat();
+                    } else if (this.levelThirst > 50)
+                    {
+                        super.say(this.petData.randomVocal(PetVocalsType.THIRSTY));
+                        this.drink();
                     }
 
                     int timeOut = Emulator.getRandom().nextInt(30);

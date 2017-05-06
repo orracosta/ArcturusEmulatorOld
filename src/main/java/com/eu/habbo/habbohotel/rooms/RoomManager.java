@@ -43,14 +43,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RoomManager {
 
     private final THashMap<Integer, RoomCategory> roomCategories;
-    private final THashSet<RoomLayout> roomLayouts;
+    private final List<String> mapNames;
     private final ConcurrentHashMap<Integer, Room> activeRooms;
 
     public RoomManager()
     {
         long millis = System.currentTimeMillis();
         this.roomCategories = new THashMap<Integer, RoomCategory>();
-        this.roomLayouts = new THashSet<RoomLayout>();
+        this.mapNames = new ArrayList<String>();
         this.activeRooms = new ConcurrentHashMap<Integer, Room>();
         this.loadRoomCategories();
         this.loadRoomModels();
@@ -60,18 +60,18 @@ public class RoomManager {
 
     public void loadRoomModels()
     {
-        this.roomLayouts.clear();
-//        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM room_models"))
-//        {
-//            while(set.next())
-//            {
-//                this.roomLayouts.add(new RoomLayout(set, null));
-//            }
-//        }
-//        catch(SQLException e)
-//        {
-//            Emulator.getLogging().logSQLException(e);
-//        }
+        this.mapNames.clear();
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT * FROM room_models"))
+        {
+            while(set.next())
+            {
+                this.mapNames.add(set.getString("name"));
+            }
+        }
+        catch(SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
     }
 
     public CustomRoomLayout loadCustomLayout(Room room)
@@ -455,34 +455,9 @@ public class RoomManager {
         }
     }
 
-    void addLayout(RoomLayout layout)
+    public boolean layoutExists(String name)
     {
-        if(layout == null)
-            return;
-
-        synchronized (this.roomLayouts)
-        {
-            this.roomLayouts.add(layout);
-        }
-    }
-
-    public RoomLayout getLayout(String name)
-    {
-        synchronized (this.roomLayouts)
-        {
-            for (RoomLayout layout : this.roomLayouts)
-            {
-                if (layout.getName() == null)
-                {
-                    continue;
-                }
-
-                if (layout.getName().equalsIgnoreCase(name))
-                    return layout;
-            }
-        }
-
-        return null;
+        return this.mapNames.contains(name);
     }
 
     public RoomLayout loadLayout(String name, Room room)
@@ -784,8 +759,6 @@ public class RoomManager {
                 habbo.getRoomUnit().setCanWalk(true);
             }
             habbo.getRoomUnit().isKicked = false;
-
-            habbo.getRoomUnit().setPathFinder(new PathFinder(habbo.getRoomUnit()));
 
             if (!habbo.getRoomUnit().isTeleporting)
             {
