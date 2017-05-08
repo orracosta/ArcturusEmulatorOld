@@ -842,7 +842,6 @@ public class RoomManager {
 
                 habbo.getClient().sendResponse(new RoomWallItemsComposer(room));
 
-                synchronized (room.getFloorItems())
                 {
                     final THashSet<HabboItem> floorItems = new THashSet<HabboItem>();
 
@@ -985,7 +984,7 @@ public class RoomManager {
         {
             statement.setInt(1, room.getId());
             statement.setInt(2, habbo.getHabboInfo().getId());
-            statement.setInt(3, habbo.getHabboStats().roomEnterTimestamp);
+            statement.setInt(3, (int)(habbo.getHabboStats().roomEnterTimestamp / 1000));
             statement.execute();
         }
         catch (SQLException e)
@@ -1021,7 +1020,7 @@ public class RoomManager {
 
             if (room.getOwnerId() != habbo.getHabboInfo().getId())
             {
-                AchievementManager.progressAchievement(room.getOwnerId(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("RoomDecoHosting"), (int)Math.floor((Emulator.getIntUnixTimestamp() - habbo.getHabboStats().roomEnterTimestamp) / 60));
+                AchievementManager.progressAchievement(room.getOwnerId(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("RoomDecoHosting"), (int)Math.floor((Emulator.getIntUnixTimestamp() - habbo.getHabboStats().roomEnterTimestamp) / 60000));
             }
         }
     }

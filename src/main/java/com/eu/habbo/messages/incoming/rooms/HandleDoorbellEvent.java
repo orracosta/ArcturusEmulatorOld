@@ -19,7 +19,6 @@ public class HandleDoorbellEvent extends MessageHandler
 
             Habbo habbo = Emulator.getGameServer().getGameClientManager().getHabbo(username);
 
-            Emulator.getLogging().logDebugLine("Current loading room for doorbell of " + username + ": " + habbo.getHabboInfo().getRoomQueueId());
             if(habbo != null && habbo.getHabboInfo().getRoomQueueId() == this.client.getHabbo().getHabboInfo().getCurrentRoom().getId())
             {
                 this.client.getHabbo().getHabboInfo().getCurrentRoom().removeFromQueue(habbo);

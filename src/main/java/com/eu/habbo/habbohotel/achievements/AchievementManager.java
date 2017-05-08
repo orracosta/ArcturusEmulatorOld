@@ -225,7 +225,7 @@ public class AchievementManager
         if(oldLevel == null)
             return;
 
-        if(oldLevel.level == achievement.levels.size() && currentProgress == oldLevel.progress) //Maximum achievement gotten.
+        if(oldLevel.level == achievement.levels.size() && currentProgress >= oldLevel.progress) //Maximum achievement gotten.
             return;
 
         habbo.getHabboStats().setProgress(achievement, currentProgress + amount);

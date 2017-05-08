@@ -115,27 +115,27 @@ public class RoomUnit
         try
         {
             /**
-             * !this.getStatus().containsKey("mv") &&
+             * !this.status.containsKey("mv") &&
              */
             if (!this.isWalking() && !isKicked)
             {
-                if (this.getStatus().remove("mv") == null)
+                if (this.status.remove("mv") == null)
                 {
                     return true;
                 }
             }
 
-            if (this.getStatus().containsKey("mv"))
+            if (this.status.containsKey("mv"))
             {
-                this.getStatus().remove("mv");
+                this.status.remove("mv");
             }
-            if (this.getStatus().containsKey("lay"))
+            if (this.status.containsKey("lay"))
             {
-                this.getStatus().remove("lay");
+                this.status.remove("lay");
             }
-            if (this.getStatus().containsKey("sit"))
+            if (this.status.containsKey("sit"))
             {
-                this.getStatus().remove("sit");
+                this.status.remove("sit");
             }
 
             if(this.path == null || this.path.isEmpty())
@@ -154,9 +154,9 @@ public class RoomUnit
 
             Habbo habbo = room.getHabbo(this);
 
-            if(this.getStatus().containsKey("ded"))
+            if(this.status.containsKey("ded"))
             {
-                this.getStatus().remove("ded");
+                this.status.remove("ded");
             }
 
             if(habbo != null)
@@ -259,7 +259,7 @@ public class RoomUnit
                         this.setRotation(oldRotation);
                         this.tilesWalked--;
                         this.setGoalLocation(this.currentLocation);
-                        this.getStatus().remove("mv");
+                        this.status.remove("mv");
                         room.sendComposer(new RoomUserStatusComposer(this).compose());
                         return false;
                     }
@@ -294,7 +294,7 @@ public class RoomUnit
             }
 
             this.previousLocation = this.currentLocation;
-            this.getStatus().put("mv", next.x + "," + next.y + "," + zHeight);
+            this.status.put("mv", next.x + "," + next.y + "," + zHeight);
             if (habbo != null)
             {
                 if (habbo.getHabboInfo().getRiding() != null)

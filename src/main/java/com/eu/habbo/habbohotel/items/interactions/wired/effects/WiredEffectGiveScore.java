@@ -79,7 +79,10 @@ public class WiredEffectGiveScore extends InteractionWiredEffect
 
             this.data.put(new AbstractMap.SimpleEntry<Integer, Integer>(game.getStartTime(), habbo.getHabboInfo().getId()), 1);
 
-            habbo.getHabboInfo().getGamePlayer().addScore(this.score);
+            if (habbo.getHabboInfo().getGamePlayer() != null)
+            {
+                habbo.getHabboInfo().getGamePlayer().addScore(this.score);
+            }
 
             return true;
         }

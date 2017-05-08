@@ -24,14 +24,20 @@ public class LayCommand extends Command
         gameClient.getHabbo().getRoomUnit().setBodyRotation(RoomUserRotation.values()[gameClient.getHabbo().getRoomUnit().getBodyRotation().getValue() - gameClient.getHabbo().getRoomUnit().getBodyRotation().getValue() % 2]);
 
         RoomTile tile = gameClient.getHabbo().getRoomUnit().getCurrentLocation();
+        if (tile == null)
+        {
+            return false;
+        }
+
         for (int i = 0; i < 3; i++)
         {
-            if (!gameClient.getHabbo().getHabboInfo().getCurrentRoom().getLayout().getTileInFront(tile, gameClient.getHabbo().getRoomUnit().getBodyRotation().getValue(), i).isWalkable())
+            RoomTile t = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getLayout().getTileInFront(tile, gameClient.getHabbo().getRoomUnit().getBodyRotation().getValue(), i);
+            if (t == null || !t.isWalkable())
             {
                 return false;
             }
         }
-        
+
         gameClient.getHabbo().getRoomUnit().getStatus().put("lay", 0.5 + "");
         gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserStatusComposer(gameClient.getHabbo().getRoomUnit()).compose());
         return true;

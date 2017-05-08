@@ -45,11 +45,17 @@ import com.eu.habbo.messages.incoming.trading.*;
 import com.eu.habbo.messages.incoming.unknown.*;
 import com.eu.habbo.messages.incoming.users.*;
 import com.eu.habbo.messages.incoming.wired.*;
+import com.eu.habbo.plugin.EventHandler;
+import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
 import gnu.trove.map.hash.THashMap;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PacketManager
 {
     private final THashMap<Integer, Class<? extends MessageHandler>> incoming;
+    private static final List<Integer> logList = new ArrayList<Integer>();
 
     public PacketManager() throws Exception
     {
@@ -104,6 +110,11 @@ public class PacketManager
             {
                 if(Emulator.getConfig().getBoolean("debug.show.packets"))
                     Emulator.getLogging().logPacketLine("[" + Logging.ANSI_CYAN + "CLIENT" + Logging.ANSI_RESET + "][" + packet.getMessageId() + "] => " + packet.getMessageBody());
+
+                if (logList.contains(packet.getMessageId()) && client.getHabbo() != null)
+                {
+                    System.out.println(("[" + Logging.ANSI_CYAN + "CLIENT" + Logging.ANSI_RESET + "][" + client.getHabbo().getHabboInfo().getUsername() + "][" + packet.getMessageId() + "] => " + packet.getMessageBody()));
+                }
 
                 final MessageHandler handler = this.incoming.get(packet.getMessageId()).newInstance();
 
@@ -515,5 +526,23 @@ public class PacketManager
         this.registerHandler(Incoming.GameCenterJoinGameEvent,                  GameCenterJoinGameEvent.class);
         this.registerHandler(Incoming.GameCenterLoadGameEvent,                  GameCenterLoadGameEvent.class);
         this.registerHandler(Incoming.GameCenterEvent,                          GameCenterEvent.class);
+    }
+
+    @EventHandler
+    public static void onConfigurationUpdated(EmulatorConfigUpdatedEvent event)
+    {
+        logList.clear();
+
+        for (String s : Emulator.getConfig().getValue("debug.show.headers").split(";"))
+        {
+            try
+            {
+                logList.add(Integer.valueOf(s));
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
     }
 }

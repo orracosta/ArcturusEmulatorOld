@@ -115,32 +115,35 @@ public class PathFinder
     {
         THashSet<RoomTile> pointList = new THashSet<RoomTile>();
 
-        if(rotation == 0 || rotation == 4)
+        if (layout != null)
         {
-            for (short i = x; i <= (x + (width - 1)); i++)
+            if (rotation == 0 || rotation == 4)
             {
-                for (short j = y; j <= (y + (length - 1)); j++)
+                for (short i = x; i <= (x + (width - 1)); i++)
                 {
-                    RoomTile t = layout.getTile(i, j);
-
-                    if (t != null)
+                    for (short j = y; j <= (y + (length - 1)); j++)
                     {
-                        pointList.add(t);
+                        RoomTile t = layout.getTile(i, j);
+
+                        if (t != null)
+                        {
+                            pointList.add(t);
+                        }
                     }
                 }
             }
-        }
-        else if(rotation == 2 || rotation == 6)
-        {
-            for (short i = x; i <= (x + (length - 1)); i++)
+            else if (rotation == 2 || rotation == 6)
             {
-                for (short j = y; j <= (y + (width - 1)); j++)
+                for (short i = x; i <= (x + (length - 1)); i++)
                 {
-                    RoomTile t = layout.getTile(i, j);
-
-                    if (t != null)
+                    for (short j = y; j <= (y + (width - 1)); j++)
                     {
-                        pointList.add(t);
+                        RoomTile t = layout.getTile(i, j);
+
+                        if (t != null)
+                        {
+                            pointList.add(t);
+                        }
                     }
                 }
             }

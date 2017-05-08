@@ -91,13 +91,16 @@ public class InteractionMultiHeight extends HabboItem
                         if(habbo.getRoomUnit().getStatus().containsKey("mv"))
                             continue;
 
-                        if (this.getBaseItem().allowSit())
+                        if (this.getBaseItem().getMultiHeights().length >= 0)
                         {
-                            habbo.getRoomUnit().getStatus().put("sit", this.getBaseItem().getMultiHeights()[(this.getExtradata().isEmpty() ? 0 : Integer.valueOf(this.getExtradata()) % (this.getBaseItem().getMultiHeights().length))] * 1.0D + "");
-                        }
-                        else
-                        {
-                            habbo.getRoomUnit().setZ(this.getZ() + this.getBaseItem().getMultiHeights()[(this.getExtradata().isEmpty() ? 0 : Integer.valueOf(this.getExtradata()) % (this.getBaseItem().getMultiHeights().length))]);
+                            if (this.getBaseItem().allowSit())
+                            {
+                                habbo.getRoomUnit().getStatus().put("sit", this.getBaseItem().getMultiHeights()[(this.getExtradata().isEmpty() ? 0 : Integer.valueOf(this.getExtradata()) % (this.getBaseItem().getMultiHeights().length))] * 1.0D + "");
+                            }
+                            else
+                            {
+                                habbo.getRoomUnit().setZ(this.getZ() + this.getBaseItem().getMultiHeights()[(this.getExtradata().isEmpty() ? 0 : Integer.valueOf(this.getExtradata()) % (this.getBaseItem().getMultiHeights().length))]);
+                            }
                         }
 
                         updatedUnits.add(habbo.getRoomUnit());

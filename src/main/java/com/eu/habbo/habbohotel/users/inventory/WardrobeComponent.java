@@ -3,8 +3,10 @@ package com.eu.habbo.habbohotel.users.inventory;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboGender;
+import gnu.trove.TIntCollection;
 import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
+import gnu.trove.set.TIntSet;
+import gnu.trove.set.hash.TIntHashSet;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,12 +16,12 @@ import java.sql.SQLException;
 public class WardrobeComponent
 {
     private final THashMap<Integer, WardrobeItem> looks;
-    private final THashSet<Integer> clothing;
+    private final TIntSet clothing;
 
     public WardrobeComponent(Habbo habbo)
     {
-        this.looks = new THashMap<Integer, WardrobeItem>();
-        this.clothing = new THashSet<Integer>();
+        this.looks = new THashMap<>();
+        this.clothing = new TIntHashSet();
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
@@ -68,22 +70,18 @@ public class WardrobeComponent
         return this.looks;
     }
 
-    public THashSet<Integer> getClothing()
+    public TIntCollection getClothing()
     {
         return this.clothing;
     }
 
     public void dispose()
     {
-        for(WardrobeItem item : looks.values())
-        {
-            if(item.needsInsert || item.needsUpdate)
-            {
-                Emulator.getThreading().run(item);
-            }
-        }
+        this.looks.values().stream().filter(item -> item.needsInsert || item.needsUpdate).forEach(item -> {
+            Emulator.getThreading().run(item);
+        });
 
-        looks.clear();
+        this.looks.clear();
     }
 
     public class WardrobeItem implements Runnable
@@ -116,27 +114,33 @@ public class WardrobeComponent
             return gender;
         }
 
-        public synchronized void setGender(HabboGender gender) {
+        public synchronized void setGender(HabboGender gender)
+        {
             this.gender = gender;
         }
 
-        public Habbo getHabbo() {
+        public Habbo getHabbo()
+        {
             return habbo;
         }
 
-        public void setHabbo(Habbo habbo) {
+        public void setHabbo(Habbo habbo)
+        {
             this.habbo = habbo;
         }
 
-        public synchronized String getLook() {
+        public synchronized String getLook()
+        {
             return look;
         }
 
-        public synchronized void setLook(String look) {
+        public synchronized void setLook(String look)
+        {
             this.look = look;
         }
 
-        public void setNeedsInsert(boolean needsInsert) {
+        public void setNeedsInsert(boolean needsInsert)
+        {
             this.needsInsert = needsInsert;
         }
 
@@ -145,13 +149,9 @@ public class WardrobeComponent
             this.needsUpdate = needsUpdate;
         }
 
-        public int getSlotId() {
-            return slotId;
-        }
-
-        public void setSlotId(int slotId)
+        public int getSlotId()
         {
-            this.slotId = slotId;
+            return slotId;
         }
 
         @Override

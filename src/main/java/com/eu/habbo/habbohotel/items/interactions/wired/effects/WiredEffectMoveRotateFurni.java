@@ -141,7 +141,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
                             (short) (item.getY() + ((moveDirection == RoomUserRotation.NORTH || moveDirection == RoomUserRotation.NORTH_EAST || moveDirection == RoomUserRotation.NORTH_WEST) ? 1 : ((moveDirection == RoomUserRotation.SOUTH || moveDirection == RoomUserRotation.SOUTH_EAST || moveDirection == RoomUserRotation.SOUTH_WEST) ? -1 : 0)))
                     );
 
-                    if (room.tileWalkable(newTile))
+                    if (newTile != null && room.tileWalkable(newTile))
                     {
                         Rectangle rectangle = new Rectangle(newTile.x,
                                 newTile.y,

@@ -6,30 +6,37 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
+import gnu.trove.procedure.TIntProcedure;
 
 import java.util.ArrayList;
 
 public class UserClothesComposer extends MessageComposer
 {
-    private final ArrayList<Integer> idList = new ArrayList<Integer>();
-    private final ArrayList<String> nameList = new ArrayList<String>();
+    private final ArrayList<Integer> idList = new ArrayList<>();
+    private final ArrayList<String> nameList = new ArrayList<>();
 
     public UserClothesComposer(Habbo habbo)
     {
-        for (int i : habbo.getHabboInventory().getWardrobeComponent().getClothing())
+        habbo.getHabboInventory().getWardrobeComponent().getClothing().forEach(new TIntProcedure()
         {
-            ClothItem item = Emulator.getGameEnvironment().getCatalogManager().clothing.get(i);
-
-            if (item != null)
+            @Override
+            public boolean execute(int value)
             {
-                for (Integer j : item.setId)
+                ClothItem item = Emulator.getGameEnvironment().getCatalogManager().clothing.get(value);
+
+                if (item != null)
                 {
-                    idList.add(j);
+                    for (Integer j : item.setId)
+                    {
+                        idList.add(j);
+                    }
+
+                    nameList.add(item.name);
                 }
 
-                nameList.add(item.name);
+                return true;
             }
-        }
+        });
     }
 
     @Override
@@ -39,17 +46,11 @@ public class UserClothesComposer extends MessageComposer
 
         this.response.appendInt32(this.idList.size());
 
-        for (Integer id : this.idList)
-        {
-            this.response.appendInt32(id);
-        }
+        this.idList.forEach(this.response::appendInt32);
 
         this.response.appendInt32(this.nameList.size());
 
-        for (String name : this.nameList)
-        {
-            this.response.appendString(name);
-        }
+        this.nameList.forEach(this.response::appendString);
 
         return this.response;
     }

@@ -404,7 +404,11 @@ public class ModToolManager
         ModToolBan ban = new ModToolBan(targetUserId, target != null ? target.getHabboInfo().getIpLogin() : "offline", target != null ? target.getClient().getMachineId() : "offline", moderator.getHabboInfo().getId(), Emulator.getIntUnixTimestamp() + duration, reason, type);
         Emulator.getPluginManager().fireEvent(new SupportUserBannedEvent(moderator, target, ban));
         Emulator.getThreading().run(ban);
-        Emulator.getGameServer().getGameClientManager().disposeClient(target.getClient().getChannel());
+
+        if (target != null)
+        {
+            Emulator.getGameServer().getGameClientManager().disposeClient(target.getClient().getChannel());
+        }
 
         if ((type == ModToolBanType.IP || type == ModToolBanType.SUPER) && target != null)
         {
@@ -520,7 +524,7 @@ public class ModToolManager
         if (habbo == null)
             return false;
 
-        if (((InetSocketAddress)habbo.remoteAddress()).getAddress() == null)
+        if (habbo.remoteAddress() == null || ((InetSocketAddress)habbo.remoteAddress()).getAddress() == null)
             return false;
 
         boolean banned = false;

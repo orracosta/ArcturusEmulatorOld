@@ -270,7 +270,7 @@ public class RoomLayout
 
     public boolean tileWalkable(short x, short y)
     {
-        return this.tileExists(x, y) && this.roomTiles[x][y].state == RoomTileState.OPEN;
+        return this.tileExists(x, y) && this.roomTiles[x][y].state == RoomTileState.OPEN && this.roomTiles[x][y].isWalkable();
     }
 
     public RoomTileState getStateAt(short x, short y)
@@ -546,7 +546,7 @@ public class RoomLayout
         short x = tile.x;
         short y = tile.y;
 
-        for (int i = 0; i <= offset;)
+        for (int i = 0; i <= offset; i++)
         {
             x += offsetX;
             y += offsetY;

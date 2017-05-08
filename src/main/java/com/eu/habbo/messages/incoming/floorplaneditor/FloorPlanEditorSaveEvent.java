@@ -9,7 +9,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
-import com.eu.habbo.threading.runnables.LoadCustomHeightMap;
 import gnu.trove.set.hash.THashSet;
 
 public class FloorPlanEditorSaveEvent extends MessageHandler

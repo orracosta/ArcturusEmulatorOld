@@ -63,7 +63,7 @@ public class WiredConditionNotFurniHaveFurni extends InteractionWiredCondition
             }
         }
 
-        return true;
+        return false;
     }
 
     @Override

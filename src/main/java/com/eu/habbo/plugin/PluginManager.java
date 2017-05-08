@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.games.battlebanzai.BattleBanzaiGame;
 import com.eu.habbo.habbohotel.games.freeze.FreezeGame;
 import com.eu.habbo.habbohotel.games.tag.TagGame;
 import com.eu.habbo.habbohotel.rooms.RoomLayout;
+import com.eu.habbo.messages.PacketManager;
 import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
 import com.eu.habbo.plugin.events.roomunit.RoomUnitLookAtPointEvent;
 import com.eu.habbo.plugin.events.users.UserSavedMottoEvent;
@@ -291,6 +292,7 @@ public class PluginManager
             this.methods.add(TagGame.class.getMethod("onUserWalkEvent", UserTakeStepEvent.class));
             this.methods.add(RoomLayout.class.getMethod("configurationUpdated", EmulatorConfigUpdatedEvent.class));
             this.methods.add(FreezeGame.class.getMethod("onConfigurationUpdated", EmulatorConfigUpdatedEvent.class));
+            this.methods.add(PacketManager.class.getMethod("onConfigurationUpdated", EmulatorConfigUpdatedEvent.class));
         }
         catch (NoSuchMethodException e)
         {

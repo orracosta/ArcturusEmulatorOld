@@ -46,7 +46,6 @@ import com.eu.habbo.plugin.events.users.UserExitRoomEvent;
 import com.eu.habbo.plugin.events.users.UserIdleEvent;
 import com.eu.habbo.plugin.events.users.UserRightsTakenEvent;
 import com.eu.habbo.plugin.events.users.UserRolledEvent;
-import com.eu.habbo.threading.runnables.LoadCustomHeightMap;
 import com.eu.habbo.threading.runnables.YouAreAPirate;
 import com.eu.habbo.util.pathfinding.PathFinder;
 import gnu.trove.TCollections;
@@ -368,13 +367,16 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     private synchronized void loadLayout()
     {
-        if (this.overrideModel && this.layout == null)
+        if (this.layout == null)
         {
-            this.layout = Emulator.getGameEnvironment().getRoomManager().loadCustomLayout(this);
-        }
-        else
-        {
-            this.layout = Emulator.getGameEnvironment().getRoomManager().loadLayout(this.layoutName, this);
+            if (this.overrideModel)
+            {
+                this.layout = Emulator.getGameEnvironment().getRoomManager().loadCustomLayout(this);
+            }
+            else
+            {
+                this.layout = Emulator.getGameEnvironment().getRoomManager().loadLayout(this.layoutName, this);
+            }
         }
     }
 
@@ -559,8 +561,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         if (tile != null)
         {
             tile.setStackHeight(this.getStackHeight(tile.x, tile.y, false));
-            HabboItem item = this.getTopItemAt(tile.x, tile.y);
-            tile.setWalkable(item == null || item.getBaseItem().allowWalk() || item.isWalkable());
+            tile.setWalkable(this.canWalkAt(tile));
         }
     }
 
@@ -572,8 +573,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             {
                 this.tileCache.remove(tile);
                 tile.setStackHeight(this.getStackHeight(tile.x, tile.y, false));
-                HabboItem item = this.getTopItemAt(tile.x, tile.y);
-                tile.setWalkable(item == null || item.getBaseItem().allowWalk() || item.isWalkable());
+                tile.setWalkable(this.canWalkAt(tile));
             }
         }
 
@@ -587,7 +587,16 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public boolean tileWalkable(short x, short y)
     {
-        return this.layout.tileWalkable(x, y) && (this.allowWalkthrough || (!this.allowWalkthrough && !this.hasHabbosAt(x, y)));
+        boolean walkable = this.layout.tileWalkable(x, y);
+
+        if (walkable)
+        {
+            if (this.hasHabbosAt(x, y) && this.allowWalkthrough)
+            {
+                walkable = false;
+            }
+        }
+        return walkable; //&& (!this.allowWalkthrough && !this.hasHabbosAt(x, y)));
         //if(this.layout.tileWalkable(x, y))
 //        {
 //            if(!this.allowWalkthrough)
@@ -963,6 +972,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.noVotes = 0;
         this.updateDatabaseUserCount();
         this.preLoaded = true;
+        this.layout = null;
 
         Emulator.getPluginManager().fireEvent(new RoomUnloadedEvent(this));
     }
@@ -1097,11 +1107,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         {
             if (this.loaded)
             {
-                Emulator.getThreading().run(this, 500);
-
                 try
                 {
+                    long millis = System.currentTimeMillis();
                     this.cycle();
+                    Emulator.getThreading().run(this, 500 - (System.currentTimeMillis() - millis));
                 }
                 catch (Exception e)
                 {
@@ -2388,12 +2398,21 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public boolean removeFromQueue(Habbo habbo)
     {
-        this.sendComposer(new HideDoorbellComposer(habbo.getHabboInfo().getUsername()).compose());
-
-        synchronized (this.habboQueue)
+        try
         {
-            return this.habboQueue.remove(habbo.getHabboInfo().getId()) != null;
+            this.sendComposer(new HideDoorbellComposer(habbo.getHabboInfo().getUsername()).compose());
+
+            synchronized (this.habboQueue)
+            {
+                return this.habboQueue.remove(habbo.getHabboInfo().getId()) != null;
+            }
         }
+        catch (Exception e)
+        {
+            Emulator.getLogging().logErrorLine(e);
+        }
+
+        return true;
     }
 
     public TIntObjectMap<Bot> getCurrentBots()
@@ -3942,6 +3961,39 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             return false;
 
         return this.canSitAt(this.getItemsAt(x, y));
+    }
+
+    boolean canWalkAt(RoomTile roomTile)
+    {
+        if (roomTile == null)
+        {
+            return false;
+        }
+
+        HabboItem topItem = null;
+        boolean canWalk = true;
+        for (HabboItem item : this.getItemsAt(roomTile))
+        {
+            if (topItem == null)
+            {
+                topItem = item;
+            }
+
+            if (item.getZ() > topItem.getZ())
+            {
+                topItem = item;
+                canWalk = topItem.isWalkable() || topItem.getBaseItem().allowWalk();
+            }
+            else if (item.getZ() == topItem.getZ() && canWalk)
+            {
+                if ((!topItem.isWalkable() && !topItem.getBaseItem().allowWalk()) || (!item.getBaseItem().allowWalk() && !item.isWalkable()))
+                {
+                    canWalk = false;
+                }
+            }
+        }
+
+        return canWalk;
     }
 
     boolean canSitAt(THashSet<HabboItem> items)
