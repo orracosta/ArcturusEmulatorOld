@@ -71,16 +71,7 @@ public class ThreadPooling
     {
         this.canAdd = false;
 
-        this.scheduledPool.shutdown();
-        try
-        {
-            this.scheduledPool.awaitTermination(10, TimeUnit.SECONDS);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
+        this.scheduledPool.shutdownNow();
         while(!this.scheduledPool.isTerminated()) {
         }
     }
