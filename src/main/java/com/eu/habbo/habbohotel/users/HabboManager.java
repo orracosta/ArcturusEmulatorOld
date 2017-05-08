@@ -17,8 +17,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledFuture;
 
 public class HabboManager
 {
@@ -226,21 +228,35 @@ public class HabboManager
         return this.onlineHabbos;
     }
 
-    public void dispose()
+    public synchronized void dispose()
     {
-        THashSet<Habbo> toDisconnect = new THashSet<Habbo>();
-        toDisconnect.addAll(this.onlineHabbos.values());
-
-        synchronized (this.onlineHabbos)
-        {
-            for (final Habbo habbo : toDisconnect)
-            {
-                habbo.disconnect();
-            }
-        }
-        toDisconnect.clear();
+        Object[] toDisconnect = this.onlineHabbos.values().toArray();
+        List<ScheduledFuture> scheduledFutures = new ArrayList<>();
         this.onlineHabbos.clear();
+        for (Object habbo : toDisconnect)
+        {
+            scheduledFutures.add(Emulator.getThreading().run(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    ((Habbo) habbo).disconnect();
+                }
+            }));
+        }
 
+        while (!scheduledFutures.isEmpty())
+        {
+            List<ScheduledFuture> toRemove = new ArrayList<>();
+            for (ScheduledFuture future : scheduledFutures)
+            {
+                if (future.isDone())
+                {
+                    toRemove.add(future);
+                }
+            }
+            scheduledFutures.removeAll(toRemove);
+        }
         Emulator.getLogging().logShutdownLine("Habbo Manager -> Disposed!");
     }
 

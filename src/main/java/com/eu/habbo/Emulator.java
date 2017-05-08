@@ -206,14 +206,14 @@ public final class Emulator
         if (Emulator.cameraClient != null)
             Emulator.cameraClient.disconnect();
 
-        if (Emulator.gameEnvironment != null)
-            Emulator.gameEnvironment.dispose();
-
         if (Emulator.rconServer != null)
             Emulator.rconServer.stop();
 
         if (Emulator.gameServer != null)
             Emulator.gameServer.stop();
+
+        if (Emulator.gameEnvironment != null)
+            Emulator.gameEnvironment.dispose();
 
         if (Emulator.threading != null)
             Emulator.threading.shutDown();

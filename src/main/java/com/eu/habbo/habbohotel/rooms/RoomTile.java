@@ -212,7 +212,7 @@ public class RoomTile
 
     public boolean isWalkable()
     {
-        return this.walkable;
+        return this.walkable && this.state != RoomTileState.BLOCKED;
     }
 
     public void setWalkable(boolean walkable)

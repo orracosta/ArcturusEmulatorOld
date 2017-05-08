@@ -3970,6 +3970,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             return false;
         }
 
+        if (roomTile.state == RoomTileState.BLOCKED)
+            return false;
+
         HabboItem topItem = null;
         boolean canWalk = true;
         for (HabboItem item : this.getItemsAt(roomTile))

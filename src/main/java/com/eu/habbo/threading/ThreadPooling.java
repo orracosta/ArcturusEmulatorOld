@@ -19,28 +19,30 @@ public class ThreadPooling
         Emulator.getLogging().logStart("Thread Pool -> Loaded!");
     }
 
-    public void run(Runnable run)
+    public ScheduledFuture run(Runnable run)
     {
         try
         {
             if (this.canAdd)
             {
-                this.run(run, 0);
+                return this.run(run, 0);
             }
         }
         catch (Exception e)
         {
             Emulator.getLogging().logErrorLine(e);
         }
+
+        return null;
     }
 
-    public void run(Runnable run, long delay)
+    public ScheduledFuture run(Runnable run, long delay)
     {
         try
         {
             if (this.canAdd)
             {
-                this.scheduledPool.schedule(new Runnable()
+                return this.scheduledPool.schedule(new Runnable()
                 {
                     @Override
                     public void run()
@@ -61,13 +63,24 @@ public class ThreadPooling
         {
             Emulator.getLogging().logErrorLine(e);
         }
+
+        return null;
     }
 
     public void shutDown()
     {
         this.canAdd = false;
 
-        this.scheduledPool.shutdownNow();
+        this.scheduledPool.shutdown();
+        try
+        {
+            this.scheduledPool.awaitTermination(10, TimeUnit.SECONDS);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
         while(!this.scheduledPool.isTerminated()) {
         }
     }
