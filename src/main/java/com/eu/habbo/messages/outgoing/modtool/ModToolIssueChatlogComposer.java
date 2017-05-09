@@ -8,11 +8,13 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class ModToolIssueChatlogComposer extends MessageComposer
 {
+    public static SimpleDateFormat format = new SimpleDateFormat("HH:mm");
     private ModToolIssue issue;
     private ArrayList<ModToolChatLog> chatlog;
     private String roomName;
@@ -57,7 +59,7 @@ public class ModToolIssueChatlogComposer extends MessageComposer
             this.response.appendShort(this.chatlog.size());
             for(ModToolChatLog chatLog : this.chatlog)
             {
-                this.response.appendString("" + (Emulator.getIntUnixTimestamp() - chatLog.timestamp));
+                this.response.appendString(format.format(chatLog.timestamp * 1000l));
                 this.response.appendInt32(chatLog.habboId);
                 this.response.appendString(chatLog.username);
                 this.response.appendString(chatLog.message);

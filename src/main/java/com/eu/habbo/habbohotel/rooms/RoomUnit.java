@@ -22,6 +22,7 @@ import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 
 import java.util.Deque;
+import java.util.LinkedList;
 
 public class RoomUnit
 {
@@ -54,7 +55,7 @@ public class RoomUnit
     private RoomUserRotation headRotation = RoomUserRotation.NORTH;
     private DanceType danceType;
     private RoomUnitType roomUnitType;
-    private Deque<RoomTile> path;
+    private Deque<RoomTile> path = new LinkedList<>();
     private int handItem;
     private long handItemTimestamp;
     private int walkTimeOut;
@@ -503,7 +504,7 @@ public class RoomUnit
 
     public void findPath()
     {
-        if (this.room != null)
+        if (this.room != null && this.goalLocation != null && (this.goalLocation.isWalkable() || this.room.canSitOrLayAt(this.goalLocation.x, this.goalLocation.y)))
         {
             this.path = this.room.getLayout().findPath(this.currentLocation, this.goalLocation);
         }
