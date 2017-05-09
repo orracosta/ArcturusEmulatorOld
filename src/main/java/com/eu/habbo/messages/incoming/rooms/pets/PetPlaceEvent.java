@@ -2,10 +2,7 @@ package com.eu.habbo.messages.incoming.rooms.pets;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.pets.Pet;
-import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.habbohotel.rooms.RoomUnitType;
-import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
+import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.generic.alerts.PetErrorComposer;
@@ -36,24 +33,53 @@ public class PetPlaceEvent extends MessageHandler
         {
             return;
         }
-
-        int x = this.packet.readInt();
-        int y = this.packet.readInt();
-
-        if (x == 0 && y == 0)
-        {
-            x = room.getLayout().getDoorX();
-            y = room.getLayout().getDoorY();
-        }
-
         if(room.getCurrentPets().size() >= Emulator.getConfig().getInt("hotel.pets.max.room") && !this.client.getHabbo().hasPermission("acc_unlimited_pets"))
         {
             this.client.sendResponse(new PetErrorComposer(PetErrorComposer.ROOM_ERROR_MAX_PETS));
             return;
         }
 
-        HabboItem item = room.getTopItemAt(x, y);
-        if(item != null && !item.getBaseItem().allowStack())
+        int x = this.packet.readInt();
+        int y = this.packet.readInt();
+
+        RoomTile tile = null;
+
+        if ((x == 0 && y == 0) || !room.isOwner(this.client.getHabbo()))
+        {
+            //Place the pet in front of the player.
+            tile = room.getLayout().getTileInFront(this.client.getHabbo().getRoomUnit().getCurrentLocation(), this.client.getHabbo().getRoomUnit().getBodyRotation().getValue(), 1);
+
+            if (tile == null || !tile.isWalkable())
+            {
+                //Find a walkable tile around the player.
+                for (RoomTile t : room.getLayout().getTilesAround(this.client.getHabbo().getRoomUnit().getCurrentLocation()))
+                {
+                    if (t != null && t.isWalkable())
+                    {
+                        tile = t;
+                        break;
+                    }
+                }
+            }
+
+            //Check if tile exists and is walkable. Else place it in the current location the Habbo is standing.
+            if (tile == null || !tile.isWalkable())
+            {
+                tile = this.client.getHabbo().getRoomUnit().getCurrentLocation();
+
+                //If the current tile is not walkable, place it at the door.
+                if (tile == null || !tile.isWalkable())
+                {
+                    tile =room.getLayout().getDoorTile();
+                }
+            }
+        }
+        else
+        {
+            tile = room.getLayout().getTile((short) x, (short) y);
+        }
+
+        if(tile == null || !tile.isWalkable() || !tile.allowStack())
         {
             this.client.sendResponse(new PetErrorComposer(PetErrorComposer.ROOM_ERROR_PETS_SELECTED_TILE_NOT_FREE));
             return;

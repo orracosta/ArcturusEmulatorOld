@@ -577,16 +577,19 @@ public class RoomLayout
         return tiles;
     }
 
-    public List<RoomTile> getTilesAround(RoomLayout roomLayout, short x, short y)
+    public List<RoomTile> getTilesAround(RoomTile tile)
     {
         List<RoomTile> tiles = new ArrayList<RoomTile>();
 
-        for(int i = 0; i < 8; i++)
+        if (tile != null)
         {
-            RoomTile t = this.getTileInFront(this.getTile(x, y), i, 0);
-            if (t != null)
+            for (int i = 0; i < 8; i++)
             {
-                tiles.add(t);
+                RoomTile t = this.getTileInFront(tile, i, 0);
+                if (t != null)
+                {
+                    tiles.add(t);
+                }
             }
         }
 
