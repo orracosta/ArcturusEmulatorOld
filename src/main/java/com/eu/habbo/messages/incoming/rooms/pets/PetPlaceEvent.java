@@ -43,6 +43,7 @@ public class PetPlaceEvent extends MessageHandler
         int y = this.packet.readInt();
 
         RoomTile tile = null;
+        RoomTile playerTile = this.client.getHabbo().getRoomUnit().getCurrentLocation();
 
         if ((x == 0 && y == 0) || !room.isOwner(this.client.getHabbo()))
         {
@@ -65,7 +66,7 @@ public class PetPlaceEvent extends MessageHandler
             //Check if tile exists and is walkable. Else place it in the current location the Habbo is standing.
             if (tile == null || !tile.isWalkable())
             {
-                tile = this.client.getHabbo().getRoomUnit().getCurrentLocation();
+                tile = playerTile;
 
                 //If the current tile is not walkable, place it at the door.
                 if (tile == null || !tile.isWalkable())
@@ -95,8 +96,9 @@ public class PetPlaceEvent extends MessageHandler
 
         roomUnit.setPathFinderRoom(room);
         roomUnit.setRotation(RoomUserRotation.SOUTH);
-        roomUnit.setLocation(room.getLayout().getTile((short)x, (short)y));
-        roomUnit.setZ(room.getStackHeight(x, y, false));
+        roomUnit.lookAtPoint(playerTile);
+        roomUnit.setLocation(tile);
+        roomUnit.setZ(tile.getStackHeight());
         roomUnit.setRoomUnitType(RoomUnitType.PET);
         pet.setRoomUnit(roomUnit);
         room.addPet(pet);
