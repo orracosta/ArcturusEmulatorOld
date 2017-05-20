@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.items.interactions;
 
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.util.pathfinding.PathFinder;
 
@@ -23,6 +24,6 @@ public class InteractionSwitch extends InteractionDefault
     @Override
     public boolean canToggle(Habbo habbo, Room room)
     {
-        return super.canToggle(habbo, room) || PathFinder.tilesAdjecent(this.getX(), this.getY(), habbo.getRoomUnit().getX(), habbo.getRoomUnit().getY());
+        return super.canToggle(habbo, room) || RoomLayout.tilesAdjecent(room.getLayout().getTile(this.getX(), this.getY()), habbo.getRoomUnit().getCurrentLocation());
     }
 }

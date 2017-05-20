@@ -44,7 +44,7 @@ public class HorseRideEvent extends MessageHandler
                     }
                 }
 
-                RoomTile goalTile = PathFinder.getSquareInFront(this.client.getHabbo().getHabboInfo().getCurrentRoom().getLayout(), this.client.getHabbo().getRoomUnit().getX(), this.client.getHabbo().getRoomUnit().getY(), this.client.getHabbo().getRoomUnit().getBodyRotation().getValue());
+                RoomTile goalTile = this.client.getHabbo().getHabboInfo().getCurrentRoom().getLayout().getTileInFront(this.client.getHabbo().getRoomUnit().getCurrentLocation(), this.client.getHabbo().getRoomUnit().getBodyRotation().getValue());
 
                 if (goalTile.equals(this.client.getHabbo().getRoomUnit().getCurrentLocation()))
                 {

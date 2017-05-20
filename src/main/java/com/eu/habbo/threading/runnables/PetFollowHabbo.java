@@ -34,10 +34,10 @@ public class PetFollowHabbo implements Runnable
                 {
                     if (this.pet.getRoomUnit() != null)
                     {
-                        RoomTile target = PathFinder.getSquareInFront(this.habbo.getHabboInfo().getCurrentRoom().getLayout(), this.habbo.getRoomUnit().getX(), this.habbo.getRoomUnit().getY(), Math.abs((this.habbo.getRoomUnit().getBodyRotation().getValue() + directionOffset + 4) % 8));
+                        RoomTile target = this.habbo.getHabboInfo().getCurrentRoom().getLayout().getTileInFront(this.habbo.getRoomUnit().getCurrentLocation(), Math.abs((this.habbo.getRoomUnit().getBodyRotation().getValue() + directionOffset + 4) % 8));
 
                         if (target.x < 0 || target.y < 0)
-                            target = PathFinder.getSquareInFront(this.habbo.getHabboInfo().getCurrentRoom().getLayout(), this.habbo.getRoomUnit().getX(), this.habbo.getRoomUnit().getY(), this.habbo.getRoomUnit().getBodyRotation().getValue());
+                            target = this.habbo.getHabboInfo().getCurrentRoom().getLayout().getTileInFront(this.habbo.getRoomUnit().getCurrentLocation(), this.habbo.getRoomUnit().getBodyRotation().getValue());
 
                         if (target.x >= 0 && target.y >= 0)
                         {

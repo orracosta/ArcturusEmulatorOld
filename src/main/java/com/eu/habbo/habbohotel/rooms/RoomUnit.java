@@ -203,15 +203,19 @@ public class RoomUnit
             {
                 if (!room.tileWalkable((short) next.x, (short) next.y) && !this.path.isEmpty() && !(item instanceof InteractionTeleport))
                 {
-                    Deque<RoomTile> path = this.path;
+                    Deque<RoomTile> path = new LinkedList<>(this.path);
+                    this.path.clear();
                     RoomTile newGoal = path.pop();
                     RoomTile oldGoal = this.goalLocation;
                     this.setGoalLocation(room.getLayout().getTile((short) newGoal.x, (short) newGoal.y));
                     this.room = room;
                     this.findPath();
-                    while (!this.path.isEmpty())
+                    if (this.path.size() > 0)
                     {
-                        path.addFirst(this.path.pollLast());
+                        for (int i = 0; i < this.path.size(); i++)
+                        {
+                            path.addFirst(this.path.pollLast());
+                        }
                     }
                     this.goalLocation = oldGoal;
                     this.path.clear();
@@ -239,7 +243,7 @@ public class RoomUnit
             HabboItem habboItem = room.getTopItemAt(this.getX(), this.getY());
             if(habboItem != null)
             {
-                if(habboItem != item || !PathFinder.pointInSquare(habboItem.getX(), habboItem.getY(), habboItem.getX() + habboItem.getBaseItem().getWidth() - 1, habboItem.getY() + habboItem.getBaseItem().getLength() - 1, next.x, next.y))
+                if(habboItem != item || !RoomLayout.pointInSquare(habboItem.getX(), habboItem.getY(), habboItem.getX() + habboItem.getBaseItem().getWidth() - 1, habboItem.getY() + habboItem.getBaseItem().getLength() - 1, next.x, next.y))
                     habboItem.onWalkOff(this, room, null);
             }
 
@@ -249,7 +253,7 @@ public class RoomUnit
             this.setRotation(RoomUserRotation.values()[Rotation.Calculate(this.getX(), this.getY(), next.x, next.y)]);
             if (item != null)
             {
-                if(item != habboItem || !PathFinder.pointInSquare(item.getX(), item.getY(), item.getX() + item.getBaseItem().getWidth() - 1, item.getY() + item.getBaseItem().getLength() - 1, this.getX(), this.getY()))
+                if(item != habboItem || !RoomLayout.pointInSquare(item.getX(), item.getY(), item.getX() + item.getBaseItem().getWidth() - 1, item.getY() + item.getBaseItem().getLength() - 1, this.getX(), this.getY()))
                 {
                     if(item.canWalkOn(this, room, null))
                     {

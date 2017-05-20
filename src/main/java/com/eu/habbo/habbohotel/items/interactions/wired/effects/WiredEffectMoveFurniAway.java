@@ -3,10 +3,7 @@ package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
-import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.rooms.RoomTile;
-import com.eu.habbo.habbohotel.rooms.RoomTileState;
-import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
@@ -69,7 +66,7 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
             if(target != null)
             {
 
-                if(PathFinder.tilesAdjecent(target.getRoomUnit().getX(), target.getRoomUnit().getY(), item.getX(), item.getY()) && (target.getRoomUnit().getX() == item.getX() || target.getRoomUnit().getY() == item.getY()))
+                if(RoomLayout.tilesAdjecent(target.getRoomUnit().getCurrentLocation(), room.getLayout().getTile(item.getX(), item.getY())) && (target.getRoomUnit().getX() == item.getX() || target.getRoomUnit().getY() == item.getY()))
                 {
                     final Habbo finalTarget = target;
                     Emulator.getThreading().run(new Runnable()

@@ -33,10 +33,10 @@ public class BotFollowHabbo implements Runnable
                     {
                         if (this.bot.getRoomUnit() != null)
                         {
-                            RoomTile target = PathFinder.getSquareInFront(this.room.getLayout(), this.habbo.getRoomUnit().getX(), this.habbo.getRoomUnit().getY(), Math.abs((this.habbo.getRoomUnit().getBodyRotation().getValue() + 4)) % 8);
+                            RoomTile target = this.room.getLayout().getTileInFront(this.habbo.getRoomUnit().getCurrentLocation(), Math.abs((this.habbo.getRoomUnit().getBodyRotation().getValue() + 4)) % 8);
 
                             if (target.x < 0 || target.y < 0)
-                                target = PathFinder.getSquareInFront(this.room.getLayout(), this.habbo.getRoomUnit().getX(), this.habbo.getRoomUnit().getY(), this.habbo.getRoomUnit().getBodyRotation().getValue());
+                                target = this.room.getLayout().getTileInFront(this.habbo.getRoomUnit().getCurrentLocation(), this.habbo.getRoomUnit().getBodyRotation().getValue());
 
                             if (target.x >= 0 && target.y >= 0)
                             {

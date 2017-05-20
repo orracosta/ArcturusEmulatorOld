@@ -37,7 +37,7 @@ public class InteractionOneWayGate extends HabboItem
     @Override
     public boolean isWalkable()
     {
-        return this.getExtradata().equals("0");
+        return false;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class InteractionOneWayGate extends HabboItem
 
         if (client != null)
         {
-            RoomTile tile = PathFinder.getSquareInFront(room.getLayout(), this.getX(), this.getY(), this.getRotation());
+            RoomTile tile = room.getLayout().getTileInFront(room.getLayout().getTile(this.getX(), this.getY()), this.getRotation());
 
             if (tile.equals(client.getHabbo().getRoomUnit().getCurrentLocation()))
             {

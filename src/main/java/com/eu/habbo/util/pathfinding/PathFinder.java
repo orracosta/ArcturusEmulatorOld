@@ -1,9 +1,7 @@
 package com.eu.habbo.util.pathfinding;
 
-import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
-import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import gnu.trove.set.hash.THashSet;
 
 import java.awt.*;
@@ -50,13 +48,13 @@ public class PathFinder
     }
 
     @Deprecated()
-    public static RoomTile getSquareInFront(RoomLayout roomLayout, short x, short y, int rotation)
+    public static RoomTile getTileInFront(RoomLayout roomLayout, short x, short y, int rotation)
     {
-        return getSquareInFront(roomLayout, x, y, rotation, (short)1);
+        return getTileInFront(roomLayout, x, y, rotation, (short) 1);
     }
 
     @Deprecated()
-    public static RoomTile getSquareInFront(RoomLayout roomLayout, short x, short y, int rotation, short offset)
+    public static RoomTile getTileInFront(RoomLayout roomLayout, short x, short y, int rotation, short offset)
     {
         rotation = rotation % 8;
 
@@ -87,7 +85,7 @@ public class PathFinder
 
         for(int i = 0; i < 8; i++)
         {
-            RoomTile t = getSquareInFront(roomLayout, x, y, i);
+            RoomTile t = getTileInFront(roomLayout, x, y, i);
             if (t != null)
             {
                 tiles.add(t);

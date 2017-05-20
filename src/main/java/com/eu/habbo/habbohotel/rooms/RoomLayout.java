@@ -105,18 +105,21 @@ public class RoomLayout
             }
         }
 
-        RoomTile doorFrontTile = PathFinder.getSquareInFront(this, this.doorX, this.doorY, this.doorDirection);
+        this.doorTile = this.roomTiles[this.doorX][this.doorY];
 
-        if(doorFrontTile != null && this.tileExists(doorFrontTile.x, doorFrontTile.y))
+        if (this.doorTile != null)
         {
-            if(this.roomTiles[doorFrontTile.x][doorFrontTile.y].state != RoomTileState.BLOCKED)
+            RoomTile doorFrontTile = this.getTileInFront(this.doorTile, this.doorDirection);
+
+            if (doorFrontTile != null && this.tileExists(doorFrontTile.x, doorFrontTile.y))
             {
-                if (this.doorZ != this.roomTiles[doorFrontTile.x][doorFrontTile.y].z || this.roomTiles[this.doorX][this.doorY].state != this.roomTiles[doorFrontTile.x][doorFrontTile.y].state)
+                if (this.roomTiles[doorFrontTile.x][doorFrontTile.y].state != RoomTileState.BLOCKED)
                 {
-                    this.doorZ = this.roomTiles[doorFrontTile.x][doorFrontTile.y].z;
-                    this.roomTiles[this.doorX][this.doorY].state = RoomTileState.OPEN;
-                    this.doorTile = this.roomTiles[this.doorX][this.doorY];
-                    //this.roomTiles[this.doorX][this.doorY].z = this.doorZ;
+                    if (this.doorZ != this.roomTiles[doorFrontTile.x][doorFrontTile.y].z || this.roomTiles[this.doorX][this.doorY].state != this.roomTiles[doorFrontTile.x][doorFrontTile.y].state)
+                    {
+                        this.doorZ = this.roomTiles[doorFrontTile.x][doorFrontTile.y].z;
+                        this.roomTiles[this.doorX][this.doorY].state = RoomTileState.OPEN;
+                        //this.roomTiles[this.doorX][this.doorY].z = this.doorZ;
 
 //                    StringBuilder stringBuilder = new StringBuilder(this.heightmap);
 //                    stringBuilder.setCharAt((this.doorY * (this.getMapSizeX() + 1)) + this.doorX, this.roomTiles[doorFrontTile.x][doorFrontTile.y].z >= 10 ? "ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(this.roomTiles[doorFrontTile.x][doorFrontTile.y].z - 10) : ("" + (this.roomTiles[doorFrontTile.x][doorFrontTile.y]).z).charAt(0));
@@ -145,8 +148,15 @@ public class RoomLayout
 //                    {
 //                        Emulator.getLogging().logSQLException(e);
 //                    }
+                    }
                 }
             }
+        }
+        else
+        {
+            this.doorX = 0;
+            this.doorY = 0;
+            this.doorTile = this.getTile(this.doorX, this.doorY);
         }
     }
 
@@ -287,7 +297,7 @@ public class RoomLayout
         LinkedList<RoomTile> openList = new LinkedList();
         try
         {
-            if (this.room == null || !this.room.isLoaded() || oldTile == null || newTile == null || oldTile.equals(newTile))
+            if (this.room == null || !this.room.isLoaded() || oldTile == null || newTile == null || oldTile.equals(newTile) || (!newTile.isWalkable() && !this.room.canSitOrLayAt(newTile.x, newTile.y)))
                 return openList;
 
             List<RoomTile> closedList = new LinkedList();
@@ -523,7 +533,12 @@ public class RoomLayout
 
     public static boolean tilesAdjecent(RoomTile one, RoomTile two)
     {
-        return !(Math.abs(one.x - two.x) > 1) && !(Math.abs(one.y - two.y) > 1);
+        return !(one == null || two == null) && !(Math.abs(one.x - two.x) > 1) && !(Math.abs(one.y - two.y) > 1);
+    }
+
+    public RoomTile getTileInFront(RoomTile tile, int rotation)
+    {
+        return this.getTileInFront(tile, rotation, 0);
     }
 
     public RoomTile getTileInFront(RoomTile tile, int rotation, int offset)
@@ -585,7 +600,7 @@ public class RoomLayout
         {
             for (int i = 0; i < 8; i++)
             {
-                RoomTile t = this.getTileInFront(tile, i, 0);
+                RoomTile t = this.getTileInFront(tile, i);
                 if (t != null)
                 {
                     tiles.add(t);

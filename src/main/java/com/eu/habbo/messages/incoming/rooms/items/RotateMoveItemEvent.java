@@ -3,6 +3,7 @@ package com.eu.habbo.messages.incoming.rooms.items;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionStackHelper;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -71,7 +72,7 @@ public class RotateMoveItemEvent extends MessageHandler
 
         if(rentSpace != null)
         {
-            if(!PathFinder.squareInSquare(PathFinder.getSquare(rentSpace.getX(), rentSpace.getY(), rentSpace.getBaseItem().getWidth(), rentSpace.getBaseItem().getLength(), rentSpace.getRotation()), PathFinder.getSquare(x, y, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), rotation)))
+            if(!RoomLayout.squareInSquare(PathFinder.getSquare(rentSpace.getX(), rentSpace.getY(), rentSpace.getBaseItem().getWidth(), rentSpace.getBaseItem().getLength(), rentSpace.getRotation()), PathFinder.getSquare(x, y, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), rotation)))
             {
                 this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "cant_set_not_owner"));
                 this.client.sendResponse(new FloorItemUpdateComposer(item));

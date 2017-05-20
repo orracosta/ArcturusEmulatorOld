@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.items.interactions.*;
 import com.eu.habbo.habbohotel.items.interactions.games.InteractionGameGate;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -156,7 +157,7 @@ public class RoomPlaceItemEvent extends MessageHandler
 
             if(rentSpace != null)
             {
-                if(!PathFinder.squareInSquare(PathFinder.getSquare(rentSpace.getX(), rentSpace.getY(), rentSpace.getBaseItem().getWidth(), rentSpace.getBaseItem().getLength(), rentSpace.getRotation()), PathFinder.getSquare(x, y, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), rotation)))
+                if(!RoomLayout.squareInSquare(PathFinder.getSquare(rentSpace.getX(), rentSpace.getY(), rentSpace.getBaseItem().getWidth(), rentSpace.getBaseItem().getLength(), rentSpace.getRotation()), PathFinder.getSquare(x, y, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), rotation)))
                 {
                     this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "cant_set_not_owner"));
                     return;

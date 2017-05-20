@@ -187,6 +187,11 @@ public class RequestNewNavigatorRoomsEvent extends MessageHandler
                 {
                     field = Emulator.getGameEnvironment().getNavigatorManager().filterSettings.get(filterField);
                 }
+
+                if (field == null)
+                {
+                    Emulator.getLogging().logDebugLine("[Navigator] Unknown filter field: " + filterField);
+                }
             }
 
             List<SearchResultList> resultLists;

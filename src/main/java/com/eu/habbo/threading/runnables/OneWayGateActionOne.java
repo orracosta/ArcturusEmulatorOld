@@ -26,7 +26,7 @@ public class OneWayGateActionOne implements Runnable
     {
         this.room.sendComposer(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()).compose());
 
-        RoomTile t = PathFinder.getSquareInFront(this.room.getLayout(), this.oneWayGate.getX(), this.oneWayGate.getY(), (this.oneWayGate.getRotation() + 4) % 8);
+        RoomTile t = this.room.getLayout().getTileInFront(this.room.getLayout().getTile(this.oneWayGate.getX(), this.oneWayGate.getY()), (this.oneWayGate.getRotation() + 4) % 8);
         
         if(client.getHabbo().getRoomUnit().animateWalk)
         {

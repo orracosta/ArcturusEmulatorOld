@@ -1,13 +1,11 @@
 package com.eu.habbo.habbohotel.games.freeze;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.achievements.Achievement;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.games.Game;
 import com.eu.habbo.habbohotel.games.GamePlayer;
 import com.eu.habbo.habbohotel.games.GameTeam;
 import com.eu.habbo.habbohotel.games.GameTeamColors;
-import com.eu.habbo.habbohotel.items.interactions.games.InteractionGameTimer;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeBlock;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeExitTile;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeTile;
@@ -15,6 +13,7 @@ import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreeze
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.gates.InteractionFreezeGate;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.scoreboards.InteractionFreezeScoreboard;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -163,7 +162,7 @@ public class FreezeGame extends Game
         if (!item.getExtradata().equalsIgnoreCase("0") && !item.getExtradata().isEmpty())
             return;
 
-        if (PathFinder.tilesAdjecent(habbo.getRoomUnit().getX(), habbo.getRoomUnit().getY(), item.getX(), item.getY()))
+        if (RoomLayout.tilesAdjecent(habbo.getRoomUnit().getCurrentLocation(), room.getLayout().getTile(item.getX(), item.getY())))
         {
             if(((FreezeGamePlayer)habbo.getHabboInfo().getGamePlayer()).canThrowSnowball())
             {
@@ -183,7 +182,7 @@ public class FreezeGame extends Game
         {
             for(int j = 0; j < radius; j++)
             {
-                t = PathFinder.getSquareInFront(this.room.getLayout(), x, y, i * 2, (short)radius);
+                t = PathFinder.getTileInFront(this.room.getLayout(), x, y, i * 2, (short) radius);
 
                 if(t == null || t.x < 0 || t.y < 0 || t.x >= this.room.getLayout().getMapSizeX() || t.y >= this.room.getLayout().getMapSizeY())
                     continue;
@@ -204,7 +203,7 @@ public class FreezeGame extends Game
 
             for(int j = 0; j < radius; j++)
             {
-                t = PathFinder.getSquareInFront(room.getLayout(),x, y, (i * 2) + 1, (short)radius);
+                t = PathFinder.getTileInFront(room.getLayout(), x, y, (i * 2) + 1, (short) radius);
 
                 if(t.x < 0 || t.y < 0 || t.x >= this.room.getLayout().getMapSizeX() || t.y >= this.room.getLayout().getMapSizeY())
                     continue;

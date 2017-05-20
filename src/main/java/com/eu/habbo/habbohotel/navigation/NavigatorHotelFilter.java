@@ -46,8 +46,6 @@ public class NavigatorHotelFilter extends NavigatorFilter
         {
             List<SearchResultList> resultLists = new ArrayList<SearchResultList>();
             int i = 0;
-            resultLists.add(new SearchResultList(i, "popular", "", SearchAction.NONE, SearchMode.fromType(Emulator.getConfig().getInt("hotel.navigator.popular.listtype")), false, Emulator.getGameEnvironment().getRoomManager().getPopularRooms(10), false, false));
-            i++;
 
             for (Map.Entry<Integer, List<Room>> set : Emulator.getGameEnvironment().getRoomManager().findRooms(filterField, value).entrySet())
             {

@@ -60,6 +60,7 @@ public class Habbo implements Runnable
     void isOnline(boolean value)
     {
         this.habboInfo.setOnline(value);
+        this.habboInfo.setLastOnline(Emulator.getIntUnixTimestamp());
         this.update();
     }
 
@@ -170,7 +171,6 @@ public class Habbo implements Runnable
             this.messenger.connectionChanged(this, false, false);
             this.messenger.dispose();
             this.disconnected = true;
-            this.habboInfo.setLastOnline(Emulator.getIntUnixTimestamp());
             AchievementManager.saveAchievements(this);
 
             this.habboStats.dispose();

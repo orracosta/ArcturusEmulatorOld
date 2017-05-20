@@ -55,7 +55,7 @@ public class SummonCommand extends Command
 
             gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_summon.summoned").replace("%user%", params[1]), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
 
-            RoomTile t = PathFinder.getSquareInFront(gameClient.getHabbo().getHabboInfo().getCurrentRoom().getLayout(), gameClient.getHabbo().getRoomUnit().getX(), gameClient.getHabbo().getRoomUnit().getY(), gameClient.getHabbo().getRoomUnit().getBodyRotation().getValue());
+            RoomTile t = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getLayout().getTileInFront(gameClient.getHabbo().getRoomUnit().getCurrentLocation(), gameClient.getHabbo().getRoomUnit().getBodyRotation().getValue());
 
             if(t != null && gameClient.getHabbo().getHabboInfo().getCurrentRoom().tileWalkable(t))
             {

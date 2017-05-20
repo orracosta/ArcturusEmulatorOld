@@ -5,7 +5,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPetBreedingNest;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWater;
-import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -339,7 +338,7 @@ public class Pet extends AbstractPet
 
             case 3:
             {
-                this.getRoomUnit().setGoalLocation(PathFinder.getSquareInFront(this.room.getLayout(), habbo.getRoomUnit().getX(), habbo.getRoomUnit().getY(), habbo.getRoomUnit().getBodyRotation().getValue()));
+                this.getRoomUnit().setGoalLocation(this.room.getLayout().getTileInFront(habbo.getRoomUnit().getCurrentLocation(), habbo.getRoomUnit().getBodyRotation().getValue()));
                 this.task = PetTasks.HERE;
                 this.roomUnit.setCanWalk(true);
 
@@ -584,7 +583,7 @@ public class Pet extends AbstractPet
 
             case 18:
             {
-                this.getRoomUnit().setGoalLocation(PathFinder.getSquareInFront(this.room.getLayout(), habbo.getRoomUnit().getX(), habbo.getRoomUnit().getY(), habbo.getRoomUnit().getBodyRotation().getValue()));
+                this.getRoomUnit().setGoalLocation(this.room.getLayout().getTileInFront(habbo.getRoomUnit().getCurrentLocation(), habbo.getRoomUnit().getBodyRotation().getValue()));
                 this.roomUnit.setCanWalk(true);
             }
             break;
@@ -623,7 +622,7 @@ public class Pet extends AbstractPet
             case 24:
             {
                 //Move forward:
-                this.getRoomUnit().setGoalLocation(PathFinder.getSquareInFront(this.room.getLayout(), this.roomUnit.getX(), this.roomUnit.getY(), this.roomUnit.getBodyRotation().getValue()));
+                this.getRoomUnit().setGoalLocation(this.room.getLayout().getTileInFront(this.roomUnit.getCurrentLocation(), this.roomUnit.getBodyRotation().getValue()));
                 this.roomUnit.setCanWalk(true);
 
                 super.say(this.petData.randomVocal(PetVocalsType.GENERIC_NEUTRAL));

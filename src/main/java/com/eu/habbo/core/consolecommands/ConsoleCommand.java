@@ -7,15 +7,7 @@ public abstract class ConsoleCommand
     /**
      * Holds all console commands.
      */
-    public static THashSet<ConsoleCommand> commands = new THashSet<ConsoleCommand>()
-    {
-        {
-            add(new ConsoleShutdownCommand());
-            add(new ConsoleInfoCommand());
-            add(new ConsoleTestCommand());
-            add(new ConsoleReconnectCameraCommand());
-        }
-    };
+    public static THashSet<ConsoleCommand> commands = new THashSet<ConsoleCommand>();
 
     /**
      * The key of the command. First word.
@@ -31,6 +23,14 @@ public abstract class ConsoleCommand
     {
         this.key    = key;
         this.usage  = usage;
+    }
+
+    public static void load()
+    {
+        commands.add(new ConsoleShutdownCommand());
+        commands.add(new ConsoleInfoCommand());
+        commands.add(new ConsoleTestCommand());
+        commands.add(new ConsoleReconnectCameraCommand());
     }
 
     /**

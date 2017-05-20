@@ -4,6 +4,8 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomLayout;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -91,7 +93,7 @@ public class InteractionLoveLock extends HabboItem
         if(client == null)
             return;
 
-        if(PathFinder.tilesAdjecent(client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY(), this.getX(), this.getY()))
+        if(RoomLayout.tilesAdjecent(client.getHabbo().getRoomUnit().getCurrentLocation(), room.getLayout().getTile(this.getX(), this.getY())))
         {
             if(this.userOneId == 0)
             {
@@ -115,7 +117,8 @@ public class InteractionLoveLock extends HabboItem
 
     public boolean lock(Habbo userOne, Habbo userTwo, Room room)
     {
-        if(PathFinder.tilesAdjecent(userOne.getRoomUnit().getX(), userOne.getRoomUnit().getY(), this.getX(), this.getY()) && PathFinder.tilesAdjecent(userTwo.getRoomUnit().getX(), userTwo.getRoomUnit().getY(), this.getX(), this.getY()))
+        RoomTile tile = room.getLayout().getTile(this.getX(), this.getY());
+        if(RoomLayout.tilesAdjecent(userOne.getRoomUnit().getCurrentLocation(), tile) && RoomLayout.tilesAdjecent(userTwo.getRoomUnit().getCurrentLocation(), tile))
         {
             String data = "1";
             data += "\t";

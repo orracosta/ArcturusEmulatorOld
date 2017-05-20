@@ -104,6 +104,9 @@ public class PacketManager
         if(client == null || Emulator.isShuttingDown)
             return;
 
+        if (client.getHabbo() == null && !(packet.getMessageId() == Incoming.SecureLoginEvent) || packet.getMessageId() == Incoming.MachineIDEvent)
+            return;
+
         try
         {
             if(this.isRegistered(packet.getMessageId()))

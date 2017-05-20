@@ -63,7 +63,6 @@ import gnu.trove.set.hash.THashSet;
 import io.netty.util.internal.ConcurrentSet;
 
 import java.awt.*;
-import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -1610,7 +1609,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                 continue;
                         }
 
-                        RoomTile roomTile = PathFinder.getSquareInFront(this.layout, roller.getX(), roller.getY(), roller.getRotation());
+                        RoomTile roomTile = this.layout.getTileInFront(this.layout.getTile(roller.getX(), roller.getY()), roller.getRotation());
 
                         if (roomTile == null)
                             continue;
@@ -2916,6 +2915,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             pet.getRoomUnit().setId(this.unitCounter);
             this.currentPets.put(pet.getId(), pet);
             this.unitCounter++;
+
+            Habbo habbo = this.getHabbo(pet.getUserId());
+            if (habbo != null)
+            {
+                this.furniOwnerNames.put(pet.getUserId(), this.getHabbo(pet.getUserId()).getHabboInfo().getUsername());
+            }
         }
     }
 

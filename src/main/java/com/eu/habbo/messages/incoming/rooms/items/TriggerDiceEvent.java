@@ -2,6 +2,7 @@ package com.eu.habbo.messages.incoming.rooms.items;
 
 import com.eu.habbo.habbohotel.items.interactions.InteractionDice;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.util.pathfinding.PathFinder;
@@ -26,9 +27,9 @@ public class TriggerDiceEvent extends MessageHandler
         {
             if(item instanceof InteractionDice)
             {
-                if (PathFinder.tilesAdjecent(item.getX(), item.getY(), this.client.getHabbo().getRoomUnit().getX(), this.client.getHabbo().getRoomUnit().getY()))
+                if (RoomLayout.tilesAdjecent(room.getLayout().getTile(item.getX(), item.getY()), this.client.getHabbo().getRoomUnit().getCurrentLocation()))
                 {
-                    ((InteractionDice)item).onClick(this.client, room, new Object[]{});
+                    item.onClick(this.client, room, new Object[]{});
                 }
             }
         }

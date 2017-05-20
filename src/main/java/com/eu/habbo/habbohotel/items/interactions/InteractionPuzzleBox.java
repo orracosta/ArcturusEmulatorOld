@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.items.interactions;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -32,7 +33,7 @@ public class InteractionPuzzleBox extends HabboItem
         if(client.getHabbo().getRoomUnit().getStatus().containsKey("mv"))
             return;
 
-        if(!PathFinder.tilesAdjecent(super.getX(), super.getY(), client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY()))
+        if(!RoomLayout.tilesAdjecent(room.getLayout().getTile(super.getX(), super.getY()), client.getHabbo().getRoomUnit().getCurrentLocation()))
             return;
 
 
@@ -49,7 +50,7 @@ public class InteractionPuzzleBox extends HabboItem
                 return;
         }
 
-        RoomTile tile = PathFinder.getSquareInFront(room.getLayout(), this.getX(), this.getY(), client.getHabbo().getRoomUnit().getBodyRotation().getValue());
+        RoomTile tile = room.getLayout().getTileInFront(room.getLayout().getTile(this.getX(), this.getY()), client.getHabbo().getRoomUnit().getBodyRotation().getValue());
 
         if (!room.tileWalkable(tile))
         {
@@ -58,7 +59,7 @@ public class InteractionPuzzleBox extends HabboItem
 
         double offset = room.getStackHeight(tile.x, tile.y, false) - this.getZ();
 
-        if(!boxLocation.equals(PathFinder.getSquareInFront(room.getLayout(), client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY(), client.getHabbo().getRoomUnit().getBodyRotation().getValue())))
+        if(!boxLocation.equals(room.getLayout().getTileInFront(client.getHabbo().getRoomUnit().getCurrentLocation(), client.getHabbo().getRoomUnit().getBodyRotation().getValue())))
             return;
 
         HabboItem item = room.getTopItemAt(tile.x, tile.y);

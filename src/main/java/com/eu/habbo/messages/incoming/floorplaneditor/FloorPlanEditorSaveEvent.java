@@ -67,6 +67,9 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
             int floorSize = this.packet.readInt();
             int wallHeight = -1;
 
+            if (doorX < 0 || doorY < 0)
+                return;
+
             if(this.packet.bytesAvailable() >= 4)
                 wallHeight = this.packet.readInt();
 
@@ -79,6 +82,14 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
                 layout.setDoorDirection(doorRotation);
                 layout.setHeightmap(map);
                 layout.parse();
+
+                if (layout.getDoorTile() == null)
+                {
+                    this.client.sendResponse(new GenericAlertComposer("Error"));
+                    ((CustomRoomLayout)layout).needsUpdate(false);
+                    Emulator.getGameEnvironment().getRoomManager().unloadRoom(room);
+                    return;
+                }
                 ((CustomRoomLayout)layout).needsUpdate(true);
                 Emulator.getThreading().run((CustomRoomLayout)layout);
             }

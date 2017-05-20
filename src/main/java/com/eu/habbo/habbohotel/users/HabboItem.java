@@ -283,7 +283,7 @@ public abstract class HabboItem implements Runnable, IEventTriggers
 
     public static RoomTile getSquareInFront(RoomLayout roomLayout, HabboItem item)
     {
-        return PathFinder.getSquareInFront(roomLayout, item.getX(), item.getY(), item.getRotation());
+        return roomLayout.getTileInFront(roomLayout.getTile(item.getX(), item.getY()), item.getRotation());
     }
 
     public abstract boolean canWalkOn(RoomUnit roomUnit, Room room, Object[] objects);

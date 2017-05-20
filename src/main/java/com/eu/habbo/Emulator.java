@@ -112,6 +112,7 @@ public final class Emulator
         try
         {
             Emulator.stopped = false;
+            ConsoleCommand.load();
             Emulator.logging = new Logging();
             Emulator.getLogging().logStart("\r" + Emulator.logo);
             random = new Random();

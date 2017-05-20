@@ -3,6 +3,7 @@ package com.eu.habbo.messages.incoming.rooms.items;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionDice;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
@@ -26,7 +27,7 @@ public class CloseDiceEvent extends MessageHandler
         {
             if (item instanceof InteractionDice)
             {
-                if (PathFinder.tilesAdjecent(item.getX(), item.getY(), this.client.getHabbo().getRoomUnit().getX(), this.client.getHabbo().getRoomUnit().getY()))
+                if (RoomLayout.tilesAdjecent(room.getLayout().getTile(item.getX(), item.getY()), this.client.getHabbo().getRoomUnit().getCurrentLocation()))
                 {
                     if (!item.getExtradata().equals("-1"))
                     {

@@ -8,6 +8,7 @@ import com.eu.habbo.habbohotel.games.GameTeamColors;
 import com.eu.habbo.habbohotel.items.interactions.games.tag.InteractionTagField;
 import com.eu.habbo.habbohotel.items.interactions.games.tag.InteractionTagPole;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboGender;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -173,7 +174,7 @@ public abstract class TagGame extends Game
     @EventHandler
     public static void onUserLookAtPoint(RoomUnitLookAtPointEvent event)
     {
-        if (PathFinder.tilesAdjecent(event.roomUnit.getCurrentLocation(), event.location))
+        if (RoomLayout.tilesAdjecent(event.roomUnit.getCurrentLocation(), event.location))
         {
             Habbo habbo = event.room.getHabbo(event.roomUnit);
 
@@ -212,7 +213,7 @@ public abstract class TagGame extends Game
     {
         if(event.habbo.getHabboInfo().getCurrentGame() != null && TagGame.class.isAssignableFrom(event.habbo.getHabboInfo().getCurrentGame()))
         {
-            THashSet<HabboItem> items = event.habbo.getHabboInfo().getCurrentRoom().getItemsAt(event.toLocation.x, event.toLocation.y);
+            THashSet<HabboItem> items = event.habbo.getHabboInfo().getCurrentRoom().getItemsAt(event.toLocation);
 
             TagGame game = (TagGame) event.habbo.getHabboInfo().getCurrentRoom().getGame(event.habbo.getHabboInfo().getCurrentGame());
 

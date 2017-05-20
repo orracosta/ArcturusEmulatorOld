@@ -3,10 +3,7 @@ package com.eu.habbo.habbohotel.items.interactions;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
-import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.rooms.RoomTile;
-import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
+import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.threading.runnables.KickBallAction;
 import com.eu.habbo.util.pathfinding.PathFinder;
 
@@ -69,7 +66,7 @@ public abstract class InteractionPushable extends InteractionDefault
     {
         super.onClick(client, room, objects);
         
-        if(PathFinder.tilesAdjecent(client.getHabbo().getRoomUnit().getCurrentLocation(), room.getLayout().getTile(this.getX(), this.getY())))
+        if(RoomLayout.tilesAdjecent(client.getHabbo().getRoomUnit().getCurrentLocation(), room.getLayout().getTile(this.getX(), this.getY())))
         {
             int velocity = this.getTackleVelocity(client.getHabbo().getRoomUnit(), room);
             RoomUserRotation direction = this.getWalkOnDirection(client.getHabbo().getRoomUnit(), room);

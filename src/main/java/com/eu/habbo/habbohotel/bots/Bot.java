@@ -263,7 +263,7 @@ public class Bot implements Runnable
                 {
                     for (RoomTile t : PathFinder.getTilesAround(this.room.getLayout(), this.getRoomUnit().getX(), this.getRoomUnit().getY()))
                     {
-                        WiredHandler.handle(WiredTriggerType.BOT_REACHED_STF, this.roomUnit, this.room, room.getItemsAt(t.x, t.y).toArray());
+                        WiredHandler.handle(WiredTriggerType.BOT_REACHED_STF, this.roomUnit, this.room, room.getItemsAt(t).toArray());
                     }
                 }
             }

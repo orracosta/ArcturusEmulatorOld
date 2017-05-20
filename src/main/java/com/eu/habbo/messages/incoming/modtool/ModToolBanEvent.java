@@ -11,7 +11,7 @@ public class ModToolBanEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        if (this.client.getHabbo().hasPermission("acc_supporttool"))
+        if (this.client.getHabbo() != null && this.client.getHabbo().hasPermission("acc_supporttool"))
         {
             Emulator.getGameEnvironment().getModToolManager().ban(this.packet.readInt(), this.client.getHabbo(), this.packet.readString(), this.packet.readInt(), ModToolBanType.ACCOUNT);
         }
