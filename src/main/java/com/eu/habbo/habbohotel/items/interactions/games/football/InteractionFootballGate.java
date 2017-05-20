@@ -146,7 +146,6 @@ public class InteractionFootballGate extends HabboItem
         {
             habbo.getHabboInfo().setLook((String)habbo.getHabboStats().cache.get(CACHE_KEY));
             habbo.getHabboStats().cache.remove(CACHE_KEY);
-            
             habbo.getClient().sendResponse(new UpdateUserLookComposer(habbo));
             if (habbo.getHabboInfo().getCurrentRoom() != null)
             {
