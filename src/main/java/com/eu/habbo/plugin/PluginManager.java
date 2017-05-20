@@ -10,9 +10,7 @@ import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.messages.PacketManager;
 import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
 import com.eu.habbo.plugin.events.roomunit.RoomUnitLookAtPointEvent;
-import com.eu.habbo.plugin.events.users.UserDisconnectEvent;
-import com.eu.habbo.plugin.events.users.UserSavedMottoEvent;
-import com.eu.habbo.plugin.events.users.UserTakeStepEvent;
+import com.eu.habbo.plugin.events.users.*;
 import com.eu.habbo.threading.runnables.RoomTrashing;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -295,7 +293,9 @@ public class PluginManager
             this.methods.add(RoomLayout.class.getMethod("configurationUpdated", EmulatorConfigUpdatedEvent.class));
             this.methods.add(FreezeGame.class.getMethod("onConfigurationUpdated", EmulatorConfigUpdatedEvent.class));
             this.methods.add(PacketManager.class.getMethod("onConfigurationUpdated", EmulatorConfigUpdatedEvent.class));
-            this.methods.add(InteractionFootballGate.class.getMethod("onUserLogOut", UserDisconnectEvent.class));
+            this.methods.add(InteractionFootballGate.class.getMethod("onUserEvent", UserDisconnectEvent.class));
+            this.methods.add(InteractionFootballGate.class.getMethod("onUserEvent", UserExitRoomEvent.class));
+            this.methods.add(InteractionFootballGate.class.getMethod("onUserEvent", UserSavedLookEvent.class));
         }
         catch (NoSuchMethodException e)
         {

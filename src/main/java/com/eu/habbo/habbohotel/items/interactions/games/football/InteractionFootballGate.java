@@ -12,6 +12,8 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDataComposer;
 import com.eu.habbo.messages.outgoing.users.UpdateUserLookComposer;
 import com.eu.habbo.plugin.EventHandler;
 import com.eu.habbo.plugin.events.users.UserDisconnectEvent;
+import com.eu.habbo.plugin.events.users.UserEvent;
+import com.eu.habbo.plugin.events.users.UserExitRoomEvent;
 import com.eu.habbo.plugin.events.users.UserSavedLookEvent;
 import com.eu.habbo.util.FigureUtil;
 
@@ -130,14 +132,25 @@ public class InteractionFootballGate extends HabboItem
     }
 
     @EventHandler
-    public static void onUserLogOut(UserDisconnectEvent event)
+    public static void onUserEvent(UserEvent event)
     {
         if (event.habbo != null)
         {
-            if (event.habbo.getHabboStats().cache.containsKey(CACHE_KEY))
+            removeLook(event.habbo);
+        }
+    }
+
+    private static void removeLook(Habbo habbo)
+    {
+        if (habbo.getHabboStats().cache.containsKey(CACHE_KEY))
+        {
+            habbo.getHabboInfo().setLook((String)habbo.getHabboStats().cache.get(CACHE_KEY));
+            habbo.getHabboStats().cache.remove(CACHE_KEY);
+            
+            habbo.getClient().sendResponse(new UpdateUserLookComposer(habbo));
+            if (habbo.getHabboInfo().getCurrentRoom() != null)
             {
-                event.habbo.getHabboInfo().setLook((String)event.habbo.getHabboStats().cache.get(CACHE_KEY));
-                event.habbo.getHabboStats().cache.remove(CACHE_KEY);
+                habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserDataComposer(habbo).compose());
             }
         }
     }
