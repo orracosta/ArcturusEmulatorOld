@@ -590,7 +590,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         if (walkable)
         {
-            if (this.hasHabbosAt(x, y) && this.allowWalkthrough)
+            if (this.hasHabbosAt(x, y) && !this.allowWalkthrough)
             {
                 walkable = false;
             }
