@@ -10,6 +10,7 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
 import com.eu.habbo.util.pathfinding.PathFinder;
 import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +42,14 @@ public class CannonKickAction implements Runnable
         {
             for(Habbo habbo : this.room.getHabbosAt(t.x, t.y))
             {
-                Emulator.getGameEnvironment().getRoomManager().leaveRoom(habbo, this.room);
-                habbo.getClient().sendResponse(message); //kicked composer
+                for(Habbo habbo : this.room.getHabbosAt(t.x, t.y))
+                {
+                    if(!habbo.hasPermission("acc_unkickable") && !this.room.isOwner(habbo)) 
+                    {
+                        Emulator.getGameEnvironment().getRoomManager().leaveRoom(habbo, this.room);
+                        habbo.getClient().sendResponse(message); //kicked composer
+                    }
+                }
             }
         }
     }

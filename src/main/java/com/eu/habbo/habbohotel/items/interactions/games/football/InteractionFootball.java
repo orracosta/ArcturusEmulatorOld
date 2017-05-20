@@ -1,15 +1,11 @@
 package com.eu.habbo.habbohotel.items.interactions.games.football;
 
-import com.eu.habbo.habbohotel.games.Game;
-import com.eu.habbo.habbohotel.games.GameTeamColors;
-import com.eu.habbo.habbohotel.games.football.FootballGame;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPushable;
 import com.eu.habbo.habbohotel.items.interactions.games.football.goals.InteractionFootballGoal;
-import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.rooms.RoomTile;
-import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
+import com.eu.habbo.habbohotel.rooms.*;
+import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.habbohotel.rooms.RoomTileState;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.items.ItemStateComposer;
 import com.eu.habbo.util.pathfinding.PathFinder;
@@ -154,7 +150,7 @@ public class InteractionFootball extends InteractionPushable
     @Override
     public boolean validMove(Room room, RoomTile from, RoomTile to)
     {
-        if (to == null)
+        if (to == null || to.state == RoomTileState.BLOCKED)
             return false;
 
         HabboItem topItem = room.getTopItemAt(to.x, to.y, this);
@@ -183,49 +179,7 @@ public class InteractionFootball extends InteractionPushable
     
     @Override
     public void onMove(Room room, RoomTile from, RoomTile to, RoomUserRotation direction, RoomUnit kicker, int nextRoll, int currentStep, int totalSteps)
-    {
-        FootballGame game = ((FootballGame)room.getGame(FootballGame.class));
-        if (game == null)
-        {
-            try
-            {
-                game = FootballGame.class.getDeclaredConstructor(Room.class).newInstance(room);
-                room.addGame(game);
-            }
-            catch(Exception e)
-            {
-                return;
-            }
-        }
-
-        THashSet<HabboItem> items = room.getItemsAt(InteractionFootballGoal.class, from.x, from.y);
-        HabboItem lowestCurrent = null;
-        for (HabboItem item : items)
-        {
-            if (lowestCurrent == null || item.getZ() < lowestCurrent.getZ())
-            {
-                lowestCurrent = item;
-            }
-        }
-
-        items = room.getItemsAt(InteractionFootballGoal.class, to.x, to.y);
-        HabboItem lowestNew = null;
-        for (HabboItem item : items)
-        {
-            if (lowestNew == null || item.getZ() < lowestNew.getZ())
-            {
-                lowestNew = item;
-            }
-        }
-
-        if (lowestCurrent == null && lowestNew != null)
-        {
-            if (game != null && lowestNew instanceof InteractionFootballGoal)
-            {
-                game.onScore(kicker, ((InteractionFootballGoal) lowestNew).teamColor);
-            }
-        }
-
+    {        
         this.setExtradata(nextRoll <= 200 ? "8" : (nextRoll <= 250 ? "7" : (nextRoll <= 300 ? "6" : (nextRoll <= 350 ? "5" : (nextRoll <= 400 ? "4" : (nextRoll <= 450 ? "3" : (nextRoll <= 500 ? "2" : "1")))))));
         room.sendComposer(new ItemStateComposer(this).compose());
     }

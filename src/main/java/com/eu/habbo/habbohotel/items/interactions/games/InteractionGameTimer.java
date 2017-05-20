@@ -110,11 +110,7 @@ public abstract class InteractionGameTimer extends HabboItem
         else
         {
 
-            if (game != null && game.isRunning)
-            {
-                this.stopGame(room);
-            }
-            else
+            if (game != null && !game.isRunning)
             {
                 this.startGame(room);
             }
@@ -186,7 +182,7 @@ public abstract class InteractionGameTimer extends HabboItem
             case 120:   this.baseTime = 180; break;
             case 180:   this.baseTime = 300; break;
             case 300:   this.baseTime = 600; break;
-            case 600:   this.baseTime = 0; break;
+            //case 600:   this.baseTime = 0; break;
 
             default:
                 this.baseTime = 30;

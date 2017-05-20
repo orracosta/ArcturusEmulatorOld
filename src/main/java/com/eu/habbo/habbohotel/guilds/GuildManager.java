@@ -307,7 +307,10 @@ public class GuildManager
                                 {
                                     if (set.next())
                                     {
-                                        error = true;
+                                        if (set.getInt(1) >= 1)
+                                        {
+                                            error = true;
+                                        }
                                     }
                                 }
                             }
@@ -330,7 +333,7 @@ public class GuildManager
                 {
                     try (PreparedStatement statement = connection.prepareStatement("UPDATE guilds_members SET level_id = ?, member_since = ? WHERE user_id = ? AND guild_id = ?"))
                     {
-                        statement.setInt(1, 2);
+                        statement.setInt(1, GuildRank.MEMBER.type);
                         statement.setInt(2, Emulator.getIntUnixTimestamp());
                         statement.setInt(3, userId);
                         statement.setInt(4, guild.getId());
@@ -338,7 +341,7 @@ public class GuildManager
                     }
                 }
 
-                if(!error)
+                if(userId == 0 && !error)
                 {
                     if (guild.getState() == GuildState.LOCKED)
                         guild.increaseRequestCount();

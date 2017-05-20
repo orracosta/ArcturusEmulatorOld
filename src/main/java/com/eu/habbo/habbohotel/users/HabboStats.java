@@ -265,7 +265,7 @@ public class HabboStats implements Runnable
 
             if(stats != null)
             {
-                try (PreparedStatement statement = connection.prepareStatement("SELECT guild_id FROM guilds_members WHERE user_id = ? LIMIT 100"))
+                try (PreparedStatement statement = connection.prepareStatement("SELECT guild_id FROM guilds_members WHERE user_id = ? AND level_id < 3 LIMIT 100"))
                 {
                     statement.setInt(1, habbo.getHabboInfo().getId());
                     try (ResultSet set = statement.executeQuery())

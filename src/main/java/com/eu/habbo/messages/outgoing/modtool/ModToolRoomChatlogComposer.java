@@ -5,8 +5,10 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
+import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ModToolRoomChatlogComposer extends MessageComposer
 {
@@ -32,10 +34,12 @@ public class ModToolRoomChatlogComposer extends MessageComposer
         this.response.appendByte(1);
         this.response.appendInt32(this.room.getId());
 
+        SimpleDateFormat formatDate = new SimpleDateFormat("HH:mm");
+        
         this.response.appendShort(this.chatlog.size());
         for(ModToolChatLog line : this.chatlog)
         {
-            this.response.appendString("" + line.timestamp);
+            this.response.appendString(formatDate.format(new Date((line.timestamp * 1000L))));
             this.response.appendInt32(line.habboId);
             this.response.appendString(line.username);
             this.response.appendString(line.message);
