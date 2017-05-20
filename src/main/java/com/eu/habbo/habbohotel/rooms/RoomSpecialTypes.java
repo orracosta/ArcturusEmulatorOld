@@ -10,7 +10,7 @@ import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.Interaction
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.InteractionBattleBanzaiTimer;
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.gates.InteractionBattleBanzaiGate;
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.scoreboards.InteractionBattleBanzaiScoreboard;
-import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeBlock;
+import com.eu.habbo.habbohotel.items.interactions.games.football.scoreboards.InteractionFootballScoreboard;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeExitTile;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeTimer;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.gates.InteractionFreezeGate;
@@ -561,6 +561,43 @@ public class RoomSpecialTypes
         }
     }
 
+    public THashMap<Integer, InteractionFootballScoreboard> getFootballScoreboards()
+    {
+        synchronized (this.gameScoreboards)
+        {
+            THashMap<Integer, InteractionFootballScoreboard> boards = new THashMap<Integer, InteractionFootballScoreboard>();
+
+            for (Map.Entry<Integer, InteractionGameScoreboard> set : this.gameScoreboards.entrySet())
+            {
+                if (set.getValue() instanceof InteractionFootballScoreboard)
+                {
+                    boards.put(set.getValue().getId(), (InteractionFootballScoreboard) set.getValue());
+                }
+            }
+
+            return boards;
+        }
+    }
+
+    public THashMap<Integer, InteractionFootballScoreboard> getFootballScoreboards(GameTeamColors teamColor)
+    {
+        synchronized (this.gameScoreboards)
+        {
+            THashMap<Integer, InteractionFootballScoreboard> boards = new THashMap<Integer, InteractionFootballScoreboard>();
+
+            for (Map.Entry<Integer, InteractionGameScoreboard> set : this.gameScoreboards.entrySet())
+            {
+                if (set.getValue() instanceof InteractionFootballScoreboard)
+                {
+                    if (((InteractionBattleBanzaiScoreboard) set.getValue()).teamColor.equals(teamColor))
+                        boards.put(set.getValue().getId(), (InteractionFootballScoreboard) set.getValue());
+                }
+            }
+
+            return boards;
+        }
+    }
+
     /*
         GameGates
      */
@@ -739,6 +776,26 @@ public class RoomSpecialTypes
         }
 
         return items;
+    }
+
+    public HabboItem getLowestItemsOfType(Class<? extends HabboItem> type)
+    {
+        HabboItem i = null;
+        synchronized (this.undefined)
+        {
+            for (HabboItem item : this.undefined.values())
+            {
+                if (i == null || item.getZ() < i.getZ())
+                {
+                    if (item.getClass().isAssignableFrom(type))
+                    {
+                        i = item;
+                    }
+                }
+            }
+        }
+
+        return i;
     }
 
     public synchronized void dispose()

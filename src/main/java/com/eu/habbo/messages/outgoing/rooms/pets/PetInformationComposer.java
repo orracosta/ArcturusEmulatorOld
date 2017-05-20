@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.HorsePet;
 import com.eu.habbo.habbohotel.pets.MonsterplantPet;
 import com.eu.habbo.habbohotel.pets.PetManager;
+import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
@@ -12,10 +13,12 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 public class PetInformationComposer extends MessageComposer
 {
     private final AbstractPet pet;
+    private final Room room;
 
-    public PetInformationComposer(AbstractPet pet)
+    public PetInformationComposer(AbstractPet pet, Room room)
     {
         this.pet = pet;
+        this.room = room;
     }
 
     @Override
@@ -44,7 +47,7 @@ public class PetInformationComposer extends MessageComposer
         this.response.appendInt32(this.pet.getRespect());
         this.response.appendInt32(this.pet.getUserId());
         this.response.appendInt32((int)days + 1);
-        this.response.appendString(pet.getRoom().getFurniOwnerNames().get(pet.getUserId())); //Owner name
+        this.response.appendString(this.room.getFurniOwnerName(pet.getUserId())); //Owner name
 
         this.response.appendInt32(this.pet instanceof MonsterplantPet ? ((MonsterplantPet) this.pet).getRarity() : 0);
         this.response.appendBoolean(this.pet instanceof HorsePet && ((HorsePet) this.pet).hasSaddle());

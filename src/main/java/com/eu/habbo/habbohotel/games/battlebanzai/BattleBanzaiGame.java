@@ -12,6 +12,7 @@ import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.Interaction
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.gates.InteractionBattleBanzaiGate;
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.scoreboards.InteractionBattleBanzaiScoreboard;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomUserAction;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
@@ -239,7 +240,7 @@ public class BattleBanzaiGame extends Game
                         {
                             if (player.getScore() > 0)
                             {
-                                this.room.sendComposer(new RoomUserActionComposer(player.getHabbo().getRoomUnit(), 1).compose());
+                                this.room.sendComposer(new RoomUserActionComposer(player.getHabbo().getRoomUnit(), RoomUserAction.WAVE).compose());
                                 AchievementManager.progressAchievement(player.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("BattleBallWinner"));
                             }
                         }

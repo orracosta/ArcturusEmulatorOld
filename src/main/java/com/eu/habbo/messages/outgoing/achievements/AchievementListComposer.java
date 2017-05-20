@@ -48,8 +48,8 @@ public class AchievementListComposer extends MessageComposer
                     this.response.appendString("ACH_" + achievement.name + ((nextLevel == null) ? level.level : nextLevel.level)); //Target badge code
                     this.response.appendInt32(level != null ? level.progress : 0); //Last level progress needed
                     this.response.appendInt32(nextLevel != null ? nextLevel.progress : 0); //Progress needed
-                    this.response.appendInt32(nextLevel != null ? nextLevel.pixels : 0); //Reward amount
-                    this.response.appendInt32(0); //Reward currency ID
+                    this.response.appendInt32(nextLevel != null ? nextLevel.rewardAmount : 0); //Reward amount
+                    this.response.appendInt32(nextLevel != null ? nextLevel.rewardAmount : 0); //Reward currency ID
                     this.response.appendInt32(achievementProgress == -1 ? 0 : achievementProgress); //Current progress
                     this.response.appendBoolean(AchievementManager.hasAchieved(habbo, achievement)); //Achieved? (Current Progress == MaxLevel.Progress)
                     this.response.appendString(achievement.category.toString().toLowerCase()); //Category

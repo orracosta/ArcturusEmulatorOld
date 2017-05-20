@@ -2367,6 +2367,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         return this.furniOwnerNames;
     }
 
+    public String getFurniOwnerName(int userId)
+    {
+        return this.furniOwnerNames.get(userId);
+    }
+
     public TIntIntMap getFurniOwnerCount()
     {
         return this.furniOwnerCount;

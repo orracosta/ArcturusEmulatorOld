@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.rooms.users;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.rooms.RoomUserAction;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserActionComposer;
@@ -61,7 +62,7 @@ public class RoomUserActionEvent extends MessageHandler
 
             }
 
-            this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserActionComposer(habbo.getRoomUnit(), action).compose());
+            this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserActionComposer(habbo.getRoomUnit(), RoomUserAction.fromValue(action)).compose());
         }
     }
 }

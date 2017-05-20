@@ -62,26 +62,19 @@ public class Achievement
      */
     public AchievementLevel getLevelForProgress(int progress)
     {
+        if(progress == 0)
+            return null;
+
         AchievementLevel l = null;
 
         for(AchievementLevel level : this.levels.values())
         {
-            if (l == null && level.level == 1)
-            {
-                l = level;
-            }
-
             if (progress >= level.progress)
             {
-                if (l != null)
+                if (l == null || level.level > l.level)
                 {
-                    if (l.level > level.level)
-                    {
-                        continue;
-                    }
+                    l = level;
                 }
-
-                l = level;
             }
         }
 

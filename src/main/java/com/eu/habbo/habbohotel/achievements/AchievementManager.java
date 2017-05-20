@@ -220,35 +220,47 @@ public class AchievementManager
                 return;
         }
 
-        AchievementLevel oldLevel = achievement.getLevelForProgress(currentProgress);
+        int currentLevelId = 0;
+        int nextLevelId = 0;
 
-        if(oldLevel == null)
-            return;
+        AchievementLevel currentLevel = achievement.getLevelForProgress(currentProgress);
 
-        if(oldLevel.level == achievement.levels.size() && currentProgress >= oldLevel.progress) //Maximum achievement gotten.
-            return;
+        if(currentLevel != null)
+        {
+            currentLevelId = currentLevel.level;
+
+            if(currentLevel.level == achievement.levels.size() && currentProgress >= currentLevel.progress) //Maximum achievement gotten.
+                return;
+        }
+
+        AchievementLevel nextLevel = achievement.getLevelForProgress(currentProgress + amount);
+
+        if(nextLevel != null)
+        {
+            nextLevelId = nextLevel.level;
+        }
 
         habbo.getHabboStats().setProgress(achievement, currentProgress + amount);
+        habbo.getClient().sendResponse(new AchievementProgressComposer(habbo, achievement));
 
-        AchievementLevel newLevel = achievement.getLevelForProgress(currentProgress + amount);
-
-        if(oldLevel.level == newLevel.level && newLevel.level < achievement.levels.size())
-        {
-            habbo.getClient().sendResponse(new AchievementProgressComposer(habbo, achievement));
-        }
-        else
+        // If we are on the same level
+        if(currentLevelId != nextLevelId)
         {
             if(Emulator.getPluginManager().isRegistered(UserAchievementLeveledEvent.class, true))
             {
-                Event userAchievementLeveledEvent = new UserAchievementLeveledEvent(habbo, achievement, oldLevel, newLevel);
+                Event userAchievementLeveledEvent = new UserAchievementLeveledEvent(habbo, achievement, currentLevel, nextLevel);
                 Emulator.getPluginManager().fireEvent(userAchievementLeveledEvent);
 
                 if(userAchievementLeveledEvent.isCancelled())
                     return;
             }
 
-            habbo.getClient().sendResponse(new AchievementProgressComposer(habbo, achievement));
             habbo.getClient().sendResponse(new AchievementUnlockedComposer(habbo, achievement));
+
+            if(nextLevel.rewardCurrency >= 0 && nextLevel.rewardAmount > 0)
+            {
+                habbo.givePoints(nextLevel.rewardCurrency, nextLevel.rewardAmount);
+            }
 
             //Exception could possibly arise when the user disconnects while being in tour.
             //The achievement is then progressed but the user is already disposed so fetching
@@ -256,7 +268,7 @@ public class AchievementManager
             HabboBadge badge = null;
             try
             {
-                badge = habbo.getHabboInventory().getBadgesComponent().getBadge(("ACH_" + achievement.name + oldLevel.level).toLowerCase());
+                badge = habbo.getHabboInventory().getBadgesComponent().getBadge(("ACH_" + achievement.name + currentLevelId).toLowerCase());
             }
             catch (Exception e)
             {
@@ -265,12 +277,13 @@ public class AchievementManager
 
             if (badge != null)
             {
-                badge.setCode("ACH_" + achievement.name + newLevel.level);
+                badge.setCode("ACH_" + achievement.name + nextLevelId);
                 badge.needsInsert(false);
                 badge.needsUpdate(true);
-            } else
+            }
+            else
             {
-                badge = new HabboBadge(0, "ACH_" + achievement.name + newLevel.level, 0, habbo);
+                badge = new HabboBadge(0, "ACH_" + achievement.name + nextLevelId, 0, habbo);
                 habbo.getClient().sendResponse(new AddUserBadgeComposer(badge));
                 badge.needsInsert(true);
                 badge.needsUpdate(true);
@@ -287,7 +300,7 @@ public class AchievementManager
                 }
             }
 
-            habbo.getHabboStats().addAchievementScore(newLevel.points);
+            habbo.getHabboStats().addAchievementScore(nextLevel.points);
 
             if (habbo.getHabboInfo().getCurrentRoom() != null)
             {
@@ -295,6 +308,7 @@ public class AchievementManager
             }
         }
     }
+
 
     /**
      * Checks wether the given Habbo has achieved a certain Achievement.
@@ -313,6 +327,9 @@ public class AchievementManager
 
         AchievementLevel level = achievement.getLevelForProgress(currentProgress);
         AchievementLevel nextLevel = achievement.levels.get(level.level + 1);
+
+        if(level == null)
+            return false;
 
         if (nextLevel == null && currentProgress >= level.progress)
         {

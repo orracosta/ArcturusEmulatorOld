@@ -21,7 +21,7 @@ public class RequestPetInformationEvent extends MessageHandler
 
         if(pet != null)
         {
-            this.client.sendResponse(new PetInformationComposer(pet));
+            this.client.sendResponse(new PetInformationComposer(pet, room));
         }
     }
 }

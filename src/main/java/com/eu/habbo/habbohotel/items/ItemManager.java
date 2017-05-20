@@ -1,16 +1,23 @@
 package com.eu.habbo.habbohotel.items;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.catalog.CatalogItem;
 import com.eu.habbo.habbohotel.items.interactions.*;
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.*;
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.gates.*;
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.scoreboards.*;
 import com.eu.habbo.habbohotel.items.interactions.games.football.InteractionFootball;
+import com.eu.habbo.habbohotel.items.interactions.games.football.InteractionFootballGate;
+import com.eu.habbo.habbohotel.items.interactions.games.football.goals.InteractionFootballGoalBlue;
+import com.eu.habbo.habbohotel.items.interactions.games.football.goals.InteractionFootballGoalGreen;
+import com.eu.habbo.habbohotel.items.interactions.games.football.goals.InteractionFootballGoalRed;
+import com.eu.habbo.habbohotel.items.interactions.games.football.goals.InteractionFootballGoalYellow;
+import com.eu.habbo.habbohotel.items.interactions.games.football.scoreboards.InteractionFootballScoreboardBlue;
+import com.eu.habbo.habbohotel.items.interactions.games.football.scoreboards.InteractionFootballScoreboardGreen;
+import com.eu.habbo.habbohotel.items.interactions.games.football.scoreboards.InteractionFootballScoreboardRed;
+import com.eu.habbo.habbohotel.items.interactions.games.football.scoreboards.InteractionFootballScoreboardYellow;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.*;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.gates.*;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.scoreboards.*;
-import com.eu.habbo.habbohotel.items.interactions.games.tag.*;
 import com.eu.habbo.habbohotel.items.interactions.games.tag.bunnyrun.InteractionBunnyrunField;
 import com.eu.habbo.habbohotel.items.interactions.games.tag.bunnyrun.InteractionBunnyrunPole;
 import com.eu.habbo.habbohotel.items.interactions.games.tag.icetag.InteractionIceTagField;
@@ -47,10 +54,10 @@ public class ItemManager {
 
     public ItemManager()
     {
-        this.items              = TCollections.synchronizedMap(new TIntObjectHashMap<Item>());
-        this.crackableRewards   = new TIntObjectHashMap<CrackableReward>();
-        this.interactionsList   = new THashSet<ItemInteraction>();
-        this.soundTracks        = new THashMap<String, SoundTrack>();
+        this.items              = TCollections.synchronizedMap(new TIntObjectHashMap<>());
+        this.crackableRewards   = new TIntObjectHashMap<>();
+        this.interactionsList   = new THashSet<>();
+        this.soundTracks        = new THashMap<>();
         this.youtubeManager     = new YoutubeManager();
     }
 
@@ -308,7 +315,16 @@ public class ItemManager {
         /*
             Football
          */
-            this.interactionsList.add(new ItemInteraction("football", InteractionFootball.class));
+            this.interactionsList.add(new ItemInteraction("football",                InteractionFootball.class));
+            this.interactionsList.add(new ItemInteraction("football_gate",           InteractionFootballGate.class));
+            this.interactionsList.add(new ItemInteraction("football_counter_blue",   InteractionFootballScoreboardBlue.class));
+            this.interactionsList.add(new ItemInteraction("football_counter_green",  InteractionFootballScoreboardGreen.class));
+            this.interactionsList.add(new ItemInteraction("football_counter_red",    InteractionFootballScoreboardRed.class));
+            this.interactionsList.add(new ItemInteraction("football_counter_yellow", InteractionFootballScoreboardYellow.class));
+            this.interactionsList.add(new ItemInteraction("football_goal_blue",      InteractionFootballGoalBlue.class));
+            this.interactionsList.add(new ItemInteraction("football_goal_green",     InteractionFootballGoalGreen.class));
+            this.interactionsList.add(new ItemInteraction("football_goal_red",       InteractionFootballGoalRed.class));
+            this.interactionsList.add(new ItemInteraction("football_goal_yellow",    InteractionFootballGoalYellow.class));
     }
 
     /**
