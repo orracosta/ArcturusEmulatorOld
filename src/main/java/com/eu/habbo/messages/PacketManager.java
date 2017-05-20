@@ -367,7 +367,6 @@ public class PacketManager
         this.registerHandler(Incoming.YoutubeRequestNextVideoEvent,             YoutubeRequestNextVideoEvent.class);
         this.registerHandler(Incoming.YoutubeRequestVideoDataEvent,             YoutubeRequestVideoDataEvent.class);
         this.registerHandler(Incoming.RoomFavoriteEvent,                        RoomFavoriteEvent.class);
-        this.registerHandler(Incoming.FootballGateSaveLookEvent,                FootballGateSaveLookEvent.class);
     }
 
     void registerPolls() throws Exception

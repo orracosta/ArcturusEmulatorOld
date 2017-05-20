@@ -8,6 +8,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboGender;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
+import com.eu.habbo.messages.incoming.users.UserSaveLookEvent;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDataComposer;
 import com.eu.habbo.messages.outgoing.users.UpdateUserLookComposer;
 import com.eu.habbo.plugin.EventHandler;
@@ -132,7 +133,25 @@ public class InteractionFootballGate extends HabboItem
     }
 
     @EventHandler
-    public static void onUserEvent(UserEvent event)
+    public static void onUserDisconnectEvent(UserDisconnectEvent event)
+    {
+        if (event.habbo != null)
+        {
+            removeLook(event.habbo);
+        }
+    }
+
+    @EventHandler
+    public static void onUserExitRoomEvent(UserExitRoomEvent event)
+    {
+        if (event.habbo != null)
+        {
+            removeLook(event.habbo);
+        }
+    }
+
+    @EventHandler
+    public static void onUserSavedLookEvent(UserSavedLookEvent event)
     {
         if (event.habbo != null)
         {

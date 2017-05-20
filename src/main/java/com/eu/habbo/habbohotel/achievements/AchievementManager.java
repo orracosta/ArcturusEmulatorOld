@@ -12,7 +12,6 @@ import com.eu.habbo.plugin.Event;
 import com.eu.habbo.plugin.events.users.achievements.UserAchievementLeveledEvent;
 import com.eu.habbo.plugin.events.users.achievements.UserAchievementProgressEvent;
 import gnu.trove.map.hash.THashMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.sql.*;
 import java.util.LinkedHashMap;
@@ -257,9 +256,9 @@ public class AchievementManager
 
             habbo.getClient().sendResponse(new AchievementUnlockedComposer(habbo, achievement));
 
-            if(nextLevel.rewardCurrency >= 0 && nextLevel.rewardAmount > 0)
+            if(nextLevel.rewardTypr >= 0 && nextLevel.rewardAmount > 0)
             {
-                habbo.givePoints(nextLevel.rewardCurrency, nextLevel.rewardAmount);
+                habbo.givePoints(nextLevel.rewardTypr, nextLevel.rewardAmount);
             }
 
             //Exception could possibly arise when the user disconnects while being in tour.

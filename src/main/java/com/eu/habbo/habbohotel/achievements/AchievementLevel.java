@@ -7,16 +7,16 @@ public class AchievementLevel
 {
     public final int level;
     public final int rewardAmount;
-    public final int rewardCurrency;
+    public final int rewardTypr;
     public final int points;
     public final int progress;
 
     public AchievementLevel(ResultSet set) throws SQLException
     {
-        this.level          = set.getInt("level");
-        this.rewardAmount   = set.getInt("reward_amount");
-        this.rewardCurrency = set.getInt("reward_currency");
-        this.points         = set.getInt("points");
-        this.progress       = set.getInt("progress_needed");
+        this.level        = set.getInt("level");
+        this.rewardAmount = set.getInt("reward_amount");
+        this.rewardTypr   = set.getInt("reward_type");
+        this.points       = set.getInt("points");
+        this.progress     = set.getInt("progress_needed");
     }
 }

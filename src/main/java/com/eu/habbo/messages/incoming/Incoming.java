@@ -318,6 +318,4 @@ public class Incoming
     public static final int ModToolSanctionMuteEvent = 1945;
     public static final int ModToolSanctionBanEvent = 2766;
     public static final int ModToolSanctionTradeLockEvent = 3742;
-
-    public static final int FootballGateSaveLookEvent = 924;
 }

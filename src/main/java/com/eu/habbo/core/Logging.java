@@ -301,38 +301,41 @@ public class Logging
 
     public void saveLogs()
     {
-        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
+        if (Emulator.getDatabase() != null && Emulator.getDatabase().getDataSource() != null)
         {
-            synchronized (this.errorLogs)
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
             {
-                try (PreparedStatement statement = connection.prepareStatement(ErrorLog.insertQuery))
+                synchronized (this.errorLogs)
                 {
-                    for (Loggable log : this.errorLogs)
+                    try (PreparedStatement statement = connection.prepareStatement(ErrorLog.insertQuery))
                     {
-                        log.log(statement);
+                        for (Loggable log : this.errorLogs)
+                        {
+                            log.log(statement);
+                        }
+                        statement.executeBatch();
                     }
-                    statement.executeBatch();
+                    this.errorLogs.clear();
                 }
-                this.errorLogs.clear();
-            }
 
-            synchronized (this.commandLogs)
+                synchronized (this.commandLogs)
+                {
+                    try (PreparedStatement statement = connection.prepareStatement(CommandLog.insertQuery))
+                    {
+                        for (Loggable log : this.commandLogs)
+                        {
+                            log.log(statement);
+                        }
+
+                        statement.executeBatch();
+                    }
+                    this.commandLogs.clear();
+                }
+            }
+            catch (SQLException e)
             {
-                try (PreparedStatement statement = connection.prepareStatement(CommandLog.insertQuery))
-                {
-                    for (Loggable log : this.commandLogs)
-                    {
-                        log.log(statement);
-                    }
-
-                    statement.executeBatch();
-                }
-                this.commandLogs.clear();
+                Emulator.getLogging().logSQLException(e);
             }
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
         }
     }
 
