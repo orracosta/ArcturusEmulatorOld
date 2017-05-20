@@ -16,4 +16,7 @@ UPDATE `items_base` SET `interaction_type` = 'football_counter_green' WHERE item
 UPDATE `items_base` SET `interaction_type` = 'football_counter_red' WHERE item_name LIKE 'fball_score_r';
 UPDATE `items_base` SET `interaction_type` = 'football_counter_yellow' WHERE item_name LIKE 'fball_score_y';
 UPDATE `items_base` SET `interaction_type` = 'football_gate' WHERE item_name LIKE 'fball_gate';
+
+ALTER TABLE  `achievements` CHANGE  `pixels`  `reward_amount` INT( 11 ) NOT NULL DEFAULT  '100';
+ALTER TABLE  `achievements` ADD  `reward_type` INT( 2 ) NOT NULL DEFAULT  '0' AFTER  `reward_amount`;
 #END DATABASE UPDATE: 1.6.0 -> 1.7.0
