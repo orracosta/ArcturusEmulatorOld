@@ -39,7 +39,7 @@ public class InteractionFXBox extends InteractionDefault
                 }
             }
 
-            if (client.getHabbo().getHabboInfo().getGamePlayer().equals(HabboGender.F))
+            if (client.getHabbo().getHabboInfo().getGender().equals(HabboGender.F))
             {
                 if (this.getBaseItem().getEffectF() > 0)
                 {
