@@ -8,7 +8,6 @@ import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserEffectComposer;
 import com.eu.habbo.threading.runnables.RoomUnitRideHorse;
-import com.eu.habbo.util.pathfinding.PathFinder;
 
 public class HorseRideEvent extends MessageHandler
 {

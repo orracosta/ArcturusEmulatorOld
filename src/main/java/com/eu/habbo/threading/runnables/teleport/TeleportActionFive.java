@@ -6,7 +6,6 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionTeleportTile;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.threading.runnables.HabboItemNewState;
-import com.eu.habbo.util.pathfinding.PathFinder;
 
 class TeleportActionFive implements Runnable
 {

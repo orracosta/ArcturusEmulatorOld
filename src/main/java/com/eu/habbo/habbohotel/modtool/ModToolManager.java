@@ -22,6 +22,7 @@ import io.netty.channel.Channel;
 import java.net.InetSocketAddress;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -399,15 +400,17 @@ public class ModToolManager
         this.alert(moderator, target, message);
     }
 
-    public ModToolBan ban(int targetUserId, Habbo moderator, String reason, int duration, ModToolBanType type)
+    public List<ModToolBan> ban(int targetUserId, Habbo moderator, String reason, int duration, ModToolBanType type)
     {
         if (moderator == null)
             return null;
 
+        List<ModToolBan> bans = new ArrayList<>();
         Habbo target = Emulator.getGameEnvironment().getHabboManager().getHabbo(targetUserId);
         ModToolBan ban = new ModToolBan(targetUserId, target != null ? target.getHabboInfo().getIpLogin() : "offline", target != null ? target.getClient() != null ? target.getClient().getMachineId() : "offline" : "offline", moderator.getHabboInfo().getId(), Emulator.getIntUnixTimestamp() + duration, reason, type);
         Emulator.getPluginManager().fireEvent(new SupportUserBannedEvent(moderator, target, ban));
         Emulator.getThreading().run(ban);
+        bans.add(ban);
 
         if (target != null)
         {
@@ -421,22 +424,24 @@ public class ModToolManager
                 ban = new ModToolBan(h.getHabboInfo().getId(), h != null ? h.getHabboInfo().getIpLogin() : "offline", h != null ? h.getClient().getMachineId() : "offline", moderator.getHabboInfo().getId(), Emulator.getIntUnixTimestamp() + duration, reason, type);
                 Emulator.getPluginManager().fireEvent(new SupportUserBannedEvent(moderator, h, ban));
                 Emulator.getThreading().run(ban);
+                bans.add(ban);
                 Emulator.getGameServer().getGameClientManager().disposeClient(h.getClient().getChannel());
             }
         }
 
-        if ((type == ModToolBanType.MACHINE) && target != null)
+        if ((type == ModToolBanType.MACHINE || type == ModToolBanType.SUPER) && target != null && !ban.machineId.equals("offline"))
         {
             for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithMachineId(ban.machineId))
             {
                 ban = new ModToolBan(h.getHabboInfo().getId(), h != null ? h.getHabboInfo().getIpLogin() : "offline", h != null ? h.getClient().getMachineId() : "offline", moderator.getHabboInfo().getId(), Emulator.getIntUnixTimestamp() + duration, reason, type);
                 Emulator.getPluginManager().fireEvent(new SupportUserBannedEvent(moderator, h, ban));
                 Emulator.getThreading().run(ban);
+                bans.add(ban);
                 Emulator.getGameServer().getGameClientManager().disposeClient(h.getClient().getChannel());
             }
         }
 
-        return ban;
+        return bans;
     }
 
     public void roomAction(Room room, Habbo moderator, boolean kickUsers, boolean lockDoor, boolean changeTitle)

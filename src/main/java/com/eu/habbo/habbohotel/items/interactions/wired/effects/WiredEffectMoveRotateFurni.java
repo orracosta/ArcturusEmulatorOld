@@ -13,7 +13,6 @@ import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemOnRollerComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
-import com.eu.habbo.util.pathfinding.PathFinder;
 import gnu.trove.set.hash.THashSet;
 
 import java.awt.*;
@@ -60,7 +59,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
             {
                 if (this.rotation > 0)
                 {
-                    THashSet<RoomTile> tiles = PathFinder.getTilesAt(room.getLayout(), item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
+                    THashSet<RoomTile> tiles = room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
                     if (this.rotation == 1)
                     {
                         item.setRotation(item.getRotation() + 2);
@@ -83,7 +82,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
 
                     if (this.direction == 0)
                     {
-                        tiles.addAll(PathFinder.getTilesAt(room.getLayout(), item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
+                        tiles.addAll(room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
                         room.updateTiles(tiles);
                         room.sendComposer(new FloorItemUpdateComposer(item).compose());
                     }

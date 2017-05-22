@@ -34,7 +34,7 @@ public class InteractionFreezeBlock extends HabboItem
             return;
 
         HabboItem item = null;
-        THashSet<HabboItem> items = room.getItemsAt(this.getX(), this.getY());
+        THashSet<HabboItem> items = room.getItemsAt(room.getLayout().getTile(this.getX(), this.getY()));
 
         for(HabboItem i : items)
         {

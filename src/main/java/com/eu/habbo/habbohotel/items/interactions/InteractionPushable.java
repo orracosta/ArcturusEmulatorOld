@@ -5,7 +5,6 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.threading.runnables.KickBallAction;
-import com.eu.habbo.util.pathfinding.PathFinder;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

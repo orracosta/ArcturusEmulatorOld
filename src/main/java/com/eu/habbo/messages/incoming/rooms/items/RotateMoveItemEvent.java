@@ -13,11 +13,9 @@ import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
-import com.eu.habbo.messages.outgoing.rooms.UpdateStackHeightComposer;
 import com.eu.habbo.plugin.Event;
 import com.eu.habbo.plugin.events.furniture.FurnitureMovedEvent;
 import com.eu.habbo.plugin.events.furniture.FurnitureRotatedEvent;
-import com.eu.habbo.util.pathfinding.PathFinder;
 import gnu.trove.set.hash.THashSet;
 
 import java.awt.*;
@@ -72,7 +70,7 @@ public class RotateMoveItemEvent extends MessageHandler
 
         if(rentSpace != null)
         {
-            if(!RoomLayout.squareInSquare(PathFinder.getSquare(rentSpace.getX(), rentSpace.getY(), rentSpace.getBaseItem().getWidth(), rentSpace.getBaseItem().getLength(), rentSpace.getRotation()), PathFinder.getSquare(x, y, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), rotation)))
+            if(!RoomLayout.squareInSquare(RoomLayout.getRectangle(rentSpace.getX(), rentSpace.getY(), rentSpace.getBaseItem().getWidth(), rentSpace.getBaseItem().getLength(), rentSpace.getRotation()), RoomLayout.getRectangle(x, y, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), rotation)))
             {
                 this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "cant_set_not_owner"));
                 this.client.sendResponse(new FloorItemUpdateComposer(item));
@@ -94,7 +92,7 @@ public class RotateMoveItemEvent extends MessageHandler
 
         THashSet<RoomTile> updatedTiles = new THashSet<RoomTile>();
 
-        Rectangle currentSquare = PathFinder.getSquare(item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
+        Rectangle currentSquare = RoomLayout.getRectangle(item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
 
         for (short i = (short) currentSquare.x; i < currentSquare.x + currentSquare.getWidth(); i++)
         {
@@ -121,7 +119,7 @@ public class RotateMoveItemEvent extends MessageHandler
 
         double checkStackHeight = item.getZ();
 
-        Rectangle newSquare = PathFinder.getSquare(x, y, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), rotation);
+        Rectangle newSquare = RoomLayout.getRectangle(x, y, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), rotation);
 
         //if (x != item.getX() || y != item.getY() || item.getRotation() != rotation)
         if (hasStackHelper == null)

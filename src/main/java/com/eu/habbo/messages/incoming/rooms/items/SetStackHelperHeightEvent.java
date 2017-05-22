@@ -1,11 +1,11 @@
 package com.eu.habbo.messages.incoming.rooms.items;
 
 import com.eu.habbo.habbohotel.items.interactions.InteractionStackHelper;
+import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.UpdateStackHeightComposer;
-import com.eu.habbo.util.pathfinding.PathFinder;
 import gnu.trove.set.hash.THashSet;
 
 public class SetStackHelperHeightEvent extends MessageHandler
@@ -30,7 +30,8 @@ public class SetStackHelperHeightEvent extends MessageHandler
 
                 double height = 0;
 
-                THashSet<RoomTile> tiles = PathFinder.getTilesAt(this.client.getHabbo().getHabboInfo().getCurrentRoom().getLayout(), item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
+                Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
+                THashSet<RoomTile> tiles = room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
 
                 if(stackerHeight >= 0)
                 {

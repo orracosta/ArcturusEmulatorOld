@@ -5,7 +5,6 @@ import com.eu.habbo.habbohotel.pets.HorsePet;
 import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.util.pathfinding.PathFinder;
 
 public class RoomUnitRideHorse implements Runnable
 {

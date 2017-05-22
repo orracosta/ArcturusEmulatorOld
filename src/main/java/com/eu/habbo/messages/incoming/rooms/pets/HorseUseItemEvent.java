@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.HorsePet;
 import com.eu.habbo.habbohotel.pets.MonsterplantPet;
 import com.eu.habbo.habbohotel.pets.Pet;
+import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
@@ -13,7 +14,6 @@ import com.eu.habbo.messages.outgoing.rooms.pets.PetStatusUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetHorseFigureComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;
-import com.eu.habbo.util.pathfinding.PathFinder;
 
 public class HorseUseItemEvent extends MessageHandler
 {
@@ -22,7 +22,8 @@ public class HorseUseItemEvent extends MessageHandler
     {
         int itemId = this.packet.readInt();
 
-        if(this.client.getHabbo().getHabboInfo().getCurrentRoom() == null)
+        Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
+        if(room == null)
             return;
 
         HabboItem item = this.client.getHabbo().getHabboInfo().getCurrentRoom().getHabboItem(itemId);
@@ -123,7 +124,7 @@ public class HorseUseItemEvent extends MessageHandler
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RemoveFloorItemComposer(item).compose());
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserStatusComposer(pet.getRoomUnit()).compose());
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new PetStatusUpdateComposer((Pet)pet).compose());
-                        this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTiles(PathFinder.getTilesAt(this.client.getHabbo().getHabboInfo().getCurrentRoom().getLayout(), item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
+                        this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTiles(room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
                         AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("MonsterPlantHealer"));
                         pet.getRoomUnit().getStatus().remove("gst");
                         Emulator.getThreading().run(new QueryDeleteHabboItem(item));
@@ -142,7 +143,7 @@ public class HorseUseItemEvent extends MessageHandler
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RemoveFloorItemComposer(item).compose());
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserStatusComposer(pet.getRoomUnit()).compose());
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new PetStatusUpdateComposer((Pet)pet).compose());
-                        this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTiles(PathFinder.getTilesAt(this.client.getHabbo().getHabboInfo().getCurrentRoom().getLayout(), item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
+                        this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTiles(room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
                         pet.getRoomUnit().getStatus().remove("gst");
                         ((MonsterplantPet) pet).cycle();
                         Emulator.getThreading().run(new QueryDeleteHabboItem(item));
@@ -167,7 +168,7 @@ public class HorseUseItemEvent extends MessageHandler
                             this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RemoveFloorItemComposer(item).compose());
                             this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserStatusComposer(pet.getRoomUnit()).compose());
                             this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new PetStatusUpdateComposer((Pet)pet).compose());
-                            this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTiles(PathFinder.getTilesAt(this.client.getHabbo().getHabboInfo().getCurrentRoom().getLayout(), item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
+                            this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTiles(room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
                             pet.getRoomUnit().getStatus().remove("gst");
                             Emulator.getThreading().run(new QueryDeleteHabboItem(item));
                         }

@@ -3,7 +3,6 @@ package com.eu.habbo.habbohotel.rooms;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.plugin.EventHandler;
 import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
-import com.eu.habbo.util.pathfinding.PathFinder;
 import gnu.trove.set.hash.THashSet;
 
 import java.awt.*;
@@ -57,7 +56,7 @@ public class RoomLayout
 
     public void parse()
     {
-        String[] modelTemp = this.heightmap.split(Character.toString('\r'));
+        String[] modelTemp = this.heightmap.replace("\n", "").split(Character.toString('\r'));
 
         this.mapSize = 0;
         this.mapSizeX = modelTemp[0].length();
@@ -119,35 +118,6 @@ public class RoomLayout
                     {
                         this.doorZ = this.roomTiles[doorFrontTile.x][doorFrontTile.y].z;
                         this.roomTiles[this.doorX][this.doorY].state = RoomTileState.OPEN;
-                        //this.roomTiles[this.doorX][this.doorY].z = this.doorZ;
-
-//                    StringBuilder stringBuilder = new StringBuilder(this.heightmap);
-//                    stringBuilder.setCharAt((this.doorY * (this.getMapSizeX() + 1)) + this.doorX, this.roomTiles[doorFrontTile.x][doorFrontTile.y].z >= 10 ? "ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(this.roomTiles[doorFrontTile.x][doorFrontTile.y].z - 10) : ("" + (this.roomTiles[doorFrontTile.x][doorFrontTile.y]).z).charAt(0));
-//                    this.heightmap = stringBuilder.toString();
-//
-//                    try
-//                    {
-//                        PreparedStatement statement;
-//
-//                        if (name.startsWith("custom_"))
-//                        {
-//                            statement = Emulator.getDatabase().prepare("UPDATE room_models_custom SET heightmap = ? WHERE name = ?");
-//                        }
-//                        else
-//                        {
-//                            statement = Emulator.getDatabase().prepare("UPDATE room_models SET heightmap = ? WHERE name = ?");
-//                        }
-//
-//                        statement.setString(1, this.heightmap);
-//                        statement.setString(2, this.name);
-//                        statement.execute();
-//                        statement.getConnection().close();
-//                        statement.close();
-//                    }
-//                    catch (SQLException e)
-//                    {
-//                        Emulator.getLogging().logSQLException(e);
-//                    }
                     }
                 }
             }
@@ -623,7 +593,7 @@ public class RoomLayout
         return new Rectangle(x, y, width, length);
     }
 
-    public THashSet<RoomTile> getTilesAt(RoomLayout layout, RoomTile tile, int width, int length, int rotation)
+    public THashSet<RoomTile> getTilesAt(RoomTile tile, int width, int length, int rotation)
     {
         THashSet<RoomTile> pointList = new THashSet<RoomTile>();
 
@@ -633,7 +603,7 @@ public class RoomLayout
             {
                 for (short j = tile.y; j <= (tile.y + (length - 1)); j++)
                 {
-                    RoomTile t = layout.getTile(i, j);
+                    RoomTile t = this.getTile(i, j);
 
                     if (t != null)
                     {
@@ -648,7 +618,7 @@ public class RoomLayout
             {
                 for (short j = tile.y; j <= (tile.y + (width - 1)); j++)
                 {
-                    RoomTile t = layout.getTile(i, j);
+                    RoomTile t = this.getTile(i, j);
 
                     if (t != null)
                     {

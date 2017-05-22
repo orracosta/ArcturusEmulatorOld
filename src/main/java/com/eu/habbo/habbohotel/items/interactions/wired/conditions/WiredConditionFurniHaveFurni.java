@@ -43,7 +43,7 @@ public class WiredConditionFurniHaveFurni extends InteractionWiredCondition
         {
             boolean found = false;
 
-            THashSet<HabboItem> stackedItems = room.getItemsAt(item.getX(), item.getY());
+            THashSet<HabboItem> stackedItems = room.getItemsAt(room.getLayout().getTile(item.getX(), item.getY()));
 
             if(stackedItems.isEmpty() && this.all)
                 return false;

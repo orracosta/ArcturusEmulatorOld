@@ -47,7 +47,6 @@ import com.eu.habbo.plugin.events.users.UserIdleEvent;
 import com.eu.habbo.plugin.events.users.UserRightsTakenEvent;
 import com.eu.habbo.plugin.events.users.UserRolledEvent;
 import com.eu.habbo.threading.runnables.YouAreAPirate;
-import com.eu.habbo.util.pathfinding.PathFinder;
 import gnu.trove.TCollections;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.iterator.hash.TObjectHashIterator;
@@ -666,7 +665,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             this.sendComposer(new RemoveFloorItemComposer(item).compose());
 
             THashSet<RoomTile> updatedTiles = new THashSet<RoomTile>();
-            Rectangle rectangle = PathFinder.getSquare(item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
+            Rectangle rectangle = RoomLayout.getRectangle(item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
 
             for (short x = (short)rectangle.x; x < rectangle.x + rectangle.getWidth(); x++)
             {
@@ -3603,7 +3602,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                             continue;
                         }
 
-                        THashSet<RoomTile> tiles = PathFinder.getTilesAt(this.layout, item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
+                        THashSet<RoomTile> tiles = this.getLayout().getTilesAt(this.layout.getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
                         for (RoomTile t : tiles)
                         {
                             if ((t.x == tile.x) && (t.y == tile.y) && (!items.contains(item)))
@@ -3649,7 +3648,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     continue;
                 }
 
-                THashSet<RoomTile> tiles = PathFinder.getTilesAt(this.layout, item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
+                THashSet<RoomTile> tiles = this.getLayout().getTilesAt(this.layout.getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
                 for (RoomTile tile : tiles)
                 {
                     if ((tile.x == x) && (tile.y == y) && (!items.contains(item))) {
@@ -3680,7 +3679,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         continue;
                     }
 
-                    THashSet<RoomTile> tiles = PathFinder.getTilesAt(this.layout, item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
+                    THashSet<RoomTile> tiles = this.getLayout().getTilesAt(this.layout.getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
                     for (RoomTile tile : tiles){
                         if ((tile.x == x) && (tile.y == y) && (!items.contains(item))) {
                             items.add(item);
@@ -3736,7 +3735,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                             continue;
                         }
 
-                        THashSet<RoomTile> tiles = PathFinder.getTilesAt(this.layout, habboItem.getX(), habboItem.getY(), habboItem.getBaseItem().getWidth(), habboItem.getBaseItem().getLength(), habboItem.getRotation());
+                        THashSet<RoomTile> tiles = this.layout.getTilesAt(
+                                this.layout.getTile(habboItem.getX(), habboItem.getY()),
+                                habboItem.getBaseItem().getWidth(),
+                                habboItem.getBaseItem().getLength(),
+                                habboItem.getRotation());
+
                         for (RoomTile tile : tiles)
                         {
                             if (((tile.x == x) && (tile.y == y)))
@@ -4543,7 +4547,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 if(item.getBaseItem().getType().equalsIgnoreCase("s"))
                 {
                     this.sendComposer(new FloorItemUpdateComposer(item).compose());
-                    this.updateTiles(PathFinder.getTilesAt(this.layout, item.getX(), item.getY(), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
+                    this.updateTiles(this.getLayout().getTilesAt(this.layout.getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
                 }
                 else if(item.getBaseItem().getType().equalsIgnoreCase("i"))
                 {

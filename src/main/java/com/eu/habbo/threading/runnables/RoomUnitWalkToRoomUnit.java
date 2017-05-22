@@ -6,7 +6,6 @@ import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
-import com.eu.habbo.util.pathfinding.PathFinder;
 
 import java.util.List;
 
@@ -52,7 +51,7 @@ public class RoomUnitWalkToRoomUnit implements Runnable
             }
             else
             {
-                List<RoomTile> tiles = PathFinder.getTilesAround(this.room.getLayout(), this.target.getX(), this.target.getY());
+                List<RoomTile> tiles = room.getLayout().getTilesAround(this.target.getCurrentLocation());
 
                 for(RoomTile t : tiles)
                 {
@@ -76,7 +75,7 @@ public class RoomUnitWalkToRoomUnit implements Runnable
 
         if (!this.room.tileWalkable(this.goalTile))
         {
-            List<RoomTile> tiles = PathFinder.getTilesAround(this.room.getLayout(), this.target.getX(), this.target.getY());
+            List<RoomTile> tiles = room.getLayout().getTilesAround(this.target.getCurrentLocation());
 
             for (RoomTile t : tiles)
             {

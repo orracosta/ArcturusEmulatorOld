@@ -8,11 +8,8 @@ import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.plugin.events.furniture.FurnitureDiceRolledEvent;
 import com.eu.habbo.threading.runnables.RandomDiceNumber;
-import com.eu.habbo.util.pathfinding.PathFinder;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

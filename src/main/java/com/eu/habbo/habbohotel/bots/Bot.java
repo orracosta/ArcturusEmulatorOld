@@ -12,9 +12,7 @@ import com.eu.habbo.plugin.events.bots.BotShoutEvent;
 import com.eu.habbo.plugin.events.bots.BotTalkEvent;
 import com.eu.habbo.plugin.events.bots.BotWhisperEvent;
 import com.eu.habbo.threading.runnables.BotFollowHabbo;
-import com.eu.habbo.util.pathfinding.PathFinder;
 
-import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -261,7 +259,7 @@ public class Bot implements Runnable
                     }
                 } else
                 {
-                    for (RoomTile t : PathFinder.getTilesAround(this.room.getLayout(), this.getRoomUnit().getX(), this.getRoomUnit().getY()))
+                    for (RoomTile t : this.room.getLayout().getTilesAround(this.room.getLayout().getTile(this.getRoomUnit().getX(), this.getRoomUnit().getY())))
                     {
                         WiredHandler.handle(WiredTriggerType.BOT_REACHED_STF, this.roomUnit, this.room, room.getItemsAt(t).toArray());
                     }

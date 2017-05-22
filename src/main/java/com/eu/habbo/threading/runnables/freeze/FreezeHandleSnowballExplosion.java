@@ -59,7 +59,7 @@ class FreezeHandleSnowballExplosion implements Runnable
 
             for (RoomTile t : tiles)
             {
-                THashSet<HabboItem> items = this.thrownData.room.getItemsAt((int) t.x, (int) t.y);
+                THashSet<HabboItem> items = this.thrownData.room.getItemsAt(t);
 
                 for (HabboItem i : items)
                 {

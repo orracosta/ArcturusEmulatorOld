@@ -43,7 +43,7 @@ public class WiredConditionNotFurniHaveFurni extends InteractionWiredCondition
 
         for(HabboItem item : this.items)
         {
-            THashSet<HabboItem> things = room.getItemsAt(item.getX(), item.getY());
+            THashSet<HabboItem> things = room.getItemsAt(room.getLayout().getTile(item.getX(), item.getY()));
 
             for(HabboItem i : things)
             {

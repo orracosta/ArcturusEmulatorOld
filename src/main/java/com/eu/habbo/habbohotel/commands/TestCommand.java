@@ -17,7 +17,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.Incoming;
 import com.eu.habbo.messages.incoming.gamecenter.GameCenterRequestAccountStatusEvent;
-import com.eu.habbo.messages.incoming.gamecenter.GameCenterRequestGamesEvent;
 import com.eu.habbo.messages.incoming.rooms.pets.MovePetEvent;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.MessagesForYouComposer;
@@ -25,7 +24,6 @@ import com.eu.habbo.messages.outgoing.rooms.pets.PetInformationComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.PetStatusUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
-import com.eu.habbo.util.pathfinding.PathFinder;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import gnu.trove.procedure.TObjectProcedure;
@@ -270,7 +268,7 @@ public class TestCommand extends Command
         else if (params[1].equalsIgnoreCase("pethere"))
         {
             Room room = gameClient.getHabbo().getHabboInfo().getCurrentRoom();
-            List<RoomTile> tiles = PathFinder.getTilesAround(room.getLayout(), gameClient.getHabbo().getRoomUnit().getX(), gameClient.getHabbo().getRoomUnit().getY());
+            List<RoomTile> tiles = room.getLayout().getTilesAround(gameClient.getHabbo().getRoomUnit().getCurrentLocation());
 
             room.getCurrentPets().forEachValue(new TObjectProcedure<AbstractPet>()
             {

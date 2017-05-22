@@ -46,17 +46,15 @@ public class MachineBanCommand extends Command
                 return true;
             }
 
-            int time = Emulator.getIntUnixTimestamp() + IPBanCommand.TEN_YEARS;
-            count++;
-            ModToolBan ban = Emulator.getGameEnvironment().getModToolManager().ban(habbo.getHabboInfo().getId(), gameClient.getHabbo(), reason, IPBanCommand.TEN_YEARS, ModToolBanType.MACHINE);
-            for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithMachineId(ban.machineId))
-            {
-                if (h != null)
-                {
-                    count++;
-                    Emulator.getGameEnvironment().getModToolManager().ban(h.getHabboInfo().getId(), gameClient.getHabbo(), reason, IPBanCommand.TEN_YEARS, ModToolBanType.MACHINE);
-                }
-            }
+            count = Emulator.getGameEnvironment().getModToolManager().ban(habbo.getHabboInfo().getId(), gameClient.getHabbo(), reason, IPBanCommand.TEN_YEARS, ModToolBanType.MACHINE).size();
+//            for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithMachineId(ban.machineId))
+//            {
+//                if (h != null)
+//                {
+//                    count++;
+//                    Emulator.getGameEnvironment().getModToolManager().ban(h.getHabboInfo().getId(), gameClient.getHabbo(), reason, IPBanCommand.TEN_YEARS, ModToolBanType.MACHINE);
+//                }
+//            }
         }
 
         gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_machine_ban").replace("%count%", count + ""), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));

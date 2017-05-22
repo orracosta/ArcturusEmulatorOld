@@ -4,7 +4,6 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.util.pathfinding.PathFinder;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

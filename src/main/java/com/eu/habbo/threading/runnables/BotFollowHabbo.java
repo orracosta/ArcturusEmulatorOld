@@ -5,7 +5,6 @@ import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.util.pathfinding.PathFinder;
 
 public class BotFollowHabbo implements Runnable
 {

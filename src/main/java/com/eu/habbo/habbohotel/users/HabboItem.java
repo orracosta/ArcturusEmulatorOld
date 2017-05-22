@@ -10,7 +10,6 @@ import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.util.pathfinding.PathFinder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -358,12 +357,12 @@ public abstract class HabboItem implements Runnable, IEventTriggers
             List<Habbo> oldHabbos = new ArrayList<Habbo>();
             List<Habbo> newHabbos = new ArrayList<Habbo>();
 
-            for (RoomTile tile : PathFinder.getTilesAt(room.getLayout(), oldLocation.x, oldLocation.y, this.getBaseItem().getWidth(), this.getBaseItem().getLength(), this.getRotation()))
+            for (RoomTile tile : room.getLayout().getTilesAt(oldLocation, this.getBaseItem().getWidth(), this.getBaseItem().getLength(), this.getRotation()))
             {
                 oldHabbos.addAll(room.getHabbosAt(tile));
             }
 
-            for (RoomTile tile : PathFinder.getTilesAt(room.getLayout(), newLocation.x, newLocation.y, this.getBaseItem().getWidth(), this.getBaseItem().getLength(), this.getRotation()))
+            for (RoomTile tile : room.getLayout().getTilesAt(oldLocation, this.getBaseItem().getWidth(), this.getBaseItem().getLength(), this.getRotation()))
             {
                 newHabbos.addAll(room.getHabbosAt(tile));
             }

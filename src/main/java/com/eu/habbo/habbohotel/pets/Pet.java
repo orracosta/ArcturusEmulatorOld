@@ -13,7 +13,6 @@ import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetExperienceComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetRespectComposer;
 import com.eu.habbo.threading.runnables.PetClearPosture;
 import com.eu.habbo.threading.runnables.PetFollowHabbo;
-import com.eu.habbo.util.pathfinding.PathFinder;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 

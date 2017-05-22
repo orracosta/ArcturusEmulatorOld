@@ -27,7 +27,6 @@ import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
 import com.eu.habbo.plugin.events.users.UserTakeStepEvent;
 import com.eu.habbo.threading.runnables.freeze.FreezeClearEffects;
 import com.eu.habbo.threading.runnables.freeze.FreezeThrowSnowball;
-import com.eu.habbo.util.pathfinding.PathFinder;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.procedure.TObjectProcedure;
@@ -183,7 +182,7 @@ public class FreezeGame extends Game
         {
             for(int j = 0; j < radius; j++)
             {
-                t = PathFinder.getTileInFront(this.room.getLayout(), x, y, i * 2, (short) radius);
+                t = this.room.getLayout().getTileInFront(this.room.getLayout().getTile(x, y), i * 2, (short) radius);
 
                 if(t == null || t.x < 0 || t.y < 0 || t.x >= this.room.getLayout().getMapSizeX() || t.y >= this.room.getLayout().getMapSizeY())
                     continue;
@@ -204,7 +203,7 @@ public class FreezeGame extends Game
 
             for(int j = 0; j < radius; j++)
             {
-                t = PathFinder.getTileInFront(room.getLayout(), x, y, (i * 2) + 1, (short) radius);
+                t = this.room.getLayout().getTileInFront(this.room.getLayout().getTile(x, y), (i * 2) + 1, (short) radius);
 
                 if(t.x < 0 || t.y < 0 || t.x >= this.room.getLayout().getMapSizeX() || t.y >= this.room.getLayout().getMapSizeY())
                     continue;

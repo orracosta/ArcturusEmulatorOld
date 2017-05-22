@@ -7,7 +7,6 @@ import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
-import com.eu.habbo.util.pathfinding.PathFinder;
 import gnu.trove.set.hash.THashSet;
 
 public class ClearRentedSpace implements Runnable
@@ -26,9 +25,9 @@ public class ClearRentedSpace implements Runnable
     {
         THashSet<HabboItem> items = new THashSet<HabboItem>();
 
-        for(RoomTile t : PathFinder.getTilesAt(this.room.getLayout(), this.item.getX(), this.item.getY(), this.item.getBaseItem().getWidth(), this.item.getBaseItem().getLength(), this.item.getRotation()))
+        for(RoomTile t : this.room.getLayout().getTilesAt(this.room.getLayout().getTile(this.item.getX(), this.item.getY()), this.item.getBaseItem().getWidth(), this.item.getBaseItem().getLength(), this.item.getRotation()))
         {
-            for(HabboItem i : this.room.getItemsAt(t.x, t.y))
+            for(HabboItem i : this.room.getItemsAt(t))
             {
                 if(i.getUserId() == this.item.getRenterId())
                 {

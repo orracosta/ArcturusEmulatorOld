@@ -16,7 +16,6 @@ import com.eu.habbo.plugin.events.roomunit.RoomUnitSetGoalEvent;
 import com.eu.habbo.plugin.events.users.UserIdleEvent;
 import com.eu.habbo.plugin.events.users.UserTakeStepEvent;
 import com.eu.habbo.threading.runnables.RoomUnitKick;
-import com.eu.habbo.util.pathfinding.PathFinder;
 import com.eu.habbo.util.pathfinding.Rotation;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
@@ -193,7 +192,7 @@ public class RoomUnit
 
             if(canSitNextTile)
             {
-                HabboItem lowestChair = room.getLowestChair(next.x, next.y);
+                HabboItem lowestChair = room.getLowestChair(next);
 
                 if(lowestChair != null)
                     item = lowestChair;
@@ -201,13 +200,13 @@ public class RoomUnit
 
             if(!(this.path.size() == 1 && canSitNextTile))
             {
-                if (!room.tileWalkable((short) next.x, (short) next.y) && !this.path.isEmpty() && !(item instanceof InteractionTeleport))
+                if (!room.tileWalkable(next.x, next.y) && !this.path.isEmpty() && !(item instanceof InteractionTeleport))
                 {
                     Deque<RoomTile> path = new LinkedList<>(this.path);
                     this.path.clear();
                     RoomTile newGoal = path.pop();
                     RoomTile oldGoal = this.goalLocation;
-                    this.setGoalLocation(room.getLayout().getTile((short) newGoal.x, (short) newGoal.y));
+                    this.setGoalLocation(room.getLayout().getTile(newGoal.x, newGoal.y));
                     this.room = room;
                     this.findPath();
                     if (this.path.size() > 0)

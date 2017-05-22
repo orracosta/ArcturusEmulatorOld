@@ -3,9 +3,9 @@ package com.eu.habbo.habbohotel.items.interactions;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.HabboItem;
-import com.eu.habbo.util.pathfinding.PathFinder;
 import gnu.trove.set.hash.THashSet;
 
 import java.awt.*;
@@ -50,13 +50,13 @@ public class InteractionWaterItem extends InteractionDefault
         if(room == null)
             return;
 
-        Rectangle rectangle = PathFinder.getSquare(this.getX(), this.getY(), this.getBaseItem().getWidth(), this.getBaseItem().getLength(), this.getRotation());
+        Rectangle rectangle = RoomLayout.getRectangle(this.getX(), this.getY(), this.getBaseItem().getWidth(), this.getBaseItem().getLength(), this.getRotation());
 
         for(int x = rectangle.x; x < rectangle.getWidth() + rectangle.x; x++)
         {
             for(int y = rectangle.y; y < rectangle.getHeight() + rectangle.y; y++)
             {
-                THashSet<HabboItem> items = room.getItemsAt(x, y);
+                THashSet<HabboItem> items = room.getItemsAt(room.getLayout().getTile(this.getX(), this.getY()));
 
                 for(HabboItem item : items)
                 {

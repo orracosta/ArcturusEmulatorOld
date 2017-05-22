@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.items.interactions.wired.WiredTriggerReset;
 import com.eu.habbo.habbohotel.items.interactions.wired.effects.WiredEffectGiveReward;
+import com.eu.habbo.habbohotel.items.interactions.wired.effects.WiredEffectTriggerStacks;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
@@ -133,11 +134,11 @@ public class WiredHandler
         {
             if(room != null)
             {
-                THashSet<HabboItem> items = room.getItemsAt(tile.x, tile.y);
+                THashSet<HabboItem> items = room.getItemsAt(tile);
 
                 for(final HabboItem item : items)
                 {
-                    if(item instanceof InteractionWiredEffect)
+                    if(item instanceof InteractionWiredEffect && !(item instanceof WiredEffectTriggerStacks))
                     {
                         Emulator.getThreading().run(new Runnable()
                         {

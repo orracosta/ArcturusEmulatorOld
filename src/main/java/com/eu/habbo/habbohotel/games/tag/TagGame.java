@@ -16,7 +16,6 @@ import com.eu.habbo.plugin.EventHandler;
 import com.eu.habbo.plugin.events.roomunit.RoomUnitLookAtPointEvent;
 import com.eu.habbo.plugin.events.users.UserTakeStepEvent;
 import com.eu.habbo.threading.runnables.HabboItemNewState;
-import com.eu.habbo.util.pathfinding.PathFinder;
 import gnu.trove.iterator.hash.TObjectHashIterator;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
