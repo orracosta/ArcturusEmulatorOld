@@ -7,6 +7,11 @@ import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * This is part of the open source license. Modification is prohobited.
+ * If you don't like it, use another emulator. Or otherwise deal with it.
+ * Respect the authors work. Don't be a dick.
+ */
 public class AboutCommand extends Command
 {
     public AboutCommand()

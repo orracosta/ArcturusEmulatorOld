@@ -1,0 +1,1 @@
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.error.cmd_pet_info.pet_not_found', '"Please provide a petname!"');
