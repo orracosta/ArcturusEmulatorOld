@@ -22,7 +22,7 @@ public class GivePoints extends RCONMessage<GivePoints.JSONGivePoints>
     @Override
     public void handle(Gson gson, JSONGivePoints object)
     {
-        Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.username);
+        Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.user_id);
 
         if (habbo != null)
         {
@@ -30,10 +30,10 @@ public class GivePoints extends RCONMessage<GivePoints.JSONGivePoints>
         }
         else
         {
-            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users_currency INNER JOIN users ON users_currency.user_id = users.id SET users_currency.amount = users_currency.amount + ? WHERE users.username = ? AND users_currency.type = ?"))
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users_currency SET users_currency.amount = users_currency.amount + ? WHERE users_currency.user_id = ? AND users_currency.type = ?"))
             {
                 statement.setInt(1, object.points);
-                statement.setString(2, object.username);
+                statement.setInt(2, object.user_id);
                 statement.setInt(3, object.type);
                 statement.execute();
             }
@@ -49,7 +49,7 @@ public class GivePoints extends RCONMessage<GivePoints.JSONGivePoints>
 
     public class JSONGivePoints
     {
-        private String username;
+        private int user_id;
         private int points;
         private int type;
     }

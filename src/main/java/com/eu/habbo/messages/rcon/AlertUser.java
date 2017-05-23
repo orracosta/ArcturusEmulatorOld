@@ -18,7 +18,7 @@ public class AlertUser extends RCONMessage<AlertUser.JSONAlertUser>
     @Override
     public void handle(Gson gson, JSONAlertUser object)
     {
-        Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.username);
+        Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.user_id);
 
         if(habbo != null)
         {
@@ -30,7 +30,7 @@ public class AlertUser extends RCONMessage<AlertUser.JSONAlertUser>
 
     public class JSONAlertUser
     {
-        public String username;
+        public int user_id;
         public String message;
     }
 }

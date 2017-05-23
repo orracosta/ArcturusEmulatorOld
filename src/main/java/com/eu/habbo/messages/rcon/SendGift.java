@@ -25,10 +25,10 @@ public class SendGift extends RCONMessage<SendGift.SendGiftJSON>
     @Override
     public void handle(Gson gson, SendGiftJSON json)
     {
-        if (json.userid < 0 && json.username.isEmpty())
+        if (json.user_id < 0)
         {
             this.status = RCONMessage.STATUS_ERROR;
-            this.message = Emulator.getTexts().getValue("commands.error.cmd_gift.user_not_found").replace("%username%", json.username);
+            this.message = Emulator.getTexts().getValue("commands.error.cmd_gift.user_not_found").replace("%username%", json.user_id + "");
             return;
         }
 
@@ -50,35 +50,20 @@ public class SendGift extends RCONMessage<SendGift.SendGiftJSON>
         boolean userFound;
         Habbo habbo;
 
-        if (json.userid >= 0)
-        {
-            habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(json.userid);
-        }
-        else
-        {
-            habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(json.userid);
-        }
+        habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(json.user_id);
 
         userFound = habbo != null;
+        String username = "";
         if (!userFound)
         {
-            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE " + (json.username.isEmpty() ? "id = ?" : "username = ?") + " LIMIT 1"))
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE id = ? LIMIT 1"))
             {
-                if (json.username.isEmpty())
-                {
-                    statement.setInt(1, json.userid);
-                }
-                else
-                {
-                    statement.setString(1, json.username);
-                }
-
+                statement.setInt(1, json.user_id);
                 try (ResultSet set = statement.executeQuery())
                 {
                     if (set.next())
                     {
-                        json.username = set.getString("username");
-                        json.userid = set.getInt("id");
+                        username = set.getString("username");
                         userFound = true;
                     }
                 }
@@ -90,14 +75,13 @@ public class SendGift extends RCONMessage<SendGift.SendGiftJSON>
         }
         else
         {
-            json.userid = habbo.getHabboInfo().getId();
-            json.username = habbo.getHabboInfo().getUsername();
+            username = habbo.getHabboInfo().getUsername();
         }
 
         if (!userFound)
         {
             this.status = RCONMessage.STATUS_ERROR;
-            this.message = Emulator.getTexts().getValue("commands.error.cmd_gift.user_not_found").replace("%username%", json.username);
+            this.message = Emulator.getTexts().getValue("commands.error.cmd_gift.user_not_found").replace("%username%", username);
             return;
         }
 
@@ -107,9 +91,9 @@ public class SendGift extends RCONMessage<SendGift.SendGiftJSON>
         String extraData = "1\t" + item.getId();
         extraData += "\t0\t0\t0\t"+ json.message +"\t0\t0";
 
-        Emulator.getGameEnvironment().getItemManager().createGift(json.username, giftItem, extraData, 0, 0);
+        Emulator.getGameEnvironment().getItemManager().createGift(username, giftItem, extraData, 0, 0);
 
-        this.message = Emulator.getTexts().getValue("commands.succes.cmd_gift").replace("%username%", json.username).replace("%itemname%", item.getBaseItem().getName());
+        this.message = Emulator.getTexts().getValue("commands.succes.cmd_gift").replace("%username%", username).replace("%itemname%", item.getBaseItem().getName());
 
         if (habbo != null)
         {
@@ -119,8 +103,7 @@ public class SendGift extends RCONMessage<SendGift.SendGiftJSON>
 
     public class SendGiftJSON
     {
-        public int userid = -1;
-        public String username = "";
+        public int user_id = -1;
         public int itemid = -1;
         public String message = "";
     }

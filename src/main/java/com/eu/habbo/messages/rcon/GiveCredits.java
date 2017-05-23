@@ -22,7 +22,7 @@ public class GiveCredits extends RCONMessage<GiveCredits.JSONGiveCredits>
     @Override
     public void handle(Gson gson, JSONGiveCredits object)
     {
-        Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.username);
+        Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.user_id);
 
         if (habbo != null)
         {
@@ -30,10 +30,10 @@ public class GiveCredits extends RCONMessage<GiveCredits.JSONGiveCredits>
         }
         else
         {
-            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET credits = credits + ? WHERE username = ? LIMIT 1"))
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET credits = credits + ? WHERE id = ? LIMIT 1"))
             {
                 statement.setInt(1, object.credits);
-                statement.setString(2, object.username);
+                statement.setInt(2, object.user_id);
                 statement.execute();
             }
             catch (SQLException e)
@@ -48,7 +48,7 @@ public class GiveCredits extends RCONMessage<GiveCredits.JSONGiveCredits>
 
     public class JSONGiveCredits
     {
-        private String username;
+        private int user_id;
         private int credits;
     }
 }

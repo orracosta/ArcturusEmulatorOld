@@ -25,7 +25,7 @@ public class GiveBadge extends RCONMessage<GiveBadge.GiveBadgeJSON>
     @Override
     public void handle(Gson gson, GiveBadgeJSON json)
     {
-        if (json.username.isEmpty() && json.userid == -1)
+        if (json.user_id == -1)
         {
             this.status = RCONMessage.HABBO_NOT_FOUND;
             return;
@@ -37,21 +37,17 @@ public class GiveBadge extends RCONMessage<GiveBadge.GiveBadgeJSON>
             return;
         }
 
-        Habbo habbo = null;
+        Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(json.user_id);
 
-        if (!json.username.isEmpty())
-            habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(json.username);
-        else
-            habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(json.userid);
-
+        String username = json.user_id + "";
         if(habbo != null)
         {
-            json.username = habbo.getHabboInfo().getUsername();
+            username = habbo.getHabboInfo().getUsername();
 
             if(habbo.getHabboInventory().getBadgesComponent().hasBadge(json.badge))
             {
                 this.status = RCONMessage.STATUS_ERROR;
-                this.message = Emulator.getTexts().getValue("commands.error.cmd_badge.already_owned").replace("%user%", json.username).replace("%badge%", json.badge);
+                this.message = Emulator.getTexts().getValue("commands.error.cmd_badge.already_owned").replace("%user%", username).replace("%badge%", json.badge);
                 return;
             }
 
@@ -62,7 +58,7 @@ public class GiveBadge extends RCONMessage<GiveBadge.GiveBadgeJSON>
             habbo.getHabboInventory().getBadgesComponent().addBadge(badge);
             habbo.getClient().sendResponse(new AddUserBadgeComposer(badge));
 
-            this.message = Emulator.getTexts().getValue("commands.succes.cmd_badge.given").replace("%user%", json.username).replace("%badge%", json.badge);
+            this.message = Emulator.getTexts().getValue("commands.succes.cmd_badge.given").replace("%user%", username).replace("%badge%", json.badge);
 
             if (habbo.getHabboInfo().getCurrentRoom() != null)
             {
@@ -75,17 +71,9 @@ public class GiveBadge extends RCONMessage<GiveBadge.GiveBadgeJSON>
             try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
             {
                 boolean found = false;
-                try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(slot_id) FROM users_badges INNER JOIN users ON users.id = user_id WHERE " + (json.username.isEmpty() ? "users.id = ?" : "users.username = ?") + " AND badge_code = ? LIMIT 1"))
+                try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(slot_id) FROM users_badges INNER JOIN users ON users.id = user_id WHERE users.id = ? AND badge_code = ? LIMIT 1"))
                 {
-                    if (!json.username.isEmpty())
-                    {
-                        statement.setString(1, json.username);
-                    }
-                    else
-                    {
-                        statement.setInt(1, json.userid);
-                    }
-
+                    statement.setInt(1, json.user_id);
                     statement.setString(2, json.badge);
                     try (ResultSet set = statement.executeQuery())
                     {
@@ -96,38 +84,32 @@ public class GiveBadge extends RCONMessage<GiveBadge.GiveBadgeJSON>
                 if(found)
                 {
                     this.status = RCONMessage.STATUS_ERROR;
-                    this.message = Emulator.getTexts().getValue("commands.error.cmd_badge.already_owns").replace("%user%", json.username).replace("%badge%", json.badge);
+                    this.message = Emulator.getTexts().getValue("commands.error.cmd_badge.already_owns").replace("%user%", username).replace("%badge%", json.badge);
                 }
                 else
                 {
-                    try (PreparedStatement statement = connection.prepareStatement("INSERT INTO users_badges VALUES (null, (SELECT id FROM users WHERE " + (json.username.isEmpty() ? "users.id = ?" : "users.username = ?") + " LIMIT 1), 0, ?)", Statement.RETURN_GENERATED_KEYS))
+                    try (PreparedStatement statement = connection.prepareStatement("INSERT INTO users_badges VALUES (null, (SELECT id FROM users WHERE users.id = ? LIMIT 1), 0, ?)", Statement.RETURN_GENERATED_KEYS))
                     {
-                        if (!json.username.isEmpty())
-                        {
-                            statement.setString(1, json.username);
-                        }
-                        else
-                        {
-                            statement.setInt(1, json.userid);
-                        }
+                        statement.setInt(1, json.user_id);
                         statement.setString(2, json.badge);
                         statement.execute();
                     }
 
-                    this.message = Emulator.getTexts().getValue("commands.succes.cmd_badge.given").replace("%user%", json.username).replace("%badge%", json.badge);
+                    this.message = Emulator.getTexts().getValue("commands.succes.cmd_badge.given").replace("%user%", username).replace("%badge%", json.badge);
                 }
             }
             catch (SQLException e)
             {
                 Emulator.getLogging().logSQLException(e);
+                this.status = RCONMessage.STATUS_ERROR;
+                this.message = e.getMessage();
             }
         }
     }
 
     public class GiveBadgeJSON
     {
-        public int userid = -1;
-        public String username = "";
+        public int user_id = -1;
         public String badge;
     }
 }
