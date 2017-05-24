@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.modtool.ModToolManager;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
+@Deprecated
 public class ModToolBanEvent extends MessageHandler
 {
     @Override

@@ -302,7 +302,7 @@ public class Outgoing
     public final static int OpenRoomCreationWindowComposer = 2064; // PRODUCTION-201611291003-338511768
     public final static int ItemsDataUpdateComposer = 1453; // PRODUCTION-201611291003-338511768
     public final static int WelcomeGiftComposer = 2707; // PRODUCTION-201611291003-338511768
-    /* TODO: */ public final static int SimplePollStartComposer = 2665; // PRODUCTION-201611291003-338511768
+    public final static int SimplePollStartComposer = 2665; // PRODUCTION-201611291003-338511768
     public final static int RoomNoRightsComposer = 2392; // PRODUCTION-201611291003-338511768
     public final static int GuildEditFailComposer = 3988; // PRODUCTION-201611291003-338511768
     public final static int MinimailNewMessageComposer = 1911; // PRODUCTION-201611291003-338511768

@@ -131,7 +131,7 @@ public class Incoming
     public static final int TestInventoryEvent = 3500; // PRODUCTION-201611291003-338511768
     public static final int RequestPetBreedsEvent = 1756; // PRODUCTION-201611291003-338511768
     public static final int GuildChangeBadgeEvent = 1991; // PRODUCTION-201611291003-338511768
-    public static final int ModToolBanEvent = 3230; // PRODUCTION-201611291003-338511768
+    public static final int ModToolBanEvent = -1; // PRODUCTION-201611291003-338511768
     public static final int SaveWardrobeEvent = 800; // PRODUCTION-201611291003-338511768
     public static final int HotelViewEvent = 105; // PRODUCTION-201611291003-338511768
     public static final int ModToolPickTicketEvent = 15; // PRODUCTION-201611291003-3385117681572;
