@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.items.interactions.games;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.games.Game;
+import com.eu.habbo.habbohotel.games.wired.WiredGame;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -75,7 +76,13 @@ public abstract class InteractionGameTimer extends HabboItem
             this.setExtradata("0");
         }
 
-        Game game = (this.getGameType().cast(room.getGame(this.getGameType())));
+        Game game = room.getGame(WiredGame.class);
+
+        if (game == null)
+        {
+            game = (this.getGameType().cast(room.getGame(this.getGameType())));
+        }
+        
         if ((objects.length >= 2 && objects[1] instanceof WiredEffectType))
         {
             if (game.isRunning)

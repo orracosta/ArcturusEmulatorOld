@@ -20,8 +20,9 @@ public class FootballGame extends Game
 {
     private Room room;
 
-    public FootballGame(Room room) {
-        super(null, null, room);
+    public FootballGame(Room room)
+    {
+        super(null, null, room, true);
 
         this.room = room;
     }

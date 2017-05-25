@@ -39,6 +39,11 @@ public abstract class Game implements Runnable
     protected Room room;
 
     /**
+     * Should this game progress any achievements.
+     */
+    protected boolean countsAchievements;
+
+    /**
      * Time the game started.
      */
     protected int startTime;
@@ -53,11 +58,12 @@ public abstract class Game implements Runnable
      */
     public boolean isRunning;
 
-    public Game(Class<? extends GameTeam> gameTeamClazz, Class<? extends GamePlayer> gamePlayerClazz, Room room)
+    public Game(Class<? extends GameTeam> gameTeamClazz, Class<? extends GamePlayer> gamePlayerClazz, Room room, boolean countsAchievements)
     {
         this.gameTeamClazz = gameTeamClazz;
         this.gamePlayerClazz = gamePlayerClazz;
         this.room = room;
+        this.countsAchievements = countsAchievements;
     }
 
     /**
@@ -141,11 +147,26 @@ public abstract class Game implements Runnable
                 habbo.getHabboInfo().setCurrentGame(null);
                 habbo.getHabboInfo().setGamePlayer(null);
 
-                if(this.endTime > this.startTime)
+                if(this.countsAchievements && this.endTime > this.startTime)
                 {
                     AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("GamePlayed"));
                 }
             }
+        }
+
+        boolean deleteGame = true;
+        for (GameTeam team : this.teams.values())
+        {
+            if (team.getMembers().size() > 0 )
+            {
+                deleteGame = false;
+                break;
+            }
+        }
+
+        if (deleteGame)
+        {
+            room.deleteGame(this);
         }
     }
 

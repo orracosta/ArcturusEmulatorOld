@@ -2309,21 +2309,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
     }
 
-    public boolean deleteGame(Class<? extends Game> gameType)
+    public boolean deleteGame(Game game)
     {
-        THashSet<Object> objects = new THashSet<Object>();
-
         synchronized (this.games)
         {
-            for(Game game: this.games)
-            {
-                if(gameType.isInstance(game))
-                {
-                    objects.add(game);
-                }
-            }
-
-            return this.games.removeAll(objects);
+            game.stop();
+            return this.games.remove(game);
         }
     }
 
@@ -4530,7 +4521,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void giveEffect(Habbo habbo, int effectId)
     {
-        this.giveEffect(habbo.getRoomUnit(), effectId);
+        if (this.currentHabbos.containsKey(habbo.getHabboInfo().getId()))
+        {
+            this.giveEffect(habbo.getRoomUnit(), effectId);
+        }
     }
 
     public void giveEffect(RoomUnit roomUnit, int effectId)

@@ -28,7 +28,7 @@ public abstract class TagGame extends Game
 
     public TagGame(Class<? extends GameTeam> gameTeamClazz, Class<? extends GamePlayer> gamePlayerClazz, Room room)
     {
-        super(gameTeamClazz, gamePlayerClazz, room);
+        super(gameTeamClazz, gamePlayerClazz, room, false);
     }
 
     public abstract Class<? extends InteractionTagPole> getTagPole();

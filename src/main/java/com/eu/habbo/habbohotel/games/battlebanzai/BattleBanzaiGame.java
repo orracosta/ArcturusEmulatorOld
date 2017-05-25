@@ -64,7 +64,7 @@ public class BattleBanzaiGame extends Game
 
     public BattleBanzaiGame(Room room)
     {
-        super(BattleBanzaiGameTeam.class, BattleBanzaiGamePlayer.class, room);
+        super(BattleBanzaiGameTeam.class, BattleBanzaiGamePlayer.class, room, true);
 
         this.lockedTiles = new THashMap<GameTeamColors, THashSet<HabboItem>>();
     }

@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
 import com.eu.habbo.habbohotel.games.Game;
 import com.eu.habbo.habbohotel.games.GameTeamColors;
+import com.eu.habbo.habbohotel.games.wired.WiredGame;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
@@ -43,12 +44,15 @@ public class WiredEffectJoinTeam extends InteractionWiredEffect
         {
             if(habbo.getHabboInfo().getGamePlayer() == null)
             {
-                Game game = room.getGame(Game.class);
+                WiredGame game = (WiredGame)room.getGame(WiredGame.class);
 
-                if(game != null)
+                if(game == null)
                 {
-                    return game.addHabbo(habbo, this.teamColor);
+                    game = new WiredGame(room);
+                    room.addGame(game);
                 }
+
+                return game.addHabbo(habbo, this.teamColor);
             }
         }
 
