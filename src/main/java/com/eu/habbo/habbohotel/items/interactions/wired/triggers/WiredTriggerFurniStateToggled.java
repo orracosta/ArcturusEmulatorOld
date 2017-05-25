@@ -121,7 +121,7 @@ public class WiredTriggerFurniStateToggled extends InteractionWiredTrigger
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message)
+    public void serializeWiredData(ServerMessage message, Room room)
     {
         THashSet<HabboItem> items = new THashSet<HabboItem>();
 
@@ -133,7 +133,6 @@ public class WiredTriggerFurniStateToggled extends InteractionWiredTrigger
                 continue;
             }
 
-            Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
             if (room.getHabboItem(item.getId()) == null)
             {
                 items.add(item);
@@ -159,7 +158,6 @@ public class WiredTriggerFurniStateToggled extends InteractionWiredTrigger
         message.appendInt32(0);
         message.appendInt32(this.getType().code);
         message.appendInt32(0);
-        message.appendInt32(0);
     }
 
     @Override
@@ -177,6 +175,12 @@ public class WiredTriggerFurniStateToggled extends InteractionWiredTrigger
             this.items.add(Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(packet.readInt()));
         }
 
+        return true;
+    }
+
+    @Override
+    public boolean isTriggeredByRoomUnit()
+    {
         return true;
     }
 }

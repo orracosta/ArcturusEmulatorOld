@@ -3,14 +3,11 @@ package com.eu.habbo.habbohotel.items.interactions.wired.triggers;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
-import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -88,7 +85,7 @@ public class WiredTriggerHabboSaysKeyword extends InteractionWiredTrigger
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message)
+    public void serializeWiredData(ServerMessage message, Room room)
     {
         message.appendBoolean(false);
         message.appendInt32(5);
@@ -110,6 +107,12 @@ public class WiredTriggerHabboSaysKeyword extends InteractionWiredTrigger
         this.ownerOnly = packet.readInt() == 1;
         this.key = packet.readString();
 
+        return true;
+    }
+
+    @Override
+    public boolean isTriggeredByRoomUnit()
+    {
         return true;
     }
 }

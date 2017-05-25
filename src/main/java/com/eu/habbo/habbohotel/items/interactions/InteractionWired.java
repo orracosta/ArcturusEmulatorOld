@@ -28,7 +28,7 @@ public abstract class InteractionWired extends HabboItem
 
     protected abstract String getWiredData();
 
-    public abstract void serializeWiredData(ServerMessage message);
+    public abstract void serializeWiredData(ServerMessage message, Room room);
 
     public abstract void loadWiredData(ResultSet set, Room room) throws SQLException;
 

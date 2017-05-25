@@ -36,7 +36,7 @@ public class WiredEffectBotWalkToFurni extends InteractionWiredEffect
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message)
+    public void serializeWiredData(ServerMessage message, Room room)
     {
         THashSet<HabboItem> items = new THashSet<HabboItem>();
 

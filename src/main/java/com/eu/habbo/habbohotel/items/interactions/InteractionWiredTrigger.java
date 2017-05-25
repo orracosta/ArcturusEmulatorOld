@@ -43,7 +43,7 @@ public abstract class InteractionWiredTrigger extends InteractionWired
         if (client != null)
         {
             if (room.hasRights(client.getHabbo()))
-                client.sendResponse(new WiredTriggerDataComposer(this));
+                client.sendResponse(new WiredTriggerDataComposer(this, room));
         }
     }
 
@@ -79,6 +79,9 @@ public abstract class InteractionWiredTrigger extends InteractionWired
         return this.delay;
     }
 
-
+    public boolean isTriggeredByRoomUnit()
+    {
+        return false;
+    }
 
 }

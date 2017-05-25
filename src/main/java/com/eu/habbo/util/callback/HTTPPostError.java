@@ -44,7 +44,6 @@ public class HTTPPostError implements Runnable
         }
         catch (Exception e)
         {
-
         }
         return;
     }
@@ -58,7 +57,6 @@ public class HTTPPostError implements Runnable
         }
         catch (Exception e)
         {
-            e.printStackTrace();
         }
     }
 }

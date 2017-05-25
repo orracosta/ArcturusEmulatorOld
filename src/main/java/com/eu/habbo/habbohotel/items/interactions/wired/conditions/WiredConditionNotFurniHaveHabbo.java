@@ -108,7 +108,7 @@ public class WiredConditionNotFurniHaveHabbo extends InteractionWiredCondition
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message)
+    public void serializeWiredData(ServerMessage message, Room room)
     {
         this.refresh();
 

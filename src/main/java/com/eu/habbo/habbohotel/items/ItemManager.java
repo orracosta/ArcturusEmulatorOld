@@ -190,9 +190,9 @@ public class ItemManager {
             this.interactionsList.add(new ItemInteraction("wf_act_bot_follow_avatar",   WiredEffectBotFollowHabbo.class));
             this.interactionsList.add(new ItemInteraction("wf_act_bot_clothes",         WiredEffectBotClothes.class));
             this.interactionsList.add(new ItemInteraction("wf_act_bot_talk_to_avatar",  WiredEffectBotTalkToHabbo.class));
-            this.interactionsList.add(new ItemInteraction("wf_give_user_diamonds",      WiredEffectGiveDiamonds.class));
-            this.interactionsList.add(new ItemInteraction("wf_give_user_xcredits",      WiredEffectGiveCredits.class));
-            this.interactionsList.add(new ItemInteraction("wf_give_user_xduckets",      WiredEffectGiveDuckets.class));
+            this.interactionsList.add(new ItemInteraction("wf_act_give_diamonds",       WiredEffectGiveDiamonds.class));
+            this.interactionsList.add(new ItemInteraction("wf_act_give_credits",        WiredEffectGiveCredits.class));
+            this.interactionsList.add(new ItemInteraction("wf_act_give_duckets",        WiredEffectGiveDuckets.class));
             this.interactionsList.add(new ItemInteraction("wf_act_give_badge",          WiredEffectGiveBadge.class));
             this.interactionsList.add(new ItemInteraction("wf_act_forward_user",        WiredEffectForwardToRoom.class));
             this.interactionsList.add(new ItemInteraction("wf_act_roller_speed",        WiredEffectRollerSpeed.class));

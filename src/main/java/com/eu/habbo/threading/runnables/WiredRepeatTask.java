@@ -1,5 +1,6 @@
 package com.eu.habbo.threading.runnables;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
@@ -18,9 +19,12 @@ public class WiredRepeatTask implements Runnable
     @Override
     public void run()
     {
-        if(this.room != null && this.room.getId() == this.repeater.getRoomId() && this.room.isLoaded())
+        if (!Emulator.isShuttingDown && Emulator.isReady)
         {
-            WiredHandler.handle(this.repeater, null, this.room, null);
+            if (this.room != null && this.room.getId() == this.repeater.getRoomId() && this.room.isLoaded())
+            {
+                WiredHandler.handle(this.repeater, null, this.room, null);
+            }
         }
     }
 }

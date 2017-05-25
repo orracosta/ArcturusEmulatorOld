@@ -20,11 +20,14 @@ class WiredRepeatEffectTask implements Runnable
     @Override
     public void run()
     {
-        if(this.room != null && this.room.getId() == this.effect.getRoomId())
+        if (!Emulator.isShuttingDown && Emulator.isReady)
         {
-            this.effect.execute(null, this.room, null);
+            if (this.room != null && this.room.getId() == this.effect.getRoomId())
+            {
+                this.effect.execute(null, this.room, null);
 
-            Emulator.getThreading().run(this, this.delay);
+                Emulator.getThreading().run(this, this.delay);
+            }
         }
     }
 }

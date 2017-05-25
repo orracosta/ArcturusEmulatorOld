@@ -72,7 +72,7 @@ public class WiredTriggerScoreAchieved extends InteractionWiredTrigger
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message)
+    public void serializeWiredData(ServerMessage message, Room room)
     {
         message.appendBoolean(false);
         message.appendInt32(5);
@@ -93,6 +93,12 @@ public class WiredTriggerScoreAchieved extends InteractionWiredTrigger
     {
         packet.readInt();
         this.score = packet.readInt();
+        return true;
+    }
+
+    @Override
+    public boolean isTriggeredByRoomUnit()
+    {
         return true;
     }
 }

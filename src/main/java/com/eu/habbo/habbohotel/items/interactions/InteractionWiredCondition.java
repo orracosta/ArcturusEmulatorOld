@@ -41,7 +41,7 @@ public abstract class InteractionWiredCondition extends InteractionWired
         if (client != null)
         {
             if (room.hasRights(client.getHabbo()))
-                client.sendResponse(new WiredConditionDataComposer(this));
+                client.sendResponse(new WiredConditionDataComposer(this, room));
         }
     }
 

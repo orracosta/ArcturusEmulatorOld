@@ -139,7 +139,7 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message)
+    public void serializeWiredData(ServerMessage message, Room room)
     {
         this.refresh();
 

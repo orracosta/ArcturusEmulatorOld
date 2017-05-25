@@ -123,11 +123,10 @@ public class WiredTriggerHabboWalkOffFurni extends InteractionWiredTrigger
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message)
+    public void serializeWiredData(ServerMessage message, Room room)
     {
         THashSet<HabboItem> items = new THashSet<HabboItem>();
 
-        Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
         if(room == null)
         {
             items.addAll(this.items);
@@ -178,6 +177,12 @@ public class WiredTriggerHabboWalkOffFurni extends InteractionWiredTrigger
             this.items.add(Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(packet.readInt()));
         }
 
+        return true;
+    }
+
+    @Override
+    public boolean isTriggeredByRoomUnit()
+    {
         return true;
     }
 }

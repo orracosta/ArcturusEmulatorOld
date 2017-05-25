@@ -36,7 +36,7 @@ public class WiredTriggerBotReachedHabbo extends InteractionWiredTrigger
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message)
+    public void serializeWiredData(ServerMessage message, Room room)
     {
         message.appendBoolean(false);
         message.appendInt32(5);
@@ -93,5 +93,11 @@ public class WiredTriggerBotReachedHabbo extends InteractionWiredTrigger
     public void onPickUp()
     {
         this.botName = "";
+    }
+
+    @Override
+    public boolean isTriggeredByRoomUnit()
+    {
+        return true;
     }
 }

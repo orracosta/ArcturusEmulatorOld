@@ -57,7 +57,7 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message)
+    public void serializeWiredData(ServerMessage message, Room room)
     {
         message.appendBoolean(false);
         message.appendInt32(Emulator.getConfig().getInt("hotel.wired.furni.selection.count"));

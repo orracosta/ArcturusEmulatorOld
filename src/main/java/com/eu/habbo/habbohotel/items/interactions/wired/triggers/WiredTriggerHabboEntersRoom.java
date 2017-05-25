@@ -74,7 +74,7 @@ public class WiredTriggerHabboEntersRoom extends InteractionWiredTrigger
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message)
+    public void serializeWiredData(ServerMessage message, Room room)
     {
         message.appendBoolean(false);
         message.appendInt32(5);
@@ -95,6 +95,12 @@ public class WiredTriggerHabboEntersRoom extends InteractionWiredTrigger
         packet.readInt();
         this.username = packet.readString();
 
+        return true;
+    }
+
+    @Override
+    public boolean isTriggeredByRoomUnit()
+    {
         return true;
     }
 }

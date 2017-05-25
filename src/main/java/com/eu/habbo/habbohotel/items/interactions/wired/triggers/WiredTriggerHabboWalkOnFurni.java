@@ -62,7 +62,7 @@ public class WiredTriggerHabboWalkOnFurni extends InteractionWiredTrigger
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message)
+    public void serializeWiredData(ServerMessage message, Room room)
     {
         THashSet<HabboItem> items = new THashSet<HabboItem>();
 
@@ -175,5 +175,11 @@ public class WiredTriggerHabboWalkOnFurni extends InteractionWiredTrigger
     {
         this.items.clear();
         this.message = "";
+    }
+
+    @Override
+    public boolean isTriggeredByRoomUnit()
+    {
+        return true;
     }
 }

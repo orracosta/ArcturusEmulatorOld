@@ -1,5 +1,6 @@
 package com.eu.habbo.threading.runnables;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.items.interactions.wired.triggers.WiredTriggerAtSetTime;
 import com.eu.habbo.habbohotel.items.interactions.wired.triggers.WiredTriggerAtTimeLong;
@@ -27,19 +28,22 @@ public class WiredExecuteTask implements Runnable
     @Override
     public void run()
     {
-        if(this.room != null && this.room.getId() == this.task.getRoomId())
+        if (!Emulator.isShuttingDown && Emulator.isReady)
         {
-            if(this.task instanceof WiredTriggerAtSetTime)
+            if (this.room != null && this.room.getId() == this.task.getRoomId())
             {
-                if(((WiredTriggerAtSetTime) this.task).taskId != taskId)
-                    return;
+                if (this.task instanceof WiredTriggerAtSetTime)
+                {
+                    if (((WiredTriggerAtSetTime) this.task).taskId != taskId)
+                        return;
+                }
+                if (this.task instanceof WiredTriggerAtTimeLong)
+                {
+                    if (((WiredTriggerAtTimeLong) this.task).taskId != taskId)
+                        return;
+                }
+                WiredHandler.handle(this.task, null, this.room, null);
             }
-            if(this.task instanceof WiredTriggerAtTimeLong)
-            {
-                if(((WiredTriggerAtTimeLong) this.task).taskId != taskId)
-                    return;
-            }
-            WiredHandler.handle(this.task, null, this.room, null);
         }
     }
 }

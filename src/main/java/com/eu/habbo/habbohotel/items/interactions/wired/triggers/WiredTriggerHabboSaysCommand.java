@@ -90,7 +90,7 @@ public class WiredTriggerHabboSaysCommand  extends InteractionWiredTrigger
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message)
+    public void serializeWiredData(ServerMessage message, Room room)
     {
         message.appendBoolean(false);
         message.appendInt32(5);
@@ -112,6 +112,12 @@ public class WiredTriggerHabboSaysCommand  extends InteractionWiredTrigger
         this.ownerOnly = packet.readInt() == 1;
         this.key = packet.readString();
 
+        return true;
+    }
+
+    @Override
+    public boolean isTriggeredByRoomUnit()
+    {
         return true;
     }
 }

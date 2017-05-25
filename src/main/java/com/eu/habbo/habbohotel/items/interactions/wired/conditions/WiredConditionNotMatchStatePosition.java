@@ -144,7 +144,7 @@ public class WiredConditionNotMatchStatePosition extends InteractionWiredConditi
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message)
+    public void serializeWiredData(ServerMessage message, Room room)
     {
         this.refresh();
 

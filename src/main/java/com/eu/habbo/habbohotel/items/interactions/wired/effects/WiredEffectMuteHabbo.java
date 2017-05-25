@@ -26,7 +26,7 @@ public class WiredEffectMuteHabbo extends InteractionWiredEffect
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message)
+    public void serializeWiredData(ServerMessage message, Room room)
     {
         message.appendBoolean(false);
         message.appendInt32(5);
@@ -85,5 +85,11 @@ public class WiredEffectMuteHabbo extends InteractionWiredEffect
     public WiredEffectType getType()
     {
         return type;
+    }
+
+    @Override
+    public boolean requiresTriggeringUser()
+    {
+        return true;
     }
 }

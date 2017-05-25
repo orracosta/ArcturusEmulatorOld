@@ -32,6 +32,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WiredHandler
 {
@@ -53,13 +55,20 @@ public class WiredHandler
         if(triggers == null || triggers.isEmpty())
             return false;
 
+        List<RoomTile> triggeredTiles = new ArrayList<>();
         for(InteractionWiredTrigger trigger : triggers)
         {
+            RoomTile tile = room.getLayout().getTile(trigger.getX(), trigger.getY());
+
+            if (triggeredTiles.contains(tile))
+                continue;
+
             if(handle(trigger, roomUnit, room, stuff))
             {
                 if(triggerType.equals(WiredTriggerType.SAY_SOMETHING))
                     talked = true;
 
+                triggeredTiles.add(tile);
                 trigger.setExtradata("1");
                 room.updateItem(trigger);
                 Emulator.getThreading().run(new HabboItemNewState(trigger, room, "0"), 500);
@@ -95,27 +104,34 @@ public class WiredHandler
                 }
             }
 
+            long millis = System.currentTimeMillis();
             for(final InteractionWiredEffect effect : effects)
             {
-                Emulator.getThreading().run(new Runnable()
+                if (effect.canExecute(millis))
                 {
-                    @Override
-                    public void run()
+                    if (!effect.requiresTriggeringUser() || (roomUnit != null && effect.requiresTriggeringUser()))
                     {
-                        effect.execute(roomUnit, room, stuff);
-
                         Emulator.getThreading().run(new Runnable()
                         {
                             @Override
                             public void run()
                             {
-                                effect.setExtradata("1");
-                                room.updateItem(effect);
-                                Emulator.getThreading().run(new HabboItemNewState(effect, room, "0"), 500);
+                                effect.execute(roomUnit, room, stuff);
+
+                                Emulator.getThreading().run(new Runnable()
+                                {
+                                    @Override
+                                    public void run()
+                                    {
+                                        effect.setExtradata("1");
+                                        room.updateItem(effect);
+                                        Emulator.getThreading().run(new HabboItemNewState(effect, room, "0"), 500);
+                                    }
+                                });
                             }
-                        });
+                        }, effect.getDelay() * 500);
                     }
-                }, effect.getDelay() * 500);
+                }
             }
 
             trigger.setExtradata("1");

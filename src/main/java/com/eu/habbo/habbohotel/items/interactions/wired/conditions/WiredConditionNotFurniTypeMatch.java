@@ -92,7 +92,7 @@ public class WiredConditionNotFurniTypeMatch extends InteractionWiredCondition
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message)
+    public void serializeWiredData(ServerMessage message, Room room)
     {
         this.refresh();
 

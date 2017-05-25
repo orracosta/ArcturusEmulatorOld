@@ -35,7 +35,7 @@ public class WiredConditionHabboHasHandItem extends InteractionWiredCondition
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message)
+    public void serializeWiredData(ServerMessage message, Room room)
     {
         message.appendBoolean(false);
         message.appendInt32(5);

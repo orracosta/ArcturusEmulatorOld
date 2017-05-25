@@ -2,7 +2,6 @@ package com.eu.habbo.habbohotel.items.interactions.wired.conditions;
 
 import com.eu.habbo.habbohotel.games.Game;
 import com.eu.habbo.habbohotel.games.battlebanzai.BattleBanzaiGame;
-import com.eu.habbo.habbohotel.games.freeze.FreezeGame;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredCondition;
 import com.eu.habbo.habbohotel.rooms.Room;
@@ -35,7 +34,7 @@ public class WiredConditionNotBattleBanzaiGameActive extends InteractionWiredCon
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message)
+    public void serializeWiredData(ServerMessage message, Room room)
     {
 
     }

@@ -10,25 +10,33 @@ import java.util.Map;
 
 public class AchievementUpdater implements Runnable
 {
+    public static int INTERVAL = 5 * 60;
+    public int lastExecutionTimestamp = Emulator.getIntUnixTimestamp();
     @Override
     public void run()
     {
-        Emulator.getThreading().run(this, 5 * 60);
-
-        Achievement onlineTime = Emulator.getGameEnvironment().getAchievementManager().getAchievement("AllTimeHotelPresence");
-
-        for(Map.Entry<Integer, Habbo> set : Emulator.getGameEnvironment().getHabboManager().getOnlineHabbos().entrySet())
+        if (!Emulator.isShuttingDown)
         {
-            Habbo habbo = set.getValue();
+            Emulator.getThreading().run(this, INTERVAL * 1000);
+        }
 
-            int timeOnline = habbo.getHabboStats().getAchievementCache().get(onlineTime);
-            if(timeOnline == 0)
+        if (Emulator.isReady)
+        {
+            Achievement onlineTime = Emulator.getGameEnvironment().getAchievementManager().getAchievement("AllTimeHotelPresence");
+
+            int timestamp = Emulator.getIntUnixTimestamp();
+            for (Map.Entry<Integer, Habbo> set : Emulator.getGameEnvironment().getHabboManager().getOnlineHabbos().entrySet())
             {
-                habbo.getHabboStats().getAchievementCache().put(onlineTime, Emulator.getIntUnixTimestamp());
+                int timeOnlineSinceLastInterval = INTERVAL;
+                Habbo habbo = set.getValue();
+                if (habbo.getHabboInfo().getLastOnline() > this.lastExecutionTimestamp)
+                {
+                    timeOnlineSinceLastInterval = timestamp - habbo.getHabboInfo().getLastOnline();
+                }
+                AchievementManager.progressAchievement(habbo, onlineTime, (int) Math.floor((timeOnlineSinceLastInterval) / 60));
             }
 
-            AchievementManager.progressAchievement(habbo, onlineTime, (int)Math.floor((Emulator.getIntUnixTimestamp() - timeOnline) / 60));
-            habbo.getHabboStats().getAchievementCache().put(onlineTime, timeOnline % 60);
+            this.lastExecutionTimestamp = timestamp;
         }
     }
 }

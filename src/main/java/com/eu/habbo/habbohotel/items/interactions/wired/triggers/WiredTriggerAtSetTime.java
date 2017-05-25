@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.items.interactions.wired.triggers;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
+import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.items.interactions.wired.WiredTriggerReset;
 import com.eu.habbo.habbohotel.rooms.Room;
@@ -10,9 +11,12 @@ import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.threading.runnables.WiredExecuteTask;
+import gnu.trove.procedure.TObjectProcedure;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WiredTriggerAtSetTime extends InteractionWiredTrigger implements WiredTriggerReset
 {
@@ -73,7 +77,7 @@ public class WiredTriggerAtSetTime extends InteractionWiredTrigger implements Wi
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message)
+    public void serializeWiredData(ServerMessage message, Room room)
     {
         message.appendBoolean(false);
         message.appendInt32(5);
@@ -85,8 +89,32 @@ public class WiredTriggerAtSetTime extends InteractionWiredTrigger implements Wi
         message.appendInt32(this.executeTime / 500);
         message.appendInt32(1);
         message.appendInt32(this.getType().code);
-        message.appendInt32(0);
-        message.appendInt32(0);
+
+        if (!this.isTriggeredByRoomUnit())
+        {
+            List<Integer> invalidTriggers = new ArrayList<>();
+            room.getRoomSpecialTypes().getEffects(this.getX(), this.getY()).forEach(new TObjectProcedure<InteractionWiredEffect>()
+            {
+                @Override
+                public boolean execute(InteractionWiredEffect object)
+                {
+                    if (object.requiresTriggeringUser())
+                    {
+                        invalidTriggers.add(object.getBaseItem().getSpriteId());
+                    }
+                    return true;
+                }
+            });
+            message.appendInt32(invalidTriggers.size());
+            for (Integer i : invalidTriggers)
+            {
+                message.appendInt32(i);
+            }
+        }
+        else
+        {
+            message.appendInt32(0);
+        }
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
+import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -11,10 +12,13 @@ import com.eu.habbo.habbohotel.wired.WiredGiveRewardItem;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
+import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WiredEffectGiveReward extends InteractionWiredEffect
 {
@@ -112,7 +116,7 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message)
+    public void serializeWiredData(ServerMessage message, Room room)
     {
         message.appendBoolean(false);
         message.appendInt32(this.rewardItems.size());
@@ -133,7 +137,32 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
         message.appendInt32(this.limit > 0);
         message.appendInt32(this.getType().code);
         message.appendInt32(this.getDelay());
-        message.appendInt32(0);
+
+        if (this.requiresTriggeringUser())
+        {
+            List<Integer> invalidTriggers = new ArrayList<>();
+            room.getRoomSpecialTypes().getTriggers(this.getX(), this.getY()).forEach(new TObjectProcedure<InteractionWiredTrigger>()
+            {
+                @Override
+                public boolean execute(InteractionWiredTrigger object)
+                {
+                    if (!object.isTriggeredByRoomUnit())
+                    {
+                        invalidTriggers.add(object.getBaseItem().getSpriteId());
+                    }
+                    return true;
+                }
+            });
+            message.appendInt32(invalidTriggers.size());
+            for (Integer i : invalidTriggers)
+            {
+                message.appendInt32(i);
+            }
+        }
+        else
+        {
+            message.appendInt32(0);
+        }
     }
 
     @Override
@@ -172,6 +201,12 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
         packet.readString();
         packet.readInt();
         this.setDelay(packet.readInt());
+        return true;
+    }
+
+    @Override
+    public boolean requiresTriggeringUser()
+    {
         return true;
     }
 }

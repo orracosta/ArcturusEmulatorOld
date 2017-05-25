@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.games.Game;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionCrackable;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
+import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.items.interactions.games.InteractionGameTimer;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeBlock;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeTile;
@@ -15,10 +16,13 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
+import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WiredEffectToggleFurni extends InteractionWiredEffect
 {
@@ -39,7 +43,7 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message)
+    public void serializeWiredData(ServerMessage message, Room room)
     {
         synchronized (this.items)
         {
@@ -70,7 +74,32 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
             message.appendInt32(0);
             message.appendInt32(this.getType().code);
             message.appendInt32(this.getDelay());
-            message.appendInt32(0);
+
+            if (this.requiresTriggeringUser())
+            {
+                List<Integer> invalidTriggers = new ArrayList<>();
+                room.getRoomSpecialTypes().getTriggers(this.getX(), this.getY()).forEach(new TObjectProcedure<InteractionWiredTrigger>()
+                {
+                    @Override
+                    public boolean execute(InteractionWiredTrigger object)
+                    {
+                        if (!object.isTriggeredByRoomUnit())
+                        {
+                            invalidTriggers.add(object.getBaseItem().getSpriteId());
+                        }
+                        return true;
+                    }
+                });
+                message.appendInt32(invalidTriggers.size());
+                for (Integer i : invalidTriggers)
+                {
+                    message.appendInt32(i);
+                }
+            }
+            else
+            {
+                message.appendInt32(0);
+            }
         }
     }
 
