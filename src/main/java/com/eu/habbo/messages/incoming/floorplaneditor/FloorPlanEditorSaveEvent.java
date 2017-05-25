@@ -58,8 +58,6 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
                 }
             }
 
-            map = map.substring(0, map.length()-1).replace((char)13 +"", "\r\n");
-
             int doorX = this.packet.readInt();
             int doorY = this.packet.readInt();
             int doorRotation = this.packet.readInt();

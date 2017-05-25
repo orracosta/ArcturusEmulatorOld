@@ -44,7 +44,7 @@ public class RoomLayout
             this.doorY = set.getShort("door_y");
 
             this.doorDirection = set.getInt("door_dir");
-            this.heightmap = set.getString("heightmap").replace("\n", "");
+            this.heightmap = set.getString("heightmap");
 
             this.parse();
         }
@@ -121,12 +121,6 @@ public class RoomLayout
                     }
                 }
             }
-        }
-        else
-        {
-            this.doorX = 0;
-            this.doorY = 0;
-            this.doorTile = this.getTile(this.doorX, this.doorY);
         }
     }
 
@@ -259,7 +253,7 @@ public class RoomLayout
     }
     public String getRelativeMap()
     {
-        return this.heightmap.replace("\r\n", "\r");
+        return this.heightmap.replace("\r\n", "\r").substring(0, this.heightmap.replace("\r\n", "\r").length());
     }
 
     public final Deque<RoomTile> findPath(RoomTile oldTile, RoomTile newTile)
@@ -597,32 +591,35 @@ public class RoomLayout
     {
         THashSet<RoomTile> pointList = new THashSet<RoomTile>();
 
-        if(rotation == 0 || rotation == 4)
+        if (tile != null)
         {
-            for (short i = tile.x; i <= (tile.x + (width - 1)); i++)
+            if (rotation == 0 || rotation == 4)
             {
-                for (short j = tile.y; j <= (tile.y + (length - 1)); j++)
+                for (short i = tile.x; i <= (tile.x + (width - 1)); i++)
                 {
-                    RoomTile t = this.getTile(i, j);
-
-                    if (t != null)
+                    for (short j = tile.y; j <= (tile.y + (length - 1)); j++)
                     {
-                        pointList.add(t);
+                        RoomTile t = this.getTile(i, j);
+
+                        if (t != null)
+                        {
+                            pointList.add(t);
+                        }
                     }
                 }
             }
-        }
-        else if(rotation == 2 || rotation == 6)
-        {
-            for (short i = tile.x; i <= (tile.x + (length - 1)); i++)
+            else if (rotation == 2 || rotation == 6)
             {
-                for (short j = tile.y; j <= (tile.y + (width - 1)); j++)
+                for (short i = tile.x; i <= (tile.x + (length - 1)); i++)
                 {
-                    RoomTile t = this.getTile(i, j);
-
-                    if (t != null)
+                    for (short j = tile.y; j <= (tile.y + (width - 1)); j++)
                     {
-                        pointList.add(t);
+                        RoomTile t = this.getTile(i, j);
+
+                        if (t != null)
+                        {
+                            pointList.add(t);
+                        }
                     }
                 }
             }
