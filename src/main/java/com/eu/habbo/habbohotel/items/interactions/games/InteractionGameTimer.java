@@ -82,7 +82,7 @@ public abstract class InteractionGameTimer extends HabboItem
         {
             game = (this.getGameType().cast(room.getGame(this.getGameType())));
         }
-        
+
         if ((objects.length >= 2 && objects[1] instanceof WiredEffectType))
         {
             if (game.isRunning)

@@ -756,6 +756,11 @@ public class RoomSpecialTypes
         this.gameTimers.remove(gameTimer.getId());
     }
 
+    public THashMap<Integer, InteractionGameTimer> getGameTimers()
+    {
+        return this.gameTimers;
+    }
+
     public THashMap<Integer, InteractionFreezeTimer> getFreezeTimers()
     {
         synchronized (this.gameTimers)
