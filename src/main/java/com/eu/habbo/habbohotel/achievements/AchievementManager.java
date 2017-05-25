@@ -12,6 +12,7 @@ import com.eu.habbo.plugin.Event;
 import com.eu.habbo.plugin.events.users.achievements.UserAchievementLeveledEvent;
 import com.eu.habbo.plugin.events.users.achievements.UserAchievementProgressEvent;
 import gnu.trove.map.hash.THashMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.sql.*;
 import java.util.LinkedHashMap;
@@ -256,9 +257,9 @@ public class AchievementManager
 
             habbo.getClient().sendResponse(new AchievementUnlockedComposer(habbo, achievement));
 
-            if(nextLevel.rewardTypr >= 0 && nextLevel.rewardAmount > 0)
+            if(nextLevel.rewardType >= 0 && nextLevel.rewardAmount > 0)
             {
-                habbo.givePoints(nextLevel.rewardTypr, nextLevel.rewardAmount);
+                habbo.givePoints(nextLevel.rewardType, nextLevel.rewardAmount);
             }
 
             //Exception could possibly arise when the user disconnects while being in tour.
@@ -308,7 +309,6 @@ public class AchievementManager
         }
     }
 
-
     /**
      * Checks wether the given Habbo has achieved a certain Achievement.
      * @param habbo The Habbo to check.
@@ -325,10 +325,11 @@ public class AchievementManager
         }
 
         AchievementLevel level = achievement.getLevelForProgress(currentProgress);
-        AchievementLevel nextLevel = achievement.levels.get(level.level + 1);
 
         if(level == null)
             return false;
+
+        AchievementLevel nextLevel = achievement.levels.get(level.level + 1);
 
         if (nextLevel == null && currentProgress >= level.progress)
         {

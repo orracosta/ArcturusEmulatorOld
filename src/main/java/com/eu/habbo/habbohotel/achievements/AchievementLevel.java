@@ -7,7 +7,7 @@ public class AchievementLevel
 {
     public final int level;
     public final int rewardAmount;
-    public final int rewardTypr;
+    public final int rewardType;
     public final int points;
     public final int progress;
 
@@ -15,7 +15,7 @@ public class AchievementLevel
     {
         this.level        = set.getInt("level");
         this.rewardAmount = set.getInt("reward_amount");
-        this.rewardTypr   = set.getInt("reward_type");
+        this.rewardType = set.getInt("reward_type");
         this.points       = set.getInt("points");
         this.progress     = set.getInt("progress_needed");
     }
