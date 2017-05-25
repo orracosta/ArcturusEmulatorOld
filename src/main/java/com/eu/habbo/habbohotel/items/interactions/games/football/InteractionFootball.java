@@ -1,7 +1,11 @@
 package com.eu.habbo.habbohotel.items.interactions.games.football;
 
+import com.eu.habbo.habbohotel.games.GameTeamColors;
+import com.eu.habbo.habbohotel.games.football.FootballGame;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPushable;
+import com.eu.habbo.habbohotel.items.interactions.games.InteractionGameTeamItem;
+import com.eu.habbo.habbohotel.items.interactions.games.football.goals.InteractionFootballGoal;
 import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.habbohotel.rooms.RoomTileState;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -175,7 +179,30 @@ public class InteractionFootball extends InteractionPushable
     
     @Override
     public void onMove(Room room, RoomTile from, RoomTile to, RoomUserRotation direction, RoomUnit kicker, int nextRoll, int currentStep, int totalSteps)
-    {        
+    {
+        FootballGame game = (FootballGame)room.getGame(FootballGame.class);
+        if (game == null)
+        {
+            try
+            {
+                game = FootballGame.class.getDeclaredConstructor(Room.class).newInstance(room);
+                room.addGame(game);
+            }
+            catch(Exception e)
+            {
+                return;
+            }
+        }
+
+        HabboItem currentTopItem = room.getTopItemAt(from.x, from.y, this);
+        HabboItem topItem = room.getTopItemAt(to.x, to.y, this);
+
+        if(game != null && topItem != null && (currentTopItem == null || currentTopItem.getId() != topItem.getId()) && topItem instanceof InteractionFootballGoal)
+        {
+            GameTeamColors color = ((InteractionGameTeamItem) topItem).teamColor;
+            game.onScore(kicker, color);
+        }
+
         this.setExtradata(nextRoll <= 200 ? "8" : (nextRoll <= 250 ? "7" : (nextRoll <= 300 ? "6" : (nextRoll <= 350 ? "5" : (nextRoll <= 400 ? "4" : (nextRoll <= 450 ? "3" : (nextRoll <= 500 ? "2" : "1")))))));
         room.sendComposer(new ItemStateComposer(this).compose());
     }
