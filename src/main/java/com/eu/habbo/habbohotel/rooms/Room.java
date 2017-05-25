@@ -2512,6 +2512,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             } else if (item instanceof InteractionWiredCondition)
             {
                 this.roomSpecialTypes.addCondition((InteractionWiredCondition) item);
+            } else if (item instanceof InteractionWiredExtra)
+            {
+                this.roomSpecialTypes.addExtra((InteractionWiredExtra) item);
             } else if (item instanceof InteractionBattleBanzaiTeleporter)
             {
                 this.roomSpecialTypes.addBanzaiTeleporter((InteractionBattleBanzaiTeleporter) item);
@@ -2683,6 +2686,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 else if (item instanceof InteractionWiredCondition)
                 {
                     this.roomSpecialTypes.removeCondition((InteractionWiredCondition) item);
+                }
+                else if (item instanceof InteractionWiredExtra)
+                {
+                    this.roomSpecialTypes.removeExtra((InteractionWiredExtra) item);
                 }
                 else if (item instanceof InteractionRoller)
                 {

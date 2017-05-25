@@ -4,16 +4,21 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredCondition;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
+import com.eu.habbo.habbohotel.items.interactions.InteractionWiredExtra;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.items.interactions.wired.WiredTriggerReset;
 import com.eu.habbo.habbohotel.items.interactions.wired.effects.WiredEffectGiveReward;
 import com.eu.habbo.habbohotel.items.interactions.wired.effects.WiredEffectTriggerStacks;
+import com.eu.habbo.habbohotel.items.interactions.wired.extra.WiredExtraRandom;
+import com.eu.habbo.habbohotel.items.interactions.wired.extra.WiredExtraUnseen;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.messages.ServerMessage;
+import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.catalog.PurchaseOKComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.WiredRewardAlertComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
@@ -33,6 +38,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class WiredHandler
@@ -69,9 +75,6 @@ public class WiredHandler
                     talked = true;
 
                 triggeredTiles.add(tile);
-                trigger.setExtradata("1");
-                room.updateItem(trigger);
-                Emulator.getThreading().run(new HabboItemNewState(trigger, room, "0"), 500);
             }
         }
 
@@ -82,8 +85,10 @@ public class WiredHandler
     {
         if(trigger.execute(roomUnit, room, stuff))
         {
-            THashSet<InteractionWiredCondition> conditions = room.getRoomSpecialTypes().getConditions(trigger.getX(), trigger.getY());
+            trigger.setExtradata(trigger.getExtradata().equals("1") ? "0" : "1");
+            room.updateItem(trigger);
 
+            THashSet<InteractionWiredCondition> conditions = room.getRoomSpecialTypes().getConditions(trigger.getX(), trigger.getY());
             THashSet<InteractionWiredEffect> effects = room.getRoomSpecialTypes().getEffects(trigger.getX(), trigger.getY());
 
             if(Emulator.getPluginManager().fireEvent(new WiredStackTriggeredEvent(room, roomUnit, trigger, effects, conditions)).isCancelled())
@@ -93,9 +98,8 @@ public class WiredHandler
             {
                 if(condition.execute(roomUnit, room, stuff))
                 {
-                    condition.setExtradata("1");
+                    condition.setExtradata(condition.getExtradata().equals("1") ? "0" : "1");
                     room.updateItem(condition);
-                    Emulator.getThreading().run(new HabboItemNewState(condition, room, "0"), 500);
                 }
                 else
                 {
@@ -104,45 +108,89 @@ public class WiredHandler
                 }
             }
 
-            long millis = System.currentTimeMillis();
-            for(final InteractionWiredEffect effect : effects)
-            {
-                if (effect.canExecute(millis))
-                {
-                    if (!effect.requiresTriggeringUser() || (roomUnit != null && effect.requiresTriggeringUser()))
-                    {
-                        Emulator.getThreading().run(new Runnable()
-                        {
-                            @Override
-                            public void run()
-                            {
-                                effect.execute(roomUnit, room, stuff);
 
-                                Emulator.getThreading().run(new Runnable()
-                                {
-                                    @Override
-                                    public void run()
-                                    {
-                                        effect.setExtradata("1");
-                                        room.updateItem(effect);
-                                        Emulator.getThreading().run(new HabboItemNewState(effect, room, "0"), 500);
-                                    }
-                                });
-                            }
-                        }, effect.getDelay() * 500);
+            boolean hasExtraRandom = room.getRoomSpecialTypes().hasExtraType(trigger.getX(), trigger.getY(), WiredExtraRandom.class);
+            boolean hasExtraUnseen = room.getRoomSpecialTypes().hasExtraType(trigger.getX(), trigger.getY(), WiredExtraUnseen.class);
+            THashSet<InteractionWiredExtra> extras = room.getRoomSpecialTypes().getExtras(trigger.getX(), trigger.getY());
+
+            for (InteractionWiredExtra extra : extras)
+            {
+                extra.setExtradata(extra.getExtradata().equals("1") ? "0" : "1");
+                room.updateItem(extra);
+            }
+
+            List<InteractionWiredEffect> effectList = new ArrayList<>(effects);
+
+            if (hasExtraRandom || hasExtraUnseen)
+            {
+                Collections.shuffle(effectList);
+            }
+
+            long millis = System.currentTimeMillis();
+
+            if (hasExtraUnseen)
+            {
+                for (InteractionWiredExtra extra : room.getRoomSpecialTypes().getExtras(trigger.getX(), trigger.getY()))
+                {
+                    if (extra instanceof WiredExtraUnseen)
+                    {
+                        extra.setExtradata(extra.getExtradata().equals("1") ? "0" : "1");
+                        InteractionWiredEffect effect = ((WiredExtraUnseen) extra).getUnseenEffect(effectList);
+                        triggerEffect(effect, roomUnit, room, stuff, millis);
+                        break;
                     }
                 }
             }
-
-            trigger.setExtradata("1");
-            room.updateItem(trigger);
-            Emulator.getThreading().run(new HabboItemNewState(trigger, room, "0"), 500);
+            else
+            {
+                for (final InteractionWiredEffect effect : effectList)
+                {
+                    boolean executed = triggerEffect(effect, roomUnit, room, stuff, millis);
+                    if (hasExtraRandom && executed)
+                    {
+                        break;
+                    }
+                }
+            }
 
             return !Emulator.getPluginManager().fireEvent(new WiredStackExecutedEvent(room, roomUnit, trigger, effects, conditions)).isCancelled();
         }
 
         return false;
     }
+
+    private static boolean triggerEffect(InteractionWiredEffect effect, RoomUnit roomUnit, Room room, Object[] stuff, long millis)
+    {
+        boolean executed = false;
+        if (effect.canExecute(millis))
+        {
+            executed = true;
+            if (!effect.requiresTriggeringUser() || (roomUnit != null && effect.requiresTriggeringUser()))
+            {
+                Emulator.getThreading().run(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        try
+                        {
+                            effect.execute(roomUnit, room, stuff);
+                        }
+                        catch (Exception e)
+                        {
+                            Emulator.getLogging().logErrorLine(e);
+                        }
+
+                        effect.setExtradata(effect.getExtradata().equals("1") ? "0" : "1");
+                        room.updateItem(effect);
+                    }
+                }, effect.getDelay() * 500);
+            }
+        }
+
+        return  executed;
+    }
+
 
     public static boolean executeEffectsAtTiles(THashSet<RoomTile> tiles, final RoomUnit roomUnit, final Room room, final Object[] stuff)
     {
@@ -152,21 +200,12 @@ public class WiredHandler
             {
                 THashSet<HabboItem> items = room.getItemsAt(tile);
 
+                long millis = System.currentTimeMillis();
                 for(final HabboItem item : items)
                 {
-                    if(item instanceof InteractionWiredEffect && !(item instanceof WiredEffectTriggerStacks))
+                    if(item instanceof InteractionWiredEffect)
                     {
-                        Emulator.getThreading().run(new Runnable()
-                        {
-                            @Override
-                            public void run()
-                            {
-                                ((InteractionWiredEffect) item).execute(roomUnit, room, stuff);
-                                item.setExtradata("1");
-                                room.updateItem(item);
-                            }
-                        }, ((InteractionWiredEffect) item).getDelay() * 500);
-                        Emulator.getThreading().run(new HabboItemNewState(item, room, "0"), 500 + ((InteractionWiredEffect) item).getDelay() * 500);
+                        triggerEffect((InteractionWiredEffect) item, roomUnit, room, stuff, millis);
                     }
                 }
             }

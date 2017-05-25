@@ -15,6 +15,7 @@ import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreeze
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeTimer;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.gates.InteractionFreezeGate;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.scoreboards.InteractionFreezeScoreboard;
+import com.eu.habbo.habbohotel.items.interactions.wired.extra.WiredExtraRandom;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredConditionType;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
@@ -36,6 +37,7 @@ public class RoomSpecialTypes
     private final THashMap<WiredTriggerType, THashSet<InteractionWiredTrigger>> wiredTriggers;
     private final THashMap<WiredEffectType, THashSet<InteractionWiredEffect>> wiredEffects;
     private final THashMap<WiredConditionType, THashSet<InteractionWiredCondition>> wiredConditions;
+    private final THashMap<Integer, InteractionWiredExtra> wiredExtras;
 
     private final THashMap<Integer, InteractionGameScoreboard> gameScoreboards;
     private final THashMap<Integer, InteractionGameGate> gameGates;
@@ -46,23 +48,24 @@ public class RoomSpecialTypes
 
     public RoomSpecialTypes()
     {
-        this.banzaiTeleporters = new THashMap<Integer, InteractionBattleBanzaiTeleporter>();
-        this.nests = new THashMap<Integer, InteractionNest>();
-        this.petDrinks = new THashMap<Integer, InteractionPetDrink>();
-        this.petFoods = new THashMap<Integer, InteractionPetFood>();
-        this.petToys = new THashMap<Integer, InteractionPetToy>();
-        this.rollers = new THashMap<Integer, InteractionRoller>();
+        this.banzaiTeleporters = new THashMap<>();
+        this.nests = new THashMap<>();
+        this.petDrinks = new THashMap<>();
+        this.petFoods = new THashMap<>();
+        this.petToys = new THashMap<>();
+        this.rollers = new THashMap<>();
 
-        this.wiredTriggers = new THashMap<WiredTriggerType, THashSet<InteractionWiredTrigger>>();
-        this.wiredEffects = new THashMap<WiredEffectType, THashSet<InteractionWiredEffect>>();
-        this.wiredConditions = new THashMap<WiredConditionType, THashSet<InteractionWiredCondition>>();
+        this.wiredTriggers = new THashMap<>();
+        this.wiredEffects = new THashMap<>();
+        this.wiredConditions = new THashMap<>();
+        this.wiredExtras = new THashMap<>();
 
-        this.gameScoreboards = new THashMap<Integer, InteractionGameScoreboard>();
-        this.gameGates = new THashMap<Integer, InteractionGameGate>();
-        this.gameTimers = new THashMap<Integer, InteractionGameTimer>();
+        this.gameScoreboards = new THashMap<>();
+        this.gameGates = new THashMap<>();
+        this.gameTimers = new THashMap<>();
 
-        this.freezeExitTile = new THashMap<Integer, InteractionFreezeExitTile>();
-        this.undefined = new THashMap<Integer, HabboItem>();
+        this.freezeExitTile = new THashMap<>();
+        this.undefined = new THashMap<>();
     }
 
     /*
@@ -289,35 +292,44 @@ public class RoomSpecialTypes
 
     public THashSet<InteractionWiredTrigger> getTriggers(int x, int y)
     {
-        THashSet<InteractionWiredTrigger> triggers = new THashSet<InteractionWiredTrigger>();
-
-        for(Map.Entry<WiredTriggerType, THashSet<InteractionWiredTrigger>> map : this.wiredTriggers.entrySet())
+        synchronized (this.wiredTriggers)
         {
-            for(InteractionWiredTrigger trigger : map.getValue())
-            {
-                if(trigger.getX() == x && trigger.getY() == y)
-                    triggers.add(trigger);
-            }
-        }
+            THashSet<InteractionWiredTrigger> triggers = new THashSet<InteractionWiredTrigger>();
 
-        return triggers;
+            for (Map.Entry<WiredTriggerType, THashSet<InteractionWiredTrigger>> map : this.wiredTriggers.entrySet())
+            {
+                for (InteractionWiredTrigger trigger : map.getValue())
+                {
+                    if (trigger.getX() == x && trigger.getY() == y)
+                        triggers.add(trigger);
+                }
+            }
+
+            return triggers;
+        }
     }
 
     public void addTrigger(InteractionWiredTrigger trigger)
     {
-        if(!this.wiredTriggers.containsKey(trigger.getType()))
-            this.wiredTriggers.put(trigger.getType(), new THashSet<InteractionWiredTrigger>());
+        synchronized (this.wiredTriggers)
+        {
+            if (!this.wiredTriggers.containsKey(trigger.getType()))
+                this.wiredTriggers.put(trigger.getType(), new THashSet<InteractionWiredTrigger>());
 
-        this.wiredTriggers.get(trigger.getType()).add(trigger);
+            this.wiredTriggers.get(trigger.getType()).add(trigger);
+        }
     }
 
     public void removeTrigger(InteractionWiredTrigger trigger)
     {
-        this.wiredTriggers.get(trigger.getType()).remove(trigger);
-
-        if(this.wiredTriggers.get(trigger.getType()).isEmpty())
+        synchronized (this.wiredTriggers)
         {
-            this.wiredTriggers.remove(trigger.getType());
+            this.wiredTriggers.get(trigger.getType()).remove(trigger);
+
+            if (this.wiredTriggers.get(trigger.getType()).isEmpty())
+            {
+                this.wiredTriggers.remove(trigger.getType());
+            }
         }
     }
 
@@ -326,12 +338,15 @@ public class RoomSpecialTypes
      */
     public InteractionWiredEffect getEffect(int itemId)
     {
-        for(Map.Entry<WiredEffectType, THashSet<InteractionWiredEffect>> map : this.wiredEffects.entrySet())
+        synchronized (this.wiredEffects)
         {
-            for(InteractionWiredEffect effect : map.getValue())
+            for (Map.Entry<WiredEffectType, THashSet<InteractionWiredEffect>> map : this.wiredEffects.entrySet())
             {
-                if(effect.getId() == itemId)
-                    return effect;
+                for (InteractionWiredEffect effect : map.getValue())
+                {
+                    if (effect.getId() == itemId)
+                        return effect;
+                }
             }
         }
 
@@ -379,19 +394,25 @@ public class RoomSpecialTypes
 
     public void addEffect(InteractionWiredEffect effect)
     {
-        if(!this.wiredEffects.containsKey(effect.getType()))
-            this.wiredEffects.put(effect.getType(), new THashSet<InteractionWiredEffect>());
+        synchronized (this.wiredEffects)
+        {
+            if (!this.wiredEffects.containsKey(effect.getType()))
+                this.wiredEffects.put(effect.getType(), new THashSet<InteractionWiredEffect>());
 
-        this.wiredEffects.get(effect.getType()).add(effect);
+            this.wiredEffects.get(effect.getType()).add(effect);
+        }
     }
 
     public void removeEffect(InteractionWiredEffect effect)
     {
-        this.wiredEffects.get(effect.getType()).remove(effect);
-
-        if(this.wiredEffects.get(effect.getType()).isEmpty())
+        synchronized (this.wiredEffects)
         {
-            this.wiredEffects.remove(effect.getType());
+            this.wiredEffects.get(effect.getType()).remove(effect);
+
+            if (this.wiredEffects.get(effect.getType()).isEmpty())
+            {
+                this.wiredEffects.remove(effect.getType());
+            }
         }
     }
 
@@ -400,12 +421,15 @@ public class RoomSpecialTypes
      */
     public InteractionWiredCondition getCondition(int itemId)
     {
-        for(Map.Entry<WiredConditionType, THashSet<InteractionWiredCondition>> map : this.wiredConditions.entrySet())
+        synchronized (this.wiredConditions)
         {
-            for(InteractionWiredCondition condition : map.getValue())
+            for (Map.Entry<WiredConditionType, THashSet<InteractionWiredCondition>> map : this.wiredConditions.entrySet())
             {
-                if(condition.getId() == itemId)
-                    return condition;
+                for (InteractionWiredCondition condition : map.getValue())
+                {
+                    if (condition.getId() == itemId)
+                        return condition;
+                }
             }
         }
 
@@ -414,14 +438,17 @@ public class RoomSpecialTypes
 
     public THashSet<InteractionWiredCondition> getConditions()
     {
-        THashSet<InteractionWiredCondition> conditions = new THashSet<InteractionWiredCondition>();
-
-        for(Map.Entry<WiredConditionType, THashSet<InteractionWiredCondition>> map : this.wiredConditions.entrySet())
+        synchronized (this.wiredConditions)
         {
-            conditions.addAll(map.getValue());
-        }
+            THashSet<InteractionWiredCondition> conditions = new THashSet<InteractionWiredCondition>();
 
-        return conditions;
+            for (Map.Entry<WiredConditionType, THashSet<InteractionWiredCondition>> map : this.wiredConditions.entrySet())
+            {
+                conditions.addAll(map.getValue());
+            }
+
+            return conditions;
+        }
     }
 
     public THashSet<InteractionWiredCondition> getConditions(WiredConditionType type)
@@ -453,20 +480,79 @@ public class RoomSpecialTypes
 
     public void addCondition(InteractionWiredCondition condition)
     {
-        if(!this.wiredConditions.containsKey(condition.getType()))
-            this.wiredConditions.put(condition.getType(), new THashSet<InteractionWiredCondition>());
+        synchronized (this.wiredConditions)
+        {
+            if (!this.wiredConditions.containsKey(condition.getType()))
+                this.wiredConditions.put(condition.getType(), new THashSet<InteractionWiredCondition>());
 
-        this.wiredConditions.get(condition.getType()).add(condition);
+            this.wiredConditions.get(condition.getType()).add(condition);
+        }
     }
 
     public void removeCondition(InteractionWiredCondition condition)
     {
-        this.wiredConditions.get(condition.getType()).remove(condition);
-
-        if(this.wiredConditions.get(condition.getType()).isEmpty())
+        synchronized (this.wiredConditions)
         {
-            this.wiredConditions.remove(condition.getType());
+            this.wiredConditions.get(condition.getType()).remove(condition);
+
+            if (this.wiredConditions.get(condition.getType()).isEmpty())
+            {
+                this.wiredConditions.remove(condition.getType());
+            }
         }
+    }
+
+    /*
+        Wired Extra
+     */
+    public THashSet<InteractionWiredExtra> getExtras(int x, int y)
+    {
+        synchronized (this.wiredExtras)
+        {
+            THashSet<InteractionWiredExtra> extras = new THashSet<InteractionWiredExtra>();
+
+            for (Map.Entry<Integer, InteractionWiredExtra> map : this.wiredExtras.entrySet())
+            {
+                if (map.getValue().getX() == x && map.getValue().getY() == y)
+                {
+                    extras.add(map.getValue());
+                }
+            }
+
+            return extras;
+        }
+    }
+
+    public void addExtra(InteractionWiredExtra extra)
+    {
+        synchronized (this.wiredExtras)
+        {
+            this.wiredExtras.put(extra.getId(), extra);
+        }
+    }
+
+    public void removeExtra(InteractionWiredExtra extra)
+    {
+        synchronized (this.wiredExtras)
+        {
+            this.wiredExtras.remove(extra);
+        }
+    }
+
+    public boolean hasExtraType(short x, short y, Class<? extends InteractionWiredExtra> type)
+    {
+        synchronized (this.wiredExtras)
+        {
+            for (Map.Entry<Integer, InteractionWiredExtra> map : this.wiredExtras.entrySet())
+            {
+                if (map.getValue().getX() == x && map.getValue().getY() == y && map.getValue().getClass().isAssignableFrom(type))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /*

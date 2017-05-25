@@ -129,7 +129,7 @@ public class WiredEffectTriggerStacks extends InteractionWiredEffect
 
         for(HabboItem item : this.items)
         {
-            if(item instanceof InteractionWiredTrigger)
+            //if(item instanceof InteractionWiredTrigger)
             {
                 found = false;
                 for(RoomTile tile : usedTiles)

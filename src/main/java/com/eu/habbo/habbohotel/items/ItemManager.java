@@ -25,6 +25,8 @@ import com.eu.habbo.habbohotel.items.interactions.games.tag.icetag.InteractionIc
 import com.eu.habbo.habbohotel.items.interactions.games.tag.rollerskate.InteractionRollerskateField;
 import com.eu.habbo.habbohotel.items.interactions.wired.conditions.*;
 import com.eu.habbo.habbohotel.items.interactions.wired.effects.*;
+import com.eu.habbo.habbohotel.items.interactions.wired.extra.WiredExtraRandom;
+import com.eu.habbo.habbohotel.items.interactions.wired.extra.WiredExtraUnseen;
 import com.eu.habbo.habbohotel.items.interactions.wired.triggers.*;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -233,6 +235,11 @@ public class ItemManager {
             this.interactionsList.add(new ItemInteraction("wf_cnd_freeze",           WiredConditionFreezeGameActive.class));
             this.interactionsList.add(new ItemInteraction("wf_cnd_not_freeze",       WiredConditionNotFreezeGameActive.class));
 
+            /*
+                Extra
+             */
+            this.interactionsList.add(new ItemInteraction("wf_xtra_random", WiredExtraRandom.class));
+            this.interactionsList.add(new ItemInteraction("wf_xtra_unseen", WiredExtraUnseen.class));
 
             /*
                 Highscores

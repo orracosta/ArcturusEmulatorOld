@@ -90,7 +90,7 @@ public class WiredEffectGiveCredits extends InteractionWiredEffect
         packet.readInt();
         this.setDelay(packet.readInt());
 
-        return true;
+        return false;
     }
 
     @Override
