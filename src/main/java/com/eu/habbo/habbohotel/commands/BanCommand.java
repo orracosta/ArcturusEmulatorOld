@@ -81,7 +81,7 @@ public class BanCommand extends Command
 
         try
         {
-            ModToolBan ban = Emulator.getGameEnvironment().getModToolManager().ban(target.getHabboInfo().getId(), gameClient.getHabbo(), reason, banTime, ModToolBanType.ACCOUNT).get(0);
+            ModToolBan ban = Emulator.getGameEnvironment().getModToolManager().ban(target.getHabboInfo().getId(), gameClient.getHabbo(), reason, banTime, ModToolBanType.ACCOUNT, -1).get(0);
             gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_ban.ban_issued").replace("%user%", target.getHabboInfo().getUsername()).replace("%time%", ban.expireDate - Emulator.getIntUnixTimestamp() + "").replace("%reason%", ban.reason), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
         }
         catch (Exception e)

@@ -40,7 +40,7 @@ public class ModToolSanctionBanEvent extends MessageHandler
         }
         if (this.client.getHabbo().hasPermission("acc_supporttool"))
         {
-            Emulator.getGameEnvironment().getModToolManager().ban(userId, this.client.getHabbo(), message, duration, ModToolBanType.ACCOUNT);
+            Emulator.getGameEnvironment().getModToolManager().ban(userId, this.client.getHabbo(), message, duration, ModToolBanType.ACCOUNT, cfhTopic);
         }
         else
         {

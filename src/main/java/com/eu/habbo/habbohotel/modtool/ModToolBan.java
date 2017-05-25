@@ -19,6 +19,7 @@ public class ModToolBan implements Runnable
     public int timestamp;
     public String reason;
     public ModToolBanType type;
+    public int cfhTopic;
 
     private boolean needsInsert;
 
@@ -32,10 +33,11 @@ public class ModToolBan implements Runnable
         this.expireDate  = set.getInt("ban_expire");
         this.reason      = set.getString("ban_reason");
         this.type        = ModToolBanType.fromString(set.getString("type"));
+        this.cfhTopic    = set.getInt("cfh_topic");
         this.needsInsert = false;
     }
 
-    public ModToolBan(int userId, String ip, String machineId, int staffId, int expireDate, String reason, ModToolBanType type)
+    public ModToolBan(int userId, String ip, String machineId, int staffId, int expireDate, String reason, ModToolBanType type, int cfhTopic)
     {
         this.userId      = userId;
         this.staffId     = staffId;
@@ -45,6 +47,7 @@ public class ModToolBan implements Runnable
         this.ip          = ip;
         this.machineId   = machineId;
         this.type        = type;
+        this.cfhTopic    = cfhTopic;
         this.needsInsert = true;
     }
 
@@ -53,7 +56,7 @@ public class ModToolBan implements Runnable
     {
         if(this.needsInsert)
         {
-            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO bans (user_id, ip, machine_id, user_staff_id, timestamp, ban_expire, ban_reason, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"))
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO bans (user_id, ip, machine_id, user_staff_id, timestamp, ban_expire, ban_reason, type, cfh_topic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"))
             {
                 statement.setInt(1, this.userId);
                 statement.setString(2, this.ip);
@@ -63,6 +66,7 @@ public class ModToolBan implements Runnable
                 statement.setInt(6, this.expireDate);
                 statement.setString(7, this.reason);
                 statement.setString(8, this.type.getType());
+                statement.setInt(9, this.cfhTopic);
                 statement.execute();
             }
             catch (SQLException e)
@@ -82,6 +86,7 @@ public class ModToolBan implements Runnable
                 .append("Date: ")           .append(dateFormat.format(this.timestamp * 1000l))     .append("\r")
                 .append("Expire Date: ")    .append(dateFormat.format(this.expireDate * 1000l))    .append("\r")
                 .append("IP: ")             .append(this.ip)            .append("\r")
-                .append("MachineID: ")      .append(this.machineId)     .append("\r").toString();
+                .append("MachineID: ")      .append(this.machineId)     .append("\r")
+                .append("Topic: ")          .append(this.cfhTopic).toString();
     }
 }

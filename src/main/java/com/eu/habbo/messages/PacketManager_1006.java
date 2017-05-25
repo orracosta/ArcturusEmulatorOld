@@ -342,7 +342,6 @@ public class PacketManager_1006
         this.registerHandler(Incoming.ModToolAlertEvent, ModToolAlertEvent.class);
         this.registerHandler(Incoming.ModToolWarnEvent, ModToolAlertEvent.class);
         this.registerHandler(Incoming.ModToolKickEvent, ModToolKickEvent.class);
-        this.registerHandler(Incoming.ModToolBanEvent, ModToolBanEvent.class);
         this.registerHandler(Incoming.ModToolRoomAlertEvent, ModToolRoomAlertEvent.class);
         this.registerHandler(Incoming.ModToolRequestUserChatlogEvent, ModToolRequestUserChatlogEvent.class);
         this.registerHandler(Incoming.ModToolChangeRoomSettingsEvent, ModToolChangeRoomSettingsEvent.class);

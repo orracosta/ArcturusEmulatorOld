@@ -45,14 +45,14 @@ public class IPBanCommand extends Command
                 return true;
             }
 
-            Emulator.getGameEnvironment().getModToolManager().ban(habbo.getHabboInfo().getId(), gameClient.getHabbo(), reason, TEN_YEARS, ModToolBanType.IP);
+            Emulator.getGameEnvironment().getModToolManager().ban(habbo.getHabboInfo().getId(), gameClient.getHabbo(), reason, TEN_YEARS, ModToolBanType.IP, -1);
             count++;
             for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithIP(habbo.getHabboInfo().getIpLogin()))
             {
                 if (h != null)
                 {
                     count++;
-                    Emulator.getGameEnvironment().getModToolManager().ban(h.getHabboInfo().getId(), gameClient.getHabbo(), reason, TEN_YEARS, ModToolBanType.IP);
+                    Emulator.getGameEnvironment().getModToolManager().ban(h.getHabboInfo().getId(), gameClient.getHabbo(), reason, TEN_YEARS, ModToolBanType.IP, -1);
                 }
             }
         }

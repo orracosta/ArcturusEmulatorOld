@@ -46,7 +46,7 @@ public class MachineBanCommand extends Command
                 return true;
             }
 
-            count = Emulator.getGameEnvironment().getModToolManager().ban(habbo.getHabboInfo().getId(), gameClient.getHabbo(), reason, IPBanCommand.TEN_YEARS, ModToolBanType.MACHINE).size();
+            count = Emulator.getGameEnvironment().getModToolManager().ban(habbo.getHabboInfo().getId(), gameClient.getHabbo(), reason, IPBanCommand.TEN_YEARS, ModToolBanType.MACHINE, -1).size();
 //            for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithMachineId(ban.machineId))
 //            {
 //                if (h != null)

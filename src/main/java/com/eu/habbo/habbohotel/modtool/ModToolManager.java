@@ -400,14 +400,14 @@ public class ModToolManager
         this.alert(moderator, target, message);
     }
 
-    public List<ModToolBan> ban(int targetUserId, Habbo moderator, String reason, int duration, ModToolBanType type)
+    public List<ModToolBan> ban(int targetUserId, Habbo moderator, String reason, int duration, ModToolBanType type, int cfhTopic)
     {
         if (moderator == null)
             return null;
 
         List<ModToolBan> bans = new ArrayList<>();
         Habbo target = Emulator.getGameEnvironment().getHabboManager().getHabbo(targetUserId);
-        ModToolBan ban = new ModToolBan(targetUserId, target != null ? target.getHabboInfo().getIpLogin() : "offline", target != null ? target.getClient() != null ? target.getClient().getMachineId() : "offline" : "offline", moderator.getHabboInfo().getId(), Emulator.getIntUnixTimestamp() + duration, reason, type);
+        ModToolBan ban = new ModToolBan(targetUserId, target != null ? target.getHabboInfo().getIpLogin() : "offline", target != null ? target.getClient() != null ? target.getClient().getMachineId() : "offline" : "offline", moderator.getHabboInfo().getId(), Emulator.getIntUnixTimestamp() + duration, reason, type, cfhTopic);
         Emulator.getPluginManager().fireEvent(new SupportUserBannedEvent(moderator, target, ban));
         Emulator.getThreading().run(ban);
         bans.add(ban);
@@ -421,7 +421,7 @@ public class ModToolManager
         {
             for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithIP(ban.ip))
             {
-                ban = new ModToolBan(h.getHabboInfo().getId(), h != null ? h.getHabboInfo().getIpLogin() : "offline", h != null ? h.getClient().getMachineId() : "offline", moderator.getHabboInfo().getId(), Emulator.getIntUnixTimestamp() + duration, reason, type);
+                ban = new ModToolBan(h.getHabboInfo().getId(), h != null ? h.getHabboInfo().getIpLogin() : "offline", h != null ? h.getClient().getMachineId() : "offline", moderator.getHabboInfo().getId(), Emulator.getIntUnixTimestamp() + duration, reason, type, cfhTopic);
                 Emulator.getPluginManager().fireEvent(new SupportUserBannedEvent(moderator, h, ban));
                 Emulator.getThreading().run(ban);
                 bans.add(ban);
@@ -433,7 +433,7 @@ public class ModToolManager
         {
             for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithMachineId(ban.machineId))
             {
-                ban = new ModToolBan(h.getHabboInfo().getId(), h != null ? h.getHabboInfo().getIpLogin() : "offline", h != null ? h.getClient().getMachineId() : "offline", moderator.getHabboInfo().getId(), Emulator.getIntUnixTimestamp() + duration, reason, type);
+                ban = new ModToolBan(h.getHabboInfo().getId(), h != null ? h.getHabboInfo().getIpLogin() : "offline", h != null ? h.getClient().getMachineId() : "offline", moderator.getHabboInfo().getId(), Emulator.getIntUnixTimestamp() + duration, reason, type, cfhTopic);
                 Emulator.getPluginManager().fireEvent(new SupportUserBannedEvent(moderator, h, ban));
                 Emulator.getThreading().run(ban);
                 bans.add(ban);
@@ -477,31 +477,6 @@ public class ModToolManager
                 }
             });
         }
-    }
-
-    @Deprecated
-    public ModToolBan createBan(Habbo target, Habbo staff, int expireDate, String reason, ModToolBanType type)
-    {
-        return createBan(target.getHabboInfo().getId(), target.getHabboInfo().getIpLogin(), target.getClient().getMachineId(), staff, expireDate, reason, type);
-    }
-
-    @Deprecated
-    public ModToolBan createBan(int target, String ip, String machineId, Habbo staff, int expireDate, String reason, ModToolBanType type)
-    {
-        if(staff.hasPermission("acc_supporttool"))
-        {
-            ModToolBan ban = new ModToolBan(target, ip, machineId, staff.getHabboInfo().getId(), expireDate, reason, type);
-            Emulator.getThreading().run(ban);
-
-            Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(target);
-
-            if(habbo != null)
-                Emulator.getGameServer().getGameClientManager().disposeClient(habbo.getClient().getChannel());
-
-            return ban;
-        }
-
-        return null;
     }
 
     public ModToolBan checkForBan(int userId)
