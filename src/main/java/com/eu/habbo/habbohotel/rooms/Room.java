@@ -4081,18 +4081,16 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public RoomTile getRandomWalkableTile()
     {
-        return this.layout.getTile((short) (Math.random() * this.layout.getMapSizeX()), (short) (Math.random() * this.layout.getMapSizeY()));
-//        for (int i = 0; i < 10; i++)
-//        {
-//            RoomTile tile = this.layout.getTile((short) (Math.random() * this.layout.getMapSizeX()), (short) (Math.random() * this.layout.getMapSizeY()));
-//
-//            if (this.tileWalkable(tile.x, tile.y) || this.canSitAt(tile.x, tile.y))
-//            {
-//                return tile;
-//            }
-//        }
-//
-//        return null;
+        for (int i = 0; i < 10; i++)
+        {
+            RoomTile tile = this.layout.getTile((short) (Math.random() * this.layout.getMapSizeX()), (short) (Math.random() * this.layout.getMapSizeY()));
+            if (tile.isWalkable() || this.canSitAt(tile.x, tile.y))
+            {
+                return tile;
+            }
+        }
+
+        return null;
     }
 
     public Habbo getHabbo(String username)
