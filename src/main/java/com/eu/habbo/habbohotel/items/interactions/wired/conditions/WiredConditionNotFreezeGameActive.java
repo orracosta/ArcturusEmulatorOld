@@ -36,7 +36,17 @@ public class WiredConditionNotFreezeGameActive extends InteractionWiredCondition
     @Override
     public void serializeWiredData(ServerMessage message, Room room)
     {
-
+        message.appendBoolean(false);
+        message.appendInt32(5);
+        message.appendInt32(0);
+        message.appendInt32(this.getBaseItem().getSpriteId());
+        message.appendInt32(this.getId());
+        message.appendString("");
+        message.appendInt32(0);
+        message.appendInt32(0);
+        message.appendInt32(this.getType().code);
+        message.appendInt32(0);
+        message.appendInt32(0);
     }
 
     @Override
