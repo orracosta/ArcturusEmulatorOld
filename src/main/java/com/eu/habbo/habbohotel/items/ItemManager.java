@@ -180,7 +180,7 @@ public class ItemManager {
             this.interactionsList.add(new ItemInteraction("wf_act_move_to_dir",         WiredEffectChangeFurniDirection.class));
             this.interactionsList.add(new ItemInteraction("wf_act_give_score_tm",       WiredEffectGiveScoreToTeam.class));
             this.interactionsList.add(new ItemInteraction("wf_act_toggle_to_rnd",       WiredEffectToggleRandom.class));
-            //TODO: this.interactionsList.add(new ItemInteraction("wf_act_move_furni_to", WiredEffectMoveFurni))
+            this.interactionsList.add(new ItemInteraction("wf_act_move_furni_to",       WiredEffectMoveFurniTo.class));
             this.interactionsList.add(new ItemInteraction("wf_act_give_reward",         WiredEffectGiveReward.class));
             this.interactionsList.add(new ItemInteraction("wf_act_call_stacks",         WiredEffectTriggerStacks.class));
             this.interactionsList.add(new ItemInteraction("wf_act_kick_user",           WiredEffectKickHabbo.class));

@@ -7,3 +7,6 @@ ALTER TABLE  `rooms` CHANGE  `paper_landscape`  `paper_landscape` VARCHAR( 5 ) C
 UPDATE rooms SET paper_floor = '0.0' WHERE paper_floor = '0';
 UPDATE rooms SET paper_wall = '0.0' WHERE paper_wall = '0';
 UPDATE rooms SET paper_landscape = '0.0' WHERE paper_landscape = '0';
+
+UPDATE items_base SET interaction_type = item_name WHERE item_name LIKE 'wf_xtra_%';
+UPDATE items_base SET interaction_type = item_name WHERE item_name LIKE 'wf_act_move_furni_to';
