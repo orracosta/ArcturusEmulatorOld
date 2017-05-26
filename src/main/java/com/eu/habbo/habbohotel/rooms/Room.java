@@ -1628,16 +1628,18 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                         boolean allowUsers = true;
                         boolean allowFurniture = true;
+                        boolean stackContainsRoller = false;
 
                         for (HabboItem item : itemsNewTile)
                         {
-                            if (!item.getBaseItem().allowWalk() && !item.getBaseItem().allowSit())
+                            if (!(item.getBaseItem().allowWalk() || item.getBaseItem().allowSit()))
                             {
                                 allowUsers = false;
                             }
                             if (item instanceof InteractionRoller)
                             {
                                 newRoller = item;
+                                stackContainsRoller = true;
 
                                 if (itemsNewTile.size() > 1 && item != topItem)
                                 {
@@ -1648,44 +1650,16 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                                 break;
                             }
+                            else
+                            {
+                                allowFurniture = false;
+                            }
                         }
 
                         double zOffset = 0;
                         if(newRoller == null)
                         {
                             zOffset = -roller.getBaseItem().getHeight();
-                        }
-
-                        if (allowUsers)
-                        {
-                            Event roomUserRolledEvent = null;
-
-                            if(Emulator.getPluginManager().isRegistered(UserRolledEvent.class, true))
-                            {
-                                roomUserRolledEvent = new UserRolledEvent(null, null, null);
-                            }
-
-                            for (Habbo habbo : habbosOnRoller)
-                            {
-                                RoomTile tile = roomTile.copy();
-                                tile.setStackHeight(habbo.getRoomUnit().getZ() + zOffset);
-                                if (!habbo.getRoomUnit().getStatus().containsKey("mv"))
-                                {
-                                    if(roomUserRolledEvent != null)
-                                    {
-                                        roomUserRolledEvent = new UserRolledEvent(habbo, roller, tile);
-                                        Emulator.getPluginManager().fireEvent(roomUserRolledEvent);
-
-                                        if(roomUserRolledEvent.isCancelled())
-                                            continue;
-                                    }
-
-                                    messages.add(new RoomUnitOnRollerComposer(habbo.getRoomUnit(), roller, tile, this));
-                                }
-
-                                if(habbo.getRoomUnit().getStatus().containsKey("sit"))
-                                    habbo.getRoomUnit().sitUpdate = true;
-                            }
                         }
 
                         if (allowFurniture)
@@ -1719,6 +1693,41 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                             messages.add(new FloorItemOnRollerComposer(item, roller, roomTile, zOffset, this));
                                     }
                                 }
+                            }
+                        }
+
+                        if (allowUsers)
+                        {
+                            if (stackContainsRoller && !allowFurniture)
+                                continue;
+
+                            Event roomUserRolledEvent = null;
+
+                            if(Emulator.getPluginManager().isRegistered(UserRolledEvent.class, true))
+                            {
+                                roomUserRolledEvent = new UserRolledEvent(null, null, null);
+                            }
+
+                            for (Habbo habbo : habbosOnRoller)
+                            {
+                                RoomTile tile = roomTile.copy();
+                                tile.setStackHeight(habbo.getRoomUnit().getZ() + zOffset);
+                                if (!habbo.getRoomUnit().getStatus().containsKey("mv"))
+                                {
+                                    if(roomUserRolledEvent != null)
+                                    {
+                                        roomUserRolledEvent = new UserRolledEvent(habbo, roller, tile);
+                                        Emulator.getPluginManager().fireEvent(roomUserRolledEvent);
+
+                                        if(roomUserRolledEvent.isCancelled())
+                                            continue;
+                                    }
+
+                                    messages.add(new RoomUnitOnRollerComposer(habbo.getRoomUnit(), roller, tile, this));
+                                }
+
+                                if(habbo.getRoomUnit().getStatus().containsKey("sit"))
+                                    habbo.getRoomUnit().sitUpdate = true;
                             }
                         }
                     }
