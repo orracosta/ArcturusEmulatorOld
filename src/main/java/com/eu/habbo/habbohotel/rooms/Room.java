@@ -1624,6 +1624,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                         THashSet<HabboItem> itemsNewTile = this.getItemsAt(roomTile.x, roomTile.y);
 
+                        HabboItem topItem = this.getTopItemAt(roomTile.x, roomTile.y);
+
                         boolean allowUsers = true;
 
                         for (HabboItem item : itemsNewTile)
@@ -1636,8 +1638,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                             {
                                 newRoller = item;
 
-                                if (itemsNewTile.size() > 1)
+                                if (itemsNewTile.size() > 1 && !(topItem instanceof InteractionRoller))
+                                {
+                                    allowUsers = false;
                                     continue;
+                                }
 
                                 break;
                             }
@@ -1690,8 +1695,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         {
                             furnitureRolledEvent = new FurnitureRolledEvent(null, null, null);
                         }
-
-                        HabboItem topItem = this.getTopItemAt(roomTile.x, roomTile.y);
 
                         if (newRoller == null || topItem == newRoller)
                         {
