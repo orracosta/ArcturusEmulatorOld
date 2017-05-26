@@ -19,6 +19,7 @@ public class WiredEffectBotClothes extends InteractionWiredEffect
 
     private String botName = "";
     private String botLook = "";
+    private int botEffect = 12;
 
     public WiredEffectBotClothes(ResultSet set, Item baseItem) throws SQLException
     {
@@ -38,7 +39,7 @@ public class WiredEffectBotClothes extends InteractionWiredEffect
         message.appendInt32(0);
         message.appendInt32(this.getBaseItem().getSpriteId());
         message.appendInt32(this.getId());
-        message.appendString(this.botName + ((char)9) + "" + this.botLook);
+        message.appendString(this.botName + (this.botEffect > 0 ? "\\effect:" + this.botEffect : "") + ((char) 9) + "" + this.botLook);
         message.appendInt32(0);
         message.appendInt32(0);
         message.appendInt32(this.getType().code);
@@ -55,7 +56,15 @@ public class WiredEffectBotClothes extends InteractionWiredEffect
 
         if(data.length == 2)
         {
-            this.botName = data[0];
+            this.botName = data[0].split("\\effect:")[0];
+            try
+            {
+                this.botEffect = Integer.valueOf(data[0].split("\\effect:")[1]);
+            }
+            catch (Exception e)
+            {
+                this.botEffect = 0;
+            }
             this.botLook = data[1];
         }
 
@@ -78,6 +87,7 @@ public class WiredEffectBotClothes extends InteractionWiredEffect
         for(Bot bot : bots)
         {
             bot.setFigure(this.botLook);
+            bot.setEffect(this.botEffect);
         }
 
         return true;
@@ -86,7 +96,10 @@ public class WiredEffectBotClothes extends InteractionWiredEffect
     @Override
     protected String getWiredData()
     {
-        return this.getDelay() + ((char) 9) + this.botName + ((char) 9) + this.botLook;
+        return this.getDelay() + ((char) 9) +
+                this.botName   + ((char) 9) +
+                this.botLook   + ((char) 9) +
+                this.botEffect;
     }
 
     @Override
@@ -94,11 +107,16 @@ public class WiredEffectBotClothes extends InteractionWiredEffect
     {
         String[] data = set.getString("wired_data").split(((char) 9) + "");
 
-        if(data.length == 3)
+        if(data.length >= 3)
         {
             this.setDelay(Integer.valueOf(data[0]));
             this.botName = data[1];
             this.botLook = data[2];
+
+            if (data.length >= 4) //TODO, Remove this check in >1.9.0 and update data.length >= 3 to == 4
+            {
+                this.botEffect = Integer.valueOf(data[3]);
+            }
         }
     }
 
@@ -107,6 +125,7 @@ public class WiredEffectBotClothes extends InteractionWiredEffect
     {
         this.botLook = "";
         this.botName = "";
+        this.botEffect = 0;
         this.setDelay(0);
     }
 
