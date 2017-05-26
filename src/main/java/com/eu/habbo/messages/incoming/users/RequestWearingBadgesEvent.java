@@ -14,9 +14,9 @@ public class RequestWearingBadgesEvent extends MessageHandler
         int userId = this.packet.readInt();
         Habbo habbo = Emulator.getGameServer().getGameClientManager().getHabbo(userId);
 
-        if(habbo != null)
-            this.client.sendResponse(new UserBadgesComposer(habbo.getHabboInventory().getBadgesComponent().getWearingBadges(), habbo.getHabboInfo().getId()));
-        else
+        if(habbo == null || habbo.getHabboInfo() == null || habbo.getHabboInventory() == null || habbo.getHabboInventory().getBadgesComponent() == null)
             this.client.sendResponse(new UserBadgesComposer(BadgesComponent.getBadgesOfflineHabbo(userId), userId));
+        else
+            this.client.sendResponse(new UserBadgesComposer(habbo.getHabboInventory().getBadgesComponent().getWearingBadges(), habbo.getHabboInfo().getId()));
     }
 }
