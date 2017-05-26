@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.interactions.InteractionTeleportTile;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.threading.runnables.HabboItemNewState;
 
@@ -30,7 +31,12 @@ class TeleportActionFive implements Runnable
 
         if (!(this.currentTeleport instanceof InteractionTeleportTile))
         {
-            this.client.getHabbo().getRoomUnit().setGoalLocation(this.room.getLayout().getTileInFront(this.room.getLayout().getTile(this.currentTeleport.getX(), this.currentTeleport.getY()), this.currentTeleport.getRotation()));
+            RoomTile tile = this.room.getLayout().getTileInFront(this.room.getLayout().getTile(this.currentTeleport.getX(), this.currentTeleport.getY()), this.currentTeleport.getRotation());
+
+            if (tile.isWalkable())
+            {
+                this.client.getHabbo().getRoomUnit().setGoalLocation(tile);
+            }
         }
 
         Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "0"), 1000);
