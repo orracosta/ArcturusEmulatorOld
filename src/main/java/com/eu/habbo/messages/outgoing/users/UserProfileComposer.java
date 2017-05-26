@@ -55,12 +55,12 @@ public class UserProfileComposer extends MessageComposer
         this.response.appendBoolean(this.habboInfo.isOnline());
 
         List<Guild> guilds = new ArrayList<Guild>();
-        if(habbo != null)
+        if(this.habbo != null)
         {
             for (int i : this.habbo.getHabboStats().guilds)
             {
                 if (i == 0)
-                    break;
+                    continue;
 
                 Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(i);
 

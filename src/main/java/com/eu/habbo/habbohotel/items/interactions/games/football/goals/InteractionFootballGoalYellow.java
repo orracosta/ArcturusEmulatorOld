@@ -8,12 +8,12 @@ import java.sql.SQLException;
 
 public class InteractionFootballGoalYellow extends InteractionFootballGoal
 {
-    protected InteractionFootballGoalYellow(ResultSet set, Item baseItem) throws SQLException
+    public InteractionFootballGoalYellow(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem, GameTeamColors.YELLOW);
     }
 
-    protected InteractionFootballGoalYellow(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
+    public InteractionFootballGoalYellow(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
     {
         super(id, userId, item, extradata, limitedStack, limitedSells, GameTeamColors.YELLOW);
     }

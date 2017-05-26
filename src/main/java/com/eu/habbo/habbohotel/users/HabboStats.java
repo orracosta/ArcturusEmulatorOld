@@ -16,6 +16,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class HabboStats implements Runnable
 {
@@ -46,7 +49,7 @@ public class HabboStats implements Runnable
     public int volumeTrax;
 
     public int guild;
-    public int[] guilds;
+    public List<Integer> guilds;
 
     public String[] tags;
 
@@ -96,7 +99,7 @@ public class HabboStats implements Runnable
         this.preferOldChat = set.getString("old_chat").equals("1");
         this.blockCameraFollow = set.getString("block_camera_follow").equals("1");
         this.guild = set.getInt("guild_id");
-        this.guilds = new int[100];
+        this.guilds = new ArrayList<>();
         this.tags = set.getString("tags").split(";");
         this.allowTrade = set.getString("can_trade").equals("1");
         this.votedRooms = new TIntArrayStack();
@@ -274,11 +277,13 @@ public class HabboStats implements Runnable
                         int i = 0;
                         while (set.next())
                         {
-                            stats.guilds[i] = set.getInt("guild_id");
+                            stats.guilds.add(set.getInt("guild_id"));
                             i++;
                         }
                     }
                 }
+
+                Collections.sort(stats.guilds);
 
                 try (PreparedStatement statement = connection.prepareStatement("SELECT room_id FROM room_votes WHERE user_id = ?"))
                 {
@@ -320,26 +325,15 @@ public class HabboStats implements Runnable
 
     public void addGuild(int guildId)
     {
-        for(int i = 0; i < this.guilds.length; i++)
+        if (!this.guilds.contains(guildId))
         {
-            if(this.guilds[i] == 0)
-            {
-                this.guilds[i] = guildId;
-                break;
-            }
+            this.guilds.add(guildId);
         }
     }
 
     public void removeGuild(int guildId)
     {
-        for(int i = 0; i < this.guilds.length; i++)
-        {
-            if(this.guilds[i] == guildId)
-            {
-                this.guilds[i] = 0;
-                break;
-            }
-        }
+        this.guilds.remove(guildId);
     }
 
     public boolean hasGuild(int guildId)

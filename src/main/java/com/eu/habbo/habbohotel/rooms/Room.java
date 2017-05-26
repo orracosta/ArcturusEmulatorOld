@@ -1627,6 +1627,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         HabboItem topItem = this.getTopItemAt(roomTile.x, roomTile.y);
 
                         boolean allowUsers = true;
+                        boolean allowFurniture = true;
 
                         for (HabboItem item : itemsNewTile)
                         {
@@ -1638,9 +1639,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                             {
                                 newRoller = item;
 
-                                if (itemsNewTile.size() > 1 && !(topItem instanceof InteractionRoller))
+                                if (itemsNewTile.size() > 1 && item != topItem)
                                 {
                                     allowUsers = false;
+                                    allowFurniture = false;
                                     continue;
                                 }
 
@@ -1686,33 +1688,36 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                             }
                         }
 
-                        /**
-                         * Redneck way to prevent checking ifregistered each time.
-                         */
-                        Event furnitureRolledEvent = null;
-
-                        if(Emulator.getPluginManager().isRegistered(FurnitureRolledEvent.class, true))
+                        if (allowFurniture)
                         {
-                            furnitureRolledEvent = new FurnitureRolledEvent(null, null, null);
-                        }
+                            /**
+                             * Redneck way to prevent checking ifregistered each time.
+                             */
+                            Event furnitureRolledEvent = null;
 
-                        if (newRoller == null || topItem == newRoller)
-                        {
-                            for (HabboItem item : itemsOnRoller)
+                            if (Emulator.getPluginManager().isRegistered(FurnitureRolledEvent.class, true))
                             {
-                                if (item.getX() == roller.getX() && item.getY() == roller.getY())
+                                furnitureRolledEvent = new FurnitureRolledEvent(null, null, null);
+                            }
+
+                            if (newRoller == null || topItem == newRoller)
+                            {
+                                for (HabboItem item : itemsOnRoller)
                                 {
-                                    if (furnitureRolledEvent != null)
+                                    if (item.getX() == roller.getX() && item.getY() == roller.getY())
                                     {
-                                        furnitureRolledEvent = new FurnitureRolledEvent(item, roller, roomTile);
-                                        Emulator.getPluginManager().fireEvent(furnitureRolledEvent);
+                                        if (furnitureRolledEvent != null)
+                                        {
+                                            furnitureRolledEvent = new FurnitureRolledEvent(item, roller, roomTile);
+                                            Emulator.getPluginManager().fireEvent(furnitureRolledEvent);
 
-                                        if (furnitureRolledEvent.isCancelled())
-                                            continue;
+                                            if (furnitureRolledEvent.isCancelled())
+                                                continue;
+                                        }
+
+                                        if (item != roller)
+                                            messages.add(new FloorItemOnRollerComposer(item, roller, roomTile, zOffset, this));
                                     }
-
-                                    if (item != roller)
-                                        messages.add(new FloorItemOnRollerComposer(item, roller, roomTile, zOffset, this));
                                 }
                             }
                         }
