@@ -17,6 +17,15 @@ public class RequestGuideToolEvent extends MessageHandler
             boolean helperRequests = this.packet.readBoolean();
             boolean bullyReports = this.packet.readBoolean();
 
+            if(!this.client.getHabbo().hasPermission("acc_helper_use_guide_tool"))
+                return;
+
+            if(helperRequests && !this.client.getHabbo().hasPermission("acc_helper_give_guide_tours"))
+                helperRequests = false;
+
+            if(bullyReports && !this.client.getHabbo().hasPermission("acc_helper_judge_chat_reviews"))
+                bullyReports = false;
+
             if (helperRequests)
             {
                 Emulator.getGameEnvironment().getGuideManager().setOnGuide(this.client.getHabbo(), onDuty);

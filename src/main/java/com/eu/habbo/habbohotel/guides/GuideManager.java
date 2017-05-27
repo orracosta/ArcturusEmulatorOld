@@ -98,14 +98,14 @@ public class GuideManager
                         tour.setHelper(set.getKey());
                         set.getKey().getClient().sendResponse(new GuideSessionAttachedComposer(tour, true));
                         tour.getNoob().getClient().sendResponse(new GuideSessionAttachedComposer(tour, false));
-                        Emulator.getThreading().run(new GuideFindNewHelper(tour), 60000);
+                        Emulator.getThreading().run(new GuideFindNewHelper(tour, set.getKey()), 60000);
                         this.activeTours.add(tour);
                         return true;
                     }
                 }
             }
         }
-
+        this.endSession(tour);
         tour.getNoob().getClient().sendResponse(new GuideSessionErrorComposer(GuideSessionErrorComposer.NO_HELPERS_AVAILABLE));
 
         return false;

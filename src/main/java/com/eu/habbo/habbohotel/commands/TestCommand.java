@@ -22,6 +22,7 @@ import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.MessagesForYouComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.PetInformationComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.PetStatusUpdateComposer;
+import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDataComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.zaxxer.hikari.HikariConfig;
@@ -52,9 +53,20 @@ public class TestCommand extends Command
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
+        if (true)
+            return false;
+
         if (params[1].equals("ach"))
         {
-            AchievementManager.progressAchievement(gameClient.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("PetLover"), 1000);
+            AchievementManager.progressAchievement(gameClient.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("GiftGiver"), 100);
+            return true;
+        }
+
+        if (params[1].equals("asddsa"))
+        {
+            gameClient.getHabbo().getHabboStats().addAchievementScore(1000);
+            gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserDataComposer(gameClient.getHabbo()).compose());
+            return true;
         }
 
         if (params[1].equals("gc"))
