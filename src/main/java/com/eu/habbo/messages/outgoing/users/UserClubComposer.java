@@ -65,11 +65,21 @@ public class UserClubComposer extends MessageComposer
             this.response.appendInt32(0);
             this.response.appendInt32(1);
         }
-        this.response.appendBoolean(true);
-        this.response.appendBoolean(true);
-        this.response.appendInt32(124);
-        this.response.appendInt32(124);
-        this.response.appendInt32(endTimestamp - Emulator.getIntUnixTimestamp());
+        this.response.appendBoolean(false);
+        this.response.appendBoolean(false);
+        this.response.appendInt32(0);
+        this.response.appendInt32(0);
+
+        long remaining = (endTimestamp - Emulator.getIntUnixTimestamp()) * 1000;
+
+        if (remaining > Integer.MAX_VALUE || remaining <= 0)
+        {
+            this.response.appendInt32(Integer.MAX_VALUE);
+        }
+        else
+        {
+            this.response.appendInt32((int) remaining);
+        }
 
         return this.response;
     }

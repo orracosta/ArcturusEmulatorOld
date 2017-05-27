@@ -1,4 +1,4 @@
-package com.eu.habbo.messages.incoming.catalog;
+package com.eu.habbo.messages.outgoing.catalog;
 
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;

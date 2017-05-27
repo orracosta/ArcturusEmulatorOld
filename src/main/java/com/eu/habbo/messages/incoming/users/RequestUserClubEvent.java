@@ -10,6 +10,5 @@ public class RequestUserClubEvent extends MessageHandler
     public void handle() throws Exception
     {
         this.client.sendResponse(new UserClubComposer(this.client.getHabbo()));
-        this.client.sendResponse(new UserPermissionsComposer(this.client.getHabbo()));
     }
 }

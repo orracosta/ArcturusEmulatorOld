@@ -1,8 +1,12 @@
 package com.eu.habbo.messages.outgoing.modtool;
 
+import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.modtool.CfhCategory;
+import com.eu.habbo.habbohotel.modtool.CfhTopic;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
+import gnu.trove.procedure.TObjectProcedure;
 
 public class CfhTopicsMessageComposer extends MessageComposer
 {
@@ -10,101 +14,31 @@ public class CfhTopicsMessageComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.CfhTopicsMessageComposer);
-        //Stolen from wherever:
-        this.response.appendInt32(6);
-        this.response.appendString("sex_and_pii");
-        this.response.appendInt32(8);
-        this.response.appendString("sexual_webcam_images");
-        this.response.appendInt32(1);
-        this.response.appendString("mods");
-        this.response.appendString("sexual_webcam_images_auto");
-        this.response.appendInt32(2);
-        this.response.appendString("mods");
-        this.response.appendString("explicit_sexual_talk");
-        this.response.appendInt32(3);
-        this.response.appendString("mods");
-        this.response.appendString("cybersex");
-        this.response.appendInt32(4);
-        this.response.appendString("mods");
-        this.response.appendString("cybersex_auto");
-        this.response.appendInt32(5);
-        this.response.appendString("mods");
-        this.response.appendString("meet_some");
-        this.response.appendInt32(6);
-        this.response.appendString("mods");
-        this.response.appendString("meet_irl");
-        this.response.appendInt32(7);
-        this.response.appendString("mods");
-        this.response.appendString("email_or_phone");
-        this.response.appendInt32(8);
-        this.response.appendString("mods");
-        this.response.appendString("scamming");
-        this.response.appendInt32(3);
-        this.response.appendString("stealing");
-        this.response.appendInt32(9);
-        this.response.appendString("mods");
-        this.response.appendString("scamsites");
-        this.response.appendInt32(10);
-        this.response.appendString("mods");
-        this.response.appendString("selling_buying_accounts_or_furni");
-        this.response.appendInt32(11);
-        this.response.appendString("mods");
-        this.response.appendString("trolling");
-        this.response.appendInt32(11);
-        this.response.appendString("hate_speech");
-        this.response.appendInt32(12);
-        this.response.appendString("mods");
-        this.response.appendString("violent_roleplay");
-        this.response.appendInt32(13);
-        this.response.appendString("mods");
-        this.response.appendString("swearing");
-        this.response.appendInt32(14);
-        this.response.appendString("auto_reply");
-        this.response.appendString("drugs");
-        this.response.appendInt32(15);
-        this.response.appendString("mods");
-        this.response.appendString("gambling");
-        this.response.appendInt32(16);
-        this.response.appendString("mods");
-        this.response.appendString("self_threatening");
-        this.response.appendInt32(17);
-        this.response.appendString("mods");
-        this.response.appendString("mild_staff_impersonation");
-        this.response.appendInt32(18);
-        this.response.appendString("mods");
-        this.response.appendString("severe_staff_impersonation");
-        this.response.appendInt32(19);
-        this.response.appendString("mods");
-        this.response.appendString("habbo_name");
-        this.response.appendInt32(20);
-        this.response.appendString("mods");
-        this.response.appendString("minors_access");
-        this.response.appendInt32(21);
-        this.response.appendString("mods");
-        this.response.appendString("bullying");
-        this.response.appendInt32(22);
-        this.response.appendString("guardians");
-        this.response.appendString("interruption");
-        this.response.appendInt32(2);
-        this.response.appendString("flooding");
-        this.response.appendInt32(23);
-        this.response.appendString("mods");
-        this.response.appendString("doors");
-        this.response.appendInt32(24);
-        this.response.appendString("mods");
-        this.response.appendString("room");
-        this.response.appendInt32(1);
-        this.response.appendString("room_report");
-        this.response.appendInt32(25);
-        this.response.appendString("mods");
-        this.response.appendString("help");
-        this.response.appendInt32(2);
-        this.response.appendString("help_habbo");
-        this.response.appendInt32(26);
-        this.response.appendString("auto_reply");
-        this.response.appendString("help_payments");
-        this.response.appendInt32(27);
-        this.response.appendString("auto_reply");
+
+        this.response.appendInt32(Emulator.getGameEnvironment().getModToolManager().getCfhCategories().valueCollection().size());
+
+        Emulator.getGameEnvironment().getModToolManager().getCfhCategories().forEachValue(new TObjectProcedure<CfhCategory>()
+        {
+            @Override
+            public boolean execute(CfhCategory category)
+            {
+                response.appendString(category.getName());
+                response.appendInt32(category.getTopics().valueCollection().size());
+                category.getTopics().forEachValue(new TObjectProcedure<CfhTopic>()
+                {
+                    @Override
+                    public boolean execute(CfhTopic topic)
+                    {
+                        response.appendString(topic.name);
+                        response.appendInt32(topic.id);
+                        response.appendString(topic.action.toString());
+                        return true;
+                    }
+                });
+                return true;
+            }
+        });
+
         return this.response;
     }
 }

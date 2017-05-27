@@ -28,16 +28,18 @@ import java.util.Objects;
 
 public class ModToolManager
 {
-    private final TIntObjectMap<ModToolCategory> category;
+    private final TIntObjectMap<ModToolCategory>     category;
     private final THashMap<String, THashSet<String>> presets;
-    private final THashMap<Integer, ModToolIssue> tickets;
+    private final THashMap<Integer, ModToolIssue>    tickets;
+    private final TIntObjectMap<CfhCategory>         cfhCategories;
 
     public ModToolManager()
     {
-        long millis = System.currentTimeMillis();
-        this.category = TCollections.synchronizedMap(new TIntObjectHashMap<ModToolCategory>());
-        this.presets = new THashMap<String, THashSet<String>>();
-        this.tickets = new THashMap<Integer, ModToolIssue>();
+        long millis   = System.currentTimeMillis();
+        this.category = TCollections.synchronizedMap(new TIntObjectHashMap<>());
+        this.presets  = new THashMap<>();
+        this.tickets  = new THashMap<>();
+        this.cfhCategories = new TIntObjectHashMap<>();
         this.loadModTool();
         Emulator.getLogging().logStart("ModTool Manager -> Loaded! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
@@ -48,14 +50,17 @@ public class ModToolManager
         {
             this.category.clear();
             this.presets.clear();
-            this.presets.put("user", new THashSet<String>());
-            this.presets.put("room", new THashSet<String>());
+            this.cfhCategories.clear();
+
+            this.presets.put("user", new THashSet<>());
+            this.presets.put("room", new THashSet<>());
 
             try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
             {
                 this.loadCategory(connection);
                 this.loadPresets(connection);
                 this.loadTickets(connection);
+                this.loadCfhCategories(connection);
             }
             catch (SQLException e)
             {
@@ -113,6 +118,47 @@ public class ModToolManager
                 }
             }
         }
+    }
+
+    private void loadCfhCategories(Connection connection) throws SQLException
+    {
+        try (Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery("SELECT " +
+                "support_cfh_topics.id, " +
+                "support_cfh_topics.category_id, " +
+                "support_cfh_topics.name_internal, " +
+                "support_cfh_topics.action, " +
+                "support_cfh_topics.auto_reply, " +
+                "support_cfh_categories.name_internal AS category_name_internal, " +
+                "support_cfh_categories.id AS support_cfh_category_id " +
+                "FROM support_cfh_topics " +
+                "LEFT JOIN support_cfh_categories ON support_cfh_categories.id = support_cfh_topics.category_id"))
+        {
+            while(set.next())
+            {
+                if (!this.cfhCategories.containsKey(set.getInt("support_cfh_category_id")))
+                {
+                    this.cfhCategories.put(set.getInt("support_cfh_category_id"), new CfhCategory(set.getInt("id"), set.getString("category_name_internal")));
+                }
+
+                this.cfhCategories.get(set.getInt("support_cfh_category_id")).addTopic(new CfhTopic(set));
+            }
+        }
+    }
+
+    public CfhTopic getCfhTopic(int topicId)
+    {
+        for(CfhCategory category : getCfhCategories().valueCollection())
+        {
+            for(CfhTopic topic : category.getTopics().valueCollection())
+            {
+                if(topic.id == topicId)
+                {
+                    return topic;
+                }
+            }
+        }
+
+        return null;
     }
 
     public void quickTicket(Habbo reported, String reason, String message)
@@ -676,6 +722,28 @@ public class ModToolManager
         return false;
     }
 
+    public int totalBans(int userId)
+    {
+        int total = 0;
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) as total FROM bans WHERE user_id = ?"))
+        {
+            statement.setInt(1, userId);
+            try (ResultSet set = statement.executeQuery())
+            {
+                if (set.next())
+                {
+                    total = set.getInt("total");
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
+        return total;
+    }
+
     public TIntObjectMap<ModToolCategory> getCategory()
     {
         return this.category;
@@ -696,25 +764,31 @@ public class ModToolManager
         return this.tickets.get(ticketId);
     }
 
-    public int totalBans(int id)
+    public TIntObjectMap<CfhCategory> getCfhCategories()
     {
-        int total = 0;
-        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) as total FROM bans WHERE user_id = ?"))
+        return this.cfhCategories;
+    }
+
+    public List<ModToolIssue> openTicketsForHabbo(Habbo habbo)
+    {
+        List<ModToolIssue> issues = new ArrayList<>();
+        synchronized (this.tickets)
         {
-            statement.setInt(1, id);
-            try (ResultSet set = statement.executeQuery())
+            this.tickets.forEachValue(new TObjectProcedure<ModToolIssue>()
             {
-                if (set.next())
+                @Override
+                public boolean execute(ModToolIssue object)
                 {
-                    total = set.getInt("total");
+                    if (object.senderId == habbo.getHabboInfo().getId() && object.state == ModToolTicketState.OPEN)
+                    {
+                        issues.add(object);
+                    }
+
+                    return true;
                 }
-            }
-        }
-        catch (SQLException e)
-        {
-            Emulator.getLogging().logSQLException(e);
+            });
         }
 
-        return total;
+        return issues;
     }
 }
