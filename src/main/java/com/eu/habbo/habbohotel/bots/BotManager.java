@@ -197,7 +197,7 @@ public class BotManager
 
             if (bot.getOwnerId() == habbo.getHabboInfo().getId() || habbo.hasPermission("acc_anyroomowner"))
             {
-                if (!habbo.hasPermission("acc_unlimited_bots") && habbo.getHabboInventory().getBotsComponent().getUserBots().size() >= 15)
+                if (!habbo.hasPermission("acc_unlimited_bots") && habbo.getHabboInventory().getBotsComponent().getBots().size() >= 15)
                     return;
 
                 bot.onPickUp(habbo, habbo.getHabboInfo().getCurrentRoom());
@@ -244,6 +244,26 @@ public class BotManager
         }
 
         return null;
+    }
+
+    /**
+     * Deletes a bot from the database.
+     * @param bot The bot to delete.
+     * @return true if the bot has been deleted.
+     */
+    public boolean deleteBot(Bot bot)
+    {
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM bots WHERE id = ? LIMIT 1"))
+        {
+            statement.setInt(1, bot.getId());
+            return statement.execute();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
+        return false;
     }
 
     /**

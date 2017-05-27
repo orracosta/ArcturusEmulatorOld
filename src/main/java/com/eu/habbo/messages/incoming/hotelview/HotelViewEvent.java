@@ -21,7 +21,15 @@ public class HotelViewEvent extends MessageHandler
         if (this.client.getHabbo().getHabboInfo().getRoomQueueId() != 0)
         {
             Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.client.getHabbo().getHabboInfo().getRoomQueueId());
-            room.removeFromQueue(this.client.getHabbo());
+
+            if (room != null)
+            {
+                room.removeFromQueue(this.client.getHabbo());
+            }
+            else
+            {
+                this.client.getHabbo().getHabboInfo().setRoomQueueId(0);
+            }
         }
 
         if(this.client.getHabbo().getRoomUnit() != null)

@@ -1662,7 +1662,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                             zOffset = -roller.getBaseItem().getHeight();
                         }
 
-                        if (allowFurniture)
+                        if (allowFurniture || (!allowFurniture && !stackContainsRoller))
                         {
                             /**
                              * Redneck way to prevent checking ifregistered each time.

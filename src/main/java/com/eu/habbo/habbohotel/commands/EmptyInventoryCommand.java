@@ -1,7 +1,9 @@
 package com.eu.habbo.habbohotel.commands;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -13,6 +15,7 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItems;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
+import gnu.trove.procedure.TObjectProcedure;
 
 public class EmptyInventoryCommand extends Command
 {
@@ -44,21 +47,50 @@ public class EmptyInventoryCommand extends Command
         if(params.length >= 2 && params[1].equalsIgnoreCase(Emulator.getTexts().getValue("generic.yes")))
         {
             Habbo habbo = gameClient.getHabbo();
-            if(params.length == 3 && gameClient.getHabbo().hasPermission("acc_empty_others"))
+            if (params.length == 3 && gameClient.getHabbo().hasPermission("acc_empty_others"))
             {
                 habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(params[2]);
             }
 
-            TIntObjectMap<HabboItem> items = new TIntObjectHashMap<HabboItem>();
-            items.putAll(habbo.getHabboInventory().getItemsComponent().getItems());
-            habbo.getHabboInventory().getItemsComponent().getItems().clear();
+            if (habbo != null)
+            {
 
-            Emulator.getThreading().run(new QueryDeleteHabboItems(items));
+                TIntObjectMap<HabboItem> items = new TIntObjectHashMap<HabboItem>();
+                items.putAll(habbo.getHabboInventory().getItemsComponent().getItems());
+                habbo.getHabboInventory().getItemsComponent().getItems().clear();
+                Emulator.getThreading().run(new QueryDeleteHabboItems(items));
 
-            habbo.getClient().sendResponse(new InventoryRefreshComposer());
-            habbo.getClient().sendResponse(new InventoryItemsComposer(0, 1, gameClient.getHabbo().getHabboInventory().getItemsComponent().getItems()));
+                TIntObjectHashMap<Bot> bots = new TIntObjectHashMap<>();
+                bots.putAll(habbo.getHabboInventory().getBotsComponent().getBots());
+                habbo.getHabboInventory().getBotsComponent().getBots().clear();
+                bots.forEachValue(new TObjectProcedure<Bot>()
+                {
+                    @Override
+                    public boolean execute(Bot object)
+                    {
+                        Emulator.getGameEnvironment().getBotManager().deleteBot(object);
+                        return true;
+                    }
+                });
 
-            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_empty.cleared"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                TIntObjectHashMap<AbstractPet> pets = new TIntObjectHashMap<>();
+                pets.putAll(habbo.getHabboInventory().getPetsComponent().getPets());
+                habbo.getHabboInventory().getPetsComponent().getPets().clear();
+                pets.forEachValue(new TObjectProcedure<AbstractPet>()
+                {
+                    @Override
+                    public boolean execute(AbstractPet object)
+                    {
+                        Emulator.getGameEnvironment().getPetManager().deletePet(object);
+                        return true;
+                    }
+                });
+
+                habbo.getClient().sendResponse(new InventoryRefreshComposer());
+                habbo.getClient().sendResponse(new InventoryItemsComposer(0, 1, gameClient.getHabbo().getHabboInventory().getItemsComponent().getItems()));
+
+                gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_empty.cleared"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            }
         }
 
         return true;

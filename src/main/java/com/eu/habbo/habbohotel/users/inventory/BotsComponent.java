@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class BotsComponent {
 
-    private final THashMap<Integer, Bot> userBots = new THashMap<Integer, Bot>();
+    private final THashMap<Integer, Bot> bots = new THashMap<Integer, Bot>();
 
     public BotsComponent(Habbo habbo)
     {
@@ -22,7 +22,7 @@ public class BotsComponent {
 
     private void loadBots(Habbo habbo)
     {
-        synchronized (this.userBots)
+        synchronized (this.bots)
         {
             try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username AS owner_name, bots.* FROM bots INNER JOIN users ON users.id = bots.user_id WHERE user_id = ? AND room_id = 0 ORDER BY id ASC"))
             {
@@ -35,7 +35,7 @@ public class BotsComponent {
                         if (bot != null)
                         {
                             bot.setOwnerName(habbo.getHabboInfo().getUsername());
-                            this.userBots.put(set.getInt("id"), bot);
+                            this.bots.put(set.getInt("id"), bot);
                         }
                     }
                 }
@@ -49,42 +49,42 @@ public class BotsComponent {
 
     public Bot getBot(int botId)
     {
-        return this.userBots.get(botId);
+        return this.bots.get(botId);
     }
 
     public void addBot(Bot bot)
     {
-        synchronized (this.userBots)
+        synchronized (this.bots)
         {
-            this.userBots.put(bot.getId(), bot);
+            this.bots.put(bot.getId(), bot);
         }
     }
 
     public void removeBot(Bot bot)
     {
-        synchronized (this.userBots)
+        synchronized (this.bots)
         {
-            this.userBots.remove(bot.getId());
+            this.bots.remove(bot.getId());
         }
     }
 
-    public THashMap<Integer, Bot> getUserBots()
+    public THashMap<Integer, Bot> getBots()
     {
-        return this.userBots;
+        return this.bots;
     }
 
     public void dispose()
     {
-        synchronized (this.userBots)
+        synchronized (this.bots)
         {
-            for (Map.Entry<Integer, Bot> map : this.userBots.entrySet())
+            for (Map.Entry<Integer, Bot> map : this.bots.entrySet())
             {
                 if (map.getValue().needsUpdate())
                 {
                     Emulator.getThreading().run(map.getValue());
                 }
             }
-            this.userBots.clear();
+            this.bots.clear();
         }
     }
 }
