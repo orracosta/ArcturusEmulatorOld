@@ -17,11 +17,11 @@ public class ScratchPetEvent extends MessageHandler
         if(this.client.getHabbo().getHabboInfo().getCurrentRoom() == null)
             return;
 
-        if(this.client.getHabbo().getHabboStats().petRespectPointsToGive > 0)
-        {
-            Pet pet = (Pet)this.client.getHabbo().getHabboInfo().getCurrentRoom().getPet(petId);
+        Pet pet = (Pet)this.client.getHabbo().getHabboInfo().getCurrentRoom().getPet(petId);
 
-            if(pet != null)
+        if(pet != null)
+        {
+            if(this.client.getHabbo().getHabboStats().petRespectPointsToGive > 0 || pet instanceof MonsterplantPet)
             {
                 pet.scratched(this.client.getHabbo());
             }

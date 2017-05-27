@@ -10,6 +10,7 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.PetStatusUpdateComposer;
+import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetRespectComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import javafx.util.Pair;
 
@@ -393,5 +394,6 @@ public class MonsterplantPet extends Pet implements IPetLook
         this.setDeathTimestamp(Emulator.getIntUnixTimestamp() + MonsterplantPet.timeToLive);
         this.addExperience(10);
         this.room.sendComposer(new PetStatusUpdateComposer(this).compose());
+        this.room.sendComposer(new RoomPetRespectComposer(this).compose());
     }
 }
