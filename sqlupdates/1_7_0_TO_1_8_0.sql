@@ -10,3 +10,4 @@ UPDATE rooms SET paper_landscape = '0.0' WHERE paper_landscape = '0';
 
 UPDATE items_base SET interaction_type = item_name WHERE item_name LIKE 'wf_xtra_%';
 UPDATE items_base SET interaction_type = item_name WHERE item_name LIKE 'wf_act_move_furni_to';
+UPDATE items_base SET allow_walk = '0' WHERE interaction_type LIKE 'gate';

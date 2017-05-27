@@ -30,7 +30,7 @@ public class CrackableExplode implements Runnable
         this.room.sendComposer(new RemoveFloorItemComposer(this.habboItem).compose());
         this.habboItem.setRoomId(0);
         Emulator.getGameEnvironment().getItemManager().deleteItem(this.habboItem);
-        HabboItem newItem = Emulator.getGameEnvironment().getItemManager().createItem(this.room.getOwnerId(), Emulator.getGameEnvironment().getItemManager().getCrackableReward(this.habboItem.getBaseItem().getId()), 0, 0, "");
+        HabboItem newItem = Emulator.getGameEnvironment().getItemManager().createItem(this.habboItem.getUserId(), Emulator.getGameEnvironment().getItemManager().getCrackableReward(this.habboItem.getBaseItem().getId()), 0, 0, "");
         newItem.setX(this.habboItem.getX());
         newItem.setY(this.habboItem.getY());
         newItem.setZ(this.habboItem.getZ());
