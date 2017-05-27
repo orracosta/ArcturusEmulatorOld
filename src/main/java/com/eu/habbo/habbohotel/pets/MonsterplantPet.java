@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.ItemManager;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.PetStatusUpdateComposer;
@@ -230,7 +231,11 @@ public class MonsterplantPet extends Pet implements IPetLook
 
     public int getRarity()
     {
-        return bodyRarity.get(this.type).getValue() + colorRarity.get(this.hue).getValue();
+        if (bodyRarity.containsKey(this.type) && colorRarity.containsKey(this.hue))
+        {
+            return bodyRarity.get(this.type).getValue() + colorRarity.get(this.hue).getValue();
+        }
+        return 0;
     }
 
     @Override
@@ -245,6 +250,36 @@ public class MonsterplantPet extends Pet implements IPetLook
                 "4 " + this.eyes  + " " + this.eyesColor;
 
         return look;
+    }
+
+
+    @Override
+    public void serialize(ServerMessage message)
+    {
+        message.appendInt32(this.getId());
+        message.appendString(this.getName());
+        message.appendInt32(this.petData.getType());
+        message.appendInt32(this.race);
+        message.appendString(this.getLook().substring(5, this.getLook().length()));
+        message.appendInt32(this.getRarity());
+        message.appendInt32(5);
+            message.appendInt32(0);
+            message.appendInt32(-1);
+            message.appendInt32(10);
+            message.appendInt32(1);
+            message.appendInt32(this.type);
+            message.appendInt32(this.hue);
+            message.appendInt32(2);
+            message.appendInt32(this.mouth);
+            message.appendInt32(this.mouthColor);
+            message.appendInt32(3);
+            message.appendInt32(this.nose);
+            message.appendInt32(this.noseColor);
+            message.appendInt32(4);
+            message.appendInt32(this.eyes);
+            message.appendInt32(this.eyesColor);
+
+        message.appendInt32(this.growthStage);
     }
 
     public int remainingTimeToLive()
@@ -394,6 +429,6 @@ public class MonsterplantPet extends Pet implements IPetLook
         this.setDeathTimestamp(Emulator.getIntUnixTimestamp() + MonsterplantPet.timeToLive);
         this.addExperience(10);
         this.room.sendComposer(new PetStatusUpdateComposer(this).compose());
-        this.room.sendComposer(new RoomPetRespectComposer(this).compose());
+        this.room.sendComposer(new RoomPetRespectComposer(this, RoomPetRespectComposer.PET_TREATED).compose());
     }
 }

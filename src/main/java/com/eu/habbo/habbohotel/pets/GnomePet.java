@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.pets;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.messages.ServerMessage;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,6 +26,19 @@ public class GnomePet extends Pet implements IPetLook
         super(type, race, color, name, userId);
 
         this.gnomeData = gnomeData;
+    }
+
+    @Override
+    public void serialize(ServerMessage message)
+    {
+        message.appendInt32(this.getId());
+        message.appendString(this.getName());
+        message.appendInt32(this.petData.getType());
+        message.appendInt32(this.race);
+        message.appendString(this.color);
+        message.appendInt32(0);
+        message.appendInt32(0);
+        message.appendInt32(0);
     }
 
     @Override
