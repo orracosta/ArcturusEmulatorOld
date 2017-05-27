@@ -7,18 +7,29 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class RoomPetRespectComposer extends MessageComposer
 {
+    public final static int PET_RESPECTED = 1;
+    public final static int PET_TREATED = 2;
+
     private final Pet pet;
+    private final int type;
 
     public RoomPetRespectComposer(Pet pet)
     {
         this.pet = pet;
+        this.type = 1;
+    }
+
+    public RoomPetRespectComposer(Pet pet, int type)
+    {
+        this.pet = pet;
+        this.type = type;
     }
 
     @Override
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomPetRespectComposer);
-        this.response.appendInt32(1);
+        this.response.appendInt32(this.type);
         this.response.appendInt32(100);
         pet.serialize(this.response);
         return this.response;

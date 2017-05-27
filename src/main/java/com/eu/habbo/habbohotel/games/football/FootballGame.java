@@ -48,7 +48,10 @@ public class FootballGame extends Game
             AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("FootballGoalScored"));
         }
 
-        AchievementManager.progressAchievement(this.room.getOwnerId(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("FootballGoalScoredInRoom"), 1);
+        if (habbo.getHabboInfo().getId() != this.room.getOwnerId())
+        {
+            AchievementManager.progressAchievement(this.room.getOwnerId(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("FootballGoalScoredInRoom"));
+        }
 
         this.room.sendComposer(new RoomUserActionComposer(kicker, RoomUserAction.WAVE).compose());
 
