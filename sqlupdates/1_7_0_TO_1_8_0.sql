@@ -72,3 +72,5 @@ INSERT INTO `support_cfh_topics` VALUES ('29', '6', 'hacking.furni', 'Scripted f
 INSERT INTO `support_cfh_topics` VALUES ('30', '6', 'hacking.room', 'Scripted room', 'mods', null);
 INSERT INTO `support_cfh_topics` VALUES ('31', '6', 'hacking.character', 'Scripted character', 'mods', null);
 INSERT INTO `support_cfh_topics` VALUES ('32', '6', 'hacking.other', 'Other hacking', 'mods', null);
+
+ALTER TABLE  `camera_web` ADD  `room_id` INT( 11 ) NOT NULL DEFAULT  '0' AFTER  `user_id`;

@@ -15,14 +15,21 @@ public class UserPublishPictureEvent extends UserEvent
     public int timestamp;
 
     /**
+     * The room id this picture was taken.
+     */
+    public int roomId;
+
+    /**
      * @param habbo The Habbo this event applies to.
      * @param url The URL the picture gets saved to.
      * @param timestamp The timestamp that the picture was taken.
+     * @param roomId The room id this picture was taken.
      */
-    public UserPublishPictureEvent(Habbo habbo, String url, int timestamp)
+    public UserPublishPictureEvent(Habbo habbo, String url, int timestamp, int roomId)
     {
         super(habbo);
-        URL = url;
+        this.URL = url;
         this.timestamp = timestamp;
+        this.roomId = roomId;
     }
 }

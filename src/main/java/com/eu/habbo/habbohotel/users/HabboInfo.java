@@ -48,6 +48,7 @@ public class HabboInfo implements Runnable
     private TIntIntHashMap currencies;
     private GamePlayer gamePlayer;
 
+    private int photoRoomId;
     private int photoTimestamp;
     private String photoURL;
     private String photoJSON;
@@ -380,6 +381,16 @@ public class HabboInfo implements Runnable
     public synchronized void setGamePlayer(GamePlayer gamePlayer)
     {
         this.gamePlayer = gamePlayer;
+    }
+
+    public int getPhotoRoomId()
+    {
+        return this.photoRoomId;
+    }
+
+    public void setPhotoRoomId(int roomId)
+    {
+        this.photoRoomId = roomId;
     }
 
     public int getPhotoTimestamp()
