@@ -39,7 +39,7 @@ public class InteractionFootballGoal extends InteractionGameTeamItem
     {
 
     }
-    
+
     @Override
     public void serializeExtradata(ServerMessage serverMessage)
     {

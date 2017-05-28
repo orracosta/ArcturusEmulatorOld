@@ -3,6 +3,8 @@ package com.eu.habbo.messages.rcon;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
+import com.eu.habbo.messages.outgoing.rooms.RoomOpenComposer;
 import com.google.gson.Gson;
 
 public class ForwardUser extends RCONMessage<ForwardUser.ForwardUserJSON>
@@ -26,7 +28,11 @@ public class ForwardUser extends RCONMessage<ForwardUser.ForwardUserJSON>
 
             if(room != null)
             {
-                Emulator.getGameEnvironment().getRoomManager().enterRoom(habbo, room);
+                if (habbo.getHabboInfo().getCurrentRoom() == null)
+                {
+                    habbo.getClient().sendResponse(new ForwardToRoomComposer(object.room_id));
+                }
+                Emulator.getGameEnvironment().getRoomManager().enterRoom(habbo, object.room_id, "", true);
             }
             else
             {

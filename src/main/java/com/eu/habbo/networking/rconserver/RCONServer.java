@@ -51,6 +51,7 @@ public class RCONServer
         this.addRCONMessage("givepoints",           GivePoints.class);
         this.addRCONMessage("hotelalert",           HotelAlert.class);
         this.addRCONMessage("sendgift",             SendGift.class);
+        this.addRCONMessage("sendroombundle",       SendRoomBundle.class);
         this.addRCONMessage("setrank",              SetRank.class);
         this.addRCONMessage("updatewordfilter",     UpdateWordfilter.class);
         this.addRCONMessage("updatecatalog",        UpdateCatalog.class);

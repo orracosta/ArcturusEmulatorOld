@@ -35,6 +35,11 @@ public class CameraRoomPictureEvent extends MessageHandler
             this.client.getHabbo().getHabboInfo().setPhotoJSON(Emulator.getConfig().getValue("camera.extradata").replace("%timestamp%", composer.timestamp + ""));
             this.client.getHabbo().getHabboInfo().setPhotoTimestamp(composer.timestamp);
 
+            if (this.client.getHabbo().getHabboInfo().getCurrentRoom() != null)
+            {
+                this.client.getHabbo().getHabboInfo().setPhotoRoomId(this.client.getHabbo().getHabboInfo().getCurrentRoom().getId());
+            }
+
             Emulator.getCameraClient().sendMessage(composer);
         }
         else

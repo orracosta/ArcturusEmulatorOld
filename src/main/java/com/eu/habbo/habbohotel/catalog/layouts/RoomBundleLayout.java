@@ -25,6 +25,7 @@ public class RoomBundleLayout extends SingleBundle
     public int roomId = 0;
     public Room room;
     private int lastUpdate = 0;
+    private boolean loaded = false;
 
     public RoomBundleLayout(ResultSet set) throws SQLException
     {
@@ -127,10 +128,21 @@ public class RoomBundleLayout extends SingleBundle
         this.room = room;
         this.room.preventUnloading = true;
         this.getCatalogItems();
+        this.loaded  = true;
     }
 
     public void buyRoom(Habbo habbo)
     {
+        this.buyRoom(habbo, habbo.getHabboInfo().getId(), habbo.getHabboInfo().getUsername());
+    }
+
+    public void buyRoom(Habbo habbo, int userId, String userName)
+    {
+        if (!this.loaded)
+        {
+            this.loadItems(Emulator.getGameEnvironment().getRoomManager().loadRoom(this.roomId));
+        }
+
         if(this.room == null)
             return;
 
@@ -153,8 +165,8 @@ public class RoomBundleLayout extends SingleBundle
         {
             try (PreparedStatement statement = connection.prepareStatement("INSERT INTO rooms (owner_id, owner_name, name, description, model, password, state, users_max, category, paper_floor, paper_wall, paper_landscape, thickness_wall, thickness_floor, moodlight_data, override_model)  (SELECT ?, ?, name, description, model, password, state, users_max, category, paper_floor, paper_wall, paper_landscape, thickness_wall, thickness_floor, moodlight_data, override_model FROM rooms WHERE id = ?)", Statement.RETURN_GENERATED_KEYS))
             {
-                statement.setInt(1, habbo.getHabboInfo().getId());
-                statement.setString(2, habbo.getHabboInfo().getUsername());
+                statement.setInt(1, userId);
+                statement.setString(2, userName);
                 statement.setInt(3, this.room.getId());
                 statement.execute();
                 try (ResultSet set = statement.getGeneratedKeys())
@@ -171,7 +183,7 @@ public class RoomBundleLayout extends SingleBundle
 
             try (PreparedStatement statement = connection.prepareStatement("INSERT INTO items (user_id, room_id, item_id, wall_pos, x, y, z, rot, extra_data, wired_data, limited_data, guild_id) (SELECT ?, ?, item_id, wall_pos, x, y, z, rot, extra_data, wired_data, ?, ? FROM items WHERE room_id = ?)", Statement.RETURN_GENERATED_KEYS))
             {
-                statement.setInt(1, habbo.getHabboInfo().getId());
+                statement.setInt(1, userId);
                 statement.setInt(2, roomId);
                 statement.setString(3, "0:0");
                 statement.setInt(4, 0);
@@ -200,7 +212,7 @@ public class RoomBundleLayout extends SingleBundle
                 {
                     synchronized (this.room.getCurrentBots())
                     {
-                        statement.setInt(1, habbo.getHabboInfo().getId());
+                        statement.setInt(1, userId);
                         statement.setInt(2, roomId);
                         for (Bot bot : this.room.getCurrentBots().valueCollection())
                         {
@@ -234,8 +246,6 @@ public class RoomBundleLayout extends SingleBundle
             Emulator.getLogging().logSQLException(e);
         }
 
-        Emulator.getLogging().logUserLine(habbo.getHabboInfo().getUsername() + " bought room bundle: " + this.room.getId());
-
         Room r = Emulator.getGameEnvironment().getRoomManager().loadRoom(roomId);
         r.setWallHeight(this.room.getWallHeight());
         r.setFloorSize(this.room.getFloorSize());
@@ -248,6 +258,10 @@ public class RoomBundleLayout extends SingleBundle
         keys.put("ROOMID", r.getId() + "");
         keys.put("OWNER", r.getOwnerName());
         keys.put("image", "${image.library.url}/notifications/room_bundle_" + this.getId() + ".png");
-        habbo.getClient().sendResponse(new BubbleAlertComposer(BubbleAlertKeys.PURCHASING_ROOM.key, keys));
+
+        if (habbo != null)
+        {
+            habbo.getClient().sendResponse(new BubbleAlertComposer(BubbleAlertKeys.PURCHASING_ROOM.key, keys));
+        }
     }
 }

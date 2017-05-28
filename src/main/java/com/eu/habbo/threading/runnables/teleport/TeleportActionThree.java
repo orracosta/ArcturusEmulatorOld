@@ -46,7 +46,7 @@ class TeleportActionThree implements Runnable
         if(targetTeleport == null)
             return;
 
-        this.client.getHabbo().getRoomUnit().setLocation(this.room.getLayout().getTile(targetTeleport.getX(), targetTeleport.getY()));
+        this.client.getHabbo().getRoomUnit().setLocation(targetRoom.getLayout().getTile(targetTeleport.getX(), targetTeleport.getY()));
         this.client.getHabbo().getRoomUnit().setZ(targetTeleport.getZ());
         this.client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[targetTeleport.getRotation() % 8]);
         this.client.getHabbo().getRoomUnit().getStatus().remove("mv");
@@ -61,6 +61,7 @@ class TeleportActionThree implements Runnable
         targetRoom.updateItem(targetTeleport);
         targetRoom.sendComposer(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()).compose());
 
+        this.client.getHabbo().getHabboInfo().setCurrentRoom(targetRoom);
         Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, this.room, "0"), 500);
         Emulator.getThreading().run(new TeleportActionFour(targetTeleport, targetRoom, this.client), 500);
 

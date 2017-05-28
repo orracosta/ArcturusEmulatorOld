@@ -25,6 +25,7 @@ class TeleportActionFive implements Runnable
     public void run()
     {
         this.client.getHabbo().getRoomUnit().isTeleporting = false;
+        this.client.getHabbo().getRoomUnit().setCanWalk(true);
 
         if (this.client.getHabbo().getHabboInfo().getCurrentRoom() != this.room)
             return;
