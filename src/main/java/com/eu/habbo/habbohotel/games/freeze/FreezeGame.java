@@ -51,7 +51,6 @@ public class FreezeGame extends Game
     public static int FREEZE_LOOSE_POINTS;
     public static boolean POWERUP_STACK;
 
-    //public HabboItem exitTile;
     private int timeLeft;
 
     public FreezeGame(Room room)

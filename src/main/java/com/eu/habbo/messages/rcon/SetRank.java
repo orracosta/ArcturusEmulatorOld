@@ -2,6 +2,7 @@ package com.eu.habbo.messages.rcon;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.messages.outgoing.users.UserPerksComposer;
 import com.eu.habbo.messages.outgoing.users.UserPermissionsComposer;
 import com.google.gson.Gson;
 
@@ -34,25 +35,23 @@ public class SetRank extends RCONMessage<SetRank.JSONSetRank>
         {
             habbo.getHabboInfo().setRank(object.rank);
             habbo.getClient().sendResponse(new UserPermissionsComposer(habbo));
+            habbo.getClient().sendResponse(new UserPerksComposer(habbo));
             this.message = "updated online user";
         }
         else
         {
             this.message = "updated offline user";
-            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET rank = ? WHERE id = ? LIMIT 1"))
-            {
-                statement.setInt(1, object.rank);
-                statement.setInt(2, object.user_id);
-                if (statement.executeUpdate() == 0)
-                {
-                    this.message = "user not found";
-                    this.status = RCONMessage.HABBO_NOT_FOUND;
-                }
-            }
-            catch (Exception e)
-            {
-                this.status = RCONMessage.SYSTEM_ERROR;
-            }
+        }
+
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET rank = ? WHERE id = ? LIMIT 1"))
+        {
+            statement.setInt(1, object.rank);
+            statement.setInt(2, object.user_id);
+            statement.execute();
+        }
+        catch (Exception e)
+        {
+            this.status = RCONMessage.SYSTEM_ERROR;
         }
     }
 
