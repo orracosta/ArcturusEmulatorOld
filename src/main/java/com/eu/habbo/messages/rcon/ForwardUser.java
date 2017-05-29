@@ -28,10 +28,12 @@ public class ForwardUser extends RCONMessage<ForwardUser.ForwardUserJSON>
 
             if(room != null)
             {
-                if (habbo.getHabboInfo().getCurrentRoom() == null)
+                if (habbo.getHabboInfo().getCurrentRoom() != null)
                 {
-                    habbo.getClient().sendResponse(new ForwardToRoomComposer(object.room_id));
+                    Emulator.getGameEnvironment().getRoomManager().leaveRoom(habbo, habbo.getHabboInfo().getCurrentRoom());
                 }
+
+                habbo.getClient().sendResponse(new ForwardToRoomComposer(object.room_id));
                 Emulator.getGameEnvironment().getRoomManager().enterRoom(habbo, object.room_id, "", true);
             }
             else

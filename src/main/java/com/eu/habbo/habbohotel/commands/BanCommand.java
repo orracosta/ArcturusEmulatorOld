@@ -62,7 +62,7 @@ public class BanCommand extends Command
             return true;
         }
 
-        if(target.getHabboInfo().getRank() > gameClient.getHabbo().getHabboInfo().getRank())
+        if(target.getHabboInfo().getRank() >= gameClient.getHabbo().getHabboInfo().getRank())
         {
             gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_ban.target_rank_higher"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
             return true;

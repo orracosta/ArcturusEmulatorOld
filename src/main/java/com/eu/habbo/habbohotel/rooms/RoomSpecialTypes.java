@@ -675,7 +675,7 @@ public class RoomSpecialTypes
             {
                 if (set.getValue() instanceof InteractionFootballScoreboard)
                 {
-                    if (((InteractionBattleBanzaiScoreboard) set.getValue()).teamColor.equals(teamColor))
+                    if (((InteractionFootballScoreboard) set.getValue()).teamColor.equals(teamColor))
                         boards.put(set.getValue().getId(), (InteractionFootballScoreboard) set.getValue());
                 }
             }
