@@ -46,7 +46,7 @@ public class WiredEffectGiveScore extends InteractionWiredEffect
     {
         Habbo habbo = room.getHabbo(roomUnit);
 
-        if(habbo != null)
+        if(habbo != null && habbo.getHabboInfo().getCurrentGame() != null)
         {
             Game game = room.getGame(habbo.getHabboInfo().getCurrentGame());
 

@@ -148,28 +148,31 @@ public class AchievementManager
 
     public static void progressAchievement(int habboId, Achievement achievement, int amount)
     {
-        Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(habboId);
+        if (achievement != null)
+        {
+            Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(habboId);
 
-        if (habbo != null)
-        {
-            progressAchievement(habbo, achievement, amount);
-        }
-        else
-        {
-            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection();
-                 PreparedStatement statement = connection.prepareStatement("" +
-                         "INSERT INTO users_achievements_queue (user_id, achievement_id, amount) VALUES (?, ?, ?) " +
-                         "ON DUPLICATE KEY UPDATE amount = amount + ?"))
+            if (habbo != null)
             {
-                statement.setInt(1, habboId);
-                statement.setInt(2, achievement.id);
-                statement.setInt(3, amount);
-                statement.setInt(4, amount);
-                statement.execute();
+                progressAchievement(habbo, achievement, amount);
             }
-            catch (SQLException e)
+            else
             {
-                Emulator.getLogging().logSQLException(e);
+                try (Connection connection = Emulator.getDatabase().getDataSource().getConnection();
+                     PreparedStatement statement = connection.prepareStatement("" +
+                             "INSERT INTO users_achievements_queue (user_id, achievement_id, amount) VALUES (?, ?, ?) " +
+                             "ON DUPLICATE KEY UPDATE amount = amount + ?"))
+                {
+                    statement.setInt(1, habboId);
+                    statement.setInt(2, achievement.id);
+                    statement.setInt(3, amount);
+                    statement.setInt(4, amount);
+                    statement.execute();
+                }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
             }
         }
     }

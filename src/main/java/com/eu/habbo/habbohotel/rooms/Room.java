@@ -4556,7 +4556,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void updateItem(HabboItem item)
     {
-        if(item.getRoomId() == this.id)
+        if(item != null && item.getRoomId() == this.id)
         {
             if(item.getBaseItem() != null)
             {

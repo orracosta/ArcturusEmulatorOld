@@ -89,10 +89,17 @@ public class WiredExtraUnseen extends InteractionWiredExtra
         else
         {
             this.seenList.clear();
-            effect = effects.get(0);
+
+            if (!effects.isEmpty())
+            {
+                effect = effects.get(0);
+            }
         }
 
-        this.seenList.add(effect.getId());
+        if (effect != null)
+        {
+            this.seenList.add(effect.getId());
+        }
         return effect;
     }
 }
