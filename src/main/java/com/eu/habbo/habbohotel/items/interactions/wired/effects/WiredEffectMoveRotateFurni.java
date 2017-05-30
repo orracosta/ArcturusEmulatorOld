@@ -173,6 +173,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
     {
         THashSet<HabboItem> items = new THashSet<HabboItem>();
 
+        this.items.remove(null);
         for(HabboItem item : this.items)
         {
             if(item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
