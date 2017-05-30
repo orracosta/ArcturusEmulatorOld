@@ -97,7 +97,11 @@ public class RoomTrashing implements Runnable
                     }
 
                     RoomTile s = INSTANCE.room.getLayout().getTileInFront(INSTANCE.habbo.getRoomUnit().getCurrentLocation(), INSTANCE.habbo.getRoomUnit().getBodyRotation().getValue() + 7);
-                    items = INSTANCE.room.getItemsAt(s);
+
+                    if (s != null)
+                    {
+                        items = INSTANCE.room.getItemsAt(s);
+                    }
 
                     for(HabboItem item : items)
                     {

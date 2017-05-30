@@ -34,14 +34,17 @@ public class BotFollowHabbo implements Runnable
                         {
                             RoomTile target = this.room.getLayout().getTileInFront(this.habbo.getRoomUnit().getCurrentLocation(), Math.abs((this.habbo.getRoomUnit().getBodyRotation().getValue() + 4)) % 8);
 
-                            if (target.x < 0 || target.y < 0)
-                                target = this.room.getLayout().getTileInFront(this.habbo.getRoomUnit().getCurrentLocation(), this.habbo.getRoomUnit().getBodyRotation().getValue());
-
-                            if (target.x >= 0 && target.y >= 0)
+                            if (target != null)
                             {
-                                this.bot.getRoomUnit().setGoalLocation(target);
-                                this.bot.getRoomUnit().setCanWalk(true);
-                                Emulator.getThreading().run(this, 500);
+                                if (target.x < 0 || target.y < 0)
+                                    target = this.room.getLayout().getTileInFront(this.habbo.getRoomUnit().getCurrentLocation(), this.habbo.getRoomUnit().getBodyRotation().getValue());
+
+                                if (target.x >= 0 && target.y >= 0)
+                                {
+                                    this.bot.getRoomUnit().setGoalLocation(target);
+                                    this.bot.getRoomUnit().setCanWalk(true);
+                                    Emulator.getThreading().run(this, 500);
+                                }
                             }
                         }
                     }

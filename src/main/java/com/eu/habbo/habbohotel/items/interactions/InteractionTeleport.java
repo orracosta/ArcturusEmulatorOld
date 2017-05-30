@@ -67,19 +67,22 @@ public class InteractionTeleport extends HabboItem
                 loc = HabboItem.getSquareInFront(room.getLayout(), this);
             }
 
-            if (this.canUseTeleport(client, loc, room))
+            if (loc != null)
             {
-                client.getHabbo().getRoomUnit().isTeleporting = true;
-                //new TeleportInteraction(room, client, this).run();
-                this.setExtradata("1");
-                room.updateItem(this);
+                if (this.canUseTeleport(client, loc, room))
+                {
+                    client.getHabbo().getRoomUnit().isTeleporting = true;
+                    //new TeleportInteraction(room, client, this).run();
+                    this.setExtradata("1");
+                    room.updateItem(this);
 
-                Emulator.getThreading().run(new TeleportActionOne(this, room, client), 500);
-            }
-            else
-            {
-                client.getHabbo().getRoomUnit().setGoalLocation(loc);
-                Emulator.getThreading().run(new RoomUnitTeleportWalkToAction(client.getHabbo(), this, room), client.getHabbo().getRoomUnit().getPath().size() + 2 * 510);
+                    Emulator.getThreading().run(new TeleportActionOne(this, room, client), 500);
+                }
+                else
+                {
+                    client.getHabbo().getRoomUnit().setGoalLocation(loc);
+                    Emulator.getThreading().run(new RoomUnitTeleportWalkToAction(client.getHabbo(), this, room), client.getHabbo().getRoomUnit().getPath().size() + 2 * 510);
+                }
             }
         }
     }

@@ -51,27 +51,30 @@ public class InteractionVendingMachine extends HabboItem
         {
             RoomTile tile = getSquareInFront(room.getLayout(), this);
 
-            if (tile.equals(client.getHabbo().getRoomUnit().getCurrentLocation()))
+            if (tile != null)
             {
-                if (this.getExtradata().equals("0") || this.getExtradata().length() == 0)
+                if (tile.equals(client.getHabbo().getRoomUnit().getCurrentLocation()))
                 {
-                    room.updateHabbo(client.getHabbo());
-                    if (!client.getHabbo().getRoomUnit().getStatus().containsKey("sit"))
+                    if (this.getExtradata().equals("0") || this.getExtradata().length() == 0)
                     {
-                        client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[Rotation.Calculate(client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY(), this.getX(), this.getY())]);
-                        client.getHabbo().getRoomUnit().getStatus().remove("mv");
-                        room.scheduledComposers.add(new RoomUserStatusComposer(client.getHabbo().getRoomUnit()).compose());
+                        room.updateHabbo(client.getHabbo());
+                        if (!client.getHabbo().getRoomUnit().getStatus().containsKey("sit"))
+                        {
+                            client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[Rotation.Calculate(client.getHabbo().getRoomUnit().getX(), client.getHabbo().getRoomUnit().getY(), this.getX(), this.getY())]);
+                            client.getHabbo().getRoomUnit().getStatus().remove("mv");
+                            room.scheduledComposers.add(new RoomUserStatusComposer(client.getHabbo().getRoomUnit()).compose());
+                        }
+                        this.setExtradata("1");
+                        room.scheduledComposers.add(new FloorItemUpdateComposer(this).compose());
+                        Emulator.getThreading().run(this, 1000);
+                        Emulator.getThreading().run(new RoomUnitGiveHanditem(client.getHabbo().getRoomUnit(), room, this.getBaseItem().getRandomVendingItem()));
                     }
-                    this.setExtradata("1");
-                    room.scheduledComposers.add(new FloorItemUpdateComposer(this).compose());
-                    Emulator.getThreading().run(this, 1000);
-                    Emulator.getThreading().run(new RoomUnitGiveHanditem(client.getHabbo().getRoomUnit(), room, this.getBaseItem().getRandomVendingItem()));
                 }
-            }
-            else
-            {
-                client.getHabbo().getRoomUnit().setGoalLocation(tile);
-                Emulator.getThreading().run(new RoomUnitVendingMachineAction(client.getHabbo(), this, room), client.getHabbo().getRoomUnit().getPath().size() + 2 * 510);
+                else
+                {
+                    client.getHabbo().getRoomUnit().setGoalLocation(tile);
+                    Emulator.getThreading().run(new RoomUnitVendingMachineAction(client.getHabbo(), this, room), client.getHabbo().getRoomUnit().getPath().size() + 2 * 510);
+                }
             }
         }
     }

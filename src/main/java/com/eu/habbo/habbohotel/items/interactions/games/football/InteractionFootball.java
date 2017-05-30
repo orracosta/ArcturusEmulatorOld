@@ -71,7 +71,20 @@ public class InteractionFootball extends InteractionPushable
     public RoomUserRotation getWalkOffDirection(RoomUnit roomUnit, Room room)
     {
         RoomTile nextWalkTile = roomUnit.getPath().peek();
-        return RoomUserRotation.values()[(RoomUserRotation.values().length + Rotation.Calculate(roomUnit.getX(), roomUnit.getY(), nextWalkTile.x, nextWalkTile.y) + 4) % 8];
+
+        if (nextWalkTile == null)
+        {
+            nextWalkTile = roomUnit.getGoal();
+        }
+
+        if (nextWalkTile != null)
+        {
+            return RoomUserRotation.values()[(RoomUserRotation.values().length + Rotation.Calculate(roomUnit.getX(), roomUnit.getY(), nextWalkTile.x, nextWalkTile.y) + 4) % 8];
+        }
+        else
+        {
+            return RoomUserRotation.values()[(roomUnit.getBodyRotation().getValue() + 4) % RoomUserRotation.values().length];
+        }
     }
     
     public RoomUserRotation getDragDirection(RoomUnit roomUnit, Room room)

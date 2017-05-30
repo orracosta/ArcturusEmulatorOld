@@ -470,9 +470,9 @@ public class ItemManager {
      * @param max The amount of ticks needed.
      * @return State of the crackable.
      */
-    public int calculateCrackState(int count, int max)
+    public int calculateCrackState(int count, int max, Item baseItem)
     {
-        return (int)Math.floor((1.0D / ((double)max / (double)count) * 14.0D));
+        return (int)Math.floor((1.0D / ((double)max / (double)count) * baseItem.getStateCount()));
     }
 
     public CrackableReward getCrackableData(int itemId)

@@ -137,7 +137,6 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
         synchronized (this.items)
         {
             Habbo habbo = room.getHabbo(roomUnit);
-            THashSet<HabboItem> items = this.items;
 
             HabboItem triggerItem = null;
 
@@ -149,11 +148,12 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
                 }
             }
 
-            for (HabboItem item : items)
+            THashSet<HabboItem> itemsToRemove = new THashSet<>();
+            for (HabboItem item : this.items)
             {
                 if (item == null || item.getRoomId() == 0 || item instanceof InteractionFreezeBlock || item instanceof InteractionFreezeTile)
                 {
-                    this.items.remove(item);
+                    itemsToRemove.add(item);
                     continue;
                 }
 
@@ -183,6 +183,8 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
                     Emulator.getLogging().logErrorLine(e);
                 }
             }
+
+            this.items.removeAll(itemsToRemove);
         }
         return true;
     }

@@ -73,6 +73,9 @@ public class RoomUnitWalkToRoomUnit implements Runnable
     {
         this.goalTile = this.room.getLayout().getTileInFront(this.target.getCurrentLocation(), this.target.getBodyRotation().getValue());
 
+        if (this.goalTile == null)
+            return;
+
         if (!this.room.tileWalkable(this.goalTile))
         {
             List<RoomTile> tiles = room.getLayout().getTilesAround(this.target.getCurrentLocation());

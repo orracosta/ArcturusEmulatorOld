@@ -60,17 +60,20 @@ public class InteractionHopper extends HabboItem
         if(room != null)
         {
             RoomTile loc = HabboItem.getSquareInFront(room.getLayout(), this);
-            if (canUseTeleport(client, loc, room))
+            if (loc != null)
             {
-                client.getHabbo().getRoomUnit().isTeleporting = true;
-                this.setExtradata("1");
-                room.updateItem(this);
+                if (canUseTeleport(client, loc, room))
+                {
+                    client.getHabbo().getRoomUnit().isTeleporting = true;
+                    this.setExtradata("1");
+                    room.updateItem(this);
 
-                Emulator.getThreading().run(new HopperActionOne(this, room, client), 500);
-            }
-            else
-            {
-                client.getHabbo().getRoomUnit().setGoalLocation(loc);
+                    Emulator.getThreading().run(new HopperActionOne(this, room, client), 500);
+                }
+                else
+                {
+                    client.getHabbo().getRoomUnit().setGoalLocation(loc);
+                }
             }
         }
     }

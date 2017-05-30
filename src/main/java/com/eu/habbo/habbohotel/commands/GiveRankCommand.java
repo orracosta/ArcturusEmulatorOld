@@ -70,6 +70,7 @@ public class GiveRankCommand extends Command
                 if (habbo != null)
                 {
                     habbo.getHabboInfo().setRank(rankId);
+                    habbo.getHabboInfo().run();
                     habbo.getClient().sendResponse(new UserPerksComposer(habbo));
 
                     if (habbo.hasPermission("acc_supporttool"))

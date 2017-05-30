@@ -45,17 +45,21 @@ public class HorseRideEvent extends MessageHandler
 
                 RoomTile goalTile = this.client.getHabbo().getHabboInfo().getCurrentRoom().getLayout().getTileInFront(this.client.getHabbo().getRoomUnit().getCurrentLocation(), this.client.getHabbo().getRoomUnit().getBodyRotation().getValue());
 
-                if (goalTile.equals(this.client.getHabbo().getRoomUnit().getCurrentLocation()))
+                if (goalTile != null)
                 {
-                    this.client.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(this.client.getHabbo(), 77);
-                    this.client.getHabbo().getHabboInfo().setRiding((HorsePet) pet);
-                    ((HorsePet) pet).setRider(this.client.getHabbo());
-                    this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserEffectComposer(this.client.getHabbo().getRoomUnit()).compose());
-                    ((HorsePet) pet).setTask(PetTasks.RIDE);
-                } else
-                {
-                    pet.getRoomUnit().setGoalLocation(goalTile);
-                    Emulator.getThreading().run(new RoomUnitRideHorse((HorsePet) pet, this.client.getHabbo(), goalTile));
+                    if (goalTile.equals(this.client.getHabbo().getRoomUnit().getCurrentLocation()))
+                    {
+                        this.client.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(this.client.getHabbo(), 77);
+                        this.client.getHabbo().getHabboInfo().setRiding((HorsePet) pet);
+                        ((HorsePet) pet).setRider(this.client.getHabbo());
+                        this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserEffectComposer(this.client.getHabbo().getRoomUnit()).compose());
+                        ((HorsePet) pet).setTask(PetTasks.RIDE);
+                    }
+                    else
+                    {
+                        pet.getRoomUnit().setGoalLocation(goalTile);
+                        Emulator.getThreading().run(new RoomUnitRideHorse((HorsePet) pet, this.client.getHabbo(), goalTile));
+                    }
                 }
             }
         }

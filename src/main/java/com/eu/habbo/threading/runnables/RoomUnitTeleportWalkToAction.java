@@ -27,24 +27,29 @@ public class RoomUnitTeleportWalkToAction implements Runnable
             if(this.habboItem.getRoomId() == this.room.getId())
             {
                 RoomTile tile = HabboItem.getSquareInFront(this.room.getLayout(), this.habboItem);
-                if(this.habbo.getRoomUnit().getGoal().equals(tile))
+
+                if (tile != null)
                 {
-                    if (this.habbo.getRoomUnit().getCurrentLocation().equals(tile))
+                    if (this.habbo.getRoomUnit().getGoal().equals(tile))
                     {
-                        try
+                        if (this.habbo.getRoomUnit().getCurrentLocation().equals(tile))
                         {
-                            this.habboItem.onClick(this.habbo.getClient(), this.room, new Object[]{0});
-                        } catch (Exception e)
-                        {
-                            e.printStackTrace();
+                            try
+                            {
+                                this.habboItem.onClick(this.habbo.getClient(), this.room, new Object[]{0});
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                    else
-                    {
-                        if(tile.isWalkable())
+                        else
                         {
-                            this.habbo.getRoomUnit().setGoalLocation(tile);
-                            Emulator.getThreading().run(this, this.habbo.getRoomUnit().getPath().size() + 2 * 510);
+                            if (tile.isWalkable())
+                            {
+                                this.habbo.getRoomUnit().setGoalLocation(tile);
+                                Emulator.getThreading().run(this, this.habbo.getRoomUnit().getPath().size() + 2 * 510);
+                            }
                         }
                     }
                 }

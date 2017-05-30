@@ -44,26 +44,29 @@ public class SearchResultList implements ISerialize, Comparable<SearchResultList
         message.appendBoolean(this.hidden); //Closed
         message.appendInt32(this.mode.type); //Display Mode (0 (List), 1 (Thumbnails), 2 (Thumbnail no choice))
 
-        if (!this.showInvisible)
+        synchronized (this.rooms)
         {
-            List<Room> toRemove = new ArrayList<Room>();
-            for (Room room : this.rooms)
+            if (!this.showInvisible)
             {
-                if (room.getState() == RoomState.INVISIBLE)
+                List<Room> toRemove = new ArrayList<Room>();
+                for (Room room : this.rooms)
                 {
-                    toRemove.add(room);
+                    if (room.getState() == RoomState.INVISIBLE)
+                    {
+                        toRemove.add(room);
+                    }
                 }
+
+                this.rooms.removeAll(toRemove);
             }
 
-            this.rooms.removeAll(toRemove);
-        }
+            message.appendInt32(this.rooms.size());
 
-        message.appendInt32(this.rooms.size());
-
-        Collections.sort(this.rooms);
-        for (Room room : this.rooms)
-        {
-            room.serialize(message);
+            Collections.sort(this.rooms);
+            for (Room room : this.rooms)
+            {
+                room.serialize(message);
+            }
         }
     }
 

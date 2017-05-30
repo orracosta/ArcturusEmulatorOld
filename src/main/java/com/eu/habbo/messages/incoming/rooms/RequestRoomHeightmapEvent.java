@@ -13,7 +13,7 @@ public class RequestRoomHeightmapEvent extends MessageHandler
     {
         if(this.client.getHabbo().getHabboInfo().getLoadingRoom() > 0)
         {
-            Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.client.getHabbo().getHabboInfo().getLoadingRoom());
+            Room room = Emulator.getGameEnvironment().getRoomManager().loadRoom(this.client.getHabbo().getHabboInfo().getLoadingRoom());
 
             if (room != null)
             {

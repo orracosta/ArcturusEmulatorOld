@@ -31,25 +31,28 @@ public class OneWayGateActionOne implements Runnable
         {
             client.getHabbo().getRoomUnit().animateWalk = false;
         }
-        
-        if(this.room.tileWalkable(t) && this.client.getHabbo().getRoomUnit().getX() == this.oneWayGate.getX() && this.client.getHabbo().getRoomUnit().getY() == this.oneWayGate.getY())
+
+        if (t.isWalkable())
         {
-            this.client.getHabbo().getRoomUnit().setGoalLocation(t);
-            
-            if(!this.oneWayGate.getExtradata().equals("0"))
+            if (this.room.tileWalkable(t) && this.client.getHabbo().getRoomUnit().getX() == this.oneWayGate.getX() && this.client.getHabbo().getRoomUnit().getY() == this.oneWayGate.getY())
             {
-                Emulator.getThreading().run(new HabboItemNewState(this.oneWayGate, this.room, "0"), 1000);
+                this.client.getHabbo().getRoomUnit().setGoalLocation(t);
+
+                if (!this.oneWayGate.getExtradata().equals("0"))
+                {
+                    Emulator.getThreading().run(new HabboItemNewState(this.oneWayGate, this.room, "0"), 1000);
+                }
             }
-        }
-        else if(this.client.getHabbo().getRoomUnit().getX() == this.oneWayGate.getX() && this.client.getHabbo().getRoomUnit().getY() == this.oneWayGate.getY())
-        {
-            Emulator.getThreading().run(this, 500);
-        }
-        else 
-        {
-            if(!this.oneWayGate.getExtradata().equals("0"))
+            else if (this.client.getHabbo().getRoomUnit().getX() == this.oneWayGate.getX() && this.client.getHabbo().getRoomUnit().getY() == this.oneWayGate.getY())
             {
-                Emulator.getThreading().run(new HabboItemNewState(this.oneWayGate, this.room, "0"), 1000);
+                Emulator.getThreading().run(this, 500);
+            }
+            else
+            {
+                if (!this.oneWayGate.getExtradata().equals("0"))
+                {
+                    Emulator.getThreading().run(new HabboItemNewState(this.oneWayGate, this.room, "0"), 1000);
+                }
             }
         }
     }

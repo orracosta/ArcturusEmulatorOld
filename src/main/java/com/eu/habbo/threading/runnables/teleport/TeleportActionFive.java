@@ -34,7 +34,7 @@ class TeleportActionFive implements Runnable
         {
             RoomTile tile = this.room.getLayout().getTileInFront(this.room.getLayout().getTile(this.currentTeleport.getX(), this.currentTeleport.getY()), this.currentTeleport.getRotation());
 
-            if (tile.isWalkable())
+            if (tile != null && tile.isWalkable())
             {
                 this.client.getHabbo().getRoomUnit().setGoalLocation(tile);
             }

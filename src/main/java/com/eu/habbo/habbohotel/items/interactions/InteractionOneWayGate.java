@@ -69,7 +69,7 @@ public class InteractionOneWayGate extends HabboItem
         {
             RoomTile tile = room.getLayout().getTileInFront(room.getLayout().getTile(this.getX(), this.getY()), this.getRotation());
 
-            if (tile.equals(client.getHabbo().getRoomUnit().getCurrentLocation()))
+            if (tile != null && tile.equals(client.getHabbo().getRoomUnit().getCurrentLocation()))
             {
                 if (room.getHabbosAt(this.getX(), this.getY()).isEmpty())
                 {

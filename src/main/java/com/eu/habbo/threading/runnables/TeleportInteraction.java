@@ -41,7 +41,11 @@ class TeleportInteraction extends Thread
                 this.teleportTwo.setExtradata("1");
                 this.targetRoom.updateItem(this.teleportTwo);
                 this.room.updateItem(this.teleportOne);
-                this.client.getHabbo().getRoomUnit().setGoalLocation(HabboItem.getSquareInFront(this.room.getLayout(), this.teleportTwo));
+                RoomTile tile = HabboItem.getSquareInFront(this.room.getLayout(), this.teleportTwo);
+                if (tile != null)
+                {
+                    this.client.getHabbo().getRoomUnit().setGoalLocation(tile);
+                }
                 Emulator.getThreading().run(this.teleportTwo, 500);
                 Emulator.getThreading().run(this.teleportOne, 500);
             } else if (state == 4)

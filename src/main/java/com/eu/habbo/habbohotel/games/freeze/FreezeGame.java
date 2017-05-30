@@ -204,10 +204,13 @@ public class FreezeGame extends Game
             {
                 t = this.room.getLayout().getTileInFront(this.room.getLayout().getTile(x, y), (i * 2) + 1, (short) radius);
 
-                if(t.x < 0 || t.y < 0 || t.x >= this.room.getLayout().getMapSizeX() || t.y >= this.room.getLayout().getMapSizeY())
-                    continue;
+                if (t != null)
+                {
+                    if (t.x < 0 || t.y < 0 || t.x >= this.room.getLayout().getMapSizeX() || t.y >= this.room.getLayout().getMapSizeY())
+                        continue;
 
-                tiles.add(room.getLayout().getTile(t.x, t.y));
+                    tiles.add(t);
+                }
             }
         }
 
