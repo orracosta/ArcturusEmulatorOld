@@ -236,6 +236,9 @@ public class InteractionFootball extends InteractionPushable
     @Override
     public boolean canStillMove(Room room, RoomTile from, RoomTile to, RoomUserRotation direction, RoomUnit kicker, int nextRoll, int currentStep, int totalSteps)
     {
+        if (from == null || to == null)
+            return false;
+
         HabboItem topItem = room.getTopItemAt(from.x, from.y, this);
         return !(room.hasHabbosAt(to.x, to.y) || (topItem != null && topItem.getBaseItem().getName().startsWith("fball_goal_") && currentStep != 1));
     }
