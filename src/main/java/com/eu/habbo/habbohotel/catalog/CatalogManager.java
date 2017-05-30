@@ -763,7 +763,16 @@ public class CatalogManager
             level = 2;
         }
 
-        return (Item)this.prizes.get(level).toArray()[Emulator.getRandom().nextInt(this.prizes.get(level).size())];
+        if (this.prizes.containsKey((Integer)level) && !this.prizes.get((Integer)level).isEmpty())
+        {
+            return (Item) this.prizes.get((Integer) level).toArray()[Emulator.getRandom().nextInt(this.prizes.get(level).size())];
+        }
+        else
+        {
+            Emulator.getLogging().logErrorLine("[Recycler] No rewards specified for rarity level " + level);
+        }
+
+        return null;
     }
 
     public CatalogPage createCatalogPage(String caption, String captionSave, int roomId, int icon, CatalogPageLayouts layout, int minRank, int parentId)
