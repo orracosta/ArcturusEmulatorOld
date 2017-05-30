@@ -333,7 +333,7 @@ public class HabboStats implements Runnable
 
     public void removeGuild(int guildId)
     {
-        this.guilds.remove(guildId);
+        this.guilds.remove((Integer)guildId);
     }
 
     public boolean hasGuild(int guildId)
