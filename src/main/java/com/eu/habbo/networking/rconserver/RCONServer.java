@@ -58,6 +58,7 @@ public class RCONServer
         this.addRCONMessage("executecommand",       ExecuteCommand.class);
         this.addRCONMessage("progressachievement",  ProgressAchievement.class);
         this.addRCONMessage("updateuser",           UpdateUser.class);
+        this.addRCONMessage("friendrequest",        FriendRequest.class);
     }
 
     public void initialise()
