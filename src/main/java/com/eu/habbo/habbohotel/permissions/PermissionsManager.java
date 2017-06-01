@@ -71,9 +71,9 @@ public class PermissionsManager
                             {
                                 this.roomEffect.put(set.getInt("id"), set.getInt(i));
                             }
-                            else if (meta.getCatalogName(i).equalsIgnoreCase("log_commands"))
+                            else if (meta.getColumnName(i).equalsIgnoreCase("log_commands"))
                             {
-                                names.put(meta.getCatalogName(i), Integer.valueOf(set.getString(i)));
+                                names.put(meta.getColumnName(i), Integer.valueOf(set.getString(i)));
                             }
                         }
 

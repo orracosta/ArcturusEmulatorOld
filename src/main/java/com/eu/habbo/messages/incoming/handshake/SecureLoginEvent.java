@@ -44,7 +44,7 @@ public class SecureLoginEvent extends MessageHandler
         if(!Emulator.isReady)
             return;
 
-        String sso = this.packet.readString();
+        String sso = this.packet.readString().replace(" ", "");
 
         if (sso == null || sso.isEmpty())
         {

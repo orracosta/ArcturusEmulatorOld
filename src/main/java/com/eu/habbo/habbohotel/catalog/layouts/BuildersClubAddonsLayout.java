@@ -6,6 +6,9 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Class for the page where additional buildersclub addons can be bought.
+ */
 public class BuildersClubAddonsLayout extends CatalogPage
 {
     public BuildersClubAddonsLayout(ResultSet set) throws SQLException

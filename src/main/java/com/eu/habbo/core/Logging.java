@@ -13,11 +13,34 @@ import java.sql.SQLException;
 
 public class Logging
 {
+    /**
+     * File that packetlogs will be sved to.
+     */
     private static File packets;
+
+    /**
+     * File that undefined packetlogs will be saved to.
+     */
     private static File packetsUndefined;
+
+    /**
+     * File that packets that were improperly handled will be saved to.
+     */
     private static File errorsPackets;
+
+    /**
+     * File that SQL errors will be saved to.
+     */
     private static File errorsSQL;
+
+    /**
+     * File that runtime errors will be saved to.
+     */
     private static File errorsRuntime;
+
+    /**
+     * File that debug logs will be saved to.
+     */
     private static File debugFile;
 
     private static PrintWriter packetsWriter;
@@ -27,11 +50,26 @@ public class Logging
     private static PrintWriter errorsRuntimeWriter;
     private static PrintWriter debugFileWriter;
 
+    /**
+     * Bright text.
+     */
     public static final String ANSI_BRIGHT = "\u001B[1m";
+
+    /**
+     * Italicized text.
+     */
     public static final String ANSI_ITALICS = "\u001B[3m";
+
+    /**
+     * Underlined text.
+     */
     public static final String ANSI_UNDERLINE = "\u001B[4m";
 
+    /**
+     * Resets all text effects to normal console font.
+     */
     public static final String ANSI_RESET = "\u001B[0m";
+
     public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
@@ -41,18 +79,26 @@ public class Logging
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
+    /**
+     * Error logging cache layer.
+     * Used for bulk inserting into the database.
+     */
     private final THashSet<Loggable> errorLogs = new THashSet<Loggable>();
+
+    /**
+     * Command log cache layer.
+     * Used for bulk inserting into the database.
+     */
     private final THashSet<Loggable> commandLogs = new THashSet<Loggable>();
 
     public Logging()
     {
-        packets = new File("logging//packets//defined.txt");
+        packets          = new File("logging//packets//defined.txt");
         packetsUndefined = new File("logging//packets//packets.txt");
-        errorsPackets = new File("logging//errors//packets.txt");
-        errorsSQL = new File("logging//errors//sql.txt");
-        errorsRuntime = new File("logging//errors//runtime.txt");
-
-        debugFile = new File("logging//debug.txt");
+        errorsPackets    = new File("logging//errors//packets.txt");
+        errorsSQL        = new File("logging//errors//sql.txt");
+        errorsRuntime    = new File("logging//errors//runtime.txt");
+        debugFile        = new File("logging//debug.txt");
 
         try
         {
@@ -123,12 +169,12 @@ public class Logging
 
         try
         {
-            packetsWriter = new PrintWriter(new FileWriter(packets, true));
+            packetsWriter          = new PrintWriter(new FileWriter(packets, true));
             packetsUndefinedWriter = new PrintWriter(new FileWriter(packetsUndefined, true));
-            errorsPacketsWriter = new PrintWriter(new FileWriter(errorsPackets, true));
-            errorsSQLWriter = new PrintWriter(new FileWriter(errorsSQL, true));
-            errorsRuntimeWriter = new PrintWriter(new FileWriter(errorsRuntime, true));
-            debugFileWriter = new PrintWriter(new FileWriter(debugFile, true));
+            errorsPacketsWriter    = new PrintWriter(new FileWriter(errorsPackets, true));
+            errorsSQLWriter        = new PrintWriter(new FileWriter(errorsSQL, true));
+            errorsRuntimeWriter    = new PrintWriter(new FileWriter(errorsRuntime, true));
+            debugFileWriter        = new PrintWriter(new FileWriter(debugFile, true));
         }
         catch (IOException e)
         {
@@ -136,11 +182,19 @@ public class Logging
         }
     }
 
+    /**
+     * Prints a starting message to the console.
+     * @param line The message to print.
+     */
     public void logStart(Object line)
     {
         System.out.println("[" + Logging.ANSI_BRIGHT + Logging.ANSI_GREEN + "LOADING" + Logging.ANSI_RESET + "] " + line.toString());
     }
-    
+
+    /**
+     * Prints a shutdown message to the console.
+     * @param line The message to print.
+     */
     public void logShutdownLine(Object line)
     {
         if(Emulator.getConfig().getBoolean("logging.debug"))
@@ -149,7 +203,7 @@ public class Logging
         }
         System.out.println("[" + Logging.ANSI_BRIGHT + Logging.ANSI_GREEN + "SHUTDOWN" + Logging.ANSI_RESET + "] " + line.toString());
     }
-    
+
     public void logUserLine(Object line)
     {
         if(Emulator.getConfig().getBoolean("logging.debug"))
@@ -185,7 +239,8 @@ public class Logging
     
     public synchronized void logUndefinedPacketLine(Object line)
     {
-        if (Emulator.getConfig().getBoolean("debug.show.packets.undefined")) {
+        if (Emulator.getConfig().getBoolean("debug.show.packets.undefined"))
+        {
             System.out.println("[PACKET] [UNDEFINED] " + line.toString());
         }
 

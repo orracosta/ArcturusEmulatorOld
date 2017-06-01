@@ -8,12 +8,10 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class GuildForumAddCommentComposer extends MessageComposer
 {
-    private final GuildForumThread thread;
     private final GuildForumComment comment;
 
-    public GuildForumAddCommentComposer(GuildForumThread thread, GuildForumComment comment)
+    public GuildForumAddCommentComposer(GuildForumComment comment)
     {
-        this.thread = thread;
         this.comment = comment;
     }
 
@@ -21,8 +19,8 @@ public class GuildForumAddCommentComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildForumAddCommentComposer);
-        this.response.appendInt32(this.thread.getGuildId()); //guild_id
-        this.response.appendInt32(this.thread.getId()); //thread_id
+        this.response.appendInt32(this.comment.getGuildId()); //guild_id
+        this.response.appendInt32(this.comment.getThreadId()); //thread_id
         this.comment.serialize(this.response); //Comment
         return this.response;
     }

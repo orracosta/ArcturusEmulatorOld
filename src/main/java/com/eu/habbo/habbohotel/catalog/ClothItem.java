@@ -22,14 +22,14 @@ public class ClothItem
 
     public ClothItem(ResultSet set) throws SQLException
     {
-        this.id = set.getInt("id");
-        this.name = set.getString("name");
+        this.id        = set.getInt("id");
+        this.name      = set.getString("name");
         String[] parts = set.getString("setid").split(",");
 
-        setId = new int[parts.length];
-        for (int i = 0; i < setId.length; i++)
+        this.setId = new int[parts.length];
+        for (int i = 0; i < this.setId.length; i++)
         {
-            setId[i] = Integer.valueOf(parts[i]);
+            this.setId[i] = Integer.valueOf(parts[i]);
         }
     }
 }

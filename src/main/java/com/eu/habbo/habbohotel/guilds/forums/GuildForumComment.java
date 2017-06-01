@@ -14,6 +14,7 @@ import java.util.List;
 public class GuildForumComment implements ISerialize, Runnable
 {
     private int id;
+    private final int guildId;
     private final int threadId;
     private int index = -1;
     private final int userId;
@@ -26,29 +27,31 @@ public class GuildForumComment implements ISerialize, Runnable
     private String adminName;
     private int authorPostCount;
 
-    public GuildForumComment(int threadId, int userId, String userName, String look, String message)
+    public GuildForumComment(int guildId, int threadId, int userId, String userName, String look, String message)
     {
-        this.threadId = threadId;
-        this.userId = userId;
-        this.userName = userName;
-        this.look = look;
+        this.guildId   = guildId;
+        this.threadId  = threadId;
+        this.userId    = userId;
+        this.userName  = userName;
+        this.look      = look;
         this.timestamp = Emulator.getIntUnixTimestamp();
-        this.message = message;
+        this.message   = message;
         this.adminName = "";
     }
 
     public GuildForumComment(final ResultSet set, final int index) throws SQLException
     {
-        this.id = set.getInt("id");
-        this.threadId = set.getInt("thread_id");
-        this.index = index;
-        this.userId = set.getInt("user_id");
-        this.userName = set.getString("author_name");
-        this.look = set.getString("look");
+        this.id        = set.getInt("id");
+        this.guildId   = set.getInt("guild_id");
+        this.threadId  = set.getInt("thread_id");
+        this.index     = index;
+        this.userId    = set.getInt("user_id");
+        this.userName  = set.getString("author_name");
+        this.look      = set.getString("look");
         this.timestamp = set.getInt("timestamp");
-        this.message = set.getString("message");
-        this.state = GuildForum.ThreadState.valueOf(set.getString("state"));
-        this.adminId = set.getInt("admin_id");
+        this.message   = set.getString("message");
+        this.state     = GuildForum.ThreadState.valueOf(set.getString("state"));
+        this.adminId   = set.getInt("admin_id");
         this.adminName = set.getString("admin_name");
     }
 
@@ -173,5 +176,10 @@ public class GuildForumComment implements ISerialize, Runnable
         {
             Emulator.getLogging().logSQLException(e);
         }
+    }
+
+    public int getGuildId()
+    {
+        return this.guildId;
     }
 }

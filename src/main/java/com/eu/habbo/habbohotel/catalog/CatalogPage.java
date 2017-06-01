@@ -46,24 +46,24 @@ public abstract class CatalogPage implements Comparable<CatalogPage>, ISerialize
             return;
 
         this.id = set.getInt("id");
-        this.parentId = set.getInt("parent_id");
-        this.rank = set.getInt("min_rank");
-        this.caption = set.getString("caption");
-        this.pageName = set.getString("caption_save");
-        this.iconColor = set.getInt("icon_color");
-        this.iconImage = set.getInt("icon_image");
-        this.orderNum = set.getInt("order_num");
-        this.visible = set.getBoolean("visible");
-        this.enabled = set.getBoolean("enabled");
-        this.clubOnly = set.getBoolean("club_only");
-        this.layout = set.getString("page_layout");
-        this.headerImage = set.getString("page_headline");
-        this.teaserImage = set.getString("page_teaser");
+        this.parentId     = set.getInt("parent_id");
+        this.rank         = set.getInt("min_rank");
+        this.caption      = set.getString("caption");
+        this.pageName     = set.getString("caption_save");
+        this.iconColor    = set.getInt("icon_color");
+        this.iconImage    = set.getInt("icon_image");
+        this.orderNum     = set.getInt("order_num");
+        this.visible      = set.getBoolean("visible");
+        this.enabled      = set.getBoolean("enabled");
+        this.clubOnly     = set.getBoolean("club_only");
+        this.layout       = set.getString("page_layout");
+        this.headerImage  = set.getString("page_headline");
+        this.teaserImage  = set.getString("page_teaser");
         this.specialImage = set.getString("page_special");
-        this.textOne = set.getString("page_text1");
-        this.textTwo = set.getString("page_text2");
-        this.textDetails = set.getString("page_text_details");
-        this.textTeaser = set.getString("page_text_teaser");
+        this.textOne      = set.getString("page_text1");
+        this.textTwo      = set.getString("page_text2");
+        this.textDetails  = set.getString("page_text_details");
+        this.textTeaser   = set.getString("page_text_teaser");
 
         if (!set.getString("includes").isEmpty())
         {

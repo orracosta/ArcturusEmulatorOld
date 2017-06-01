@@ -13,11 +13,34 @@ import java.sql.SQLException;
 
 public class TalentTrackLevel
 {
+    /**
+     * Type of this talen track level.
+     */
     public TalentTrackType type;
+
+    /**
+     * The level of this TalenTrackLevel.
+     */
     public int level;
+
+    /**
+     * Achievements required to achieve this level.
+     */
     public TObjectIntMap<Achievement> achievements;
+
+    /**
+     * Items that will be rewarded upon achieving this level.
+     */
     public THashSet<Item> items;
+
+    /**
+     * Perks unlocked upon achieving this level.
+     */
     public String[] perks;
+
+    /**
+     * Badges received upon achieving this level.
+     */
     public String[] badges;
 
     public TalentTrackLevel(ResultSet set) throws SQLException

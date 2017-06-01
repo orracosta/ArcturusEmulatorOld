@@ -1,29 +1,40 @@
 package com.eu.habbo.messages.outgoing.guilds.forums;
 
+import com.eu.habbo.habbohotel.guilds.forums.GuildForumComment;
 import com.eu.habbo.habbohotel.guilds.forums.GuildForumThread;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
+import java.util.List;
+
 public class GuildForumCommentsComposer extends MessageComposer
 {
-    private final GuildForumThread thread;
+    private final int guildId;
+    private final int threadId;
     private final int index;
+    private final List<GuildForumComment> guildForumCommentList;
 
-    public GuildForumCommentsComposer(GuildForumThread thread, int index)
+    public GuildForumCommentsComposer(int guildId, int threadId, int index, List<GuildForumComment> guildForumCommentList)
     {
-        this.thread = thread;
+        this.guildId = guildId;
+        this.threadId = threadId;
         this.index = index;
+        this.guildForumCommentList = guildForumCommentList;
     }
 
     @Override
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildForumCommentsComposer);
-        this.response.appendInt32(this.thread.getGuildId()); //guild_id
-        this.response.appendInt32(this.thread.getId()); //thread_id
+        this.response.appendInt32(this.guildId); //guild_id
+        this.response.appendInt32(this.threadId); //thread_id
         this.response.appendInt32(this.index); //start_index
-        this.thread.serializeComments(this.response, index, 20);
+        this.response.appendInt32(this.guildForumCommentList.size());
+        for (final GuildForumComment comment : this.guildForumCommentList)
+        {
+            comment.serialize(this.response);
+        }
         return this.response;
     }
 }

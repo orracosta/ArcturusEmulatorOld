@@ -385,11 +385,6 @@ public class AchievementManager
         }
     }
 
-    /**
-     *
-     * @param type
-     * @return
-     */
     public LinkedHashMap<Integer, TalentTrackLevel> getTalenTrackLevels(TalentTrackType type)
     {
         return this.talentTrackLevels.get(type);

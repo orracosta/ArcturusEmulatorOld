@@ -65,8 +65,8 @@ public class UserClubComposer extends MessageComposer
             this.response.appendInt32(0);
             this.response.appendInt32(1);
         }
-        this.response.appendBoolean(false);
-        this.response.appendBoolean(false);
+        this.response.appendBoolean(true);
+        this.response.appendBoolean(true);
         this.response.appendInt32(0);
         this.response.appendInt32(0);
 

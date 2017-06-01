@@ -17,6 +17,11 @@ public class ButlerBot extends Bot
 {
     public static THashMap<THashSet<String>, Integer> serveItems = new THashMap<THashSet<String>, Integer>();
 
+    /**
+     * This class is a bot that will hand out handitems upon triggering with the correct keys.
+     * @param set
+     * @throws SQLException
+     */
     public ButlerBot(ResultSet set) throws SQLException
     {
         super(set);

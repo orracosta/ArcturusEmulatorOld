@@ -93,7 +93,7 @@ public final class Emulator
     {
         Thread hook = new Thread(new Runnable()
         {
-            public void run()
+            public synchronized void run()
             {
                 Emulator.dispose();
             }
@@ -201,32 +201,66 @@ public final class Emulator
         Emulator.isReady = false;
         Emulator.getLogging().logShutdownLine("Stopping Arcturus Emulator " + version + "...");
 
-        if (Emulator.getPluginManager() != null)
-            Emulator.getPluginManager().fireEvent(new EmulatorStartShutdownEvent());
+        try
+        {
+            if (Emulator.getPluginManager() != null)
+                Emulator.getPluginManager().fireEvent(new EmulatorStartShutdownEvent());
+        }
+        catch (Exception e) {}
 
-        if (Emulator.cameraClient != null)
-            Emulator.cameraClient.disconnect();
+        try
+        {
+            if (Emulator.cameraClient != null)
+                Emulator.cameraClient.disconnect();
+        }
+        catch (Exception e) {}
 
-        if (Emulator.rconServer != null)
-            Emulator.rconServer.stop();
+        try
+        {
+            if (Emulator.rconServer != null)
+                Emulator.rconServer.stop();
+        }
+        catch (Exception e) {}
 
-        if (Emulator.gameServer != null)
-            Emulator.gameServer.stop();
 
-        if (Emulator.gameEnvironment != null)
-            Emulator.gameEnvironment.dispose();
+        try
+        {
+            if (Emulator.gameEnvironment != null)
+                Emulator.gameEnvironment.dispose();
+        }
+        catch (Exception e) {}
 
-        if (Emulator.threading != null)
-            Emulator.threading.shutDown();
+        try
+        {
+            if (Emulator.threading != null)
+                Emulator.threading.shutDown();
+        }
+        catch (Exception e) {}
 
-        if (Emulator.getPluginManager() != null)
-            Emulator.getPluginManager().fireEvent(new EmulatorStoppedEvent());
+        try
+        {
+            if (Emulator.getPluginManager() != null)
+                Emulator.getPluginManager().fireEvent(new EmulatorStoppedEvent());
+        }
+        catch (Exception e) {}
 
-        if (Emulator.pluginManager != null)
-            Emulator.pluginManager.dispose();
+        try
+        {
+            if (Emulator.pluginManager != null)
+                Emulator.pluginManager.dispose();
+        }
+        catch (Exception e) {}
 
         Emulator.getLogging().saveLogs();
         Emulator.getDatabase().dispose();
+
+        try
+        {
+            if (Emulator.gameServer != null)
+                Emulator.gameServer.stop();
+        }
+        catch (Exception e) {}
+
         Emulator.getLogging().logShutdownLine("Stopped Arcturus Emulator " + version + "...");
         Emulator.stopped = true;
     }

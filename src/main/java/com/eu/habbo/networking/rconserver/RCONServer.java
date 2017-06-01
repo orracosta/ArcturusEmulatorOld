@@ -89,8 +89,13 @@ public class RCONServer
 
     public void stop()
     {
-        this.workerGroup.shutdownGracefully();
-        this.bossGroup.shutdownGracefully();
+        try
+        {
+            this.workerGroup.shutdownGracefully().sync();
+            this.bossGroup.shutdownGracefully().sync();
+        }
+        catch (Exception e)
+        {}
     }
 
     /**

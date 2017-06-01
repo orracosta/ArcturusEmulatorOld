@@ -32,7 +32,7 @@ public class GuildForumThreadsMessagesEvent extends MessageHandler
             this.client.sendResponse(new BubbleAlertComposer("forums.error.access_denied"));
         } else
         {
-            this.client.sendResponse(new GuildForumCommentsComposer(thread, index));
+            this.client.sendResponse(new GuildForumCommentsComposer(guildId, threadId, index, thread.getComments(index, limit)));
         }
 
         this.client.sendResponse(new GuildForumDataComposer(Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(guildId), this.client.getHabbo()));

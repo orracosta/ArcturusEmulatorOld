@@ -1,3 +1,5 @@
+#DATABASE UPDATE: 1.7.0 -> 1.8.0
+
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.error.cmd_pet_info.pet_not_found', '"Please provide a petname!"');
 ALTER TABLE  `bans` ADD  `cfh_topic` INT( 4 ) NOT NULL DEFAULT  '-1';
 ALTER TABLE  `rooms` CHANGE  `paper_floor`  `paper_floor` VARCHAR( 5 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  '0.0';
@@ -74,3 +76,13 @@ INSERT INTO `support_cfh_topics` VALUES ('31', '6', 'hacking.character', 'Script
 INSERT INTO `support_cfh_topics` VALUES ('32', '6', 'hacking.other', 'Other hacking', 'mods', null);
 
 ALTER TABLE  `camera_web` ADD  `room_id` INT( 11 ) NOT NULL DEFAULT  '0' AFTER  `user_id`;
+
+ALTER TABLE  `commandlogs` CHANGE  `command`  `command` VARCHAR( 256 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT  '';
+UPDATE emulator_settings SET `value` = '0' WHERE `key` LIKE  'debug.show.%';
+DELETE FROM emulator_errors;
+DELETE FROM gift_wrappers;
+INSERT INTO gift_wrappers (sprite_id, item_id) SELECT sprite_id, id FROM items_base WHERE item_name LIKE 'present_gen%';
+UPDATE gift_wrappers SET type = 'gift';
+INSERT INTO gift_wrappers (sprite_id, item_id) SELECT sprite_id, id FROM items_base WHERE item_name LIKE 'present_wrap%';
+
+#END DATABASE UPDATE: 1.7.0 -> 1.8.0

@@ -15,8 +15,19 @@ import java.util.Properties;
 
 public class ConfigurationManager
 {
+    /**
+     * Flag for when the ConfigurationManager has fully loaded.
+     */
     public boolean loaded = false;
+
+    /**
+     * Flag for when the ConfigurationManager is still loading.
+     * The configurationmanager is loaded in two parts,
+     * first the config.ini is read.
+     * After that the rest of the configuration is read from the database.
+     */
     public boolean isLoading = false;
+
     /**
      * Our configurations stored in this object.
      */

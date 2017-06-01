@@ -2,17 +2,20 @@ package com.eu.habbo.habbohotel.guilds.forums;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.guilds.Guild;
+import com.eu.habbo.habbohotel.users.Habbo;
 import gnu.trove.TCollections;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class GuildForumManager
 {
-    private TIntObjectMap<GuildForum> guildForums;
+    private final TIntObjectMap<GuildForum> guildForums;
 
     public GuildForumManager()
     {
@@ -21,21 +24,24 @@ public class GuildForumManager
 
     public GuildForum getGuildForum(int guildId)
     {
-        GuildForum forum = this.guildForums.get(guildId);
-
-        if (forum == null)
+        synchronized (this.guildForums)
         {
-            Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(guildId);
+            GuildForum forum = this.guildForums.get(guildId);
 
-            if (guild != null && guild.hasForum())
+            if (forum == null)
             {
-                forum = new GuildForum(guild.getId());
-                this.guildForums.put(guild.getId(), forum);
-            }
-        }
+                Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(guildId);
 
-        forum.updateLastRequested();
-        return forum;
+                if (guild != null && guild.hasForum())
+                {
+                    forum = new GuildForum(guild.getId());
+                    this.guildForums.put(guild.getId(), forum);
+                }
+            }
+
+            forum.updateLastRequested();
+            return forum;
+        }
     }
 
     public void clearInactiveForums()
@@ -59,5 +65,21 @@ public class GuildForumManager
                 this.guildForums.remove(guildForums.key());
             }
         }
+    }
+
+    public List<GuildForum> getGuildForums(Habbo habbo)
+    {
+        List<GuildForum> forums = new ArrayList<>();
+        for (Integer i : habbo.getHabboStats().guilds)
+        {
+            Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(i);
+
+            if (guild != null && guild.hasForum())
+            {
+                forums.add(this.getGuildForum(i));
+            }
+        }
+
+        return forums;
     }
 }

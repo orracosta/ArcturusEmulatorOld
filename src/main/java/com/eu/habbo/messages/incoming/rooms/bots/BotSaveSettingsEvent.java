@@ -11,6 +11,7 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDanceComposer;
 import com.eu.habbo.plugin.events.bots.BotSavedChatEvent;
 import com.eu.habbo.plugin.events.bots.BotSavedLookEvent;
 import com.eu.habbo.plugin.events.bots.BotSavedNameEvent;
+import org.jsoup.Jsoup;
 
 import java.util.ArrayList;
 
@@ -55,6 +56,7 @@ public class BotSaveSettingsEvent extends MessageHandler
 
                 case 2:
                     String messageString = this.packet.readString();
+                    messageString = Jsoup.parse(messageString).text();
 
                     if(messageString.length() > 5112)
                         break;
@@ -102,7 +104,7 @@ public class BotSaveSettingsEvent extends MessageHandler
                     break;
 
                 case 5:
-                    BotSavedNameEvent nameEvent = new BotSavedNameEvent(bot, this.packet.readString());
+                    BotSavedNameEvent nameEvent = new BotSavedNameEvent(bot, Jsoup.parse(this.packet.readString()).text());
 
                     if(nameEvent.name.length() <= 25)
                     {

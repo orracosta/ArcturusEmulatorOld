@@ -139,7 +139,7 @@ public class GuildForumThread implements ISerialize, Runnable
     {
         int commentId = -1;
 
-        GuildForumComment comment = new GuildForumComment(this.threadId, habbo.getHabboInfo().getId(), habbo.getHabboInfo().getUsername(), habbo.getHabboInfo().getLook(), message);
+        GuildForumComment comment = new GuildForumComment(this.guildId, this.threadId, habbo.getHabboInfo().getId(), habbo.getHabboInfo().getUsername(), habbo.getHabboInfo().getLook(), message);
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO guilds_forums_comments (thread_id, user_id, timestamp, message) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
         {

@@ -103,7 +103,7 @@ public class HabboManager
         }
 
         try(Connection connection = Emulator.getDatabase().getDataSource().getConnection();
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE auth_ticket = ? LIMIT 1"))
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE auth_ticket LIKE ? LIMIT 1"))
         {
             statement.setString(1, sso);
             set = statement.executeQuery();
@@ -129,9 +129,9 @@ public class HabboManager
                     Emulator.getPluginManager().fireEvent(new UserRegisteredEvent(habbo));
                 }
 
-                try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET auth_ticket = ? WHERE auth_ticket = ? AND users.id = ? LIMIT 1"))
+                try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET auth_ticket = ? WHERE auth_ticket LIKE ? AND id = ? LIMIT 1"))
                 {
-                    statement.setString(1, "");
+                    statement.setString(1, null);
                     statement.setString(2, sso);
                     statement.setInt(3, habbo.getHabboInfo().getId());
                 }

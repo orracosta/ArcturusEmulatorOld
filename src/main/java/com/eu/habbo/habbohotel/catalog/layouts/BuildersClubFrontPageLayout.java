@@ -6,6 +6,9 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Class for the frontpage of the buildersclub.
+ */
 public class BuildersClubFrontPageLayout extends CatalogPage
 {
     public BuildersClubFrontPageLayout(ResultSet set) throws SQLException

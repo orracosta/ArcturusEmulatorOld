@@ -10,13 +10,18 @@ import java.sql.Statement;
 
 public class Database
 {
+    /**
+     * Database datasource.
+     */
     private HikariDataSource dataSource;
+
+    /**
+     * Database connection pool.
+     */
     private DatabasePool databasePool;
-    private ConfigurationManager config;
     
     public Database(ConfigurationManager config)
     {
-        this.config = config;
 
         long millis = System.currentTimeMillis();
 
@@ -49,29 +54,17 @@ public class Database
         Emulator.getLogging().logStart("Database -> Connected! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
 
-    @Deprecated
-    public PreparedStatement prepare(String query)
-    {
-        PreparedStatement statement = null;
-
-        try
-        {
-            statement = this.dataSource.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-        }
-        catch (Exception e)
-        {
-            Emulator.getLogging().logErrorLine(e);
-        }
-
-        return statement;
-    }
-
+    /**
+     * Disposes the database and closes all connections to the database.
+     */
     public void dispose()
     {
         if (this.databasePool != null)
         {
             this.databasePool.getDatabase().close();
         }
+
+        this.dataSource.close();
     }
 
     public HikariDataSource getDataSource()

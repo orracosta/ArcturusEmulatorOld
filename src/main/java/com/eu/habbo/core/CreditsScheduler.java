@@ -7,11 +7,20 @@ import java.util.Map;
 
 public class CreditsScheduler extends Scheduler
 {
+    /**
+     * Defines if users that are not in a room should be excluded from receiving credits.
+     */
     public static boolean IGNORE_HOTEL_VIEW;
+
+    /**
+     * Defines if users idling in rooms should be excluded from receiving credits.
+     */
     public static boolean IGNORE_IDLED;
 
+    /**
+     * The amount of credits that will be given.
+     */
     public static int CREDITS;
-    public static int INTERVAL;
 
     public CreditsScheduler()
     {

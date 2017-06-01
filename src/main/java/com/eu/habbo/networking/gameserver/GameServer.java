@@ -39,16 +39,8 @@ public class GameServer
         this.packetManager = new PacketManager();
         this.gameClientManager = new GameClientManager();
 
-        if (Emulator.getConfig().getInt("io.bossgroup.threads") + Emulator.getConfig().getInt("io.workergroup.threads") <= Emulator.getThreading().threads)
-        {
-            this.bossGroup = new NioEventLoopGroup(Emulator.getConfig().getInt("io.bossgroup.threads"));
-            this.workerGroup = new NioEventLoopGroup(Emulator.getConfig().getInt("io.workergroup.threads"));
-        }
-        else
-        {
-            throw new RuntimeException("io.bossgroup.threads (" + Emulator.getConfig().getInt("io.bossgroup.threads") + ") + " +
-                    "io.workergroup.threads (" + Emulator.getConfig().getInt("io.workergroup.threads") + ") exceeds ");
-        }
+        this.bossGroup = new NioEventLoopGroup(Emulator.getConfig().getInt("io.bossgroup.threads"));
+        this.workerGroup = new NioEventLoopGroup(Emulator.getConfig().getInt("io.workergroup.threads"));
 
         this.serverBootstrap = new ServerBootstrap();
 
@@ -107,8 +99,17 @@ public class GameServer
 
     public void stop()
     {
-        this.workerGroup.shutdownGracefully();
-        this.bossGroup.shutdownGracefully();
+        Emulator.getLogging().logShutdownLine("Stopping GameServer...");
+        try
+        {
+            this.workerGroup.shutdownGracefully().sync();
+            this.bossGroup.shutdownGracefully().sync();
+        }
+        catch (Exception e)
+        {
+            Emulator.getLogging().logErrorLine("Exception during GameServer shutdown... HARD STOP");
+        }
+        Emulator.getLogging().logShutdownLine("GameServer Stopped!");
     }
 
     public PacketManager getPacketManager()

@@ -6,6 +6,9 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Class for the bots page.
+ */
 public class BotsLayout extends CatalogPage
 {
     public BotsLayout(ResultSet set) throws SQLException

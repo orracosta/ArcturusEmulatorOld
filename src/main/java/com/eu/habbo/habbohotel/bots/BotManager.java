@@ -40,6 +40,10 @@ public class BotManager
         Emulator.getLogging().logStart("Bot Manager -> Loaded! ("+(System.currentTimeMillis() - millis)+" MS)");
     }
 
+    /**
+     * Reloads the bot manager
+     * @return Returns true if the BotManager has been succesfully reloaded.
+     */
     public boolean reload()
     {
         for(Map.Entry<String, Class<? extends Bot>> set : botDefenitions.entrySet())

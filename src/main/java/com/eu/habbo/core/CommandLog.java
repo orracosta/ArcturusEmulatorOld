@@ -30,9 +30,9 @@ public class CommandLog implements Loggable
     {
         statement.setInt(1, this.userId);
         statement.setInt(2, this.timestamp);
-        statement.setString(3, this.command.getClass().getName());
+        statement.setString(3, this.command.getClass().getSimpleName());
         statement.setString(4, this.params);
-        statement.setString(5, this.succes ? "1" : "0");
+        statement.setString(5, this.succes ? "yes" : "no");
         statement.addBatch();
     }
 }

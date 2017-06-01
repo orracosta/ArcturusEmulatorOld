@@ -7,11 +7,20 @@ import java.util.Map;
 
 public class PixelScheduler extends Scheduler
 {
-    private static boolean IGNORE_HOTEL_VIEW;
-    private static boolean IGNORE_IDLED;
+    /**
+     * Defines if users that are not in a room should be excluded from receiving pixels.
+     */
+    public static boolean IGNORE_HOTEL_VIEW;
 
+    /**
+     * Defines if users idling in rooms should be excluded from receiving pixels.
+     */
+    public static boolean IGNORE_IDLED;
+
+    /**
+     * The amount of pixels to give.
+     */
     private static int PIXELS;
-    private static int INTERVAL;
 
     public PixelScheduler()
     {
@@ -88,16 +97,6 @@ public class PixelScheduler extends Scheduler
     public static void setPIXELS(int PIXELS)
     {
         PixelScheduler.PIXELS = PIXELS;
-    }
-
-    public static int getINTERVAL()
-    {
-        return INTERVAL;
-    }
-
-    public static void setINTERVAL(int INTERVAL)
-    {
-        PixelScheduler.INTERVAL = INTERVAL;
     }
 
     public boolean isDisposed()

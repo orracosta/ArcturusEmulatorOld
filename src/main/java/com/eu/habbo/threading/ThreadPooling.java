@@ -74,6 +74,8 @@ public class ThreadPooling
         this.scheduledPool.shutdownNow();
         while(!this.scheduledPool.isTerminated()) {
         }
+
+        Emulator.getLogging().logShutdownLine("Threading -> Disposed!");
     }
 
     public ScheduledExecutorService getService()

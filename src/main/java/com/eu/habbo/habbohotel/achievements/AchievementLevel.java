@@ -5,10 +5,29 @@ import java.sql.SQLException;
 
 public class AchievementLevel
 {
+    /**
+     * level of the achievement.
+     */
     public final int level;
+
+    /**
+     * Amount of currency to give upon achieving this level.
+     */
     public final int rewardAmount;
+
+    /**
+     * Currency type to give upon achieving this level.
+     */
     public final int rewardType;
+
+    /**
+     * Amount of achievement points to add upon achieving this level.
+     */
     public final int points;
+
+    /**
+     * Amount of progress needed to achieve this level.
+     */
     public final int progress;
 
     public AchievementLevel(ResultSet set) throws SQLException

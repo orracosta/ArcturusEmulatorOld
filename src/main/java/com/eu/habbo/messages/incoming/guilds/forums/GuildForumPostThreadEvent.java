@@ -18,6 +18,9 @@ public class GuildForumPostThreadEvent extends MessageHandler
         String subject = this.packet.readString();
         String message = this.packet.readString();
 
+        //TODO: Add check if user has guild
+        //TODO: Add check if threads can be posted.
+
         final GuildForum forum = Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(guildId);
 
         final GuildForumThread thread;
@@ -27,7 +30,7 @@ public class GuildForumPostThreadEvent extends MessageHandler
             {
                 thread = forum.createThread(this.client.getHabbo(), subject, message);
 
-                GuildForumComment comment = new GuildForumComment(threadId, this.client.getHabbo().getHabboInfo().getId(),
+                GuildForumComment comment = new GuildForumComment(guildId, threadId, this.client.getHabbo().getHabboInfo().getId(),
                 this.client.getHabbo().getHabboInfo().getUsername(), this.client.getHabbo().getHabboInfo().getLook(), message);
                 thread.addComment(comment);
 
@@ -40,7 +43,7 @@ public class GuildForumPostThreadEvent extends MessageHandler
 
                 if (comment != null)
                 {
-                    this.client.sendResponse(new GuildForumAddCommentComposer(thread, comment));
+                    this.client.sendResponse(new GuildForumAddCommentComposer(comment));
                 }
                 else
                 {

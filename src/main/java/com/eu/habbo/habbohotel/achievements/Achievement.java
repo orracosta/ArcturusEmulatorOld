@@ -88,6 +88,11 @@ public class Achievement
         return l;
     }
 
+    /**
+     * Calculates the next level compared to the current level.
+     * @param currentLevel The current level to calculate the next level for.
+     * @return The next level. Return null if there is no next level.
+     */
     public AchievementLevel getNextLevel(int currentLevel)
     {
         AchievementLevel l = null;

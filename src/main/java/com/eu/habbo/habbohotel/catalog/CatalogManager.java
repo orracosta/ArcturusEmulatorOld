@@ -100,6 +100,9 @@ public class CatalogManager
      */
     public static int catalogItemAmount;
 
+    /**
+     * Mapped all page definitions.
+     */
     public static final THashMap<String, Class<? extends CatalogPage>> pageDefinitions = new THashMap<String, Class<? extends CatalogPage>>()
     {
         {
@@ -305,6 +308,10 @@ public class CatalogManager
         Emulator.getLogging().logStart("Loaded " + this.catalogPages.size() + " Catalog Pages!");
     }
 
+    /**
+     * Loads the featured catalog pages.
+     * @throws SQLException
+     */
     private synchronized void loadCatalogFeaturedPages() throws SQLException
     {
         this.catalogFeaturedPages.clear();
@@ -495,7 +502,10 @@ public class CatalogManager
         }
     }
 
-    public void loadClothing()
+    /**
+     * Loads all clothing.
+     */
+    private void loadClothing()
     {
         synchronized (this.clothing)
         {
@@ -650,6 +660,11 @@ public class CatalogManager
         }
     }
 
+    /**
+     * Finds the catalog item associated with the id.
+     * @param id
+     * @return
+     */
     public CatalogItem getCatalogItem(int id)
     {
         final CatalogItem[] item = {null};
@@ -721,6 +736,12 @@ public class CatalogManager
         return null;
     }
 
+    /**
+     * Moves a catalog item to the a different CatalogPage.
+     * @param item The CatalogItem to move.
+     * @param pageId The unique identifier of the page.
+     * @return True if the move has been succesfully.
+     */
     public boolean moveCatalogItem(CatalogItem item, int pageId)
     {
         CatalogPage page = this.getCatalogPage(item.getPageId());
@@ -775,6 +796,17 @@ public class CatalogManager
         return null;
     }
 
+    /**
+     * Creates a new catalog page.
+     * @param caption The caption of the page.
+     * @param captionSave Save caption.
+     * @param roomId The id of the room if the page is a room bundle.
+     * @param icon The icon of the page.
+     * @param layout The layout of the page.
+     * @param minRank The minimum rank that is required to view the page.
+     * @param parentId The id of the parent page.
+     * @return The created CatalogPage.
+     */
     public CatalogPage createCatalogPage(String caption, String captionSave, int roomId, int icon, CatalogPageLayouts layout, int minRank, int parentId)
     {
         CatalogPage catalogPage = null;
@@ -837,6 +869,10 @@ public class CatalogManager
         return catalogPage;
     }
 
+    /**
+     * @param item The CatalogItem to find the limited configuration for.
+     * @return The limited configuration for the CatalogItem.
+     */
     public CatalogLimitedConfiguration getLimitedConfig(CatalogItem item)
     {
         synchronized (this.limitedNumbers)
@@ -845,6 +881,11 @@ public class CatalogManager
         }
     }
 
+    /**
+     * Creates or updates the CatalogLimitedConfiguration for the given CatalogItem.
+     * @param item The CatalogItem to create or update hte CatalogLimitedConfiguration for.
+     * @return The created or updated CatalogLimitedConfiguration.
+     */
     public CatalogLimitedConfiguration createOrUpdateLimitedConfig(CatalogItem item)
     {
         if (item.isLimited())
@@ -881,6 +922,7 @@ public class CatalogManager
 
         return null;
     }
+
     /**
      * Disposes the CatalogManager.
      */
@@ -905,6 +947,15 @@ public class CatalogManager
         Emulator.getLogging().logShutdownLine("Catalog Manager -> Disposed!");
     }
 
+    /**
+     * Purchases a catalog item.
+     * @param page The page to purchase from.
+     * @param item The CatalogItem to purchase.
+     * @param habbo The Habbo that purchased this CatalogItem.
+     * @param amount The amount of times the item should be bought.
+     * @param extradata Any extradataassociated.
+     * @param free Determines if this purchase is free and thus no credits / points will be deducted.
+     */
     public void purchaseItem(CatalogPage page, CatalogItem item, Habbo habbo, int amount, String extradata, boolean free)
     {
         Item cBaseItem = null;

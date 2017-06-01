@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.guilds.forums;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.guilds.Guild;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ISerialize;
 import com.eu.habbo.messages.ServerMessage;
@@ -12,6 +13,8 @@ import java.sql.*;
 public class GuildForum implements ISerialize
 {
     private final int guild;
+    private int totalThreads;
+    private GuildForumComment lastComment = null;
     private final TIntObjectHashMap<GuildForumThread> threads;
     private int lastRequested = Emulator.getIntUnixTimestamp();
 
@@ -170,6 +173,27 @@ public class GuildForum implements ISerialize
             }
 
             return OPEN;
+        }
+    }
+
+    public void serializeUserForum(ServerMessage response, Habbo habbo)
+    {
+        Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(this.guild);
+        response.appendInt32(guild.getId()); //k._SafeStr_6864 = _arg_2._SafeStr_5878();   = guild_id
+        response.appendString(guild.getName()); //k._name = _arg_2.readString();            = name
+        response.appendString(guild.getDescription()); //k._SafeStr_5790 = _arg_2.readString();    = description
+        response.appendString(guild.getBadge()); //k._icon = _arg_2.readString();            = icon
+        response.appendInt32(0); //k._SafeStr_11338 = _arg_2._SafeStr_5878(); (?)
+        response.appendInt32(0); //k._SafeStr_19191 = _arg_2._SafeStr_5878();  = rating
+        response.appendInt32(this.totalThreads); //k._SafeStr_11328 = _arg_2._SafeStr_5878();  = total_messages
+        response.appendInt32(0); //k._SafeStr_19192 = _arg_2._SafeStr_5878();  = new_messages
+
+        if (this.lastComment != null)
+        {
+            response.appendInt32(this.lastComment.getThreadId()); //k._SafeStr_19193 = _arg_2._SafeStr_5878(); (?)
+            response.appendInt32(this.lastComment.getUserId()); //k._SafeStr_19194 = _arg_2._SafeStr_5878();  = last_author_id
+            response.appendString(this.lastComment.getUserName()); //k._SafeStr_19195 = _arg_2.readString();   = last_author_name
+            response.appendInt32(this.lastComment.getTimestamp()); //k._SafeStr_19196 = _arg_2._SafeStr_5878();  = update_time
         }
     }
 }

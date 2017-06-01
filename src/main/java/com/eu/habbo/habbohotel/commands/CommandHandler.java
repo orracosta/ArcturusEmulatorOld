@@ -208,11 +208,11 @@ public class CommandHandler
                                     {
                                         e.printStackTrace();
                                     }
-                                }
 
-                                if (gameClient.getHabbo().hasPermission("log_commands"))
-                                {
-                                    Emulator.getLogging().addLog(new CommandLog(gameClient.getHabbo().getHabboInfo().getId(), command, commandLine, succes));
+                                    if (gameClient.getHabbo().hasPermission("log_commands"))
+                                    {
+                                        Emulator.getLogging().addLog(new CommandLog(gameClient.getHabbo().getHabboInfo().getId(), command, commandLine, succes));
+                                    }
                                 }
 
                                 return succes;

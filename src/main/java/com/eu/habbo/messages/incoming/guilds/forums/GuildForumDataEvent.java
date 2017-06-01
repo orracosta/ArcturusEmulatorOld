@@ -1,10 +1,8 @@
 package com.eu.habbo.messages.incoming.guilds.forums;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.guilds.forums.GuildForum;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.guilds.forums.GuildForumDataComposer;
-
 
 public class GuildForumDataEvent extends MessageHandler
 {
@@ -14,6 +12,5 @@ public class GuildForumDataEvent extends MessageHandler
         int guildId = packet.readInt();
 
         this.client.sendResponse(new GuildForumDataComposer(Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(guildId), this.client.getHabbo()));
-        //TODO read guildid
     }
 }

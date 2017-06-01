@@ -42,11 +42,11 @@ public class Voucher
      */
     public Voucher(ResultSet set) throws SQLException
     {
-        this.id = set.getInt("id");
-        this.code = set.getString("code");
-        this.credits = set.getInt("credits");
-        this.points = set.getInt("points");
-        this.pointsType = set.getInt("points_type");
+        this.id            = set.getInt("id");
+        this.code          = set.getString("code");
+        this.credits       = set.getInt("credits");
+        this.points        = set.getInt("points");
+        this.pointsType    = set.getInt("points_type");
         this.catalogItemId = set.getInt("catalog_item_id");
     }
 }

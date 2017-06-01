@@ -25,15 +25,14 @@ public class GuildForumUpdateSettingsEvent extends MessageHandler
         if(guild == null || guild.getOwnerId() != this.client.getHabbo().getHabboInfo().getId())
             return;
 
-        guild.needsUpdate = true;
-        Emulator.getThreading().run(guild);
-
         this.client.sendResponse(new GuildForumDataComposer(Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(1), this.client.getHabbo()));
 
         guild.setReadForum(SettingsState.fromValue(canRead));
         guild.setPostMessages(SettingsState.fromValue(postMessages));
         guild.setPostThreads(SettingsState.fromValue(postThreads));
         guild.setModForum(SettingsState.fromValue(modForum));
+        guild.needsUpdate = true;
+        Emulator.getThreading().run(guild);
 
 
 

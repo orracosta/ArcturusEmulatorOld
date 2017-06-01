@@ -6,8 +6,11 @@ import com.eu.habbo.messages.ServerMessage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class BadgeDisplayLayout extends CatalogPage {
-
+/**
+ * Class for the interactive badge display catalog page.
+ */
+public class BadgeDisplayLayout extends CatalogPage
+{
     public BadgeDisplayLayout(ResultSet set) throws SQLException
     {
         super(set);
