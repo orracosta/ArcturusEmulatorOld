@@ -93,4 +93,5 @@ INSERT INTO `emulator_settings` (`key`, `value`) VALUES
 
 ALTER TABLE  `permissions` ADD  `cmd_hal` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_ha`;
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.description.cmd_hal', ':hal <url> <message>'), ('commands.keys.cmd_hal', 'hal;halink');
+ALTER TABLE  `permissions` ADD  `acc_enable_others` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `acc_empty_others`;
 #END DATABASE UPDATE: 1.7.0 -> 1.8.0

@@ -21,16 +21,16 @@ public class EnableCommand extends Command
         if(params.length >= 2)
         {
             int effectId = 0;
-            effectId = Integer.parseInt(params[params.length-1]);
+            effectId = Integer.parseInt(params[1]);
             Habbo target = gameClient.getHabbo();
             if (params.length == 3)
             {
-                target = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getHabbo(params[1]);
+                target = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getHabbo(params[2]);
             }
 
             if (target != null)
             {
-                if (target != gameClient.getHabbo() && gameClient.getHabbo().hasPermission("acc_enable_others"))
+                if (target == gameClient.getHabbo() || gameClient.getHabbo().hasPermission("acc_enable_others"))
                 {
                     try
                     {
@@ -50,7 +50,7 @@ public class EnableCommand extends Command
                     }
                     catch (Exception e)
                     {
-                        //Don't handle incorrect parse exceptions :P
+                        e.printStackTrace();
                     }
                 }
             }
