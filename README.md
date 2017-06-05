@@ -5,16 +5,14 @@
 ## **To Get The Camera To Work Visit http://arcturus.wf and register.** ##
 ## **TUTORIAL FOR PLUGINS http://arcturus.wf/thread-2415.html** ##
 # **DO NOT EDIT THE SOURCE. USE THE PLUGIN API.** #
-## Current Stable Version: 1.7.0 ##
+## Current Stable Version: 1.8.0 ##
 Arcturus Emulator is a Habbo emulator written in Java aiming to be an exact clone of the offical server.
 
 Targeting PRODUCTION-201611291003-338511768
 
 Download SWF: http://arcturus.wf/mirrors/asmd_PRODUCTION-201611291003-338511768.swf
 
-SCRIPTS: http://arcturus.wf/mirrors/PRODUCTION-201611291003-338511768_scripts.txt
-
-# **Compiled version (Including Database): http://arcturus.wf/mirrors/ArcturusEmulator_1.7.0.zip** #
+# **Compiled version (Including Database): http://arcturus.wf/mirrors/ArcturusEmulator_1.8.0.zip** #
 
 Latest Compiled Version: http://arcturus.wf:8080
 
@@ -23,6 +21,8 @@ Older Files: http://arcturus.wf/mirrors/
 Icons: http://arcturus.wf/mirrors/icons.zip
 
 JavaDoc: http://arcturus.wf/doc/
+
+SCRIPTS for developers: http://arcturus.wf/mirrors/PRODUCTION-201611291003-338511768_scripts.txt
 ### Contributing ###
 
 Anyone is allowed to contribute to the project. Reporting bugs and issues goes via the issue tracker.
