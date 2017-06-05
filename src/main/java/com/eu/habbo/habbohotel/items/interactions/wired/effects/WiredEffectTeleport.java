@@ -24,7 +24,7 @@ public class WiredEffectTeleport extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.TELEPORT;
 
-    private THashSet<HabboItem> items;
+    protected THashSet<HabboItem> items;
 
     public WiredEffectTeleport(ResultSet set, Item baseItem) throws SQLException
     {

@@ -22,7 +22,7 @@ public class WiredEffectWhisper extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.SHOW_MESSAGE;
 
-    private String message = "";
+    protected String message = "";
 
     public WiredEffectWhisper(ResultSet set, Item baseItem) throws SQLException
     {
