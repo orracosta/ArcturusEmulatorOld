@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.threading.runnables.teleport.TeleportActionOne;
@@ -37,12 +38,20 @@ public class InteractionTeleportTile extends InteractionTeleport
 
         if (habbo != null && roomUnit.getGoal().x == this.getX() && roomUnit.getGoal().y == this.getY() && canUseTeleport(habbo.getClient(), room))
         {
-            this.setExtradata("1");
-            room.updateItem(this);
-            roomUnit.getStatus().remove("mv");
-            room.sendComposer(new RoomUserStatusComposer(roomUnit).compose());
-            Emulator.getThreading().run(new TeleportActionOne(this, room, habbo.getClient()), 0);
-            roomUnit.isTeleporting = true;
+            HabboItem thisthing = this;
+            Emulator.getThreading().run(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    setExtradata("1");
+                    room.updateItem(thisthing);
+                    roomUnit.getStatus().remove("mv");
+                    room.sendComposer(new RoomUserStatusComposer(roomUnit).compose());
+                    Emulator.getThreading().run(new TeleportActionOne(thisthing, room, habbo.getClient()), 0);
+                    roomUnit.isTeleporting = true;
+                }
+            }, 500);
         }
     }
 
