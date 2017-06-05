@@ -155,7 +155,7 @@ public class MarketPlace
         }
         if(search.length() > 0)
         {
-            query += " AND items_base.item_name LIKE ?";
+            query += " AND items_base.public_name LIKE ?";
         }
 
         query += " GROUP BY base_item_id, ltd_data";
