@@ -72,6 +72,17 @@ public class InteractionVendingMachine extends HabboItem
                 }
                 else
                 {
+                    if (!tile.isWalkable())
+                    {
+                        for (RoomTile t : room.getLayout().getTilesAround(room.getLayout().getTile(this.getX(), this.getY())))
+                        {
+                            if (t != null && t.isWalkable())
+                            {
+                                tile = t;
+                                break;
+                            }
+                        }
+                    }
                     client.getHabbo().getRoomUnit().setGoalLocation(tile);
                     Emulator.getThreading().run(new RoomUnitVendingMachineAction(client.getHabbo(), this, room), client.getHabbo().getRoomUnit().getPath().size() + 2 * 510);
                 }
