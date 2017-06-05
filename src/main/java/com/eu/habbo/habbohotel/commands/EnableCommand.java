@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
+import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserEffectComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
@@ -17,29 +18,41 @@ public class EnableCommand extends Command
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
-        if(params.length == 2)
+        if(params.length >= 2)
         {
-            try
+            int effectId = 0;
+            effectId = Integer.parseInt(params[params.length-1]);
+            Habbo target = gameClient.getHabbo();
+            if (params.length == 3)
             {
-                if(gameClient.getHabbo().getHabboInfo().getCurrentRoom() != null)
+                target = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getHabbo(params[1]);
+            }
+
+            if (target != null)
+            {
+                if (target != gameClient.getHabbo() && gameClient.getHabbo().hasPermission("acc_enable_others"))
                 {
-                    if(gameClient.getHabbo().getHabboInfo().getRiding() == null)
+                    try
                     {
-                        int effectId = Integer.parseInt(params[1]);
-
-                        if (Emulator.getGameEnvironment().getPermissionsManager().isEffectBlocked(effectId, gameClient.getHabbo().getHabboInfo().getRank()))
+                        if (target.getHabboInfo().getCurrentRoom() != null)
                         {
-                            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_enable.not_allowed"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
-                            return true;
-                        }
+                            if (target.getHabboInfo().getRiding() == null)
+                            {
+                                if (Emulator.getGameEnvironment().getPermissionsManager().isEffectBlocked(effectId, target.getHabboInfo().getRank()))
+                                {
+                                    gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_enable.not_allowed"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                                    return true;
+                                }
 
-                        gameClient.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(gameClient.getHabbo(), effectId);
+                                target.getHabboInfo().getCurrentRoom().giveEffect(target, effectId);
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        //Don't handle incorrect parse exceptions :P
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                //Don't handle incorrect parse exceptions :P
             }
         }
         return true;

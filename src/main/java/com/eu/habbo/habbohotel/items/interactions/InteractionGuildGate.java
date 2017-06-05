@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.threading.runnables.CloseGate;
@@ -57,5 +58,12 @@ public class InteractionGuildGate extends InteractionGuildFurni
         super.onWalkOff(roomUnit, room, objects);
 
         Emulator.getThreading().run(new CloseGate(this, room), 500);
+    }
+
+    @Override
+    public void onMove(Room room, RoomTile oldLocation, RoomTile newLocation)
+    {
+        this.setExtradata("0");
+        room.updateItem(this);
     }
 }
