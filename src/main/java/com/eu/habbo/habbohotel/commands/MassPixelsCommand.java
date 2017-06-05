@@ -41,8 +41,7 @@ public class MassPixelsCommand extends Command
                 {
                     Habbo habbo = set.getValue();
 
-                    habbo.getHabboInfo().addPixels(amount);
-                    habbo.getClient().sendResponse(new UserCurrencyComposer(habbo));
+                    habbo.givePixels(amount);
 
                     if(habbo.getHabboInfo().getCurrentRoom() != null)
                         habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.generic.cmd_duckets.received").replace("%amount%", amount + ""), habbo, habbo, RoomChatMessageBubbles.ALERT)));

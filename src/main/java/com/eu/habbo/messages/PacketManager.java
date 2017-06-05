@@ -49,17 +49,21 @@ import com.eu.habbo.plugin.EventHandler;
 import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
 import gnu.trove.map.hash.THashMap;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PacketManager
 {
     private final THashMap<Integer, Class<? extends MessageHandler>> incoming;
+    private final THashMap<Integer, Map.Entry<Object, Method>> callables;
     private static final List<Integer> logList = new ArrayList<Integer>();
 
     public PacketManager() throws Exception
     {
         this.incoming = new THashMap<Integer, Class<? extends MessageHandler>>();
+        this.callables = new THashMap<Integer, Map.Entry<Object, Method>>();
 
         this.registerHandshake();
         this.registerCatalog();
@@ -99,6 +103,16 @@ public class PacketManager
         this.incoming.putIfAbsent(header, handler);
     }
 
+    public void registerCallable(Integer header, Map.Entry<Object, Method> objectMethodEntry)
+    {
+        this.callables.put(header, objectMethodEntry);
+    }
+
+    public void unregisterCallable(Integer header)
+    {
+        this.callables.remove(header);
+    }
+
     public void handlePacket(GameClient client, ClientMessage packet)
     {
         if(client == null || Emulator.isShuttingDown)
@@ -123,6 +137,17 @@ public class PacketManager
 
                 handler.client = client;
                 handler.packet = packet;
+
+                if (this.callables.containsKey(packet.getMessageId()))
+                {
+                    Map.Entry<Object, Method> entry = this.callables.get(packet.getMessageId());
+
+                    if (entry.getKey() != null)
+                    {
+                        entry.getValue().invoke(entry.getKey(), handler);
+                    }
+                }
+
                 handler.handle();
             }
             else

@@ -108,6 +108,7 @@ public class RoomLayout
 
         if (this.doorTile != null)
         {
+            this.doorTile.allowStack(false);
             RoomTile doorFrontTile = this.getTileInFront(this.doorTile, this.doorDirection);
 
             if (doorFrontTile != null && this.tileExists(doorFrontTile.x, doorFrontTile.y))

@@ -413,8 +413,7 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
             {
                 if (totalCredits > 0)
                 {
-                    this.client.getHabbo().getHabboInfo().addCredits(-totalCredits);
-                    this.client.sendResponse(new UserCreditsComposer(this.client.getHabbo()));
+                    this.client.getHabbo().giveCredits(-totalCredits);
                 }
             }
             if(totalPoints > 0)

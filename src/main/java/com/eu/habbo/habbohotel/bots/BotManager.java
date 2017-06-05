@@ -205,10 +205,7 @@ public class BotManager
                     return;
 
                 bot.onPickUp(habbo, habbo.getHabboInfo().getCurrentRoom());
-                habbo.getHabboInfo().getCurrentRoom().removeBot(bot.getId());
-                habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserRemoveComposer(bot.getRoomUnit()).compose());
-                bot.setRoom(null);
-                bot.setRoomUnit(null);
+                habbo.getHabboInfo().getCurrentRoom().removeBot(bot);
                 bot.stopFollowingHabbo();
                 bot.setOwnerId(habbo.getHabboInfo().getId());
                 bot.setOwnerName(habbo.getHabboInfo().getUsername());

@@ -1,11 +1,8 @@
 package com.eu.habbo.habbohotel.messenger;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.achievements.AchievementLevel;
-import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboInfo;
-import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.users.HabboManager;
 import com.eu.habbo.messages.outgoing.friends.UpdateFriendComposer;
 import com.eu.habbo.plugin.events.users.friends.UserAcceptFriendRequestEvent;

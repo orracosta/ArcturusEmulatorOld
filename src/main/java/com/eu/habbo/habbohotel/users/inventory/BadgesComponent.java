@@ -175,4 +175,24 @@ public class BadgesComponent
         habbo.getHabboInventory().getBadgesComponent().addBadge(badge);
         return badge;
     }
+
+
+    public static void deleteBadge(String username, HabboBadge badge)
+    {
+        deleteBadge(username, badge.getCode());
+    }
+
+    public static void deleteBadge(String username, String badge)
+    {
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE users_badges FROM users_badges INNER JOIN users ON users_badges.user_id = users.id WHERE users.username LIKE ? AND badge_code LIKE ?"))
+        {
+            statement.setString(1, username);
+            statement.setString(2, badge);
+            statement.execute();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+    }
 }

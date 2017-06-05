@@ -276,20 +276,17 @@ public class WiredHandler
                 if(rewardReceived.type.equalsIgnoreCase("credits"))
                 {
                     int credits = Integer.valueOf(rewardReceived.value);
-                    habbo.getHabboInfo().addCredits(credits);
-                    habbo.getClient().sendResponse(new UserCreditsComposer(habbo));
+                    habbo.giveCredits(credits);
                 }
                 else if(rewardReceived.type.equalsIgnoreCase("pixels"))
                 {
                     int pixels = Integer.valueOf(rewardReceived.value);
-                    habbo.getHabboInfo().addPixels(pixels);
-                    habbo.getClient().sendResponse(new UserCurrencyComposer(habbo));
+                    habbo.givePixels(pixels);
                 }
                 else  if(rewardReceived.type.equalsIgnoreCase("points"))
                 {
                     int points = Integer.valueOf(rewardReceived.value);
-                    habbo.getHabboInfo().addCurrencyAmount(Emulator.getConfig().getInt("seasonal.primary.type"), points);
-                    habbo.getClient().sendResponse(new UserCurrencyComposer(habbo));
+                    habbo.givePoints(points);
                 }
                 else if(rewardReceived.type.equalsIgnoreCase("furni"))
                 {

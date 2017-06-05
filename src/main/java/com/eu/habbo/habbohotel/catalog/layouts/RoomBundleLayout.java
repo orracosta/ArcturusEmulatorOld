@@ -8,8 +8,12 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.messages.outgoing.catalog.AlertPurchaseFailedComposer;
+import com.eu.habbo.messages.outgoing.catalog.AlertPurchaseUnavailableComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
+import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
+import com.eu.habbo.messages.outgoing.navigator.CanCreateRoomComposer;
 import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.THashMap;
@@ -141,6 +145,18 @@ public class RoomBundleLayout extends SingleBundle
         if (!this.loaded)
         {
             this.loadItems(Emulator.getGameEnvironment().getRoomManager().loadRoom(this.roomId));
+        }
+
+        if (habbo != null)
+        {
+            int count = Emulator.getGameEnvironment().getRoomManager().getRoomsForHabbo(habbo).size();
+            int max = habbo.getHabboStats().hasActiveClub() ? Emulator.getConfig().getInt("hotel.max.rooms.vip") : Emulator.getConfig().getInt("hotel.max.rooms.user");
+
+            if (count >= max)
+            {
+                habbo.getClient().sendResponse(new CanCreateRoomComposer(count, max));
+                return;
+            }
         }
 
         if(this.room == null)

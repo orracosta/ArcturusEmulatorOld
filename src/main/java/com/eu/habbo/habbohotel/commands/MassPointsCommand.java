@@ -83,9 +83,7 @@ public class MassPointsCommand extends Command
             for(Map.Entry<Integer, Habbo> set : Emulator.getGameEnvironment().getHabboManager().getOnlineHabbos().entrySet())
             {
                 Habbo habbo = set.getValue();
-
-                habbo.getHabboInfo().addCurrencyAmount(type, amount);
-                habbo.getClient().sendResponse(new UserPointsComposer(habbo.getHabboInfo().getCurrencyAmount(type), amount, type));
+                habbo.givePoints(type, amount);
 
                 if(habbo.getHabboInfo().getCurrentRoom() != null)
                     habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(message, habbo, habbo, RoomChatMessageBubbles.ALERT)));

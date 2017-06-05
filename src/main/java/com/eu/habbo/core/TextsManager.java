@@ -140,4 +140,33 @@ public class TextsManager
         }
         return defaultValue;
     }
+
+    /**
+     * Updates the give key.
+     * @param key The key to update.
+     * @param value The new value.
+     */
+    public void update(String key, String value)
+    {
+        this.texts.setProperty(key, value);
+    }
+
+    public void register(String key, String value)
+    {
+        if (this.texts.getProperty(key, null) != null)
+            return;
+
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO emulator_texts VALUES (?, ?)"))
+        {
+            statement.setString(1, key);
+            statement.setString(2, value);
+            statement.execute();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
+        this.update(key, value);
+    }
 }

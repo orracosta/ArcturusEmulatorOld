@@ -41,7 +41,7 @@ public class MassCreditsCommand extends Command
                 {
                     Habbo habbo = set.getValue();
 
-                    habbo.getHabboInfo().addCredits(amount);
+                    habbo.giveCredits(amount);
                     habbo.getClient().sendResponse(new UserCreditsComposer(habbo));
 
                     if(habbo.getHabboInfo().getCurrentRoom() != null)

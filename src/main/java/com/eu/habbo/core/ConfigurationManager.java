@@ -245,4 +245,23 @@ public class ConfigurationManager
     {
         this.properties.setProperty(key, value);
     }
+
+    public void register(String key, String value)
+    {
+        if (this.properties.getProperty(key, null) != null)
+            return;
+
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO emulator_settings VALUES (?, ?)"))
+        {
+            statement.setString(1, key);
+            statement.setString(2, value);
+            statement.execute();
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
+        this.update(key, value);
+    }
 }

@@ -45,7 +45,7 @@ public class PointsCommand extends Command
                     int amount = Integer.valueOf(params[2]);
                     if (amount != 0)
                     {
-                        habbo.getHabboInfo().addCurrencyAmount(type, amount);
+                        habbo.givePoints(type, amount);
 
                         if(habbo.getHabboInfo().getCurrentRoom() != null)
                             habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.generic.cmd_points.received").replace("%amount%", amount + "").replace("%type%", Emulator.getTexts().getValue("seasonal.name." + type)), habbo, habbo, RoomChatMessageBubbles.ALERT)));

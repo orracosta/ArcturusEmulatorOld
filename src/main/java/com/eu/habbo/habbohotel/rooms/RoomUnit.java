@@ -645,7 +645,7 @@ public class RoomUnit
 
     public void setIdle()
     {
-        this.idleTimer = Emulator.getConfig().getInt("hotel.roomuser.idle.cycles", 240);
+        this.idleTimer = Emulator.getConfig().getInt("hotel.roomuser.idle.cycles", 240) + 1;
     }
 
     public void lookAtPoint(RoomTile location)

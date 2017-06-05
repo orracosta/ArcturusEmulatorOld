@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboBadge;
+import com.eu.habbo.habbohotel.users.inventory.BadgesComponent;
 import com.eu.habbo.messages.outgoing.inventory.InventoryBadgesComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
@@ -55,12 +56,7 @@ public class TakeBadgeCommand extends Command
 
             gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_take_badge"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
 
-            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE users_badges FROM users_badges INNER JOIN users ON users_badges.user_id = users.id WHERE users.username LIKE ? AND badge_code LIKE ?"))
-            {
-                statement.setString(1, username);
-                statement.setString(2, badge);
-                statement.execute();
-            }
+            BadgesComponent.deleteBadge(username, badge);
         }
 
         return true;

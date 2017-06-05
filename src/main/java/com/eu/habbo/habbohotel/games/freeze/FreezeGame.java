@@ -56,6 +56,7 @@ public class FreezeGame extends Game
     public FreezeGame(Room room)
     {
         super(FreezeGameTeam.class, FreezeGamePlayer.class, room, true);
+        room.setAllowEffects(true);
     }
 
     @Override

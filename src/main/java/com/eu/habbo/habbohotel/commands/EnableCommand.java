@@ -33,8 +33,7 @@ public class EnableCommand extends Command
                             return true;
                         }
 
-                        gameClient.getHabbo().getRoomUnit().setEffectId(effectId);
-                        gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserEffectComposer(gameClient.getHabbo().getRoomUnit()).compose());
+                        gameClient.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(gameClient.getHabbo(), effectId);
                     }
                 }
             }

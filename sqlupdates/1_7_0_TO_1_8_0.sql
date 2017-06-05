@@ -84,5 +84,13 @@ DELETE FROM gift_wrappers;
 INSERT INTO gift_wrappers (sprite_id, item_id) SELECT sprite_id, id FROM items_base WHERE item_name LIKE 'present_gen%';
 UPDATE gift_wrappers SET type = 'gift';
 INSERT INTO gift_wrappers (sprite_id, item_id) SELECT sprite_id, id FROM items_base WHERE item_name LIKE 'present_wrap%';
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES
+('seasonal.currency.ducket', '0'),
+('seasonal.currency.pixel', '0'),
+('seasonal.currency.diamond', '5'),
+('seasonal.currency.shell', '4'),
+('seasonal.currency.names', 'ducket;pixel;shell;diamond');
 
+ALTER TABLE  `permissions` ADD  `cmd_hal` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_ha`;
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.description.cmd_hal', ':hal <url> <message>'), ('commands.keys.cmd_hal', 'hal;halink');
 #END DATABASE UPDATE: 1.7.0 -> 1.8.0

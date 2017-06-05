@@ -14,6 +14,7 @@ public class Item {
     private int id;
     private int spriteId;
     private String name;
+    private String fullName;
     private String type;
     private short width;
     private short length;
@@ -50,6 +51,7 @@ public class Item {
         this.id = set.getInt("id");
         this.spriteId = set.getInt("sprite_id");
         this.name = set.getString("item_name");
+        this.fullName = set.getString("public_name");
         this.type = set.getString("type");
         this.width = set.getShort("width");
         this.length = set.getShort("length");
@@ -109,6 +111,11 @@ public class Item {
 
     public String getName() {
         return this.name;
+    }
+
+    public String getFullName()
+    {
+        return this.fullName;
     }
 
     public String getType()

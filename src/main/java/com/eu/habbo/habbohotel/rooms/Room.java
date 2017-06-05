@@ -113,6 +113,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     private volatile boolean allowPetsEat;
     private volatile boolean allowWalkthrough;
     private volatile boolean allowBotsWalk;
+    private volatile boolean allowEffects;
     private volatile boolean hideWall;
     private volatile int chatMode;
     private volatile int chatWeight;
@@ -236,6 +237,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         this.preLoaded = true;
         this.allowBotsWalk = true;
+        this.allowEffects = true;
         this.currentHabbos = TCollections.synchronizedMap(new TIntObjectHashMap<Habbo>());
         this.habboQueue = TCollections.synchronizedMap(new TIntObjectHashMap<Habbo>());
         this.currentBots = TCollections.synchronizedMap(new TIntObjectHashMap<Bot>());
@@ -1999,6 +2001,16 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         return this.allowBotsWalk;
     }
 
+    public boolean isAllowEffects()
+    {
+        return this.allowEffects;
+    }
+
+    public void setAllowEffects(boolean allowEffects)
+    {
+        this.allowEffects = allowEffects;
+    }
+
     public boolean isHideWall()
     {
         return this.hideWall;
@@ -3029,10 +3041,19 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         return null;
     }
 
-    public Bot removeBot(int botId)
+    public boolean removeBot(Bot bot)
     {
-        this.currentBots.get(botId).getRoomUnit().setInRoom(false);
-        return this.currentBots.remove(botId);
+        if (this.currentBots.containsKey(bot.getId()))
+        {
+            bot.getRoomUnit().setInRoom(false);
+            bot.setRoom(null);
+            bot.setRoomUnit(null);
+            this.currentBots.remove(bot.getId());
+            this.sendComposer(new RoomUserRemoveComposer(bot.getRoomUnit()).compose());
+            return true;
+        }
+
+        return false;
     }
 
     public void placePet(AbstractPet pet, short x, short y, double z, int rot)
@@ -4168,6 +4189,26 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
     }
 
+    public void sendComposerToHabbosWithRights(ServerMessage message)
+    {
+        synchronized (this.currentHabbos)
+        {
+            this.currentHabbos.forEachValue(new TObjectProcedure<Habbo>()
+            {
+                @Override
+                public boolean execute(Habbo object)
+                {
+                    if (hasRights(object))
+                    {
+                        object.getClient().sendResponse(message);
+                    }
+
+                    return true;
+                }
+            });
+        }
+    }
+
     public void petChat(ServerMessage message)
     {
         synchronized (this.currentHabbos)
@@ -4544,8 +4585,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void giveEffect(RoomUnit roomUnit, int effectId)
     {
-        roomUnit.setEffectId(effectId);
-        this.sendComposer(new RoomUserEffectComposer(roomUnit).compose());
+        if (this.allowEffects)
+        {
+            roomUnit.setEffectId(effectId);
+            this.sendComposer(new RoomUserEffectComposer(roomUnit).compose());
+        }
     }
 
     public void giveHandItem(Habbo habbo, int handItem)
@@ -4798,8 +4842,13 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public void unIdle(Habbo habbo)
     {
         habbo.getRoomUnit().resetIdleTimer();
-
         this.sendComposer(new RoomUnitIdleComposer(habbo.getRoomUnit()).compose());
+    }
+
+    public void dance(Habbo habbo, DanceType danceType)
+    {
+        habbo.getRoomUnit().setDanceType(danceType);
+        this.sendComposer(new RoomUserDanceComposer(habbo.getRoomUnit()).compose());
     }
 
     public void addToWordFilter(String word)

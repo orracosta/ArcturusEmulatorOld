@@ -58,6 +58,7 @@ public class CommandHandler
         addCommand(new HandItemCommand());
         addCommand(new HappyHourCommand());
         addCommand(new HotelAlertCommand());
+        addCommand(new HotelAlertLinkCommand());
         addCommand(new IPBanCommand());
         addCommand(new LayCommand());
         addCommand(new MachineBanCommand());
@@ -308,6 +309,22 @@ public class CommandHandler
         Collections.sort(allowedCommands, CommandHandler.ALPHABETICAL_ORDER);
 
         return allowedCommands;
+    }
+
+    public static Command getCommand(String key)
+    {
+        for (Command command : commands)
+        {
+            for (String k : command.keys)
+            {
+                if (key.equalsIgnoreCase(k))
+                {
+                    return command;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**

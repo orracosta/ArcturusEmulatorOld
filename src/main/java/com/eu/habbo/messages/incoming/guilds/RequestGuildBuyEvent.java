@@ -24,8 +24,7 @@ public class RequestGuildBuyEvent extends MessageHandler
             int guildPrice = Emulator.getConfig().getInt("catalog.guild.price");
             if (this.client.getHabbo().getHabboInfo().getCredits() >= guildPrice)
             {
-                this.client.getHabbo().getHabboInfo().addCredits(-guildPrice);
-                this.client.sendResponse(new UserCreditsComposer(this.client.getHabbo()));
+                this.client.getHabbo().giveCredits(-guildPrice);
             }
             else
             {

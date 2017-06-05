@@ -269,6 +269,11 @@ public abstract class Game implements Runnable
         }
     }
 
+    /**
+     * Adds a new team to the game.
+     * Note: Overwrites any existing team for the team.teamColor
+     * @param team The team to add.
+     */
     public void addTeam(GameTeam team)
     {
         synchronized (this.teams)

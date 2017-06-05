@@ -1,8 +1,10 @@
 package com.eu.habbo.messages.incoming.friends;
 
+import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.friends.UpdateFriendComposer;
+import com.eu.habbo.plugin.events.users.friends.UserRelationShipEvent;
 
 public class ChangeRelationEvent extends MessageHandler
 {
@@ -13,10 +15,14 @@ public class ChangeRelationEvent extends MessageHandler
         int relationId = this.packet.readInt();
 
         MessengerBuddy buddy = this.client.getHabbo().getMessenger().getFriends().get(userId);
-        if(buddy != null)
+        if(buddy != null && relationId >= 0 && relationId <= 3)
         {
-            buddy.setRelation(relationId);
-            this.client.sendResponse(new UpdateFriendComposer(buddy));
+            UserRelationShipEvent event = new UserRelationShipEvent(this.client.getHabbo(), buddy, relationId);
+            if (!event.isCancelled())
+            {
+                buddy.setRelation(event.relationShip);
+                this.client.sendResponse(new UpdateFriendComposer(buddy));
+            }
         }
     }
 }
