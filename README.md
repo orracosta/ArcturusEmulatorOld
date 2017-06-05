@@ -34,7 +34,9 @@ An example plugin can be found here: https://bitbucket.org/Wesley12312/pluginexa
 
 Here is a list of cool plugins you can download:
 
-* https://bitbucket.org/Wesley12312/kickwars-plugin
+* Kickwars: https://bitbucket.org/Wesley12312/kickwars-plugin
+* Bubble Alerts: https://bitbucket.org/Wesley12312/arcturus-bubble-alerts-plugin
+* Essentials: https://bitbucket.org/Wesley12312/arcturus-essentials-plugin
 
 If you want the link to your plugin repository to be added, create an issue.
 
