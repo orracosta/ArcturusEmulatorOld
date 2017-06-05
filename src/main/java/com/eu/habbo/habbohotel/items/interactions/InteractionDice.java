@@ -16,8 +16,6 @@ import java.sql.SQLException;
 
 public class InteractionDice extends HabboItem
 {
-    private Runnable rollTaks = null;
-
     public InteractionDice(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
     {
         super(id, userId, item, extradata, limitedStack, limitedSells);
@@ -58,7 +56,7 @@ public class InteractionDice extends HabboItem
         {
             if (RoomLayout.tilesAdjecent(room.getLayout().getTile(this.getX(), this.getY()), client.getHabbo().getRoomUnit().getCurrentLocation()))
             {
-                if (this.rollTaks == null)
+                if (!this.getExtradata().equalsIgnoreCase("-1"))
                 {
                     FurnitureDiceRolledEvent event = (FurnitureDiceRolledEvent) Emulator.getPluginManager().fireEvent(new FurnitureDiceRolledEvent(this, client.getHabbo(), -1));
 
@@ -92,10 +90,5 @@ public class InteractionDice extends HabboItem
     public void onPickUp(Room room)
     {
         this.setExtradata("0");
-    }
-
-    public void clearRunnable()
-    {
-        this.rollTaks = null;
     }
 }

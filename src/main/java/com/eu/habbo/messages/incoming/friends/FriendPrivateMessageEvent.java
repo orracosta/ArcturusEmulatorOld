@@ -17,6 +17,13 @@ public class FriendPrivateMessageEvent extends MessageHandler
         int userId = this.packet.readInt();
         String message = this.packet.readString();
 
+        long millis = System.currentTimeMillis();
+        if (millis - this.client.getHabbo().getHabboStats().lastChat < 750)
+        {
+            return;
+        }
+        this.client.getHabbo().getHabboStats().lastChat = millis;
+
         if(userId == Emulator.publicChatBuddy.getId())
         {
             if(message.startsWith(":"))

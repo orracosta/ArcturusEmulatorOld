@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.rooms.items;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.items.interactions.InteractionDice;
 import com.eu.habbo.habbohotel.items.interactions.InteractionMonsterPlantSeed;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWired;
 import com.eu.habbo.habbohotel.pets.MonsterplantPet;
@@ -31,7 +32,7 @@ public class ToggleFloorItemEvent extends MessageHandler
 
             HabboItem item = room.getHabboItem(itemId);
 
-            if (item == null)
+            if (item == null || item instanceof InteractionDice)
                 return;
 
             if(item.getBaseItem().getName().equalsIgnoreCase("totem_planet"))

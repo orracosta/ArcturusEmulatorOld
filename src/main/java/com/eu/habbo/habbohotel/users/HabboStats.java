@@ -75,6 +75,7 @@ public class HabboStats implements Runnable
     public final THashMap<String, Object> cache;
 
     public long roomEnterTimestamp;
+    public long lastChat;
 
     private HabboStats(ResultSet set, Habbo habbo) throws SQLException
     {

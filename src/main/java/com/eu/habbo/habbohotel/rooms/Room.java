@@ -3284,6 +3284,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void talk(final Habbo habbo, final RoomChatMessage roomChatMessage, RoomChatType chatType, boolean ignoreWired)
     {
+        long millis = System.currentTimeMillis();
+        if (millis - habbo.getHabboStats().lastChat < 750)
+        {
+            return;
+        }
+        habbo.getHabboStats().lastChat = millis;
         if(roomChatMessage != null && roomChatMessage.getMessage().equalsIgnoreCase("i am a pirate"))
         {
             Emulator.getThreading().run(new YouAreAPirate(habbo, this));
