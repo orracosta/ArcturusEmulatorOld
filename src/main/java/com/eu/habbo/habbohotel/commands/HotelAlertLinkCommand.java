@@ -30,6 +30,6 @@ public class HotelAlertLinkCommand extends Command
         message += "\r\r-<b>" + gameClient.getHabbo().getHabboInfo().getUsername() + "</b>";
 
         Emulator.getGameServer().getGameClientManager().sendBroadcastResponse(new StaffAlertWithLinkComposer(message, url).compose());
-        return false;
+        return true;
     }
 }
