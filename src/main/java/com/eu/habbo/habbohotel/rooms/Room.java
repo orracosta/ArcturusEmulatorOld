@@ -3043,14 +3043,17 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public boolean removeBot(Bot bot)
     {
-        if (this.currentBots.containsKey(bot.getId()))
+        synchronized (this.currentBots)
         {
-            bot.getRoomUnit().setInRoom(false);
-            bot.setRoom(null);
-            bot.setRoomUnit(null);
-            this.currentBots.remove(bot.getId());
-            this.sendComposer(new RoomUserRemoveComposer(bot.getRoomUnit()).compose());
-            return true;
+            if (this.currentBots.containsKey(bot.getId()))
+            {
+                this.currentBots.remove(bot.getId());
+                bot.getRoomUnit().setInRoom(false);
+                bot.setRoom(null);
+                this.sendComposer(new RoomUserRemoveComposer(bot.getRoomUnit()).compose());
+                bot.setRoomUnit(null);
+                return true;
+            }
         }
 
         return false;

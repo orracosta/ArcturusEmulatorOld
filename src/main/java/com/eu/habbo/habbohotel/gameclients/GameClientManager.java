@@ -128,7 +128,7 @@ public class GameClientManager
             if(client.getHabbo() == null)
                 continue;
 
-            if(client.getHabbo().getHabboInfo().getUsername().equals(username))
+            if(client.getHabbo().getHabboInfo().getUsername().equalsIgnoreCase(username))
                 return client.getHabbo();
         }
 
