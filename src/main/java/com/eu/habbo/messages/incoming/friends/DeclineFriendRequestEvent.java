@@ -20,7 +20,6 @@ public class DeclineFriendRequestEvent extends MessageHandler
 
             for (int i = 0; i < count; i++)
             {
-                Emulator.getLogging().logDebugLine("Deleting");
                 this.client.getHabbo().getMessenger().deleteFriendRequests(this.packet.readInt(), this.client.getHabbo().getHabboInfo().getId());
             }
         }

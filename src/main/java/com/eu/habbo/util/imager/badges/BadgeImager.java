@@ -191,7 +191,7 @@ public class BadgeImager
         }
         catch (Exception e)
         {
-            Emulator.getLogging().logErrorLine(e);
+            Emulator.getLogging().logErrorLine("Failed to generate guild badge: " + outputFile + ".png Make sure the output folder exists and is writable!");
         }
 
         graphics.dispose();

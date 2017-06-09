@@ -551,7 +551,7 @@ public class RoomUnit
         return !isAtGoal() && this.canWalk;
     }
 
-    public synchronized TMap<String, String> getStatus()
+    public synchronized THashMap<String, String> getStatus()
     {
         return this.status;
     }

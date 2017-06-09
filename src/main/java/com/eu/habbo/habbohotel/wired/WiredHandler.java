@@ -172,17 +172,20 @@ public class WiredHandler
                     @Override
                     public void run()
                     {
-                        try
+                        if (room.isLoaded())
                         {
-                            effect.execute(roomUnit, room, stuff);
-                        }
-                        catch (Exception e)
-                        {
-                            Emulator.getLogging().logErrorLine(e);
-                        }
+                            try
+                            {
+                                effect.execute(roomUnit, room, stuff);
+                            }
+                            catch (Exception e)
+                            {
+                                Emulator.getLogging().logErrorLine(e);
+                            }
 
-                        effect.setExtradata(effect.getExtradata().equals("1") ? "0" : "1");
-                        room.updateItem(effect);
+                            effect.setExtradata(effect.getExtradata().equals("1") ? "0" : "1");
+                            room.updateItem(effect);
+                        }
                     }
                 }, effect.getDelay() * 500);
             }
@@ -432,9 +435,14 @@ public class WiredHandler
         if(!room.isLoaded())
             return;
 
-        for(InteractionWiredTrigger trigger : room.getRoomSpecialTypes().getTriggers(WiredTriggerType.AT_GIVEN_TIME))
+        THashSet<InteractionWiredTrigger> triggers = room.getRoomSpecialTypes().getTriggers(WiredTriggerType.AT_GIVEN_TIME);
+
+        if (triggers != null)
         {
-            ((WiredTriggerReset)trigger).resetTimer();
+            for (InteractionWiredTrigger trigger : triggers)
+            {
+                ((WiredTriggerReset) trigger).resetTimer();
+            }
         }
 
         room.setLastTimerReset(Emulator.getIntUnixTimestamp());

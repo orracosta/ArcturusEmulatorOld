@@ -1338,6 +1338,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                         {
                                             habbo.getRoomUnit().getStatus().put("sit", topItem.getBaseItem().getHeight() * 1.0D + "");
                                         }
+                                        habbo.getRoomUnit().setZ(topItem.getZ());
                                         habbo.getRoomUnit().setRotation(RoomUserRotation.values()[topItem.getRotation()]);
                                         updatedUnit.add(habbo.getRoomUnit());
                                         habbo.getRoomUnit().sitUpdate = false;
@@ -1634,7 +1635,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                         for (HabboItem item : itemsNewTile)
                         {
-                            if (!(item.getBaseItem().allowWalk() || item.getBaseItem().allowSit()))
+                            if (!(item.getBaseItem().allowWalk() || item.getBaseItem().allowSit()) && !(item instanceof InteractionGate))
                             {
                                 allowUsers = false;
                             }
@@ -1700,9 +1701,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                         if (allowUsers)
                         {
-                            if (stackContainsRoller && !allowFurniture)
-                                continue;
-
                             Event roomUserRolledEvent = null;
 
                             if(Emulator.getPluginManager().isRegistered(UserRolledEvent.class, true))
@@ -1712,6 +1710,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                             for (Habbo habbo : habbosOnRoller)
                             {
+                                if (stackContainsRoller && !allowFurniture && !(topItem != null && topItem.canWalkOn(habbo.getRoomUnit(), this, new Object[]{})))
+                                    continue;
+
                                 RoomTile tile = roomTile.copy();
                                 tile.setStackHeight(habbo.getRoomUnit().getZ() + zOffset);
                                 if (!habbo.getRoomUnit().getStatus().containsKey("mv"))
@@ -5025,5 +5026,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public void alert(String message)
     {
         this.sendComposer(new GenericAlertComposer(message).compose());
+    }
+
+    public int itemCount()
+    {
+        return this.roomItems.size();
     }
 }

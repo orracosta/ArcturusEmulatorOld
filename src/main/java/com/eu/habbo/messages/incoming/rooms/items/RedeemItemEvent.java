@@ -42,6 +42,7 @@ public class RedeemItemEvent extends MessageHandler
                         }
                         catch (Exception e)
                         {
+                            Emulator.getLogging().logErrorLine("Failed to parse redeemable furniture: " + item.getBaseItem().getName() + ". Must be in format of CF_<amount>");
                             return;
                         }
 
@@ -67,6 +68,7 @@ public class RedeemItemEvent extends MessageHandler
                         }
                         catch (Exception e)
                         {
+                            Emulator.getLogging().logErrorLine("Failed to parse redeemable furniture: " + item.getBaseItem().getName() + ". Must be in format of PF_<amount>");
                             return;
                         }
 
@@ -93,7 +95,7 @@ public class RedeemItemEvent extends MessageHandler
                         }
                         catch (Exception e)
                         {
-                            Emulator.getLogging().logErrorLine(e);
+                            Emulator.getLogging().logErrorLine("Failed to parse redeemable furniture: " + item.getBaseItem().getName() + ". Must be in format of DF_<pointstype>_<amount> where <pointstype> equals integer representation of seasonal currency.");
                             return;
                         }
 
@@ -103,7 +105,7 @@ public class RedeemItemEvent extends MessageHandler
                         }
                         catch (Exception e)
                         {
-                            Emulator.getLogging().logErrorLine(e);
+                            Emulator.getLogging().logErrorLine("Failed to parse redeemable furniture: " + item.getBaseItem().getName() + ". Must be in format of DF_<pointstype>_<amount> where <pointstype> equals integer representation of seasonal currency.");
                             return;
                         }
 

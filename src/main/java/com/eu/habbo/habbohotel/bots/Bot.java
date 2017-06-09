@@ -271,7 +271,12 @@ public class Bot implements Runnable
                 if(this.room != null)
                 {
                     this.lastChatIndex = (this.chatRandom ? (short)Emulator.getRandom().nextInt(this.chatLines.size()) : (this.lastChatIndex == (this.chatLines.size() - 1) ? 0 : this.lastChatIndex++));
-                    this.talk(this.chatLines.get(this.lastChatIndex));
+                    this.talk(this.chatLines.get(this.lastChatIndex)
+                            .replace("%owner%", this.room.getOwnerName())
+                            .replace("%item_count%", this.room.itemCount() + "")
+                            .replace("%name%", this.name)
+                            .replace("%roomname%", this.room.getName())
+                            .replace("%user_count%", this.room.getUserCount() + ""));
                     this.chatTimeOut = Emulator.getIntUnixTimestamp() + this.chatDelay;
                 }
             }

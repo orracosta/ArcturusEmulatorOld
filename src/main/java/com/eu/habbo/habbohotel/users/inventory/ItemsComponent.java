@@ -164,7 +164,7 @@ public class ItemsComponent
 
             if (items == null)
             {
-                Emulator.getLogging().logErrorLine(new NullPointerException("Items is NULL!"));
+                Emulator.getLogging().logErrorLine(new RuntimeException("Items is NULL!"));
                 return;
             }
 

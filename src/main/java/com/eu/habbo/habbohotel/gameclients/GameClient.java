@@ -154,7 +154,7 @@ public class GameClient
     {
         if (machineId == null)
         {
-            throw new NullPointerException("Cannot set machineID to NULL");
+            throw new RuntimeException("Cannot set machineID to NULL");
         }
         this.machineId = machineId;
 

@@ -68,6 +68,7 @@ public class RoomUnitOnRollerComposer extends MessageComposer
         {
             Emulator.getLogging().logErrorLine(e);
         }
+        this.roomUnit.sitUpdate = true;
 
         return this.response;
     }

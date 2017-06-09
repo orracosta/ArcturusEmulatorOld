@@ -6,6 +6,7 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.map.TIntObjectMap;
+import gnu.trove.procedure.TObjectObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
 import java.util.Map;
@@ -47,14 +48,21 @@ public class RoomUserStatusComposer extends MessageComposer
                 this.response.appendInt32(roomUnit.getHeadRotation().getValue());
                 this.response.appendInt32(roomUnit.getBodyRotation().getValue());
 
-                String status = "/";
-
-                for (Map.Entry<String, String> keys : roomUnit.getStatus().entrySet())
+                final String[] status = {"/"};
+                synchronized (roomUnit.getStatus())
                 {
-                    status = status + keys.getKey() + " " + keys.getValue() + "/";
+                    roomUnit.getStatus().forEachEntry(new TObjectObjectProcedure<String, String>()
+                    {
+                        @Override
+                        public boolean execute(String key, String value)
+                        {
+                            status[0] = status[0] + key + " " + value + "/";
+                            return true;
+                        }
+                    });
                 }
 
-                this.response.appendString(status);
+                this.response.appendString(status[0]);
                 roomUnit.setPreviousLocation(roomUnit.getCurrentLocation());
                 roomUnit.getPreviousLocation().setStackHeight(roomUnit.getZ());
             }
@@ -72,12 +80,20 @@ public class RoomUserStatusComposer extends MessageComposer
                     this.response.appendInt32(habbo.getRoomUnit().getHeadRotation().getValue());
                     this.response.appendInt32(habbo.getRoomUnit().getBodyRotation().getValue());
 
-                    String status = "/";
-                    for (Map.Entry<String, String> keys : habbo.getRoomUnit().getStatus().entrySet())
+                    final String[] status = {"/"};
+                    synchronized (habbo.getRoomUnit().getStatus())
                     {
-                        status = status + keys.getKey() + " " + keys.getValue() + "/";
+                        habbo.getRoomUnit().getStatus().forEachEntry(new TObjectObjectProcedure<String, String>()
+                        {
+                            @Override
+                            public boolean execute(String key, String value)
+                            {
+                                status[0] = status[0] + key + " " + value + "/";
+                                return true;
+                            }
+                        });
                     }
-                    this.response.appendString(status);
+                    this.response.appendString(status[0]);
                     habbo.getRoomUnit().setPreviousLocation(habbo.getRoomUnit().getCurrentLocation());
                     habbo.getRoomUnit().getPreviousLocation().setStackHeight(habbo.getRoomUnit().getZ());
                 }

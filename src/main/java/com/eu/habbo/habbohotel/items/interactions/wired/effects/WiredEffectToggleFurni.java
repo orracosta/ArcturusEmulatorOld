@@ -157,7 +157,7 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
                     continue;
                 }
 
-                if (triggerItem != null && triggerItem.getId() == item.getId())
+                if (triggerItem == null)// && triggerItem.getId() == item.getId())
                 {
                     continue;
                 }

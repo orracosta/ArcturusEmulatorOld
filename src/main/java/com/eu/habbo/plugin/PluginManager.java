@@ -57,7 +57,7 @@ public class PluginManager
 
                 if (stream == null)
                 {
-                    throw new NullPointerException("Invalid Jar! Missing plugin.json in: " + file.getName());
+                    throw new RuntimeException("Invalid Jar! Missing plugin.json in: " + file.getName());
                 }
 
                 byte[] content = new byte[stream.available()];

@@ -56,7 +56,6 @@ public class BotSaveSettingsEvent extends MessageHandler
 
                 case 2:
                     String messageString = this.packet.readString();
-                    messageString = Jsoup.parse(messageString).text();
 
                     if(messageString.length() > 5112)
                         break;
@@ -68,7 +67,7 @@ public class BotSaveSettingsEvent extends MessageHandler
                     {
                         for(String s : data[i].split("\r"))
                         {
-                            chat.add(Emulator.getGameEnvironment().getWordFilter().filter(s.replace("<", "&lt;").replace(">", "&rt;"), this.client.getHabbo()));
+                            chat.add(Emulator.getGameEnvironment().getWordFilter().filter(Jsoup.parse(s).text(), this.client.getHabbo()));
                         }
                     }
 

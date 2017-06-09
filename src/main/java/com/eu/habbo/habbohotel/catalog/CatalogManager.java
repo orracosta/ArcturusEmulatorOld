@@ -784,9 +784,9 @@ public class CatalogManager
             level = 2;
         }
 
-        if (this.prizes.containsKey((Integer)level) && !this.prizes.get((Integer)level).isEmpty())
+        if (this.prizes.containsKey(level) && !this.prizes.get(level).isEmpty())
         {
-            return (Item) this.prizes.get((Integer) level).toArray()[Emulator.getRandom().nextInt(this.prizes.get(level).size())];
+            return (Item) this.prizes.get(level).toArray()[Emulator.getRandom().nextInt(this.prizes.get(level).size())];
         }
         else
         {
