@@ -18,7 +18,7 @@ public abstract class Command
      */
     public final String[] keys;
 
-    protected Command(String permission, String[] keys)
+    public Command(String permission, String[] keys)
     {
         this.permission = permission;
         this.keys = keys;

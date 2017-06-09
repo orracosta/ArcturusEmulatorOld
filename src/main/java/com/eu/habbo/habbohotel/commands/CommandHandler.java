@@ -46,6 +46,8 @@ public class CommandHandler
         addCommand(new DisconnectCommand());
         addCommand(new EjectAllCommand());
         addCommand(new EmptyInventoryCommand());
+        addCommand(new EmptyBotsInventoryCommand());
+        addCommand(new EmptyPetsInventoryCommand());
         addCommand(new EnableCommand());
         addCommand(new EventCommand());
         addCommand(new FacelessCommand());

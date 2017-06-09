@@ -56,6 +56,11 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
     protected int amount;
 
     /**
+     * If this item can be gifted.
+     */
+    protected boolean allowGift = false;
+
+    /**
      * The total limited stack of this catalog item.
      */
     protected int limitedStack;
@@ -371,6 +376,20 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
                 e.printStackTrace();
             }
         }
+        else
+        {
+            try
+            {
+                Item item = Emulator.getGameEnvironment().getItemManager().getItem(Integer.valueOf(this.itemId));
+
+                if (item != null)
+                {
+                    this.allowGift = item.allowGift();
+                }
+            }
+            catch (Exception e)
+            {}
+        }
     }
 
     @Override
@@ -382,7 +401,7 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
         message.appendInt32(this.getCredits());
         message.appendInt32(this.getPoints());
         message.appendInt32(this.getPointsType());
-        message.appendBoolean(true); //Can gift
+        message.appendBoolean(this.allowGift); //Can gift
 
         THashSet<Item> items = this.getBaseItems();
 

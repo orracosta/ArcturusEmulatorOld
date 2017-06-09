@@ -60,32 +60,6 @@ public class EmptyInventoryCommand extends Command
                 habbo.getHabboInventory().getItemsComponent().getItems().clear();
                 Emulator.getThreading().run(new QueryDeleteHabboItems(items));
 
-                TIntObjectHashMap<Bot> bots = new TIntObjectHashMap<>();
-                bots.putAll(habbo.getHabboInventory().getBotsComponent().getBots());
-                habbo.getHabboInventory().getBotsComponent().getBots().clear();
-                bots.forEachValue(new TObjectProcedure<Bot>()
-                {
-                    @Override
-                    public boolean execute(Bot object)
-                    {
-                        Emulator.getGameEnvironment().getBotManager().deleteBot(object);
-                        return true;
-                    }
-                });
-
-                TIntObjectHashMap<AbstractPet> pets = new TIntObjectHashMap<>();
-                pets.putAll(habbo.getHabboInventory().getPetsComponent().getPets());
-                habbo.getHabboInventory().getPetsComponent().getPets().clear();
-                pets.forEachValue(new TObjectProcedure<AbstractPet>()
-                {
-                    @Override
-                    public boolean execute(AbstractPet object)
-                    {
-                        Emulator.getGameEnvironment().getPetManager().deletePet(object);
-                        return true;
-                    }
-                });
-
                 habbo.getClient().sendResponse(new InventoryRefreshComposer());
                 habbo.getClient().sendResponse(new InventoryItemsComposer(0, 1, gameClient.getHabbo().getHabboInventory().getItemsComponent().getItems()));
 
