@@ -66,18 +66,25 @@ public class SecureLoginEvent extends MessageHandler
             }
             if(habbo != null)
             {
-                habbo.setClient(this.client);
-                this.client.setHabbo(habbo);
-                this.client.getHabbo().connect();
+                try
+                {
+                    habbo.setClient(this.client);
+                    this.client.setHabbo(habbo);
+                    this.client.getHabbo().connect();
 
-                if (this.client.getHabbo().getHabboInfo() == null)
+                    if (this.client.getHabbo().getHabboInfo() == null)
+                    {
+                        Emulator.getGameServer().getGameClientManager().disposeClient(this.client.getChannel());
+                        return;
+                    }
+                    Emulator.getThreading().run(habbo);
+                    Emulator.getGameEnvironment().getHabboManager().addHabbo(habbo);
+                }
+                catch (Exception e)
                 {
                     Emulator.getGameServer().getGameClientManager().disposeClient(this.client.getChannel());
                     return;
                 }
-                Emulator.getThreading().run(habbo);
-                Emulator.getGameEnvironment().getHabboManager().addHabbo(habbo);
-
                 ArrayList<ServerMessage> messages = new ArrayList<ServerMessage>();
 
                 messages.add(new SecureLoginOKComposer().compose());
