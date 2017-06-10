@@ -2884,7 +2884,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         habbo.getRoomUnit().isKicked = true;
         habbo.getRoomUnit().setGoalLocation(this.layout.getDoorTile());
 
-        if (habbo.getRoomUnit().getPath() == null || habbo.getRoomUnit().getPath().size() <= 1)
+        if (habbo.getRoomUnit().getPath() == null || habbo.getRoomUnit().getPath().size() <= 1 || this.isPublicRoom())
         {
             habbo.getRoomUnit().setCanWalk(true);
             Emulator.getGameEnvironment().getRoomManager().leaveRoom(habbo, this);

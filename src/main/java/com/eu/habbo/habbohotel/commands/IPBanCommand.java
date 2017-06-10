@@ -7,6 +7,8 @@ import com.eu.habbo.habbohotel.modtool.ModToolBanType;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.habbohotel.users.HabboInfo;
+import com.eu.habbo.habbohotel.users.HabboManager;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
 public class IPBanCommand extends Command
@@ -20,11 +22,24 @@ public class IPBanCommand extends Command
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
-        Habbo habbo = null;
+        HabboInfo habbo = null;
         String reason = "";
         if (params.length >= 2)
         {
-            habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(params[1]);
+            Habbo h = Emulator.getGameEnvironment().getHabboManager().getHabbo(params[1]);
+
+            if (h != null)
+            {
+                habbo = h.getHabboInfo();
+            }
+            else
+            {
+                habbo = HabboManager.getOfflineHabboInfo(params[1]);
+            }
+        }
+        else
+        {
+            return true;
         }
 
         if (params.length > 2)
@@ -39,21 +54,21 @@ public class IPBanCommand extends Command
         int count = 0;
         if (habbo != null)
         {
-            if (habbo == gameClient.getHabbo())
+            if (habbo == gameClient.getHabbo().getHabboInfo())
             {
                 gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_ip_ban.ban_self"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
                 return true;
             }
 
-            if (habbo.getHabboInfo().getRank() >= gameClient.getHabbo().getHabboInfo().getRank())
+            if (habbo.getRank() >= gameClient.getHabbo().getHabboInfo().getRank())
             {
                 gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_ban.target_rank_higher"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
                 return true;
             }
 
-            Emulator.getGameEnvironment().getModToolManager().ban(habbo.getHabboInfo().getId(), gameClient.getHabbo(), reason, TEN_YEARS, ModToolBanType.IP, -1);
+            Emulator.getGameEnvironment().getModToolManager().ban(habbo.getId(), gameClient.getHabbo(), reason, TEN_YEARS, ModToolBanType.IP, -1);
             count++;
-            for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithIP(habbo.getHabboInfo().getIpLogin()))
+            for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithIP(habbo.getIpLogin()))
             {
                 if (h != null)
                 {

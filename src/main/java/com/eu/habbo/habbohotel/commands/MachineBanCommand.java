@@ -7,6 +7,8 @@ import com.eu.habbo.habbohotel.modtool.ModToolBanType;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.habbohotel.users.HabboInfo;
+import com.eu.habbo.habbohotel.users.HabboManager;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
 import java.util.List;
@@ -21,11 +23,20 @@ public class MachineBanCommand extends Command
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
-        Habbo habbo = null;
+        HabboInfo habbo = null;
         String reason = "";
         if (params.length >= 2)
         {
-            habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(params[1]);
+            Habbo h = Emulator.getGameEnvironment().getHabboManager().getHabbo(params[1]);
+
+            if (h != null)
+            {
+                habbo = h.getHabboInfo();
+            }
+            else
+            {
+                habbo = HabboManager.getOfflineHabboInfo(params[1]);
+            }
         }
 
         if (params.length > 2)
@@ -40,19 +51,19 @@ public class MachineBanCommand extends Command
         int count = 0;
         if (habbo != null)
         {
-            if (habbo == gameClient.getHabbo())
+            if (habbo == gameClient.getHabbo().getHabboInfo())
             {
                 gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_machine_ban.ban_self"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
                 return true;
             }
 
-            if (habbo.getHabboInfo().getRank() >= gameClient.getHabbo().getHabboInfo().getRank())
+            if (habbo.getRank() >= gameClient.getHabbo().getHabboInfo().getRank())
             {
                 gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_ban.target_rank_higher"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
                 return true;
             }
 
-            count = Emulator.getGameEnvironment().getModToolManager().ban(habbo.getHabboInfo().getId(), gameClient.getHabbo(), reason, IPBanCommand.TEN_YEARS, ModToolBanType.MACHINE, -1).size();
+            count = Emulator.getGameEnvironment().getModToolManager().ban(habbo.getId(), gameClient.getHabbo(), reason, IPBanCommand.TEN_YEARS, ModToolBanType.MACHINE, -1).size();
 //            for (Habbo h : Emulator.getGameServer().getGameClientManager().getHabbosWithMachineId(ban.machineId))
 //            {
 //                if (h != null)
@@ -64,7 +75,7 @@ public class MachineBanCommand extends Command
         }
         else
         {
-            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_ban.user_offline"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_ban.user_not_found"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
             return true;
         }
 

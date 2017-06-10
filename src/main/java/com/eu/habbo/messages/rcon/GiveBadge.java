@@ -62,7 +62,8 @@ public class GiveBadge extends RCONMessage<GiveBadge.GiveBadgeJSON>
 
             if (habbo.getHabboInfo().getCurrentRoom() != null)
             {
-                habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.generic.cmd_badge.received"), habbo, habbo, RoomChatMessageBubbles.ALERT)));
+                //habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.generic.cmd_badge.received"), habbo, habbo, RoomChatMessageBubbles.ALERT)));
+
             }
             return;
         }
