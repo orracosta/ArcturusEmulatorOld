@@ -60,7 +60,7 @@ public class SecureLoginEvent_BACKUP extends MessageHandler
                 messages.add(new FriendsComposer(this.client.getHabbo()).compose());
                 messages.add(new MessengerInitComposer(this.client.getHabbo()).compose());
                 messages.add(new HotelViewDataComposer(",2013-05-08 13:00,gamesmaker;2013-05-11 13:00", "").compose());
-                messages.add(new AddHabboItemComposer(this.client.getHabbo().getHabboInventory().getItemsComponent().getItemsAsValueCollection()).compose());
+                messages.add(new AddHabboItemComposer(this.client.getHabbo().getInventory().getItemsComponent().getItemsAsValueCollection()).compose());
 
                 for(int i = 0; i < 9; i++)
                 {
@@ -127,7 +127,7 @@ public class SecureLoginEvent_BACKUP extends MessageHandler
                 this.client.sendResponse(new SessionRightsComposer());
 
 
-                //this.client.sendResponse(new AddHabboItemComposer(this.client.getHabbo().getHabboInventory().getItemsComponent().getItemsAsValueCollection()));
+                //this.client.sendResponse(new AddHabboItemComposer(this.client.getHabbo().getInventory().getItemsComponent().getItemsAsValueCollection()));
                 this.client.sendResponse(new UserClothesComposer());
 
                 //this.client.sendResponse(new UnknownComposer4());

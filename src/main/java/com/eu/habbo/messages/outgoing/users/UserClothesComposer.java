@@ -17,7 +17,7 @@ public class UserClothesComposer extends MessageComposer
 
     public UserClothesComposer(Habbo habbo)
     {
-        habbo.getHabboInventory().getWardrobeComponent().getClothing().forEach(new TIntProcedure()
+        habbo.getInventory().getWardrobeComponent().getClothing().forEach(new TIntProcedure()
         {
             @Override
             public boolean execute(int value)

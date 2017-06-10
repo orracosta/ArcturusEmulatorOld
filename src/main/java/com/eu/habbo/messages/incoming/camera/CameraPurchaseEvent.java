@@ -31,7 +31,7 @@ public class CameraPurchaseEvent extends MessageHandler
                     {
                         photoItem.setExtradata(photoItem.getExtradata().replace("%id%", photoItem.getId() + ""));
                         photoItem.needsUpdate(true);
-                        this.client.getHabbo().getHabboInventory().getItemsComponent().addItem(photoItem);
+                        this.client.getHabbo().getInventory().getItemsComponent().addItem(photoItem);
                         this.client.sendResponse(new CameraPurchaseSuccesfullComposer());
                         this.client.sendResponse(new AddHabboItemComposer(photoItem));
                         this.client.sendResponse(new InventoryRefreshComposer());

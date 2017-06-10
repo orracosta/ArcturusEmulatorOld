@@ -695,7 +695,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         Habbo habbo = (picker != null && picker.getHabboInfo().getId() == item.getId() ? picker : Emulator.getGameServer().getGameClientManager().getHabbo(item.getUserId()));
         if (habbo != null) {
-            habbo.getHabboInventory().getItemsComponent().addItem(item);
+            habbo.getInventory().getItemsComponent().addItem(item);
             habbo.getClient().sendResponse(new InventoryRefreshComposer());
         }
         Emulator.getThreading().run(item);
@@ -789,7 +789,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         pets.add((Pet) pet);
 
                         habbo.
-                                getHabboInventory().
+                                getInventory().
                                 getPetsComponent().
                                 addPet((Pet) pet);
 
@@ -3887,48 +3887,51 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         boolean stackHelper = false;
         THashSet<HabboItem> items = this.getItemsAt(x, y);
 
-        for (HabboItem item : items)
-        {
-            if (item instanceof InteractionStackHelper)
-            {
-                stackHelper = true;
-                height = item.getExtradata().isEmpty() ? Double.valueOf("0.0") : (Double.valueOf(item.getExtradata()) / 100);
-                canStack = true;
-            }
-        }
-
-        if (!stackHelper)
+        if (items != null)
         {
             for (HabboItem item : items)
             {
-                if (item.getBaseItem().allowSit())
+                if (item instanceof InteractionStackHelper)
                 {
-                    canStack = false;
-                    height = -1.0D;
-                    break;
+                    stackHelper = true;
+                    height = item.getExtradata().isEmpty() ? Double.valueOf("0.0") : (Double.valueOf(item.getExtradata()) / 100);
+                    canStack = true;
                 }
+            }
 
-                if (!item.getBaseItem().allowStack())
+            if (!stackHelper)
+            {
+                for (HabboItem item : items)
                 {
-                    canStack = false;
-                    height = -1.0D;
-                    break;
-                }
-
-                double itemHeight = (item.getBaseItem().allowSit() ? 0.0D : item.getBaseItem().getHeight()) + item.getZ();
-
-                if (item instanceof InteractionMultiHeight)
-                {
-                    if (item.getExtradata().length() == 0)
+                    if (item.getBaseItem().allowSit())
                     {
-                        item.setExtradata("0");
+                        canStack = false;
+                        height = -1.0D;
+                        break;
                     }
-                    itemHeight += Item.getCurrentHeight(item);
-                }
 
-                if (itemHeight > height)
-                {
-                    height = itemHeight;
+                    if (!item.getBaseItem().allowStack())
+                    {
+                        canStack = false;
+                        height = -1.0D;
+                        break;
+                    }
+
+                    double itemHeight = (item.getBaseItem().allowSit() ? 0.0D : item.getBaseItem().getHeight()) + item.getZ();
+
+                    if (item instanceof InteractionMultiHeight)
+                    {
+                        if (item.getExtradata().length() == 0)
+                        {
+                            item.setExtradata("0");
+                        }
+                        itemHeight += Item.getCurrentHeight(item);
+                    }
+
+                    if (itemHeight > height)
+                    {
+                        height = itemHeight;
+                    }
                 }
             }
         }
@@ -4036,23 +4039,27 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         HabboItem topItem = null;
         boolean canWalk = true;
-        for (HabboItem item : this.getItemsAt(roomTile))
+        THashSet<HabboItem> items = this.getItemsAt(roomTile);
+        if (items != null)
         {
-            if (topItem == null)
+            for (HabboItem item : items)
             {
-                topItem = item;
-            }
-
-            if (item.getZ() > topItem.getZ())
-            {
-                topItem = item;
-                canWalk = topItem.isWalkable() || topItem.getBaseItem().allowWalk();
-            }
-            else if (item.getZ() == topItem.getZ() && canWalk)
-            {
-                if ((!topItem.isWalkable() && !topItem.getBaseItem().allowWalk()) || (!item.getBaseItem().allowWalk() && !item.isWalkable()))
+                if (topItem == null)
                 {
-                    canWalk = false;
+                    topItem = item;
+                }
+
+                if (item.getZ() > topItem.getZ())
+                {
+                    topItem = item;
+                    canWalk = topItem.isWalkable() || topItem.getBaseItem().allowWalk();
+                }
+                else if (item.getZ() == topItem.getZ() && canWalk)
+                {
+                    if ((!topItem.isWalkable() && !topItem.getBaseItem().allowWalk()) || (!item.getBaseItem().allowWalk() && !item.isWalkable()))
+                    {
+                        canWalk = false;
+                    }
                 }
             }
         }
@@ -4610,18 +4617,21 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void updateItem(HabboItem item)
     {
-        if(item != null && item.getRoomId() == this.id)
+        if (this.isLoaded())
         {
-            if(item.getBaseItem() != null)
+            if (item != null && item.getRoomId() == this.id)
             {
-                if(item.getBaseItem().getType().equalsIgnoreCase("s"))
+                if (item.getBaseItem() != null)
                 {
-                    this.sendComposer(new FloorItemUpdateComposer(item).compose());
-                    this.updateTiles(this.getLayout().getTilesAt(this.layout.getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
-                }
-                else if(item.getBaseItem().getType().equalsIgnoreCase("i"))
-                {
-                    this.sendComposer(new WallItemUpdateComposer(item).compose());
+                    if (item.getBaseItem().getType().equalsIgnoreCase("s"))
+                    {
+                        this.sendComposer(new FloorItemUpdateComposer(item).compose());
+                        this.updateTiles(this.getLayout().getTilesAt(this.layout.getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
+                    }
+                    else if (item.getBaseItem().getType().equalsIgnoreCase("i"))
+                    {
+                        this.sendComposer(new WallItemUpdateComposer(item).compose());
+                    }
                 }
             }
         }
@@ -4685,7 +4695,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         if (habbo != null)
         {
-            habbo.getHabboInventory().getItemsComponent().addItems(items);
+            habbo.getInventory().getItemsComponent().addItems(items);
             habbo.getClient().sendResponse(new AddHabboItemComposer(items));
         }
 
@@ -4757,7 +4767,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
             if (user != null)
             {
-                user.getHabboInventory().getItemsComponent().addItems(entrySet.getValue());
+                user.getInventory().getItemsComponent().addItems(entrySet.getValue());
                 user.getClient().sendResponse(new AddHabboItemComposer(entrySet.getValue()));
             }
         }

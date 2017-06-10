@@ -5,7 +5,6 @@ import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.AlertPurchaseFailedComposer;
-import com.eu.habbo.messages.outgoing.catalog.PurchaseOKComposer;
 import com.eu.habbo.messages.outgoing.catalog.RecyclerCompleteComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.HotelWillCloseInMinutesComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
@@ -34,7 +33,7 @@ public class RecycleEvent extends MessageHandler
 
             for (int i = 0; i < count; i++)
             {
-                HabboItem item = this.client.getHabbo().getHabboInventory().getItemsComponent().getHabboItem(this.packet.readInt());
+                HabboItem item = this.client.getHabbo().getInventory().getItemsComponent().getHabboItem(this.packet.readInt());
 
                 if (item == null)
                     return;
@@ -49,7 +48,7 @@ public class RecycleEvent extends MessageHandler
             {
                 for (HabboItem item : items)
                 {
-                    this.client.getHabbo().getHabboInventory().getItemsComponent().removeHabboItem(item);
+                    this.client.getHabbo().getInventory().getItemsComponent().removeHabboItem(item);
                     this.client.sendResponse(new RemoveHabboItemComposer(item.getId()));
                     Emulator.getThreading().run(new QueryDeleteHabboItem(item));
                 }
@@ -63,7 +62,7 @@ public class RecycleEvent extends MessageHandler
             }
 
             this.client.sendResponse(new AddHabboItemComposer(reward));
-            this.client.getHabbo().getHabboInventory().getItemsComponent().addItem(reward);
+            this.client.getHabbo().getInventory().getItemsComponent().addItem(reward);
             this.client.sendResponse(new RecyclerCompleteComposer(RecyclerCompleteComposer.RECYCLING_COMPLETE));
             this.client.sendResponse(new InventoryRefreshComposer());
 

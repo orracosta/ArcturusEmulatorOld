@@ -8,7 +8,6 @@ import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
 import com.eu.habbo.messages.outgoing.inventory.AddBotComposer;
 import com.eu.habbo.messages.outgoing.inventory.RemoveBotComposer;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserRemoveComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUsersComposer;
 import com.eu.habbo.plugin.events.bots.BotPickedUpEvent;
 import com.eu.habbo.plugin.events.bots.BotPlacedEvent;
@@ -157,7 +156,7 @@ public class BotManager
                 room.addBot(bot);
                 Emulator.getThreading().run(bot);
                 room.sendComposer(new RoomUsersComposer(bot).compose());
-                habbo.getHabboInventory().getBotsComponent().removeBot(bot);
+                habbo.getInventory().getBotsComponent().removeBot(bot);
                 habbo.getClient().sendResponse(new RemoveBotComposer(bot));
                 bot.onPlace(habbo, room);
                 bot.cycle(false);
@@ -201,7 +200,7 @@ public class BotManager
 
             if (bot.getOwnerId() == habbo.getHabboInfo().getId() || habbo.hasPermission("acc_anyroomowner"))
             {
-                if (!habbo.hasPermission("acc_unlimited_bots") && habbo.getHabboInventory().getBotsComponent().getBots().size() >= 15)
+                if (!habbo.hasPermission("acc_unlimited_bots") && habbo.getInventory().getBotsComponent().getBots().size() >= 15)
                     return;
 
                 bot.onPickUp(habbo, habbo.getHabboInfo().getCurrentRoom());
@@ -212,7 +211,7 @@ public class BotManager
                 bot.needsUpdate(true);
                 Emulator.getThreading().run(bot);
 
-                habbo.getHabboInventory().getBotsComponent().addBot(bot);
+                habbo.getInventory().getBotsComponent().addBot(bot);
                 habbo.getClient().sendResponse(new AddBotComposer(bot));
             }
         }

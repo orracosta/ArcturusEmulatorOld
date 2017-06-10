@@ -17,7 +17,7 @@ public class TradeOfferItemEvent extends MessageHandler
         if(trade == null)
             return;
 
-        HabboItem item = this.client.getHabbo().getHabboInventory().getItemsComponent().getHabboItem(this.packet.readInt());
+        HabboItem item = this.client.getHabbo().getInventory().getItemsComponent().getHabboItem(this.packet.readInt());
 
         if(item == null)
             return;

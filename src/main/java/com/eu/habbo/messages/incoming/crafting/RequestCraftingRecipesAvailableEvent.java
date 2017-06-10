@@ -29,7 +29,7 @@ public class RequestCraftingRecipesAvailableEvent extends MessageHandler
             int count = this.packet.readInt();
             for (int i = 0; i < count; i++)
             {
-                HabboItem habboItem = this.client.getHabbo().getHabboInventory().getItemsComponent().getHabboItem(this.packet.readInt());
+                HabboItem habboItem = this.client.getHabbo().getInventory().getItemsComponent().getHabboItem(this.packet.readInt());
 
                 if (habboItem != null)
                 {

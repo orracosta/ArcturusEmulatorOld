@@ -2,7 +2,6 @@ package com.eu.habbo.messages.incoming.polls;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.polls.Poll;
-import com.eu.habbo.habbohotel.polls.PollManager;
 import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.generic.alerts.WiredRewardAlertComposer;
@@ -56,11 +55,11 @@ public class AnswerPollEvent extends MessageHandler
             {
                 if(poll.getBadgeReward().length() > 0)
                 {
-                    if(this.client.getHabbo().getHabboInventory().getBadgesComponent().getBadge(poll.getBadgeReward()) == null)
+                    if(this.client.getHabbo().getInventory().getBadgesComponent().getBadge(poll.getBadgeReward()) == null)
                     {
                         HabboBadge badge = new HabboBadge(0, poll.getBadgeReward(), 0, this.client.getHabbo());
                         Emulator.getThreading().run(badge);
-                        this.client.getHabbo().getHabboInventory().getBadgesComponent().addBadge(badge);
+                        this.client.getHabbo().getInventory().getBadgesComponent().addBadge(badge);
                         this.client.sendResponse(new AddUserBadgeComposer(badge));
                         this.client.sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_RECEIVED_BADGE));
                     }

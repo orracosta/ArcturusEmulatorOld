@@ -47,7 +47,7 @@ public class BadgesComponent
 
     public static void resetSlots(Habbo habbo)
     {
-        for(HabboBadge badge : habbo.getHabboInventory().getBadgesComponent().getBadges())
+        for(HabboBadge badge : habbo.getInventory().getBadgesComponent().getBadges())
         {
             if(badge.getSlot() == 0)
                 continue;
@@ -172,7 +172,7 @@ public class BadgesComponent
     {
         HabboBadge badge = new HabboBadge(0, code, 0, habbo);
         badge.run();
-        habbo.getHabboInventory().getBadgesComponent().addBadge(badge);
+        habbo.getInventory().getBadgesComponent().addBadge(badge);
         return badge;
     }
 

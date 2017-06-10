@@ -6,13 +6,9 @@ import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
-import com.eu.habbo.messages.outgoing.inventory.InventoryItemsComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
-import com.eu.habbo.threading.runnables.QueryDeleteHabboItems;
-import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.procedure.TObjectProcedure;
 
@@ -54,8 +50,8 @@ public class EmptyPetsInventoryCommand extends Command
             if (habbo != null)
             {
                 TIntObjectHashMap<AbstractPet> pets = new TIntObjectHashMap<>();
-                pets.putAll(habbo.getHabboInventory().getPetsComponent().getPets());
-                habbo.getHabboInventory().getPetsComponent().getPets().clear();
+                pets.putAll(habbo.getInventory().getPetsComponent().getPets());
+                habbo.getInventory().getPetsComponent().getPets().clear();
                 pets.forEachValue(new TObjectProcedure<AbstractPet>()
                 {
                     @Override

@@ -34,7 +34,7 @@ public class RedeemClothingEvent extends MessageHandler
 
                     if (clothing != null)
                     {
-                        if (!this.client.getHabbo().getHabboInventory().getWardrobeComponent().getClothing().contains(clothing.id))
+                        if (!this.client.getHabbo().getInventory().getWardrobeComponent().getClothing().contains(clothing.id))
                         {
                             item.setRoomId(0);
                             this.client.getHabbo().getHabboInfo().getCurrentRoom().removeHabboItem(item);
@@ -52,13 +52,17 @@ public class RedeemClothingEvent extends MessageHandler
                                 Emulator.getLogging().logSQLException(e);
                             }
 
-                            this.client.getHabbo().getHabboInventory().getWardrobeComponent().getClothing().add(clothing.id);
+                            this.client.getHabbo().getInventory().getWardrobeComponent().getClothing().add(clothing.id);
                             this.client.sendResponse(new UserClothesComposer(this.client.getHabbo()));
                         }
                         else
                         {
                             this.client.sendResponse(new GenericAlertComposer("You already own this item!"));
                         }
+                    }
+                    else
+                    {
+                        Emulator.getLogging().logErrorLine("[Catalog] No definition in catalog_clothing found for clothing name " + item.getBaseItem().getName() + ". Could not redeem clothing!");
                     }
                 }
             }

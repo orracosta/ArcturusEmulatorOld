@@ -12,7 +12,6 @@ import com.eu.habbo.messages.outgoing.crafting.CraftingResultComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.inventory.RemoveHabboItemComposer;
-import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItems;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.procedure.TObjectProcedure;
@@ -42,7 +41,7 @@ public class CraftingCraftItemEvent extends MessageHandler
             {
                 for (int i = 0; i < set.getValue(); i++)
                 {
-                    HabboItem habboItem = this.client.getHabbo().getHabboInventory().getItemsComponent().getAndRemoveHabboItem(set.getKey());
+                    HabboItem habboItem = this.client.getHabbo().getInventory().getItemsComponent().getAndRemoveHabboItem(set.getKey());
 
                     if (habboItem == null)
                     {
@@ -68,7 +67,7 @@ public class CraftingCraftItemEvent extends MessageHandler
                 }
 
                 this.client.sendResponse(new CraftingResultComposer(recipe));
-                this.client.getHabbo().getHabboInventory().getItemsComponent().addItem(rewardItem);
+                this.client.getHabbo().getInventory().getItemsComponent().addItem(rewardItem);
                 this.client.sendResponse(new AddHabboItemComposer(rewardItem));
                 toRemove.forEachValue(new TObjectProcedure<HabboItem>()
                 {

@@ -201,6 +201,7 @@ public class ItemManager {
             this.interactionsList.add(new ItemInteraction("wf_act_raise_furni",         WiredEffectRaiseFurni.class));
             this.interactionsList.add(new ItemInteraction("wf_act_lower_furni",         WiredEffectLowerFurni.class));
             this.interactionsList.add(new ItemInteraction("wf_act_give_respect",        WiredEffectGiveRespect.class));
+            this.interactionsList.add(new ItemInteraction("wf_act_alert",               WiredEffectAlert.class));
 
             /*
                 Conditions
@@ -836,7 +837,7 @@ public class ItemManager {
         {
             if(habbo != null)
             {
-                habbo.getHabboInventory().getItemsComponent().addItem(gift);
+                habbo.getInventory().getItemsComponent().addItem(gift);
 
                 habbo.getClient().sendResponse(new AddHabboItemComposer(gift));
             }

@@ -33,7 +33,7 @@ public class RedeemCommand extends Command
         TIntIntMap points = new TIntIntHashMap();
 
 
-        for(HabboItem item : gameClient.getHabbo().getHabboInventory().getItemsComponent().getItemsAsValueCollection())
+        for(HabboItem item : gameClient.getHabbo().getInventory().getItemsComponent().getItemsAsValueCollection())
         {
             if (item.getBaseItem().getName().startsWith("CF_") || item.getBaseItem().getName().startsWith("CFC_") || item.getBaseItem().getName().startsWith("DF_") || item.getBaseItem().getName().startsWith("PF_"))
             {
@@ -82,7 +82,7 @@ public class RedeemCommand extends Command
         TIntObjectHashMap<HabboItem> deleted = new TIntObjectHashMap<HabboItem>();
         for(HabboItem item : items)
         {
-            gameClient.getHabbo().getHabboInventory().getItemsComponent().removeHabboItem(item);
+            gameClient.getHabbo().getInventory().getItemsComponent().removeHabboItem(item);
             deleted.put(item.getId(), item);
         }
 

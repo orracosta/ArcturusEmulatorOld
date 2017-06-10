@@ -18,8 +18,6 @@ import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.HotelWillCloseInMinutesComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
-import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
-import com.eu.habbo.messages.outgoing.users.UserCurrencyComposer;
 import com.eu.habbo.messages.outgoing.users.UserPointsComposer;
 import com.eu.habbo.threading.runnables.ShutdownEmulator;
 import gnu.trove.map.hash.THashMap;
@@ -207,7 +205,7 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                 {
                     if (habbo != null)
                     {
-                        if(habbo.getHabboInventory().getBadgesComponent().hasBadge(baseItem.getName()))
+                        if(habbo.getInventory().getBadgesComponent().hasBadge(baseItem.getName()))
                         {
                             badgeFound = true;
                         }
@@ -285,7 +283,7 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                                                 {
                                                     HabboBadge badge = new HabboBadge(0, baseItem.getName(), 0, habbo);
                                                     Emulator.getThreading().run(badge);
-                                                    habbo.getHabboInventory().getBadgesComponent().addBadge(badge);
+                                                    habbo.getInventory().getBadgesComponent().addBadge(badge);
                                                 }
                                                 else
                                                 {
@@ -394,7 +392,7 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
             if(habbo != null)
             {
                 habbo.getClient().sendResponse(new AddHabboItemComposer(gift));
-                habbo.getClient().getHabbo().getHabboInventory().getItemsComponent().addItem(gift);
+                habbo.getClient().getHabbo().getInventory().getItemsComponent().addItem(gift);
                 habbo.getClient().sendResponse(new InventoryRefreshComposer());
                 THashMap<String, String> keys = new THashMap<String, String>();
                 keys.put("display", "BUBBLE");

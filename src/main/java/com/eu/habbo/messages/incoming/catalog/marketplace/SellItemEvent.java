@@ -25,7 +25,7 @@ public class SellItemEvent extends MessageHandler
         int unknown = this.packet.readInt();
         int itemId = this.packet.readInt();
 
-        HabboItem item = this.client.getHabbo().getHabboInventory().getItemsComponent().getHabboItem(itemId);
+        HabboItem item = this.client.getHabbo().getInventory().getItemsComponent().getHabboItem(itemId);
         if(item != null)
         {
             if (!item.getBaseItem().allowMarketplace())

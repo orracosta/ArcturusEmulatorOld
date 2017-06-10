@@ -105,7 +105,7 @@ public class WiredEffectGiveBadge extends InteractionWiredEffect
         if (this.badge.isEmpty())
             return false;
 
-        if (habbo.getHabboInventory().getBadgesComponent().hasBadge(this.badge))
+        if (habbo.getInventory().getBadgesComponent().hasBadge(this.badge))
         {
             habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_ALREADY_RECEIVED));
         }

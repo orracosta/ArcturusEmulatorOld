@@ -40,7 +40,7 @@ public class CraftingCraftSecretEvent extends MessageHandler
 
                 for (int i = 0; i < count; i++)
                 {
-                    HabboItem habboItem = this.client.getHabbo().getHabboInventory().getItemsComponent().getHabboItem(this.packet.readInt());
+                    HabboItem habboItem = this.client.getHabbo().getInventory().getItemsComponent().getHabboItem(this.packet.readInt());
 
                     if (habboItem == null)
                     {
@@ -84,11 +84,11 @@ public class CraftingCraftSecretEvent extends MessageHandler
 
                         this.client.sendResponse(new CraftingResultComposer(recipe));
                         this.client.getHabbo().getHabboStats().addRecipe(recipe.getId());
-                        this.client.getHabbo().getHabboInventory().getItemsComponent().addItem(rewardItem);
+                        this.client.getHabbo().getInventory().getItemsComponent().addItem(rewardItem);
                         this.client.sendResponse(new AddHabboItemComposer(rewardItem));
                         for (HabboItem item : habboItems)
                         {
-                            this.client.getHabbo().getHabboInventory().getItemsComponent().removeHabboItem(item);
+                            this.client.getHabbo().getInventory().getItemsComponent().removeHabboItem(item);
                             this.client.sendResponse(new RemoveHabboItemComposer(item.getId()));
                             Emulator.getThreading().run(new QueryDeleteHabboItem(item));
                         }

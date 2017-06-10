@@ -12,10 +12,8 @@ import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
-import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
 import gnu.trove.map.hash.THashMap;
 
-import java.util.Collection;
 import java.util.Map;
 
 public class MassBadgeCommand extends Command
@@ -48,7 +46,7 @@ public class MassBadgeCommand extends Command
 
                     if(habbo.isOnline())
                     {
-                        if (habbo.getHabboInventory() != null && habbo.getHabboInventory().getBadgesComponent() != null && !habbo.getHabboInventory().getBadgesComponent().hasBadge(badge))
+                        if (habbo.getInventory() != null && habbo.getInventory().getBadgesComponent() != null && !habbo.getInventory().getBadgesComponent().hasBadge(badge))
                         {
                             HabboBadge b = BadgesComponent.createBadge(badge, habbo);
 

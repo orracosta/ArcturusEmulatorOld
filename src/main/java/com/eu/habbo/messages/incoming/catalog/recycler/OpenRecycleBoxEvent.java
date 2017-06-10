@@ -53,7 +53,7 @@ public class OpenRecycleBoxEvent extends MessageHandler
 
                     if (reward != null)
                     {
-                        this.client.getHabbo().getHabboInventory().getItemsComponent().addItem(reward);
+                        this.client.getHabbo().getInventory().getItemsComponent().addItem(reward);
                         this.client.sendResponse(new AddHabboItemComposer(reward));
                         this.client.sendResponse(new InventoryRefreshComposer());
 

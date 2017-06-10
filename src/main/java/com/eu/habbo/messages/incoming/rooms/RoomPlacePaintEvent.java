@@ -21,7 +21,7 @@ public class RoomPlacePaintEvent extends MessageHandler
         if(room.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || room.hasRights(this.client.getHabbo()) || this.client.getHabbo().hasPermission("acc_placefurni"))
         {
             int itemId = this.packet.readInt();
-            HabboItem item = this.client.getHabbo().getHabboInventory().getItemsComponent().getHabboItem(itemId);
+            HabboItem item = this.client.getHabbo().getInventory().getItemsComponent().getHabboItem(itemId);
 
             if(item == null)
             {
@@ -50,7 +50,7 @@ public class RoomPlacePaintEvent extends MessageHandler
             else
                 return;
 
-            this.client.getHabbo().getHabboInventory().getItemsComponent().removeHabboItem(item);
+            this.client.getHabbo().getInventory().getItemsComponent().removeHabboItem(item);
             room.setNeedsUpdate(true);
             room.sendComposer(new RoomPaintComposer(item.getBaseItem().getName(), item.getExtradata()).compose());
             item.needsDelete(true);

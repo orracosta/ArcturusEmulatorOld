@@ -15,7 +15,7 @@ public class RequestInventoryItemsEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        int totalItems = this.client.getHabbo().getHabboInventory().getItemsComponent().getItems().size();
+        int totalItems = this.client.getHabbo().getInventory().getItemsComponent().getItems().size();
         int pages = (int) Math.ceil((double) totalItems / 1000.0);
 
         if (pages == 0)
@@ -23,13 +23,13 @@ public class RequestInventoryItemsEvent extends MessageHandler
             pages = 1;
         }
 
-        synchronized (this.client.getHabbo().getHabboInventory().getItemsComponent().getItems())
+        synchronized (this.client.getHabbo().getInventory().getItemsComponent().getItems())
         {
             TIntObjectMap<HabboItem> items = new TIntObjectHashMap<HabboItem>();
-            TIntObjectIterator<HabboItem> iterator = this.client.getHabbo().getHabboInventory().getItemsComponent().getItems().iterator();
+            TIntObjectIterator<HabboItem> iterator = this.client.getHabbo().getInventory().getItemsComponent().getItems().iterator();
             int count = 0;
             int page = 1;
-            for (int i = this.client.getHabbo().getHabboInventory().getItemsComponent().getItems().size(); i-- > 0; )
+            for (int i = this.client.getHabbo().getInventory().getItemsComponent().getItems().size(); i-- > 0; )
             {
                 try
                 {

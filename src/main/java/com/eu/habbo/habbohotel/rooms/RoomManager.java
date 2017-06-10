@@ -538,6 +538,11 @@ public class RoomManager {
         return new ArrayList<Room>(this.activeRooms.values());
     }
 
+    public int loadedRoomsCount()
+    {
+        return this.activeRooms.size();
+    }
+
     public void enterRoom(Habbo habbo, int roomId, String password)
     {
         this.enterRoom(habbo, roomId, password, false, null);

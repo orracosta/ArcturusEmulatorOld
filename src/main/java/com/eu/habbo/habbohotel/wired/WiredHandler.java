@@ -8,7 +8,6 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionWiredExtra;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.items.interactions.wired.WiredTriggerReset;
 import com.eu.habbo.habbohotel.items.interactions.wired.effects.WiredEffectGiveReward;
-import com.eu.habbo.habbohotel.items.interactions.wired.effects.WiredEffectTriggerStacks;
 import com.eu.habbo.habbohotel.items.interactions.wired.extra.WiredExtraRandom;
 import com.eu.habbo.habbohotel.items.interactions.wired.extra.WiredExtraUnseen;
 import com.eu.habbo.habbohotel.rooms.Room;
@@ -17,20 +16,15 @@ import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.habbohotel.users.HabboItem;
-import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.catalog.PurchaseOKComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.WiredRewardAlertComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
-import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
-import com.eu.habbo.messages.outgoing.users.UserCurrencyComposer;
 import com.eu.habbo.plugin.events.furniture.wired.WiredConditionFailedEvent;
 import com.eu.habbo.plugin.events.furniture.wired.WiredStackExecutedEvent;
 import com.eu.habbo.plugin.events.furniture.wired.WiredStackTriggeredEvent;
 import com.eu.habbo.plugin.events.users.UserWiredRewardReceived;
-import com.eu.habbo.threading.runnables.HabboItemNewState;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.Connection;
@@ -259,7 +253,7 @@ public class WiredHandler
 
             HabboBadge badge = new HabboBadge(0, rewardReceived.value, 0, habbo);
             Emulator.getThreading().run(badge);
-            habbo.getHabboInventory().getBadgesComponent().addBadge(badge);
+            habbo.getInventory().getBadgesComponent().addBadge(badge);
             habbo.getClient().sendResponse(new AddUserBadgeComposer(badge));
             habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_RECEIVED_BADGE));
         }
@@ -301,7 +295,7 @@ public class WiredHandler
                         if(item != null)
                         {
                             habbo.getClient().sendResponse(new AddHabboItemComposer(item));
-                            habbo.getClient().getHabbo().getHabboInventory().getItemsComponent().addItem(item);
+                            habbo.getClient().getHabbo().getInventory().getItemsComponent().addItem(item);
                             habbo.getClient().sendResponse(new PurchaseOKComposer(null, null));
                             habbo.getClient().sendResponse(new InventoryRefreshComposer());
                             habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_RECEIVED_ITEM));

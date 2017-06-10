@@ -19,7 +19,7 @@ public class HotelViewClaimBadgeRewardEvent extends MessageHandler
 
             if (!badgeCode.isEmpty())
             {
-                if (!this.client.getHabbo().getHabboInventory().getBadgesComponent().hasBadge(badgeCode))
+                if (!this.client.getHabbo().getInventory().getBadgesComponent().hasBadge(badgeCode))
                 {
                     HabboBadge badge = BadgesComponent.createBadge(badgeCode, this.client.getHabbo());
                     this.client.sendResponse(new AddUserBadgeComposer(badge));

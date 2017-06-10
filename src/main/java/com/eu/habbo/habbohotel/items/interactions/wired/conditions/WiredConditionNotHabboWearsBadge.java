@@ -36,9 +36,9 @@ public class WiredConditionNotHabboWearsBadge extends InteractionWiredCondition
 
         if(habbo != null)
         {
-            synchronized (habbo.getHabboInventory().getBadgesComponent().getWearingBadges())
+            synchronized (habbo.getInventory().getBadgesComponent().getWearingBadges())
             {
-                for (HabboBadge b : habbo.getHabboInventory().getBadgesComponent().getWearingBadges())
+                for (HabboBadge b : habbo.getInventory().getBadgesComponent().getWearingBadges())
                 {
                     if (b.getCode().equalsIgnoreCase(this.badge))
                         return false;

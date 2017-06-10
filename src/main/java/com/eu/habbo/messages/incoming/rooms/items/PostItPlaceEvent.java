@@ -21,7 +21,7 @@ public class PostItPlaceEvent extends MessageHandler
         if(room == null || !room.hasRights(this.client.getHabbo()))
             return;
 
-        HabboItem item = this.client.getHabbo().getHabboInventory().getItemsComponent().getHabboItem(itemId);
+        HabboItem item = this.client.getHabbo().getInventory().getItemsComponent().getHabboItem(itemId);
 
         if(item != null && item instanceof InteractionPostIt)
         {

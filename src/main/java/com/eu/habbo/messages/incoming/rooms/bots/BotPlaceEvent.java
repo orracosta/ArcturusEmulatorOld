@@ -15,7 +15,7 @@ public class BotPlaceEvent extends MessageHandler
         if(room == null)
             return;
 
-        Bot bot = this.client.getHabbo().getHabboInventory().getBotsComponent().getBot(this.packet.readInt());
+        Bot bot = this.client.getHabbo().getInventory().getBotsComponent().getBot(this.packet.readInt());
 
         if(bot == null)
             return;

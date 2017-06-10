@@ -44,7 +44,7 @@ public class GiveBadge extends RCONMessage<GiveBadge.GiveBadgeJSON>
         {
             username = habbo.getHabboInfo().getUsername();
 
-            if(habbo.getHabboInventory().getBadgesComponent().hasBadge(json.badge))
+            if(habbo.getInventory().getBadgesComponent().hasBadge(json.badge))
             {
                 this.status = RCONMessage.STATUS_ERROR;
                 this.message = Emulator.getTexts().getValue("commands.error.cmd_badge.already_owned").replace("%user%", username).replace("%badge%", json.badge);
@@ -55,7 +55,7 @@ public class GiveBadge extends RCONMessage<GiveBadge.GiveBadgeJSON>
 
             badge.run();
 
-            habbo.getHabboInventory().getBadgesComponent().addBadge(badge);
+            habbo.getInventory().getBadgesComponent().addBadge(badge);
             habbo.getClient().sendResponse(new AddUserBadgeComposer(badge));
 
             this.message = Emulator.getTexts().getValue("commands.succes.cmd_badge.given").replace("%user%", username).replace("%badge%", json.badge);

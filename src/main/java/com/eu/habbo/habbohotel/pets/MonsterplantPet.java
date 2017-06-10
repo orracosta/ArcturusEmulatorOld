@@ -1,10 +1,8 @@
 package com.eu.habbo.habbohotel.pets;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.achievements.Achievement;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.items.Item;
-import com.eu.habbo.habbohotel.items.ItemManager;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
@@ -389,7 +387,7 @@ public class MonsterplantPet extends Pet implements IPetLook
                 {
                     AchievementManager.progressAchievement(ownerOne, Emulator.getGameEnvironment().getAchievementManager().getAchievement("MonsterPlantBreeder"), 5);
                     seed = Emulator.getGameEnvironment().getItemManager().createItem(ownerOne.getHabboInfo().getId(), seedBase, 0, 0, "");
-                    ownerOne.getHabboInventory().getItemsComponent().addItem(seed);
+                    ownerOne.getInventory().getItemsComponent().addItem(seed);
                     ownerOne.getClient().sendResponse(new AddHabboItemComposer(seed));
                     ownerOne.getClient().sendResponse(new InventoryRefreshComposer());
                 }
@@ -398,7 +396,7 @@ public class MonsterplantPet extends Pet implements IPetLook
                 {
                     AchievementManager.progressAchievement(ownerTwo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("MonsterPlantBreeder"), 5);
                     seed = Emulator.getGameEnvironment().getItemManager().createItem(ownerTwo.getHabboInfo().getId(), seedBase, 0, 0, "");
-                    ownerTwo.getHabboInventory().getItemsComponent().addItem(seed);
+                    ownerTwo.getInventory().getItemsComponent().addItem(seed);
                     ownerTwo.getClient().sendResponse(new AddHabboItemComposer(seed));
                     ownerTwo.getClient().sendResponse(new InventoryRefreshComposer());
                 }

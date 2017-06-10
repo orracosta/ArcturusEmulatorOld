@@ -12,7 +12,6 @@ import com.eu.habbo.plugin.Event;
 import com.eu.habbo.plugin.events.users.achievements.UserAchievementLeveledEvent;
 import com.eu.habbo.plugin.events.users.achievements.UserAchievementProgressEvent;
 import gnu.trove.map.hash.THashMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.sql.*;
 import java.util.LinkedHashMap;
@@ -271,7 +270,7 @@ public class AchievementManager
             HabboBadge badge = null;
             try
             {
-                badge = habbo.getHabboInventory().getBadgesComponent().getBadge(("ACH_" + achievement.name + currentLevelId).toLowerCase());
+                badge = habbo.getInventory().getBadgesComponent().getBadge(("ACH_" + achievement.name + currentLevelId).toLowerCase());
             }
             catch (Exception e)
             {
@@ -290,7 +289,7 @@ public class AchievementManager
                 habbo.getClient().sendResponse(new AddUserBadgeComposer(badge));
                 badge.needsInsert(true);
                 badge.needsUpdate(true);
-                habbo.getHabboInventory().getBadgesComponent().addBadge(badge);
+                habbo.getInventory().getBadgesComponent().addBadge(badge);
             }
 
             Emulator.getThreading().run(badge);
@@ -299,7 +298,7 @@ public class AchievementManager
             {
                 if(habbo.getHabboInfo().getCurrentRoom() != null)
                 {
-                    habbo.getHabboInfo().getCurrentRoom().sendComposer(new UserBadgesComposer(habbo.getHabboInventory().getBadgesComponent().getWearingBadges(), habbo.getHabboInfo().getId()).compose());
+                    habbo.getHabboInfo().getCurrentRoom().sendComposer(new UserBadgesComposer(habbo.getInventory().getBadgesComponent().getWearingBadges(), habbo.getHabboInfo().getId()).compose());
                 }
             }
 

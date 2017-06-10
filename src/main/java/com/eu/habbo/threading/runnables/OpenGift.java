@@ -39,7 +39,7 @@ public class OpenGift implements Runnable
                 i.run();
             }
 
-            this.habbo.getHabboInventory().getItemsComponent().addItems(((InteractionGift) this.item).items);
+            this.habbo.getInventory().getItemsComponent().addItems(((InteractionGift) this.item).items);
 
             this.habbo.getClient().sendResponse(new AddHabboItemComposer(((InteractionGift) this.item).items));
             this.habbo.getClient().sendResponse(new InventoryRefreshComposer());

@@ -7,7 +7,6 @@ import com.eu.habbo.habbohotel.catalog.layouts.ClubBuyLayout;
 import com.eu.habbo.habbohotel.catalog.layouts.RecentPurchasesLayout;
 import com.eu.habbo.habbohotel.catalog.layouts.RoomBundleLayout;
 import com.eu.habbo.habbohotel.catalog.layouts.VipBuyLayout;
-import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.*;
@@ -39,7 +38,7 @@ public class CatalogBuyItemEvent extends MessageHandler
 
         try
         {
-            if (this.client.getHabbo().getHabboInventory().getItemsComponent().itemCount() > Emulator.getConfig().getInt("inventory.max.items"))
+            if (this.client.getHabbo().getInventory().getItemsComponent().itemCount() > Emulator.getConfig().getInt("inventory.max.items"))
             {
                 this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR).compose());
                 this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("inventory.full")));
@@ -114,11 +113,11 @@ public class CatalogBuyItemEvent extends MessageHandler
 
                 final boolean[] badgeFound = {false};
                 item[0].getBaseItems().stream().filter(i -> i.getType().equalsIgnoreCase("b")).forEach(i -> {
-                    if (!this.client.getHabbo().getHabboInventory().getBadgesComponent().hasBadge(i.getName()))
+                    if (!this.client.getHabbo().getInventory().getBadgesComponent().hasBadge(i.getName()))
                     {
                         HabboBadge badge = new HabboBadge(0, i.getName(), 0, this.client.getHabbo());
                         Emulator.getThreading().run(badge);
-                        this.client.getHabbo().getHabboInventory().getBadgesComponent().addBadge(badge);
+                        this.client.getHabbo().getInventory().getBadgesComponent().addBadge(badge);
                         this.client.sendResponse(new AddUserBadgeComposer(badge));
                         THashMap<String, String> keys = new THashMap<String, String>();
                         keys.put("display", "BUBBLE");
@@ -196,9 +195,11 @@ public class CatalogBuyItemEvent extends MessageHandler
                 if (this.client.getHabbo().getHabboInfo().getCredits() < totalCredits)
                     return;
 
-                this.client.getHabbo().getHabboInfo().addCurrencyAmount(item.getPointsType(), -totalDuckets);
+                if (!this.client.getHabbo().hasPermission("acc_infinite_credits"))
+                    this.client.getHabbo().getHabboInfo().addCredits(-totalCredits);
 
-                this.client.getHabbo().getHabboInfo().addCredits(-totalCredits);
+                if (!this.client.getHabbo().hasPermission("acc_infinite_points"))
+                    this.client.getHabbo().getHabboInfo().addCurrencyAmount(item.getPointsType(), -totalDuckets);
 
                 if(this.client.getHabbo().getHabboStats().getClubExpireTimestamp() <= Emulator.getIntUnixTimestamp())
                     this.client.getHabbo().getHabboStats().setClubExpireTimestamp(Emulator.getIntUnixTimestamp());

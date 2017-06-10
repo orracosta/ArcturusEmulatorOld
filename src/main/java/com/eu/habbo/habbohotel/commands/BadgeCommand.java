@@ -44,7 +44,7 @@ public class BadgeCommand extends Command
 
             if(habbo != null)
             {
-                if(habbo.getHabboInventory().getBadgesComponent().hasBadge(params[2]))
+                if(habbo.getInventory().getBadgesComponent().hasBadge(params[2]))
                 {
                     gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_badge.already_owned").replace("%user%", params[1]).replace("%badge%", params[2]), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
                     return true;
@@ -54,7 +54,7 @@ public class BadgeCommand extends Command
 
                 badge.run();
 
-                habbo.getHabboInventory().getBadgesComponent().addBadge(badge);
+                habbo.getInventory().getBadgesComponent().addBadge(badge);
                 habbo.getClient().sendResponse(new AddUserBadgeComposer(badge));
 
                 gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_badge.given").replace("%user%", params[1]).replace("%badge%", params[2]), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));

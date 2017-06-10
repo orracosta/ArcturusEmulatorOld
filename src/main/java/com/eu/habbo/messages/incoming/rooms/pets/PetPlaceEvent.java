@@ -3,7 +3,6 @@ package com.eu.habbo.messages.incoming.rooms.pets;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.rooms.*;
-import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.generic.alerts.PetErrorComposer;
 import com.eu.habbo.messages.outgoing.inventory.RemovePetComposer;
@@ -27,7 +26,7 @@ public class PetPlaceEvent extends MessageHandler
 
         int petId = this.packet.readInt();
 
-        Pet pet = this.client.getHabbo().getHabboInventory().getPetsComponent().getPet(petId);
+        Pet pet = this.client.getHabbo().getInventory().getPetsComponent().getPet(petId);
 
         if(pet == null)
         {
@@ -109,7 +108,7 @@ public class PetPlaceEvent extends MessageHandler
         pet.needsUpdate = true;
         Emulator.getThreading().run(pet);
         room.sendComposer(new RoomPetComposer(pet).compose());
-        this.client.getHabbo().getHabboInventory().getPetsComponent().removePet(pet);
+        this.client.getHabbo().getInventory().getPetsComponent().removePet(pet);
         this.client.sendResponse(new RemovePetComposer(pet));
     }
 }

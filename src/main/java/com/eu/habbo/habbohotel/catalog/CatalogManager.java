@@ -1089,7 +1089,7 @@ public class CatalogManager
                                                 bot.setOwnerName(habbo.getClient().getHabbo().getHabboInfo().getUsername());
                                                 bot.needsUpdate(true);
                                                 Emulator.getThreading().run(bot);
-                                                habbo.getClient().getHabbo().getHabboInventory().getBotsComponent().addBot(bot);
+                                                habbo.getClient().getHabbo().getInventory().getBotsComponent().addBot(bot);
                                                 habbo.getClient().sendResponse(new AddBotComposer(bot));
                                             }
                                             else
@@ -1121,7 +1121,7 @@ public class CatalogManager
                                             if(pet == null)
                                                 return;
 
-                                            habbo.getClient().getHabbo().getHabboInventory().getPetsComponent().addPet(pet);
+                                            habbo.getClient().getHabbo().getInventory().getPetsComponent().addPet(pet);
                                             habbo.getClient().sendResponse(new AddPetComposer(pet));
                                             habbo.getClient().sendResponse(new PetBoughtNotificationComposer(pet, false));
 
@@ -1129,11 +1129,11 @@ public class CatalogManager
                                         }
                                         else if (baseItem.getType().equalsIgnoreCase("b"))
                                         {
-                                            if(!habbo.getHabboInventory().getBadgesComponent().hasBadge(baseItem.getName()))
+                                            if(!habbo.getInventory().getBadgesComponent().hasBadge(baseItem.getName()))
                                             {
                                                 HabboBadge badge = new HabboBadge(0, baseItem.getName(), 0, habbo);
                                                 Emulator.getThreading().run(badge);
-                                                habbo.getHabboInventory().getBadgesComponent().addBadge(badge);
+                                                habbo.getInventory().getBadgesComponent().addBadge(badge);
                                                 habbo.getClient().sendResponse(new AddUserBadgeComposer(badge));
                                                 THashMap<String, String> keys = new THashMap<String, String>();
                                                 keys.put("display", "BUBBLE");
@@ -1150,7 +1150,7 @@ public class CatalogManager
                                         {
                                             if (baseItem.getInteractionType().getType() == InteractionTrophy.class || baseItem.getInteractionType().getType() == InteractionBadgeDisplay.class)
                                             {
-                                                if(baseItem.getInteractionType().getType() == InteractionBadgeDisplay.class && !habbo.getClient().getHabbo().getHabboInventory().getBadgesComponent().hasBadge(extradata))
+                                                if(baseItem.getInteractionType().getType() == InteractionBadgeDisplay.class && !habbo.getClient().getHabbo().getInventory().getBadgesComponent().hasBadge(extradata))
                                                 {
                                                     Emulator.getGameEnvironment().getModToolManager().quickTicket(habbo.getClient().getHabbo(), "Scripter", Emulator.getTexts().getValue("scripter.warning.catalog.badge_display").replace("%username%", habbo.getClient().getHabbo().getHabboInfo().getUsername()).replace("%badge%", extradata));
                                                     extradata = "UMAD";
@@ -1258,7 +1258,7 @@ public class CatalogManager
 
 
             habbo.getClient().sendResponse(new AddHabboItemComposer(purchasedEvent.itemsList));
-            habbo.getClient().getHabbo().getHabboInventory().getItemsComponent().addItems(purchasedEvent.itemsList);
+            habbo.getClient().getHabbo().getInventory().getItemsComponent().addItems(purchasedEvent.itemsList);
             habbo.getClient().sendResponse(new PurchaseOKComposer(purchasedEvent.catalogItem, cBaseItem));
             habbo.getClient().sendResponse(new InventoryRefreshComposer());
 

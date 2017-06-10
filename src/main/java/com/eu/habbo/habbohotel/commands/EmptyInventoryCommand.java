@@ -1,9 +1,7 @@
 package com.eu.habbo.habbohotel.commands;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
-import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -15,7 +13,6 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItems;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
-import gnu.trove.procedure.TObjectProcedure;
 
 public class EmptyInventoryCommand extends Command
 {
@@ -56,12 +53,12 @@ public class EmptyInventoryCommand extends Command
             {
 
                 TIntObjectMap<HabboItem> items = new TIntObjectHashMap<HabboItem>();
-                items.putAll(habbo.getHabboInventory().getItemsComponent().getItems());
-                habbo.getHabboInventory().getItemsComponent().getItems().clear();
+                items.putAll(habbo.getInventory().getItemsComponent().getItems());
+                habbo.getInventory().getItemsComponent().getItems().clear();
                 Emulator.getThreading().run(new QueryDeleteHabboItems(items));
 
                 habbo.getClient().sendResponse(new InventoryRefreshComposer());
-                habbo.getClient().sendResponse(new InventoryItemsComposer(0, 1, gameClient.getHabbo().getHabboInventory().getItemsComponent().getItems()));
+                habbo.getClient().sendResponse(new InventoryItemsComposer(0, 1, gameClient.getHabbo().getInventory().getItemsComponent().getItems()));
 
                 gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_empty.cleared"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
             }

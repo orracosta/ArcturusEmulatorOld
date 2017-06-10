@@ -21,10 +21,10 @@ public class MarketplaceOwnItemsComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.MarketplaceOwnItemsComposer);
-        this.response.appendInt32(habbo.getHabboInventory().getSoldPriceTotal());
-        this.response.appendInt32(habbo.getHabboInventory().getMarketplaceItems().size());
+        this.response.appendInt32(habbo.getInventory().getSoldPriceTotal());
+        this.response.appendInt32(habbo.getInventory().getMarketplaceItems().size());
 
-        for(MarketPlaceOffer offer : habbo.getHabboInventory().getMarketplaceItems())
+        for(MarketPlaceOffer offer : habbo.getInventory().getMarketplaceItems())
         {
             try
             {

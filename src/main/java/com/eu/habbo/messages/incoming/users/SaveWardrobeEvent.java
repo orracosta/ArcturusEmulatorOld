@@ -16,16 +16,16 @@ public class SaveWardrobeEvent extends MessageHandler
         String gender = this.packet.readString();
 
         WardrobeComponent.WardrobeItem wardrobeItem;
-        if(this.client.getHabbo().getHabboInventory().getWardrobeComponent().getLooks().containsKey(slotId))
+        if(this.client.getHabbo().getInventory().getWardrobeComponent().getLooks().containsKey(slotId))
         {
-            wardrobeItem = this.client.getHabbo().getHabboInventory().getWardrobeComponent().getLooks().get(slotId);
+            wardrobeItem = this.client.getHabbo().getInventory().getWardrobeComponent().getLooks().get(slotId);
             wardrobeItem.setGender(HabboGender.valueOf(gender));
             wardrobeItem.setLook(look);
             wardrobeItem.setNeedsUpdate(true);
         }
         else
         {
-            wardrobeItem = this.client.getHabbo().getHabboInventory().getWardrobeComponent().createLook(this.client.getHabbo(), slotId, look);
+            wardrobeItem = this.client.getHabbo().getInventory().getWardrobeComponent().createLook(this.client.getHabbo(), slotId, look);
             wardrobeItem.setNeedsInsert(true);
         }
 

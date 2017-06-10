@@ -95,7 +95,7 @@ public class RoomPlaceItemEvent extends MessageHandler
         if(itemId <= 0)
             return;
 
-        HabboItem item = this.client.getHabbo().getHabboInventory().getItemsComponent().getHabboItem(itemId);
+        HabboItem item = this.client.getHabbo().getInventory().getItemsComponent().getHabboItem(itemId);
 
         if(item == null)
             return;
@@ -251,7 +251,7 @@ public class RoomPlaceItemEvent extends MessageHandler
 
         this.client.sendResponse(new RemoveHabboItemComposer(item.getId()));
         item.needsUpdate(true);
-        this.client.getHabbo().getHabboInventory().getItemsComponent().removeHabboItem(item.getId());
+        this.client.getHabbo().getInventory().getItemsComponent().removeHabboItem(item.getId());
         room.addHabboItem(item);
         item.setRoomId(room.getId());
 

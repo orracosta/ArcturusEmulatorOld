@@ -5,7 +5,6 @@ import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.habbohotel.users.inventory.BadgesComponent;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.users.UserBadgesComposer;
-import gnu.trove.set.hash.THashSet;
 
 import java.util.ArrayList;
 
@@ -28,7 +27,7 @@ public class UserWearBadgeEvent extends MessageHandler
             if(badgeId.length() == 0)
                 continue;
 
-            HabboBadge badge = this.client.getHabbo().getHabboInventory().getBadgesComponent().getBadge(badgeId);
+            HabboBadge badge = this.client.getHabbo().getInventory().getBadgesComponent().getBadge(badgeId);
             if(badge != null)
             {
                 badge.setSlot(slot);

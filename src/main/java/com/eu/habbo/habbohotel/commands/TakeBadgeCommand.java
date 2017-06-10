@@ -10,9 +10,6 @@ import com.eu.habbo.habbohotel.users.inventory.BadgesComponent;
 import com.eu.habbo.messages.outgoing.inventory.InventoryBadgesComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-
 public class TakeBadgeCommand extends Command
 {
     public TakeBadgeCommand()
@@ -43,7 +40,7 @@ public class TakeBadgeCommand extends Command
 
             if (habbo != null)
             {
-                HabboBadge b = habbo.getHabboInventory().getBadgesComponent().removeBadge(badge);
+                HabboBadge b = habbo.getInventory().getBadgesComponent().removeBadge(badge);
 
                 if (b == null)
                 {

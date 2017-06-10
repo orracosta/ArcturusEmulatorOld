@@ -25,11 +25,11 @@ public class InventoryPetsComposer extends MessageComposer
 
         this.response.appendInt32(1);
         this.response.appendInt32(1);
-        this.response.appendInt32(this.habbo.getHabboInventory().getPetsComponent().getPetsCount());
+        this.response.appendInt32(this.habbo.getInventory().getPetsComponent().getPetsCount());
 
-        TIntObjectIterator<Pet> petIterator = this.habbo.getHabboInventory().getPetsComponent().getPets().iterator();
+        TIntObjectIterator<Pet> petIterator = this.habbo.getInventory().getPetsComponent().getPets().iterator();
 
-        for(int i = this.habbo.getHabboInventory().getPetsComponent().getPets().size(); i-- > 0;)
+        for(int i = this.habbo.getInventory().getPetsComponent().getPets().size(); i-- > 0;)
         {
             try
             {

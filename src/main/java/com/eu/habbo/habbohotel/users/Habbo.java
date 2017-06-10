@@ -3,10 +3,8 @@ package com.eu.habbo.habbohotel.users;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.bots.Bot;
-import com.eu.habbo.habbohotel.bots.BotManager;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.messenger.Messenger;
-import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.habbohotel.users.inventory.BadgesComponent;
@@ -26,7 +24,6 @@ import com.eu.habbo.plugin.events.users.UserDisconnectEvent;
 import com.eu.habbo.plugin.events.users.UserPointsEvent;
 import gnu.trove.set.hash.THashSet;
 
-import java.net.InetSocketAddress;
 import java.sql.ResultSet;
 
 public class Habbo implements Runnable
@@ -105,12 +102,6 @@ public class Habbo implements Runnable
         return this.habboStats;
     }
 
-    @Deprecated
-    public HabboInventory getHabboInventory()
-    {
-        return this.habboInventory;
-    }
-
     public HabboInventory getInventory()
     {
         return this.habboInventory;
@@ -183,7 +174,7 @@ public class Habbo implements Runnable
             this.needsUpdate(true);
             this.isOnline(false);
             this.run();
-            this.getHabboInventory().dispose();
+            this.getInventory().dispose();
             this.messenger.connectionChanged(this, false, false);
             this.messenger.dispose();
             this.disconnected = true;

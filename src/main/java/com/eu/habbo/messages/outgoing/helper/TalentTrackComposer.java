@@ -11,9 +11,6 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
-import gnu.trove.iterator.TIntObjectIterator;
-import gnu.trove.map.hash.TIntObjectHashMap;
-import gnu.trove.procedure.TIntIntProcedure;
 import gnu.trove.procedure.TObjectIntProcedure;
 
 import java.util.LinkedHashMap;
@@ -146,7 +143,7 @@ public class TalentTrackComposer extends MessageComposer
                         if (giveRewards)
                         {
                             HabboItem rewardItem = Emulator.getGameEnvironment().getItemManager().createItem(this.habbo.getHabboInfo().getId(), item, 0, 0, "");
-                            this.habbo.getHabboInventory().getItemsComponent().addItem(rewardItem);
+                            this.habbo.getInventory().getItemsComponent().addItem(rewardItem);
                             this.habbo.getClient().sendResponse(new AddHabboItemComposer(rewardItem));
                         }
                         this.response.appendString(item.getName());
@@ -161,7 +158,7 @@ public class TalentTrackComposer extends MessageComposer
                             {
                                 HabboBadge b = new HabboBadge(0, badge, 0, habbo);
                                 Emulator.getThreading().run(b);
-                                this.habbo.getHabboInventory().getBadgesComponent().addBadge(b);
+                                this.habbo.getInventory().getBadgesComponent().addBadge(b);
                                 this.habbo.getClient().sendResponse(new AddUserBadgeComposer(b));
                             }
                         }

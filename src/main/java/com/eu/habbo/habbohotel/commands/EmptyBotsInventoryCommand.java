@@ -50,8 +50,8 @@ public class EmptyBotsInventoryCommand extends Command
             if (habbo != null)
             {
                 TIntObjectHashMap<Bot> bots = new TIntObjectHashMap<>();
-                bots.putAll(habbo.getHabboInventory().getBotsComponent().getBots());
-                habbo.getHabboInventory().getBotsComponent().getBots().clear();
+                bots.putAll(habbo.getInventory().getBotsComponent().getBots());
+                habbo.getInventory().getBotsComponent().getBots().clear();
                 bots.forEachValue(new TObjectProcedure<Bot>()
                 {
                     @Override

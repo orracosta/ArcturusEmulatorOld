@@ -59,7 +59,7 @@ public class MarketPlace
      */
     public static void takeBackItem(Habbo habbo, int offerId)
     {
-        MarketPlaceOffer offer = habbo.getHabboInventory().getOffer(offerId);
+        MarketPlaceOffer offer = habbo.getInventory().getOffer(offerId);
 
         takeBackItem(habbo, offer);
     }
@@ -71,7 +71,7 @@ public class MarketPlace
      */
     private static void takeBackItem(Habbo habbo, MarketPlaceOffer offer)
     {
-        if(offer != null && habbo.getHabboInventory().getMarketplaceItems().contains(offer))
+        if(offer != null && habbo.getInventory().getMarketplaceItems().contains(offer))
         {
             try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
             {
@@ -87,7 +87,7 @@ public class MarketPlace
                             return;
                         }
 
-                        habbo.getHabboInventory().removeMarketplaceOffer(offer);
+                        habbo.getInventory().removeMarketplaceOffer(offer);
 
                         try (PreparedStatement statement = connection.prepareStatement("DELETE FROM marketplace_items WHERE id = ? AND state != 2"))
                         {
@@ -110,7 +110,7 @@ public class MarketPlace
                                             while (set.next())
                                             {
                                                 HabboItem item = Emulator.getGameEnvironment().getItemManager().loadHabboItem(set);
-                                                habbo.getHabboInventory().getItemsComponent().addItem(item);
+                                                habbo.getInventory().getItemsComponent().addItem(item);
                                                 habbo.getClient().sendResponse(new MarketplaceCancelSaleComposer(offer, true));
                                                 habbo.getClient().sendResponse(new AddHabboItemComposer(item));
                                                 habbo.getClient().sendResponse(new InventoryRefreshComposer());
@@ -330,7 +330,7 @@ public class MarketPlace
                                         item.needsUpdate(true);
                                         Emulator.getThreading().run(item);
 
-                                        client.getHabbo().getHabboInventory().getItemsComponent().addItem(item);
+                                        client.getHabbo().getInventory().getItemsComponent().addItem(item);
                                         client.getHabbo().getHabboInfo().addCredits(-price);
                                         client.sendResponse(new UserCreditsComposer(client.getHabbo()));
                                         client.sendResponse(new AddHabboItemComposer(item));
@@ -340,7 +340,7 @@ public class MarketPlace
                                         Habbo habbo = Emulator.getGameServer().getGameClientManager().getHabbo(set.getInt("user_id"));
                                         if (habbo != null)
                                         {
-                                            habbo.getHabboInventory().getOffer(offerId).setState(MarketPlaceState.SOLD);
+                                            habbo.getInventory().getOffer(offerId).setState(MarketPlaceState.SOLD);
                                         }
                                     }
                                 }
@@ -413,9 +413,9 @@ public class MarketPlace
 
             if(offer != null)
             {
-                client.getHabbo().getHabboInventory().addMarketplaceOffer(offer);
+                client.getHabbo().getInventory().addMarketplaceOffer(offer);
 
-                client.getHabbo().getHabboInventory().getItemsComponent().removeHabboItem(item);
+                client.getHabbo().getInventory().getItemsComponent().removeHabboItem(item);
                 client.sendResponse(new RemoveHabboItemComposer(item.getId()));
                 client.sendResponse(new InventoryRefreshComposer());
                 item.setUserId(-1);
@@ -440,13 +440,13 @@ public class MarketPlace
         int credits = 0;
 
         THashSet<MarketPlaceOffer> offers = new THashSet<MarketPlaceOffer>();
-        offers.addAll(client.getHabbo().getHabboInventory().getMarketplaceItems());
+        offers.addAll(client.getHabbo().getInventory().getMarketplaceItems());
 
         for(MarketPlaceOffer offer : offers)
         {
             if(offer.getState().equals(MarketPlaceState.SOLD))
             {
-                client.getHabbo().getHabboInventory().removeMarketplaceOffer(offer);
+                client.getHabbo().getInventory().removeMarketplaceOffer(offer);
                 credits += offer.getPrice();
                 removeUser(offer);
                 offer.needsUpdate(true);

@@ -6,7 +6,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
-import com.eu.habbo.messages.outgoing.inventory.RemoveHabboItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.messages.outgoing.trading.*;
 import gnu.trove.set.hash.THashSet;
@@ -133,7 +132,7 @@ public class RoomTrade
         {
             for(HabboItem item : roomTradeUser.getItems())
             {
-                if(roomTradeUser.getHabbo().getHabboInventory().getItemsComponent().getHabboItem(item.getId()) == null)
+                if(roomTradeUser.getHabbo().getInventory().getItemsComponent().getHabboItem(item.getId()) == null)
                 {
                     sendMessageToUsers(new TradeClosedComposer(roomTradeUser.getHabbo().getRoomUnit().getId(), TradeClosedComposer.ITEMS_NOT_FOUND));
                     return;
@@ -184,8 +183,8 @@ public class RoomTrade
                         item.setUserId(userTwoId);
                         statement.setInt(1, userTwoId);
                         statement.setInt(2, item.getId());
-                        userOne.getHabbo().getHabboInventory().getItemsComponent().removeHabboItem(item);
-                        userTwo.getHabbo().getHabboInventory().getItemsComponent().addItem(item);
+                        userOne.getHabbo().getInventory().getItemsComponent().removeHabboItem(item);
+                        userTwo.getHabbo().getInventory().getItemsComponent().addItem(item);
                         statement.addBatch();
 
                         if (logTrades)
@@ -202,8 +201,8 @@ public class RoomTrade
                         item.setUserId(userOneId);
                         statement.setInt(1, userOneId);
                         statement.setInt(2, item.getId());
-                        userTwo.getHabbo().getHabboInventory().getItemsComponent().removeHabboItem(item);
-                        userOne.getHabbo().getHabboInventory().getItemsComponent().addItem(item);
+                        userTwo.getHabbo().getInventory().getItemsComponent().removeHabboItem(item);
+                        userOne.getHabbo().getInventory().getItemsComponent().addItem(item);
                         statement.addBatch();
 
                         if (logTrades)

@@ -12,7 +12,7 @@ public class TradeCancelOfferItemEvent extends MessageHandler
         int itemId = this.packet.readInt();
 
         RoomTrade trade = this.client.getHabbo().getHabboInfo().getCurrentRoom().getActiveTradeForHabbo(this.client.getHabbo());
-        HabboItem item = this.client.getHabbo().getHabboInventory().getItemsComponent().getHabboItem(itemId);
+        HabboItem item = this.client.getHabbo().getInventory().getItemsComponent().getHabboItem(itemId);
 
         if(trade == null || trade.getRoomTradeUserForHabbo(this.client.getHabbo()).getAccepted() || item == null)
         {
