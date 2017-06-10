@@ -49,8 +49,10 @@ public class BuyRoomPromotionEvent extends MessageHandler
 
                     if(room.isPromoted())
                     {
-                        this.client.getHabbo().giveCredits(-item.getCredits());
-                        this.client.getHabbo().givePoints(item.getPointsType(), -item.getPoints());
+                        if (!this.client.getHabbo().hasPermission("acc_infinite_credits"))
+                            this.client.getHabbo().giveCredits(-item.getCredits());
+                        if (!this.client.getHabbo().hasPermission("acc_infinite_points"))
+                            this.client.getHabbo().givePoints(item.getPointsType(), -item.getPoints());
                         this.client.sendResponse(new PurchaseOKComposer());
                         room.sendComposer(new RoomPromotionMessageComposer(room, room.getPromotion()).compose());
                     }
