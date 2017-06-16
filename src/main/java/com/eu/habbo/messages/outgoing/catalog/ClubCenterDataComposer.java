@@ -29,15 +29,15 @@ public class ClubCenterDataComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.ClubCenterDataComposer);
-        this.response.appendInt32(this.streakDuration); //streakduration in days
+        this.response.appendInt(this.streakDuration); //streakduration in days
         this.response.appendString(this.joinDate); //joindate
         this.response.appendDouble(this.percentage); //percentage
-        this.response.appendInt32(0); //Unused
-        this.response.appendInt32(0); //unused
-        this.response.appendInt32(this.creditsSpend); //Amount credits spend
-        this.response.appendInt32(this.creditsBonus); //Credits bonus
-        this.response.appendInt32(this.spendBonus); //Spend bonus
-        this.response.appendInt32(this.delay); //next pay in minutes
+        this.response.appendInt(0); //Unused
+        this.response.appendInt(0); //unused
+        this.response.appendInt(this.creditsSpend); //Amount credits spend
+        this.response.appendInt(this.creditsBonus); //Credits bonus
+        this.response.appendInt(this.spendBonus); //Spend bonus
+        this.response.appendInt(this.delay); //next pay in minutes
         return this.response;
     }
 }

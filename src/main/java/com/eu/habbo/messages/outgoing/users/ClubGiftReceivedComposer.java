@@ -20,14 +20,14 @@ public class ClubGiftReceivedComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.ClubGiftReceivedComposer);
-        this.response.appendInt32(this.items.size());
+        this.response.appendInt(this.items.size());
 
         for(HabboItem item : this.items)
         {
-            this.response.appendString(item.getBaseItem().getType());
-            this.response.appendInt32(item.getBaseItem().getId());
+            this.response.appendString(item.getBaseItem().getType().code);
+            this.response.appendInt(item.getBaseItem().getId());
             this.response.appendString(item.getBaseItem().getName());
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
             this.response.appendBoolean(false);
         }
 

@@ -23,14 +23,14 @@ public class FriendChatMessageComposer extends MessageComposer
 
         if (message.getToId() == 0)
         {
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
         }
         else
         {
-            this.response.appendInt32(message.getFromId());
+            this.response.appendInt(message.getFromId());
         }
         this.response.appendString(message.getMessage());
-        this.response.appendInt32(Emulator.getIntUnixTimestamp() - message.getTimestamp());
+        this.response.appendInt(Emulator.getIntUnixTimestamp() - message.getTimestamp());
 
         if (message.getToId() == 0) //TO Staff Chat
         {

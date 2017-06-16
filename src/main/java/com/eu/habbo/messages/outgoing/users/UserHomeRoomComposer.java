@@ -21,8 +21,8 @@ public class UserHomeRoomComposer extends MessageComposer
     {
         this.response.init(Outgoing.UserHomeRoomComposer);
 
-        this.response.appendInt32(this.homeRoom);
-        this.response.appendInt32(this.newRoom);
+        this.response.appendInt(this.homeRoom);
+        this.response.appendInt(this.newRoom);
 
         return this.response;
     }

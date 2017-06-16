@@ -42,8 +42,8 @@ public class InteractionClothing extends HabboItem
     @Override
     public void serializeExtradata(ServerMessage serverMessage)
     {
-        serverMessage.appendInt32(2 + (this.isLimited() ? 256 : 0));
-        serverMessage.appendInt32(1);
+        serverMessage.appendInt(2 + (this.isLimited() ? 256 : 0));
+        serverMessage.appendInt(1);
         serverMessage.appendString("");
 
         super.serializeExtradata(serverMessage);

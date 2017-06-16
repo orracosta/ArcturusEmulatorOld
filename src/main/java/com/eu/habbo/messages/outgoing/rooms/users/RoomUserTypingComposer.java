@@ -20,8 +20,8 @@ public class RoomUserTypingComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomUserTypingComposer);
-        this.response.appendInt32(this.roomUnit.getId());
-        this.response.appendInt32(this.typing ? 1 : 0);
+        this.response.appendInt(this.roomUnit.getId());
+        this.response.appendInt(this.typing ? 1 : 0);
         return this.response;
     }
 }

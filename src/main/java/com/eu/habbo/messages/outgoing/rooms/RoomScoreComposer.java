@@ -20,7 +20,7 @@ public class RoomScoreComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomScoreComposer);
-        this.response.appendInt32(score);
+        this.response.appendInt(score);
         this.response.appendBoolean(this.canVote);
         return this.response;
     }

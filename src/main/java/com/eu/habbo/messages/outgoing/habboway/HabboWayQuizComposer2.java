@@ -20,10 +20,10 @@ public class HabboWayQuizComposer2 extends MessageComposer
     {
         this.response.init(Outgoing.HabboWayQuizComposer2);
         this.response.appendString(this.name);
-        this.response.appendInt32(this.items.length);
+        this.response.appendInt(this.items.length);
         for (int i = 0; i < this.items.length; i++)
         {
-            this.response.appendInt32(this.items[i]);
+            this.response.appendInt(this.items[i]);
         }
         return this.response;
     }

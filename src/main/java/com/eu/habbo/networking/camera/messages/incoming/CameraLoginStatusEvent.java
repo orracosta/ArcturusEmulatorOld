@@ -33,7 +33,7 @@ public class CameraLoginStatusEvent extends CameraIncomingMessage
         }
         else if (status == NO_ACCOUNT)
         {
-            System.out.println("[" + Logging.ANSI_RED + "CAMERA" + Logging.ANSI_RESET + "] Failed to login to Camera Server: No Account Found");
+            System.out.println("[" + Logging.ANSI_RED + "CAMERA" + Logging.ANSI_RESET + "] Failed to login to Camera Server: No Account Found. Register for free on the Arcturus Forums! Visit http://arcturus.wf/");
         }
         else if (status == BANNED)
         {

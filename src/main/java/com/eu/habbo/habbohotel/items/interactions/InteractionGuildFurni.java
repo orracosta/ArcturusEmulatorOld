@@ -8,7 +8,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,8 +35,8 @@ public class InteractionGuildFurni extends HabboItem
 
         if(guild != null)
         {
-            serverMessage.appendInt32(2 + (this.isLimited() ? 256 : 0));
-            serverMessage.appendInt32(5);
+            serverMessage.appendInt(2 + (this.isLimited() ? 256 : 0));
+            serverMessage.appendInt(5);
             serverMessage.appendString(this.getExtradata());
             serverMessage.appendString(guild.getId() + "");
             serverMessage.appendString(guild.getBadge());
@@ -48,13 +47,13 @@ public class InteractionGuildFurni extends HabboItem
         }
         else
         {
-            serverMessage.appendInt32((this.isLimited() ? 256 : 0));
+            serverMessage.appendInt((this.isLimited() ? 256 : 0));
             serverMessage.appendString(this.getExtradata());
 
             if(this.isLimited())
             {
-                serverMessage.appendInt32(10);
-                serverMessage.appendInt32(100);
+                serverMessage.appendInt(10);
+                serverMessage.appendInt(100);
             }
         }
     }

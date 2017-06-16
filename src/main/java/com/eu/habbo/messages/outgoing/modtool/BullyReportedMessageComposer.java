@@ -23,7 +23,7 @@ public class BullyReportedMessageComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.BullyReportedMessageComposer);
-        this.response.appendInt32(this.code);
+        this.response.appendInt(this.code);
         return this.response;
     }
 }

@@ -10,7 +10,7 @@ public class BaseJumpUnloadGameComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.BaseJumpUnloadGameComposer);
-        this.response.appendInt32(3);
+        this.response.appendInt(3);
         this.response.appendString("basejump");
         return this.response;
     }

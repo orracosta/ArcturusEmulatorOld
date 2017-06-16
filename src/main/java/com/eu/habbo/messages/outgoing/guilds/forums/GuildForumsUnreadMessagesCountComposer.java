@@ -17,7 +17,7 @@ public class GuildForumsUnreadMessagesCountComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildForumsUnreadMessagesCountComposer);
-        this.response.appendInt32(this.count);
+        this.response.appendInt(this.count);
         return this.response;
     }
 }

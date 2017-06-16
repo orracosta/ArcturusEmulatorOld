@@ -18,7 +18,7 @@ public class LoveLockFurniFriendConfirmedComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.LoveLockFurniFriendConfirmedComposer);
-        this.response.appendInt32(this.loveLock.getId());
+        this.response.appendInt(this.loveLock.getId());
         return this.response;
     }
 }

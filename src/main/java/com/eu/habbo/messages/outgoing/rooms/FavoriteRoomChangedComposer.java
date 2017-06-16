@@ -19,7 +19,7 @@ public class FavoriteRoomChangedComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.FavoriteRoomChangedComposer);
-        this.response.appendInt32(this.roomId);
+        this.response.appendInt(this.roomId);
         this.response.appendBoolean(this.favorite);
         return this.response;
     }

@@ -26,12 +26,12 @@ public class PetTrainingPanelComposer extends MessageComposer
         Collections.sort(this.pet.getPetData().getPetCommands());
 
         this.response.init(Outgoing.PetTrainingPanelComposer);
-        this.response.appendInt32(this.pet.getId());
-        this.response.appendInt32(this.pet.getPetData().getPetCommands().size());
+        this.response.appendInt(this.pet.getId());
+        this.response.appendInt(this.pet.getPetData().getPetCommands().size());
 
         for(PetCommand petCommand : this.pet.getPetData().getPetCommands())
         {
-            this.response.appendInt32(petCommand.id);
+            this.response.appendInt(petCommand.id);
 
             if(this.pet.getLevel() >= petCommand.level)
             {
@@ -41,11 +41,11 @@ public class PetTrainingPanelComposer extends MessageComposer
 
         Collections.sort(enabled);
 
-        this.response.appendInt32(enabled.size());
+        this.response.appendInt(enabled.size());
 
         for(PetCommand petCommand : enabled)
         {
-            this.response.appendInt32(petCommand.id);
+            this.response.appendInt(petCommand.id);
         }
 
         return this.response;

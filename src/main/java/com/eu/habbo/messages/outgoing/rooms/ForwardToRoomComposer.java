@@ -17,7 +17,7 @@ public class ForwardToRoomComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.ForwardToRoomComposer);
-        this.response.appendInt32(this.roomId);
+        this.response.appendInt(this.roomId);
         return this.response;
     }
 }

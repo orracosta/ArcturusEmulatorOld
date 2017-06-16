@@ -17,9 +17,9 @@ public class ClubGiftsLayout extends CatalogPage
     public void serialize(ServerMessage message)
     {
         message.appendString("club_gifts");
-        message.appendInt32(1);
+        message.appendInt(1);
         message.appendString(super.getHeaderImage());
-        message.appendInt32(1);
+        message.appendInt(1);
         message.appendString(super.getTextOne());
     }
 }

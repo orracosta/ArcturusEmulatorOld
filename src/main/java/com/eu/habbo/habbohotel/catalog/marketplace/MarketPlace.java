@@ -204,26 +204,26 @@ public class MarketPlace
         {
             statement.setInt(1, itemId);
 
-            message.appendInt32(avarageLastXDays(itemId, 7));//idk
-            message.appendInt32(itemsOnSale(itemId)); //offcount to do!
-            message.appendInt32(30); //days.
+            message.appendInt(avarageLastXDays(itemId, 7));//idk
+            message.appendInt(itemsOnSale(itemId)); //offcount to do!
+            message.appendInt(30); //days.
 
             try (ResultSet set = statement.executeQuery())
             {
                 set.last();
-                message.appendInt32(set.getRow());
+                message.appendInt(set.getRow());
                 set.beforeFirst();
 
                 while (set.next())
                 {
-                    message.appendInt32(-set.getInt("day"));
-                    message.appendInt32(MarketPlace.calculateCommision(set.getInt("price")));
-                    message.appendInt32(set.getInt("sold"));
+                    message.appendInt(-set.getInt("day"));
+                    message.appendInt(MarketPlace.calculateCommision(set.getInt("price")));
+                    message.appendInt(set.getInt("sold"));
                 }
             }
 
-            message.appendInt32(1);
-            message.appendInt32(itemId);
+            message.appendInt(1);
+            message.appendInt(itemId);
         }
         catch(SQLException e)
         {

@@ -277,7 +277,7 @@ public class Outgoing
     public final static int RoomUnknown2Composer = 2208; // PRODUCTION-201611291003-338511768
     public final static int RoomUnknown3Composer = 1033; // PRODUCTION-201611291003-338511768
 
-    public final static int UnknownEffectsComposer = 2228; // PRODUCTION-201611291003-338511768
+    public final static int EffectsListRemoveComposer = 2228; // PRODUCTION-201611291003-338511768
 
     public final static int OldPublicRoomsComposer = 2726; // PRODUCTION-201611291003-338511768
     public final static int ItemStateComposer2 = 3431; // PRODUCTION-201611291003-338511768
@@ -378,7 +378,7 @@ public class Outgoing
     public final static int HotelViewCommunityGoalComposer = 2525; // PRODUCTION-201611291003-338511768
     public final static int UnknownRoomVisitsComposer = 966; // PRODUCTION-201611291003-338511768
     public final static int CanCreateEventComposer = 2599; // PRODUCTION-201611291003-338511768
-    public final static int UnknownGroupComposer = 1459; // PRODUCTION-201611291003-338511768
+    public final static int UnknownGuild2Composer = 1459; // PRODUCTION-201611291003-338511768
     public final static int YoutubeDisplayListComposer = 1112; // PRODUCTION-201611291003-338511768
     public final static int YoutubeMessageComposer2 = 1411; // PRODUCTION-201611291003-338511768
     public final static int YoutubeMessageComposer3 = 1554; // PRODUCTION-201611291003-338511768

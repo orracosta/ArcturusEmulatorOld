@@ -1,7 +1,6 @@
 package com.eu.habbo.messages.outgoing.navigator;
 
 import com.eu.habbo.habbohotel.navigation.SearchResultList;
-import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
@@ -39,7 +38,7 @@ public class NewNavigatorSearchResultsComposer extends MessageComposer
             }
         });
 
-        this.response.appendInt32(this.resultList.size()); //Count
+        this.response.appendInt(this.resultList.size()); //Count
 
         for (SearchResultList item : resultList)
         {

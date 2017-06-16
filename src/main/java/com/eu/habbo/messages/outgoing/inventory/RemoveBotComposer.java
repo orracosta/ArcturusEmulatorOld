@@ -18,7 +18,7 @@ public class RemoveBotComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RemoveBotComposer);
-        this.response.appendInt32(this.bot.getId());
+        this.response.appendInt(this.bot.getId());
         return this.response;
     }
 }

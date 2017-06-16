@@ -43,19 +43,19 @@ public class CatalogFeaturedPage implements ISerialize
     @Override
     public void serialize(ServerMessage message)
     {
-        message.appendInt32(this.slotId);
+        message.appendInt(this.slotId);
         message.appendString(this.caption);
         message.appendString(this.image);
-        message.appendInt32(this.type.type);
+        message.appendInt(this.type.type);
         switch (this.type)
         {
             case PAGE_NAME:
                 message.appendString(this.pageName); break;
             case PAGE_ID:
-                message.appendInt32(this.pageId); break;
+                message.appendInt(this.pageId); break;
             case PRODUCT_NAME:
                 message.appendString(this.productName); break;
         }
-        message.appendInt32(Emulator.getIntUnixTimestamp() - this.expireTimestamp);
+        message.appendInt(Emulator.getIntUnixTimestamp() - this.expireTimestamp);
     }
 }

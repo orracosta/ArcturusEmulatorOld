@@ -18,7 +18,7 @@ public class LoveLockFurniFinishedComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.LoveLockFurniFinishedComposer);
-        this.response.appendInt32(this.loveLock.getId());
+        this.response.appendInt(this.loveLock.getId());
         return this.response;
     }
 }

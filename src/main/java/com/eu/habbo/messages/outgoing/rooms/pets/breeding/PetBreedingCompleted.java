@@ -19,8 +19,8 @@ public class PetBreedingCompleted extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.PetBreedingCompleted);
-        this.response.appendInt32(this.anInt1);
-        this.response.appendInt32(this.anInt2);
+        this.response.appendInt(this.anInt1);
+        this.response.appendInt(this.anInt2);
         return this.response;
     }
 }

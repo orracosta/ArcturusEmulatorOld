@@ -34,8 +34,8 @@ public class InteractionLoveLock extends HabboItem
     @Override
     public void serializeExtradata(ServerMessage serverMessage)
     {
-        serverMessage.appendInt32(2 + (this.isLimited() ? 256 : 0));
-        serverMessage.appendInt32(6);
+        serverMessage.appendInt(2 + (this.isLimited() ? 256 : 0));
+        serverMessage.appendInt(6);
 
         String[] data = this.getExtradata().split("\t");
 

@@ -10,7 +10,7 @@ public class SnowWarsResetTimerComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(294);
-        this.response.appendInt32(100);
+        this.response.appendInt(100);
         return this.response;
     }
 }

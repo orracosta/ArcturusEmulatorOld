@@ -18,7 +18,7 @@ public class PostItStickyPoleOpenComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.PostItStickyPoleOpenComposer);
-        this.response.appendInt32(this.item == null ? -1234 : this.item.getId());
+        this.response.appendInt(this.item == null ? -1234 : this.item.getId());
         this.response.appendString("");
         return this.response;
     }

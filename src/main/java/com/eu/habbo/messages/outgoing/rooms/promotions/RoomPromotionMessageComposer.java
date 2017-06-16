@@ -26,38 +26,38 @@ public class RoomPromotionMessageComposer extends MessageComposer
         if (room == null || roomPromotion == null)
         {
             // RoomID of the promoted room
-            this.response.appendInt32(-1);
+            this.response.appendInt(-1);
             // UserID of the room owner
-            this.response.appendInt32(-1);
+            this.response.appendInt(-1);
             // Username of the room owner
             this.response.appendString("");
             // Promoted status? Seems to only switch to 0 or 1
-            this.response.appendInt32(0);
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
+            this.response.appendInt(0);
             // Promotion title
             this.response.appendString("");
             // Promotion description
             this.response.appendString("");
             // Category ID? Also seen in BuyRoomPromotionEvent (last int)
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
             // On later production these are used to pass the time left in minutes
-            this.response.appendInt32(0);
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
+            this.response.appendInt(0);
         }
         else
         {
-            this.response.appendInt32(room.getId());
-            this.response.appendInt32(room.getOwnerId());
+            this.response.appendInt(room.getId());
+            this.response.appendInt(room.getOwnerId());
             this.response.appendString(room.getOwnerName());
 
-            this.response.appendInt32(1);
-            this.response.appendInt32(1);
+            this.response.appendInt(1);
+            this.response.appendInt(1);
 
             this.response.appendString(roomPromotion.getTitle());
             this.response.appendString(roomPromotion.getDescription());
-            this.response.appendInt32(0);
-            this.response.appendInt32(0);
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
+            this.response.appendInt(0);
+            this.response.appendInt(0);
         }
 
         return this.response;

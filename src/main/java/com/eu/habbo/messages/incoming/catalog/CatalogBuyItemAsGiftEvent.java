@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.catalog.CatalogItem;
 import com.eu.habbo.habbohotel.catalog.CatalogLimitedConfiguration;
 import com.eu.habbo.habbohotel.catalog.CatalogPage;
+import com.eu.habbo.habbohotel.items.FurnitureType;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.*;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -201,7 +202,7 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
             boolean badgeFound = false;
             for (Item baseItem : item.getBaseItems())
             {
-                if (baseItem.getType().equalsIgnoreCase("b"))
+                if (baseItem.getType() == FurnitureType.BADGE)
                 {
                     if (habbo != null)
                     {
@@ -275,7 +276,7 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                                     cBaseItem = baseItem;
                                     if (!baseItem.getName().contains("avatar_effect"))
                                     {
-                                        if (baseItem.getType().equalsIgnoreCase("b"))
+                                        if (baseItem.getType() == FurnitureType.BADGE)
                                         {
                                             if (!badgeFound)
                                             {

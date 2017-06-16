@@ -20,7 +20,7 @@ public class AlertPurchaseUnavailableComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.AlertPurchaseUnavailableComposer);
-        this.response.appendInt32(this.code);
+        this.response.appendInt(this.code);
         return this.response;
     }
 }

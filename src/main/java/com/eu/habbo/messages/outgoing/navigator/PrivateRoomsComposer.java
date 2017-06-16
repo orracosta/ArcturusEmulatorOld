@@ -23,25 +23,25 @@ public class PrivateRoomsComposer extends MessageComposer
         {
             this.response.init(Outgoing.PrivateRoomsComposer);
 
-            this.response.appendInt32(2);
+            this.response.appendInt(2);
             this.response.appendString("");
 
-            this.response.appendInt32(this.rooms.size());
+            this.response.appendInt(this.rooms.size());
 
             for (Room room : this.rooms) {
                 room.serialize(this.response);
             }
             this.response.appendBoolean(true);
 
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
             this.response.appendString("A");
             this.response.appendString("B");
-            this.response.appendInt32(1);
+            this.response.appendInt(1);
             this.response.appendString("C");
             this.response.appendString("D");
-            this.response.appendInt32(1);
-            this.response.appendInt32(1);
-            this.response.appendInt32(1);
+            this.response.appendInt(1);
+            this.response.appendInt(1);
+            this.response.appendInt(1);
             this.response.appendString("E");
             return this.response;
         }

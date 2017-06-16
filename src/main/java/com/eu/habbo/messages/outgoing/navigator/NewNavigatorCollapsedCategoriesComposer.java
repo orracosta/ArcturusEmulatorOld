@@ -10,7 +10,7 @@ public class NewNavigatorCollapsedCategoriesComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.NewNavigatorCollapsedCategoriesComposer);
-        this.response.appendInt32(46);
+        this.response.appendInt(46);
         this.response.appendString("new_ads");
         this.response.appendString("friend_finding");
         this.response.appendString("staffpicks");

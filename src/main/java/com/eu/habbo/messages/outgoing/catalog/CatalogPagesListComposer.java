@@ -32,12 +32,12 @@ public class CatalogPagesListComposer extends MessageComposer
             this.response.init(Outgoing.CatalogPagesListComposer);
 
             this.response.appendBoolean(true);
-            this.response.appendInt32(0);
-            this.response.appendInt32(-1);
+            this.response.appendInt(0);
+            this.response.appendInt(-1);
             this.response.appendString("root");
             this.response.appendString("");
-            this.response.appendInt32(0);
-            this.response.appendInt32(pages.size());
+            this.response.appendInt(0);
+            this.response.appendInt(pages.size());
 
             for (CatalogPage category : pages)
             {
@@ -62,18 +62,18 @@ public class CatalogPagesListComposer extends MessageComposer
         List<CatalogPage> pagesList = Emulator.getGameEnvironment().getCatalogManager().getCatalogPages(category.getId(), this.habbo);
 
         this.response.appendBoolean(category.isVisible());
-        this.response.appendInt32(category.getIconImage());
-        this.response.appendInt32(category.isEnabled() ? category.getId() : -1);
+        this.response.appendInt(category.getIconImage());
+        this.response.appendInt(category.isEnabled() ? category.getId() : -1);
         this.response.appendString(category.getPageName());
         this.response.appendString(category.getCaption() + (hasPermission ? " (" + category.getId() + ")" : ""));
-        this.response.appendInt32(category.getOfferIds().size());
+        this.response.appendInt(category.getOfferIds().size());
 
         for(int i : category.getOfferIds().toArray())
         {
-            this.response.appendInt32(i);
+            this.response.appendInt(i);
         }
 
-        this.response.appendInt32(pagesList.size());
+        this.response.appendInt(pagesList.size());
 
         for (CatalogPage page : pagesList)
         {

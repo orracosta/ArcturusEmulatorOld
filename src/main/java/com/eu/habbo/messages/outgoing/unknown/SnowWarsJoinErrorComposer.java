@@ -13,7 +13,7 @@ public class SnowWarsJoinErrorComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(1437);
-        this.response.appendInt32(2);
+        this.response.appendInt(2);
         return this.response;
     }
 }

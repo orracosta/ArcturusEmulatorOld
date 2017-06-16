@@ -24,7 +24,7 @@ public class GenericErrorMessagesComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GenericErrorMessages);
-        this.response.appendInt32(this.errorCode);
+        this.response.appendInt(this.errorCode);
         return this.response;
     }
 }

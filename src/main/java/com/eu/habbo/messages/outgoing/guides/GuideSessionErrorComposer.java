@@ -21,7 +21,7 @@ public class GuideSessionErrorComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuideSessionErrorComposer);
-        this.response.appendInt32(this.errorCode);
+        this.response.appendInt(this.errorCode);
         return this.response;
     }
 }

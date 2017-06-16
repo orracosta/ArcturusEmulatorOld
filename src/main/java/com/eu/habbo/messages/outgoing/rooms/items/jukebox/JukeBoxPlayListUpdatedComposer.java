@@ -27,13 +27,13 @@ public class JukeBoxPlayListUpdatedComposer extends MessageComposer
             length += track.getLength();
         }
 
-        this.response.appendInt32(length * 1000);
-        this.response.appendInt32(this.tracks.size());
+        this.response.appendInt(length * 1000);
+        this.response.appendInt(this.tracks.size());
 
         for(SoundTrack track : this.tracks)
         {
-            this.response.appendInt32(track.getId());
-            this.response.appendInt32(track.getLength() * 1000);
+            this.response.appendInt(track.getId());
+            this.response.appendInt(track.getLength() * 1000);
             this.response.appendString(track.getCode());
             this.response.appendString(track.getAuthor());
         }

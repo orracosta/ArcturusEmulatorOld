@@ -4,7 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.catalog.CatalogFeaturedPage;
 import com.eu.habbo.habbohotel.catalog.CatalogItem;
 import com.eu.habbo.habbohotel.catalog.CatalogPage;
-import com.eu.habbo.habbohotel.catalog.CatalogPageType;
 import com.eu.habbo.habbohotel.catalog.layouts.FrontPageFeaturedLayout;
 import com.eu.habbo.habbohotel.catalog.layouts.FrontpageLayout;
 import com.eu.habbo.habbohotel.catalog.layouts.RecentPurchasesLayout;
@@ -35,13 +34,13 @@ public class CatalogPageComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.CatalogPageComposer);
-        this.response.appendInt32(this.page.getId());
+        this.response.appendInt(this.page.getId());
         this.response.appendString(this.mode);
         this.page.serialize(this.response);
 
         if(this.page instanceof RecentPurchasesLayout)
         {
-            this.response.appendInt32(this.habbo.getHabboStats().getRecentPurchases().size());
+            this.response.appendInt(this.habbo.getHabboStats().getRecentPurchases().size());
 
             for(Map.Entry<Integer, CatalogItem> item : this.habbo.getHabboStats().getRecentPurchases().entrySet())
             {
@@ -50,7 +49,7 @@ public class CatalogPageComposer extends MessageComposer
         }
         else
         {
-            this.response.appendInt32(this.page.getCatalogItems().size());
+            this.response.appendInt(this.page.getCatalogItems().size());
             List<CatalogItem> items = new ArrayList<CatalogItem>();
             items.addAll(this.page.getCatalogItems().valueCollection());
             Collections.sort(items);
@@ -59,7 +58,7 @@ public class CatalogPageComposer extends MessageComposer
                 item.serialize(this.response);
             }
         }
-        this.response.appendInt32(0);
+        this.response.appendInt(0);
         this.response.appendBoolean(false); //acceptSeasonCurrencyAsCredits
 
         if (this.page instanceof FrontPageFeaturedLayout || this.page instanceof FrontpageLayout)
@@ -72,7 +71,7 @@ public class CatalogPageComposer extends MessageComposer
 
     public void serializeExtra(ServerMessage message)
     {
-        message.appendInt32(Emulator.getGameEnvironment().getCatalogManager().getCatalogFeaturedPages().size()); // count
+        message.appendInt(Emulator.getGameEnvironment().getCatalogManager().getCatalogFeaturedPages().size()); // count
 
         for (CatalogFeaturedPage page : Emulator.getGameEnvironment().getCatalogManager().getCatalogFeaturedPages().valueCollection())
         {

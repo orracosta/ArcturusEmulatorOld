@@ -21,9 +21,9 @@ public class CameraPriceComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.CameraPriceComposer);
-        this.response.appendInt32(this.credits);
-        this.response.appendInt32(this.points);
-        this.response.appendInt32(this.pointsType);
+        this.response.appendInt(this.credits);
+        this.response.appendInt(this.points);
+        this.response.appendInt(this.pointsType);
         return this.response;
     }
 }

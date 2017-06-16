@@ -24,8 +24,8 @@ public class UpdateStackHeightTileHeightComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.UpdateStackHeightTileHeightComposer);
-        this.response.appendInt32(this.item.getId());
-        this.response.appendInt32(this.height);
+        this.response.appendInt(this.item.getId());
+        this.response.appendInt(this.height);
         return this.response;
     }
 }

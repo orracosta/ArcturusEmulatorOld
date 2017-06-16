@@ -18,8 +18,8 @@ public class RoomUserRespectComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomUserRespectComposer);
-        this.response.appendInt32(habbo.getHabboInfo().getId());
-        this.response.appendInt32(habbo.getHabboStats().respectPointsReceived);
+        this.response.appendInt(habbo.getHabboInfo().getId());
+        this.response.appendInt(habbo.getHabboStats().respectPointsReceived);
         return this.response;
     }
 }

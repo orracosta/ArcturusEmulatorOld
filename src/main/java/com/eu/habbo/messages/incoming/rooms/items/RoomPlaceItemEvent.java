@@ -3,6 +3,7 @@ package com.eu.habbo.messages.incoming.rooms.items;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.Achievement;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
+import com.eu.habbo.habbohotel.items.FurnitureType;
 import com.eu.habbo.habbohotel.items.interactions.*;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomLayout;
@@ -116,7 +117,7 @@ public class RoomPlaceItemEvent extends MessageHandler
         }
 
         THashSet<RoomTile> updatedTiles = new THashSet<RoomTile>();
-        if(item.getBaseItem().getType().toLowerCase().equals("s"))
+        if(item.getBaseItem().getType() == FurnitureType.FLOOR)
         {
             short x = Short.valueOf(values[1]);
             short y = Short.valueOf(values[2]);

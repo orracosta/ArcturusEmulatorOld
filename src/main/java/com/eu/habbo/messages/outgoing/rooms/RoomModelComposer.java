@@ -19,7 +19,7 @@ public class RoomModelComposer extends MessageComposer
     {
         this.response.init(Outgoing.RoomModelComposer);
         this.response.appendString(this.room.getLayout().getName());
-        this.response.appendInt32(this.room.getId());
+        this.response.appendInt(this.room.getId());
         return this.response;
     }
 }

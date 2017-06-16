@@ -17,7 +17,7 @@ public class PongComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.PongComposer);
-        this.response.appendInt32(this.id);
+        this.response.appendInt(this.id);
         return this.response;
     }
 }

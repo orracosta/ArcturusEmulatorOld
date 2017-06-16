@@ -23,9 +23,9 @@ public class GuideSessionAttachedComposer extends MessageComposer
         //:test 3549 b:1 i:1 s:abcd i:100
         this.response.init(Outgoing.GuideSessionAttachedComposer);
         this.response.appendBoolean(this.isHelper); //? //isHelper
-        this.response.appendInt32(1);       //? Tour type
+        this.response.appendInt(1);       //? Tour type
         this.response.appendString(tour.getHelpRequest());    //? Instruction (Help message)
-        this.response.appendInt32(isHelper ? 60 : Emulator.getGameEnvironment().getGuideManager().getAverageWaitingTime());       //? Avarage Waiting Time (for noob) | Time left to pickup (For helper)
+        this.response.appendInt(isHelper ? 60 : Emulator.getGameEnvironment().getGuideManager().getAverageWaitingTime());       //? Avarage Waiting Time (for noob) | Time left to pickup (For helper)
         return this.response;
     }
 }

@@ -28,10 +28,10 @@ public class MarketplaceBuyErrorComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.MarketplaceBuyErrorComposer);
-        this.response.appendInt32(this.errorCode);
-        this.response.appendInt32(this.unknown);
-        this.response.appendInt32(this.offerId);
-        this.response.appendInt32(this.price);
+        this.response.appendInt(this.errorCode);
+        this.response.appendInt(this.unknown);
+        this.response.appendInt(this.offerId);
+        this.response.appendInt(this.price);
         return this.response;
     }
 }

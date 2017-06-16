@@ -18,7 +18,7 @@ public class AddUserBadgeComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.AddUserBadgeComposer);
-        this.response.appendInt32(this.badge.getSlot());
+        this.response.appendInt(this.badge.getSlot());
         this.response.appendString(this.badge.getCode());
         return this.response;
     }

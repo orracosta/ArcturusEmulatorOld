@@ -19,7 +19,7 @@ public class GuardianNewReportReceivedComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuardianNewReportReceivedComposer);
-        this.response.appendInt32(Emulator.getConfig().getInt("guardians.accept.timer"));
+        this.response.appendInt(Emulator.getConfig().getInt("guardians.accept.timer"));
         return this.response;
     }
 }

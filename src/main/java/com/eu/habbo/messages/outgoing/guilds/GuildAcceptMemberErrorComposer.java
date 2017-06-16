@@ -23,8 +23,8 @@ public class GuildAcceptMemberErrorComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildAcceptMemberErrorComposer);
-        this.response.appendInt32(this.guildId);
-        this.response.appendInt32(this.errorCode);
+        this.response.appendInt(this.guildId);
+        this.response.appendInt(this.errorCode);
         return this.response;
     }
 }

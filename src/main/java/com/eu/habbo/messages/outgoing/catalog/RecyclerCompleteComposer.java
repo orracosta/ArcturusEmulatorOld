@@ -20,8 +20,8 @@ public class RecyclerCompleteComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RecyclerCompleteComposer);
-        this.response.appendInt32(this.code);
-        this.response.appendInt32(0); //prize ID.
+        this.response.appendInt(this.code);
+        this.response.appendInt(0); //prize ID.
         return this.response;
     }
 }

@@ -17,11 +17,11 @@ public class RecyclerPrizesLayout extends CatalogPage
     public void serialize(ServerMessage message)
     {
         message.appendString("recycler_prizes");
-        message.appendInt32(3);
+        message.appendInt(3);
         message.appendString("");
         message.appendString("");
         message.appendString("");
-        message.appendInt32(3);
+        message.appendInt(3);
         message.appendString("");
         message.appendString("");
         message.appendString("");

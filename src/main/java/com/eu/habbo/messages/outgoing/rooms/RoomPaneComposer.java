@@ -20,7 +20,7 @@ public class RoomPaneComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomPaneComposer);
-        this.response.appendInt32(this.room.getId());
+        this.response.appendInt(this.room.getId());
         this.response.appendBoolean(this.roomOwner);
         return this.response;
     }

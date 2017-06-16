@@ -22,8 +22,8 @@ public class UnknownGuildForumComposer6 extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.UnknownGuildForumComposer6);
-        this.response.appendInt32(this.guildId); //guild_id
-        this.response.appendInt32(this.threadId); //thread_id
+        this.response.appendInt(this.guildId); //guild_id
+        this.response.appendInt(this.threadId); //thread_id
         this.comment.serialize(this.response); //Comment
         return this.response;
     }

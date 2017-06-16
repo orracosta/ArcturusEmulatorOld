@@ -82,8 +82,8 @@ public abstract class InteractionCustomValues extends HabboItem
     @Override
     public void serializeExtradata(ServerMessage serverMessage)
     {
-        serverMessage.appendInt32(1 + (this.isLimited() ? 256 : 0));
-        serverMessage.appendInt32(this.values.size());
+        serverMessage.appendInt(1 + (this.isLimited() ? 256 : 0));
+        serverMessage.appendInt(this.values.size());
         for (Map.Entry<String, String> set : this.values.entrySet())
         {
             serverMessage.appendString(set.getKey());

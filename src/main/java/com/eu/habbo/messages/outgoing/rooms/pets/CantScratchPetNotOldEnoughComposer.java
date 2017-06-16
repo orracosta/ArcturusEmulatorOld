@@ -19,8 +19,8 @@ public class CantScratchPetNotOldEnoughComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.CantScratchPetNotOldEnoughComposer);
-        this.response.appendInt32(this.currentAge);
-        this.response.appendInt32(this.requiredAge);
+        this.response.appendInt(this.currentAge);
+        this.response.appendInt(this.requiredAge);
         return this.response;
     }
 }

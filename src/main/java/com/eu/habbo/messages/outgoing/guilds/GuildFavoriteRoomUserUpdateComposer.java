@@ -21,9 +21,9 @@ public class GuildFavoriteRoomUserUpdateComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildFavoriteRoomUserUpdateComposer);
-        this.response.appendInt32(this.roomUnit.getId());
-        this.response.appendInt32(this.guild.getId());
-        this.response.appendInt32(this.guild.getState().state);
+        this.response.appendInt(this.roomUnit.getId());
+        this.response.appendInt(this.guild.getId());
+        this.response.appendInt(this.guild.getState().state);
         this.response.appendString(this.guild.getName());
         return this.response;
     }

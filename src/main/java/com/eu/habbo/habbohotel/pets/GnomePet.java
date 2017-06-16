@@ -31,14 +31,14 @@ public class GnomePet extends Pet implements IPetLook
     @Override
     public void serialize(ServerMessage message)
     {
-        message.appendInt32(this.getId());
+        message.appendInt(this.getId());
         message.appendString(this.getName());
-        message.appendInt32(this.petData.getType());
-        message.appendInt32(this.race);
+        message.appendInt(this.petData.getType());
+        message.appendInt(this.race);
         message.appendString(this.color);
-        message.appendInt32(0);
-        message.appendInt32(0);
-        message.appendInt32(0);
+        message.appendInt(0);
+        message.appendInt(0);
+        message.appendInt(0);
     }
 
     @Override

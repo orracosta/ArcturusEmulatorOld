@@ -23,7 +23,7 @@ public class BotErrorComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.BotErrorComposer);
-        this.response.appendInt32(this.errorCode);
+        this.response.appendInt(this.errorCode);
         return this.response;
     }
 }

@@ -17,7 +17,7 @@ public class RemoveHabboItemComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RemoveHabboItemComposer);
-        this.response.appendInt32(this.itemId);
+        this.response.appendInt(this.itemId);
         return this.response;
     }
 }

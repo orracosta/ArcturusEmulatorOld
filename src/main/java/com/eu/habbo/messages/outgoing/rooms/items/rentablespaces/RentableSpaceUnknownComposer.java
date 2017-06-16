@@ -17,7 +17,7 @@ public class RentableSpaceUnknownComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RentableSpaceUnknownComposer);
-        this.response.appendInt32(this.itemId);
+        this.response.appendInt(this.itemId);
         return this.response;
     }
 }

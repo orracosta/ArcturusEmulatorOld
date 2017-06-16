@@ -20,11 +20,11 @@ public class YoutubeVideoComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.YoutubeMessageComposer2);
-        this.response.appendInt32(this.itemId);
+        this.response.appendInt(this.itemId);
         this.response.appendString(this.item.video);
-        this.response.appendInt32(this.item.startTime);
-        this.response.appendInt32(this.item.endTime);
-        this.response.appendInt32(0);
+        this.response.appendInt(this.item.startTime);
+        this.response.appendInt(this.item.endTime);
+        this.response.appendInt(0);
         return this.response;
     }
 }

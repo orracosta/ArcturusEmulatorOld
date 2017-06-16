@@ -36,7 +36,7 @@ public class RoomEnterErrorComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomEnterErrorComposer);
-        this.response.appendInt32(this.errorCode);
+        this.response.appendInt(this.errorCode);
         this.response.appendString(this.queError);
         return this.response;
     }

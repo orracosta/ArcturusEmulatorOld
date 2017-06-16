@@ -20,15 +20,15 @@ public class BaseJumpLoadGameComposer extends MessageComposer
     {
         this.response.init(Outgoing.BaseJumpLoadGameComposer);
 
-        this.response.appendInt32(3);
+        this.response.appendInt(3);
         this.response.appendString("1344031458870");
         this.response.appendString("http://localhost/game/BaseJump.swf");
         this.response.appendString("best");
         this.response.appendString("showAll");
-        this.response.appendInt32(60);
-        this.response.appendInt32(10);
-        this.response.appendInt32(0);
-        this.response.appendInt32(6);
+        this.response.appendInt(60);
+        this.response.appendInt(10);
+        this.response.appendInt(0);
+        this.response.appendInt(6);
         this.response.appendString("assetUrl");
         this.response.appendString("http://localhost/gamecenter/gamecenter_basejump/BasicAssets.swf");
         this.response.appendString("habboHost");

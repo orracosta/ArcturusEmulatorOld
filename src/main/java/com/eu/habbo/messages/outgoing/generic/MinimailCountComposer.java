@@ -11,7 +11,7 @@ public class MinimailCountComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.MinimailCountComposer);
-        this.response.appendInt32(0);
+        this.response.appendInt(0);
 
         return this.response;
     }

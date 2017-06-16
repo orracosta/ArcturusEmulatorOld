@@ -21,15 +21,15 @@ public class RoomRightsListComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomRightsListComposer);
-        this.response.appendInt32(this.room.getId());
+        this.response.appendInt(this.room.getId());
 
         THashMap<Integer, String> rightsMap = this.room.getUsersWithRights();
 
-        this.response.appendInt32(rightsMap.size());
+        this.response.appendInt(rightsMap.size());
 
         for(Map.Entry<Integer, String> set : rightsMap.entrySet())
         {
-            this.response.appendInt32(set.getKey());
+            this.response.appendInt(set.getKey());
             this.response.appendString(set.getValue());
         }
 

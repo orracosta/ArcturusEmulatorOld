@@ -28,19 +28,19 @@ public class AddHabboItemComposer extends MessageComposer
 
         if(item == null)
         {
-            this.response.appendInt32(1);
-            this.response.appendInt32(1);
-            this.response.appendInt32(this.itemsList.size());
+            this.response.appendInt(1);
+            this.response.appendInt(1);
+            this.response.appendInt(this.itemsList.size());
             for (HabboItem habboItem : this.itemsList) {
-                this.response.appendInt32(habboItem.getId());
+                this.response.appendInt(habboItem.getId());
             }
         }
         else
         {
-            this.response.appendInt32(1);
-            this.response.appendInt32(1);
-            this.response.appendInt32(1);
-            this.response.appendInt32(this.item.getId());
+            this.response.appendInt(1);
+            this.response.appendInt(1);
+            this.response.appendInt(1);
+            this.response.appendInt(this.item.getId());
         }
         return this.response;
     }

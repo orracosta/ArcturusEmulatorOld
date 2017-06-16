@@ -25,7 +25,7 @@ public class GuildJoinErrorComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildJoinErrorComposer);
-        this.response.appendInt32(this.code);
+        this.response.appendInt(this.code);
         return this.response;
     }
 }

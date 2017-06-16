@@ -27,12 +27,12 @@ public class NewYearResolutionProgressComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.NewYearResolutionProgressComposer);
-        this.response.appendInt32(this.stuffId);
-        this.response.appendInt32(this.achievementId);
+        this.response.appendInt(this.stuffId);
+        this.response.appendInt(this.achievementId);
         this.response.appendString(this.achievementName);
-        this.response.appendInt32(this.currentProgress);
-        this.response.appendInt32(this.progressNeeded);
-        this.response.appendInt32(this.timeLeft);
+        this.response.appendInt(this.currentProgress);
+        this.response.appendInt(this.progressNeeded);
+        this.response.appendInt(this.timeLeft);
         return this.response;
     }
 }

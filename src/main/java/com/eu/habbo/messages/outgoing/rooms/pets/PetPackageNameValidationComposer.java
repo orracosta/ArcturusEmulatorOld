@@ -27,8 +27,8 @@ public class PetPackageNameValidationComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.PetPackageNameValidationComposer);
-        this.response.appendInt32(this.itemId);
-        this.response.appendInt32(this.errorCode);
+        this.response.appendInt(this.itemId);
+        this.response.appendInt(this.errorCode);
         this.response.appendString(this.errorString);
         return this.response;
     }

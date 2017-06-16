@@ -131,17 +131,17 @@ public class WiredEffectGiveScore extends InteractionWiredEffect
     public void serializeWiredData(ServerMessage message, Room room)
     {
         message.appendBoolean(false);
-        message.appendInt32(5);
-        message.appendInt32(0);
-        message.appendInt32(this.getBaseItem().getSpriteId());
-        message.appendInt32(this.getId());
+        message.appendInt(5);
+        message.appendInt(0);
+        message.appendInt(this.getBaseItem().getSpriteId());
+        message.appendInt(this.getId());
         message.appendString("");
-        message.appendInt32(2);
-        message.appendInt32(this.score);
-        message.appendInt32(this.count);
-        message.appendInt32(0);
-        message.appendInt32(this.getType().code);
-        message.appendInt32(this.getDelay());
+        message.appendInt(2);
+        message.appendInt(this.score);
+        message.appendInt(this.count);
+        message.appendInt(0);
+        message.appendInt(this.getType().code);
+        message.appendInt(this.getDelay());
 
         if (this.requiresTriggeringUser())
         {
@@ -158,15 +158,15 @@ public class WiredEffectGiveScore extends InteractionWiredEffect
                     return true;
                 }
             });
-            message.appendInt32(invalidTriggers.size());
+            message.appendInt(invalidTriggers.size());
             for (Integer i : invalidTriggers)
             {
-                message.appendInt32(i);
+                message.appendInt(i);
             }
         }
         else
         {
-            message.appendInt32(0);
+            message.appendInt(0);
         }
     }
 

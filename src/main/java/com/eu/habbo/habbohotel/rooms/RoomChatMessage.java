@@ -248,12 +248,12 @@ public class RoomChatMessage implements Runnable, ISerialize
 
         try
         {
-            message.appendInt32(this.roomUnit.getId());
+            message.appendInt(this.roomUnit.getId());
             message.appendString(this.getMessage());
-            message.appendInt32(this.getEmotion());
-            message.appendInt32(this.getBubble().getType());
-            message.appendInt32(0);
-            message.appendInt32(this.getMessage().length());
+            message.appendInt(this.getEmotion());
+            message.appendInt(this.getBubble().getType());
+            message.appendInt(0);
+            message.appendInt(this.getMessage().length());
         }
         catch(Exception e)
         {

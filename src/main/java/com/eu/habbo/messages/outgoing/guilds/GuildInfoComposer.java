@@ -1,11 +1,9 @@
 package com.eu.habbo.messages.outgoing.guilds;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.guilds.Guild;
 import com.eu.habbo.habbohotel.guilds.GuildMember;
 import com.eu.habbo.habbohotel.guilds.GuildRank;
-import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
@@ -32,17 +30,17 @@ public class GuildInfoComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildInfoComposer);
-        this.response.appendInt32(this.guild.getId());
+        this.response.appendInt(this.guild.getId());
         this.response.appendBoolean(true);
-        this.response.appendInt32(this.guild.getState().state);
+        this.response.appendInt(this.guild.getState().state);
         this.response.appendString(this.guild.getName());
         this.response.appendString(this.guild.getDescription());
         this.response.appendString(this.guild.getBadge());
-        this.response.appendInt32(this.guild.getRoomId());
+        this.response.appendInt(this.guild.getRoomId());
         this.response.appendString(this.guild.getRoomName());
-        //this.response.appendInt32(this.guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() ? 3 : (this.member == null ? 0 : (this.member.getRank().equals(GuildRank.MEMBER) || this.member.getRank().equals(GuildRank.MOD) ? 1 : (this.member.getRank().equals(GuildRank.REQUESTED) ? 2 : 0))));
-        this.response.appendInt32(this.client.getHabbo().hasPermission("acc_guild_admin") ? 4 : (this.member == null ? 0 : (this.member.getRank().equals(GuildRank.MEMBER) ? 1 : (this.member.getRank().equals(GuildRank.REQUESTED) ? 2 : (this.member.getRank().equals(GuildRank.MOD) ? 3 : (this.member.getRank().equals(GuildRank.ADMIN) ? 4 : 0))))));
-        this.response.appendInt32(this.guild.getMemberCount()); //Member count.
+        //this.response.appendInt(this.guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() ? 3 : (this.member == null ? 0 : (this.member.getRank().equals(GuildRank.MEMBER) || this.member.getRank().equals(GuildRank.MOD) ? 1 : (this.member.getRank().equals(GuildRank.REQUESTED) ? 2 : 0))));
+        this.response.appendInt(this.client.getHabbo().hasPermission("acc_guild_admin") ? 4 : (this.member == null ? 0 : (this.member.getRank().equals(GuildRank.MEMBER) ? 1 : (this.member.getRank().equals(GuildRank.REQUESTED) ? 2 : (this.member.getRank().equals(GuildRank.MOD) ? 3 : (this.member.getRank().equals(GuildRank.ADMIN) ? 4 : 0))))));
+        this.response.appendInt(this.guild.getMemberCount()); //Member count.
         this.response.appendBoolean(this.client.getHabbo().getHabboStats().guild == this.guild.getId()); //favorite group
         this.response.appendString(new SimpleDateFormat("dd-MM-yyyy").format(new Date(this.guild.getDateCreated() * 1000L)));
         this.response.appendBoolean(this.client.getHabbo().hasPermission("acc_guild_admin") || (this.guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId()));
@@ -52,7 +50,7 @@ public class GuildInfoComposer extends MessageComposer
         this.response.appendString(this.guild.getOwnerName());
         this.response.appendBoolean(this.newWindow);
         this.response.appendBoolean(this.guild.getRights() == 0); //User can place furni.
-        this.response.appendInt32((this.client.getHabbo().hasPermission("acc_guild_admin") || this.guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId()) ? this.guild.getRequestCount() : 0); //Guild invites count.
+        this.response.appendInt((this.client.getHabbo().hasPermission("acc_guild_admin") || this.guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId()) ? this.guild.getRequestCount() : 0); //Guild invites count.
         this.response.appendBoolean(true); //Unknown
         return this.response;
     }

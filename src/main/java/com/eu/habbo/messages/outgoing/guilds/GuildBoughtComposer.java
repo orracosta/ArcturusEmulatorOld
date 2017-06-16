@@ -18,8 +18,8 @@ public class GuildBoughtComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildBoughtComposer);
-        this.response.appendInt32(this.guild.getRoomId());
-        this.response.appendInt32(this.guild.getId());
+        this.response.appendInt(this.guild.getRoomId());
+        this.response.appendInt(this.guild.getId());
         return this.response;
     }
 }

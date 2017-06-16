@@ -25,12 +25,12 @@ public class BullyReportRequestComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.BullyReportRequestComposer);
-        this.response.appendInt32(this.errorCode);
+        this.response.appendInt(this.errorCode);
 
         if(this.errorCode == ONGOING_HELPER_CASE)
         {
-            this.response.appendInt32(this.errorCodeType);
-            this.response.appendInt32(1); //Timestamp
+            this.response.appendInt(this.errorCodeType);
+            this.response.appendInt(1); //Timestamp
             this.response.appendBoolean(true); //Pending guide session.
 
             this.response.appendString("admin");

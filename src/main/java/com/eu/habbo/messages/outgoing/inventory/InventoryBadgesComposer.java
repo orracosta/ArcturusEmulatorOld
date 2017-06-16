@@ -26,21 +26,21 @@ public class InventoryBadgesComposer extends MessageComposer
 
         this.response.init(Outgoing.InventoryBadgesComposer);
 
-        this.response.appendInt32(this.habbo.getInventory().getBadgesComponent().getBadges().size());
+        this.response.appendInt(this.habbo.getInventory().getBadgesComponent().getBadges().size());
         for(HabboBadge badge : this.habbo.getInventory().getBadgesComponent().getBadges())
         {
-            this.response.appendInt32(badge.getId());
+            this.response.appendInt(badge.getId());
             this.response.appendString(badge.getCode());
 
             if(badge.getSlot() > 0)
                 equippedBadges.add(badge);
         }
 
-        this.response.appendInt32(equippedBadges.size());
+        this.response.appendInt(equippedBadges.size());
 
         for(HabboBadge badge : equippedBadges)
         {
-            this.response.appendInt32(badge.getSlot());
+            this.response.appendInt(badge.getSlot());
             this.response.appendString(badge.getCode());
         }
 

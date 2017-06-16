@@ -25,19 +25,19 @@ public class JukeBoxNowPlayingMessageComposer extends MessageComposer
 
         if(this.track != null)
         {
-            this.response.appendInt32(this.track.getId());
-            this.response.appendInt32(this.playListId);
-            this.response.appendInt32(this.track.getId());
-            this.response.appendInt32(this.track.getLength());
-            this.response.appendInt32(this.msPlayed);
+            this.response.appendInt(this.track.getId());
+            this.response.appendInt(this.playListId);
+            this.response.appendInt(this.track.getId());
+            this.response.appendInt(this.track.getLength());
+            this.response.appendInt(this.msPlayed);
         }
         else
         {
-            this.response.appendInt32(-1);
-            this.response.appendInt32(-1);
-            this.response.appendInt32(-1);
-            this.response.appendInt32(-1);
-            this.response.appendInt32(-1);
+            this.response.appendInt(-1);
+            this.response.appendInt(-1);
+            this.response.appendInt(-1);
+            this.response.appendInt(-1);
+            this.response.appendInt(-1);
         }
         return this.response;
     }

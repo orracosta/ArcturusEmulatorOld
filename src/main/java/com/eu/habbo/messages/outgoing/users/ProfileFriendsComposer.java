@@ -74,7 +74,7 @@ public class ProfileFriendsComposer extends MessageComposer
         try {
 
             this.response.init(Outgoing.ProfileFriendsComposer);
-            this.response.appendInt32(this.userId);
+            this.response.appendInt(this.userId);
 
             int total = 0;
 
@@ -87,33 +87,33 @@ public class ProfileFriendsComposer extends MessageComposer
             if(!this.haters.isEmpty())
                 total++;
 
-            this.response.appendInt32(total);
+            this.response.appendInt(total);
 
             Random random = new Random();
 
             if (!this.lovers.isEmpty()) {
                 int loversIndex = random.nextInt(this.lovers.size());
-                this.response.appendInt32(1);
-                this.response.appendInt32(this.lovers.size());
-                this.response.appendInt32(this.lovers.get(loversIndex).getId());
+                this.response.appendInt(1);
+                this.response.appendInt(this.lovers.size());
+                this.response.appendInt(this.lovers.get(loversIndex).getId());
                 this.response.appendString(this.lovers.get(loversIndex).getUsername());
                 this.response.appendString(this.lovers.get(loversIndex).getLook());
             }
 
             if (!friends.isEmpty()) {
                 int friendsIndex = random.nextInt(this.friends.size());
-                this.response.appendInt32(2);
-                this.response.appendInt32(this.friends.size());
-                this.response.appendInt32(this.friends.get(friendsIndex).getId());
+                this.response.appendInt(2);
+                this.response.appendInt(this.friends.size());
+                this.response.appendInt(this.friends.get(friendsIndex).getId());
                 this.response.appendString(this.friends.get(friendsIndex).getUsername());
                 this.response.appendString(this.friends.get(friendsIndex).getLook());
             }
 
             if (!this.haters.isEmpty()) {
                 int hatersIndex = random.nextInt(this.haters.size());
-                this.response.appendInt32(3);
-                this.response.appendInt32(this.haters.size());
-                this.response.appendInt32(this.haters.get(hatersIndex).getId());
+                this.response.appendInt(3);
+                this.response.appendInt(this.haters.size());
+                this.response.appendInt(this.haters.get(hatersIndex).getId());
                 this.response.appendString(this.haters.get(hatersIndex).getUsername());
                 this.response.appendString(this.haters.get(hatersIndex).getLook());
             }

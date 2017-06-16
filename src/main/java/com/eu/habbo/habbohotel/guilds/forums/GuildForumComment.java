@@ -8,8 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class GuildForumComment implements ISerialize, Runnable
 {
@@ -63,18 +61,18 @@ public class GuildForumComment implements ISerialize, Runnable
     @Override
     public void serialize(ServerMessage message)
     {
-        message.appendInt32(this.id);               //_local_2.messageId = k._SafeStr_5878();       = message_id
-        message.appendInt32(this.index);            //_local_2.messageIndex = k._SafeStr_5878();    = message_index
-        message.appendInt32(this.userId);           //_local_2._SafeStr_11317 = k._SafeStr_5878();  = author_id
+        message.appendInt(this.id);               //_local_2.messageId = k._SafeStr_5878();       = message_id
+        message.appendInt(this.index);            //_local_2.messageIndex = k._SafeStr_5878();    = message_index
+        message.appendInt(this.userId);           //_local_2._SafeStr_11317 = k._SafeStr_5878();  = author_id
         message.appendString(this.userName);        //_local_2._SafeStr_6798 = k.readString();      = author_name
         message.appendString(this.look);            //_local_2._SafeStr_11319 = k.readString();     = author_look
-        message.appendInt32(Emulator.getIntUnixTimestamp() - this.timestamp);        //_local_2._SafeStr_11164 = k._SafeStr_5878();  = creation_time
+        message.appendInt(Emulator.getIntUnixTimestamp() - this.timestamp);        //_local_2._SafeStr_11164 = k._SafeStr_5878();  = creation_time
         message.appendString(this.message);         //_local_2._SafeStr_9526 = k.readString();      = message
         message.appendByte(this.state.state);       //_local_2.state = k.readByte();                = state
-        message.appendInt32(this.adminId);          //_local_2._SafeStr_19188 = k._SafeStr_5878();  = admin_id
+        message.appendInt(this.adminId);          //_local_2._SafeStr_19188 = k._SafeStr_5878();  = admin_id
         message.appendString(this.adminName);       //_local_2._SafeStr_11326 = k.readString();     = admin_name
-        message.appendInt32(0);                     //_local_2._SafeStr_19189 = k._SafeStr_5878();  = (UNUSED)
-        message.appendInt32(this.authorPostCount);  //_local_2._SafeStr_11320 = k._SafeStr_5878();  = author_post_count
+        message.appendInt(0);                     //_local_2._SafeStr_19189 = k._SafeStr_5878();  = (UNUSED)
+        message.appendInt(this.authorPostCount);  //_local_2._SafeStr_11320 = k._SafeStr_5878();  = author_post_count
     }
 
     public int getId()

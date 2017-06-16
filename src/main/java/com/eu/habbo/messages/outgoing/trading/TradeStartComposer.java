@@ -20,8 +20,8 @@ public class TradeStartComposer extends MessageComposer
         this.response.init(Outgoing.TradeStartComposer);
         for(RoomTradeUser tradeUser : this.roomTrade.getRoomTradeUsers())
         {
-            this.response.appendInt32(tradeUser.getHabbo().getHabboInfo().getId());
-            this.response.appendInt32(1);
+            this.response.appendInt(tradeUser.getHabbo().getHabboInfo().getId());
+            this.response.appendInt(1);
         }
         return this.response;
     }

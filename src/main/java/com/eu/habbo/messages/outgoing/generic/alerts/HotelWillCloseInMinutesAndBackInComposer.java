@@ -20,8 +20,8 @@ public class HotelWillCloseInMinutesAndBackInComposer extends MessageComposer
     {
         this.response.init(Outgoing.HotelWillCloseInMinutesAndBackInComposer);
         this.response.appendBoolean(true);
-        this.response.appendInt32(this.closeInMinutes);
-        this.response.appendInt32(this.reopenInMinutes);
+        this.response.appendInt(this.closeInMinutes);
+        this.response.appendInt(this.reopenInMinutes);
         return this.response;
     }
 }

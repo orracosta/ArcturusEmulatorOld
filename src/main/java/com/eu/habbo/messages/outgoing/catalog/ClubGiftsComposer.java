@@ -17,14 +17,14 @@ public class ClubGiftsComposer extends MessageComposer
     {
         this.response.init(Outgoing.ClubGiftsComposer);
 
-        this.response.appendInt32(365); //Days Until Next Gift
-        this.response.appendInt32(1); //Gift Selectable
+        this.response.appendInt(365); //Days Until Next Gift
+        this.response.appendInt(1); //Gift Selectable
 
         CatalogPage page = Emulator.getGameEnvironment().getCatalogManager().getCatalogPage(Emulator.getConfig().getInt("catalog.page.vipgifts"));
 
         if (page != null)
         {
-            this.response.appendInt32(page.getCatalogItems().size());
+            this.response.appendInt(page.getCatalogItems().size());
 
             TIntObjectIterator<CatalogItem> iterator = page.getCatalogItems().iterator();
 
@@ -49,13 +49,13 @@ public class ClubGiftsComposer extends MessageComposer
         }
         else
         {
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
         }
 
-        this.response.appendInt32(1);
-        this.response.appendInt32(-100);
+        this.response.appendInt(1);
+        this.response.appendInt(-100);
         this.response.appendBoolean(false);
-        this.response.appendInt32(-100);
+        this.response.appendInt(-100);
         this.response.appendBoolean(false);
 
         return this.response;

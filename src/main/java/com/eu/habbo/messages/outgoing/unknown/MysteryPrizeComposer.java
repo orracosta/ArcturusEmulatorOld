@@ -10,7 +10,7 @@ public class MysteryPrizeComposer extends MessageComposer
     {
         this.response.init(427);
         this.response.appendString("s");
-        this.response.appendInt32(230);
+        this.response.appendInt(230);
         return this.response;
 
         //s -> floorItem. -> itemId

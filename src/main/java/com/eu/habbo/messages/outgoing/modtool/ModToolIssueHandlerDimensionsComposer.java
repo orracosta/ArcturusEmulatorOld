@@ -23,10 +23,10 @@ public class ModToolIssueHandlerDimensionsComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.ModToolIssueHandlerDimensionsComposer);
-        this.response.appendInt32(this.x);
-        this.response.appendInt32(this.y);
-        this.response.appendInt32(this.width);
-        this.response.appendInt32(this.height);
+        this.response.appendInt(this.x);
+        this.response.appendInt(this.y);
+        this.response.appendInt(this.width);
+        this.response.appendInt(this.height);
         return this.response;
     }
 }

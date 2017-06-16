@@ -12,13 +12,13 @@ public class MarketplaceConfigComposer extends MessageComposer
         this.response.init(Outgoing.MarketplaceConfigComposer);
 
         this.response.appendBoolean(true);
-        this.response.appendInt32(1); //Commision Percentage.
-        this.response.appendInt32(10); //Credits
-        this.response.appendInt32(5); //Advertisements
-        this.response.appendInt32(1); //Min price
-        this.response.appendInt32(1000000); //Max price
-        this.response.appendInt32(48); //Hours in marketplace
-        this.response.appendInt32(7); //Days to display
+        this.response.appendInt(1); //Commision Percentage.
+        this.response.appendInt(10); //Credits
+        this.response.appendInt(5); //Advertisements
+        this.response.appendInt(1); //Min price
+        this.response.appendInt(1000000); //Max price
+        this.response.appendInt(48); //Hours in marketplace
+        this.response.appendInt(7); //Days to display
 
         return this.response;
     }

@@ -19,8 +19,8 @@ public class UserCitizinShipComposer extends MessageComposer
     {
         this.response.init(Outgoing.UserCitizinShipComposer);
         this.response.appendString(this.name);
-        this.response.appendInt32(4);
-        this.response.appendInt32(4);
+        this.response.appendInt(4);
+        this.response.appendInt(4);
 
         return this.response;
     }

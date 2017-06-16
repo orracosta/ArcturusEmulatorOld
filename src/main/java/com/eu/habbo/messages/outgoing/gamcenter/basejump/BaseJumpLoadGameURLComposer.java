@@ -10,7 +10,7 @@ public class BaseJumpLoadGameURLComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.BaseJumpLoadGameURLComposer);
-        this.response.appendInt32(3);
+        this.response.appendInt(3);
         this.response.appendString("3002");
         this.response.appendString("127.0.0.1");
         return this.response;

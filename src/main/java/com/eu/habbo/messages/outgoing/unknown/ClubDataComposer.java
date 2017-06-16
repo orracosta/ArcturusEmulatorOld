@@ -8,8 +8,6 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class ClubDataComposer extends MessageComposer
 {
@@ -27,16 +25,17 @@ public class ClubDataComposer extends MessageComposer
     {
         this.response.init(Outgoing.ClubDataComposer);
 
-        this.response.appendInt32(Emulator.getGameEnvironment().getCatalogManager().clubItems.size());
+        this.response.appendInt(Emulator.getGameEnvironment().getCatalogManager().clubItems.size());
 
+        //TODO Change this to a seperate table.
         for(CatalogItem item : Emulator.getGameEnvironment().getCatalogManager().clubItems)
         {
-            this.response.appendInt32(item.getId());
+            this.response.appendInt(item.getId());
             this.response.appendString(item.getName());
             this.response.appendBoolean(false); //unused
-            this.response.appendInt32(item.getCredits());
-            this.response.appendInt32(item.getPoints());
-            this.response.appendInt32(item.getPointsType());
+            this.response.appendInt(item.getCredits());
+            this.response.appendInt(item.getPoints());
+            this.response.appendInt(item.getPointsType());
             this.response.appendBoolean(item.getName().contains("_VIP_"));
 
             String[] data = item.getName().replace("_VIP_", "_").toLowerCase().split("_");
@@ -67,10 +66,10 @@ public class ClubDataComposer extends MessageComposer
             int totalDays = (int)Math.floor((int)seconds / 86400);
             seconds -= totalDays * 86400;
 
-            this.response.appendInt32((int)secondsTotal / 86400 / 31);
-            this.response.appendInt32((int)seconds);
+            this.response.appendInt((int) secondsTotal / 86400 / 31);
+            this.response.appendInt((int) seconds);
             this.response.appendBoolean(false); //giftable
-            this.response.appendInt32((int)seconds);
+            this.response.appendInt((int) seconds);
 
             int endTimestamp = habbo.getHabboStats().getClubExpireTimestamp();
 
@@ -83,12 +82,12 @@ public class ClubDataComposer extends MessageComposer
 
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(endTimestamp * 1000l);
-            this.response.appendInt32(cal.get(Calendar.YEAR));
-            this.response.appendInt32(cal.get(Calendar.MONTH) + 1);
-            this.response.appendInt32(cal.get(Calendar.DAY_OF_MONTH));
+            this.response.appendInt(cal.get(Calendar.YEAR));
+            this.response.appendInt(cal.get(Calendar.MONTH) + 1);
+            this.response.appendInt(cal.get(Calendar.DAY_OF_MONTH));
         }
 
-        this.response.appendInt32(this.windowId);
+        this.response.appendInt(this.windowId);
         return this.response;
     }
 }

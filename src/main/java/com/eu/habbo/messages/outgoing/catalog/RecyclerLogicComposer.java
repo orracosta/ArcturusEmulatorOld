@@ -15,18 +15,18 @@ public class RecyclerLogicComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RecyclerLogicComposer);
-        this.response.appendInt32(Emulator.getGameEnvironment().getCatalogManager().prizes.size());
+        this.response.appendInt(Emulator.getGameEnvironment().getCatalogManager().prizes.size());
         for(Map.Entry<Integer, THashSet<Item>> map : Emulator.getGameEnvironment().getCatalogManager().prizes.entrySet())
         {
-            this.response.appendInt32(map.getKey());
-            this.response.appendInt32(Integer.valueOf(Emulator.getConfig().getValue("hotel.ecotron.rarity.chance." + map.getKey())));
-            this.response.appendInt32(map.getValue().size());
+            this.response.appendInt(map.getKey());
+            this.response.appendInt(Integer.valueOf(Emulator.getConfig().getValue("hotel.ecotron.rarity.chance." + map.getKey())));
+            this.response.appendInt(map.getValue().size());
             for(Item item : map.getValue())
             {
                 this.response.appendString(item.getName());
-                this.response.appendInt32(1);
-                this.response.appendString(item.getType().toLowerCase());
-                this.response.appendInt32(item.getSpriteId());
+                this.response.appendInt(1);
+                this.response.appendString(item.getType().code);
+                this.response.appendInt(item.getSpriteId());
             }
         }
         return this.response;

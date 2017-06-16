@@ -19,8 +19,8 @@ public class RoomUserDanceComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomUserDanceComposer);
-        this.response.appendInt32(this.roomUnit.getId());
-        this.response.appendInt32(this.roomUnit.getDanceType().getType());
+        this.response.appendInt(this.roomUnit.getId());
+        this.response.appendInt(this.roomUnit.getDanceType().getType());
         return this.response;
     }
 }
