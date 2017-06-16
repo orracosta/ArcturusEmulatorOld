@@ -20,7 +20,7 @@ public class AlertPurchaseFailedComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.AlertPurchaseFailedComposer);
-        this.response.appendInt32(this.error);
+        this.response.appendInt(this.error);
         return this.response;
     }
 }

@@ -22,8 +22,8 @@ public class YoutubeDisplayListComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.YoutubeDisplayListComposer);
-        this.response.appendInt32(this.itemId);
-        this.response.appendInt32(this.items.size());
+        this.response.appendInt(this.itemId);
+        this.response.appendInt(this.items.size());
 
         for (YoutubeManager.YoutubeItem item : this.items)
         {

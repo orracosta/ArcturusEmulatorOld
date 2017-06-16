@@ -21,9 +21,9 @@ public class UserPointsComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.UserPointsComposer);
-        this.response.appendInt32(this.currentAmount);
-        this.response.appendInt32(this.amountAdded);
-        this.response.appendInt32(this.type);
+        this.response.appendInt(this.currentAmount);
+        this.response.appendInt(this.amountAdded);
+        this.response.appendInt(this.type);
         return this.response;
     }
 }

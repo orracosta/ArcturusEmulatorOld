@@ -19,7 +19,7 @@ public class RoomInviteComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomInviteComposer);
-        this.response.appendInt32(this.userId);
+        this.response.appendInt(this.userId);
         this.response.appendString(this.message);
         return this.response;
     }

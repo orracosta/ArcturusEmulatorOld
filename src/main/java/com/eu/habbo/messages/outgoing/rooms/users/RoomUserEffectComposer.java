@@ -18,9 +18,9 @@ public class RoomUserEffectComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomUserEffectComposer);
-        this.response.appendInt32(this.roomUnit.getId());
-        this.response.appendInt32(this.roomUnit.getEffectId());
-        this.response.appendInt32(0);
+        this.response.appendInt(this.roomUnit.getId());
+        this.response.appendInt(this.roomUnit.getEffectId());
+        this.response.appendInt(0);
         return this.response;
     }
 }

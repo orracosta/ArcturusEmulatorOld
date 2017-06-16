@@ -25,18 +25,18 @@ public class ModToolUserRoomVisitsComposer extends MessageComposer
     {
         this.response.init(Outgoing.ModToolUserRoomVisitsComposer);
 
-        this.response.appendInt32(this.habbo.getHabboInfo().getId());
+        this.response.appendInt(this.habbo.getHabboInfo().getId());
         this.response.appendString(this.habbo.getHabboInfo().getUsername());
-        this.response.appendInt32(this.roomVisits.size());
+        this.response.appendInt(this.roomVisits.size());
 
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         for(ModToolRoomVisit visit : this.roomVisits)
         {
             cal.setTimeInMillis(visit.timestamp * 1000);
-            this.response.appendInt32(visit.roomId);
+            this.response.appendInt(visit.roomId);
             this.response.appendString(visit.roomName);
-            this.response.appendInt32(cal.get(Calendar.HOUR));
-            this.response.appendInt32(cal.get(Calendar.MINUTE));
+            this.response.appendInt(cal.get(Calendar.HOUR));
+            this.response.appendInt(cal.get(Calendar.MINUTE));
         }
 
         return this.response;

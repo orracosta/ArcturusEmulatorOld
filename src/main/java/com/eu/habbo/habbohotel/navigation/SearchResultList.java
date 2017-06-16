@@ -1,6 +1,5 @@
 package com.eu.habbo.habbohotel.navigation;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomState;
 import com.eu.habbo.messages.ISerialize;
@@ -40,9 +39,9 @@ public class SearchResultList implements ISerialize, Comparable<SearchResultList
     {
         message.appendString(this.code); //Search Code
         message.appendString(this.query); //Text
-        message.appendInt32(this.action.type); //Action Allowed (0 (Nothing), 1 (More Results), 2 (Go Back))
+        message.appendInt(this.action.type); //Action Allowed (0 (Nothing), 1 (More Results), 2 (Go Back))
         message.appendBoolean(this.hidden); //Closed
-        message.appendInt32(this.mode.type); //Display Mode (0 (List), 1 (Thumbnails), 2 (Thumbnail no choice))
+        message.appendInt(this.mode.type); //Display Mode (0 (List), 1 (Thumbnails), 2 (Thumbnail no choice))
 
         synchronized (this.rooms)
         {
@@ -60,7 +59,7 @@ public class SearchResultList implements ISerialize, Comparable<SearchResultList
                 this.rooms.removeAll(toRemove);
             }
 
-            message.appendInt32(this.rooms.size());
+            message.appendInt(this.rooms.size());
 
             Collections.sort(this.rooms);
             for (Room room : this.rooms)

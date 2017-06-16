@@ -25,12 +25,12 @@ public class RemoveFriendComposer extends MessageComposer
     {
         this.response.init(Outgoing.UpdateFriendComposer);
 
-        this.response.appendInt32(0);
-        this.response.appendInt32(this.unfriendIds.size());
+        this.response.appendInt(0);
+        this.response.appendInt(this.unfriendIds.size());
         for(int i = 0; i < this.unfriendIds.size(); i++)
         {
-            this.response.appendInt32(-1);
-            this.response.appendInt32(unfriendIds.get(i));
+            this.response.appendInt(-1);
+            this.response.appendInt(unfriendIds.get(i));
         }
 
         return this.response;

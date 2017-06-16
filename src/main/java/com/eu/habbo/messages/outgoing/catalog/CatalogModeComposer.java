@@ -17,7 +17,7 @@ public class CatalogModeComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.CatalogModeComposer);
-        this.response.appendInt32(this.mode);
+        this.response.appendInt(this.mode);
         return this.response;
     }
 }

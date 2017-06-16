@@ -20,37 +20,37 @@ public class GuildBuyRoomsComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildBuyRoomsComposer);
-        this.response.appendInt32(Emulator.getConfig().getInt("catalog.guild.price"));
-        this.response.appendInt32(this.rooms.size());
+        this.response.appendInt(Emulator.getConfig().getInt("catalog.guild.price"));
+        this.response.appendInt(this.rooms.size());
 
         for (Room room : this.rooms)
         {
-            this.response.appendInt32(room.getId());
+            this.response.appendInt(room.getId());
             this.response.appendString(room.getName());
             this.response.appendBoolean(false);
         }
 
-        this.response.appendInt32(5);
+        this.response.appendInt(5);
 
-        this.response.appendInt32(10);
-        this.response.appendInt32(3);
-        this.response.appendInt32(4);
+        this.response.appendInt(10);
+        this.response.appendInt(3);
+        this.response.appendInt(4);
 
-        this.response.appendInt32(25);
-        this.response.appendInt32(17);
-        this.response.appendInt32(5);
+        this.response.appendInt(25);
+        this.response.appendInt(17);
+        this.response.appendInt(5);
 
-        this.response.appendInt32(25);
-        this.response.appendInt32(17);
-        this.response.appendInt32(3);
+        this.response.appendInt(25);
+        this.response.appendInt(17);
+        this.response.appendInt(3);
 
-        this.response.appendInt32(29);
-        this.response.appendInt32(11);
-        this.response.appendInt32(4);
+        this.response.appendInt(29);
+        this.response.appendInt(11);
+        this.response.appendInt(4);
 
-        this.response.appendInt32(0);
-        this.response.appendInt32(0);
-        this.response.appendInt32(0);
+        this.response.appendInt(0);
+        this.response.appendInt(0);
+        this.response.appendInt(0);
         return this.response;
     }
 }

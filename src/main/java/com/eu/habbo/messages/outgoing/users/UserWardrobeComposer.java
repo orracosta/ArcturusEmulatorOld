@@ -19,11 +19,11 @@ public class UserWardrobeComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.UserWardrobeComposer);
-        this.response.appendInt32(1);
-        this.response.appendInt32(this.wardrobeComponent.getLooks().size());
+        this.response.appendInt(1);
+        this.response.appendInt(this.wardrobeComponent.getLooks().size());
         for(WardrobeComponent.WardrobeItem wardrobeItem : this.wardrobeComponent.getLooks().values())
         {
-            this.response.appendInt32(wardrobeItem.getSlotId());
+            this.response.appendInt(wardrobeItem.getSlotId());
             this.response.appendString(wardrobeItem.getLook());
             this.response.appendString(wardrobeItem.getGender().name().toUpperCase());
         }

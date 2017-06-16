@@ -7,6 +7,7 @@ public abstract class MessageHandler
 {
     public GameClient client;
     public ClientMessage packet;
+    public boolean isCancelled = false;
 
     public abstract void handle() throws Exception;
 }

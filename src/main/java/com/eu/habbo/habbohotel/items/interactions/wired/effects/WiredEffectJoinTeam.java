@@ -1,6 +1,5 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
-import com.eu.habbo.habbohotel.games.Game;
 import com.eu.habbo.habbohotel.games.GameTeamColors;
 import com.eu.habbo.habbohotel.games.wired.WiredGame;
 import com.eu.habbo.habbohotel.items.Item;
@@ -98,16 +97,16 @@ public class WiredEffectJoinTeam extends InteractionWiredEffect
     public void serializeWiredData(ServerMessage message, Room room)
     {
         message.appendBoolean(false);
-        message.appendInt32(5);
-        message.appendInt32(0);
-        message.appendInt32(this.getBaseItem().getSpriteId());
-        message.appendInt32(this.getId());
+        message.appendInt(5);
+        message.appendInt(0);
+        message.appendInt(this.getBaseItem().getSpriteId());
+        message.appendInt(this.getId());
         message.appendString("");
-        message.appendInt32(1);
-        message.appendInt32(this.teamColor.type + 1);
-        message.appendInt32(0);
-        message.appendInt32(this.getType().code);
-        message.appendInt32(this.getDelay());
+        message.appendInt(1);
+        message.appendInt(this.teamColor.type + 1);
+        message.appendInt(0);
+        message.appendInt(this.getType().code);
+        message.appendInt(this.getDelay());
 
         if (this.requiresTriggeringUser())
         {
@@ -124,15 +123,15 @@ public class WiredEffectJoinTeam extends InteractionWiredEffect
                     return true;
                 }
             });
-            message.appendInt32(invalidTriggers.size());
+            message.appendInt(invalidTriggers.size());
             for (Integer i : invalidTriggers)
             {
-                message.appendInt32(i);
+                message.appendInt(i);
             }
         }
         else
         {
-            message.appendInt32(0);
+            message.appendInt(0);
         }
     }
 

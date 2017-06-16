@@ -46,7 +46,7 @@ public class GuardianVotingRequestedComposer extends MessageComposer
         }
 
         this.response.init(Outgoing.GuardianVotingRequestedComposer);
-        this.response.appendInt32(this.ticket.getTimeLeft());
+        this.response.appendInt(this.ticket.getTimeLeft());
         this.response.appendString(fullMessage);
 
         //2015 10 17 14 24 30

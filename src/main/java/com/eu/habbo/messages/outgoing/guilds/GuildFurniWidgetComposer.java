@@ -25,10 +25,10 @@ public class GuildFurniWidgetComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildFurniWidgetComposer);
-        this.response.appendInt32(item.getId());
-        this.response.appendInt32(this.guild.getId());
+        this.response.appendInt(item.getId());
+        this.response.appendInt(this.guild.getId());
         this.response.appendString(this.guild.getName());
-        this.response.appendInt32(this.guild.getRoomId());
+        this.response.appendInt(this.guild.getRoomId());
         this.response.appendBoolean(Emulator.getGameEnvironment().getGuildManager().getGuildMember(this.guild, this.habbo) != null); //User Joined.
         this.response.appendBoolean(this.guild.hasForum()); //Has Forum.
         return this.response;

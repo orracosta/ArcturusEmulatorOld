@@ -18,8 +18,8 @@ public class GuildRefreshMembersListComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildRefreshMembersListComposer);
-        this.response.appendInt32(this.guild.getId());
-        this.response.appendInt32(0);
+        this.response.appendInt(this.guild.getId());
+        this.response.appendInt(0);
         return this.response;
     }
 }

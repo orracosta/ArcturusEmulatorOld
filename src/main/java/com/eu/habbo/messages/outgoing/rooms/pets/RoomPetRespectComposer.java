@@ -29,8 +29,8 @@ public class RoomPetRespectComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomPetRespectComposer);
-        this.response.appendInt32(this.type);
-        this.response.appendInt32(100);
+        this.response.appendInt(this.type);
+        this.response.appendInt(100);
         pet.serialize(this.response);
         return this.response;
     }

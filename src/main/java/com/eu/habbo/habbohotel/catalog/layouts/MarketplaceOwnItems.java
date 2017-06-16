@@ -17,8 +17,8 @@ public class MarketplaceOwnItems extends CatalogPage
     public void serialize(ServerMessage message)
     {
         message.appendString("marketplace_own_items");
-        message.appendInt32(0);
-        message.appendInt32(0);
+        message.appendInt(0);
+        message.appendInt(0);
 
     }
 }

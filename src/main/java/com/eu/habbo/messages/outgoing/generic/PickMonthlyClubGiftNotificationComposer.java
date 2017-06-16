@@ -17,7 +17,7 @@ public class PickMonthlyClubGiftNotificationComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.PickMonthlyClubGiftNotificationComposer);
-        this.response.appendInt32(this.count);
+        this.response.appendInt(this.count);
         return this.response;
     }
 }

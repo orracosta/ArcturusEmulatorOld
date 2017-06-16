@@ -49,18 +49,18 @@ public class WiredEffectLowerFurni extends InteractionWiredEffect
             this.items.remove(item);
         }
         message.appendBoolean(false);
-        message.appendInt32(Emulator.getConfig().getInt("hotel.wired.furni.selection.count"));
-        message.appendInt32(this.items.size());
+        message.appendInt(Emulator.getConfig().getInt("hotel.wired.furni.selection.count"));
+        message.appendInt(this.items.size());
         for(HabboItem item : this.items)
-            message.appendInt32(item.getId());
-        message.appendInt32(this.getBaseItem().getSpriteId());
-        message.appendInt32(this.getId());
+            message.appendInt(item.getId());
+        message.appendInt(this.getBaseItem().getSpriteId());
+        message.appendInt(this.getId());
         message.appendString("");
-        message.appendInt32(0);
-        message.appendInt32(type.code);
-        message.appendInt32(0);
-        message.appendInt32(this.offset);
-        message.appendInt32(0);
+        message.appendInt(0);
+        message.appendInt(type.code);
+        message.appendInt(0);
+        message.appendInt(this.offset);
+        message.appendInt(0);
         message.appendString("");
     }
 

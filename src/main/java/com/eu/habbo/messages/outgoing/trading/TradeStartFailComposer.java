@@ -31,7 +31,7 @@ public class TradeStartFailComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.TradeStartFailComposer);
-        this.response.appendInt32(code);
+        this.response.appendInt(code);
         this.response.appendString(username);
         return this.response;
     }

@@ -32,7 +32,7 @@ public class ModToolRoomChatlogComposer extends MessageComposer
         this.response.appendString(this.room.getName());
         this.response.appendString("roomId");
         this.response.appendByte(1);
-        this.response.appendInt32(this.room.getId());
+        this.response.appendInt(this.room.getId());
 
         SimpleDateFormat formatDate = new SimpleDateFormat("HH:mm");
         
@@ -40,7 +40,7 @@ public class ModToolRoomChatlogComposer extends MessageComposer
         for(ModToolChatLog line : this.chatlog)
         {
             this.response.appendString(formatDate.format(new Date((line.timestamp * 1000L))));
-            this.response.appendInt32(line.habboId);
+            this.response.appendInt(line.habboId);
             this.response.appendString(line.username);
             this.response.appendString(line.message);
             this.response.appendBoolean(false);

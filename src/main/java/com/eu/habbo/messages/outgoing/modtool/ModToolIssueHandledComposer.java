@@ -27,7 +27,7 @@ public class ModToolIssueHandledComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.ModToolIssueHandledComposer);
-        this.response.appendInt32(this.code);
+        this.response.appendInt(this.code);
         this.response.appendString(this.message);
         return this.response;
     }

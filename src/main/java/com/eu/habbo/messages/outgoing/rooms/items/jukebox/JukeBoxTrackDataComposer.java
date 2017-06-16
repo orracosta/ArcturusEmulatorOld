@@ -20,15 +20,15 @@ public class JukeBoxTrackDataComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.JukeBoxTrackDataComposer);
-        this.response.appendInt32(this.tracks.size());
+        this.response.appendInt(this.tracks.size());
 
         for(SoundTrack track : this.tracks)
         {
-            this.response.appendInt32(track.getId());
+            this.response.appendInt(track.getId());
             this.response.appendString(track.getCode());
             this.response.appendString(track.getName());
             this.response.appendString(track.getData());
-            this.response.appendInt32(track.getLength() * 1000);
+            this.response.appendInt(track.getLength() * 1000);
             this.response.appendString(track.getAuthor());
         }
 

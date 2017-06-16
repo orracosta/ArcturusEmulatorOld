@@ -18,37 +18,37 @@ public class RoomPetHorseFigureComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomPetHorseFigureComposer);
-        this.response.appendInt32(this.pet.getRoomUnit().getId());
-        this.response.appendInt32(this.pet.getId());
-        this.response.appendInt32(this.pet.getPetData().getType());
-        this.response.appendInt32(this.pet.getRace());
+        this.response.appendInt(this.pet.getRoomUnit().getId());
+        this.response.appendInt(this.pet.getId());
+        this.response.appendInt(this.pet.getPetData().getType());
+        this.response.appendInt(this.pet.getRace());
         this.response.appendString(this.pet.getColor().toLowerCase());
 
         if(this.pet.hasSaddle())
         {
-            this.response.appendInt32(2);
-            this.response.appendInt32(3);
-            this.response.appendInt32(4);
-            this.response.appendInt32(9);
-            this.response.appendInt32(0);
-            this.response.appendInt32(3);
+            this.response.appendInt(2);
+            this.response.appendInt(3);
+            this.response.appendInt(4);
+            this.response.appendInt(9);
+            this.response.appendInt(0);
+            this.response.appendInt(3);
 
-            this.response.appendInt32(this.pet.getHairStyle());
-            this.response.appendInt32(this.pet.getHairColor());
-            this.response.appendInt32(3); //Saddle type?
-            this.response.appendInt32(this.pet.getHairStyle());
-            this.response.appendInt32(this.pet.getHairColor());
+            this.response.appendInt(this.pet.getHairStyle());
+            this.response.appendInt(this.pet.getHairColor());
+            this.response.appendInt(3); //Saddle type?
+            this.response.appendInt(this.pet.getHairStyle());
+            this.response.appendInt(this.pet.getHairColor());
         }
         else
         {
-            this.response.appendInt32(1);
-            this.response.appendInt32(2);
-            this.response.appendInt32(2);
-            this.response.appendInt32(this.pet.getHairStyle());
-            this.response.appendInt32(this.pet.getHairColor());
-            this.response.appendInt32(3);
-            this.response.appendInt32(this.pet.getHairStyle());
-            this.response.appendInt32(this.pet.getHairColor());
+            this.response.appendInt(1);
+            this.response.appendInt(2);
+            this.response.appendInt(2);
+            this.response.appendInt(this.pet.getHairStyle());
+            this.response.appendInt(this.pet.getHairColor());
+            this.response.appendInt(3);
+            this.response.appendInt(this.pet.getHairStyle());
+            this.response.appendInt(this.pet.getHairColor());
         }
         this.response.appendBoolean(this.pet.hasSaddle());
         this.response.appendBoolean(this.pet.anyoneCanRide());

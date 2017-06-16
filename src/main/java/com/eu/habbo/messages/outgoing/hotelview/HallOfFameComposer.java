@@ -21,7 +21,7 @@ public class HallOfFameComposer extends MessageComposer
         HallOfFame hallOfFame = Emulator.getGameEnvironment().getHotelViewManager().getHallOfFame();
 
         this.response.appendString(hallOfFame.getCompetitionName());
-        this.response.appendInt32(hallOfFame.getWinners().size());
+        this.response.appendInt(hallOfFame.getWinners().size());
 
         int count = 1;
 
@@ -29,11 +29,11 @@ public class HallOfFameComposer extends MessageComposer
         Collections.sort(winners);
         for(HallOfFameWinner winner : winners)
         {
-            this.response.appendInt32(winner.getId());
+            this.response.appendInt(winner.getId());
             this.response.appendString(winner.getUsername());
             this.response.appendString(winner.getLook());
-            this.response.appendInt32(count);
-            this.response.appendInt32(winner.getPoints());
+            this.response.appendInt(count);
+            this.response.appendInt(winner.getPoints());
             count++;
         }
         return this.response;

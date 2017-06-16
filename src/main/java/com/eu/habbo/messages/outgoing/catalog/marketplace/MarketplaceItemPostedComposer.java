@@ -21,7 +21,7 @@ public class MarketplaceItemPostedComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.MarketplaceItemPostedComposer);
-        this.response.appendInt32(this.code);
+        this.response.appendInt(this.code);
         return this.response;
     }
 }

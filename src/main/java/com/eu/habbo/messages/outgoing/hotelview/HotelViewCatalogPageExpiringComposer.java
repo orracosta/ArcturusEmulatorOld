@@ -22,7 +22,7 @@ public class HotelViewCatalogPageExpiringComposer extends MessageComposer
     {
         this.response.init(Outgoing.HotelViewCatalogPageExpiringComposer);
         this.response.appendString(this.name);
-        this.response.appendInt32(this.time);
+        this.response.appendInt(this.time);
         this.response.appendString(this.image);
         return this.response;
     }

@@ -168,19 +168,30 @@ public class CleanerThread implements Runnable {
         int time = Emulator.getIntUnixTimestamp();
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
-            Statement statement = connection.createStatement();
+            try (Statement statement = connection.createStatement())
+            {
+                statement.execute("UPDATE users SET online = '0'");
+                statement.execute("UPDATE rooms SET users = '0'");
+                statement.execute("DELETE FROM room_mutes WHERE ends < " + time);
+                statement.execute("DELETE FROM room_bans WHERE ends < " + time);
+                statement.execute("DELETE users_favorite_rooms FROM users_favorite_rooms LEFT JOIN rooms ON room_id = rooms.id WHERE rooms.id IS NULL");
+            }
 
-            statement.execute("UPDATE users SET online = '0'");
-            statement.execute("UPDATE rooms SET users = '0'");
-            statement.execute("DELETE FROM room_mutes WHERE ends < " + time);
-            statement.execute("DELETE FROM room_bans WHERE ends < " + time);
-            statement.execute("DELETE users_favorite_rooms FROM users_favorite_rooms LEFT JOIN rooms ON room_id = rooms.id WHERE rooms.id IS NULL");
+            try (PreparedStatement statement = connection.prepareStatement("UPDATE users_effects SET total = total - 1 WHERE activation_timestamp < ? AND activation_timestamp != 0"))
+            {
+                statement.setInt(1, Emulator.getIntUnixTimestamp() - 86400);
+                statement.execute();
+            }
+
+            try (Statement statement = connection.createStatement())
+            {
+                statement.execute("DELETE FROM users_effects WHERE total <= 0");
+            }
         }
         catch (SQLException e)
         {
             Emulator.getLogging().logSQLException(e);
         }
-
         Emulator.getLogging().logStart("Database -> Cleaned!");
     }
 

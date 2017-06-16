@@ -10,8 +10,8 @@ public class ReloadRecyclerComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.ReloadRecyclerComposer);
-        this.response.appendInt32(1);
-        this.response.appendInt32(0);
+        this.response.appendInt(1);
+        this.response.appendInt(0);
         return this.response;
     }
 }

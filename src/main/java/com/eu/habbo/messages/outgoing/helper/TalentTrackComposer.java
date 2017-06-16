@@ -52,7 +52,7 @@ public class TalentTrackComposer extends MessageComposer
 
         if (talentTrackLevels != null)
         {
-            this.response.appendInt32(talentTrackLevels.size()); //Count
+            this.response.appendInt(talentTrackLevels.size()); //Count
 
             final boolean[] allCompleted = {true};
             for (Map.Entry<Integer, TalentTrackLevel> set : talentTrackLevels.entrySet())
@@ -61,7 +61,7 @@ public class TalentTrackComposer extends MessageComposer
                 {
                     TalentTrackLevel level = set.getValue();
 
-                    this.response.appendInt32(level.level);
+                    this.response.appendInt(level.level);
 
                     TalentTrackState state = TalentTrackState.LOCKED;
 
@@ -76,8 +76,8 @@ public class TalentTrackComposer extends MessageComposer
                         state = TalentTrackState.COMPLETED;
                     }
 
-                    this.response.appendInt32(state.id);
-                    this.response.appendInt32(level.achievements.size());
+                    this.response.appendInt(state.id);
+                    this.response.appendInt(level.achievements.size());
 
                     level.achievements.forEachEntry(new TObjectIntProcedure<Achievement>()
                     {
@@ -86,10 +86,10 @@ public class TalentTrackComposer extends MessageComposer
                         {
                             if (achievement != null)
                             {
-                                response.appendInt32(achievement.id);
+                                response.appendInt(achievement.id);
 
                                 //TODO Move this to TalenTrackLevel class
-                                response.appendInt32(1); //idk
+                                response.appendInt(1); //idk
                                 response.appendString("ACH_" + achievement.name + b);
 
                                 int progress = habbo.getHabboStats().getAchievementProgress(achievement);
@@ -99,31 +99,31 @@ public class TalentTrackComposer extends MessageComposer
                                 {
                                     if (achievementLevel.progress <= progress)
                                     {
-                                        response.appendInt32(2);
+                                        response.appendInt(2);
                                     }
                                     else
                                     {
-                                        response.appendInt32(1);
+                                        response.appendInt(1);
                                         allCompleted[0] = false;
                                     }
                                 }
                                 else
                                 {
-                                    response.appendInt32(0);
+                                    response.appendInt(0);
                                     allCompleted[0] = false;
                                 }
-                                response.appendInt32(progress);
-                                response.appendInt32(achievementLevel.progress);
+                                response.appendInt(progress);
+                                response.appendInt(achievementLevel.progress);
                             }
                             else
                             {
-                                response.appendInt32(0);
-                                response.appendInt32(0);
+                                response.appendInt(0);
+                                response.appendInt(0);
                                 response.appendString("");
                                 response.appendString("");
-                                response.appendInt32(0);
-                                response.appendInt32(0);
-                                response.appendInt32(0);
+                                response.appendInt(0);
+                                response.appendInt(0);
+                                response.appendInt(0);
                             }
                             return true;
                         }
@@ -131,13 +131,13 @@ public class TalentTrackComposer extends MessageComposer
 
                     boolean giveRewards = allCompleted[0] && currentLevel < level.level && currentLevel >= 0;
 
-                    this.response.appendInt32(level.perks.length);
+                    this.response.appendInt(level.perks.length);
                     for (String perk : level.perks)
                     {
                         this.response.appendString(perk);
                     }
 
-                    this.response.appendInt32(level.items.size());
+                    this.response.appendInt(level.items.size());
                     for (Item item : level.items)
                     {
                         if (giveRewards)
@@ -147,7 +147,7 @@ public class TalentTrackComposer extends MessageComposer
                             this.habbo.getClient().sendResponse(new AddHabboItemComposer(rewardItem));
                         }
                         this.response.appendString(item.getName());
-                        this.response.appendInt32(0);
+                        this.response.appendInt(0);
                     }
 
                     if (giveRewards)
@@ -174,7 +174,7 @@ public class TalentTrackComposer extends MessageComposer
         }
         else
         {
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
         }
         return this.response;
     }

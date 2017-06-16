@@ -9,7 +9,7 @@ public class SnowWarsGenericErrorComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(3702);
-        this.response.appendInt32(1);
+        this.response.appendInt(1);
         return this.response;
     }
 }

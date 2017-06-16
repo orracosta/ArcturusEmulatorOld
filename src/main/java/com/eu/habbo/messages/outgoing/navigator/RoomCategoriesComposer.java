@@ -21,10 +21,10 @@ public class RoomCategoriesComposer extends MessageComposer
     {
         this.response.init(Outgoing.RoomCategoriesComposer);
 
-        this.response.appendInt32(this.categories.size());
+        this.response.appendInt(this.categories.size());
         for(RoomCategory category : this.categories)
         {
-            this.response.appendInt32(category.getId());
+            this.response.appendInt(category.getId());
             this.response.appendString(category.getCaption());
             this.response.appendBoolean(true); //Visible
             this.response.appendBoolean(false); //True = Disconnect?

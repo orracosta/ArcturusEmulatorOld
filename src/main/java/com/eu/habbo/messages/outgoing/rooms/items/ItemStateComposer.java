@@ -18,15 +18,15 @@ public class ItemStateComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.ItemStateComposer);
-        this.response.appendInt32(this.item.getId());
+        this.response.appendInt(this.item.getId());
         try
         {
             int state = Integer.valueOf(this.item.getExtradata());
-            this.response.appendInt32(state);
+            this.response.appendInt(state);
         }
         catch (Exception e)
         {
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
         }
 
         return this.response;

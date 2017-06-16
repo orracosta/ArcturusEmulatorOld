@@ -20,7 +20,7 @@ public class RemoveWallItemComposer extends MessageComposer
     {
         this.response.init(Outgoing.RemoveWallItemComposer);
         this.response.appendString(this.item.getId() + "");
-        this.response.appendInt32(this.item.getUserId());
+        this.response.appendInt(this.item.getUserId());
         return this.response;
     }
 }

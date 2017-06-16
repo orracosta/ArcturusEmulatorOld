@@ -119,10 +119,10 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
     public void serializeWiredData(ServerMessage message, Room room)
     {
         message.appendBoolean(false);
-        message.appendInt32(this.rewardItems.size());
-        message.appendInt32(0);
-        message.appendInt32(this.getBaseItem().getSpriteId());
-        message.appendInt32(this.getId());
+        message.appendInt(this.rewardItems.size());
+        message.appendInt(0);
+        message.appendInt(this.getBaseItem().getSpriteId());
+        message.appendInt(this.getId());
         String s = "";
 
         for(WiredGiveRewardItem item : this.rewardItems)
@@ -130,13 +130,13 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
             s += item.wiredString() + ";";
         }
         message.appendString(s);
-        message.appendInt32(3);
-            message.appendInt32(this.rewardTime);
+        message.appendInt(3);
+            message.appendInt(this.rewardTime);
             message.appendInt32(this.uniqueRewards);
-            message.appendInt32(this.limit);
+            message.appendInt(this.limit);
         message.appendInt32(this.limit > 0);
-        message.appendInt32(this.getType().code);
-        message.appendInt32(this.getDelay());
+        message.appendInt(this.getType().code);
+        message.appendInt(this.getDelay());
 
         if (this.requiresTriggeringUser())
         {
@@ -153,15 +153,15 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
                     return true;
                 }
             });
-            message.appendInt32(invalidTriggers.size());
+            message.appendInt(invalidTriggers.size());
             for (Integer i : invalidTriggers)
             {
-                message.appendInt32(i);
+                message.appendInt(i);
             }
         }
         else
         {
-            message.appendInt32(0);
+            message.appendInt(0);
         }
     }
 

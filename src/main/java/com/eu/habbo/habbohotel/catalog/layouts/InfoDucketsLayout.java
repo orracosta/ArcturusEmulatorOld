@@ -17,10 +17,10 @@ public class InfoDucketsLayout extends CatalogPage
     public void serialize(ServerMessage message)
     {
         message.appendString("info_duckets");
-        message.appendInt32(1);
+        message.appendInt(1);
         message.appendString(getHeaderImage());
-        message.appendInt32(1);
+        message.appendInt(1);
         message.appendString(getTextOne());
-        message.appendInt32(0);
+        message.appendInt(0);
     }
 }

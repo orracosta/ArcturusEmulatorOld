@@ -20,7 +20,7 @@ public class GuideSessionEndedComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuideSessionEndedComposer);
-        this.response.appendInt32(this.errorCode); //?
+        this.response.appendInt(this.errorCode); //?
         return this.response;
     }
 }

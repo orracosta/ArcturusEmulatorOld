@@ -20,8 +20,8 @@ public class RoomUserReceivedHandItemComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomUserReceivedHandItemComposer);
-        this.response.appendInt32(this.from.getId());
-        this.response.appendInt32(this.handItem);
+        this.response.appendInt(this.from.getId());
+        this.response.appendInt(this.handItem);
         return this.response;
     }
 }

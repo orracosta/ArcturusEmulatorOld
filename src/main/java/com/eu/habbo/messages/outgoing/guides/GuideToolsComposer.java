@@ -20,9 +20,9 @@ public class GuideToolsComposer extends MessageComposer
         //:test 117 b:1 i:1 i:1 i:1
         this.response.init(Outgoing.GuideToolsComposer);
         this.response.appendBoolean(this.onDuty); //OnDuty
-        this.response.appendInt32(0); //Guides On Duty
-        this.response.appendInt32(Emulator.getGameEnvironment().getGuideManager().getGuidesCount()); //Helpers On Duty
-        this.response.appendInt32(Emulator.getGameEnvironment().getGuideManager().getGuardiansCount()); //Guardians On Duty
+        this.response.appendInt(0); //Guides On Duty
+        this.response.appendInt(Emulator.getGameEnvironment().getGuideManager().getGuidesCount()); //Helpers On Duty
+        this.response.appendInt(Emulator.getGameEnvironment().getGuideManager().getGuardiansCount()); //Guardians On Duty
         return this.response;
     }
 }

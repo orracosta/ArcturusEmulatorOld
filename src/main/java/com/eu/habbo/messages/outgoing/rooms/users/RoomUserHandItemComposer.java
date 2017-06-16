@@ -18,8 +18,8 @@ public class RoomUserHandItemComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomUserHandItemComposer);
-        this.response.appendInt32(this.roomUnit.getId());
-        this.response.appendInt32(this.roomUnit.getHandItem());
+        this.response.appendInt(this.roomUnit.getId());
+        this.response.appendInt(this.roomUnit.getHandItem());
         return this.response;
     }
 }

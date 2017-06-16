@@ -10,24 +10,24 @@ public class NewNavigatorSavedSearchesComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.NewNavigatorSavedSearchesComposer);
-        this.response.appendInt32(4);
+        this.response.appendInt(4);
 
-        this.response.appendInt32(1);
+        this.response.appendInt(1);
         this.response.appendString("official");
         this.response.appendString("");
         this.response.appendString("");
 
-        this.response.appendInt32(2);
+        this.response.appendInt(2);
         this.response.appendString("recommended");
         this.response.appendString("");
         this.response.appendString("");
 
-        this.response.appendInt32(3);
+        this.response.appendInt(3);
         this.response.appendString("my");
         this.response.appendString("");
         this.response.appendString("");
 
-        this.response.appendInt32(4);
+        this.response.appendInt(4);
         this.response.appendString("favorites");
         this.response.appendString("");
         this.response.appendString("");

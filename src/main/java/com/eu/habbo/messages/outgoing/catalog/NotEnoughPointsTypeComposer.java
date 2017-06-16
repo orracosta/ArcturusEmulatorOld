@@ -23,7 +23,7 @@ public class NotEnoughPointsTypeComposer extends MessageComposer
         this.response.init(Outgoing.NotEnoughPointsTypeComposer);
         this.response.appendBoolean(this.isCredits);
         this.response.appendBoolean(this.isPixels);
-        this.response.appendInt32(this.pointsType);
+        this.response.appendInt(this.pointsType);
         return this.response;
     }
 }

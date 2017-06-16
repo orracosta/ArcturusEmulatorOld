@@ -20,7 +20,7 @@ public class MarketplaceCancelSaleComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.MarketplaceCancelSaleComposer);
-        this.response.appendInt32(this.offer.getOfferId());
+        this.response.appendInt(this.offer.getOfferId());
         this.response.appendBoolean(this.success);
         return this.response;
     }

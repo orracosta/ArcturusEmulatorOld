@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.catalog;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.items.FurnitureType;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.messages.ISerialize;
 import com.eu.habbo.messages.ServerMessage;
@@ -395,35 +396,35 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
     @Override
     public void serialize(ServerMessage message)
     {
-        message.appendInt32(this.getId());
+        message.appendInt(this.getId());
         message.appendString(this.getName());
         message.appendBoolean(false);
-        message.appendInt32(this.getCredits());
-        message.appendInt32(this.getPoints());
-        message.appendInt32(this.getPointsType());
+        message.appendInt(this.getCredits());
+        message.appendInt(this.getPoints());
+        message.appendInt(this.getPointsType());
         message.appendBoolean(this.allowGift); //Can gift
 
         THashSet<Item> items = this.getBaseItems();
 
-        message.appendInt32(items.size());
+        message.appendInt(items.size());
 
         for(Item item : items)
         {
-            message.appendString(item.getType());
+            message.appendString(item.getType().code);
 
-            if(item.getType().equals("b"))
+            if(item.getType() == FurnitureType.BADGE)
             {
                 message.appendString(item.getName());
             }
             else
             {
-                message.appendInt32(item.getSpriteId());
+                message.appendInt(item.getSpriteId());
 
                 if(this.getName().contains("wallpaper_single") || this.getName().contains("floor_single") || this.getName().contains("landscape_single"))
                 {
                     message.appendString(this.getName().split("_")[2]);
                 }
-                else if(item.getName().contains("bot") && item.getType().equalsIgnoreCase("r"))
+                else if(item.getName().contains("bot") && item.getType() == FurnitureType.ROBOT)
                 {
                     boolean lookFound = false;
                     for (String s : this.getExtradata().split(";"))
@@ -441,7 +442,7 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
                         message.appendString(this.getExtradata());
                     }
                 }
-                else if(item.getType().toLowerCase().equals("r"))
+                else if(item.getType() == FurnitureType.ROBOT)
                 {
                     message.appendString(this.getExtradata());
                 }
@@ -457,12 +458,12 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
                 {
                     message.appendString("");
                 }
-                message.appendInt32(this.getItemAmount(item.getId()));
+                message.appendInt(this.getItemAmount(item.getId()));
                 message.appendBoolean(this.isLimited());
                 if(this.isLimited())
                 {
-                    message.appendInt32(this.getLimitedStack());
-                    message.appendInt32(this.getLimitedStack() - this.getLimitedSells());
+                    message.appendInt(this.getLimitedStack());
+                    message.appendInt(this.getLimitedStack() - this.getLimitedSells());
                 }
             }
         }

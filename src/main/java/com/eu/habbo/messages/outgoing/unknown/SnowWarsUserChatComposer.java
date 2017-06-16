@@ -9,7 +9,7 @@ public class SnowWarsUserChatComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(2049);
-        this.response.appendInt32(1); //UserID
+        this.response.appendInt(1); //UserID
         this.response.appendString("Message");
         return this.response;
     }

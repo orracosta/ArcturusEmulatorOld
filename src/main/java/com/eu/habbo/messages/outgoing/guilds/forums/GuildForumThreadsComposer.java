@@ -20,8 +20,8 @@ public class GuildForumThreadsComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildForumThreadsComposer);
-        this.response.appendInt32(this.forum.getGuild());
-        this.response.appendInt32(this.index);
+        this.response.appendInt(this.forum.getGuild());
+        this.response.appendInt(this.index);
         this.forum.serializeThreads(this.response);
         return this.response;
     }

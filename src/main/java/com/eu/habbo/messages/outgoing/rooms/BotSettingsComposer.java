@@ -20,8 +20,8 @@ public class BotSettingsComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.BotSettingsComposer);
-        this.response.appendInt32(-this.bot.getId());
-        this.response.appendInt32(this.settingId);
+        this.response.appendInt(-this.bot.getId());
+        this.response.appendInt(this.settingId);
 
         switch(this.settingId)
         {

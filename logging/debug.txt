@@ -1,0 +1,184 @@
+Admin logged in from IP 127.0.0.1
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+Admin logged in from IP 127.0.0.1
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+Admin logged in from IP 127.0.0.1
+Admin disconnected.
+Admin logged in from IP 127.0.0.1
+Emetophobic logged in from IP 127.0.0.1
+Admin disconnected.
+Admin logged in from IP 127.0.0.1
+Emetophobic disconnected.
+Emetophobic logged in from IP 127.0.0.1
+Emetophobic disconnected.
+Emetophobic logged in from IP 127.0.0.1
+Emetophobic disconnected.
+Admin disconnected.
+Admin logged in from IP 127.0.0.1
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+Admin disconnected.
+Admin logged in from IP 127.0.0.1
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+Admin disconnected.
+Admin logged in from IP 127.0.0.1
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+Admin logged in from IP 127.0.0.1
+Emetophobic logged in from IP 127.0.0.1
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+Emetophobic logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+[BubbleAlerts] Plugin Stopped!
+Emetophobic logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Emetophobic logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+Emetophobic logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+Admin logged in from IP 127.0.0.1
+[BubbleAlerts] Plugin Stopped!
+Admin logged in from IP 127.0.0.1
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+Admin logged in from IP 127.0.0.1
+Emetophobic logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+[BubbleAlerts] Plugin Stopped!
+Admin logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+Admin logged in from IP 127.0.0.1
+Admin disconnected.
+Admin logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Emetophobic logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin disconnected.
+Admin logged in from IP 127.0.0.1
+Emetophobic logged in from IP 127.0.0.1
+Emetophobic disconnected.
+Potato logged in from IP 127.0.0.1
+Potato disconnected.
+Test logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin disconnected.
+Admin logged in from IP 127.0.0.1
+Admin disconnected.
+Failed to connect to the host (127.0.0.1:3000).
+Stopping Arcturus Emulator Version: 1.9.0...
+Habbo Manager -> Disposed!
+Command Handler -> Disposed!
+Guild Manager -> Disposed!
+Catalog Manager -> Disposed!
+Room Manager -> Disposed!
+Item Manager -> Disposed!
+HotelView Manager -> Disposed!
+GameEnvironment -> Disposed!
+Threading -> Disposed!
+[BubbleAlerts] Plugin Stopped!
+Disposed Plugin Manager!
+Stopping GameServer...
+GameServer Stopped!
+Stopped Arcturus Emulator Version: 1.9.0...
+Admin logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin disconnected.
+Emetophobic logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+[BubbleAlerts] Plugin Stopped!
+[BubbleAlerts] Plugin Stopped!
+Emetophobic logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin disconnected.
+Admin logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin disconnected.
+Admin logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin disconnected.
+Admin logged in from IP 127.0.0.1
+Admin disconnected.
+Admin logged in from IP 127.0.0.1
+Admin disconnected.
+Admin logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin disconnected.
+Admin logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin logged in from IP 127.0.0.1
+Admin disconnected.
+Admin logged in from IP 127.0.0.1
+Admin disconnected.
+Admin logged in from IP 127.0.0.1
+Admin disconnected.
+Admin logged in from IP 127.0.0.1
+Admin disconnected.
+Emetophobic logged in from IP 127.0.0.1
+Emetophobic disconnected.
+Emetophobic logged in from IP 127.0.0.1
+Emetophobic disconnected.
+Emetophobic logged in from IP 127.0.0.1
+Emetophobic disconnected.
+Emetophobic logged in from IP 127.0.0.1
+Emetophobic disconnected.
+Admin logged in from IP 127.0.0.1
+Admin disconnected.
+Emetophobic logged in from IP 127.0.0.1
+Emetophobic disconnected.
+Emetophobic logged in from IP 127.0.0.1
+Emetophobic disconnected.
+Emetophobic logged in from IP 127.0.0.1
+Emetophobic disconnected.
+Emetophobic logged in from IP 127.0.0.1
+Emetophobic disconnected.
+Emetophobic logged in from IP 127.0.0.1
+Emetophobic disconnected.
+Emetophobic logged in from IP 127.0.0.1
+Emetophobic disconnected.
+Emetophobic logged in from IP 127.0.0.1
+Emetophobic disconnected.
+Emetophobic logged in from IP 127.0.0.1
+Emetophobic disconnected.
+Admin logged in from IP 127.0.0.1
+Admin disconnected.
+Emetophobic logged in from IP 127.0.0.1
+Emetophobic disconnected.
+Emetophobic logged in from IP 127.0.0.1
+Emetophobic disconnected.
+Admin logged in from IP 127.0.0.1
+Admin disconnected.
+Emetophobic logged in from IP 127.0.0.1
+Emetophobic disconnected.

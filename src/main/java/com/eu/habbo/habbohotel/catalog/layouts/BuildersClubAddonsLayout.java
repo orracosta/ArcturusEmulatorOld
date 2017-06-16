@@ -20,11 +20,11 @@ public class BuildersClubAddonsLayout extends CatalogPage
     public void serialize(ServerMessage message)
     {
         message.appendString("builders_club_addons");
-        message.appendInt32(3);
+        message.appendInt(3);
         message.appendString(super.getHeaderImage());
         message.appendString(super.getTeaserImage());
         message.appendString(super.getSpecialImage());
-        message.appendInt32(3);
+        message.appendInt(3);
         message.appendString(super.getTextOne());
         message.appendString(super.getTextDetails());
         message.appendString(super.getTextTeaser());

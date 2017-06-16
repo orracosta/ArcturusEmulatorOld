@@ -4,8 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-import java.util.Map;
-
 public class HotelViewCommunityGoalComposer extends MessageComposer
 {
     private final boolean achieved;
@@ -48,18 +46,18 @@ public class HotelViewCommunityGoalComposer extends MessageComposer
     {
         this.response.init(Outgoing.HotelViewCommunityGoalComposer);
         this.response.appendBoolean(this.achieved); //Achieved?
-        this.response.appendInt32(this.personalContributionScore); //User Amount
-        this.response.appendInt32(this.personalRank); //User Rank
-        this.response.appendInt32(this.personalRank); //Total Amount
-        this.response.appendInt32(this.totalAmount); //Community Highest Achieved
-        this.response.appendInt32(this.communityHighestAchievedLevel); //Community Score Untill Next Level
-        this.response.appendInt32(this.scoreRemainingUntilNextLevel); //Percent Completed Till Next Level
+        this.response.appendInt(this.personalContributionScore); //User Amount
+        this.response.appendInt(this.personalRank); //User Rank
+        this.response.appendInt(this.personalRank); //Total Amount
+        this.response.appendInt(this.totalAmount); //Community Highest Achieved
+        this.response.appendInt(this.communityHighestAchievedLevel); //Community Score Untill Next Level
+        this.response.appendInt(this.scoreRemainingUntilNextLevel); //Percent Completed Till Next Level
         this.response.appendString(this.competitionName);
-        this.response.appendInt32(this.timeLeft); //Timer
-        this.response.appendInt32(this.rankData.length); //Rank Count
+        this.response.appendInt(this.timeLeft); //Timer
+        this.response.appendInt(this.rankData.length); //Rank Count
         for (int i : rankData)
         {
-            this.response.appendInt32(i);
+            this.response.appendInt(i);
         }
         return this.response;
     }

@@ -2,7 +2,6 @@ package com.eu.habbo.habbohotel.items.interactions;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
-import com.eu.habbo.habbohotel.items.YoutubeManager;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -47,8 +46,8 @@ public class InteractionYoutubeTV extends HabboItem
         if(this.getExtradata().length() == 0)
             this.setExtradata("");
 
-        serverMessage.appendInt32(1 + (this.isLimited() ? 256 : 0));
-        serverMessage.appendInt32(1);
+        serverMessage.appendInt(1 + (this.isLimited() ? 256 : 0));
+        serverMessage.appendInt(1);
         serverMessage.appendString("THUMBNAIL_URL");
         serverMessage.appendString(Emulator.getConfig().getValue("imager.url.youtube").replace("%video%", Emulator.getGameEnvironment().getItemManager().getYoutubeManager().getPreviewImage(this.getBaseItem())));
 

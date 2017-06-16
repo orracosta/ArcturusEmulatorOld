@@ -19,7 +19,7 @@ public class RoomRightsComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomRightsComposer);
-        this.response.appendInt32(this.type.level);
+        this.response.appendInt(this.type.level);
         return this.response;
     }
 }

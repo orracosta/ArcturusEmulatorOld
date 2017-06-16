@@ -15,15 +15,15 @@ public class NewsListComposer extends MessageComposer
         this.response.init(Outgoing.NewsWidgetsComposer);
         NewsList newsList = Emulator.getGameEnvironment().getHotelViewManager().getNewsList();
 
-        this.response.appendInt32(newsList.getNewsWidgets().size());
+        this.response.appendInt(newsList.getNewsWidgets().size());
 
         for(NewsWidget widget : newsList.getNewsWidgets())
         {
-            this.response.appendInt32(widget.getId());
+            this.response.appendInt(widget.getId());
             this.response.appendString(widget.getTitle());
             this.response.appendString(widget.getMessage());
             this.response.appendString(widget.getButtonMessage());
-            this.response.appendInt32(widget.getType());
+            this.response.appendInt(widget.getType());
             this.response.appendString("event:" + widget.getLink());
             this.response.appendString(widget.getImage());
         }

@@ -9,7 +9,7 @@ public class SnowWarsQuePositionComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(2077);
-        this.response.appendInt32(1);
+        this.response.appendInt(1);
         return this.response;
     }
 }

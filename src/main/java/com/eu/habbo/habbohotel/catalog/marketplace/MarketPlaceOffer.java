@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.catalog.marketplace;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.items.FurnitureType;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -61,11 +62,11 @@ public class MarketPlaceOffer implements Runnable
         this.price = price;
         this.baseItem = item.getBaseItem();
         this.itemId = item.getId();
-        if(item.getBaseItem().getType().equalsIgnoreCase("s"))
+        if(item.getBaseItem().getType() == FurnitureType.FLOOR)
         {
             this.type = 1;
         }
-        if(item.getBaseItem().getType().equalsIgnoreCase("i"))
+        if(item.getBaseItem().getType() == FurnitureType.WALL)
         {
             this.type = 2;
         }

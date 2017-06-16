@@ -8,7 +8,7 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.map.TIntObjectMap;
-import gnu.trove.set.hash.THashSet;
+
 import java.util.Collection;
 
 public class RoomUsersComposer extends MessageComposer
@@ -43,20 +43,20 @@ public class RoomUsersComposer extends MessageComposer
     {
         this.response.init(Outgoing.RoomUsersComposer);
         if(this.habbo != null) {
-            this.response.appendInt32(1);
-            this.response.appendInt32(this.habbo.getHabboInfo().getId());
+            this.response.appendInt(1);
+            this.response.appendInt(this.habbo.getHabboInfo().getId());
             this.response.appendString(this.habbo.getHabboInfo().getUsername());
             this.response.appendString(this.habbo.getHabboInfo().getMotto());
             this.response.appendString(this.habbo.getHabboInfo().getLook());
-            this.response.appendInt32(this.habbo.getRoomUnit().getId()); //Room Unit ID
+            this.response.appendInt(this.habbo.getRoomUnit().getId()); //Room Unit ID
             this.response.appendInt32(this.habbo.getRoomUnit().getX());
             this.response.appendInt32(this.habbo.getRoomUnit().getY());
             this.response.appendString(this.habbo.getRoomUnit().getZ() + "");
-            this.response.appendInt32(this.habbo.getRoomUnit().getBodyRotation().getValue());
-            this.response.appendInt32(1);
+            this.response.appendInt(this.habbo.getRoomUnit().getBodyRotation().getValue());
+            this.response.appendInt(1);
             this.response.appendString(this.habbo.getHabboInfo().getGender().name().toUpperCase());
-            this.response.appendInt32(this.habbo.getHabboStats().guild != 0 ? this.habbo.getHabboStats().guild : -1);
-            this.response.appendInt32(this.habbo.getHabboStats().guild != 0 ? 1 : -1);
+            this.response.appendInt(this.habbo.getHabboStats().guild != 0 ? this.habbo.getHabboStats().guild : -1);
+            this.response.appendInt(this.habbo.getHabboStats().guild != 0 ? 1 : -1);
 
             String name = "";
             if(this.habbo.getHabboStats().guild != 0)
@@ -69,29 +69,29 @@ public class RoomUsersComposer extends MessageComposer
             this.response.appendString(name);
 
             this.response.appendString("");
-            this.response.appendInt32(this.habbo.getHabboStats().getAchievementScore());
+            this.response.appendInt(this.habbo.getHabboStats().getAchievementScore());
             this.response.appendBoolean(true);
         }
         else if(this.habbos != null)
         {
             synchronized (this.habbos)
             {
-                this.response.appendInt32(this.habbos.size());
+                this.response.appendInt(this.habbos.size());
                 for (Habbo habbo : this.habbos.valueCollection())
                 {
-                    this.response.appendInt32(habbo.getHabboInfo().getId());
+                    this.response.appendInt(habbo.getHabboInfo().getId());
                     this.response.appendString(habbo.getHabboInfo().getUsername());
                     this.response.appendString(habbo.getHabboInfo().getMotto());
                     this.response.appendString(habbo.getHabboInfo().getLook());
-                    this.response.appendInt32(habbo.getRoomUnit().getId()); //Room Unit ID
+                    this.response.appendInt(habbo.getRoomUnit().getId()); //Room Unit ID
                     this.response.appendInt32(habbo.getRoomUnit().getX());
                     this.response.appendInt32(habbo.getRoomUnit().getY());
                     this.response.appendString(habbo.getRoomUnit().getZ() + "");
-                    this.response.appendInt32(habbo.getRoomUnit().getBodyRotation().getValue());
-                    this.response.appendInt32(1);
+                    this.response.appendInt(habbo.getRoomUnit().getBodyRotation().getValue());
+                    this.response.appendInt(1);
                     this.response.appendString(habbo.getHabboInfo().getGender().name().toUpperCase());
-                    this.response.appendInt32(habbo.getHabboStats().guild != 0 ? habbo.getHabboStats().guild : -1);
-                    this.response.appendInt32(habbo.getHabboStats().guild != 0 ? habbo.getHabboStats().guild : -1);
+                    this.response.appendInt(habbo.getHabboStats().guild != 0 ? habbo.getHabboStats().guild : -1);
+                    this.response.appendInt(habbo.getHabboStats().guild != 0 ? habbo.getHabboStats().guild : -1);
                     String name = "";
                     if (habbo.getHabboStats().guild != 0)
                     {
@@ -102,28 +102,28 @@ public class RoomUsersComposer extends MessageComposer
                     }
                     this.response.appendString(name);
                     this.response.appendString("");
-                    this.response.appendInt32(habbo.getHabboStats().getAchievementScore());
+                    this.response.appendInt(habbo.getHabboStats().getAchievementScore());
                     this.response.appendBoolean(true);
                 }
             }
         }
         else if(this.bot != null)
         {
-            this.response.appendInt32(1);
-            this.response.appendInt32(0 - this.bot.getId());
+            this.response.appendInt(1);
+            this.response.appendInt(0 - this.bot.getId());
             this.response.appendString(this.bot.getName());
             this.response.appendString(this.bot.getMotto());
             this.response.appendString(this.bot.getFigure());
-            this.response.appendInt32(this.bot.getRoomUnit().getId());
+            this.response.appendInt(this.bot.getRoomUnit().getId());
             this.response.appendInt32(this.bot.getRoomUnit().getX());
             this.response.appendInt32(this.bot.getRoomUnit().getY());
             this.response.appendString(this.bot.getRoomUnit().getZ() + "");
-            this.response.appendInt32(this.bot.getRoomUnit().getBodyRotation().getValue());
-            this.response.appendInt32(4);
+            this.response.appendInt(this.bot.getRoomUnit().getBodyRotation().getValue());
+            this.response.appendInt(4);
             this.response.appendString(this.bot.getGender().name().toUpperCase());
-            this.response.appendInt32(this.bot.getOwnerId());
+            this.response.appendInt(this.bot.getOwnerId());
             this.response.appendString(this.bot.getOwnerName());
-            this.response.appendInt32(10);
+            this.response.appendInt(10);
             this.response.appendShort(0);
             this.response.appendShort(1);
             this.response.appendShort(2);
@@ -137,23 +137,23 @@ public class RoomUsersComposer extends MessageComposer
         }
         else if(this.bots != null)
         {
-            this.response.appendInt32(this.bots.size());
+            this.response.appendInt(this.bots.size());
             for(Bot bot : this.bots)
             {
-                this.response.appendInt32(0 - bot.getId());
+                this.response.appendInt(0 - bot.getId());
                 this.response.appendString(bot.getName());
                 this.response.appendString(bot.getMotto());
                 this.response.appendString(bot.getFigure());
-                this.response.appendInt32(bot.getRoomUnit().getId());
+                this.response.appendInt(bot.getRoomUnit().getId());
                 this.response.appendInt32(bot.getRoomUnit().getX());
                 this.response.appendInt32(bot.getRoomUnit().getY());
                 this.response.appendString(bot.getRoomUnit().getZ() + "");
-                this.response.appendInt32(bot.getRoomUnit().getBodyRotation().getValue());
-                this.response.appendInt32(4);
+                this.response.appendInt(bot.getRoomUnit().getBodyRotation().getValue());
+                this.response.appendInt(4);
                 this.response.appendString(bot.getGender().name().toUpperCase());
-                this.response.appendInt32(bot.getOwnerId());
+                this.response.appendInt(bot.getOwnerId());
                 this.response.appendString(bot.getOwnerName());
-                this.response.appendInt32(10);
+                this.response.appendInt(10);
                 this.response.appendShort(0);
                 this.response.appendShort(1);
                 this.response.appendShort(2);

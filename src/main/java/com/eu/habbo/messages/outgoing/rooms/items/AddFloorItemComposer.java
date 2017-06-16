@@ -23,11 +23,11 @@ public class AddFloorItemComposer extends MessageComposer
     {
         this.response.init(Outgoing.AddFloorItemComposer);
         this.item.serializeFloorData(this.response);
-        this.response.appendInt32(this.item instanceof InteractionGift ? ((((InteractionGift) this.item).getColorId() * 1000) + ((InteractionGift) this.item).getRibbonId()) : (this.item instanceof InteractionMusicDisc ? ((InteractionMusicDisc)this.item).getSongId() : 1));
+        this.response.appendInt(this.item instanceof InteractionGift ? ((((InteractionGift) this.item).getColorId() * 1000) + ((InteractionGift) this.item).getRibbonId()) : (this.item instanceof InteractionMusicDisc ? ((InteractionMusicDisc) this.item).getSongId() : 1));
         this.item.serializeExtradata(this.response);
-        this.response.appendInt32(-1);
-        this.response.appendInt32(this.item.getBaseItem().getStateCount() > 1 ? 1 : 0);
-        this.response.appendInt32(this.item.getUserId());
+        this.response.appendInt(-1);
+        this.response.appendInt(this.item.getBaseItem().getStateCount() > 1 ? 1 : 0);
+        this.response.appendInt(this.item.getUserId());
         this.response.appendString(this.itemOwnerName);
         return this.response;
     }

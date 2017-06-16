@@ -31,10 +31,10 @@ public class GuildForumDataComposer extends MessageComposer
 
             Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(this.forum.getGuild());
 
-            this.response.appendInt32(guild.canReadForum().state);
-            this.response.appendInt32(guild.canPostMessages().state);
-            this.response.appendInt32(guild.canPostThreads().state);
-            this.response.appendInt32(guild.canModForum().state);
+            this.response.appendInt(guild.canReadForum().state);
+            this.response.appendInt(guild.canPostMessages().state);
+            this.response.appendInt(guild.canPostThreads().state);
+            this.response.appendInt(guild.canModForum().state);
             this.response.appendString(""); //_local_2._SafeStr_19197 = k.readString();
             this.response.appendString(""); //_local_2._SafeStr_19198 = k.readString(); = member
             this.response.appendString(guild.getOwnerId()== this.habbo.getClient().getHabbo().getHabboInfo().getId() ? "" : "not_owner"); //_local_2._SafeStr_19199 = k.readString(); = owner

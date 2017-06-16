@@ -17,13 +17,13 @@ public class InfoPetsLayout extends CatalogPage
     public void serialize(ServerMessage message)
     {
         message.appendString("info_pets");
-        message.appendInt32(2);
+        message.appendInt(2);
         message.appendString(getHeaderImage());
         message.appendString(getTeaserImage());
-        message.appendInt32(3);
+        message.appendInt(3);
         message.appendString(getTextOne());
         message.appendString("");
         message.appendString(getTextTeaser());
-        message.appendInt32(0);
+        message.appendInt(0);
     }
 }

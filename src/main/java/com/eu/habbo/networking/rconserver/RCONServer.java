@@ -59,6 +59,7 @@ public class RCONServer
         this.addRCONMessage("progressachievement",  ProgressAchievement.class);
         this.addRCONMessage("updateuser",           UpdateUser.class);
         this.addRCONMessage("friendrequest",        FriendRequest.class);
+        this.addRCONMessage("imagehotelalert",      ImageHotelAlert.class);
     }
 
     public void initialise()

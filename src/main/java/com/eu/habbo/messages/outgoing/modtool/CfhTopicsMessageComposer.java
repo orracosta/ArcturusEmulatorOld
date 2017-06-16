@@ -15,7 +15,7 @@ public class CfhTopicsMessageComposer extends MessageComposer
     {
         this.response.init(Outgoing.CfhTopicsMessageComposer);
 
-        this.response.appendInt32(Emulator.getGameEnvironment().getModToolManager().getCfhCategories().valueCollection().size());
+        this.response.appendInt(Emulator.getGameEnvironment().getModToolManager().getCfhCategories().valueCollection().size());
 
         Emulator.getGameEnvironment().getModToolManager().getCfhCategories().forEachValue(new TObjectProcedure<CfhCategory>()
         {
@@ -23,14 +23,14 @@ public class CfhTopicsMessageComposer extends MessageComposer
             public boolean execute(CfhCategory category)
             {
                 response.appendString(category.getName());
-                response.appendInt32(category.getTopics().valueCollection().size());
+                response.appendInt(category.getTopics().valueCollection().size());
                 category.getTopics().forEachValue(new TObjectProcedure<CfhTopic>()
                 {
                     @Override
                     public boolean execute(CfhTopic topic)
                     {
                         response.appendString(topic.name);
-                        response.appendInt32(topic.id);
+                        response.appendInt(topic.id);
                         response.appendString(topic.action.toString());
                         return true;
                     }

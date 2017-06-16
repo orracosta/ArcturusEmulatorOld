@@ -1,6 +1,5 @@
 package com.eu.habbo.messages.outgoing.modtool;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.modtool.ModToolChatLog;
 import com.eu.habbo.habbohotel.modtool.ModToolRoomVisit;
 import com.eu.habbo.messages.ServerMessage;
@@ -29,9 +28,9 @@ public class ModToolUserChatlogComposer extends MessageComposer
     {
         this.response.init(Outgoing.ModToolUserChatlogComposer);
 
-        this.response.appendInt32(this.userId);
+        this.response.appendInt(this.userId);
         this.response.appendString(this.username);
-        this.response.appendInt32(this.set.size());
+        this.response.appendInt(this.set.size());
 
         for(ModToolRoomVisit visit : set)
         {
@@ -42,13 +41,13 @@ public class ModToolUserChatlogComposer extends MessageComposer
             this.response.appendString(visit.roomName);
             this.response.appendString("roomId");
             this.response.appendByte(1);
-            this.response.appendInt32(visit.roomId);
+            this.response.appendInt(visit.roomId);
 
             this.response.appendShort(visit.chat.size());
             for(ModToolChatLog chatLog : visit.chat)
             {
                 this.response.appendString(format.format(chatLog.timestamp * 1000l));
-                this.response.appendInt32(chatLog.habboId);
+                this.response.appendInt(chatLog.habboId);
                 this.response.appendString(chatLog.username);
                 this.response.appendString(chatLog.message);
                 this.response.appendBoolean(false);

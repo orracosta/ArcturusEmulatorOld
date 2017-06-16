@@ -19,7 +19,7 @@ public class FriendRequestComposer extends MessageComposer
     {
         this.response.init(Outgoing.FriendRequestComposer);
 
-        this.response.appendInt32(this.habbo.getHabboInfo().getId());
+        this.response.appendInt(this.habbo.getHabboInfo().getId());
         this.response.appendString(this.habbo.getHabboInfo().getUsername());
         this.response.appendString(this.habbo.getHabboInfo().getLook());
 

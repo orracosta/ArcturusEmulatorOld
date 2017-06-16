@@ -17,11 +17,11 @@ public class RoomChatSettingsComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomChatSettingsComposer);
-        this.response.appendInt32(this.room.getChatMode());
-        this.response.appendInt32(this.room.getChatWeight());
-        this.response.appendInt32(this.room.getChatSpeed());
-        this.response.appendInt32(this.room.getChatDistance());
-        this.response.appendInt32(this.room.getChatProtection());
+        this.response.appendInt(this.room.getChatMode());
+        this.response.appendInt(this.room.getChatWeight());
+        this.response.appendInt(this.room.getChatSpeed());
+        this.response.appendInt(this.room.getChatDistance());
+        this.response.appendInt(this.room.getChatProtection());
         return this.response;
     }
 }

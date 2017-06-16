@@ -23,9 +23,9 @@ public class HotelViewNextLTDAvailableComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.HotelViewNextLTDAvailableComposer);
-        this.response.appendInt32(this.time);
-        this.response.appendInt32(this.pageId);
-        this.response.appendInt32(this.itemId);
+        this.response.appendInt(this.time);
+        this.response.appendInt(this.pageId);
+        this.response.appendInt(this.itemId);
         this.response.appendString(this.itemName);
         return this.response;
     }

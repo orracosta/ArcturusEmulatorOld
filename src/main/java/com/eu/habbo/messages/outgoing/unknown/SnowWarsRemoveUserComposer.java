@@ -13,7 +13,7 @@ public class SnowWarsRemoveUserComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(2502);
-        this.response.appendInt32(3);
+        this.response.appendInt(3);
         return this.response;
     }
 }

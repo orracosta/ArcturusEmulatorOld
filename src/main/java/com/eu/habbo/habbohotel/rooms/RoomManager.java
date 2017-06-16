@@ -803,7 +803,12 @@ public class RoomManager {
                         }
                     }
 
-                    int effect = Emulator.getGameEnvironment().getPermissionsManager().getEffect(habbo.getHabboInfo().getRank());
+                    int effect = habbo.getInventory().getEffectsComponent().activatedEffect ;
+
+                    if (effect == 0)
+                    {
+                        effect = Emulator.getGameEnvironment().getPermissionsManager().getEffect(habbo.getHabboInfo().getRank());
+                    }
 
                     if (effect > 0)
                     {
@@ -987,7 +992,7 @@ public class RoomManager {
         {
             statement.setInt(1, room.getId());
             statement.setInt(2, habbo.getHabboInfo().getId());
-            statement.setInt(3, (int)(habbo.getHabboStats().roomEnterTimestamp / 1000));
+            statement.setInt(3, (int)(habbo.getHabboStats().roomEnterTimestamp));
             statement.execute();
         }
         catch (SQLException e)

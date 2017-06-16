@@ -38,11 +38,11 @@ public class FloorItemOnRollerComposer extends MessageComposer
         this.response.appendInt32(this.item.getY());
         this.response.appendInt32(this.newLocation.x);
         this.response.appendInt32(this.newLocation.y);
-        this.response.appendInt32(1);
-        this.response.appendInt32(this.item.getId());
+        this.response.appendInt(1);
+        this.response.appendInt(this.item.getId());
         this.response.appendString(Double.toString(this.item.getZ()));
         this.response.appendString(Double.toString(this.item.getZ() + this.heightOffset));
-        this.response.appendInt32(this.roller != null ? this.roller.getId() : -1);
+        this.response.appendInt(this.roller != null ? this.roller.getId() : -1);
 
         this.item.onMove(this.room, this.room.getLayout().getTile(item.getX(), item.getY()), this.newLocation);
         this.item.setX(this.newLocation.x);

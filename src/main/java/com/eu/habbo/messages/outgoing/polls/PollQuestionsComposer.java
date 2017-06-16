@@ -6,8 +6,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-import java.util.Collections;
-
 public class PollQuestionsComposer extends MessageComposer
 {
     private Poll poll;
@@ -22,10 +20,10 @@ public class PollQuestionsComposer extends MessageComposer
     {
         this.response.init(Outgoing.PollQuestionsComposer);
 
-        this.response.appendInt32(this.poll.getId());
+        this.response.appendInt(this.poll.getId());
         this.response.appendString(this.poll.getTitle());
         this.response.appendString(this.poll.getThanksMessage());
-        this.response.appendInt32(this.poll.getQuestions().size());
+        this.response.appendInt(this.poll.getQuestions().size());
         for (PollQuestion question : this.poll.getQuestions())
         {
             question.serialize(this.response);

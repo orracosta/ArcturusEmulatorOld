@@ -26,10 +26,10 @@ public class PromoteOwnRoomsListComposer extends MessageComposer
     {
         this.response.init(Outgoing.PromoteOwnRoomsListComposer);
         this.response.appendBoolean(true);
-        this.response.appendInt32(this.rooms.size());
+        this.response.appendInt(this.rooms.size());
         for(Room room : this.rooms)
         {
-            this.response.appendInt32(room.getId());
+            this.response.appendInt(room.getId());
             this.response.appendString(room.getName());
             this.response.appendBoolean(true); //IDK what the fuck this is.
         }

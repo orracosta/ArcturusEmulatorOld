@@ -34,28 +34,28 @@ public class GuildMembersComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildMembersComposer);
-        this.response.appendInt32(this.guild.getId());
+        this.response.appendInt(this.guild.getId());
         this.response.appendString(this.guild.getName());
-        this.response.appendInt32(this.guild.getRoomId());
+        this.response.appendInt(this.guild.getRoomId());
         this.response.appendString(this.guild.getBadge());
-        this.response.appendInt32(this.guild.getMemberCount());
-        this.response.appendInt32(this.members.size());
+        this.response.appendInt(this.guild.getMemberCount());
+        this.response.appendInt(this.members.size());
 
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         for(GuildMember member : this.members)
         {
             cal.setTimeInMillis(member.getJoinDate() * 1000L);
-            this.response.appendInt32(member.getRank().type);
-            this.response.appendInt32(member.getUserId());
+            this.response.appendInt(member.getRank().type);
+            this.response.appendInt(member.getUserId());
             this.response.appendString(member.getUsername());
             this.response.appendString(member.getLook());
             this.response.appendString(member.getRank().type < 3 && member.getRank().type > 0 ? cal.get(Calendar.DAY_OF_MONTH) + "/" + (cal.get(Calendar.MONTH) + 1) + "/" + cal.get(Calendar.YEAR) : "");
         }
 
         this.response.appendBoolean(this.guild.getOwnerId() == this.session.getHabboInfo().getId()); //Is owner
-        this.response.appendInt32(14);
-        this.response.appendInt32(this.pageId);
-        this.response.appendInt32(this.level);
+        this.response.appendInt(14);
+        this.response.appendInt(this.pageId);
+        this.response.appendInt(this.level);
         this.response.appendString(this.searchValue);
         return this.response;
     }

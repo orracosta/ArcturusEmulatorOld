@@ -20,7 +20,7 @@ public class HotelViewCustomTimerComposer extends MessageComposer
     {
         this.response.init(Outgoing.HotelViewCustomTimerComposer);
         this.response.appendString(this.name); //Send by the client.
-        this.response.appendInt32(this.seconds);
+        this.response.appendInt(this.seconds);
         return this.response;
     }
 }

@@ -27,7 +27,7 @@ public class MessagesForYouComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.MessagesForYouComposer);
-        this.response.appendInt32(this.messages.length + this.newMessages.size());
+        this.response.appendInt(this.messages.length + this.newMessages.size());
 
         for(String s : this.messages)
         {

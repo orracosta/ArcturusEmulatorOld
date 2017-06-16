@@ -24,7 +24,7 @@ public class PetBreedingStartFailedComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.PetBreedingStartFailedComposer);
-        this.response.appendInt32(this.reason);
+        this.response.appendInt(this.reason);
         return this.response;
     }
 }

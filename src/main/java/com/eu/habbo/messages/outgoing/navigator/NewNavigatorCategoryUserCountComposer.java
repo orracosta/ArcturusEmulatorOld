@@ -20,13 +20,13 @@ public class NewNavigatorCategoryUserCountComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.NewNavigatorCategoryUserCountComposer);
-        this.response.appendInt32(this.roomCategories.size());
+        this.response.appendInt(this.roomCategories.size());
 
         for (RoomCategory category : this.roomCategories)
         {
-            this.response.appendInt32(0);
-            this.response.appendInt32(0);
-            this.response.appendInt32(200);
+            this.response.appendInt(0);
+            this.response.appendInt(0);
+            this.response.appendInt(200);
         }
         return this.response;
     }

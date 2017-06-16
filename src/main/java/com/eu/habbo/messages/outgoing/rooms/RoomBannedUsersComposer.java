@@ -48,12 +48,12 @@ public class RoomBannedUsersComposer extends MessageComposer
             return null;
 
         this.response.init(Outgoing.RoomBannedUsersComposer);
-        this.response.appendInt32(this.room.getId());
-        this.response.appendInt32(roomBans.size());
+        this.response.appendInt(this.room.getId());
+        this.response.appendInt(roomBans.size());
 
         for(RoomBan ban : roomBans)
         {
-            this.response.appendInt32(ban.userId);
+            this.response.appendInt(ban.userId);
             this.response.appendString(ban.username);
         }
 

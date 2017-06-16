@@ -32,7 +32,7 @@ public class InteractionPetFood extends HabboItem
     @Override
     public void serializeExtradata(ServerMessage serverMessage)
     {
-        serverMessage.appendInt32((this.isLimited() ? 256 : 0));
+        serverMessage.appendInt((this.isLimited() ? 256 : 0));
         serverMessage.appendString(this.getExtradata());
 
         super.serializeExtradata(serverMessage);

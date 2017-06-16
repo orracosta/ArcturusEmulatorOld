@@ -107,7 +107,20 @@ public class ServerMessage
         }
     }
 
+    @Deprecated
     public void appendInt32(Integer obj)
+    {
+        try
+        {
+            this.stream.writeInt(obj.intValue());
+        }
+        catch(IOException e)
+        {
+            Emulator.getLogging().logPacketError(e);
+        }
+    }
+
+    public void appendInt(Integer obj)
     {
         try
         {

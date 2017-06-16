@@ -24,28 +24,28 @@ public class RoomUserPetComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomUsersComposer);
-        this.response.appendInt32(1);
-        this.response.appendInt32(this.habbo.getHabboInfo().getId());
+        this.response.appendInt(1);
+        this.response.appendInt(this.habbo.getHabboInfo().getId());
         this.response.appendString(this.habbo.getHabboInfo().getUsername());
         this.response.appendString("");
         this.response.appendString(this.petType + " " + this.race + " " + this.color + " 2 2 -1 0 3 -1 0");
-        this.response.appendInt32(habbo.getRoomUnit().getId());
+        this.response.appendInt(habbo.getRoomUnit().getId());
         this.response.appendInt32(habbo.getRoomUnit().getX());
         this.response.appendInt32(habbo.getRoomUnit().getY());
         this.response.appendString(habbo.getRoomUnit().getZ() + "");
-        this.response.appendInt32(habbo.getRoomUnit().getBodyRotation().getValue());
-        this.response.appendInt32(2);
-        this.response.appendInt32(this.petType);
-        this.response.appendInt32(this.habbo.getHabboInfo().getId());
+        this.response.appendInt(habbo.getRoomUnit().getBodyRotation().getValue());
+        this.response.appendInt(2);
+        this.response.appendInt(this.petType);
+        this.response.appendInt(this.habbo.getHabboInfo().getId());
         this.response.appendString(this.habbo.getHabboInfo().getUsername());
-        this.response.appendInt32(1);
+        this.response.appendInt(1);
         this.response.appendBoolean(false);
         this.response.appendBoolean(true);
         this.response.appendBoolean(true); //Can toggle breeding permissions.
         this.response.appendBoolean(true);
         this.response.appendBoolean(true); //Can treat?
         this.response.appendBoolean(true); //Can breed
-        this.response.appendInt32(0);
+        this.response.appendInt(0);
         this.response.appendString("");
         return this.response;
     }

@@ -44,11 +44,11 @@ public class UserClothesComposer extends MessageComposer
     {
         this.response.init(Outgoing.UserClothesComposer);
 
-        this.response.appendInt32(this.idList.size());
+        this.response.appendInt(this.idList.size());
 
-        this.idList.forEach(this.response::appendInt32);
+        this.idList.forEach(this.response::appendInt);
 
-        this.response.appendInt32(this.nameList.size());
+        this.response.appendInt(this.nameList.size());
 
         this.nameList.forEach(this.response::appendString);
 

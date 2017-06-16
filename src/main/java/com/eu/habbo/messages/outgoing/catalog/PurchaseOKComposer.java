@@ -29,20 +29,20 @@ public class PurchaseOKComposer extends MessageComposer
         this.response.init(Outgoing.PurchaseOKComposer);
 //        if(catalogItem != null && item != null)
 //        {
-//            this.response.appendInt32(this.item.getId());
+//            this.response.appendInt(this.item.getId());
 //            this.response.appendString(this.item.getName());
 //            this.response.appendBoolean(false);
-//            this.response.appendInt32(this.catalogItem.getCredits());
-//            this.response.appendInt32(this.catalogItem.getPoints());
-//            this.response.appendInt32(this.catalogItem.getPointsType());
+//            this.response.appendInt(this.catalogItem.getCredits());
+//            this.response.appendInt(this.catalogItem.getPoints());
+//            this.response.appendInt(this.catalogItem.getPointsType());
 //            this.response.appendBoolean(false);
-//            this.response.appendInt32(1);
+//            this.response.appendInt(1);
 //            this.response.appendString(this.item.getType().toLowerCase());
-//            this.response.appendInt32(this.item.getSpriteId());
+//            this.response.appendInt(this.item.getSpriteId());
 //            this.response.appendString("");
-//            this.response.appendInt32(1);
-//            this.response.appendInt32(false);
-//            this.response.appendInt32(0);
+//            this.response.appendInt(1);
+//            this.response.appendInt(false);
+//            this.response.appendInt(0);
 //            this.response.appendBoolean(true);
 //        }
 //        else
@@ -52,21 +52,21 @@ public class PurchaseOKComposer extends MessageComposer
         }
         else
         {
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
             this.response.appendString("");
             this.response.appendBoolean(false);
-            this.response.appendInt32(0);
-            this.response.appendInt32(0);
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
+            this.response.appendInt(0);
+            this.response.appendInt(0);
             this.response.appendBoolean(true);
-            this.response.appendInt32(1);
+            this.response.appendInt(1);
             this.response.appendString("s");
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
             this.response.appendString("");
-            this.response.appendInt32(1);
-            this.response.appendInt32(0);
+            this.response.appendInt(1);
+            this.response.appendInt(0);
             this.response.appendString("");
-            this.response.appendInt32(1);
+            this.response.appendInt(1);
         }
         return this.response;
     }

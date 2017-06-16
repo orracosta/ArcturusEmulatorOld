@@ -18,7 +18,7 @@ public class TradeAcceptedComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.TradeAcceptedComposer);
-        this.response.appendInt32(this.tradeUser.getHabbo().getHabboInfo().getId());
+        this.response.appendInt(this.tradeUser.getHabbo().getHabboInfo().getId());
         this.response.appendInt32(this.tradeUser.getAccepted());
         return this.response;
     }

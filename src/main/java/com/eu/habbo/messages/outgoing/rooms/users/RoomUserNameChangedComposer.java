@@ -21,8 +21,8 @@ public class RoomUserNameChangedComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomUserNameChangedComposer);
-        this.response.appendInt32(this.roomUnit.getId());
-        this.response.appendInt32(this.habbo.getHabboInfo().getId());
+        this.response.appendInt(this.roomUnit.getId());
+        this.response.appendInt(this.habbo.getHabboInfo().getId());
         this.response.appendString(this.habbo.getHabboInfo().getUsername());
         return this.response;
     }

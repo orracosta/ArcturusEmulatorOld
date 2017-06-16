@@ -17,9 +17,9 @@ public class ClubBuyLayout extends CatalogPage
     public void serialize(ServerMessage message)
     {
         message.appendString("club_buy");
-        message.appendInt32(2);
+        message.appendInt(2);
         message.appendString(super.getHeaderImage());
         message.appendString(super.getTeaserImage());
-        message.appendInt32(0);
+        message.appendInt(0);
     }
 }

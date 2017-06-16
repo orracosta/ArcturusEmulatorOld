@@ -65,22 +65,22 @@ public class ModToolIssue implements ISerialize
     @Override
     public void serialize(ServerMessage message)
     {
-        message.appendInt32(this.id); //ID
-        message.appendInt32(this.state.getState()); //STATE
-        message.appendInt32(this.type.getType()); //TYPE
-        message.appendInt32(this.category); //CATEGORY ID
-        message.appendInt32(((Emulator.getIntUnixTimestamp() - this.timestamp))); //TIME IN MS AGO
-        message.appendInt32(this.priority); //PRIORITY
-        message.appendInt32(1); // != 0?
-        message.appendInt32(this.senderId); //Reporter user ID
+        message.appendInt(this.id); //ID
+        message.appendInt(this.state.getState()); //STATE
+        message.appendInt(this.type.getType()); //TYPE
+        message.appendInt(this.category); //CATEGORY ID
+        message.appendInt(((Emulator.getIntUnixTimestamp() - this.timestamp))); //TIME IN MS AGO
+        message.appendInt(this.priority); //PRIORITY
+        message.appendInt(1); // != 0?
+        message.appendInt(this.senderId); //Reporter user ID
         message.appendString(this.senderUsername); //Reporter user name.
-        message.appendInt32(this.reportedId); //Reported user ID.
+        message.appendInt(this.reportedId); //Reported user ID.
         message.appendString(this.reportedUsername); //Reported user name.
-        message.appendInt32(this.modId); //MOD User ID?
+        message.appendInt(this.modId); //MOD User ID?
         message.appendString(this.modName); //MOD User name?
         message.appendString(this.message);
-        message.appendInt32(0);
-        message.appendInt32(0);
+        message.appendInt(0);
+        message.appendInt(0);
     }
 
     public void updateInDatabase()

@@ -75,17 +75,17 @@ public class WiredTriggerScoreAchieved extends InteractionWiredTrigger
     public void serializeWiredData(ServerMessage message, Room room)
     {
         message.appendBoolean(false);
-        message.appendInt32(5);
-        message.appendInt32(0);
-        message.appendInt32(this.getBaseItem().getSpriteId());
-        message.appendInt32(this.getId());
+        message.appendInt(5);
+        message.appendInt(0);
+        message.appendInt(this.getBaseItem().getSpriteId());
+        message.appendInt(this.getId());
         message.appendString("");
-        message.appendInt32(1);
-        message.appendInt32(this.score);
-        message.appendInt32(0);
-        message.appendInt32(this.getType().code);
-        message.appendInt32(0);
-        message.appendInt32(0);
+        message.appendInt(1);
+        message.appendInt(this.score);
+        message.appendInt(0);
+        message.appendInt(this.getType().code);
+        message.appendInt(0);
+        message.appendInt(0);
     }
 
     @Override

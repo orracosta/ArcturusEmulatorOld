@@ -18,7 +18,7 @@ public class RoomUnitIdleComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomUnitIdleComposer);
-        this.response.appendInt32(this.roomUnit.getId());
+        this.response.appendInt(this.roomUnit.getId());
         this.response.appendBoolean(this.roomUnit.isIdle());
         return this.response;
     }

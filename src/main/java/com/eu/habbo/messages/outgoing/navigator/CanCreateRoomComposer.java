@@ -20,8 +20,8 @@ public class CanCreateRoomComposer extends MessageComposer
     {
         this.response.init(Outgoing.CanCreateRoomComposer);
 
-        this.response.appendInt32(this.count >= this.max ? 1 : 0);
-        this.response.appendInt32(this.max);
+        this.response.appendInt(this.count >= this.max ? 1 : 0);
+        this.response.appendInt(this.max);
 
         return this.response;
     }

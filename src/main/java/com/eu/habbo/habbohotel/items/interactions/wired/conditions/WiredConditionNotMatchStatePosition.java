@@ -149,24 +149,24 @@ public class WiredConditionNotMatchStatePosition extends InteractionWiredConditi
         this.refresh();
 
         message.appendBoolean(false);
-        message.appendInt32(Emulator.getConfig().getInt("hotel.wired.furni.selection.count"));
-        message.appendInt32(this.settings.size());
+        message.appendInt(Emulator.getConfig().getInt("hotel.wired.furni.selection.count"));
+        message.appendInt(this.settings.size());
 
         for(WiredMatchFurniSetting item : this.settings)
-            message.appendInt32(item.itemId);
+            message.appendInt(item.itemId);
 
-        message.appendInt32(this.getBaseItem().getSpriteId());
-        message.appendInt32(this.getId());
+        message.appendInt(this.getBaseItem().getSpriteId());
+        message.appendInt(this.getId());
         message.appendString("");
-        message.appendInt32(4);
-        message.appendInt32(this.state ? 1 : 0);
-        message.appendInt32(this.direction ? 1 : 0);
-        message.appendInt32(this.position ? 1 : 0);
-        message.appendInt32(10);
-        message.appendInt32(0);
-        message.appendInt32(this.getType().code);
-        message.appendInt32(0);
-        message.appendInt32(0);
+        message.appendInt(4);
+        message.appendInt(this.state ? 1 : 0);
+        message.appendInt(this.direction ? 1 : 0);
+        message.appendInt(this.position ? 1 : 0);
+        message.appendInt(10);
+        message.appendInt(0);
+        message.appendInt(this.getType().code);
+        message.appendInt(0);
+        message.appendInt(0);
     }
 
     @Override

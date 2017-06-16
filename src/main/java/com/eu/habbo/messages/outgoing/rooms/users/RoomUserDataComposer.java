@@ -18,11 +18,11 @@ public class RoomUserDataComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomUserDataComposer);
-        this.response.appendInt32(this.habbo.getRoomUnit() == null ? -1 : this.habbo.getRoomUnit().getId());
+        this.response.appendInt(this.habbo.getRoomUnit() == null ? -1 : this.habbo.getRoomUnit().getId());
         this.response.appendString(this.habbo.getHabboInfo().getLook());
         this.response.appendString(this.habbo.getHabboInfo().getGender() + "");
         this.response.appendString(this.habbo.getHabboInfo().getMotto());
-        this.response.appendInt32(this.habbo.getHabboStats().getAchievementScore());
+        this.response.appendInt(this.habbo.getHabboStats().getAchievementScore());
         return this.response;
     }
 }

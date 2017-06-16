@@ -7,7 +7,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.threading.runnables.BackgroundAnimation;
 
 import java.sql.ResultSet;
@@ -28,22 +27,22 @@ public class InteractionBackgroundToner extends HabboItem
     @Override
     public void serializeExtradata(ServerMessage serverMessage)
     {
-        serverMessage.appendInt32(5 + (this.isLimited() ? 256 : 0));
-        serverMessage.appendInt32(4);
+        serverMessage.appendInt(5 + (this.isLimited() ? 256 : 0));
+        serverMessage.appendInt(4);
         if (this.getExtradata().split(":").length == 4)
         {
             String[] colorData = this.getExtradata().split(":");
-            serverMessage.appendInt32(Integer.valueOf(colorData[0]));
-            serverMessage.appendInt32(Integer.valueOf(colorData[1]));
-            serverMessage.appendInt32(Integer.valueOf(colorData[2]));
-            serverMessage.appendInt32(Integer.valueOf(colorData[3]));
+            serverMessage.appendInt(Integer.valueOf(colorData[0]));
+            serverMessage.appendInt(Integer.valueOf(colorData[1]));
+            serverMessage.appendInt(Integer.valueOf(colorData[2]));
+            serverMessage.appendInt(Integer.valueOf(colorData[3]));
         }
         else
         {
-            serverMessage.appendInt32(0);
-            serverMessage.appendInt32(126);
-            serverMessage.appendInt32(126);
-            serverMessage.appendInt32(126);
+            serverMessage.appendInt(0);
+            serverMessage.appendInt(126);
+            serverMessage.appendInt(126);
+            serverMessage.appendInt(126);
             this.setExtradata("0:126:126:126");
             this.needsUpdate(true);
             Emulator.getThreading().run(this);

@@ -19,7 +19,7 @@ public class GuideSessionMessageComposer extends MessageComposer
     {
         this.response.init(Outgoing.GuideSessionMessageComposer);
         this.response.appendString(this.message.message); //Message
-        this.response.appendInt32(this.message.userId);   //Sender ID
+        this.response.appendInt(this.message.userId);   //Sender ID
         return this.response;
     }
 }

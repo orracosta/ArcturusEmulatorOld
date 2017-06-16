@@ -9,8 +9,8 @@ public class SnowWarsUserExitArenaComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(3811);
-        this.response.appendInt32(1); //userId
-        this.response.appendInt32(1); //IDK ? TEAM?
+        this.response.appendInt(1); //userId
+        this.response.appendInt(1); //IDK ? TEAM?
         return this.response;
     }
 }

@@ -10,16 +10,16 @@ public class NewNavigatorMetaDataComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.NewNavigatorMetaDataComposer);
-        this.response.appendInt32(4);
+        this.response.appendInt(4);
 
         this.response.appendString("official_view");
-        this.response.appendInt32(0);
+        this.response.appendInt(0);
         this.response.appendString("hotel_view");
-        this.response.appendInt32(0);
+        this.response.appendInt(0);
         this.response.appendString("roomads_view");
-        this.response.appendInt32(0);
+        this.response.appendInt(0);
         this.response.appendString("myworld_view");
-        this.response.appendInt32(0);
+        this.response.appendInt(0);
 
         return this.response;
     }

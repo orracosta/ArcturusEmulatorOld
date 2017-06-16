@@ -21,8 +21,8 @@ public class RoomUserActionComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomUserActionComposer);
-        this.response.appendInt32(this.roomUnit.getId());
-        this.response.appendInt32(this.action.getAction());
+        this.response.appendInt(this.roomUnit.getId());
+        this.response.appendInt(this.action.getAction());
         return this.response;
     }
 }

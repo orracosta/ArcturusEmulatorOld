@@ -9,23 +9,23 @@ public class SnowWarsFullGameStatusComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(0);
-        this.response.appendInt32(0); //Unused
-        this.response.appendInt32(0);
-        this.response.appendInt32(0);
+        this.response.appendInt(0); //Unused
+        this.response.appendInt(0);
+        this.response.appendInt(0);
 
         //SnowWarGameObjectData
-        this.response.appendInt32(1); //Count
+        this.response.appendInt(1); //Count
         //{
-            this.response.appendInt32(3); //type
-            this.response.appendInt32(1); //id?
+            this.response.appendInt(3); //type
+            this.response.appendInt(1); //id?
 
-            this.response.appendInt32(1); //variable
-            this.response.appendInt32(1); //variable
-            this.response.appendInt32(1); //variable
-            this.response.appendInt32(1); //variable
-            this.response.appendInt32(1); //variable
-            this.response.appendInt32(1); //variable
-            this.response.appendInt32(1); //variable
+            this.response.appendInt(1); //variable
+            this.response.appendInt(1); //variable
+            this.response.appendInt(1); //variable
+            this.response.appendInt(1); //variable
+            this.response.appendInt(1); //variable
+            this.response.appendInt(1); //variable
+            this.response.appendInt(1); //variable
 
             //1: -> 11 variables.
             //4: -> 8 variables.

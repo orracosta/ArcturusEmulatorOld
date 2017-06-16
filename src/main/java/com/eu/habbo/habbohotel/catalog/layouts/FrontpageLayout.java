@@ -16,10 +16,10 @@ public class FrontpageLayout extends CatalogPage {
     @Override
     public void serialize(ServerMessage message) {
         message.appendString("frontpage4");
-        message.appendInt32(2);
+        message.appendInt(2);
         message.appendString(super.getHeaderImage());
         message.appendString(super.getTeaserImage());
-        message.appendInt32(3);
+        message.appendInt(3);
         message.appendString(super.getTextOne());
         message.appendString(super.getTextTwo());
         message.appendString(super.getTextTeaser());

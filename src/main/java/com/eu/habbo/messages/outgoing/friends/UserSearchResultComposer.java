@@ -34,30 +34,30 @@ public class UserSearchResultComposer extends MessageComposer
             }
         }
 
-        this.response.appendInt32(this.friends.size());
+        this.response.appendInt(this.friends.size());
         for(MessengerBuddy buddy : this.friends)
         {
-            this.response.appendInt32(buddy.getId());
+            this.response.appendInt(buddy.getId());
             this.response.appendString(buddy.getUsername());
             this.response.appendString(buddy.getMotto());
             this.response.appendBoolean(false);
             this.response.appendBoolean(false);
             this.response.appendString("");
-            this.response.appendInt32(1);
+            this.response.appendInt(1);
             this.response.appendString(buddy.getLook());
             this.response.appendString("");
         }
 
-        this.response.appendInt32(u.size());
+        this.response.appendInt(u.size());
         for(MessengerBuddy buddy : u)
         {
-            this.response.appendInt32(buddy.getId());
+            this.response.appendInt(buddy.getId());
             this.response.appendString(buddy.getUsername());
             this.response.appendString(buddy.getMotto());
             this.response.appendBoolean(false);
             this.response.appendBoolean(false);
             this.response.appendString("");
-            this.response.appendInt32(1);
+            this.response.appendInt(1);
             this.response.appendString(buddy.getLook());
             this.response.appendString("");
         }

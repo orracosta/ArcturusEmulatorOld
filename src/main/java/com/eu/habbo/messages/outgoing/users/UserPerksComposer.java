@@ -20,7 +20,7 @@ public class UserPerksComposer extends MessageComposer
     {
         this.response.init(Outgoing.UserPerksComposer);
 
-        this.response.appendInt32(15);
+        this.response.appendInt(15);
 
         this.response.appendString("USE_GUIDE_TOOL");
         this.response.appendString("requirement.unfulfilled.helper_level_4");

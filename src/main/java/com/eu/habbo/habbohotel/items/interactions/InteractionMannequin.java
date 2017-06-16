@@ -28,8 +28,8 @@ public class InteractionMannequin extends HabboItem
     @Override
     public void serializeExtradata(ServerMessage serverMessage)
     {
-        serverMessage.appendInt32(1 + (this.isLimited() ? 256 : 0));
-        serverMessage.appendInt32(3);
+        serverMessage.appendInt(1 + (this.isLimited() ? 256 : 0));
+        serverMessage.appendInt(3);
         if(this.getExtradata().split(":").length >= 2)
         {
             String[] data = this.getExtradata().split(":");

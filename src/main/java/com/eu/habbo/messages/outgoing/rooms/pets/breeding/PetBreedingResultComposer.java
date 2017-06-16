@@ -23,35 +23,35 @@ public class PetBreedingResultComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.PetBreedingResultComposer);
-        this.response.appendInt32(this.anInt1);
+        this.response.appendInt(this.anInt1);
         this.petOne.serialize(this.response);
         this.petTwo.serialize(this.response);
 
-        this.response.appendInt32(5); //Levels
+        this.response.appendInt(5); //Levels
         {
-            this.response.appendInt32(1); //Percentage
-            this.response.appendInt32(1); //Count
+            this.response.appendInt(1); //Percentage
+            this.response.appendInt(1); //Count
             {
-                this.response.appendInt32(1); //Breed
+                this.response.appendInt(1); //Breed
             }
-            this.response.appendInt32(1); //Percentage
-            this.response.appendInt32(1); //Count
+            this.response.appendInt(1); //Percentage
+            this.response.appendInt(1); //Count
             {
-                this.response.appendInt32(1); //Breed
+                this.response.appendInt(1); //Breed
             }
-            this.response.appendInt32(1); //Percentage
-            this.response.appendInt32(1); //Count
+            this.response.appendInt(1); //Percentage
+            this.response.appendInt(1); //Count
             {
-                this.response.appendInt32(1); //Breed
+                this.response.appendInt(1); //Breed
             }
-            this.response.appendInt32(1); //Percentage
-            this.response.appendInt32(1); //Count
+            this.response.appendInt(1); //Percentage
+            this.response.appendInt(1); //Count
             {
-                this.response.appendInt32(1); //Breed
+                this.response.appendInt(1); //Breed
             }
         }
 
-        this.response.appendInt32(0); //Race type
+        this.response.appendInt(0); //Race type
         return this.response;
     }
 
@@ -69,9 +69,9 @@ public class PetBreedingResultComposer extends MessageComposer
         @Override
         public void serialize(ServerMessage message)
         {
-            message.appendInt32(this.pet.getId());
+            message.appendInt(this.pet.getId());
             message.appendString(this.pet.getName());
-            message.appendInt32(this.pet.getLevel());
+            message.appendInt(this.pet.getLevel());
             message.appendString(this.pet.getColor());
             message.appendString(this.ownerName);
         }

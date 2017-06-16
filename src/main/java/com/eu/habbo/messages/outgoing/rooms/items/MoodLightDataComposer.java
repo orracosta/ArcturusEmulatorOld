@@ -19,14 +19,14 @@ public class MoodLightDataComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.MoodLightDataComposer);
-        this.response.appendInt32(3); //PresetCount
+        this.response.appendInt(3); //PresetCount
 
         int index = 1;
         for(RoomMoodlightData data : moodLightData.valueCollection())
         {
             if(data.isEnabled())
             {
-                this.response.appendInt32(data.getId());
+                this.response.appendInt(data.getId());
                 index = -1;
                 break;
             }
@@ -35,33 +35,33 @@ public class MoodLightDataComposer extends MessageComposer
 
         if(index != -1)
         {
-            this.response.appendInt32(1);
+            this.response.appendInt(1);
         }
 
         int i = 1;
         for(RoomMoodlightData data : moodLightData.valueCollection())
         {
-            this.response.appendInt32(data.getId()); //Preset ID
-            this.response.appendInt32(data.isBackgroundOnly() ? 2 : 1); //Background only ? 2 : 1
+            this.response.appendInt(data.getId()); //Preset ID
+            this.response.appendInt(data.isBackgroundOnly() ? 2 : 1); //Background only ? 2 : 1
             this.response.appendString(data.getColor()); //Color
-            this.response.appendInt32(data.getIntensity()); //Intensity
+            this.response.appendInt(data.getIntensity()); //Intensity
             i++;
         }
 
         for(; i <= 3; i++)
         {
-            this.response.appendInt32(i);
-            this.response.appendInt32(1);
+            this.response.appendInt(i);
+            this.response.appendInt(1);
             this.response.appendString("#000000");
-            this.response.appendInt32(255);
+            this.response.appendInt(255);
         }
 
         /*for(int i = moodLightData.valueCollection().size(); i < 3; i++)
         {
-            this.response.appendInt32(i);
-            this.response.appendInt32(1);
+            this.response.appendInt(i);
+            this.response.appendInt(1);
             this.response.appendString("#000000");
-            this.response.appendInt32(255);
+            this.response.appendInt(255);
         }*/
         //:test 2780 i:1 i:1 i:1 i:2 s:#FF00FF i:255
         return this.response;

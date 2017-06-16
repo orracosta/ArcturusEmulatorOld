@@ -10,7 +10,7 @@ public class BaseJumpJoinQueueComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.BaseJumpJoinQueueComposer);
-        this.response.appendInt32(3);
+        this.response.appendInt(3);
         return this.response;
     }
 }

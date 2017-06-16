@@ -19,8 +19,8 @@ public class GuildConfirmRemoveMemberComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildConfirmRemoveMemberComposer);
-        this.response.appendInt32(this.userId);
-        this.response.appendInt32(this.furniCount);
+        this.response.appendInt(this.userId);
+        this.response.appendInt(this.furniCount);
         return this.response;
     }
 }

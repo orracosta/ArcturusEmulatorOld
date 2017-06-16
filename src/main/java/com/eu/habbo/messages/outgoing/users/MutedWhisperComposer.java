@@ -17,7 +17,7 @@ public class MutedWhisperComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.MutedWhisperComposer);
-        this.response.appendInt32(this.seconds);
+        this.response.appendInt(this.seconds);
         return this.response;
     }
 }

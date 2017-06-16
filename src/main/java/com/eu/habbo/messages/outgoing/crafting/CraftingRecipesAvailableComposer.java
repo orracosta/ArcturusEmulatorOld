@@ -19,7 +19,7 @@ public class CraftingRecipesAvailableComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.CraftingComposerFour);
-        this.response.appendInt32((this.found ? -1 : 0 ) + this.count);
+        this.response.appendInt((this.found ? -1 : 0) + this.count);
         this.response.appendBoolean(this.found);
         return this.response;
     }

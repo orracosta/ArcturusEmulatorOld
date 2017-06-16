@@ -10,7 +10,6 @@ import com.eu.habbo.habbohotel.wired.WiredHighscoreClearType;
 import com.eu.habbo.habbohotel.wired.WiredHighscoreData;
 import com.eu.habbo.habbohotel.wired.WiredHighscoreScoreType;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.ResultSet;
@@ -120,14 +119,14 @@ public class InteractionWiredHighscore extends HabboItem
     @Override
     public void serializeExtradata(ServerMessage serverMessage)
     {
-        serverMessage.appendInt32(6);
+        serverMessage.appendInt(6);
         serverMessage.appendString(this.getExtradata());
-        serverMessage.appendInt32(this.scoreType.type); //score type
-        serverMessage.appendInt32(this.clearType.type); //clear type
+        serverMessage.appendInt(this.scoreType.type); //score type
+        serverMessage.appendInt(this.clearType.type); //clear type
 
         if(this.getRoomId() == 0)
         {
-            serverMessage.appendInt32(0);
+            serverMessage.appendInt(0);
         }
         else
         {
@@ -135,7 +134,7 @@ public class InteractionWiredHighscore extends HabboItem
 
             if(room == null)
             {
-                serverMessage.appendInt32(0);
+                serverMessage.appendInt(0);
             }
             else
             {
@@ -146,22 +145,22 @@ public class InteractionWiredHighscore extends HabboItem
 
                 if(this.data != null)
                 {
-                    serverMessage.appendInt32(this.data.size()); //count
+                    serverMessage.appendInt(this.data.size()); //count
 
                     for (WiredHighscoreData dataSet : this.data)
                     {
                         if (this.scoreType == WiredHighscoreScoreType.PERTEAM)
                         {
-                            serverMessage.appendInt32(dataSet.teamScore); //Team score
+                            serverMessage.appendInt(dataSet.teamScore); //Team score
                         } else if (dataSet.usernames.length == 1)
                         {
-                            serverMessage.appendInt32(dataSet.score);
+                            serverMessage.appendInt(dataSet.score);
                         } else
                         {
-                            serverMessage.appendInt32(dataSet.totalScore);
+                            serverMessage.appendInt(dataSet.totalScore);
                         }
 
-                        serverMessage.appendInt32(dataSet.usernames.length); //Users count
+                        serverMessage.appendInt(dataSet.usernames.length); //Users count
 
                         for (String codeDragon : dataSet.usernames)
                         {
@@ -171,7 +170,7 @@ public class InteractionWiredHighscore extends HabboItem
                 }
                 else
                 {
-                    serverMessage.appendInt32(0);
+                    serverMessage.appendInt(0);
                 }
             }
         }

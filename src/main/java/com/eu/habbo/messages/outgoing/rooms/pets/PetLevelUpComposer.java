@@ -18,14 +18,14 @@ public class PetLevelUpComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.PetLevelUpComposer);
-        this.response.appendInt32(this.pet.getId());
+        this.response.appendInt(this.pet.getId());
         this.response.appendString(this.pet.getName());
-        this.response.appendInt32(this.pet.getLevel());
-        this.response.appendInt32(this.pet.getPetData().getType());
-        this.response.appendInt32(this.pet.getRace());
+        this.response.appendInt(this.pet.getLevel());
+        this.response.appendInt(this.pet.getPetData().getType());
+        this.response.appendInt(this.pet.getRace());
         this.response.appendString(this.pet.getColor());
-        this.response.appendInt32(0);
-        this.response.appendInt32(0);
+        this.response.appendInt(0);
+        this.response.appendInt(0);
 
         //:test 2329  i:0 s:a i:3 i:1 i:1 s:FF00FF i:0 i:0
         return this.response;

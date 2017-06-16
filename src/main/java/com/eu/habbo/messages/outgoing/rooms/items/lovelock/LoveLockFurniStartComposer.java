@@ -18,7 +18,7 @@ public class LoveLockFurniStartComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.LoveLockFurniStartComposer);
-        this.response.appendInt32(this.loveLock.getId());
+        this.response.appendInt(this.loveLock.getId());
         this.response.appendBoolean(true);
         return this.response;
     }

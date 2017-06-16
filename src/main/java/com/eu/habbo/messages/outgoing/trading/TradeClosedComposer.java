@@ -22,8 +22,8 @@ public class TradeClosedComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.TradeStoppedComposer);
-        this.response.appendInt32(this.userId);
-        this.response.appendInt32(this.errorCode);
+        this.response.appendInt(this.userId);
+        this.response.appendInt(this.errorCode);
         return this.response;
     }
 }

@@ -23,21 +23,21 @@ public class ModToolUserInfoComposer extends MessageComposer
         this.response.init(Outgoing.ModToolUserInfoComposer);
         try
         {
-            this.response.appendInt32(set.getInt("user_id"));
+            this.response.appendInt(set.getInt("user_id"));
             this.response.appendString(set.getString("username"));
             this.response.appendString(set.getString("look"));
-            this.response.appendInt32(set.getInt("account_created"));
-            this.response.appendInt32(set.getInt("online") == 1 ? 0 : set.getInt("last_online"));
+            this.response.appendInt(set.getInt("account_created"));
+            this.response.appendInt(set.getInt("online") == 1 ? 0 : set.getInt("last_online"));
             this.response.appendBoolean(set.getInt("online") == 1);
-            this.response.appendInt32(set.getInt("cfh_send"));
-            this.response.appendInt32(set.getInt("cfh_abusive"));
-            this.response.appendInt32(set.getInt("cfh_warnings"));
-            this.response.appendInt32(set.getInt("cfh_bans"));
-            this.response.appendInt32(0);
+            this.response.appendInt(set.getInt("cfh_send"));
+            this.response.appendInt(set.getInt("cfh_abusive"));
+            this.response.appendInt(set.getInt("cfh_warnings"));
+            this.response.appendInt(set.getInt("cfh_bans"));
+            this.response.appendInt(0);
             this.response.appendString("");
             this.response.appendString("");
-            this.response.appendInt32(0);
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
+            this.response.appendInt(0);
             this.response.appendString(set.getString("mail"));
             this.response.appendString("");
             return this.response;

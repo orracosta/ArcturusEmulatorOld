@@ -10,7 +10,7 @@ public class NewUserIdentityComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.NewUserIdentityComposer);
-        this.response.appendInt32(0);
+        this.response.appendInt(0);
         return this.response;
     }
 }

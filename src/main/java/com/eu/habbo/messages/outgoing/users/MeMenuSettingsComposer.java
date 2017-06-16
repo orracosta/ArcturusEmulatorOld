@@ -20,14 +20,14 @@ public class MeMenuSettingsComposer extends MessageComposer
     {
         this.response.init(Outgoing.MeMenuSettingsComposer);
 
-        this.response.appendInt32(this.habbo.getHabboStats().volumeSystem);
-        this.response.appendInt32(this.habbo.getHabboStats().volumeFurni);
-        this.response.appendInt32(this.habbo.getHabboStats().volumeTrax);
+        this.response.appendInt(this.habbo.getHabboStats().volumeSystem);
+        this.response.appendInt(this.habbo.getHabboStats().volumeFurni);
+        this.response.appendInt(this.habbo.getHabboStats().volumeTrax);
         this.response.appendBoolean(this.habbo.getHabboStats().preferOldChat);
         this.response.appendBoolean(this.habbo.getHabboStats().blockRoomInvites);
         this.response.appendBoolean(this.habbo.getHabboStats().blockCameraFollow);
-        this.response.appendInt32(1);
-        this.response.appendInt32(this.habbo.getHabboStats().chatColor.getType());
+        this.response.appendInt(1);
+        this.response.appendInt(this.habbo.getHabboStats().chatColor.getType());
 
         return this.response;
     }

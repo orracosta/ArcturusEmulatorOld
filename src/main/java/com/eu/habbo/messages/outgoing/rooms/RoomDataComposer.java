@@ -29,30 +29,30 @@ public class RoomDataComposer extends MessageComposer
     {
         this.response.init(Outgoing.RoomDataComposer);
         this.response.appendBoolean(this.unknown);
-        this.response.appendInt32(this.room.getId());
+        this.response.appendInt(this.room.getId());
         this.response.appendString(this.room.getName());
         if (this.room.isPublicRoom())
         {
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
             this.response.appendString("");
         } else
         {
-            this.response.appendInt32(this.room.getOwnerId());
+            this.response.appendInt(this.room.getOwnerId());
             this.response.appendString(this.room.getOwnerName());
         }
-        this.response.appendInt32(this.room.getState().getState());
-        this.response.appendInt32(this.room.getUserCount());
-        this.response.appendInt32(this.room.getUsersMax());
+        this.response.appendInt(this.room.getState().getState());
+        this.response.appendInt(this.room.getUserCount());
+        this.response.appendInt(this.room.getUsersMax());
         this.response.appendString(this.room.getDescription());
-        this.response.appendInt32(0);
-        this.response.appendInt32(2);
-        this.response.appendInt32(this.room.getScore());
-        this.response.appendInt32(this.room.getCategory());
+        this.response.appendInt(0);
+        this.response.appendInt(2);
+        this.response.appendInt(this.room.getScore());
+        this.response.appendInt(this.room.getCategory());
 
         if (!this.room.getTags().isEmpty())
         {
             String[] tags = this.room.getTags().split(";");
-            this.response.appendInt32(tags.length);
+            this.response.appendInt(tags.length);
             for(String s : tags)
             {
                 this.response.appendString(s);
@@ -60,7 +60,7 @@ public class RoomDataComposer extends MessageComposer
         }
         else
         {
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
         }
 
         int base = 16;
@@ -80,20 +80,20 @@ public class RoomDataComposer extends MessageComposer
             base = base | 4;
         }
 
-        this.response.appendInt32(base);
+        this.response.appendInt(base);
 
         if(this.room.getGuildId() > 0)
         {
             Guild g = Emulator.getGameEnvironment().getGuildManager().getGuild(this.room.getGuildId());
             if (g != null)
             {
-                this.response.appendInt32(g.getId());
+                this.response.appendInt(g.getId());
                 this.response.appendString(g.getName());
                 this.response.appendString(g.getBadge());
             }
             else
             {
-                this.response.appendInt32(0);
+                this.response.appendInt(0);
                 this.response.appendString("");
                 this.response.appendString("");
             }
@@ -103,7 +103,7 @@ public class RoomDataComposer extends MessageComposer
         {
             this.response.appendString(this.room.getPromotion().getTitle());
             this.response.appendString(this.room.getPromotion().getDescription());
-            this.response.appendInt32((this.room.getPromotion().getEndTimestamp() - Emulator.getIntUnixTimestamp()) / 60);
+            this.response.appendInt((this.room.getPromotion().getEndTimestamp() - Emulator.getIntUnixTimestamp()) / 60);
         }
 
         this.response.appendBoolean(this.publicRoom);
@@ -111,17 +111,17 @@ public class RoomDataComposer extends MessageComposer
         this.response.appendBoolean(this.room.isPublicRoom()); //ispublicroom
         this.response.appendBoolean(this.room.isMuted()); //isroommuted
 
-        this.response.appendInt32(this.room.getMuteOption());
-        this.response.appendInt32(this.room.getKickOption());
-        this.response.appendInt32(this.room.getBanOption());
+        this.response.appendInt(this.room.getMuteOption());
+        this.response.appendInt(this.room.getKickOption());
+        this.response.appendInt(this.room.getBanOption());
 
         this.response.appendBoolean(this.room.hasRights(this.habbo)); //mute all button
 
-        this.response.appendInt32(this.room.getChatMode());
-        this.response.appendInt32(this.room.getChatWeight());
-        this.response.appendInt32(this.room.getChatSpeed());
-        this.response.appendInt32(this.room.getChatDistance());
-        this.response.appendInt32(this.room.getChatProtection());
+        this.response.appendInt(this.room.getChatMode());
+        this.response.appendInt(this.room.getChatWeight());
+        this.response.appendInt(this.room.getChatSpeed());
+        this.response.appendInt(this.room.getChatDistance());
+        this.response.appendInt(this.room.getChatProtection());
 
 
         return this.response;

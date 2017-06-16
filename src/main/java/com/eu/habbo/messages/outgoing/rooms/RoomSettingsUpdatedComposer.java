@@ -17,7 +17,7 @@ public class RoomSettingsUpdatedComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomSettingsUpdatedComposer);
-        this.response.appendInt32(this.room.getId());
+        this.response.appendInt(this.room.getId());
         return this.response;
     }
 }

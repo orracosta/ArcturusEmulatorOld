@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.commands.CommandHandler;
 import com.eu.habbo.habbohotel.games.Game;
 import com.eu.habbo.habbohotel.guilds.Guild;
 import com.eu.habbo.habbohotel.guilds.GuildMember;
+import com.eu.habbo.habbohotel.items.FurnitureType;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.*;
 import com.eu.habbo.habbohotel.items.interactions.games.InteractionGameGate;
@@ -662,7 +663,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         item.setRoomId(0);
         item.needsUpdate(true);
 
-        if (item.getBaseItem().getType().toLowerCase().equals("s"))
+        if (item.getBaseItem().getType() == FurnitureType.FLOOR)
         {
             this.sendComposer(new RemoveFloorItemComposer(item).compose());
 
@@ -688,7 +689,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             this.sendComposer(new UpdateStackHeightComposer(updatedTiles).compose());
             this.updateTiles(updatedTiles);
         }
-        else if (item.getBaseItem().getType().toLowerCase().equals("i"))
+        else if (item.getBaseItem().getType() == FurnitureType.WALL)
         {
             this.sendComposer(new RemoveWallItemComposer(item).compose());
         }
@@ -992,27 +993,27 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     @Override
     public void serialize(ServerMessage message)
     {
-        message.appendInt32(this.id);
+        message.appendInt(this.id);
         message.appendString(this.name);
         if(this.isPublicRoom())
         {
-            message.appendInt32(0);
+            message.appendInt(0);
             message.appendString("");
         }
         else
         {
-            message.appendInt32(this.ownerId);
+            message.appendInt(this.ownerId);
             message.appendString(this.ownerName);
         }
-        message.appendInt32(this.state.getState());
-        message.appendInt32(this.getUserCount());
-        message.appendInt32(this.usersMax);
+        message.appendInt(this.state.getState());
+        message.appendInt(this.getUserCount());
+        message.appendInt(this.usersMax);
         message.appendString(this.description);
-        message.appendInt32(0);
-        message.appendInt32(this.score);
-        message.appendInt32(0);
-        message.appendInt32(this.category);
-        message.appendInt32(this.tags.split(";").length);
+        message.appendInt(0);
+        message.appendInt(this.score);
+        message.appendInt(0);
+        message.appendInt(this.category);
+        message.appendInt(this.tags.split(";").length);
         for(String s : this.tags.split(";"))
         {
             message.appendString(s);
@@ -1020,14 +1021,14 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         /*if(g != null)
         {
-            message.appendInt32(58);
-            message.appendInt32(g.getId());
+            message.appendInt(58);
+            message.appendInt(g.getId());
             message.appendString(g.getName());
             message.appendString(g.getBadge());
         }
         else
         {
-            message.appendInt32(56);
+            message.appendInt(56);
         }*/
 
         int base = 0;
@@ -1047,7 +1048,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             base = base | 8;
         }
 
-        message.appendInt32(base);
+        message.appendInt(base);
 
 
         //message.appendString("a.png"); //Camera image.
@@ -1057,13 +1058,13 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             Guild g = Emulator.getGameEnvironment().getGuildManager().getGuild(this.getGuildId());
             if (g != null)
             {
-                message.appendInt32(g.getId());
+                message.appendInt(g.getId());
                 message.appendString(g.getName());
                 message.appendString(g.getBadge());
             }
             else
             {
-                message.appendInt32(0);
+                message.appendInt(0);
                 message.appendString("");
                 message.appendString("");
             }
@@ -1073,7 +1074,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         {
             message.appendString(this.promotion.getTitle());
             message.appendString(this.promotion.getDescription());
-            message.appendInt32((this.promotion.getEndTimestamp() - Emulator.getIntUnixTimestamp()) / 60);
+            message.appendInt((this.promotion.getEndTimestamp() - Emulator.getIntUnixTimestamp()) / 60);
         }
 
     }
@@ -2813,7 +2814,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 {
                     iterator.advance();
 
-                    if (iterator.value().getBaseItem().getType().toLowerCase().equals("s"))
+                    if (iterator.value().getBaseItem().getType() == FurnitureType.FLOOR)
                         items.add(iterator.value());
                 }
                 catch (NoSuchElementException e)
@@ -2849,7 +2850,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 {
                     iterator.advance();
 
-                    if (iterator.value().getBaseItem().getType().toLowerCase().equals("i"))
+                    if (iterator.value().getBaseItem().getType() == FurnitureType.WALL)
                         items.add(iterator.value());
                 }
                 catch (NoSuchElementException e)
@@ -3759,7 +3760,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                     HabboItem habboItem = iterator.value();
 
-                    if (!habboItem.getBaseItem().getType().toLowerCase().equals("s"))
+                    if (habboItem.getBaseItem().getType() != FurnitureType.FLOOR)
                         continue;
 
                     if (exclude != null)
@@ -4623,12 +4624,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             {
                 if (item.getBaseItem() != null)
                 {
-                    if (item.getBaseItem().getType().equalsIgnoreCase("s"))
+                    if (item.getBaseItem().getType() == FurnitureType.FLOOR)
                     {
                         this.sendComposer(new FloorItemUpdateComposer(item).compose());
                         this.updateTiles(this.getLayout().getTilesAt(this.layout.getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
                     }
-                    else if (item.getBaseItem().getType().equalsIgnoreCase("i"))
+                    else if (item.getBaseItem().getType() == FurnitureType.WALL)
                     {
                         this.sendComposer(new WallItemUpdateComposer(item).compose());
                     }

@@ -21,12 +21,12 @@ public class GuideSessionStartedComposer extends MessageComposer
         this.response.init(Outgoing.GuideSessionStartedComposer);
 
         //Help Requester
-        this.response.appendInt32(this.tour.getNoob().getHabboInfo().getId()); //UserID 1?
+        this.response.appendInt(this.tour.getNoob().getHabboInfo().getId()); //UserID 1?
         this.response.appendString(this.tour.getNoob().getHabboInfo().getUsername()); //UserName 1?
         this.response.appendString(this.tour.getNoob().getHabboInfo().getLook()); //Look 1?
 
         //Being helped by.
-        this.response.appendInt32(this.tour.getHelper().getHabboInfo().getId()); //UserID 2?
+        this.response.appendInt(this.tour.getHelper().getHabboInfo().getId()); //UserID 2?
         this.response.appendString(this.tour.getHelper().getHabboInfo().getUsername()); //UserName 2?
         this.response.appendString(this.tour.getHelper().getHabboInfo().getLook()); //Look 2?
         return this.response;

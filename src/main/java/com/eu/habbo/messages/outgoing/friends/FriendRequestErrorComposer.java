@@ -21,8 +21,8 @@ public class FriendRequestErrorComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.FriendRequestErrorComposer);
-        this.response.appendInt32(0);
-        this.response.appendInt32(this.errorCode);
+        this.response.appendInt(0);
+        this.response.appendInt(this.errorCode);
         return this.response;
     }
 }

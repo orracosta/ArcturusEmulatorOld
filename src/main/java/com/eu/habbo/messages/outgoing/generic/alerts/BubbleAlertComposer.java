@@ -36,7 +36,7 @@ public class BubbleAlertComposer extends MessageComposer
     {
         this.response.init(Outgoing.BubbleAlertComposer);
         this.response.appendString(this.errorKey);
-        this.response.appendInt32(this.keys.size());
+        this.response.appendInt(this.keys.size());
         for(Map.Entry<String, String> set : this.keys.entrySet())
         {
             this.response.appendString(set.getKey());

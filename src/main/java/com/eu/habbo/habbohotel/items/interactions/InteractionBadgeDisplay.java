@@ -25,8 +25,8 @@ public class InteractionBadgeDisplay extends HabboItem
     @Override
     public void serializeExtradata(ServerMessage serverMessage)
     {
-        serverMessage.appendInt32(2 + (this.isLimited() ? 256 : 0));
-        serverMessage.appendInt32(4);
+        serverMessage.appendInt(2 + (this.isLimited() ? 256 : 0));
+        serverMessage.appendInt(4);
         serverMessage.appendString("0");
         String[] data = this.getExtradata().split((char) 9 + "");
         if(data.length == 3)

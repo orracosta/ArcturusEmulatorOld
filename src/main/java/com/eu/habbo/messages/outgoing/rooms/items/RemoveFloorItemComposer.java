@@ -30,8 +30,8 @@ public class RemoveFloorItemComposer extends MessageComposer
 
         this.response.appendString(this.item.getId() + "");
         this.response.appendBoolean(false);
-        this.response.appendInt32(this.noUser ? 0 : this.item.getUserId());
-        this.response.appendInt32(0);
+        this.response.appendInt(this.noUser ? 0 : this.item.getUserId());
+        this.response.appendInt(0);
 
         return this.response;
     }

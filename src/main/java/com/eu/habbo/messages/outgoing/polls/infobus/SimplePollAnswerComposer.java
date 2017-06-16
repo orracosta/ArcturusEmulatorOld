@@ -23,13 +23,13 @@ public class SimplePollAnswerComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.SimplePollAnswerComposer);
-        this.response.appendInt32(this.userId);
+        this.response.appendInt(this.userId);
         this.response.appendString(this.choice);
-        this.response.appendInt32(2);
+        this.response.appendInt(2);
         this.response.appendString("0");
-        this.response.appendInt32(this.no);
+        this.response.appendInt(this.no);
         this.response.appendString("1");
-        this.response.appendInt32(this.yes);
+        this.response.appendInt(this.yes);
         return this.response;
     }
 }

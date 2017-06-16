@@ -21,9 +21,9 @@ public class GuildMemberUpdateComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildMemberUpdateComposer);
-        this.response.appendInt32(this.guild.getId());
-        this.response.appendInt32(this.guildMember.getRank().type);
-        this.response.appendInt32(this.guildMember.getUserId());
+        this.response.appendInt(this.guild.getId());
+        this.response.appendInt(this.guildMember.getRank().type);
+        this.response.appendInt(this.guildMember.getUserId());
         this.response.appendString(this.guildMember.getUsername());
         this.response.appendString(this.guildMember.getLook());
         this.response.appendString(this.guildMember.getRank().type != 0 ? this.guildMember.getJoinDate()  + "" : "");

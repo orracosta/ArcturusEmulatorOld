@@ -354,7 +354,7 @@ public class TestCommand extends Command
                         }
                     } else if (data[0].equals("i"))
                     {
-                        message.appendInt32(Integer.valueOf(data[1]));
+                        message.appendInt(Integer.valueOf(data[1]));
                     } else if (data[0].equalsIgnoreCase("by"))
                     {
                         message.appendByte(Integer.valueOf(data[1]));
@@ -454,7 +454,7 @@ public class TestCommand extends Command
             gameClient.sendResponse(new SnowWarsUserEnteredArenaComposer(2));
             ServerMessage message = new ServerMessage();
             message.init(2077);
-            message.appendInt32(0);
+            message.appendInt(0);
             gameClient.sendResponse(message);
 
             gameClient.sendResponse(new SnowWarsOnStageRunningComposer());
@@ -474,10 +474,10 @@ public class TestCommand extends Command
 
             ServerMessage ff = new ServerMessage();
             ff.init(3850);
-            ff.appendInt32(100);
-            ff.appendInt32(2);
-            ff.appendInt32(1);
-            ff.appendInt32(2);
+            ff.appendInt(100);
+            ff.appendInt(2);
+            ff.appendInt(1);
+            ff.appendInt(2);
             gameClient.sendResponse(ff);
 
             gameClient.sendResponse(new SnowWarsCompose1(2823));
@@ -506,7 +506,7 @@ public class TestCommand extends Command
                 System.out.println(data.length + "//");
                 if (data[0].equals("i"))
                 {
-                    message.appendInt32(Integer.valueOf(data[1]));
+                    message.appendInt(Integer.valueOf(data[1]));
                 } else if (data[0].equals("s"))
                 {
                     if(data[1].equalsIgnoreCase("%look%"))
@@ -537,23 +537,23 @@ public class TestCommand extends Command
         /*
         ServerMessage response = new ServerMessage();
         response.init(Outgoing.RoomUsersComposer);
-        response.appendInt32(1);
-        response.appendInt32(0);
+        response.appendInt(1);
+        response.appendInt(0);
         response.appendString("");
         response.appendString("");
         response.appendString("");
-        response.appendInt32(0); //Room Unit ID
-        response.appendInt32(10);
-        response.appendInt32(10);
+        response.appendInt(0); //Room Unit ID
+        response.appendInt(10);
+        response.appendInt(10);
         response.appendString("");
-        response.appendInt32(0);
-        response.appendInt32(200);
+        response.appendInt(0);
+        response.appendInt(200);
         response.appendString(this.habbo.getHabboInfo().getGender());
-        response.appendInt32(this.habbo.getHabboStats().guild != 0 ? this.habbo.getHabboStats().guild : -1);
-        response.appendInt32(this.habbo.getHabboStats().guild != 0 ? 1 : -1);
+        response.appendInt(this.habbo.getHabboStats().guild != 0 ? this.habbo.getHabboStats().guild : -1);
+        response.appendInt(this.habbo.getHabboStats().guild != 0 ? 1 : -1);
         response.appendString(this.habbo.getHabboStats().guild != 0 ? Emulator.getGameEnvironment().getGuildManager().getGuild(this.habbo.getHabboStats().guild).getName() : "");
         response.appendString("");
-        response.appendInt32(this.habbo.getHabboInfo().getAchievementScore());
+        response.appendInt(this.habbo.getHabboInfo().getAchievementScore());
         response.appendBoolean(true);
         }*/
         return true;

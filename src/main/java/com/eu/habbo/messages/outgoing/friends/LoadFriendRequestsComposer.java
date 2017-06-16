@@ -22,12 +22,12 @@ public class LoadFriendRequestsComposer extends MessageComposer
 
         synchronized (this.habbo.getMessenger().getFriendRequests())
         {
-            this.response.appendInt32(this.habbo.getMessenger().getFriendRequests().size());
-            this.response.appendInt32(this.habbo.getMessenger().getFriendRequests().size());
+            this.response.appendInt(this.habbo.getMessenger().getFriendRequests().size());
+            this.response.appendInt(this.habbo.getMessenger().getFriendRequests().size());
 
             for (FriendRequest friendRequest : this.habbo.getMessenger().getFriendRequests())
             {
-                this.response.appendInt32(friendRequest.getId());
+                this.response.appendInt(friendRequest.getId());
                 this.response.appendString(friendRequest.getUsername());
                 this.response.appendString(friendRequest.getLook());
             }

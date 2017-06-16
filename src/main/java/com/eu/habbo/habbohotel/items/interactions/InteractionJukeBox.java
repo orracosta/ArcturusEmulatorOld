@@ -1,7 +1,6 @@
 package com.eu.habbo.habbohotel.items.interactions;
 
 import com.eu.habbo.habbohotel.items.Item;
-import com.eu.habbo.habbohotel.items.SoundTrack;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
@@ -10,7 +9,6 @@ import gnu.trove.list.array.TIntArrayList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class InteractionJukeBox extends HabboItem
 {
@@ -53,7 +51,7 @@ public class InteractionJukeBox extends HabboItem
     @Override
     public void serializeExtradata(ServerMessage serverMessage)
     {
-        serverMessage.appendInt32((this.isLimited() ? 256 : 0));
+        serverMessage.appendInt((this.isLimited() ? 256 : 0));
         serverMessage.appendString(this.currentItem > 0 ? "1" : "0");
 
         super.serializeExtradata(serverMessage);

@@ -20,7 +20,7 @@ public class RoomHeightMapComposer extends MessageComposer
     {
         this.response.init(Outgoing.RoomHeightMapComposer);
         this.response.appendBoolean(true);
-        this.response.appendInt32(this.room.getWallHeight()); //FixedWallsHeight
+        this.response.appendInt(this.room.getWallHeight()); //FixedWallsHeight
         this.response.appendString(this.room.getLayout().getRelativeMap());
         return this.response;
     }

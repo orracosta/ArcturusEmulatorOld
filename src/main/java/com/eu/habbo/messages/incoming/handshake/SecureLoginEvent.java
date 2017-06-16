@@ -5,13 +5,12 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.achievements.AchievementListComposer;
-import com.eu.habbo.messages.outgoing.friends.FriendsComposer;
-import com.eu.habbo.messages.outgoing.friends.MessengerInitComposer;
 import com.eu.habbo.messages.outgoing.gamcenter.GameCenterAccountInfoComposer;
 import com.eu.habbo.messages.outgoing.gamcenter.GameCenterGameListComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.handshake.*;
 import com.eu.habbo.messages.outgoing.inventory.InventoryAchievementsComposer;
+import com.eu.habbo.messages.outgoing.inventory.UserEffectsListComposer;
 import com.eu.habbo.messages.outgoing.modtool.CfhTopicsMessageComposer;
 import com.eu.habbo.messages.outgoing.users.FavoriteRoomsCountComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
@@ -89,7 +88,7 @@ public class SecureLoginEvent extends MessageHandler
 
                 messages.add(new SecureLoginOKComposer().compose());
                 messages.add(new UserHomeRoomComposer(this.client.getHabbo().getHabboInfo().getHomeRoom(), 0).compose());
-                messages.add(new UserEffectsListComposer().compose());
+                messages.add(new UserEffectsListComposer(habbo).compose());
                 messages.add(new UserClothesComposer(this.client.getHabbo()).compose());
                 messages.add(new NewUserIdentityComposer().compose());
                 messages.add(new UserPermissionsComposer(this.client.getHabbo()).compose());

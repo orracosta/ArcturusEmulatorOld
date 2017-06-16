@@ -9,7 +9,7 @@ public class SnowWarsPreviousRoomComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(1381);
-        this.response.appendInt32(1); //room Id
+        this.response.appendInt(1); //room Id
         return this.response;
     }
 }

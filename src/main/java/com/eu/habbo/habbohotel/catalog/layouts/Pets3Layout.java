@@ -17,10 +17,10 @@ public class Pets3Layout extends CatalogPage
     public void serialize(ServerMessage message)
     {
         message.appendString("pets3");
-        message.appendInt32(2);
+        message.appendInt(2);
         message.appendString(super.getHeaderImage());
         message.appendString(super.getTeaserImage());
-        message.appendInt32(4);
+        message.appendInt(4);
         message.appendString(super.getTextOne());
         message.appendString(super.getTextTwo());
         message.appendString(super.getTextDetails());

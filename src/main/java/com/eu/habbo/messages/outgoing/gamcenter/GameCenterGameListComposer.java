@@ -10,9 +10,9 @@ public class GameCenterGameListComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GameCenterGameListComposer);
-        this.response.appendInt32(1);//Count
+        this.response.appendInt(1);//Count
 
-        this.response.appendInt32(3);
+        this.response.appendInt(3);
         this.response.appendString("basejump");
         this.response.appendString("68bbd2"); //Background Color
         this.response.appendString(""); //Text color

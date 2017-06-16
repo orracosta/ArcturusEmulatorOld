@@ -1,16 +1,16 @@
-package com.eu.habbo.messages.outgoing.users;
+package com.eu.habbo.messages.outgoing.unknown;
 
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class UserEffectsListComposer extends MessageComposer
+public class UnknownHelperComposer extends MessageComposer
 {
     @Override
     public ServerMessage compose()
     {
-        this.response.init(Outgoing.UserEffectsListComposer);
-        this.response.appendInt32(0);
+        this.response.init(Outgoing.UnknownHelperComposer);
+        //Empty body
         return this.response;
     }
 }

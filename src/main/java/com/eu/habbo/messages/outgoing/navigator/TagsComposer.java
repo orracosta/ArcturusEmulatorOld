@@ -18,13 +18,13 @@ public class TagsComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.TagsComposer);
-        this.response.appendInt32(this.tags.size());
+        this.response.appendInt(this.tags.size());
 
         int i = 1;
         for(String s : this.tags)
         {
             this.response.appendString(s);
-            this.response.appendInt32(i);
+            this.response.appendInt(i);
             i++;
         }
 

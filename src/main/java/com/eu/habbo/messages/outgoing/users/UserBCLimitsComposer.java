@@ -12,9 +12,9 @@ public class UserBCLimitsComposer extends MessageComposer
     {
         this.response.init(Outgoing.UserBCLimitsComposer);
 
-        this.response.appendInt32(0);
-        this.response.appendInt32(500);
-        this.response.appendInt32(0);
+        this.response.appendInt(0);
+        this.response.appendInt(500);
+        this.response.appendInt(0);
 
         return this.response;
     }

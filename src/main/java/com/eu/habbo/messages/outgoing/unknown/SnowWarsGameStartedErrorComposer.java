@@ -9,7 +9,7 @@ public class SnowWarsGameStartedErrorComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(2860);
-        this.response.appendInt32(1);
+        this.response.appendInt(1);
         return this.response;
     }
 }

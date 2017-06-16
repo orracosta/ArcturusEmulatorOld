@@ -3,15 +3,11 @@ package com.eu.habbo.messages.outgoing.modtool;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.modtool.ModToolCategory;
 import com.eu.habbo.habbohotel.modtool.ModToolIssue;
-import com.eu.habbo.habbohotel.modtool.ModToolPreset;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
-import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.procedure.TObjectProcedure;
-
-import java.util.NoSuchElementException;
 
 public class ModToolComposer extends MessageComposer implements TObjectProcedure<ModToolCategory>
 {
@@ -29,7 +25,7 @@ public class ModToolComposer extends MessageComposer implements TObjectProcedure
 
         if(this.habbo.hasPermission("acc_modtool_ticket_q"))
         {
-            this.response.appendInt32(Emulator.getGameEnvironment().getModToolManager().getTickets().size()); //tickets
+            this.response.appendInt(Emulator.getGameEnvironment().getModToolManager().getTickets().size()); //tickets
 
             for (ModToolIssue issue : Emulator.getGameEnvironment().getModToolManager().getTickets().values())
             {
@@ -38,19 +34,19 @@ public class ModToolComposer extends MessageComposer implements TObjectProcedure
         }
         else
         {
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
         }
 
         synchronized (Emulator.getGameEnvironment().getModToolManager().getPresets())
         {
-            this.response.appendInt32(Emulator.getGameEnvironment().getModToolManager().getPresets().get("user").size());
+            this.response.appendInt(Emulator.getGameEnvironment().getModToolManager().getPresets().get("user").size());
             for (String s : Emulator.getGameEnvironment().getModToolManager().getPresets().get("user"))
             {
                 this.response.appendString(s);
             }
         }
 
-        this.response.appendInt32(Emulator.getGameEnvironment().getModToolManager().getCategory().size());
+        this.response.appendInt(Emulator.getGameEnvironment().getModToolManager().getCategory().size());
 
         Emulator.getGameEnvironment().getModToolManager().getCategory().forEachValue(this);
 
@@ -64,7 +60,7 @@ public class ModToolComposer extends MessageComposer implements TObjectProcedure
 
         synchronized (Emulator.getGameEnvironment().getModToolManager().getPresets())
         {
-            this.response.appendInt32(Emulator.getGameEnvironment().getModToolManager().getPresets().get("room").size());
+            this.response.appendInt(Emulator.getGameEnvironment().getModToolManager().getPresets().get("room").size());
             for (String s : Emulator.getGameEnvironment().getModToolManager().getPresets().get("room"))
             {
                 this.response.appendString(s);
@@ -79,7 +75,7 @@ public class ModToolComposer extends MessageComposer implements TObjectProcedure
     {
         this.response.appendString(category.getName());
 //        this.response.appendBoolean(false);
-//        this.response.appendInt32(category.getPresets().size());
+//        this.response.appendInt(category.getPresets().size());
 //
 //        TIntObjectIterator<ModToolPreset> iterator = category.getPresets().iterator();
 //
@@ -95,10 +91,10 @@ public class ModToolComposer extends MessageComposer implements TObjectProcedure
 //            }
 //            this.response.appendString(iterator.value().name);
 //            this.response.appendString(iterator.value().message);
-//            this.response.appendInt32(iterator.value().banLength);
-//            this.response.appendInt32(1); //avatarban
-//            this.response.appendInt32(iterator.value().muteLength);
-//            this.response.appendInt32(1); //tradelock
+//            this.response.appendInt(iterator.value().banLength);
+//            this.response.appendInt(1); //avatarban
+//            this.response.appendInt(iterator.value().muteLength);
+//            this.response.appendInt(1); //tradelock
 //            this.response.appendString(iterator.value().reminder);
 //            this.response.appendBoolean(false); //ShowHabboWay
 //        }

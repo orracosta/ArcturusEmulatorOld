@@ -23,7 +23,7 @@ public class CustomNotificationComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.CustomNotificationComposer);
-        this.response.appendInt32(this.type);
+        this.response.appendInt(this.type);
         return this.response;
     }
 }

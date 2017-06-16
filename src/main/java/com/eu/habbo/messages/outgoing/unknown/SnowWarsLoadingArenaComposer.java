@@ -15,8 +15,8 @@ public class SnowWarsLoadingArenaComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(3850);
-        this.response.appendInt32(this.count); //GameID?
-        this.response.appendInt32(0); //Count
+        this.response.appendInt(this.count); //GameID?
+        this.response.appendInt(0); //Count
             //this.response.appendInt(1); //ItemID to dispose?
         return this.response;
     }

@@ -22,10 +22,10 @@ public class InventoryBotsComposer extends MessageComposer
         this.response.init(Outgoing.InventoryBotsComposer);
 
         THashMap<Integer, Bot> userBots = this.habbo.getInventory().getBotsComponent().getBots();
-        this.response.appendInt32(userBots.size());
+        this.response.appendInt(userBots.size());
         for(Bot bot : userBots.values())
         {
-            this.response.appendInt32(bot.getId());
+            this.response.appendInt(bot.getId());
             this.response.appendString(bot.getName());
             this.response.appendString(bot.getMotto());
             this.response.appendString(bot.getGender().toString().toLowerCase().charAt(0) + "");

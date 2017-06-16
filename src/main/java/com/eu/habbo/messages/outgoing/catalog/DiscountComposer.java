@@ -11,13 +11,13 @@ public class DiscountComposer extends MessageComposer
     {
         this.response.init(Outgoing.DiscountComposer);
 
-        this.response.appendInt32(100);
-        this.response.appendInt32(6);
-        this.response.appendInt32(1);
-        this.response.appendInt32(1);
-        this.response.appendInt32(2);
-        this.response.appendInt32(40);
-        this.response.appendInt32(99);
+        this.response.appendInt(100);
+        this.response.appendInt(6);
+        this.response.appendInt(1);
+        this.response.appendInt(1);
+        this.response.appendInt(2);
+        this.response.appendInt(40);
+        this.response.appendInt(99);
 
         return this.response;
     }

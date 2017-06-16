@@ -57,9 +57,9 @@ public class InteractionGift extends HabboItem
     @Override
     public void serializeExtradata(ServerMessage serverMessage)
     {
-        //serverMessage.appendInt32(this.colorId * 1000 + this.ribbonId);
-        serverMessage.appendInt32(1);
-        serverMessage.appendInt32(6);
+        //serverMessage.appendInt(this.colorId * 1000 + this.ribbonId);
+        serverMessage.appendInt(1);
+        serverMessage.appendInt(6);
         serverMessage.appendString("EXTRA_PARAM");
         serverMessage.appendString("");
         serverMessage.appendString("MESSAGE");

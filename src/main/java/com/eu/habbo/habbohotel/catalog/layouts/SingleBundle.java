@@ -17,11 +17,11 @@ public class SingleBundle extends CatalogPage
     public void serialize(ServerMessage message)
     {
         message.appendString("single_bundle");
-        message.appendInt32(3);
+        message.appendInt(3);
         message.appendString(super.getHeaderImage());
         message.appendString(super.getTeaserImage());
         message.appendString("");
-        message.appendInt32(4);
+        message.appendInt(4);
         message.appendString(super.getTextOne());
         message.appendString(super.getTextDetails());
         message.appendString(super.getTextTeaser());

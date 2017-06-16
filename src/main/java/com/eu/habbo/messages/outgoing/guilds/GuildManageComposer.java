@@ -18,22 +18,22 @@ public class GuildManageComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildManageComposer);
-        this.response.appendInt32(1);
-        this.response.appendInt32(1);
+        this.response.appendInt(1);
+        this.response.appendInt(1);
         this.response.appendString("Room Name");
         this.response.appendBoolean(false);
         this.response.appendBoolean(true);
-        this.response.appendInt32(this.guild.getId());
+        this.response.appendInt(this.guild.getId());
         this.response.appendString(this.guild.getName());
         this.response.appendString(this.guild.getDescription());
-        this.response.appendInt32(this.guild.getRoomId());
-        this.response.appendInt32(this.guild.getColorOne());
-        this.response.appendInt32(this.guild.getColorTwo());
-        this.response.appendInt32(this.guild.getState().state);
-        this.response.appendInt32(this.guild.getRights());
+        this.response.appendInt(this.guild.getRoomId());
+        this.response.appendInt(this.guild.getColorOne());
+        this.response.appendInt(this.guild.getColorTwo());
+        this.response.appendInt(this.guild.getState().state);
+        this.response.appendInt(this.guild.getRights());
         this.response.appendBoolean(false);
         this.response.appendString("");
-        this.response.appendInt32(5);
+        this.response.appendInt(5);
         String badge = this.guild.getBadge();
         badge = badge.replace("b", "");
         String[] data = badge.split("s");
@@ -42,26 +42,26 @@ public class GuildManageComposer extends MessageComposer
 
         for(String s : data)
         {
-            this.response.appendInt32((s.length() >= 6 ? Integer.parseInt(s.substring(0, 3)) : Integer.parseInt(s.substring(0, 2))));
-            this.response.appendInt32((s.length() >= 6 ? Integer.parseInt(s.substring(3, 5)) : Integer.parseInt(s.substring(2, 4))));
+            this.response.appendInt((s.length() >= 6 ? Integer.parseInt(s.substring(0, 3)) : Integer.parseInt(s.substring(0, 2))));
+            this.response.appendInt((s.length() >= 6 ? Integer.parseInt(s.substring(3, 5)) : Integer.parseInt(s.substring(2, 4))));
 
             if(s.length() < 5)
-                this.response.appendInt32(0);
+                this.response.appendInt(0);
             else if(s.length() >= 6)
-                this.response.appendInt32(Integer.parseInt(s.substring(5, 6)));
+                this.response.appendInt(Integer.parseInt(s.substring(5, 6)));
             else
-                this.response.appendInt32(Integer.parseInt(s.substring(4, 5)));
+                this.response.appendInt(Integer.parseInt(s.substring(4, 5)));
         }
 
         while(i != req)
         {
-            this.response.appendInt32(0);
-            this.response.appendInt32(0);
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
+            this.response.appendInt(0);
+            this.response.appendInt(0);
             i++;
         }
         this.response.appendString(this.guild.getBadge());
-        this.response.appendInt32(this.guild.getMemberCount());
+        this.response.appendInt(this.guild.getMemberCount());
         return this.response;
     }
 }

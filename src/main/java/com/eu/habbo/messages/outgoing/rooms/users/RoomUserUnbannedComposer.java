@@ -20,8 +20,8 @@ public class RoomUserUnbannedComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomUserUnbannedComposer);
-        this.response.appendInt32(this.room.getId());
-        this.response.appendInt32(this.userId);
+        this.response.appendInt(this.room.getId());
+        this.response.appendInt(this.userId);
         return this.response;
     }
 }

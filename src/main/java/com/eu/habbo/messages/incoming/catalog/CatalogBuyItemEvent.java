@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.catalog.layouts.ClubBuyLayout;
 import com.eu.habbo.habbohotel.catalog.layouts.RecentPurchasesLayout;
 import com.eu.habbo.habbohotel.catalog.layouts.RoomBundleLayout;
 import com.eu.habbo.habbohotel.catalog.layouts.VipBuyLayout;
+import com.eu.habbo.habbohotel.items.FurnitureType;
 import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.*;
@@ -112,7 +113,7 @@ public class CatalogBuyItemEvent extends MessageHandler
                 this.client.sendResponse(new PurchaseOKComposer());
 
                 final boolean[] badgeFound = {false};
-                item[0].getBaseItems().stream().filter(i -> i.getType().equalsIgnoreCase("b")).forEach(i -> {
+                item[0].getBaseItems().stream().filter(i -> i.getType() == FurnitureType.BADGE).forEach(i -> {
                     if (!this.client.getHabbo().getInventory().getBadgesComponent().hasBadge(i.getName()))
                     {
                         HabboBadge badge = new HabboBadge(0, i.getName(), 0, this.client.getHabbo());

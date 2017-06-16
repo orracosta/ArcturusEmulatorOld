@@ -22,7 +22,7 @@ public class UserCurrencyComposer extends MessageComposer
         this.response.init(Outgoing.UserCurrencyComposer);
 
         String[] pointsTypes = Emulator.getConfig().getValue("seasonal.types").split(";");
-        this.response.appendInt32(pointsTypes.length);
+        this.response.appendInt(pointsTypes.length);
         for(String s : pointsTypes)
         {
             int type = 0;
@@ -35,46 +35,46 @@ public class UserCurrencyComposer extends MessageComposer
                 return null;
             }
 
-            this.response.appendInt32(type);
-            this.response.appendInt32(this.habbo.getHabboInfo().getCurrencyAmount(type));
+            this.response.appendInt(type);
+            this.response.appendInt(this.habbo.getHabboInfo().getCurrencyAmount(type));
         }
 
         //Size
-//        this.response.appendInt32(11);
+//        this.response.appendInt(11);
 //
-//        this.response.appendInt32(0);
-//        this.response.appendInt32(this.habbo.getHabboInfo().getPixels());
+//        this.response.appendInt(0);
+//        this.response.appendInt(this.habbo.getHabboInfo().getPixels());
 //
-//        this.response.appendInt32(1);
-//        this.response.appendInt32(this.habbo.getHabboInfo().get);
+//        this.response.appendInt(1);
+//        this.response.appendInt(this.habbo.getHabboInfo().get);
 //
-//        this.response.appendInt32(2);
-//        this.response.appendInt32(0);
+//        this.response.appendInt(2);
+//        this.response.appendInt(0);
 //
-//        this.response.appendInt32(3);
-//        this.response.appendInt32(0);
+//        this.response.appendInt(3);
+//        this.response.appendInt(0);
 //
-//        this.response.appendInt32(4);
-//        this.response.appendInt32(0);
+//        this.response.appendInt(4);
+//        this.response.appendInt(0);
 //
-//        this.response.appendInt32(5);
-//        this.response.appendInt32(0);
+//        this.response.appendInt(5);
+//        this.response.appendInt(0);
 //
 //
-//        this.response.appendInt32(101);
-//        this.response.appendInt32(0);
+//        this.response.appendInt(101);
+//        this.response.appendInt(0);
 //
-//        this.response.appendInt32(102);
-//        this.response.appendInt32(0);
+//        this.response.appendInt(102);
+//        this.response.appendInt(0);
 //
-//        this.response.appendInt32(103);
-//        this.response.appendInt32(0);
+//        this.response.appendInt(103);
+//        this.response.appendInt(0);
 //
-//        this.response.appendInt32(104);
-//        this.response.appendInt32(0);
+//        this.response.appendInt(104);
+//        this.response.appendInt(0);
 //
-//        this.response.appendInt32(105);
-//        this.response.appendInt32(this.habbo.getHabboInfo().getPoints());
+//        this.response.appendInt(105);
+//        this.response.appendInt(this.habbo.getHabboInfo().getPoints());
 
         return this.response;
     }

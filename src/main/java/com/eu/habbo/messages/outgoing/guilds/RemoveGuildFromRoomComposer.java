@@ -17,7 +17,7 @@ public class RemoveGuildFromRoomComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RemoveGuildFromRoomComposer);
-        this.response.appendInt32(this.guildId);
+        this.response.appendInt(this.guildId);
         return this.response;
     }
 }

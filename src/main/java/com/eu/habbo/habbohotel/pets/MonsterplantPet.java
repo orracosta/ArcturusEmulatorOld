@@ -254,30 +254,30 @@ public class MonsterplantPet extends Pet implements IPetLook
     @Override
     public void serialize(ServerMessage message)
     {
-        message.appendInt32(this.getId());
+        message.appendInt(this.getId());
         message.appendString(this.getName());
-        message.appendInt32(this.petData.getType());
-        message.appendInt32(this.race);
+        message.appendInt(this.petData.getType());
+        message.appendInt(this.race);
         message.appendString(this.getLook().substring(5, this.getLook().length()));
-        message.appendInt32(this.getRarity());
-        message.appendInt32(5);
-            message.appendInt32(0);
-            message.appendInt32(-1);
-            message.appendInt32(10);
-            message.appendInt32(1);
-            message.appendInt32(this.type);
-            message.appendInt32(this.hue);
-            message.appendInt32(2);
-            message.appendInt32(this.mouth);
-            message.appendInt32(this.mouthColor);
-            message.appendInt32(3);
-            message.appendInt32(this.nose);
-            message.appendInt32(this.noseColor);
-            message.appendInt32(4);
-            message.appendInt32(this.eyes);
-            message.appendInt32(this.eyesColor);
+        message.appendInt(this.getRarity());
+        message.appendInt(5);
+            message.appendInt(0);
+            message.appendInt(-1);
+            message.appendInt(10);
+            message.appendInt(1);
+            message.appendInt(this.type);
+            message.appendInt(this.hue);
+            message.appendInt(2);
+            message.appendInt(this.mouth);
+            message.appendInt(this.mouthColor);
+            message.appendInt(3);
+            message.appendInt(this.nose);
+            message.appendInt(this.noseColor);
+            message.appendInt(4);
+            message.appendInt(this.eyes);
+            message.appendInt(this.eyesColor);
 
-        message.appendInt32(this.growthStage);
+        message.appendInt(this.growthStage);
     }
 
     public int remainingTimeToLive()

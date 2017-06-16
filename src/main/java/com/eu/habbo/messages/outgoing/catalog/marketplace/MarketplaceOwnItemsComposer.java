@@ -21,8 +21,8 @@ public class MarketplaceOwnItemsComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.MarketplaceOwnItemsComposer);
-        this.response.appendInt32(habbo.getInventory().getSoldPriceTotal());
-        this.response.appendInt32(habbo.getInventory().getMarketplaceItems().size());
+        this.response.appendInt(habbo.getInventory().getSoldPriceTotal());
+        this.response.appendInt(habbo.getInventory().getMarketplaceItems().size());
 
         for(MarketPlaceOffer offer : habbo.getInventory().getMarketplaceItems())
         {
@@ -37,29 +37,29 @@ public class MarketplaceOwnItemsComposer extends MessageComposer
                     }
                 }
 
-                this.response.appendInt32(offer.getOfferId());
-                this.response.appendInt32(offer.getState().getState());
-                this.response.appendInt32(offer.getType());
-                this.response.appendInt32(offer.getItemId());
+                this.response.appendInt(offer.getOfferId());
+                this.response.appendInt(offer.getState().getState());
+                this.response.appendInt(offer.getType());
+                this.response.appendInt(offer.getItemId());
 
                 if (offer.getType() == 3)
                 {
-                    this.response.appendInt32(offer.getLimitedNumber());
-                    this.response.appendInt32(offer.getLimitedStack());
+                    this.response.appendInt(offer.getLimitedNumber());
+                    this.response.appendInt(offer.getLimitedStack());
                 } else
                 {
-                    this.response.appendInt32(0);
+                    this.response.appendInt(0);
                     this.response.appendString("");
                 }
 
-                this.response.appendInt32(offer.getPrice());
+                this.response.appendInt(offer.getPrice());
 
                 if (offer.getState() == MarketPlaceState.OPEN)
-                    this.response.appendInt32((((offer.getTimestamp() + 172800) - Emulator.getIntUnixTimestamp()) / 60));
+                    this.response.appendInt((((offer.getTimestamp() + 172800) - Emulator.getIntUnixTimestamp()) / 60));
                 else
-                    this.response.appendInt32(0);
+                    this.response.appendInt(0);
 
-                this.response.appendInt32(0);
+                this.response.appendInt(0);
             }
             catch (Exception e)
             {

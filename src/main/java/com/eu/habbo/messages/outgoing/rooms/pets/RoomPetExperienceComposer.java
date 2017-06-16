@@ -20,9 +20,9 @@ public class RoomPetExperienceComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomPetExperienceComposer);
-        this.response.appendInt32(this.pet.getId());
-        this.response.appendInt32(this.pet.getRoomUnit().getId());
-        this.response.appendInt32(this.amount);
+        this.response.appendInt(this.pet.getId());
+        this.response.appendInt(this.pet.getRoomUnit().getId());
+        this.response.appendInt(this.amount);
         return this.response;
     }
 }

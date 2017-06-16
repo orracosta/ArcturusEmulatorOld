@@ -26,7 +26,7 @@ public class ReportRoomFormComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.ReportRoomFormComposer);
-        this.response.appendInt32(this.pendingIssues.size()); //Current standing help request(s) amount:
+        this.response.appendInt(this.pendingIssues.size()); //Current standing help request(s) amount:
 
         for (ModToolIssue issue : this.pendingIssues)
         {

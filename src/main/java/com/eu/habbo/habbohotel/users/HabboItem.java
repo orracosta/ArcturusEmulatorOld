@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.users;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.habbohotel.items.FurnitureType;
 import com.eu.habbo.habbohotel.items.IEventTriggers;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.*;
@@ -71,11 +72,11 @@ public abstract class HabboItem implements Runnable, IEventTriggers
     {
         try
         {
-            serverMessage.appendInt32(this.getId());
-            serverMessage.appendInt32(this.baseItem.getSpriteId());
+            serverMessage.appendInt(this.getId());
+            serverMessage.appendInt(this.baseItem.getSpriteId());
             serverMessage.appendInt32(this.x);
             serverMessage.appendInt32(this.y);
-            serverMessage.appendInt32(getRotation());
+            serverMessage.appendInt(getRotation());
             serverMessage.appendString(Double.toString(this.z));
 
             serverMessage.appendString((this.getBaseItem().getInteractionType().getType() == InteractionTrophy.class || this.getBaseItem().getInteractionType().getType() == InteractionCrackable.class || this.getBaseItem().getName().toLowerCase().equals("gnome_box")) ? "1.0" : ((this.getBaseItem().allowWalk() || this.getBaseItem().allowSit() && this.roomId != 0) ? Item.getCurrentHeight(this) + "" : ""));
@@ -92,24 +93,24 @@ public abstract class HabboItem implements Runnable, IEventTriggers
     {
         if(this.isLimited())
         {
-            serverMessage.appendInt32(this.getLimitedSells());
-            serverMessage.appendInt32(this.getLimitedStack());
+            serverMessage.appendInt(this.getLimitedSells());
+            serverMessage.appendInt(this.getLimitedStack());
         }
     }
 
     public void serializeWallData(ServerMessage serverMessage)
     {
         serverMessage.appendString(this.getId() + "");
-        serverMessage.appendInt32(this.baseItem.getSpriteId());
+        serverMessage.appendInt(this.baseItem.getSpriteId());
         serverMessage.appendString(this.wallPosition);
 
         if(this instanceof InteractionPostIt)
             serverMessage.appendString(this.extradata.split(" ")[0]);
         else
             serverMessage.appendString(this.extradata);
-        serverMessage.appendInt32(-1);
-        serverMessage.appendInt32(this.getBaseItem().getStateCount() > 1 || this instanceof InteractionCrackable || this instanceof InteractionMultiHeight ? 1 : 0);
-        serverMessage.appendInt32(this.getUserId());
+        serverMessage.appendInt(-1);
+        serverMessage.appendInt(this.getBaseItem().getStateCount() > 1 || this instanceof InteractionCrackable || this instanceof InteractionMultiHeight ? 1 : 0);
+        serverMessage.appendInt(this.getUserId());
     }
 
     public int getId()
@@ -292,7 +293,7 @@ public abstract class HabboItem implements Runnable, IEventTriggers
     @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
-        if(client != null && this.getBaseItem().getType().equalsIgnoreCase("s"))
+        if(client != null && this.getBaseItem().getType() == FurnitureType.FLOOR)
         {
             if (objects != null && objects.length >= 2)
             {

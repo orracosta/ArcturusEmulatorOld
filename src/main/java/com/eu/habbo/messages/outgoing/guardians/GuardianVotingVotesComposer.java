@@ -27,11 +27,11 @@ public class GuardianVotingVotesComposer extends MessageComposer
 
         ArrayList<GuardianVote> votes = this.ticket.getSortedVotes(this.guardian);
 
-        this.response.appendInt32(votes.size());
+        this.response.appendInt(votes.size());
 
         for(GuardianVote vote : votes)
         {
-            this.response.appendInt32(vote.type.getType());
+            this.response.appendInt(vote.type.getType());
         }
 
         return this.response;

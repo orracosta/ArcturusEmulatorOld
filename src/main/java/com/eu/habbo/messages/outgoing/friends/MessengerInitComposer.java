@@ -18,11 +18,11 @@ public class MessengerInitComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.MessengerInitComposer);
-        this.response.appendInt32(300);
-        this.response.appendInt32(1337);
-        this.response.appendInt32(500);
-        //this.response.appendInt32(1000);
-        this.response.appendInt32(0);
+        this.response.appendInt(300);
+        this.response.appendInt(1337);
+        this.response.appendInt(500);
+        //this.response.appendInt(1000);
+        this.response.appendInt(0);
         return this.response;
     }
 }

@@ -19,14 +19,14 @@ public class RoomUsersGuildBadgesComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomUsersGuildBadgesComposer);
-        this.response.appendInt32(this.guildBadges.size());
+        this.response.appendInt(this.guildBadges.size());
 
         this.guildBadges.forEachEntry(new TObjectObjectProcedure<Integer, String>()
         {
             @Override
             public boolean execute(Integer guildId, String badge)
             {
-                response.appendInt32(guildId);
+                response.appendInt(guildId);
                 response.appendString(badge);
                 return true;
             }

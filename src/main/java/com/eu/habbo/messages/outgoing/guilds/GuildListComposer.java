@@ -23,16 +23,16 @@ public class GuildListComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildListComposer);
-        this.response.appendInt32(this.guilds.size());
+        this.response.appendInt(this.guilds.size());
         for(Guild guild : this.guilds)
         {
-            this.response.appendInt32(guild.getId());
+            this.response.appendInt(guild.getId());
             this.response.appendString(guild.getName());
             this.response.appendString(guild.getBadge());
             this.response.appendString(Emulator.getGameEnvironment().getGuildManager().getSymbolColor(guild.getColorOne()).valueA);
             this.response.appendString(Emulator.getGameEnvironment().getGuildManager().getBackgroundColor(guild.getColorTwo()).valueA);
             this.response.appendBoolean(this.habbo.getHabboStats().guild == guild.getId());
-            this.response.appendInt32(guild.getOwnerId());
+            this.response.appendInt(guild.getOwnerId());
             this.response.appendBoolean(guild.hasForum());
         }
         return this.response;

@@ -18,7 +18,7 @@ public class PetPackageComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.LeprechaunStarterBundleComposer);
-        this.response.appendInt32(this.item.getId());
+        this.response.appendInt(this.item.getId());
         return this.response;
     }
 }

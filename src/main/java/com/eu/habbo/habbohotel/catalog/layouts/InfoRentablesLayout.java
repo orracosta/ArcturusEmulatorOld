@@ -18,12 +18,12 @@ public class InfoRentablesLayout extends CatalogPage
     {
         String[] data = getTextOne().split("\\|\\|");
         message.appendString("info_rentables");
-        message.appendInt32(1);
+        message.appendInt(1);
         message.appendString(getHeaderImage());
-        message.appendInt32(data.length);
+        message.appendInt(data.length);
         for (String d : data) {
             message.appendString(d);
         }
-        message.appendInt32(0);
+        message.appendInt(0);
     }
 }

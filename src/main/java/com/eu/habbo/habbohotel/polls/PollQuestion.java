@@ -74,13 +74,13 @@ public class PollQuestion implements ISerialize, Comparable<PollQuestion>
     @Override
     public void serialize(ServerMessage message)
     {
-        message.appendInt32(this.id);
-        message.appendInt32(this.order);
-        message.appendInt32(this.type);
+        message.appendInt(this.id);
+        message.appendInt(this.order);
+        message.appendInt(this.type);
         message.appendString(this.question);
-        message.appendInt32(this.minSelections);
-        message.appendInt32(0);
-        message.appendInt32(this.options.size());
+        message.appendInt(this.minSelections);
+        message.appendInt(0);
+        message.appendInt(this.options.size());
 
         if (this.type == 1 || this.type == 2)
         {
@@ -88,14 +88,14 @@ public class PollQuestion implements ISerialize, Comparable<PollQuestion>
             {
                 message.appendString(set.getValue()[0]);
                 message.appendString(set.getValue()[1]);
-                message.appendInt32(set.getKey());
+                message.appendInt(set.getKey());
             }
         }
 
         if (this.parentId <= 0)
         {
             Collections.sort(this.subQuestions);
-            message.appendInt32(this.subQuestions.size());
+            message.appendInt(this.subQuestions.size());
 
             for (PollQuestion q : this.subQuestions)
             {

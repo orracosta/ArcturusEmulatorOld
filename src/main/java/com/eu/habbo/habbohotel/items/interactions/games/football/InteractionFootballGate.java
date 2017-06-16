@@ -8,12 +8,10 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboGender;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.incoming.users.UserSaveLookEvent;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDataComposer;
 import com.eu.habbo.messages.outgoing.users.UpdateUserLookComposer;
 import com.eu.habbo.plugin.EventHandler;
 import com.eu.habbo.plugin.events.users.UserDisconnectEvent;
-import com.eu.habbo.plugin.events.users.UserEvent;
 import com.eu.habbo.plugin.events.users.UserExitRoomEvent;
 import com.eu.habbo.plugin.events.users.UserSavedLookEvent;
 import com.eu.habbo.util.FigureUtil;
@@ -67,7 +65,7 @@ public class InteractionFootballGate extends HabboItem
     @Override
     public void serializeExtradata(ServerMessage serverMessage)
     {
-        serverMessage.appendInt32((this.isLimited() ? 256 : 0));
+        serverMessage.appendInt((this.isLimited() ? 256 : 0));
         serverMessage.appendString(this.figureM + "," + this.figureF);
         super.serializeExtradata(serverMessage);
     }

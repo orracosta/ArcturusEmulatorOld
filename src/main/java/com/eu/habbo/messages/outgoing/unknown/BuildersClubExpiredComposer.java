@@ -10,11 +10,11 @@ public class BuildersClubExpiredComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.BuildersClubExpiredComposer);
-        this.response.appendInt32(Integer.MAX_VALUE);
-        this.response.appendInt32(0);
-        this.response.appendInt32(100);
-        this.response.appendInt32(100000);
-        this.response.appendInt32(0);
+        this.response.appendInt(Integer.MAX_VALUE);
+        this.response.appendInt(0);
+        this.response.appendInt(100);
+        this.response.appendInt(100000);
+        this.response.appendInt(0);
         return this.response;
     }
 }

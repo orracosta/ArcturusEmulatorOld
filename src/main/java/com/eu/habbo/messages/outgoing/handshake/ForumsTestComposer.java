@@ -9,7 +9,7 @@ public class ForumsTestComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(2379);
-        this.response.appendInt32(0);
+        this.response.appendInt(0);
         return this.response;
     }
 }

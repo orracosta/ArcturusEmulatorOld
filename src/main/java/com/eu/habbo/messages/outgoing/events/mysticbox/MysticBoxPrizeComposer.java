@@ -20,7 +20,7 @@ public class MysticBoxPrizeComposer extends MessageComposer
     {
         this.response.init(Outgoing.MysticBoxPrizeComposer);
         this.response.appendString(this.type);
-        this.response.appendInt32(this.itemId);
+        this.response.appendInt(this.itemId);
         return this.response;
     }
 }

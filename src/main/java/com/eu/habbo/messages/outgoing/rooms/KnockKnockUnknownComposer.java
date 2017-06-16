@@ -18,7 +18,7 @@ public class KnockKnockUnknownComposer extends MessageComposer
     {
         this.response.init(478); //TODO Hardcoded header
         this.response.appendString(this.habbo.getHabboInfo().getUsername());
-        this.response.appendInt32(this.habbo.getHabboInfo().getId());
+        this.response.appendInt(this.habbo.getHabboInfo().getId());
         return this.response;
     }
 }

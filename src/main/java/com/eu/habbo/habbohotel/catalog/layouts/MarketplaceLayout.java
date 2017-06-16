@@ -17,7 +17,7 @@ public class MarketplaceLayout extends CatalogPage
     public void serialize(ServerMessage message)
     {
         message.appendString("marketplace");
-        message.appendInt32(0);
-        message.appendInt32(0);
+        message.appendInt(0);
+        message.appendInt(0);
     }
 }

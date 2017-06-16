@@ -20,9 +20,9 @@ public class RoomUserUpdateNameComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomUserUpdateNameComposer);
-        this.response.appendInt32(this.roomUnit.getId());
+        this.response.appendInt(this.roomUnit.getId());
         this.response.appendString(this.name);
-        this.response.appendInt32(0);
+        this.response.appendInt(0);
         return this.response;
     }
 }

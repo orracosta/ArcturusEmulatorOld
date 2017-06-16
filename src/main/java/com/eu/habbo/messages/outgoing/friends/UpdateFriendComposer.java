@@ -33,16 +33,16 @@ public class UpdateFriendComposer extends MessageComposer
         this.response.init(Outgoing.UpdateFriendComposer);
         if(buddy != null)
         {
-            this.response.appendInt32(0);
-            this.response.appendInt32(1);
-            this.response.appendInt32(0);
-            this.response.appendInt32(this.buddy.getId());
+            this.response.appendInt(0);
+            this.response.appendInt(1);
+            this.response.appendInt(0);
+            this.response.appendInt(this.buddy.getId());
             this.response.appendString(this.buddy.getUsername());
-            this.response.appendInt32(this.buddy.getGender().equals("M") ? 0 : 1);
+            this.response.appendInt(this.buddy.getGender().equals("M") ? 0 : 1);
             this.response.appendBoolean(this.buddy.getOnline() == 1);
             this.response.appendBoolean(this.buddy.inRoom()); //In room
             this.response.appendString(this.buddy.getLook());
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
             this.response.appendString(this.buddy.getMotto());
             this.response.appendString("");
             this.response.appendString("");
@@ -53,16 +53,16 @@ public class UpdateFriendComposer extends MessageComposer
         }
         else
         {
-            this.response.appendInt32(0);
-            this.response.appendInt32(1);
-            this.response.appendInt32(0);
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
+            this.response.appendInt(1);
+            this.response.appendInt(0);
+            this.response.appendInt(0);
             this.response.appendString("Staff Chat");
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
             this.response.appendBoolean(true);
             this.response.appendBoolean(false); //In room
             this.response.appendString(this.habbo.getHabboInfo().getLook());
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
             this.response.appendString("");
             this.response.appendString("");
             this.response.appendString("");

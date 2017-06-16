@@ -22,14 +22,14 @@ public class RoomInviteErrorComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomInviteErrorComposer);
-        this.response.appendInt32(this.errorCode);
-        this.response.appendInt32(this.buddies.size());
+        this.response.appendInt(this.errorCode);
+        this.response.appendInt(this.buddies.size());
         this.buddies.forEach(new TObjectProcedure<MessengerBuddy>()
         {
             @Override
             public boolean execute(MessengerBuddy object)
             {
-                response.appendInt32(object.getId());
+                response.appendInt(object.getId());
                 return true;
             }
         });

@@ -20,10 +20,10 @@ public class BotsLayout extends CatalogPage
     public void serialize(ServerMessage message)
     {
         message.appendString("bots");
-        message.appendInt32(2);
+        message.appendInt(2);
         message.appendString(super.getHeaderImage());
         message.appendString(super.getTeaserImage());
-        message.appendInt32(3);
+        message.appendInt(3);
         message.appendString(super.getTextOne());
         message.appendString(super.getTextDetails());
         message.appendString(super.getTextTwo());

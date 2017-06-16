@@ -20,19 +20,19 @@ public class InventoryAchievementsComposer extends MessageComposer
         {
             THashMap<String, Achievement> achievements = Emulator.getGameEnvironment().getAchievementManager().getAchievements();
 
-            this.response.appendInt32(achievements.size());
+            this.response.appendInt(achievements.size());
             achievements.forEachValue(new TObjectProcedure<Achievement>()
             {
                 @Override
                 public boolean execute(Achievement achievement)
                 {
                     response.appendString((achievement.name.startsWith("ACH_") ? achievement.name.replace("ACH_", "") : achievement.name));
-                    response.appendInt32(achievement.levels.size());
+                    response.appendInt(achievement.levels.size());
 
                     for (AchievementLevel level : achievement.levels.values())
                     {
-                        response.appendInt32(level.level);
-                        response.appendInt32(level.progress);
+                        response.appendInt(level.level);
+                        response.appendInt(level.progress);
                     }
 
                     return true;

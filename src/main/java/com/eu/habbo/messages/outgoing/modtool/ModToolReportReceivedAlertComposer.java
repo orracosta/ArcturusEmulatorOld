@@ -21,7 +21,7 @@ public class ModToolReportReceivedAlertComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.ModToolReportReceivedAlertComposer);
-        this.response.appendInt32(this.errorCode);
+        this.response.appendInt(this.errorCode);
         return null;
     }
 }

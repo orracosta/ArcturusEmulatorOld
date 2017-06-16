@@ -9,7 +9,6 @@ import com.eu.habbo.habbohotel.users.HabboInfo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
-import gnu.trove.set.hash.THashSet;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,13 +42,13 @@ public class UserProfileComposer extends MessageComposer
 
         this.response.init(Outgoing.UserProfileComposer);
 
-        this.response.appendInt32(this.habboInfo.getId());
+        this.response.appendInt(this.habboInfo.getId());
         this.response.appendString(this.habboInfo.getUsername());
         this.response.appendString(this.habboInfo.getLook());
         this.response.appendString(this.habboInfo.getMotto());
         this.response.appendString(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date(this.habboInfo.getAccountCreated() * 1000L)));
-        this.response.appendInt32(this.habbo != null ? this.habbo.getHabboStats().getAchievementScore() : 0);
-        this.response.appendInt32(Messenger.getFriendCount(this.habboInfo.getId()));
+        this.response.appendInt(this.habbo != null ? this.habbo.getHabboStats().getAchievementScore() : 0);
+        this.response.appendInt(Messenger.getFriendCount(this.habboInfo.getId()));
         this.response.appendBoolean(viewer.getHabbo().getMessenger().getFriends().containsKey(this.habboInfo.getId())); //Friend
         this.response.appendBoolean(Messenger.friendRequested(this.viewer.getHabbo().getHabboInfo().getId(), this.habboInfo.getId())); //Friend Request Send
         this.response.appendBoolean(this.habboInfo.isOnline());
@@ -79,20 +78,20 @@ public class UserProfileComposer extends MessageComposer
             guilds = Emulator.getGameEnvironment().getGuildManager().getGuilds(this.habboInfo.getId());
         }
 
-        this.response.appendInt32(guilds.size());
+        this.response.appendInt(guilds.size());
         for(Guild guild : guilds)
         {
-            this.response.appendInt32(guild.getId());
+            this.response.appendInt(guild.getId());
             this.response.appendString(guild.getName());
             this.response.appendString(guild.getBadge());
             this.response.appendString(Emulator.getGameEnvironment().getGuildManager().getSymbolColor(guild.getColorOne()).valueA);
             this.response.appendString(Emulator.getGameEnvironment().getGuildManager().getSymbolColor(guild.getColorTwo()).valueA);
             this.response.appendBoolean(habbo != null && guild.getId() == this.habbo.getHabboStats().guild);
-            this.response.appendInt32(guild.getOwnerId());
+            this.response.appendInt(guild.getOwnerId());
             this.response.appendBoolean(guild.getOwnerId() == this.habboInfo.getId());
         }
 
-        this.response.appendInt32(Emulator.getIntUnixTimestamp() - this.habboInfo.getLastOnline()); //Secs ago.
+        this.response.appendInt(Emulator.getIntUnixTimestamp() - this.habboInfo.getLastOnline()); //Secs ago.
         this.response.appendBoolean(true);
 
         return this.response;

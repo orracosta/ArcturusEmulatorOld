@@ -21,32 +21,32 @@ public class MarketplaceOffersComposer extends MessageComposer
     {
         this.response.init(Outgoing.MarketplaceOffersComposer);
         int total = 0;
-        this.response.appendInt32(this.offers.size());
+        this.response.appendInt(this.offers.size());
 
         for(MarketPlaceOffer offer : this.offers)
         {
-            this.response.appendInt32(offer.getOfferId());
-            this.response.appendInt32(1);
-            this.response.appendInt32(offer.getType());
-            this.response.appendInt32(offer.getItemId());
+            this.response.appendInt(offer.getOfferId());
+            this.response.appendInt(1);
+            this.response.appendInt(offer.getType());
+            this.response.appendInt(offer.getItemId());
             if(offer.getType() == 3)
             {
-                this.response.appendInt32(offer.getLimitedNumber());
-                this.response.appendInt32(offer.getLimitedStack());
+                this.response.appendInt(offer.getLimitedNumber());
+                this.response.appendInt(offer.getLimitedStack());
             }
             else
             {
-                this.response.appendInt32(0);
+                this.response.appendInt(0);
                 this.response.appendString("");
             }
-            this.response.appendInt32(MarketPlace.calculateCommision(offer.getPrice()));
-            this.response.appendInt32(0);
-            this.response.appendInt32(offer.avarage);
-            this.response.appendInt32(offer.count);
+            this.response.appendInt(MarketPlace.calculateCommision(offer.getPrice()));
+            this.response.appendInt(0);
+            this.response.appendInt(offer.avarage);
+            this.response.appendInt(offer.count);
 
             total += offer.count;
         }
-        this.response.appendInt32(total);
+        this.response.appendInt(total);
         return this.response;
     }
 }

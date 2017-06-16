@@ -27,19 +27,19 @@ public class AdventCalendarDataComposer extends MessageComposer
         this.response.init(Outgoing.AdventCalendarDataComposer);
         this.response.appendString(this.eventName);
         this.response.appendString(this.eventName);
-        this.response.appendInt32(this.currentDay);
-        this.response.appendInt32(this.totalDays);
+        this.response.appendInt(this.currentDay);
+        this.response.appendInt(this.totalDays);
 
-        this.response.appendInt32(this.unlocked.length);
+        this.response.appendInt(this.unlocked.length);
         for (int unlocked : this.unlocked)
         {
-            this.response.appendInt32(unlocked);
+            this.response.appendInt(unlocked);
         }
 
-        this.response.appendInt32(this.expired.length);
+        this.response.appendInt(this.expired.length);
         for (int expired : this.expired)
         {
-            this.response.appendInt32(expired);
+            this.response.appendInt(expired);
         }
 
         return this.response;

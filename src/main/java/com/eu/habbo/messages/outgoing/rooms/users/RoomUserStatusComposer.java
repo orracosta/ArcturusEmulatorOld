@@ -9,8 +9,6 @@ import gnu.trove.map.TIntObjectMap;
 import gnu.trove.procedure.TObjectObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
-import java.util.Map;
-
 public class RoomUserStatusComposer extends MessageComposer
 {
     private TIntObjectMap<Habbo> habbos;
@@ -38,15 +36,15 @@ public class RoomUserStatusComposer extends MessageComposer
         this.response.init(Outgoing.RoomUserStatusComposer);
         if(this.roomUnits != null)
         {
-            this.response.appendInt32(this.roomUnits.size());
+            this.response.appendInt(this.roomUnits.size());
             for(RoomUnit roomUnit : this.roomUnits)
             {
-                this.response.appendInt32(roomUnit.getId());
+                this.response.appendInt(roomUnit.getId());
                 this.response.appendInt32(roomUnit.getPreviousLocation().x);
                 this.response.appendInt32(roomUnit.getPreviousLocation().y);
                 this.response.appendString(roomUnit.getPreviousLocation().getStackHeight() + "");
-                this.response.appendInt32(roomUnit.getHeadRotation().getValue());
-                this.response.appendInt32(roomUnit.getBodyRotation().getValue());
+                this.response.appendInt(roomUnit.getHeadRotation().getValue());
+                this.response.appendInt(roomUnit.getBodyRotation().getValue());
 
                 final String[] status = {"/"};
                 synchronized (roomUnit.getStatus())
@@ -70,15 +68,15 @@ public class RoomUserStatusComposer extends MessageComposer
         else {
             synchronized (this.habbos)
             {
-                this.response.appendInt32(this.habbos.size());
+                this.response.appendInt(this.habbos.size());
                 for (Habbo habbo : this.habbos.valueCollection())
                 {
-                    this.response.appendInt32(habbo.getRoomUnit().getId());
+                    this.response.appendInt(habbo.getRoomUnit().getId());
                     this.response.appendInt32(habbo.getRoomUnit().getPreviousLocation().x);
                     this.response.appendInt32(habbo.getRoomUnit().getPreviousLocation().y);
                     this.response.appendString(habbo.getRoomUnit().getPreviousLocation().getStackHeight() + "");
-                    this.response.appendInt32(habbo.getRoomUnit().getHeadRotation().getValue());
-                    this.response.appendInt32(habbo.getRoomUnit().getBodyRotation().getValue());
+                    this.response.appendInt(habbo.getRoomUnit().getHeadRotation().getValue());
+                    this.response.appendInt(habbo.getRoomUnit().getBodyRotation().getValue());
 
                     final String[] status = {"/"};
                     synchronized (habbo.getRoomUnit().getStatus())

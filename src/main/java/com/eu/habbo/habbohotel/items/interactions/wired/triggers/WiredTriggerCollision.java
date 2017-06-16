@@ -66,16 +66,16 @@ public class WiredTriggerCollision extends InteractionWiredTrigger
     public void serializeWiredData(ServerMessage message, Room room)
     {
         message.appendBoolean(false);
-        message.appendInt32(Emulator.getConfig().getInt("hotel.wired.furni.selection.count"));
-        message.appendInt32(0);
-        message.appendInt32(this.getBaseItem().getSpriteId());
-        message.appendInt32(this.getId());
+        message.appendInt(Emulator.getConfig().getInt("hotel.wired.furni.selection.count"));
+        message.appendInt(0);
+        message.appendInt(this.getBaseItem().getSpriteId());
+        message.appendInt(this.getId());
         message.appendString("");
-        message.appendInt32(0);
-        message.appendInt32(0);
-        message.appendInt32(type.code);
-        message.appendInt32(0);
-        message.appendInt32(0);
+        message.appendInt(0);
+        message.appendInt(0);
+        message.appendInt(type.code);
+        message.appendInt(0);
+        message.appendInt(0);
     }
 
     @Override

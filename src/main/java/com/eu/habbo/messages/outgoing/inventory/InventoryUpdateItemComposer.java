@@ -1,5 +1,6 @@
 package com.eu.habbo.messages.outgoing.inventory;
 
+import com.eu.habbo.habbohotel.items.FurnitureType;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
@@ -18,46 +19,46 @@ public class InventoryUpdateItemComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.InventoryItemUpdateComposer);
-        this.response.appendInt32(2);
-        this.response.appendInt32(habboItem.getId());
-        this.response.appendString(habboItem.getBaseItem().getType().toUpperCase());
-        this.response.appendInt32(habboItem.getId());
-        this.response.appendInt32(habboItem.getBaseItem().getSpriteId());
+        this.response.appendInt(2);
+        this.response.appendInt(this.habboItem.getId());
+        this.response.appendString(this.habboItem.getBaseItem().getType().code);
+        this.response.appendInt(this.habboItem.getId());
+        this.response.appendInt(this.habboItem.getBaseItem().getSpriteId());
 
-        if (habboItem.getBaseItem().getName().equals("landscape"))
-            this.response.appendInt32(4);
-        else if (habboItem.getBaseItem().getName().equals("floor"))
-            this.response.appendInt32(3);
-        else if (habboItem.getBaseItem().getName().equals("wallpaper"))
-            this.response.appendInt32(2);
+        if (this.habboItem.getBaseItem().getName().equals("landscape"))
+            this.response.appendInt(4);
+        else if (this.habboItem.getBaseItem().getName().equals("floor"))
+            this.response.appendInt(3);
+        else if (this.habboItem.getBaseItem().getName().equals("wallpaper"))
+            this.response.appendInt(2);
 
-        if(habboItem.isLimited())
+        if(this.habboItem.isLimited())
         {
-            this.response.appendInt32(1);
-            this.response.appendInt32(256);
-            this.response.appendString(habboItem.getExtradata());
-            this.response.appendInt32(habboItem.getLimitedSells());
-            this.response.appendInt32(habboItem.getLimitedStack());
+            this.response.appendInt(1);
+            this.response.appendInt(256);
+            this.response.appendString(this.habboItem.getExtradata());
+            this.response.appendInt(this.habboItem.getLimitedSells());
+            this.response.appendInt(this.habboItem.getLimitedStack());
         }
         else
         {
-            this.response.appendInt32(1);
-            this.response.appendInt32(0);
-            this.response.appendString(habboItem.getExtradata());
+            this.response.appendInt(1);
+            this.response.appendInt(0);
+            this.response.appendString(this.habboItem.getExtradata());
         }
-        this.response.appendBoolean(habboItem.getBaseItem().allowRecyle());
-        this.response.appendBoolean(habboItem.getBaseItem().allowTrade());
-        this.response.appendBoolean(!habboItem.isLimited() && habboItem.getBaseItem().allowInventoryStack());
-        this.response.appendBoolean(habboItem.getBaseItem().allowMarketplace());
-        this.response.appendInt32(-1);
+        this.response.appendBoolean(this.habboItem.getBaseItem().allowRecyle());
+        this.response.appendBoolean(this.habboItem.getBaseItem().allowTrade());
+        this.response.appendBoolean(!this.habboItem.isLimited() && this.habboItem.getBaseItem().allowInventoryStack());
+        this.response.appendBoolean(this.habboItem.getBaseItem().allowMarketplace());
+        this.response.appendInt(-1);
         this.response.appendBoolean(false);
-        this.response.appendInt32(-1);
+        this.response.appendInt(-1);
 
-        if (!habboItem.getBaseItem().getType().equals("i")) {
+        if (this.habboItem.getBaseItem().getType() != FurnitureType.WALL) {
             this.response.appendString("");
-            this.response.appendInt32(0);
+            this.response.appendInt(0);
         }
-        this.response.appendInt32(100);
+        this.response.appendInt(100);
         return this.response;
     }
 }

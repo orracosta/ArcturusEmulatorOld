@@ -18,8 +18,8 @@ public class RoomUsersAddGuildBadgeComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomUsersGuildBadgesComposer);
-        this.response.appendInt32(1);
-        this.response.appendInt32(this.guild.getId());
+        this.response.appendInt(1);
+        this.response.appendInt(this.guild.getId());
         this.response.appendString(this.guild.getBadge());
         return this.response;
     }

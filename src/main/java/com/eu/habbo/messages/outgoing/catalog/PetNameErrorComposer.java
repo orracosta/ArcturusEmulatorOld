@@ -25,7 +25,7 @@ public class PetNameErrorComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.PetNameErrorComposer);
-        this.response.appendInt32(this.type);
+        this.response.appendInt(this.type);
         this.response.appendString(this.value);
         return this.response;
     }

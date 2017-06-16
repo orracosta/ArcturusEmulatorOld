@@ -18,8 +18,8 @@ public class JukeBoxPlayListAddSongComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.JukeBoxPlayListAddSongComposer);
-        this.response.appendInt32(this.track.getId());
-        this.response.appendInt32(this.track.getLength() * 1000);
+        this.response.appendInt(this.track.getId());
+        this.response.appendInt(this.track.getLength() * 1000);
         this.response.appendString(this.track.getCode());
         this.response.appendString(this.track.getAuthor());
         return this.response;

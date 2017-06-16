@@ -23,7 +23,7 @@ public class RemovePetComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RemovePetComposer);
-        this.response.appendInt32(this.petId);
+        this.response.appendInt(this.petId);
         return this.response;
     }
 }

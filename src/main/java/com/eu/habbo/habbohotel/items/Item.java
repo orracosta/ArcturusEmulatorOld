@@ -15,7 +15,7 @@ public class Item {
     private int spriteId;
     private String name;
     private String fullName;
-    private String type;
+    private FurnitureType type;
     private short width;
     private short length;
     private double height;
@@ -52,7 +52,7 @@ public class Item {
         this.spriteId = set.getInt("sprite_id");
         this.name = set.getString("item_name");
         this.fullName = set.getString("public_name");
-        this.type = set.getString("type");
+        this.type = FurnitureType.fromString(set.getString("type"));
         this.width = set.getShort("width");
         this.length = set.getShort("length");
         this.height = set.getDouble("stack_height");
@@ -118,7 +118,7 @@ public class Item {
         return this.fullName;
     }
 
-    public String getType()
+    public FurnitureType getType()
     {
         return this.type;
     }

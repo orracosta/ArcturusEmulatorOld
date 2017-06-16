@@ -19,8 +19,8 @@ public class RoomFloorThicknessUpdatedComposer extends MessageComposer
     {
         this.response.init(Outgoing.RoomFloorThicknessUpdatedComposer);
         this.response.appendBoolean(this.room.isHideWall()); //Hide walls?
-        this.response.appendInt32(this.room.getFloorSize()); //Floor Thickness
-        this.response.appendInt32(this.room.getWallSize()); //Wall Thickness
+        this.response.appendInt(this.room.getFloorSize()); //Floor Thickness
+        this.response.appendInt(this.room.getWallSize()); //Wall Thickness
         return this.response;
     }
 }

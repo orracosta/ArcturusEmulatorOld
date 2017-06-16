@@ -11,7 +11,7 @@ public class CanCreateEventComposer extends MessageComposer
     {
         this.response.init(Outgoing.CanCreateEventComposer);
         this.response.appendBoolean(true);
-        this.response.appendInt32(0);
+        this.response.appendInt(0);
         return this.response;
     }
 }

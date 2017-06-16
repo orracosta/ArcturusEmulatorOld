@@ -9,7 +9,7 @@ public class SnowWarsOnStageRunningComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(3832);
-        this.response.appendInt32(120);
+        this.response.appendInt(120);
         return this.response;
     }
 }

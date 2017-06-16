@@ -18,8 +18,8 @@ public class RoomUserTagsComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.RoomUserTagsComposer);
-        this.response.appendInt32(this.habbo.getRoomUnit().getId());
-        this.response.appendInt32(this.habbo.getHabboStats().tags.length);
+        this.response.appendInt(this.habbo.getRoomUnit().getId());
+        this.response.appendInt(this.habbo.getHabboStats().tags.length);
 
         for(String tag : this.habbo.getHabboStats().tags)
         {

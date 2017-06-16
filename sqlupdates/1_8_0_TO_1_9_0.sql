@@ -10,3 +10,12 @@ INSERT INTO `emulator_texts` (`key`, `value`) VALUES
     ('commands.succes.cmd_empty_pets.verify', 'This will remove all pets from your inventory. Type :emptypets %generic.yes% to continue!'),
     ('commands.keys.cmd_empty_pets', 'emptypets;empty_pets;deletepets'),
     ('commands.description.cmd_empty_pets', ':emptypets');
+
+CREATE TABLE `users_effects` (
+    `user_id` INT NOT NULL,
+    `effect` SMALLINT(5) NOT NULL,
+    `duration` INT NOT NULL DEFAULT '86400',
+    `activation_timestamp` INT NOT NULL DEFAULT '-1',
+    `total` TINYINT(2) NOT NULL DEFAULT '1',
+    UNIQUE(user_id, effect)
+) ENGINE = MyISAM;

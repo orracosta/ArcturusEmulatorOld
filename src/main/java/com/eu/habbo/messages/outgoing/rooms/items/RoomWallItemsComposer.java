@@ -45,16 +45,16 @@ public class RoomWallItemsComposer extends MessageComposer
             }
         }
 
-        this.response.appendInt32(userNames.size());
+        this.response.appendInt(userNames.size());
         for(Map.Entry<Integer, String> set : userNames.entrySet())
         {
-            this.response.appendInt32(set.getKey());
+            this.response.appendInt(set.getKey());
             this.response.appendString(set.getValue());
         }
 
         THashSet<HabboItem> items = this.room.getWallItems();
 
-        this.response.appendInt32(items.size());
+        this.response.appendInt(items.size());
         for(HabboItem item : items)
         {
             item.serializeWallData(this.response);

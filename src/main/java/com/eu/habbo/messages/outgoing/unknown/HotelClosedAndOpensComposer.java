@@ -19,8 +19,8 @@ public class HotelClosedAndOpensComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.HotelClosedAndOpensComposer);
-        this.response.appendInt32(this.hour);
-        this.response.appendInt32(this.minute);
+        this.response.appendInt(this.hour);
+        this.response.appendInt(this.minute);
         return this.response;
     }
 }

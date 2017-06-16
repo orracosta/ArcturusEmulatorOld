@@ -21,11 +21,11 @@ public class CraftingRecipeComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.CraftingRecipeComposer);
-        this.response.appendInt32(this.recipe.getIngredients().size());
+        this.response.appendInt(this.recipe.getIngredients().size());
 
         for (Map.Entry<Item, Integer> ingredient : this.recipe.getIngredients().entrySet())
         {
-            this.response.appendInt32(ingredient.getValue());
+            this.response.appendInt(ingredient.getValue());
             this.response.appendString(ingredient.getKey().getName());
         }
         return this.response;

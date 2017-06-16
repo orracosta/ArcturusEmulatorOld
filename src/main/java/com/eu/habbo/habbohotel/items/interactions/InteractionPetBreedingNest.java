@@ -8,7 +8,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.pets.breeding.PetBreedingResultComposer;
-import com.eu.habbo.messages.outgoing.rooms.pets.breeding.PetBreedingStartComposer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -44,7 +43,7 @@ public class InteractionPetBreedingNest extends HabboItem
     @Override
     public void serializeExtradata(ServerMessage serverMessage)
     {
-        serverMessage.appendInt32((this.isLimited() ? 256 : 0));
+        serverMessage.appendInt((this.isLimited() ? 256 : 0));
         serverMessage.appendString(this.getExtradata());
 
         super.serializeExtradata(serverMessage);

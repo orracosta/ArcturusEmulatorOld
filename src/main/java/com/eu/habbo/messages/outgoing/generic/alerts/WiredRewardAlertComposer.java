@@ -27,7 +27,7 @@ public class WiredRewardAlertComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.WiredRewardAlertComposer);
-        this.response.appendInt32(this.code);
+        this.response.appendInt(this.code);
         return this.response;
     }
 }

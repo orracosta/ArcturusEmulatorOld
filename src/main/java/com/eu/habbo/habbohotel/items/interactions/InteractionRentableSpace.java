@@ -132,17 +132,17 @@ public class InteractionRentableSpace extends HabboItem
         if(this.getExtradata().isEmpty())
             this.setExtradata("0:0");
 
-        serverMessage.appendInt32(1 + (this.isLimited() ? 256 : 0));
+        serverMessage.appendInt(1 + (this.isLimited() ? 256 : 0));
 
         if(this.isRented())
         {
-            serverMessage.appendInt32(1);
+            serverMessage.appendInt(1);
             serverMessage.appendString("renterId");
             serverMessage.appendString(this.renterId + "");
         }
         else
         {
-            serverMessage.appendInt32(0);
+            serverMessage.appendInt(0);
         }
 
         super.serializeExtradata(serverMessage);

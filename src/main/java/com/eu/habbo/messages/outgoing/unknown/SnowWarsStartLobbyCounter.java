@@ -10,7 +10,7 @@ public class SnowWarsStartLobbyCounter extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(3757);
-        this.response.appendInt32(5);
+        this.response.appendInt(5);
         return this.response;
     }
 }

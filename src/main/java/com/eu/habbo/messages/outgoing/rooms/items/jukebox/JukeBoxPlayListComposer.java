@@ -9,7 +9,6 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
-import gnu.trove.set.hash.THashSet;
 
 import java.util.ArrayList;
 
@@ -47,13 +46,13 @@ public class JukeBoxPlayListComposer extends MessageComposer
                 }
             }
         }
-        this.response.appendInt32((int)totalTime); //Dunno //TODO Total play length?
-        this.response.appendInt32(soundTracks.size());
+        this.response.appendInt((int) totalTime); //Dunno //TODO Total play length?
+        this.response.appendInt(soundTracks.size());
 
         for (SoundTrack soundTrack : soundTracks)
         {
-            this.response.appendInt32(soundTrack.getId());
-            this.response.appendInt32(soundTrack.getLength() * 1000);
+            this.response.appendInt(soundTrack.getId());
+            this.response.appendInt(soundTrack.getLength() * 1000);
         }
 
         return this.response;

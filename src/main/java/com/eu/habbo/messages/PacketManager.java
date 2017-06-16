@@ -148,7 +148,10 @@ public class PacketManager
                     }
                 }
 
-                handler.handle();
+                if (!handler.isCancelled)
+                {
+                    handler.handle();
+                }
             }
             else
             {
@@ -256,6 +259,8 @@ public class PacketManager
         this.registerHandler(Incoming.SaveBlockCameraFollowEvent,               SaveBlockCameraFollowEvent.class);
         this.registerHandler(Incoming.SaveIgnoreRoomInvitesEvent,               SaveIgnoreRoomInvitesEvent.class);
         this.registerHandler(Incoming.SavePreferOldChatEvent,                   SavePreferOldChatEvent.class);
+        this.registerHandler(Incoming.ActivateEffectEvent,                      ActivateEffectEvent.class);
+        this.registerHandler(Incoming.EnableEffectEvent,                        EnableEffectEvent.class);
     }
 
     private void registerNavigator() throws Exception

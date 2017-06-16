@@ -24,12 +24,12 @@ public class PetBreedsComposer extends MessageComposer
             return null;
         this.response.init(Outgoing.PetBreedsComposer);
         this.response.appendString(this.petName);
-        this.response.appendInt32(this.petRaces.size());
+        this.response.appendInt(this.petRaces.size());
         for(PetRace race : this.petRaces)
         {
-            this.response.appendInt32(race.race);
-            this.response.appendInt32(race.colorOne);
-            this.response.appendInt32(race.colorTwo);
+            this.response.appendInt(race.race);
+            this.response.appendInt(race.colorOne);
+            this.response.appendInt(race.colorTwo);
             this.response.appendBoolean(race.hasColorOne);
             this.response.appendBoolean(race.hasColorTwo);
         }

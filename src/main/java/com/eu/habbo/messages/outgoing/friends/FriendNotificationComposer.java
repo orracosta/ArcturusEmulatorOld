@@ -30,7 +30,7 @@ public class FriendNotificationComposer extends MessageComposer
     {
         this.response.init(Outgoing.FriendToolbarNotificationComposer);
         this.response.appendString(userId + "");
-        this.response.appendInt32(this.type);
+        this.response.appendInt(this.type);
         this.response.appendString(this.data);
         return this.response;
     }

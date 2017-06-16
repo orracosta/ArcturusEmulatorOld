@@ -25,21 +25,21 @@ public class FriendsComposer extends MessageComposer
         {
             this.response.init(Outgoing.FriendsComposer);
 
-            //this.response.appendInt32(300);
-            //this.response.appendInt32(300);
-            //this.response.appendInt32(3); //Club level
-            this.response.appendInt32(300);
-            this.response.appendInt32(300);
-            this.response.appendInt32(this.habbo.getMessenger().getFriends().size() + (this.habbo.hasPermission("acc_staff_chat") ? 1 : 0));
+            //this.response.appendInt(300);
+            //this.response.appendInt(300);
+            //this.response.appendInt(3); //Club level
+            this.response.appendInt(300);
+            this.response.appendInt(300);
+            this.response.appendInt(this.habbo.getMessenger().getFriends().size() + (this.habbo.hasPermission("acc_staff_chat") ? 1 : 0));
 
             for (Map.Entry<Integer, MessengerBuddy> row : this.habbo.getMessenger().getFriends().entrySet()) {
-                this.response.appendInt32(row.getKey());
+                this.response.appendInt(row.getKey());
                 this.response.appendString(row.getValue().getUsername());
-                this.response.appendInt32(row.getValue().getGender().equals("M") ? 0 : 1);
+                this.response.appendInt(row.getValue().getGender().equals("M") ? 0 : 1);
                 this.response.appendBoolean(row.getValue().getOnline() == 1);
                 this.response.appendBoolean(row.getValue().inRoom()); //IN ROOM
                 this.response.appendString(row.getValue().getLook());
-                this.response.appendInt32(0);
+                this.response.appendInt(0);
                 this.response.appendString(row.getValue().getMotto());
                 this.response.appendString("");
                 this.response.appendString("");
@@ -51,13 +51,13 @@ public class FriendsComposer extends MessageComposer
 
             if(habbo.hasPermission("acc_staff_chat"))
             {
-                this.response.appendInt32(-1);
+                this.response.appendInt(-1);
                 this.response.appendString("Staff Chat");
-                this.response.appendInt32(this.habbo.getHabboInfo().getGender().equals(HabboGender.M) ? 0 : 1);
+                this.response.appendInt(this.habbo.getHabboInfo().getGender().equals(HabboGender.M) ? 0 : 1);
                 this.response.appendBoolean(true);
                 this.response.appendBoolean(false); //IN ROOM
                 this.response.appendString("ADM");
-                this.response.appendInt32(0);
+                this.response.appendInt(0);
                 this.response.appendString("");
                 this.response.appendString("");
                 this.response.appendString("");

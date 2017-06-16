@@ -18,8 +18,8 @@ public class FreezeLivesComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.FreezeLivesComposer);
-        this.response.appendInt32(this.gamePlayer.getHabbo().getHabboInfo().getId());
-        this.response.appendInt32(this.gamePlayer.getLives());
+        this.response.appendInt(this.gamePlayer.getHabbo().getHabboInfo().getId());
+        this.response.appendInt(this.gamePlayer.getLives());
         return this.response;
     }
 }

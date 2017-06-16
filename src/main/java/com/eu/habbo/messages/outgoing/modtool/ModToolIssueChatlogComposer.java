@@ -1,6 +1,5 @@
 package com.eu.habbo.messages.outgoing.modtool;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.modtool.ModToolChatLog;
 import com.eu.habbo.habbohotel.modtool.ModToolChatRecordDataContext;
 import com.eu.habbo.habbohotel.modtool.ModToolIssue;
@@ -30,10 +29,10 @@ public class ModToolIssueChatlogComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.ModToolIssueChatlogComposer);
-        this.response.appendInt32(this.issue.id);
-        this.response.appendInt32(this.issue.senderId);
-        this.response.appendInt32(this.issue.reportedId);
-        this.response.appendInt32(this.issue.roomId);
+        this.response.appendInt(this.issue.id);
+        this.response.appendInt(this.issue.senderId);
+        this.response.appendInt(this.issue.reportedId);
+        this.response.appendInt(this.issue.roomId);
 
         Collections.sort(chatlog);
 
@@ -51,16 +50,16 @@ public class ModToolIssueChatlogComposer extends MessageComposer
         this.response.appendString(this.roomName); //Value
 
         ModToolChatRecordDataContext.ROOM_ID.append(this.response);
-        this.response.appendInt32(this.issue.roomId); //Value
+        this.response.appendInt(this.issue.roomId); //Value
 
         ModToolChatRecordDataContext.GROUP_ID.append(this.response);
-        this.response.appendInt32(12); //Value
+        this.response.appendInt(12); //Value
 
             this.response.appendShort(this.chatlog.size());
             for(ModToolChatLog chatLog : this.chatlog)
             {
                 this.response.appendString(format.format(chatLog.timestamp * 1000l));
-                this.response.appendInt32(chatLog.habboId);
+                this.response.appendInt(chatLog.habboId);
                 this.response.appendString(chatLog.username);
                 this.response.appendString(chatLog.message);
                 this.response.appendBoolean(false);

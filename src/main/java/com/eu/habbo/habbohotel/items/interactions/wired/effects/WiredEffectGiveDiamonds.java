@@ -39,15 +39,15 @@ public class WiredEffectGiveDiamonds extends InteractionWiredEffect
     public void serializeWiredData(ServerMessage message, Room room)
     {
         message.appendBoolean(false);
-        message.appendInt32(0);
-        message.appendInt32(0);
-        message.appendInt32(this.getBaseItem().getSpriteId());
-        message.appendInt32(this.getId());
+        message.appendInt(0);
+        message.appendInt(0);
+        message.appendInt(this.getBaseItem().getSpriteId());
+        message.appendInt(this.getId());
         message.appendString(this.points + (this.pointsType == -1 ? "" : ":" + this.pointsType));
-        message.appendInt32(0);
-        message.appendInt32(0);
-        message.appendInt32(type.code);
-        message.appendInt32(this.getDelay());
+        message.appendInt(0);
+        message.appendInt(0);
+        message.appendInt(type.code);
+        message.appendInt(this.getDelay());
 
         if (this.requiresTriggeringUser())
         {
@@ -64,15 +64,15 @@ public class WiredEffectGiveDiamonds extends InteractionWiredEffect
                     return true;
                 }
             });
-            message.appendInt32(invalidTriggers.size());
+            message.appendInt(invalidTriggers.size());
             for (Integer i : invalidTriggers)
             {
-                message.appendInt32(i);
+                message.appendInt(i);
             }
         }
         else
         {
-            message.appendInt32(0);
+            message.appendInt(0);
         }
     }
 

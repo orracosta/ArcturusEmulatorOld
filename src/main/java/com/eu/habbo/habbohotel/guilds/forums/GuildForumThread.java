@@ -260,7 +260,7 @@ public class GuildForumThread implements ISerialize, Runnable
 
         if (comments != null)
         {
-            message.appendInt32(comments.size());
+            message.appendInt(comments.size());
             for (GuildForumComment comment : comments)
             {
                 comment.serialize(message);
@@ -272,23 +272,23 @@ public class GuildForumThread implements ISerialize, Runnable
     public void serialize(ServerMessage message)
     {
         int nowTimestamp = Emulator.getIntUnixTimestamp();
-        message.appendInt32(this.threadId); //_local_2.threadId = k._SafeStr_5878();
-        message.appendInt32(this.authorId); //_local_2._SafeStr_11333 = k._SafeStr_5878(); = thread_author_id
+        message.appendInt(this.threadId); //_local_2.threadId = k._SafeStr_5878();
+        message.appendInt(this.authorId); //_local_2._SafeStr_11333 = k._SafeStr_5878(); = thread_author_id
         message.appendString(this.authorName); //_local_2._SafeStr_11334 = k.readString(); = thread_author_name
         message.appendString(this.subject); //_local_2.header = k.readString(); = look
         message.appendBoolean(this.pinned); //_local_2._SafeStr_11331 = k.readBoolean(); = pinned
         message.appendBoolean(this.locked); //_local_2._SafeStr_5801 = k.readBoolean(); = locked
-        message.appendInt32(nowTimestamp - this.timestamp); //_local_2._SafeStr_11164 = k._SafeStr_5878(); = creation_time
-        message.appendInt32(this.getCommentsSize()); //_local_2._SafeStr_11239 = k._SafeStr_5878(); = total_messages
-        message.appendInt32(0); //_local_2._SafeStr_11260 = k._SafeStr_5878(); = unread_messages(?)
-        message.appendInt32(1); //_local_2._SafeStr_11242 = k._SafeStr_5878(); = Something message count related.
-        message.appendInt32(this.lastAuthorId); //_local_2._SafeStr_11188 = k._SafeStr_5878(); = last_author_id
+        message.appendInt(nowTimestamp - this.timestamp); //_local_2._SafeStr_11164 = k._SafeStr_5878(); = creation_time
+        message.appendInt(this.getCommentsSize()); //_local_2._SafeStr_11239 = k._SafeStr_5878(); = total_messages
+        message.appendInt(0); //_local_2._SafeStr_11260 = k._SafeStr_5878(); = unread_messages(?)
+        message.appendInt(1); //_local_2._SafeStr_11242 = k._SafeStr_5878(); = Something message count related.
+        message.appendInt(this.lastAuthorId); //_local_2._SafeStr_11188 = k._SafeStr_5878(); = last_author_id
         message.appendString(this.lastAuthorName); //_local_2._SafeStr_11189 = k.readString(); = last_author_name
-        message.appendInt32(nowTimestamp - this.lastCommentTimestamp); //_local_2._SafeStr_11190 = k._SafeStr_5878(); = update_time, seconds ago
+        message.appendInt(nowTimestamp - this.lastCommentTimestamp); //_local_2._SafeStr_11190 = k._SafeStr_5878(); = update_time, seconds ago
         message.appendByte(this.state.state); //_local_2.state = k.readByte(); = state
-        message.appendInt32(this.adminId); //_local_2._SafeStr_19188 = k._SafeStr_5878(); = admin id
+        message.appendInt(this.adminId); //_local_2._SafeStr_19188 = k._SafeStr_5878(); = admin id
         message.appendString(this.adminName); //_local_2._SafeStr_11326 = k.readString(); = admin_name
-        message.appendInt32(this.threadId); //_local_2._SafeStr_19214 = k._SafeStr_5878(); //UNUSED?
+        message.appendInt(this.threadId); //_local_2._SafeStr_19214 = k._SafeStr_5878(); //UNUSED?
     }
 
 

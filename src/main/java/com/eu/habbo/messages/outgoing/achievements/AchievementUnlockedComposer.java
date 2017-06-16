@@ -24,15 +24,15 @@ public class AchievementUnlockedComposer extends MessageComposer
         this.response.init(Outgoing.AchievementUnlockedComposer);
 
         AchievementLevel level = this.achievement.getLevelForProgress(this.habbo.getHabboStats().getAchievementProgress(this.achievement));
-        this.response.appendInt32(this.achievement.id);
-        this.response.appendInt32(level.level);
-        this.response.appendInt32(144);
+        this.response.appendInt(this.achievement.id);
+        this.response.appendInt(level.level);
+        this.response.appendInt(144);
         this.response.appendString("ACH_" + this.achievement.name + level.level);
-        this.response.appendInt32(level.rewardAmount);
-        this.response.appendInt32(level.rewardType);
-        this.response.appendInt32(0);
-        this.response.appendInt32(10);
-        this.response.appendInt32(21);
+        this.response.appendInt(level.rewardAmount);
+        this.response.appendInt(level.rewardType);
+        this.response.appendInt(0);
+        this.response.appendInt(10);
+        this.response.appendInt(21);
         this.response.appendString(level.level > 1 ? "ACH_" + this.achievement.name + (level.level - 1) : "");
         this.response.appendString(this.achievement.category.name());
         this.response.appendBoolean(true);

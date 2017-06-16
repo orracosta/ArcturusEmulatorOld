@@ -18,7 +18,7 @@ public class AddBotComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.AddBotComposer);
-        this.response.appendInt32(this.bot.getId());
+        this.response.appendInt(this.bot.getId());
         this.response.appendString(this.bot.getName());
         this.response.appendString(this.bot.getMotto());
         this.response.appendString(this.bot.getGender().toString().toLowerCase().charAt(0) + "");

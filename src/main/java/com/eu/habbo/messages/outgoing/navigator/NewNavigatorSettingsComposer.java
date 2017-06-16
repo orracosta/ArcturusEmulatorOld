@@ -18,12 +18,12 @@ public class NewNavigatorSettingsComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.NewNavigatorSettingsComposer);
-        this.response.appendInt32(this.windowSettings.x);
-        this.response.appendInt32(this.windowSettings.y);
-        this.response.appendInt32(this.windowSettings.width);
-        this.response.appendInt32(this.windowSettings.height);
+        this.response.appendInt(this.windowSettings.x);
+        this.response.appendInt(this.windowSettings.y);
+        this.response.appendInt(this.windowSettings.width);
+        this.response.appendInt(this.windowSettings.height);
         this.response.appendBoolean(this.windowSettings.openSearches);
-        this.response.appendInt32(0);
+        this.response.appendInt(0);
         return this.response;
     }
 }

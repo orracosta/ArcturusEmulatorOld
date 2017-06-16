@@ -7,8 +7,6 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.set.hash.THashSet;
 
-import java.util.ArrayList;
-
 public class FloorPlanEditorBlockedTilesComposer extends MessageComposer
 {
     private final Room room;
@@ -25,11 +23,11 @@ public class FloorPlanEditorBlockedTilesComposer extends MessageComposer
 
         THashSet<RoomTile> tileList = this.room.getLockedTiles();
 
-        this.response.appendInt32(tileList.size());
+        this.response.appendInt(tileList.size());
         for(RoomTile node : tileList)
         {
-            this.response.appendInt32((int) node.x);
-            this.response.appendInt32((int) node.y);
+            this.response.appendInt((int) node.x);
+            this.response.appendInt((int) node.y);
         }
 
         return this.response;
