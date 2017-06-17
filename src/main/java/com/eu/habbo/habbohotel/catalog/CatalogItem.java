@@ -410,7 +410,7 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
 
         for(Item item : items)
         {
-            message.appendString(item.getType().code);
+            message.appendString(item.getType().code.toLowerCase());
 
             if(item.getType() == FurnitureType.BADGE)
             {

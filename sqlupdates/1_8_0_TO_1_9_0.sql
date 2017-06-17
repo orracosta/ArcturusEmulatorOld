@@ -13,9 +13,16 @@ INSERT INTO `emulator_texts` (`key`, `value`) VALUES
 
 CREATE TABLE `users_effects` (
     `user_id` INT NOT NULL,
-    `effect` SMALLINT(5) NOT NULL,
+    `effect` INT(5) NOT NULL,
     `duration` INT NOT NULL DEFAULT '86400',
     `activation_timestamp` INT NOT NULL DEFAULT '-1',
-    `total` TINYINT(2) NOT NULL DEFAULT '1',
+    `total` INT(2) NOT NULL DEFAULT '1',
     UNIQUE(user_id, effect)
 ) ENGINE = MyISAM;
+
+ALTER TABLE  `users_settings` CHANGE  `talent_track_citizenship_level`  `talent_track_citizenship_level` INT( 2 ) NOT NULL DEFAULT  '-1',
+CHANGE  `talent_track_helpers_level`  `talent_track_helpers_level` INT( 2 ) NOT NULL DEFAULT  '-1';
+UPDATE users_settings SET talent_track_citizenship_level = -1;
+UPDATE users_settings SET talent_track_helpers_level = -1;
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.room.tags.staff', 'staff;official;habbo');
+ALTER TABLE  `permissions` ADD  `acc_room_staff_tags` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0';

@@ -1,6 +1,7 @@
 package com.eu.habbo.networking.gameserver;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.core.Logging;
 import com.eu.habbo.threading.runnables.ChannelReadHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
@@ -57,7 +58,7 @@ public class GameMessageHandler extends ChannelInboundHandlerAdapter
         {
             if (!(cause instanceof IOException))
             {
-                Emulator.getLogging().logErrorLine(cause);
+                cause.printStackTrace(Logging.getErrorsRuntimeWriter());
             }
         }
 

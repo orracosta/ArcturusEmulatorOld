@@ -22,13 +22,73 @@ public class RoomSettingsSaveEvent extends MessageHandler
         {
             if(room.isOwner(this.client.getHabbo()))
             {
-                room.setName(this.packet.readString());
-                room.setDescription(this.packet.readString());
-                room.setState(RoomState.values()[this.packet.readInt() % RoomState.values().length]);
-                room.setPassword(this.packet.readString());
-                room.setUsersMax(this.packet.readInt());
+                String name = this.packet.readString();
 
+                if (name.isEmpty())
+                {
+                    this.client.sendResponse(new RoomEditSettingsErrorComposer(room.getId(), RoomEditSettingsErrorComposer.ROOM_NAME_MISSING, ""));
+                    return;
+                }
+
+                if (Emulator.getGameEnvironment().getWordFilter().hideMessageCheck(name))
+                {
+                    this.client.sendResponse(new RoomEditSettingsErrorComposer(room.getId(), RoomEditSettingsErrorComposer.ROOM_NAME_BADWORDS, ""));
+                    return;
+                }
+
+                String description = this.packet.readString();
+                if (Emulator.getGameEnvironment().getWordFilter().hideMessageCheck(description))
+                {
+                    this.client.sendResponse(new RoomEditSettingsErrorComposer(room.getId(), RoomEditSettingsErrorComposer.ROOM_DESCRIPTION_BADWORDS, ""));
+                    return;
+                }
+
+                RoomState state = RoomState.values()[this.packet.readInt() % RoomState.values().length];
+
+                String password = this.packet.readString();
+                if (state == RoomState.PASSWORD && password.isEmpty())
+                {
+                    this.client.sendResponse(new RoomEditSettingsErrorComposer(room.getId(), RoomEditSettingsErrorComposer.PASSWORD_REQUIRED, ""));
+                    return;
+                }
+
+                int usersMax = this.packet.readInt();
                 int categoryId = this.packet.readInt();
+                String tags = "";
+                int count = Math.min(this.packet.readInt(), 2);
+                for(int i = 0; i < count; i++)
+                {
+                    String tag = this.packet.readString();
+
+                    if (tag.length() > 15)
+                    {
+                        this.client.sendResponse(new RoomEditSettingsErrorComposer(room.getId(), RoomEditSettingsErrorComposer.TAGS_TOO_LONG, ""));
+                        return;
+                    }
+                    tags += tag + ";";
+                }
+
+                if (Emulator.getGameEnvironment().getWordFilter().hideMessageCheck(tags))
+                {
+                    this.client.sendResponse(new RoomEditSettingsErrorComposer(room.getId(), RoomEditSettingsErrorComposer.ROOM_TAGS_BADWWORDS, ""));
+                    return;
+                }
+
+                for (String s : Emulator.getConfig().getValue("hotel.room.tags.staff").split(";"))
+                {
+                    if (tags.contains(s))
+                    {
+                        this.client.sendResponse(new RoomEditSettingsErrorComposer(room.getId(), RoomEditSettingsErrorComposer.RESTRICTED_TAGS, ""));
+                        return;
+                    }
+                }
+
+                room.setName(name);
+                room.setDescription(description);
+                room.setState(state);
+                room.setPassword(password);
+                room.setUsersMax(usersMax);
+
 
                 if(Emulator.getGameEnvironment().getRoomManager().hasCategory(categoryId, this.client.getHabbo()))
                     room.setCategory(categoryId);
@@ -51,12 +111,6 @@ public class RoomSettingsSaveEvent extends MessageHandler
                     Emulator.getLogging().logUserLine(message);
                 }
 
-                String tags = "";
-                int count = this.packet.readInt();
-                for(int i = 0; i < count; i++)
-                {
-                    tags += this.packet.readString() + ";";
-                }
 
                 room.setTags(tags);
                 room.setTradeMode(this.packet.readInt());

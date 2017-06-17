@@ -7,7 +7,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class MeMenuSettingsComposer extends MessageComposer
 {
-
     private Habbo habbo;
 
     public MeMenuSettingsComposer(Habbo habbo)

@@ -45,14 +45,13 @@ public class TalentTrackLevel
 
     public TalentTrackLevel(ResultSet set) throws SQLException
     {
-        this.type = TalentTrackType.valueOf(set.getString("type").toUpperCase());
-        this.level = set.getInt("level");
+        this.type         = TalentTrackType.valueOf(set.getString("type").toUpperCase());
+        this.level        = set.getInt("level");
         this.achievements = new TObjectIntHashMap<Achievement>();
-        this.items = new THashSet<Item>();
+        this.items        = new THashSet<Item>();
 
-        String[] achievements = set.getString("achievement_ids").split(",");
+        String[] achievements      = set.getString("achievement_ids").split(",");
         String[] achievementLevels = set.getString("achievement_levels").split(",");
-
         if (achievementLevels.length == achievements.length)
         {
             for (int i = 0; i < achievements.length; i++)
@@ -87,7 +86,7 @@ public class TalentTrackLevel
             }
         }
 
-        this.perks = set.getString("reward_perks").split(",");
+        this.perks  = set.getString("reward_perks").split(",");
         this.badges = set.getString("reward_badges").split(",");
     }
 }

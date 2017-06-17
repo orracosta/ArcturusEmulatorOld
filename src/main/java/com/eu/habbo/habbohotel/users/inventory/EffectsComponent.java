@@ -48,15 +48,19 @@ public class EffectsComponent
             if (this.effects.containsKey(effectId))
             {
                 effect = this.effects.get(effectId);
-                effect.total++;
+
+                if (effect.total <= 99)
+                {
+                    effect.total++;
+                }
             }
             else
             {
                 effect = new HabboEffect(effectId, this.habbo.getHabboInfo().getId());
                 effect.insert();
-
-                this.addEffect(effect);
             }
+
+            this.addEffect(effect);
         }
 
         return effect;
@@ -217,8 +221,9 @@ public class EffectsComponent
             {
                 statement.setInt(1, this.userId);
                 statement.setInt(2, this.effect);
-                statement.setInt(3, this.duration);
-                statement.setInt(4, this.total);
+                statement.setInt(3, this.total);
+                statement.setInt(4, this.duration);
+                statement.execute();
             }
             catch (SQLException e)
             {

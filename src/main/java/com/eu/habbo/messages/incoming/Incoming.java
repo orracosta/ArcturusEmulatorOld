@@ -4,6 +4,7 @@ public class Incoming
 {
     public static final int ActivateEffectEvent = 2959;
     public static final int EnableEffectEvent = 1752;
+    public static final int UserActivityEvent = 3457;
     public static final int FootballGateSaveLookEvent = 924; // PRODUCTION-201611291003-338511768
     public static final int MannequinSaveLookEvent = 2209; // PRODUCTION-201611291003-338511768
     public static final int RequestCatalogPageEvent = 412; //PRODUCTION-201611291003-338511768

@@ -2,13 +2,13 @@ package com.eu.habbo.habbohotel.items;
 
 public enum FurnitureType
 {
-    FLOOR("s"),
-    WALL("i"),
-    EFFECT("e"),
-    BADGE("b"),
-    ROBOT("r"),
-    HABBO_CLUB("h"),
-    PET("p");
+    FLOOR("S"),
+    WALL("I"),
+    EFFECT("E"),
+    BADGE("B"),
+    ROBOT("R"),
+    HABBO_CLUB("H"),
+    PET("P");
 
     public final String code;
 
@@ -19,21 +19,21 @@ public enum FurnitureType
 
     public static FurnitureType fromString(String code)
     {
-        switch (code.toLowerCase())
+        switch (code.toUpperCase())
         {
-            case "s":
+            case "S":
                 return FLOOR;
-            case "i":
+            case "I":
                 return WALL;
-            case "e":
+            case "E":
                 return EFFECT;
-            case "b":
+            case "B":
                 return BADGE;
-            case "r":
+            case "R":
                 return ROBOT;
-            case "h":
+            case "H":
                 return HABBO_CLUB;
-            case "p":
+            case "P":
                 return PET;
             default:
                 return FLOOR;

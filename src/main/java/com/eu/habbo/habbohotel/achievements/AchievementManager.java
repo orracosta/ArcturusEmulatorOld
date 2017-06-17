@@ -1,10 +1,14 @@
 package com.eu.habbo.habbohotel.achievements;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboBadge;
+import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.achievements.AchievementProgressComposer;
 import com.eu.habbo.messages.outgoing.achievements.AchievementUnlockedComposer;
+import com.eu.habbo.messages.outgoing.achievements.talenttrack.TalentLevelUpdateComposer;
+import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDataComposer;
 import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
 import com.eu.habbo.messages.outgoing.users.UserBadgesComposer;
@@ -12,6 +16,7 @@ import com.eu.habbo.plugin.Event;
 import com.eu.habbo.plugin.events.users.achievements.UserAchievementLeveledEvent;
 import com.eu.habbo.plugin.events.users.achievements.UserAchievementProgressEvent;
 import gnu.trove.map.hash.THashMap;
+import gnu.trove.procedure.TObjectIntProcedure;
 
 import java.sql.*;
 import java.util.LinkedHashMap;
@@ -33,8 +38,8 @@ public class AchievementManager
      */
     public AchievementManager()
     {
-        this.achievements = new THashMap<String, Achievement>();
-        this.talentTrackLevels = new THashMap<TalentTrackType, LinkedHashMap<Integer, TalentTrackLevel>>();
+        this.achievements = new THashMap<>();
+        this.talentTrackLevels = new THashMap<>();
     }
 
     /**
@@ -222,47 +227,35 @@ public class AchievementManager
                 return;
         }
 
-        int currentLevelId = 0;
-        int nextLevelId = 0;
+        AchievementLevel oldLevel = achievement.getLevelForProgress(currentProgress);
 
-        AchievementLevel currentLevel = achievement.getLevelForProgress(currentProgress);
+        if(oldLevel == null)
+            return;
 
-        if(currentLevel != null)
-        {
-            currentLevelId = currentLevel.level;
-
-            if(currentLevel.level == achievement.levels.size() && currentProgress >= currentLevel.progress) //Maximum achievement gotten.
-                return;
-        }
-
-        AchievementLevel nextLevel = achievement.getLevelForProgress(currentProgress + amount);
-
-        if(nextLevel != null)
-        {
-            nextLevelId = nextLevel.level;
-        }
+        if(oldLevel.level == achievement.levels.size() && currentProgress == oldLevel.progress) //Maximum achievement gotten.
+            return;
 
         habbo.getHabboStats().setProgress(achievement, currentProgress + amount);
-        habbo.getClient().sendResponse(new AchievementProgressComposer(habbo, achievement));
 
-        // If we are on the same level
-        if(currentLevelId != nextLevelId)
+        AchievementLevel newLevel = achievement.getLevelForProgress(currentProgress + amount);
+
+        if(oldLevel.level == newLevel.level && newLevel.level < achievement.levels.size())
+        {
+            habbo.getClient().sendResponse(new AchievementProgressComposer(habbo, achievement));
+        }
+        else
         {
             if(Emulator.getPluginManager().isRegistered(UserAchievementLeveledEvent.class, true))
             {
-                Event userAchievementLeveledEvent = new UserAchievementLeveledEvent(habbo, achievement, currentLevel, nextLevel);
+                Event userAchievementLeveledEvent = new UserAchievementLeveledEvent(habbo, achievement, oldLevel, newLevel);
                 Emulator.getPluginManager().fireEvent(userAchievementLeveledEvent);
 
                 if(userAchievementLeveledEvent.isCancelled())
                     return;
             }
 
+            habbo.getClient().sendResponse(new AchievementProgressComposer(habbo, achievement));
             habbo.getClient().sendResponse(new AchievementUnlockedComposer(habbo, achievement));
-
-            if(nextLevel.rewardType >= 0 && nextLevel.rewardAmount > 0)
-            {
-                habbo.givePoints(nextLevel.rewardType, nextLevel.rewardAmount);
-            }
 
             //Exception could possibly arise when the user disconnects while being in tour.
             //The achievement is then progressed but the user is already disposed so fetching
@@ -270,7 +263,7 @@ public class AchievementManager
             HabboBadge badge = null;
             try
             {
-                badge = habbo.getInventory().getBadgesComponent().getBadge(("ACH_" + achievement.name + currentLevelId).toLowerCase());
+                badge = habbo.getInventory().getBadgesComponent().getBadge(("ACH_" + achievement.name + oldLevel.level).toLowerCase());
             }
             catch (Exception e)
             {
@@ -279,13 +272,12 @@ public class AchievementManager
 
             if (badge != null)
             {
-                badge.setCode("ACH_" + achievement.name + nextLevelId);
+                badge.setCode("ACH_" + achievement.name + newLevel.level);
                 badge.needsInsert(false);
                 badge.needsUpdate(true);
-            }
-            else
+            } else
             {
-                badge = new HabboBadge(0, "ACH_" + achievement.name + nextLevelId, 0, habbo);
+                badge = new HabboBadge(0, "ACH_" + achievement.name + newLevel.level, 0, habbo);
                 habbo.getClient().sendResponse(new AddUserBadgeComposer(badge));
                 badge.needsInsert(true);
                 badge.needsUpdate(true);
@@ -302,11 +294,25 @@ public class AchievementManager
                 }
             }
 
-            habbo.getHabboStats().addAchievementScore(nextLevel.points);
+            habbo.getHabboStats().addAchievementScore(newLevel.points);
 
             if (habbo.getHabboInfo().getCurrentRoom() != null)
             {
                 habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserDataComposer(habbo).compose());
+            }
+
+            for (TalentTrackType type : TalentTrackType.values())
+            {
+                if (Emulator.getGameEnvironment().getAchievementManager().talentTrackLevels.containsKey(type))
+                {
+                    for (Map.Entry<Integer, TalentTrackLevel> entry : Emulator.getGameEnvironment().getAchievementManager().talentTrackLevels.get(type).entrySet())
+                    {
+                        if (entry.getValue().achievements.containsKey(achievement))
+                        {
+                            Emulator.getGameEnvironment().getAchievementManager().handleTalentTrackAchievement(habbo, type, achievement);
+                        }
+                    }
+                }
             }
         }
     }
@@ -387,5 +393,86 @@ public class AchievementManager
     public LinkedHashMap<Integer, TalentTrackLevel> getTalenTrackLevels(TalentTrackType type)
     {
         return this.talentTrackLevels.get(type);
+    }
+
+    public TalentTrackLevel calculateTalenTrackLevel(Habbo habbo, TalentTrackType type)
+    {
+        TalentTrackLevel level = null;
+
+        for (Map.Entry<Integer, TalentTrackLevel> entry : this.talentTrackLevels.get(type).entrySet())
+        {
+            final boolean[] allCompleted = {true};
+            entry.getValue().achievements.forEachEntry(new TObjectIntProcedure<Achievement>()
+            {
+                @Override
+                public boolean execute(Achievement a, int b)
+                {
+                    if (habbo.getHabboStats().getAchievementProgress(a) < b)
+                    {
+                        allCompleted[0] = false;
+                    }
+
+                    return allCompleted[0];
+                }
+            });
+
+            if (allCompleted[0])
+            {
+                if (level == null || level.level < entry.getValue().level)
+                {
+                    level = entry.getValue();
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return level;
+    }
+
+    public void handleTalentTrackAchievement(Habbo habbo, TalentTrackType type, Achievement achievement)
+    {
+        TalentTrackLevel currentLevel = this.calculateTalenTrackLevel(habbo, type);
+
+        if (currentLevel.level > habbo.getHabboStats().talentTrackLevel(type))
+        {
+            for (int i = habbo.getHabboStats().talentTrackLevel(type); i <= currentLevel.level; i++)
+            {
+                TalentTrackLevel level = this.getTalentTrackLevel(type, i);
+
+                if (level != null)
+                {
+                    for (Item item : level.items)
+                    {
+                        HabboItem rewardItem = Emulator.getGameEnvironment().getItemManager().createItem(habbo.getHabboInfo().getId(), item, 0, 0, "");
+                        habbo.getInventory().getItemsComponent().addItem(rewardItem);
+                        habbo.getClient().sendResponse(new AddHabboItemComposer(rewardItem));
+                    }
+
+                    for (String badge : level.badges)
+                    {
+                        if (!badge.isEmpty())
+                        {
+                            HabboBadge b = new HabboBadge(0, badge, 0, habbo);
+                            Emulator.getThreading().run(b);
+                            habbo.getInventory().getBadgesComponent().addBadge(b);
+                            habbo.getClient().sendResponse(new AddUserBadgeComposer(b));
+                        }
+                    }
+
+                    habbo.getClient().sendResponse(new TalentLevelUpdateComposer(type, level));
+                }
+            }
+        }
+
+
+        habbo.getHabboStats().setTalentLevel(type, currentLevel.level);
+    }
+
+    public TalentTrackLevel getTalentTrackLevel(TalentTrackType type, int level)
+    {
+        return this.talentTrackLevels.get(type).get(level);
     }
 }

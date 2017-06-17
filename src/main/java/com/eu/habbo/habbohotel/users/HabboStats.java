@@ -68,8 +68,8 @@ public class HabboStats implements Runnable
     public final TIntArrayList ignoredUsers;
     public final TIntArrayList secretRecipes;
 
-    public int citizenshipLevel;
-    public int helpersLevel;
+    public int citizenshipLevel = -1;
+    public int helpersLevel = -1;
 
     public final HabboNavigatorWindowSettings navigatorWindowSettings;
     public final THashMap<String, Object> cache;

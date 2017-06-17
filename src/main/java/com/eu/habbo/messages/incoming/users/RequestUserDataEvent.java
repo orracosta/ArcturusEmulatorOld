@@ -96,6 +96,8 @@ public class RequestUserDataEvent extends MessageHandler
             else if (Emulator.getConfig().getInt("hotel.home.room") > 0)
                 messages.add(new ForwardToRoomComposer(Emulator.getConfig().getInt("hotel.home.room")).compose());
 
+            messages.add(new MeMenuSettingsComposer(this.client.getHabbo()).compose());
+
 //            messages.add(new UserPerksComposer().compose());
 //            messages.add(new ForwardToRoomComposer(0).compose());
 //            if(this.client.getHabbo().hasPermission("acc_supporttool"))

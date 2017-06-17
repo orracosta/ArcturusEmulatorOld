@@ -261,6 +261,7 @@ public class PacketManager
         this.registerHandler(Incoming.SavePreferOldChatEvent,                   SavePreferOldChatEvent.class);
         this.registerHandler(Incoming.ActivateEffectEvent,                      ActivateEffectEvent.class);
         this.registerHandler(Incoming.EnableEffectEvent,                        EnableEffectEvent.class);
+        this.registerHandler(Incoming.UserActivityEvent,                        UserActivityEvent.class);
     }
 
     private void registerNavigator() throws Exception

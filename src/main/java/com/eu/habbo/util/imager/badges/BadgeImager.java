@@ -94,7 +94,7 @@ public class BadgeImager
         {
             outputFile = new File(Emulator.getConfig().getValue("imager.location.output.badges"), badge + ".png");
 
-            if (outputFile.exists())
+            if (outputFile == null || outputFile.exists())
                 return;
         }
         catch (Exception e)

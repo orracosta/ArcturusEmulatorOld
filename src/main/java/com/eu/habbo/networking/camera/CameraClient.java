@@ -73,8 +73,15 @@ public class CameraClient
     {
         if (channelFuture != null)
         {
-            channelFuture.channel().close();
-            channelFuture = null;
+            try
+            {
+                channelFuture.channel().close().sync();
+                channelFuture = null;
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
 
         channel = null;

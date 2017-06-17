@@ -1,16 +1,12 @@
-package com.eu.habbo.messages.outgoing.helper;
+package com.eu.habbo.messages.outgoing.achievements.talenttrack;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.*;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.habbohotel.users.HabboBadge;
-import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
-import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
-import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
 import gnu.trove.procedure.TObjectIntProcedure;
 
 import java.util.LinkedHashMap;
@@ -49,11 +45,9 @@ public class TalentTrackComposer extends MessageComposer
         this.response.appendString(this.type.name().toLowerCase());
 
         LinkedHashMap<Integer, TalentTrackLevel> talentTrackLevels = Emulator.getGameEnvironment().getAchievementManager().getTalenTrackLevels(this.type);
-
         if (talentTrackLevels != null)
         {
             this.response.appendInt(talentTrackLevels.size()); //Count
-
             final boolean[] allCompleted = {true};
             for (Map.Entry<Integer, TalentTrackLevel> set : talentTrackLevels.entrySet())
             {
@@ -67,11 +61,11 @@ public class TalentTrackComposer extends MessageComposer
 
                     int currentLevel = habbo.getHabboStats().talentTrackLevel(this.type);
 
-                    if (currentLevel == level.level)
+                    if (currentLevel + 1 == level.level)
                     {
                         state = TalentTrackState.IN_PROGRESS;
                     }
-                    else if (currentLevel > level.level)
+                    else if (currentLevel >= level.level)
                     {
                         state = TalentTrackState.COMPLETED;
                     }
@@ -79,6 +73,7 @@ public class TalentTrackComposer extends MessageComposer
                     this.response.appendInt(state.id);
                     this.response.appendInt(level.achievements.size());
 
+                    final TalentTrackState finalState = state;
                     level.achievements.forEachEntry(new TObjectIntProcedure<Achievement>()
                     {
                         @Override
@@ -95,7 +90,7 @@ public class TalentTrackComposer extends MessageComposer
                                 int progress = habbo.getHabboStats().getAchievementProgress(achievement);
                                 AchievementLevel achievementLevel = achievement.getLevelForProgress(progress);
 
-                                if (progress > 0)
+                                if (finalState != TalentTrackState.LOCKED)
                                 {
                                     if (achievementLevel.progress <= progress)
                                     {
@@ -129,7 +124,6 @@ public class TalentTrackComposer extends MessageComposer
                         }
                     });
 
-                    boolean giveRewards = allCompleted[0] && currentLevel < level.level && currentLevel >= 0;
 
                     this.response.appendInt(level.perks.length);
                     for (String perk : level.perks)
@@ -140,31 +134,9 @@ public class TalentTrackComposer extends MessageComposer
                     this.response.appendInt(level.items.size());
                     for (Item item : level.items)
                     {
-                        if (giveRewards)
-                        {
-                            HabboItem rewardItem = Emulator.getGameEnvironment().getItemManager().createItem(this.habbo.getHabboInfo().getId(), item, 0, 0, "");
-                            this.habbo.getInventory().getItemsComponent().addItem(rewardItem);
-                            this.habbo.getClient().sendResponse(new AddHabboItemComposer(rewardItem));
-                        }
                         this.response.appendString(item.getName());
                         this.response.appendInt(0);
                     }
-
-                    if (giveRewards)
-                    {
-                        for (String badge : level.badges)
-                        {
-                            if (!badge.isEmpty())
-                            {
-                                HabboBadge b = new HabboBadge(0, badge, 0, habbo);
-                                Emulator.getThreading().run(b);
-                                this.habbo.getInventory().getBadgesComponent().addBadge(b);
-                                this.habbo.getClient().sendResponse(new AddUserBadgeComposer(b));
-                            }
-                        }
-                    }
-
-                    habbo.getHabboStats().setTalentLevel(type, level.level);
                 }
                 catch (NoSuchElementException e)
                 {
