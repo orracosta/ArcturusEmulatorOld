@@ -30,14 +30,14 @@ public class RoomSettingsSaveEvent extends MessageHandler
                     return;
                 }
 
-                if (Emulator.getGameEnvironment().getWordFilter().hideMessageCheck(name))
+                if (!Emulator.getGameEnvironment().getWordFilter().filter(name, this.client.getHabbo()).equals(name))
                 {
                     this.client.sendResponse(new RoomEditSettingsErrorComposer(room.getId(), RoomEditSettingsErrorComposer.ROOM_NAME_BADWORDS, ""));
                     return;
                 }
 
                 String description = this.packet.readString();
-                if (Emulator.getGameEnvironment().getWordFilter().hideMessageCheck(description))
+                if (!Emulator.getGameEnvironment().getWordFilter().filter(description, this.client.getHabbo()).equals(description))
                 {
                     this.client.sendResponse(new RoomEditSettingsErrorComposer(room.getId(), RoomEditSettingsErrorComposer.ROOM_DESCRIPTION_BADWORDS, ""));
                     return;
@@ -68,18 +68,22 @@ public class RoomSettingsSaveEvent extends MessageHandler
                     tags += tag + ";";
                 }
 
-                if (Emulator.getGameEnvironment().getWordFilter().hideMessageCheck(tags))
+                if (!Emulator.getGameEnvironment().getWordFilter().filter(tags, this.client.getHabbo()).equals(tags))
                 {
                     this.client.sendResponse(new RoomEditSettingsErrorComposer(room.getId(), RoomEditSettingsErrorComposer.ROOM_TAGS_BADWWORDS, ""));
                     return;
                 }
 
-                for (String s : Emulator.getConfig().getValue("hotel.room.tags.staff").split(";"))
+
+                if (!tags.isEmpty())
                 {
-                    if (tags.contains(s))
+                    for (String s : Emulator.getConfig().getValue("hotel.room.tags.staff").split(";"))
                     {
-                        this.client.sendResponse(new RoomEditSettingsErrorComposer(room.getId(), RoomEditSettingsErrorComposer.RESTRICTED_TAGS, ""));
-                        return;
+                        if (tags.contains(s))
+                        {
+                            this.client.sendResponse(new RoomEditSettingsErrorComposer(room.getId(), RoomEditSettingsErrorComposer.RESTRICTED_TAGS, "1"));
+                            return;
+                        }
                     }
                 }
 
