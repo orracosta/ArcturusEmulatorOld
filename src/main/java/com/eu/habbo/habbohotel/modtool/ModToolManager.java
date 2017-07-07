@@ -127,7 +127,8 @@ public class ModToolManager
                 "support_cfh_topics.category_id, " +
                 "support_cfh_topics.name_internal, " +
                 "support_cfh_topics.action, " +
-                "support_cfh_topics.auto_reply, " +
+                "support_cfh_topics.auto_reply," +
+                "support_cfh_topics.ignore_target, " +
                 "support_cfh_categories.name_internal AS category_name_internal, " +
                 "support_cfh_categories.id AS support_cfh_category_id " +
                 "FROM support_cfh_topics " +

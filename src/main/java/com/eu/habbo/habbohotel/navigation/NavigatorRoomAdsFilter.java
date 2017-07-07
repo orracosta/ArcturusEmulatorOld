@@ -18,8 +18,9 @@ public class NavigatorRoomAdsFilter extends NavigatorFilter
     @Override
     public List<SearchResultList> getResult(Habbo habbo)
     {
+        boolean showInvisible = habbo.hasPermission("acc_enter_anyroom") || habbo.hasPermission("acc_anyroomowner");
         List<SearchResultList> resultList = new ArrayList<SearchResultList>();
-        resultList.add(new SearchResultList(0, "categories", "", SearchAction.NONE, SearchMode.LIST, false, Emulator.getGameEnvironment().getRoomManager().getRoomsPromoted(), false, false));
+        resultList.add(new SearchResultList(0, "categories", "", SearchAction.NONE, SearchMode.LIST, false, Emulator.getGameEnvironment().getRoomManager().getRoomsPromoted(), false, showInvisible));
         return resultList;
     }
 }

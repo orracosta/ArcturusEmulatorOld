@@ -284,6 +284,14 @@ public class GuideManager
     }
 
     /**
+     * @return true if there are guardians on duty.
+     */
+    public boolean activeGuardians()
+    {
+        return this.activeGuardians.size() > 0;
+    }
+
+    /**
      * @return The average waiting time before an helper is assinged.
      */
     public int getAverageWaitingTime()

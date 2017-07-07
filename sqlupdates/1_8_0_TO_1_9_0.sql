@@ -44,3 +44,5 @@ INSERT INTO `catalog_club_offers` (`id`, `enabled`, `name`, `days`, `credits`, `
     (NULL, '1', 'HABBO_CLUB_1_MONTH', '31', '20', '0', '0', 'VIP', '0');
 
 UPDATE catalog_pages SET page_layout = 'vip_buy' WHERE page_layout = 'club_buy';
+
+ALTER TABLE  `support_cfh_topics` ADD  `ignore_target` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `action`;

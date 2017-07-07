@@ -323,7 +323,7 @@ public class RoomLayout
         {
             Emulator.getLogging().logErrorLine(e);
         }
-        return null;
+        return new LinkedList<>();
     }
 
     private RoomTile findTile(List<RoomTile> tiles, short x, short y)

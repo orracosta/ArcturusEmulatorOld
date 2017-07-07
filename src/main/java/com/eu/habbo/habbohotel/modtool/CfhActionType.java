@@ -4,7 +4,8 @@ public enum CfhActionType
 {
     MODS(0),
     AUTO_REPLY(1),
-    AUTO_IGNORE(2);
+    AUTO_IGNORE(2),
+    GUARDIANS(3);
 
     public final int type;
 
@@ -16,16 +17,7 @@ public enum CfhActionType
     @Override
     public String toString()
     {
-        switch(this)
-        {
-            case AUTO_REPLY:
-                return "auto_reply";
-
-            case AUTO_IGNORE:
-                return "auto_ignore";
-        }
-
-        return "mods";
+        return this.name().toLowerCase();
     }
 
     public static CfhActionType get(String name)
@@ -37,6 +29,9 @@ public enum CfhActionType
 
             case "auto_ignore":
                 return CfhActionType.AUTO_IGNORE;
+
+            case "guardians":
+                return CfhActionType.GUARDIANS;
         }
 
         return CfhActionType.MODS;

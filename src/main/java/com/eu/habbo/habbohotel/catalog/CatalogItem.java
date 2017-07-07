@@ -232,7 +232,14 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
      */
     public int getLimitedSells()
     {
-        return this.limitedStack - Emulator.getGameEnvironment().getCatalogManager().getLimitedConfig(this).available();
+        CatalogLimitedConfiguration ltdConfig = Emulator.getGameEnvironment().getCatalogManager().getLimitedConfig(this);
+
+        if (ltdConfig != null)
+        {
+            return this.limitedStack - ltdConfig.available();
+        }
+
+        return this.limitedStack;
     }
 
     /**

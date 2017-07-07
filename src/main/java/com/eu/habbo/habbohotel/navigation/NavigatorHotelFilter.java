@@ -21,9 +21,10 @@ public class NavigatorHotelFilter extends NavigatorFilter
     @Override
     public List<SearchResultList> getResult(Habbo habbo)
     {
+        boolean showInvisible = habbo.hasPermission("acc_enter_anyroom") || habbo.hasPermission("acc_anyroomowner");
         List<SearchResultList> resultLists = new ArrayList<SearchResultList>();
         int i = 0;
-        resultLists.add(new SearchResultList(i, "popular", "", SearchAction.NONE, SearchMode.fromType(Emulator.getConfig().getInt("hotel.navigator.popular.listtype")), false, Emulator.getGameEnvironment().getRoomManager().getPopularRooms(Emulator.getConfig().getInt("hotel.navigator.popular.amount")), false, false));
+        resultLists.add(new SearchResultList(i, "popular", "", SearchAction.NONE, SearchMode.fromType(Emulator.getConfig().getInt("hotel.navigator.popular.listtype")), false, Emulator.getGameEnvironment().getRoomManager().getPopularRooms(Emulator.getConfig().getInt("hotel.navigator.popular.amount")), false, showInvisible));
         i++;
 
         for (Map.Entry<Integer, List<Room>> set : Emulator.getGameEnvironment().getRoomManager().getPopularRoomsByCategory(Emulator.getConfig().getInt("hotel.navigator.search.maxresults")).entrySet())
@@ -31,7 +32,7 @@ public class NavigatorHotelFilter extends NavigatorFilter
             if (!set.getValue().isEmpty())
             {
                 RoomCategory category = Emulator.getGameEnvironment().getRoomManager().getCategory(set.getKey());
-                resultLists.add(new SearchResultList(i, category.getCaption(), category.getCaption(), SearchAction.MORE, category.getDisplayMode(), false, set.getValue(), true, false));
+                resultLists.add(new SearchResultList(i, category.getCaption(), category.getCaption(), SearchAction.MORE, category.getDisplayMode(), false, set.getValue(), true, showInvisible));
                 i++;
             }
         }
@@ -42,6 +43,7 @@ public class NavigatorHotelFilter extends NavigatorFilter
     @Override
     public List<SearchResultList> getResult(Habbo habbo, NavigatorFilterField filterField, String value)
     {
+        boolean showInvisible = habbo.hasPermission("acc_enter_anyroom") || habbo.hasPermission("acc_anyroomowner");
         if (!filterField.databaseQuery.isEmpty())
         {
             List<SearchResultList> resultLists = new ArrayList<SearchResultList>();
@@ -52,7 +54,7 @@ public class NavigatorHotelFilter extends NavigatorFilter
                 if (!set.getValue().isEmpty())
                 {
                     RoomCategory category = Emulator.getGameEnvironment().getRoomManager().getCategory(set.getKey());
-                    resultLists.add(new SearchResultList(i, category.getCaption(), category.getCaption(), SearchAction.MORE, category.getDisplayMode(), false, set.getValue(), true, false));
+                    resultLists.add(new SearchResultList(i, category.getCaption(), category.getCaption(), SearchAction.MORE, category.getDisplayMode(), false, set.getValue(), true, showInvisible));
                     i++;
                 }
             }

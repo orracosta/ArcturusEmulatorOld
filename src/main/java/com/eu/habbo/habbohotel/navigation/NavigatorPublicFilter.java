@@ -18,15 +18,16 @@ public class NavigatorPublicFilter extends NavigatorFilter
     @Override
     public List<SearchResultList> getResult(Habbo habbo)
     {
+        boolean showInvisible = habbo.hasPermission("acc_enter_anyroom") || habbo.hasPermission("acc_anyroomowner");
         List<SearchResultList> resultLists = new ArrayList<SearchResultList>();
         int i = 0;
-        resultLists.add(new SearchResultList(i, "official-root", "", SearchAction.NONE, SearchMode.THUMBNAILS, false, Emulator.getGameEnvironment().getRoomManager().getPublicRooms(), false, false));
+        resultLists.add(new SearchResultList(i, "official-root", "", SearchAction.NONE, SearchMode.THUMBNAILS, false, Emulator.getGameEnvironment().getRoomManager().getPublicRooms(), false, showInvisible));
         i++;
         for (NavigatorPublicCategory category : Emulator.getGameEnvironment().getNavigatorManager().publicCategories.values())
         {
             if (!category.rooms.isEmpty())
             {
-                resultLists.add(new SearchResultList(i, "", category.name, SearchAction.NONE, category.image, false, category.rooms, true, false));
+                resultLists.add(new SearchResultList(i, "", category.name, SearchAction.NONE, category.image, false, category.rooms, true, showInvisible));
                 i++;
             }
         }
