@@ -137,7 +137,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     private final TIntArrayList rights;
     private final TIntIntHashMap mutedHabbos;
     private final TIntObjectHashMap<RoomBan> bannedHabbos;
-    private final THashSet<Game> games;
+    private final ConcurrentSet<Game> games;
     private final TIntObjectMap<String> furniOwnerNames;
     private final TIntIntMap furniOwnerCount;
     private final TIntObjectMap<RoomMoodlightData> moodlightData;
@@ -171,6 +171,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public int noVotes = 0;
     public int yesVotes = 0;
     public int wordQuizEnd = 0;
+    public final List<Integer> userVotes;
 
     public Room(ResultSet set) throws SQLException
     {
@@ -256,11 +257,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
 
         this.mutedHabbos = new TIntIntHashMap();
-        this.games = new THashSet<Game>();
+        this.games = new ConcurrentSet<Game>();
 
         this.activeTrades = new THashSet<RoomTrade>();
         this.rights = new TIntArrayList();
         this.wiredHighscoreData = new THashMap<WiredHighscoreScoreType, THashMap<WiredHighscoreClearType, THashSet<WiredHighscoreData>>>();
+        this.userVotes = new ArrayList<>();
     }
 
     public synchronized void loadData()
@@ -860,17 +862,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 this.mutedHabbos.clear();
             }
 
-            synchronized (this.games)
+            for (Game game : this.games)
             {
-                TObjectHashIterator<Game> gameIterator = this.games.iterator();
-
-                for (int i = this.games.size(); i-- > 0; )
-                {
-                    gameIterator.next().stop();
-                }
-
-                this.games.clear();
+                game.stop();
             }
+            this.games.clear();
 
             synchronized (this.roomItems)
             {
@@ -1711,7 +1707,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                             for (Habbo habbo : habbosOnRoller)
                             {
-                                if (stackContainsRoller && !allowFurniture && !(topItem != null && topItem.canWalkOn(habbo.getRoomUnit(), this, new Object[]{})))
+                                if (stackContainsRoller && !allowFurniture && !(topItem != null && topItem.isWalkable()))
                                     continue;
 
                                 RoomTile tile = roomTile.copy();
@@ -2342,9 +2338,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public boolean deleteGame(Game game)
     {
+        game.stop();
         synchronized (this.games)
         {
-            game.stop();
             return this.games.remove(game);
         }
     }
@@ -5000,20 +4996,24 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void handleWordQuiz(Habbo habbo, String answer)
     {
-        if (!this.wordQuiz.isEmpty())
+        synchronized (this.userVotes)
         {
-            answer = answer.replace(":", "");
-
-            if (answer.equals("0"))
+            if (!this.wordQuiz.isEmpty() && !this.hasVotedInWordQuiz(habbo))
             {
-                this.noVotes++;
-            }
-            else if (answer.equals("1"))
-            {
-                this.yesVotes++;
-            }
+                answer = answer.replace(":", "");
 
-            this.sendComposer(new SimplePollAnswerComposer(habbo.getHabboInfo().getId(), answer, this.noVotes, this.yesVotes).compose());
+                if (answer.equals("0"))
+                {
+                    this.noVotes++;
+                }
+                else if (answer.equals("1"))
+                {
+                    this.yesVotes++;
+                }
+
+                this.sendComposer(new SimplePollAnswerComposer(habbo.getHabboInfo().getId(), answer, this.noVotes, this.yesVotes).compose());
+                this.userVotes.add(habbo.getHabboInfo().getId());
+            }
         }
     }
 
@@ -5032,6 +5032,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public boolean hasActiveWordQuiz()
     {
         return Emulator.getIntUnixTimestamp() < this.wordQuizEnd;
+    }
+
+    public boolean hasVotedInWordQuiz(Habbo habbo)
+    {
+        return this.userVotes.contains(habbo.getHabboInfo().getId());
     }
 
     public void alert(String message)

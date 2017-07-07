@@ -66,7 +66,7 @@ public class GameServer
                     @Override
                     protected void channelIdle(ChannelHandlerContext ctx, IdleStateEvent evt) throws Exception
                     {
-                        ctx.close();
+                        ctx.channel().close();
                     }
                 });
             }

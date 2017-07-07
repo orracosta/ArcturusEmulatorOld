@@ -73,6 +73,11 @@ public class CatalogManager
     public final THashSet<CatalogItem> clubItems;
 
     /**
+     * All Habbo Club subcription offers.
+     */
+    public final THashMap<Integer, ClubOffer> clubOffers;
+
+    /**
      * All clothing definitions
      */
     public final THashMap<Integer, ClothItem> clothing;
@@ -164,6 +169,7 @@ public class CatalogManager
         this.giftWrappers           = new THashMap<Integer, Integer>();
         this.giftFurnis             = new THashMap<Integer, Integer>();
         this.clubItems              = new THashSet<CatalogItem>();
+        this.clubOffers             = new THashMap<>();
         this.clothing               = new THashMap<Integer, ClothItem>();
         this.offerDefs              = new TIntIntHashMap();
         this.vouchers               = new ArrayList<Voucher>();
@@ -189,6 +195,7 @@ public class CatalogManager
             loadCatalogPages();
             loadCatalogFeaturedPages();
             loadCatalogItems();
+            loadClubOffers();
             loadVouchers();
             loadClothing();
             loadRecycler();
@@ -405,6 +412,26 @@ public class CatalogManager
                 if (p != null)
                 {
                     page.getCatalogItems().putAll(p.getCatalogItems());
+                }
+            }
+        }
+    }
+
+    private void loadClubOffers() throws SQLException
+    {
+        synchronized (this.clubOffers)
+        {
+            this.clubOffers.clear();
+
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM catalog_club_offers WHERE enabled = ?"))
+            {
+                statement.setString(1, "1");
+                try (ResultSet set = statement.executeQuery())
+                {
+                    while (set.next())
+                    {
+                        this.clubOffers.put(set.getInt("id"), new ClubOffer(set));
+                    }
                 }
             }
         }
@@ -1267,7 +1294,7 @@ public class CatalogManager
 
             habbo.getClient().sendResponse(new AddHabboItemComposer(purchasedEvent.itemsList));
             habbo.getClient().getHabbo().getInventory().getItemsComponent().addItems(purchasedEvent.itemsList);
-            habbo.getClient().sendResponse(new PurchaseOKComposer(purchasedEvent.catalogItem, cBaseItem));
+            habbo.getClient().sendResponse(new PurchaseOKComposer(purchasedEvent.catalogItem));
             habbo.getClient().sendResponse(new InventoryRefreshComposer());
 
             Emulator.getPluginManager().fireEvent(new UserCatalogFurnitureBoughtEvent(habbo, item, purchasedEvent.itemsList));
@@ -1288,5 +1315,20 @@ public class CatalogManager
             Emulator.getLogging().logPacketError(e);
             habbo.getClient().sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR));
         }
+    }
+
+    public List<ClubOffer> getClubOffers()
+    {
+        List<ClubOffer> offers = new ArrayList<>();
+
+        for (Map.Entry<Integer, ClubOffer> entry : this.clubOffers.entrySet())
+        {
+            if (!entry.getValue().isDeal())
+            {
+                offers.add(entry.getValue());
+            }
+        }
+
+        return offers;
     }
 }

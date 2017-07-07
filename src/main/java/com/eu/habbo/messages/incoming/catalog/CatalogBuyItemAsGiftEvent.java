@@ -425,7 +425,7 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                 this.client.sendResponse(new UserPointsComposer(this.client.getHabbo().getHabboInfo().getCurrencyAmount(item.getPointsType()), -totalPoints, item.getPointsType()));
             }
 
-            this.client.sendResponse(new PurchaseOKComposer(item, cBaseItem));
+            this.client.sendResponse(new PurchaseOKComposer(item));
         }
         catch(Exception e)
         {

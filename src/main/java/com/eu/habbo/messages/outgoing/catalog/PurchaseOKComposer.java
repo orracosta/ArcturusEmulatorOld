@@ -9,43 +9,21 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 public class PurchaseOKComposer extends MessageComposer
 {
     private final CatalogItem catalogItem;
-    private final Item item;
 
-    public PurchaseOKComposer(CatalogItem catalogItem, Item item)
+    public PurchaseOKComposer(CatalogItem catalogItem)
     {
         this.catalogItem = catalogItem;
-        this.item = item;
     }
 
     public PurchaseOKComposer()
     {
         this.catalogItem = null;
-        this.item = null;
     }
 
     @Override
     public ServerMessage compose()
     {
         this.response.init(Outgoing.PurchaseOKComposer);
-//        if(catalogItem != null && item != null)
-//        {
-//            this.response.appendInt(this.item.getId());
-//            this.response.appendString(this.item.getName());
-//            this.response.appendBoolean(false);
-//            this.response.appendInt(this.catalogItem.getCredits());
-//            this.response.appendInt(this.catalogItem.getPoints());
-//            this.response.appendInt(this.catalogItem.getPointsType());
-//            this.response.appendBoolean(false);
-//            this.response.appendInt(1);
-//            this.response.appendString(this.item.getType().toLowerCase());
-//            this.response.appendInt(this.item.getSpriteId());
-//            this.response.appendString("");
-//            this.response.appendInt(1);
-//            this.response.appendInt(false);
-//            this.response.appendInt(0);
-//            this.response.appendBoolean(true);
-//        }
-//        else
         if(this.catalogItem != null)
         {
             this.catalogItem.serialize(this.response);

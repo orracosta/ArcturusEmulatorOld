@@ -396,7 +396,6 @@ public class Outgoing
     public final static int FriendFindingRoomComposer = 1210; // PRODUCTION-201611291003-338511768
     public final static int UnknownQuestComposer1 = 230; // PRODUCTION-201611291003-338511768
     public final static int ModToolSanctionDataComposer = 2782; // PRODUCTION-201611291003-338511768
-    public final static int CallForHelpTopicsComposer = 325; // PRODUCTION-201611291003-338511768
     public final static int RoomEventMessageComposer = 2274;
     /**
      * int << count
@@ -514,7 +513,6 @@ public class Outgoing
 //    624;
 //    675;
     public final static int HotelViewCatalogPageExpiringComposer = 690;
-    public final static int HotelViewNextLTDAvailableComposer = 707;
 //    749;
 //    812;
 //    843;
@@ -528,4 +526,69 @@ public class Outgoing
     public final static int TradingWaitingConfirmComposer = 2720;
     public final static int BaseJumpJoinQueueComposer = 2260;
     public final static int ClubCenterDataComposer = 3277;
+
+    public final static int SimplePollAnswersComposer = 1066;
+    public final static int UnknownFurniModelComposer = 1501;
+    public final static int UnknownAdManagerComposer = 1808;
+    public final static int UnknownWiredComposer = 1830;
+    public final static int UnknownCatalogPageOfferComposer = 1889;
+    public final static int UnknownCreateLinkComposer = 2023;
+    public final static int HotelViewExpiringCatalogPageCommposer = 2515;
+    public final static int UnknownHabboWayQuizComposer =2772;
+    public final static int PetLevelUpdatedComposer = 2824;
+    public final static int QuestExpiredComposer = 3027;
+    public final static int UnknownTradeComposer = 3128;
+    public final static int UnknownMessengerErrorComposer = 3359;
+    public final static int UnknownComposer8 = 3441;
+    public final static int RemoveRoomEventComposer = 3479;
+    public final static int UnknownCompetitionComposer = 3506;
+    public final static int UnknownRoomViewerComposer = 3523;
+    public final static int ErrorLoginComposer = 4000;
+    public final static int HotelViewNextLTDAvailableComposer = 44;
+    public final static int UnknownRoomDesktopComposer = 69;
+    public final static int UnknownGuildComposer3 = 876;
+
+    /*
+    0x0909 //unused
+1347 //Unused cry[to
+
+195 //unused
+1982 //unused
+
+2142 //unused
+2494 //u
+
+2668 //u
+2756 //u
+
+2819 //u
+
+
+3035 //u
+3099 //u
+
+3138 //u
+3191 //u
+
+
+
+
+
+3560 //Game2WeeklyLeaderboardParser
+3684 //u
+3805 //u Gamecomposer
+3863 //u
+3885 //u Crypto
+3915 //u
+
+416 //u
+
+463 //u
+600 //u
+
+761 //u
+872 //u
+
+
+     */
 }

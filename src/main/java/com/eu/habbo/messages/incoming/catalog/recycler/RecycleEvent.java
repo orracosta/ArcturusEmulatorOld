@@ -53,6 +53,11 @@ public class RecycleEvent extends MessageHandler
                     Emulator.getThreading().run(new QueryDeleteHabboItem(item));
                 }
             }
+            else
+            {
+                this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR));
+                return;
+            }
 
             HabboItem reward = Emulator.getGameEnvironment().getItemManager().handleRecycle(this.client.getHabbo(), Emulator.getGameEnvironment().getCatalogManager().getRandomRecyclerPrize().getId() + "");
             if(reward == null)

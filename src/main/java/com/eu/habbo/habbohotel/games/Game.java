@@ -127,7 +127,7 @@ public abstract class Game implements Runnable
      * <li>The Habbo triggers leave team wired.</li>
      * @param habbo The Habbo to be removed.
      */
-    public synchronized void removeHabbo(Habbo habbo)
+    public void removeHabbo(Habbo habbo)
     {
         if (habbo != null)
         {

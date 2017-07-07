@@ -13,9 +13,9 @@ public class ModToolRoomAlertEvent extends MessageHandler
     {
         if(this.client.getHabbo().hasPermission("acc_supporttool"))
         {
-            int roomId = this.packet.readInt();
+            int type = this.packet.readInt();
 
-            Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(roomId);
+            Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
             if (room != null)
             {
                 room.alert(this.packet.readString());

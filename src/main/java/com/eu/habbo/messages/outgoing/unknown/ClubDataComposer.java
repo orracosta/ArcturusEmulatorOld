@@ -2,12 +2,14 @@ package com.eu.habbo.messages.outgoing.unknown;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.catalog.CatalogItem;
+import com.eu.habbo.habbohotel.catalog.ClubOffer;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class ClubDataComposer extends MessageComposer
 {
@@ -25,35 +27,21 @@ public class ClubDataComposer extends MessageComposer
     {
         this.response.init(Outgoing.ClubDataComposer);
 
-        this.response.appendInt(Emulator.getGameEnvironment().getCatalogManager().clubItems.size());
+        List<ClubOffer> offers = Emulator.getGameEnvironment().getCatalogManager().getClubOffers();
+        this.response.appendInt(offers.size());
 
         //TODO Change this to a seperate table.
-        for(CatalogItem item : Emulator.getGameEnvironment().getCatalogManager().clubItems)
+        for(ClubOffer offer : offers)
         {
-            this.response.appendInt(item.getId());
-            this.response.appendString(item.getName());
+            this.response.appendInt(offer.getId());
+            this.response.appendString(offer.getName());
             this.response.appendBoolean(false); //unused
-            this.response.appendInt(item.getCredits());
-            this.response.appendInt(item.getPoints());
-            this.response.appendInt(item.getPointsType());
-            this.response.appendBoolean(item.getName().contains("_VIP_"));
+            this.response.appendInt(offer.getCredits());
+            this.response.appendInt(offer.getPoints());
+            this.response.appendInt(offer.getPointsType());
+            this.response.appendBoolean(offer.isVip());
 
-            String[] data = item.getName().replace("_VIP_", "_").toLowerCase().split("_");
-
-            long seconds = 0;
-
-            if(data[3].toLowerCase().startsWith("day"))
-            {
-                seconds = 86400 * Integer.valueOf(data[2]);
-            }
-            else if(data[3].toLowerCase().startsWith("month"))
-            {
-                seconds = 86400 * 31 * Integer.valueOf(data[2]);
-            }
-            else if(data[3].toLowerCase().startsWith("year"))
-            {
-                seconds = 86400 * 31 * 12 * Integer.valueOf(data[2]);
-            }
+            long seconds = offer.getDays() * 86400l;
 
             long secondsTotal = seconds;
 

@@ -26,3 +26,21 @@ UPDATE users_settings SET talent_track_citizenship_level = -1;
 UPDATE users_settings SET talent_track_helpers_level = -1;
 INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.room.tags.staff', 'staff;official;habbo');
 ALTER TABLE  `permissions` ADD  `acc_room_staff_tags` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0';
+
+CREATE TABLE  `catalog_club_offers` (
+    `id` INT NOT NULL DEFAULT NULL AUTO_INCREMENT PRIMARY KEY ,
+    `enabled` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '1',
+    `name` VARCHAR( 35 ) NOT NULL ,
+    `days` INT( 7 ) NOT NULL ,
+    `credits` INT( 5 ) NOT NULL DEFAULT  '10',
+    `points` INT( 5 ) NOT NULL DEFAULT  '0',
+    `points_type` INT( 3 ) NOT NULL DEFAULT  '0',
+    `type` ENUM(  'HC',  'VIP' ) NOT NULL DEFAULT  'HC',
+    `deal` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0'
+) ENGINE = MYISAM ;
+
+INSERT INTO `catalog_club_offers` (`id`, `enabled`, `name`, `days`, `credits`, `points`, `points_type`, `type`, `deal`) VALUES
+    (NULL, '1', 'HABBO_CLUB_7_DAY', '7', '5', '0', '0', 'VIP', '0'),
+    (NULL, '1', 'HABBO_CLUB_1_MONTH', '31', '20', '0', '0', 'VIP', '0');
+
+UPDATE catalog_pages SET page_layout = 'vip_buy' WHERE page_layout = 'club_buy';

@@ -68,7 +68,7 @@ public class RedeemItemEvent extends MessageHandler
                         }
                         catch (Exception e)
                         {
-                            Emulator.getLogging().logErrorLine("Failed to parse redeemable furniture: " + item.getBaseItem().getName() + ". Must be in format of PF_<amount>");
+                            Emulator.getLogging().logErrorLine("Failed to parse redeemable pixel furniture: " + item.getBaseItem().getName() + ". Must be in format of PF_<amount>");
                             return;
                         }
 
@@ -95,7 +95,7 @@ public class RedeemItemEvent extends MessageHandler
                         }
                         catch (Exception e)
                         {
-                            Emulator.getLogging().logErrorLine("Failed to parse redeemable furniture: " + item.getBaseItem().getName() + ". Must be in format of DF_<pointstype>_<amount> where <pointstype> equals integer representation of seasonal currency.");
+                            Emulator.getLogging().logErrorLine("Failed to parse redeemable points furniture: " + item.getBaseItem().getName() + ". Must be in format of DF_<pointstype>_<amount> where <pointstype> equals integer representation of seasonal currency.");
                             return;
                         }
 
@@ -105,7 +105,7 @@ public class RedeemItemEvent extends MessageHandler
                         }
                         catch (Exception e)
                         {
-                            Emulator.getLogging().logErrorLine("Failed to parse redeemable furniture: " + item.getBaseItem().getName() + ". Must be in format of DF_<pointstype>_<amount> where <pointstype> equals integer representation of seasonal currency.");
+                            Emulator.getLogging().logErrorLine("Failed to parse redeemable points furniture: " + item.getBaseItem().getName() + ". Must be in format of DF_<pointstype>_<amount> where <pointstype> equals integer representation of seasonal currency.");
                             return;
                         }
 
@@ -122,7 +122,15 @@ public class RedeemItemEvent extends MessageHandler
                     }
                     else if (item.getBaseItem().getName().startsWith("CF_diamond_"))
                     {
-                        this.client.getHabbo().givePoints(Integer.valueOf(item.getBaseItem().getName().split("_")[2]));
+                        try
+                        {
+                            this.client.getHabbo().givePoints(Integer.valueOf(item.getBaseItem().getName().split("_")[2]));
+                        }
+                        catch (Exception e)
+                        {
+                            Emulator.getLogging().logErrorLine("Failed to parse redeemable diamonds furniture: " + item.getBaseItem().getName() + ". Must be in format of CF_diamond_<amount>");
+                            return;
+                        }
                     }
 
                     room.removeHabboItem(item);

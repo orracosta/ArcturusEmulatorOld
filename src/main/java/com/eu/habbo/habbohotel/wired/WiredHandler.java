@@ -296,7 +296,7 @@ public class WiredHandler
                         {
                             habbo.getClient().sendResponse(new AddHabboItemComposer(item));
                             habbo.getClient().getHabbo().getInventory().getItemsComponent().addItem(item);
-                            habbo.getClient().sendResponse(new PurchaseOKComposer(null, null));
+                            habbo.getClient().sendResponse(new PurchaseOKComposer(null));
                             habbo.getClient().sendResponse(new InventoryRefreshComposer());
                             habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_RECEIVED_ITEM));
                         }

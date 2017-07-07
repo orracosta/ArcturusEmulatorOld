@@ -3,6 +3,7 @@ package com.eu.habbo.messages.incoming.catalog;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.catalog.CatalogItem;
 import com.eu.habbo.habbohotel.catalog.CatalogPage;
+import com.eu.habbo.habbohotel.catalog.ClubOffer;
 import com.eu.habbo.habbohotel.catalog.layouts.ClubBuyLayout;
 import com.eu.habbo.habbohotel.catalog.layouts.RecentPurchasesLayout;
 import com.eu.habbo.habbohotel.catalog.layouts.RoomBundleLayout;
@@ -155,7 +156,7 @@ public class CatalogBuyItemEvent extends MessageHandler
 
         if(page instanceof ClubBuyLayout || page instanceof VipBuyLayout)
         {
-            CatalogItem item = Emulator.getGameEnvironment().getCatalogManager().getClubItem(itemId);
+            ClubOffer item = Emulator.getGameEnvironment().getCatalogManager().clubOffers.get(itemId);
 
             if(item == null)
             {
@@ -169,21 +170,7 @@ public class CatalogBuyItemEvent extends MessageHandler
 
             for(int i = 0; i < count; i++)
             {
-                String[] data = item.getName().replace("_VIP_", "_").toLowerCase().split("_");
-
-                if(data[3].startsWith("day"))
-                {
-                    totalDays = Integer.valueOf(data[2]);
-                }
-                else if(data[3].startsWith("month"))
-                {
-                    totalDays = Integer.valueOf(data[2]) * 31;
-                }
-                else if(data[3].startsWith("year"))
-                {
-                    totalDays = Integer.valueOf(data[2]) * 365;
-                }
-
+                totalDays += item.getDays();
                 totalCredits += item.getCredits();
                 totalDuckets += item.getPoints();
             }
@@ -215,7 +202,7 @@ public class CatalogBuyItemEvent extends MessageHandler
                 if (totalDuckets > 0)
                     this.client.sendResponse(new UserCurrencyComposer(this.client.getHabbo()));
 
-                this.client.sendResponse(new PurchaseOKComposer(item, null));
+                this.client.sendResponse(new PurchaseOKComposer(null));
                 this.client.sendResponse(new InventoryRefreshComposer());
             }
             return;

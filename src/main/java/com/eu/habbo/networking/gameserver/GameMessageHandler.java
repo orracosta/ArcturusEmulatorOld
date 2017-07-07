@@ -41,7 +41,7 @@ public class GameMessageHandler extends ChannelInboundHandlerAdapter
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Emulator.getLogging().logErrorLine(e);
         }
     }
 

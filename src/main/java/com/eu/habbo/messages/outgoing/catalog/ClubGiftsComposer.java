@@ -27,7 +27,6 @@ public class ClubGiftsComposer extends MessageComposer
             this.response.appendInt(page.getCatalogItems().size());
 
             TIntObjectIterator<CatalogItem> iterator = page.getCatalogItems().iterator();
-
             for (int i = page.getCatalogItems().size(); i-- > 0; )
             {
                 try
@@ -46,17 +45,43 @@ public class ClubGiftsComposer extends MessageComposer
                     break;
                 }
             }
+
+            this.response.appendInt(page.getCatalogItems().size());
+            iterator = page.getCatalogItems().iterator();
+            for (int i = page.getCatalogItems().size(); i-- > 0; )
+            {
+                try
+                {
+                    iterator.advance();
+
+                    CatalogItem item = iterator.value();
+
+                    if (item != null)
+                    {
+                        this.response.appendInt(1);
+                        this.response.appendBoolean(true);
+                        this.response.appendInt(2);
+                        this.response.appendBoolean(true);
+                    }
+                    else
+                    {
+                        this.response.appendInt(-100);
+                        this.response.appendBoolean(false);
+                        this.response.appendInt(-100);
+                        this.response.appendBoolean(false);
+                    }
+                }
+                catch (NoSuchElementException e)
+                {
+                    break;
+                }
+            }
         }
         else
         {
             this.response.appendInt(0);
+            this.response.appendInt(0);
         }
-
-        this.response.appendInt(1);
-        this.response.appendInt(-100);
-        this.response.appendBoolean(false);
-        this.response.appendInt(-100);
-        this.response.appendBoolean(false);
 
         return this.response;
     }
