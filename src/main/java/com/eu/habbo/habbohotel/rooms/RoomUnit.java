@@ -66,6 +66,7 @@ public class RoomUnit
     public int mutedCount;
     private int idleTimer;
     private Room room;
+    private RoomRightLevels rightsLevel = RoomRightLevels.NONE;
 
     public RoomUnit()
     {
@@ -535,7 +536,7 @@ public class RoomUnit
 
     public void findPath()
     {
-        if (this.room != null && this.goalLocation != null && (this.goalLocation.isWalkable() || this.room.canSitOrLayAt(this.goalLocation.x, this.goalLocation.y)))
+        if (this.room != null && this.room.getLayout() != null && this.goalLocation != null && (this.goalLocation.isWalkable() || this.room.canSitOrLayAt(this.goalLocation.x, this.goalLocation.y)))
         {
             this.path = this.room.getLayout().findPath(this.currentLocation, this.goalLocation);
         }
@@ -680,5 +681,15 @@ public class RoomUnit
     public Deque<RoomTile> getPath()
     {
         return path;
+    }
+
+    public RoomRightLevels getRightsLevel()
+    {
+        return rightsLevel;
+    }
+
+    public void setRightsLevel(RoomRightLevels rightsLevel)
+    {
+        this.rightsLevel = rightsLevel;
     }
 }

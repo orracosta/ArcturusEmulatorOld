@@ -12,13 +12,13 @@ public class NavigatorPublicCategory
     public final int id;
     public final String name;
     public final List<Room> rooms;
-    public final SearchMode image;
+    public final ListMode image;
 
     public NavigatorPublicCategory(ResultSet set) throws SQLException
     {
         this.id = set.getInt("id");
         this.name = set.getString("name");
-        this.image = set.getString("image").equals("1") ? SearchMode.THUMBNAILS : SearchMode.LIST;
+        this.image = set.getString("image").equals("1") ? ListMode.THUMBNAILS : ListMode.LIST;
 
         this.rooms = new ArrayList<Room>();
     }

@@ -42,21 +42,28 @@ public class InteractionObstacle extends HabboItem
     @Override
     public boolean canWalkOn(RoomUnit roomUnit, Room room, Object[] objects)
     {
-        HorsePet pet = (HorsePet) room.getPet(roomUnit);
+        AbstractPet pet = room.getPet(roomUnit);
 
-        if(pet == null)
+        if (pet != null && pet instanceof HorsePet)
         {
-            Habbo habbo = room.getHabbo(roomUnit);
+            HorsePet horsePet = (HorsePet)pet;
 
-            if(habbo != null && habbo.getHabboInfo().getRiding() != null)
+            if (horsePet == null)
             {
-                return true;
-            }
+                Habbo habbo = room.getHabbo(roomUnit);
 
-            return false;
+                if (habbo != null && habbo.getHabboInfo().getRiding() != null)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+            else
+                return horsePet.getRider() != null;
         }
-        else
-            return pet.getRider() != null;
+
+        return false;
     }
 
     @Override

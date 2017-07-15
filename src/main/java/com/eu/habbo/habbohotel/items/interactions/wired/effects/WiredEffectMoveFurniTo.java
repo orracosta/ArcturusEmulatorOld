@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.rooms.Room;
@@ -39,7 +40,7 @@ public class WiredEffectMoveFurniTo extends InteractionWiredEffect
     }
 
     @Override
-    public boolean saveData(ClientMessage packet)
+    public boolean saveData(ClientMessage packet, GameClient gameClient)
     {
         Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
 
@@ -60,6 +61,8 @@ public class WiredEffectMoveFurniTo extends InteractionWiredEffect
         {
             this.items.add(room.getHabboItem(packet.readInt()));
         }
+
+        this.setDelay(packet.readInt());
 
         return true;
     }
@@ -239,5 +242,6 @@ public class WiredEffectMoveFurniTo extends InteractionWiredEffect
         this.items.clear();
         this.direction = 0;
         this.spacing = 0;
+        this.indexOffset.clear();
     }
 }

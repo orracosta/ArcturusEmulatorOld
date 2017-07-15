@@ -5,6 +5,9 @@ public class Incoming
     public static final int ActivateEffectEvent = 2959;
     public static final int EnableEffectEvent = 1752;
     public static final int UserActivityEvent = 3457;
+    public static final int NavigatorCategoryListModeEvent = 1202;
+    public static final int NavigatorCollapseCategoryEvent = 1834;
+    public static final int NavigatorUncollapseCategoryEvent = 637;
     public static final int FootballGateSaveLookEvent = 924; // PRODUCTION-201611291003-338511768
     public static final int MannequinSaveLookEvent = 2209; // PRODUCTION-201611291003-338511768
     public static final int RequestCatalogPageEvent = 412; //PRODUCTION-201611291003-338511768
@@ -302,7 +305,7 @@ public class Incoming
     public static final int HotelViewRequestBadgeRewardEvent = 2318;
     public static final int HotelViewClaimBadgeRewardEvent = -1;
 
-    public static final int JukeBoxAddSoundTrackEvent = 1878;
+    public static final int JukeBoxAddSoundTrackEvent = 753;
     public static final int ToggleMonsterplantBreedableEvent = 3379;
     public static final int CompostMonsterplantEvent = 3835;
     public static final int BreedPetsEvent = 1638;
@@ -321,4 +324,5 @@ public class Incoming
     public static final int ModToolSanctionMuteEvent = 1945;
     public static final int ModToolSanctionBanEvent = 2766;
     public static final int ModToolSanctionTradeLockEvent = 3742;
+    public static final int UserNuxEvent = 1299;
 }

@@ -10,6 +10,10 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,7 +51,31 @@ public class UserProfileComposer extends MessageComposer
         this.response.appendString(this.habboInfo.getLook());
         this.response.appendString(this.habboInfo.getMotto());
         this.response.appendString(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date(this.habboInfo.getAccountCreated() * 1000L)));
-        this.response.appendInt(this.habbo != null ? this.habbo.getHabboStats().getAchievementScore() : 0);
+
+        int achievementScore = 0;
+        if (this.habbo != null)
+        {
+            achievementScore = this.habbo.getHabboStats().getAchievementScore();
+        }
+        else
+        {
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT achievement_score FROM users_settings WHERE user_id = ? LIMIT 1"))
+            {
+                statement.setInt(1, this.habboInfo.getId());
+                try (ResultSet set = statement.executeQuery())
+                {
+                    if (set.next())
+                    {
+                        achievementScore = set.getInt("achievement_score");
+                    }
+                }
+            }
+            catch (SQLException e)
+            {
+                Emulator.getLogging().logSQLException(e);
+            }
+        }
+        this.response.appendInt(achievementScore);
         this.response.appendInt(Messenger.getFriendCount(this.habboInfo.getId()));
         this.response.appendBoolean(viewer.getHabbo().getMessenger().getFriends().containsKey(this.habboInfo.getId())); //Friend
         this.response.appendBoolean(Messenger.friendRequested(this.viewer.getHabbo().getHabboInfo().getId(), this.habboInfo.getId())); //Friend Request Send
@@ -56,6 +84,7 @@ public class UserProfileComposer extends MessageComposer
         List<Guild> guilds = new ArrayList<Guild>();
         if(this.habbo != null)
         {
+            List<Integer> toRemove = new ArrayList<Integer>();
             for (int i : this.habbo.getHabboStats().guilds)
             {
                 if (i == 0)
@@ -69,8 +98,13 @@ public class UserProfileComposer extends MessageComposer
                 }
                 else
                 {
-                    this.habbo.getHabboStats().removeGuild(i);
+                    toRemove.add(i);
                 }
+            }
+
+            for (int i : toRemove)
+            {
+                this.habbo.getHabboStats().removeGuild(i);
             }
         }
         else

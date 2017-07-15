@@ -106,6 +106,13 @@ public class InteractionJukeBox extends HabboItem
     public void addToPlayList(int itemId, Room room)
     {
         this.musicDisks.add(itemId);
+
+        if (this.currentItem == 0)
+        {
+            this.currentItem = itemId;
+            room.updateItem(this);
+            nextSong();
+        }
     }
 
     public boolean removeFromPlayList(int itemId, Room room)
@@ -148,6 +155,11 @@ public class InteractionJukeBox extends HabboItem
         {
             this.currentIndex = 0;
             this.currentItem = 0;
+
+            if (!this.musicDisks.isEmpty())
+            {
+                this.currentItem = this.musicDisks.get(this.currentIndex);
+            }
         }
     }
 

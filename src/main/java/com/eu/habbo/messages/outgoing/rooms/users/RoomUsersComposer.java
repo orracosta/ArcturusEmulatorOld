@@ -7,9 +7,11 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
+import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.TIntObjectMap;
 
 import java.util.Collection;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class RoomUsersComposer extends MessageComposer
 {
@@ -74,10 +76,16 @@ public class RoomUsersComposer extends MessageComposer
         }
         else if(this.habbos != null)
         {
-            synchronized (this.habbos)
+            TIntObjectIterator<Habbo> iterator = this.habbos.iterator();
+            this.response.appendInt(this.habbos.size());
+            int count = 0;
+            while (iterator.hasNext())
             {
-                this.response.appendInt(this.habbos.size());
-                for (Habbo habbo : this.habbos.valueCollection())
+                iterator.advance();
+
+                Habbo habbo = iterator.value();
+
+                if (habbo != null)
                 {
                     this.response.appendInt(habbo.getHabboInfo().getId());
                     this.response.appendString(habbo.getHabboInfo().getUsername());
@@ -104,6 +112,7 @@ public class RoomUsersComposer extends MessageComposer
                     this.response.appendString("");
                     this.response.appendInt(habbo.getHabboStats().getAchievementScore());
                     this.response.appendBoolean(true);
+                    count++;
                 }
             }
         }

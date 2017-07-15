@@ -1,5 +1,6 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
+import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.games.GameTeamColors;
 import com.eu.habbo.habbohotel.games.wired.WiredGame;
 import com.eu.habbo.habbohotel.items.Item;
@@ -136,11 +137,12 @@ public class WiredEffectJoinTeam extends InteractionWiredEffect
     }
 
     @Override
-    public boolean saveData(ClientMessage packet)
+    public boolean saveData(ClientMessage packet, GameClient gameClient)
     {
         packet.readInt();
         this.teamColor = GameTeamColors.values()[packet.readInt() - 1];
-        packet.readInt();
+        int unknownInt = packet.readInt();
+        packet.readString();
         this.setDelay(packet.readInt());
 
         return true;

@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.games.Game;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionCrackable;
@@ -104,7 +105,7 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
     }
 
     @Override
-    public boolean saveData(ClientMessage packet)
+    public boolean saveData(ClientMessage packet, GameClient gameClient)
     {
         packet.readInt();
         packet.readString();
@@ -157,7 +158,7 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
                     continue;
                 }
 
-                if (triggerItem == null)// && triggerItem.getId() == item.getId())
+                if (triggerItem == null && roomUnit == null)// && triggerItem.getId() == item.getId())
                 {
                     continue;
                 }
@@ -242,11 +243,8 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
     @Override
     public void onPickUp()
     {
-        synchronized (this.items)
-        {
-            this.items.clear();
-            this.setDelay(0);
-        }
+        this.items.clear();
+        this.setDelay(0);
     }
 
     @Override

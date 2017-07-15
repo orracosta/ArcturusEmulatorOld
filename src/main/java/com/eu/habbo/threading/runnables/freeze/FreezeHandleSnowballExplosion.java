@@ -25,14 +25,12 @@ class FreezeHandleSnowballExplosion implements Runnable
     {
         try
         {
-            if (this.thrownData.habbo.getHabboInfo().getGamePlayer() != null)
+            if (this.thrownData.habbo.getHabboInfo().getGamePlayer() == null)
             {
-                ((FreezeGamePlayer)this.thrownData.habbo.getHabboInfo().getGamePlayer()).addSnowball();
+                return;
             }
-            else
-            {
-                Emulator.getLogging().logDebugLine("Throwing snowball at (" + this.thrownData.targetTile.getX() + ", " + this.thrownData.targetTile.getY() + "): Player not found!");
-            }
+
+            ((FreezeGamePlayer)this.thrownData.habbo.getHabboInfo().getGamePlayer()).addSnowball();
 
             THashSet<RoomTile> tiles = new THashSet<RoomTile>();
 

@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.rooms.users;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -46,19 +47,24 @@ public class RoomUserLookAtPoint extends MessageHandler
         if(x == roomUnit.getX() && y == roomUnit.getY())
             return;
 
-        roomUnit.lookAtPoint(habbo.getHabboInfo().getCurrentRoom().getLayout().getTile((short) x, (short) y));
+        RoomTile tile = habbo.getHabboInfo().getCurrentRoom().getLayout().getTile((short) x, (short) y);
 
-        UserIdleEvent event = new UserIdleEvent(this.client.getHabbo(), UserIdleEvent.IdleReason.WALKED, false);
-        Emulator.getPluginManager().fireEvent(event);
-
-        if (!event.isCancelled())
+        if (tile != null)
         {
-            if (!event.idle)
-            {
-                this.client.getHabbo().getHabboInfo().getCurrentRoom().unIdle(habbo);
-            }
-        }
+            roomUnit.lookAtPoint(tile);
 
-        this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserStatusComposer(roomUnit).compose());
+            UserIdleEvent event = new UserIdleEvent(this.client.getHabbo(), UserIdleEvent.IdleReason.WALKED, false);
+            Emulator.getPluginManager().fireEvent(event);
+
+            if (!event.isCancelled())
+            {
+                if (!event.idle)
+                {
+                    this.client.getHabbo().getHabboInfo().getCurrentRoom().unIdle(habbo);
+                }
+            }
+
+            this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserStatusComposer(roomUnit).compose());
+        }
     }
 }

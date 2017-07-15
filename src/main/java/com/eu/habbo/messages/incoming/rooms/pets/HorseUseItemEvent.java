@@ -110,7 +110,6 @@ public class HorseUseItemEvent extends MessageHandler
             }
             else if (pet instanceof MonsterplantPet)
             {
-                System.out.println(item.getBaseItem().getName());
                 if (item.getBaseItem().getName().equalsIgnoreCase("mnstr_revival"))
                 {
                     if (((MonsterplantPet) pet).isDead())
@@ -171,10 +170,6 @@ public class HorseUseItemEvent extends MessageHandler
                             this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTiles(room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
                             pet.getRoomUnit().getStatus().remove("gst");
                             Emulator.getThreading().run(new QueryDeleteHabboItem(item));
-                        }
-                        else
-                        {
-                            System.out.println(item.getBaseItem().getName() + " | " + ((MonsterplantPet) pet).getRarity());
                         }
                     }
                 }

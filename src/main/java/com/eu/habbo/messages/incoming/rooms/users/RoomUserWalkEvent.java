@@ -55,6 +55,10 @@ public class RoomUserWalkEvent extends MessageHandler
 
                         RoomTile tile = habbo.getHabboInfo().getCurrentRoom().getLayout().getTile((short) x, (short) y);
 
+                        if (tile == null)
+                        {
+                            return;
+                        }
                         if (tile.isWalkable() || habbo.getHabboInfo().getCurrentRoom().canSitOrLayAt(tile.x, tile.y))
                         {
                             roomUnit.setGoalLocation(tile);

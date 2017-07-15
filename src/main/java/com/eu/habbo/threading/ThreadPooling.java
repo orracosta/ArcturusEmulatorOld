@@ -14,7 +14,7 @@ public class ThreadPooling
     public ThreadPooling(Integer threads)
     {
         this.threads = threads;
-        this.scheduledPool = Executors.newScheduledThreadPool(this.threads, new DefaultThreadFactory("ArcturusThreadFactory"));
+        this.scheduledPool = new HabboExecutorService(this.threads, new DefaultThreadFactory("ArcturusThreadFactory"));
         this.canAdd = true;
         Emulator.getLogging().logStart("Thread Pool -> Loaded!");
     }
@@ -82,4 +82,6 @@ public class ThreadPooling
     {
         return this.scheduledPool;
     }
+
+
 }

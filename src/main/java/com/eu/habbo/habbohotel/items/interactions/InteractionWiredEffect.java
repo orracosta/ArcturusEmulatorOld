@@ -82,7 +82,7 @@ public abstract class InteractionWiredEffect extends InteractionWired
         this.cooldown = newMillis;
         return true;
     }
-    public abstract boolean saveData(ClientMessage packet);
+    public abstract boolean saveData(ClientMessage packet, GameClient gameClient);
 
     /**
      * Sets the delay of execution.

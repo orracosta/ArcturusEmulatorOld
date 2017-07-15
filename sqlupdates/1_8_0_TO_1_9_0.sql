@@ -46,3 +46,53 @@ INSERT INTO `catalog_club_offers` (`id`, `enabled`, `name`, `days`, `credits`, `
 UPDATE catalog_pages SET page_layout = 'vip_buy' WHERE page_layout = 'club_buy';
 
 ALTER TABLE  `support_cfh_topics` ADD  `ignore_target` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `action`;
+
+ALTER TABLE  `users_settings` ADD  `nux` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0';
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES
+('nux.step.1', 'This is the reception button, it will take you to the hotelview.'),
+('nux.step.2', 'This is the navigator button, from here you can visit other rooms.'),
+('nux.step.3', 'To talk, just enter your message here.'),
+('nux.step.4', 'The chat history window lets you read back your previous conversations.'),
+('nux.step.5', 'If you want to change your looks, you can use the wardrobe.'),
+('nux.step.6', 'In the catalog you can purchase furniture to decorate your own room.'),
+('nux.step.7', 'Furniture can be bought with a combination of credits...'),
+('nux.step.8', '...duckets,'), ('nux.step.9', 'or diamonds.'),
+('nux.step.10', 'All your friends are located down here.'),
+('nux.step.11', 'Lets have some fun and start exploring the hotel!');
+ALTER TABLE  `commandlogs` CHANGE  `params`  `params` VARCHAR( 256 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT  '';
+
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('alert.superwired.invalid', 'Invalid superwired configuration. Make sure to NOT use <b>;</b> in the product field!');
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.navigator.popular.category.maxresults', '10');
+
+ALTER TABLE  `navigator_flatcats` ADD  `caption_save` VARCHAR( 32 ) NOT NULL DEFAULT  'caption_save' AFTER  `min_rank`;
+CREATE TABLE  `users_navigator_settings` (
+    `user_id` INT NOT NULL ,
+    `caption` VARCHAR( 16 ) NOT NULL ,
+    `list_type` ENUM(  'list',  'thumbnails' ) NOT NULL DEFAULT  'list',
+    `display` ENUM(  'visible',  'collapsed' ) NOT NULL DEFAULT  'visible'
+) ENGINE = MYISAM ;
+
+UPDATE  `navigator_flatcats` SET  `caption_save` =  'caption_save_building' WHERE  `navigator_flatcats`.`id` =2;
+UPDATE  `navigator_flatcats` SET  `caption_save` =  'caption_save_chat' WHERE  `navigator_flatcats`.`id` =3;
+UPDATE  `navigator_flatcats` SET  `caption_save` =  'caption_save_fansite' WHERE  `navigator_flatcats`.`id` =4;
+UPDATE  `navigator_flatcats` SET  `caption_save` =  'caption_save_games' WHERE  `navigator_flatcats`.`id` =5;
+UPDATE  `navigator_flatcats` SET  `caption_save` =  'caption_save_help' WHERE  `navigator_flatcats`.`id` =6;
+UPDATE  `navigator_flatcats` SET  `caption_save` =  'caption_save_life' WHERE  `navigator_flatcats`.`id` =7;
+UPDATE  `navigator_flatcats` SET  `caption_save` =  'caption_save_official' WHERE  `navigator_flatcats`.`id` =8;
+UPDATE  `navigator_flatcats` SET  `caption_save` =  'caption_save_party' WHERE  `navigator_flatcats`.`id` =9;
+UPDATE  `navigator_flatcats` SET  `caption_save` =  'caption_save_personal' WHERE  `navigator_flatcats`.`id` =10;
+UPDATE  `navigator_flatcats` SET  `caption_save` =  'caption_save_reviews' WHERE  `navigator_flatcats`.`id` =11;
+UPDATE  `navigator_flatcats` SET  `caption_save` =  'caption_save_trading' WHERE  `navigator_flatcats`.`id` =12;
+
+ALTER TABLE  `permissions` ADD  `cmd_allow_trading` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_alert`;
+
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES
+('commands.keys.cmd_allow_trading', 'tradelock;blocktrading;disabletrade'),
+('commands.error.cmd_allow_trading.forgot_username', 'Please specify the user to enable / disable trading for.'),
+('commands.error.cmd_allow_trading.forgot_trade', 'Please specify if you want to enable trading for %username%.'),
+('commands.succes.cmd_allow_trading.enabled', 'Trading has been enabled for %username%!'),
+('commands.succes.cmd_allow_trading.disabled', 'Trading has been disabled for %username%!'),
+('commands.error.cmd_allow_trading.user_not_found', 'Target Habbo does not exist.'),
+('commands.error.cmd_allow_trading.incorrect_setting', 'Please use %enabled% to enable trading. Use %disabled% to disable trading.');
+
+ALTER TABLE  `rooms` CHANGE  `allow_walkthrough`  `allow_walkthrough` ENUM(  '0',  '1' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  '1';

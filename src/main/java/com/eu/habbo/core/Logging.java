@@ -178,7 +178,7 @@ public class Logging
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+			System.out.println("[CRITICAL] FAILED TO LOAD LOGGING COMPONENT!");
         }
     }
 
@@ -215,6 +215,11 @@ public class Logging
     
     public synchronized void logDebugLine(Object line)
     {
+        if (line instanceof Throwable)
+        {
+            logErrorLine(line);
+            return;
+        }
         if (Emulator.getConfig().getBoolean("debug.mode")) {
             System.out.println("[DEBUG] " + line.toString());
         }
@@ -295,7 +300,7 @@ public class Logging
     {
         if(Emulator.getConfig().getBoolean("logging.errors.packets"))
         {
-            if(e instanceof Exception)
+            if(e instanceof Throwable)
                 ((Exception) e).printStackTrace();
 
             write(errorsPacketsWriter, e);
@@ -323,13 +328,13 @@ public class Logging
     {
         if(printWriter != null && message != null)
         {
-            if(message instanceof Exception)
+            if(message instanceof Throwable)
             {
                 ((Exception) message).printStackTrace(printWriter);
             }
             else
             {
-                printWriter.write(message.toString() + "\r\n");
+                printWriter.write("MSG: " + message.toString() + "\r\n");
             }
 
             printWriter.flush();

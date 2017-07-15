@@ -23,7 +23,11 @@ public class CameraPublishWaitMessageComposer extends MessageComposer
         this.response.init(Outgoing.CameraPublishWaitMessageComposer);
         this.response.appendBoolean(this.published);
         this.response.appendInt(this.seconds);
-        this.response.appendString(this.unknownString);
+
+        if (this.published)
+        {
+            this.response.appendString(this.unknownString);
+        }
         return this.response;
     }
 }

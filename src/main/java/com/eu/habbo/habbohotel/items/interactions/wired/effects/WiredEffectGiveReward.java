@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
@@ -12,6 +13,10 @@ import com.eu.habbo.habbohotel.wired.WiredGiveRewardItem;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
+import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.GenericErrorMessagesComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.WiredRewardAlertComposer;
+import com.eu.habbo.messages.outgoing.unknown.UnknownMessengerErrorComposer;
 import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
@@ -22,9 +27,14 @@ import java.util.List;
 
 public class WiredEffectGiveReward extends InteractionWiredEffect
 {
-    public final static WiredEffectType type = WiredEffectType.GIVE_REWARD;
+    public final static int LIMIT_ONCE = 0;
+    public final static int LIMIT_N_DAY = 1;
+    public final static int LIMIT_N_HOURS = 2;
+    public final static int LIMIT_N_MINUTES = 3;
 
+    public final static WiredEffectType type = WiredEffectType.GIVE_REWARD;
     public int limit;
+    public int limitationInterval;
     public int given;
     public int rewardTime;
     public boolean uniqueRewards;
@@ -52,7 +62,7 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
     @Override
     public String getWiredData()
     {
-        String data = limit + ":" + given + ":"+ rewardTime + ":" + (uniqueRewards ? 1 : 0) + ":" + getDelay() + ":";
+        String data = limit + ":" + given + ":"+ rewardTime + ":" + (uniqueRewards ? 1 : 0) + ":" + this.limitationInterval +":" + getDelay() + ":";
 
         if(this.rewardItems.isEmpty())
         {
@@ -79,19 +89,25 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
             this.given = Integer.valueOf(data[1]);
             this.rewardTime = Integer.valueOf(data[2]);
             this.uniqueRewards = data[3].equals("1");
-            this.setDelay(Integer.valueOf(data[4]));
+            this.limitationInterval = Integer.valueOf(data[4]);
+            this.setDelay(Integer.valueOf(data[5]));
 
             if(data.length > 5)
             {
-                if(!data[5].equalsIgnoreCase("\t"))
+                if(!data[6].equalsIgnoreCase("\t"))
                 {
-                    String[] items = data[5].split(";");
+                    String[] items = data[6].split(";");
 
                     this.rewardItems.clear();
 
                     for (String s : items)
                     {
-                        this.rewardItems.add(new WiredGiveRewardItem(s));
+                        try
+                        {
+                            this.rewardItems.add(new WiredGiveRewardItem(s));
+                        }
+                        catch (Exception e)
+                        {}
                     }
                 }
             }
@@ -102,6 +118,7 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
     public void onPickUp()
     {
         this.limit = 0;
+        this.limitationInterval = 0;
         this.given = 0;
         this.rewardTime = 0;
         this.uniqueRewards = false;
@@ -130,10 +147,11 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
             s += item.wiredString() + ";";
         }
         message.appendString(s);
-        message.appendInt(3);
+        message.appendInt(4);
             message.appendInt(this.rewardTime);
             message.appendInt32(this.uniqueRewards);
             message.appendInt(this.limit);
+            message.appendInt(this.limitationInterval);
         message.appendInt32(this.limit > 0);
         message.appendInt(this.getType().code);
         message.appendInt(this.getDelay());
@@ -166,13 +184,14 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
     }
 
     @Override
-    public boolean saveData(ClientMessage packet)
+    public boolean saveData(ClientMessage packet, GameClient gameClient)
     {
         packet.readInt();
 
         this.rewardTime = packet.readInt();
         this.uniqueRewards = packet.readInt() == 1;
         this.limit = packet.readInt();
+        this.limitationInterval = packet.readInt();
         this.given = 0;
 
         String data = packet.readString();
@@ -188,12 +207,15 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
 
             if(d.length == 3)
             {
-                this.rewardItems.add(new WiredGiveRewardItem(i, d[0].equalsIgnoreCase("0"), d[1], Integer.valueOf(d[2])));
+                if (!(d[1].contains(":") || d[1].contains(";")))
+                {
+                    this.rewardItems.add(new WiredGiveRewardItem(i, d[0].equalsIgnoreCase("0"), d[1], Integer.valueOf(d[2])));
+                    continue;
+                }
             }
-            else
-            {
-                Emulator.getLogging().logErrorLine("Incorrect WiredEffectGiveReward data: " + s);
-            }
+
+            gameClient.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("alert.superwired.invalid")));
+            return false;
         }
 
         WiredHandler.dropRewards(this.getId());

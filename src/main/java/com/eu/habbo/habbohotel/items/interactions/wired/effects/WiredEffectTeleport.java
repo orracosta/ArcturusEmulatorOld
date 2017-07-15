@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
@@ -94,7 +95,7 @@ public class WiredEffectTeleport extends InteractionWiredEffect
     }
 
     @Override
-    public boolean saveData(ClientMessage packet)
+    public boolean saveData(ClientMessage packet, GameClient gameClient)
     {
         packet.readInt();
         packet.readString();
@@ -136,6 +137,19 @@ public class WiredEffectTeleport extends InteractionWiredEffect
 
                     room.giveEffect(habbo, 4);
                     Emulator.getThreading().run(new RoomUnitTeleport(habbo.getRoomUnit(), room, item.getX(), item.getY(), item.getZ() + (item.getBaseItem().allowSit() ? item.getBaseItem().getHeight() - 0.50 : 0D), currentEffect), Emulator.getConfig().getInt("wired.effect.teleport.delay", 500));
+                    Emulator.getThreading().run(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            try
+                            {
+                                item.onWalkOn(habbo.getRoomUnit(), room, new Object[]{});
+                            }
+                            catch (Exception e)
+                            {}
+                        }
+                    }, Emulator.getConfig().getInt("wired.effect.teleport.delay", 500));
                     break;
                 } else
                 {

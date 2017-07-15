@@ -31,6 +31,7 @@ public class CommandHandler
     {
         addCommand(new AboutCommand());
         addCommand(new AlertCommand());
+        addCommand(new AllowTradingCommand());
         addCommand(new ArcturusCommand());
         addCommand(new BadgeCommand());
         addCommand(new BanCommand());

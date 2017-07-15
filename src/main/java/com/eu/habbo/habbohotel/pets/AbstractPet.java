@@ -48,6 +48,9 @@ public abstract class AbstractPet implements ISerialize, Runnable
 
     public void say(PetVocal vocal)
     {
+        if (true)
+            return;
+
         if(vocal != null)
             this.say(vocal.message);
     }

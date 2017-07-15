@@ -1,6 +1,6 @@
 package com.eu.habbo.habbohotel.navigation;
 
-public enum SearchMode
+public enum ListMode
 {
     LIST(0),
     THUMBNAILS(1),
@@ -8,14 +8,14 @@ public enum SearchMode
 
     public final int type;
 
-    SearchMode(int type)
+    ListMode(int type)
     {
         this.type = type;
     }
 
-    public static SearchMode fromType(int type)
+    public static ListMode fromType(int type)
     {
-        for (SearchMode m : SearchMode.values())
+        for (ListMode m : ListMode.values())
         {
             if (m.type == type)
             {

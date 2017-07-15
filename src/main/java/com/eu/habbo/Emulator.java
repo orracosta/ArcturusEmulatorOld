@@ -148,6 +148,7 @@ public final class Emulator
             Emulator.rconServer.initialise();
             Emulator.rconServer.connect();
             Emulator.badgeImager = new BadgeImager();
+            Emulator.config.update("hotel.home.room", "62");
             if (Emulator.getConfig().getBoolean("camera.enabled"))
             {
                 Emulator.getThreading().run(new CameraClientAutoReconnect());
@@ -178,11 +179,18 @@ public final class Emulator
 
             while (true)
             {
-                String line = reader.readLine();
-
-                if (line != null)
+                try
                 {
-                    ConsoleCommand.handle(line);
+                    String line = reader.readLine();
+
+                    if (line != null)
+                    {
+                        ConsoleCommand.handle(line);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Emulator.getLogging().logErrorLine(e);
                 }
             }
         }
@@ -232,13 +240,6 @@ public final class Emulator
 
         try
         {
-            if (Emulator.threading != null)
-                Emulator.threading.shutDown();
-        }
-        catch (Exception e) {}
-
-        try
-        {
             if (Emulator.getPluginManager() != null)
                 Emulator.getPluginManager().fireEvent(new EmulatorStoppedEvent());
         }
@@ -252,7 +253,15 @@ public final class Emulator
         catch (Exception e) {}
 
         Emulator.getLogging().saveLogs();
-        Emulator.getDatabase().dispose();
+
+        try
+        {
+            if (Emulator.config != null)
+            {
+                Emulator.config.saveToDatabase();
+            }
+        }
+        catch (Exception e) {}
 
         try
         {
@@ -262,7 +271,15 @@ public final class Emulator
         catch (Exception e) {}
 
         Emulator.getLogging().logShutdownLine("Stopped Arcturus Emulator " + version + "...");
+        Emulator.getDatabase().dispose();
         Emulator.stopped = true;
+
+        try
+        {
+            if (Emulator.threading != null)
+                Emulator.threading.shutDown();
+        }
+        catch (Exception e) {}
     }
 
     /**

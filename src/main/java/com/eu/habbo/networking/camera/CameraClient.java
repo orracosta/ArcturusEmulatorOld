@@ -40,6 +40,7 @@ public class CameraClient
             }
         });
         bootstrap.option(ChannelOption.SO_RCVBUF, 5120);
+        bootstrap.option(ChannelOption.SO_REUSEADDR, true);
         bootstrap.option(ChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(5120));
         bootstrap.option(ChannelOption.ALLOCATOR, new UnpooledByteBufAllocator(false));
     }

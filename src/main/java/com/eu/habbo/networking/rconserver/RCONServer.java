@@ -60,6 +60,7 @@ public class RCONServer
         this.addRCONMessage("updateuser",           UpdateUser.class);
         this.addRCONMessage("friendrequest",        FriendRequest.class);
         this.addRCONMessage("imagehotelalert",      ImageHotelAlert.class);
+        this.addRCONMessage("stalkuser",            StalkUser.class);
     }
 
     public void initialise()

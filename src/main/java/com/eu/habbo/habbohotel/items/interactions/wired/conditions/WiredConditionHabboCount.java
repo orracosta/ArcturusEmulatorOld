@@ -55,7 +55,7 @@ public class WiredConditionHabboCount extends InteractionWiredCondition
     public void onPickUp()
     {
         this.lowerLimit = 0;
-        this.upperLimit = 0;
+        this.upperLimit = 50;
     }
 
     @Override

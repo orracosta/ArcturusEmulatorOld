@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.threading.runnables.BanzaiRandomTeleport;
@@ -61,19 +62,23 @@ public class InteractionBattleBanzaiTeleporter extends HabboItem
     public void onWalkOn(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
         super.onWalkOn(roomUnit, room, objects);
+        Habbo habbo = room.getHabbo(roomUnit);
 
-        this.setExtradata("1");
-        HabboItem target = room.getRoomSpecialTypes().getRandomTeleporter();
+        if (habbo != null)
+        {
+            this.setExtradata("1");
+            HabboItem target = room.getRoomSpecialTypes().getRandomTeleporter();
 
-        while (target == this && room.getRoomSpecialTypes().getBanzaiTeleporters().size() > 1)
-            target = room.getRoomSpecialTypes().getRandomTeleporter();
+            while (target == this && room.getRoomSpecialTypes().getBanzaiTeleporters().size() > 1)
+                target = room.getRoomSpecialTypes().getRandomTeleporter();
 
-        target.setExtradata("1");
-        room.updateItem(this);
-        room.updateItem(target);
-        roomUnit.setGoalLocation(room.getLayout().getTile(roomUnit.getX(), roomUnit.getY()));
-        roomUnit.setCanWalk(false);
-        Emulator.getThreading().run(new BanzaiRandomTeleport(this, target, room.getHabbo(roomUnit), room), 500);
+            target.setExtradata("1");
+            room.updateItem(this);
+            room.updateItem(target);
+            roomUnit.setGoalLocation(room.getLayout().getTile(roomUnit.getX(), roomUnit.getY()));
+            roomUnit.setCanWalk(false);
+            Emulator.getThreading().run(new BanzaiRandomTeleport(this, target, habbo, room), 500);
+        }
     }
 
     @Override

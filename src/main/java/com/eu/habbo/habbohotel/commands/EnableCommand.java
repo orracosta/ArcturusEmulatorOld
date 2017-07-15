@@ -21,7 +21,14 @@ public class EnableCommand extends Command
         if(params.length >= 2)
         {
             int effectId = 0;
-            effectId = Integer.parseInt(params[1]);
+            try
+            {
+                effectId = Integer.parseInt(params[1]);
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
             Habbo target = gameClient.getHabbo();
             if (params.length == 3)
             {

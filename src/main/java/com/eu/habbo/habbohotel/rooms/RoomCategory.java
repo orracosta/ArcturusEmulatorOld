@@ -1,6 +1,6 @@
 package com.eu.habbo.habbohotel.rooms;
 
-import com.eu.habbo.habbohotel.navigation.SearchMode;
+import com.eu.habbo.habbohotel.navigation.ListMode;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,20 +11,22 @@ public class RoomCategory implements Comparable<RoomCategory> {
     private int id;
     private int minRank;
     private String caption;
+    private String captionSave;
     private boolean canTrade;
     private int maxUserCount;
     private boolean official;
-    private SearchMode displayMode;
+    private ListMode displayMode;
 
     public RoomCategory(ResultSet set) throws SQLException
     {
         this.id = set.getInt("id");
         this.minRank = set.getInt("min_rank");
         this.caption = set.getString("caption");
+        this.captionSave = set.getString("caption_save");
         this.canTrade = set.getBoolean("can_trade");
         this.maxUserCount = set.getInt("max_user_count");
         this.official = set.getString("public").equals("1");
-        this.displayMode = SearchMode.fromType(set.getInt("list_type"));
+        this.displayMode = ListMode.fromType(set.getInt("list_type"));
     }
 
     public int getId() {
@@ -35,8 +37,14 @@ public class RoomCategory implements Comparable<RoomCategory> {
         return this.minRank;
     }
 
-    public String getCaption() {
+    public String getCaption()
+    {
         return this.caption;
+    }
+
+    public String getCaptionSave()
+    {
+        return this.captionSave;
     }
 
     public boolean isCanTrade() {
@@ -53,7 +61,7 @@ public class RoomCategory implements Comparable<RoomCategory> {
         return this.official;
     }
 
-    public SearchMode getDisplayMode()
+    public ListMode getDisplayMode()
     {
         return this.displayMode;
     }

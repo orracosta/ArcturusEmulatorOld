@@ -7,8 +7,6 @@ import com.eu.habbo.habbohotel.rooms.RoomCategory;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.navigator.NewNavigatorSearchResultsComposer;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.*;
 
 public class RequestNewNavigatorRoomsEvent extends MessageHandler
@@ -90,7 +88,7 @@ public class RequestNewNavigatorRoomsEvent extends MessageHandler
 //
 //        Collections.sort(rooms);
 //        List<SearchResultList> resultLists = new ArrayList<SearchResultList>();
-//        resultLists.add(new SearchResultList(key, text, SearchAction.MORE, SearchMode.LIST, false, rooms));
+//        resultLists.add(new SearchResultList(key, text, SearchAction.MORE, ListMode.LIST, false, rooms));
 //        this.client.sendResponse(new NewNavigatorSearchResultsComposer(searchCode, text, resultLists));
 
 //        String view = this.packet.readString();
@@ -198,11 +196,21 @@ public class RequestNewNavigatorRoomsEvent extends MessageHandler
             if (field != null)
             {
                 resultLists = filter.getResult(this.client.getHabbo(), field, part);
+
+                if (resultLists == null)
+                {
+                    resultLists = new ArrayList<>();
+                }
                 filter.filter(field.field, part, resultLists);
             }
             else
             {
                 resultLists = filter.getResult(this.client.getHabbo());
+
+                if (resultLists == null)
+                {
+                    resultLists = new ArrayList<>();
+                }
                 if (!part.isEmpty())
                 {
                     filter(resultLists, filter, part);
@@ -220,7 +228,7 @@ public class RequestNewNavigatorRoomsEvent extends MessageHandler
 
             if (category != null)
             {
-                resultLists.add(new SearchResultList(1, view, view, SearchAction.BACK, SearchMode.LIST, false, Emulator.getGameEnvironment().getRoomManager().getPopularRooms(50, category.getId()), true, false));
+                resultLists.add(new SearchResultList(1, view, view, SearchAction.BACK, ListMode.LIST, DisplayMode.VISIBLE, Emulator.getGameEnvironment().getRoomManager().getPopularRooms(50, category.getId()), true, false));
             }
 
             filter = Emulator.getGameEnvironment().getNavigatorManager().filters.get("hotel_view");

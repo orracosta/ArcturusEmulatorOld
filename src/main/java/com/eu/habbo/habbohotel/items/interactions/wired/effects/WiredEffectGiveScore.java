@@ -1,5 +1,6 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
+import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.games.Game;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
@@ -171,7 +172,7 @@ public class WiredEffectGiveScore extends InteractionWiredEffect
     }
 
     @Override
-    public boolean saveData(ClientMessage packet)
+    public boolean saveData(ClientMessage packet, GameClient gameClient)
     {
         packet.readInt();
 

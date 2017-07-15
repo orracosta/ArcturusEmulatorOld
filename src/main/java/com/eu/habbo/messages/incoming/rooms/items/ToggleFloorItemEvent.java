@@ -110,12 +110,12 @@ public class ToggleFloorItemEvent extends MessageHandler
             }
 
             if (
-                    item.getBaseItem().getName().equalsIgnoreCase("val11_present") ||
+                    (item.getBaseItem().getName().equalsIgnoreCase("val11_present") ||
                     item.getBaseItem().getName().equalsIgnoreCase("gnome_box") ||
                     item.getBaseItem().getName().equalsIgnoreCase("leprechaun_box") ||
                     item.getBaseItem().getName().equalsIgnoreCase("velociraptor_egg") ||
                     item.getBaseItem().getName().equalsIgnoreCase("pterosaur_egg") ||
-                    item.getBaseItem().getName().equalsIgnoreCase("petbox_epic"))
+                    item.getBaseItem().getName().equalsIgnoreCase("petbox_epic")) && room.getCurrentPets().size() < Emulator.getConfig().getInt("hotel.pets.max.room"))
             {
                 this.client.sendResponse(new PetPackageComposer(item));
                 return;

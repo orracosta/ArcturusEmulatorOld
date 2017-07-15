@@ -49,6 +49,7 @@ public class GameByteDecoder extends ByteToMessageDecoder
 
             //in.release();
             f.channel().close();
+            ctx.close();
             return;
         }
 

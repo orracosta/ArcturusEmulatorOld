@@ -384,10 +384,11 @@ public class RoomLayout
         short x = node.x;
         short y = node.y;
         List<RoomTile> adj = new LinkedList<RoomTile>();
+        boolean canSitOrLayAt = room.canSitOrLayAt(newX, newY);
         if (x > 0)
         {
             RoomTile temp = findTile(adj, (short) (x - 1), y);
-            if (temp != null && (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.x == newX && temp.y == newY && room.canSitOrLayAt(newX, newY))))
+            if (temp != null && (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.x == newX && temp.y == newY && canSitOrLayAt)))
             {
                 temp.isDiagonally(false);
                 adj.add(temp);
@@ -396,7 +397,7 @@ public class RoomLayout
         if (x < this.mapSizeX)
         {
             RoomTile temp = findTile(closedList, (short) (x + 1), y);
-            if (temp != null && (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.x == newX && temp.y == newY && room.canSitOrLayAt(newX, newY))))
+            if (temp != null && (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.x == newX && temp.y == newY && canSitOrLayAt)))
             {
                 temp.isDiagonally(false);
                 adj.add(temp);
@@ -405,7 +406,7 @@ public class RoomLayout
         if (y > 0)
         {
             RoomTile temp = findTile(closedList, x, (short) (y - 1));
-            if (temp != null && (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.x == newX && temp.y == newY && room.canSitOrLayAt(newX, newY))))
+            if (temp != null && (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.x == newX && temp.y == newY && canSitOrLayAt)))
             {
                 temp.isDiagonally(false);
                 adj.add(temp);
@@ -414,7 +415,7 @@ public class RoomLayout
         if (y < this.mapSizeY)
         {
             RoomTile temp = findTile(closedList, x, (short) (y + 1));
-            if (temp != null && (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.x == newX && temp.y == newY && room.canSitOrLayAt(newX, newY))))
+            if (temp != null && (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.x == newX && temp.y == newY && canSitOrLayAt)))
             {
                 temp.isDiagonally(false);
                 adj.add(temp);
@@ -425,7 +426,7 @@ public class RoomLayout
             if ((x < this.mapSizeX) && (y < this.mapSizeY))
             {
                 RoomTile temp = findTile(closedList, (short) (x + 1), (short) (y + 1));
-                if (temp != null && (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.x == newX && temp.y == newY && room.canSitOrLayAt(newX, newY))))
+                if (temp != null && (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.x == newX && temp.y == newY && canSitOrLayAt)))
                 {
                     temp.isDiagonally(true);
                     adj.add(temp);
@@ -434,7 +435,7 @@ public class RoomLayout
             if ((x > 0) && (y > 0))
             {
                 RoomTile temp = findTile(closedList, (short) (x - 1), (short) (y - 1));
-                if (temp != null && (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.x == newX && temp.y == newY && room.canSitOrLayAt(newX, newY))))
+                if (temp != null && (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.x == newX && temp.y == newY && canSitOrLayAt)))
                 {
                     temp.isDiagonally(true);
                     adj.add(temp);
@@ -443,7 +444,7 @@ public class RoomLayout
             if ((x > 0) && (y < this.mapSizeY))
             {
                 RoomTile temp = findTile(closedList, (short) (x - 1), (short) (y + 1));
-                if (temp != null && (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.x == newX && temp.y == newY && room.canSitOrLayAt(newX, newY))))
+                if (temp != null && (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.x == newX && temp.y == newY && canSitOrLayAt)))
                 {
                     temp.isDiagonally(true);
                     adj.add(temp);
@@ -452,7 +453,7 @@ public class RoomLayout
             if ((x < this.mapSizeX) && (y > 0))
             {
                 RoomTile temp = findTile(closedList, (short) (x + 1), (short) (y - 1));
-                if (temp != null && (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.x == newX && temp.y == newY && room.canSitOrLayAt(newX, newY))))
+                if (temp != null && (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.x == newX && temp.y == newY && canSitOrLayAt)))
                 {
                     temp.isDiagonally(true);
                     adj.add(temp);

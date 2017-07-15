@@ -116,12 +116,12 @@ public class SecureLoginEvent extends MessageHandler
                 this.client.sendResponses(messages);
 
                 //Hardcoded
+                this.client.sendResponse(new NewNavigatorSettingsComposer(this.client.getHabbo().getHabboStats().navigatorWindowSettings));
                 this.client.sendResponse(new NewNavigatorMetaDataComposer());
                 this.client.sendResponse(new NewNavigatorLiftedRoomsComposer());
                 this.client.sendResponse(new NewNavigatorCollapsedCategoriesComposer());
                 this.client.sendResponse(new NewNavigatorSavedSearchesComposer());
                 this.client.sendResponse(new NewNavigatorEventCategoriesComposer());
-                this.client.sendResponse(new NewNavigatorSettingsComposer(this.client.getHabbo().getHabboStats().navigatorWindowSettings));
                 this.client.sendResponse(new InventoryRefreshComposer());
                 this.client.sendResponse(new ForumsTestComposer());
                 this.client.sendResponse(new InventoryAchievementsComposer());
@@ -131,9 +131,16 @@ public class SecureLoginEvent extends MessageHandler
 
                 if (Emulator.getConfig().getBoolean("hotel.welcome.alert.enabled"))
                 {
-                    this.client.sendResponse(new GenericAlertComposer(Emulator.getConfig().getValue("hotel.welcome.alert.message").replace("%username%", habbo.getHabboInfo().getUsername()).replace("%user%", habbo.getHabboInfo().getUsername())));
+                    final Habbo finalHabbo = habbo;
+                    Emulator.getThreading().run(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            client.sendResponse(new GenericAlertComposer(Emulator.getConfig().getValue("hotel.welcome.alert.message").replace("%username%", finalHabbo.getHabboInfo().getUsername()).replace("%user%", finalHabbo.getHabboInfo().getUsername())));
+                        }
+                    }, 5000);
                 }
-
             }
             else
             {

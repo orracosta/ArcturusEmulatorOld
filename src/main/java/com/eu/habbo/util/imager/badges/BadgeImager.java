@@ -39,7 +39,10 @@ public class BadgeImager
     {
         File file = new File(Emulator.getConfig().getValue("imager.location.badgeparts"));
         if (!file.exists())
+        {
+            Emulator.getLogging().logErrorLine("[BadgeImager] Output folder: " + Emulator.getConfig().getValue("imager.location.badgeparts") + " does not exist!");
             return false;
+        }
 
         this.cachedImages.clear();
         try

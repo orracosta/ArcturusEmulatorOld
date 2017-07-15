@@ -546,7 +546,7 @@ public class ItemManager {
                         }
                         catch (Exception e)
                         {
-                            Emulator.getLogging().logDebugLine(e);
+                            Emulator.getLogging().logErrorLine(e);
                             return new InteractionDefault(set.getInt(1), habboId, item, extraData, limitedStack, limitedSells);
                         }
                     }

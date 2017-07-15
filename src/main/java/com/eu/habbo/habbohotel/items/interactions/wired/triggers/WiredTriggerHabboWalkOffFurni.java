@@ -19,7 +19,6 @@ public class WiredTriggerHabboWalkOffFurni extends InteractionWiredTrigger
 {
     public static final WiredTriggerType type = WiredTriggerType.WALKS_OFF_FURNI;
 
-    private String tempString;
     private THashSet<HabboItem> items;
     private String message = "";
 
@@ -112,7 +111,6 @@ public class WiredTriggerHabboWalkOffFurni extends InteractionWiredTrigger
     public void onPickUp()
     {
         this.items.clear();
-        this.tempString = "";
         this.message = "";
     }
 

@@ -45,6 +45,9 @@ public class WiredConditionFurniHaveFurni extends InteractionWiredCondition
 
             THashSet<HabboItem> stackedItems = room.getItemsAt(room.getLayout().getTile(item.getX(), item.getY()));
 
+            if (stackedItems == null)
+                continue;
+
             if(stackedItems.isEmpty() && this.all)
                 return false;
 

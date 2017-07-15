@@ -25,6 +25,12 @@ public class CameraResultURLEvent extends CameraIncomingMessage
         int userId = this.readInt();
         int status = this.readInt();
         String URL = this.readString();
+
+        if (!Emulator.getConfig().getBoolean("camera.use.https", true))
+        {
+            URL = URL.replace("https://", "http://");
+        }
+
         int roomId = this.readInt();
         int timestamp = this.readInt();
 

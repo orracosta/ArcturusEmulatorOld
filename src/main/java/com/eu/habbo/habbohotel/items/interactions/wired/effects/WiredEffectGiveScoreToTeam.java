@@ -1,5 +1,6 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
+import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.games.Game;
 import com.eu.habbo.habbohotel.games.GameTeam;
 import com.eu.habbo.habbohotel.games.GameTeamColors;
@@ -82,7 +83,7 @@ public class WiredEffectGiveScoreToTeam extends InteractionWiredEffect
     @Override
     public void loadWiredData(ResultSet set, Room room) throws SQLException
     {
-        String[] data = set.getString("wired_data").split(":");
+        String[] data = set.getString("wired_data").split(";");
 
         if(data.length == 4)
         {
@@ -129,7 +130,7 @@ public class WiredEffectGiveScoreToTeam extends InteractionWiredEffect
     }
 
     @Override
-    public boolean saveData(ClientMessage packet)
+    public boolean saveData(ClientMessage packet, GameClient gameClient)
     {
         packet.readInt();
 

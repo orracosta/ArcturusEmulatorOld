@@ -11,10 +11,6 @@ public class UserActivityEvent extends MessageHandler
     {
         String type = this.packet.readString();
         String value = this.packet.readString();
-        String action = this.packet.readString();
-        String extradata = this.packet.readString();
-        String unknownString = this.packet.readString();
-        String unkownString2 = this.packet.readString();
 
         switch (type)
         {

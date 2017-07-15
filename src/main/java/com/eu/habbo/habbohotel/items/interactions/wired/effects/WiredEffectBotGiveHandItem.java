@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.bots.Bot;
+import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
@@ -80,7 +81,7 @@ public class WiredEffectBotGiveHandItem extends InteractionWiredEffect
     }
 
     @Override
-    public boolean saveData(ClientMessage packet)
+    public boolean saveData(ClientMessage packet, GameClient gameClient)
     {
         packet.readInt();
 
@@ -124,7 +125,7 @@ public class WiredEffectBotGiveHandItem extends InteractionWiredEffect
     @Override
     protected String getWiredData()
     {
-        return this.getDelay() + ((char)9) + this.itemId + "" + ((char) 9) + "" + this.botName;
+        return this.getDelay() + "" + ((char)9) + "" + this.itemId + "" + ((char) 9) + "" + this.botName;
     }
 
     @Override

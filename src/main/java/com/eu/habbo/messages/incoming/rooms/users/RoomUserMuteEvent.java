@@ -19,7 +19,7 @@ public class RoomUserMuteEvent extends MessageHandler
 
         if (room != null)
         {
-            if (room.hasRights(this.client.getHabbo()) || this.client.getHabbo().hasPermission("acc_ambassador"))
+            if (room.hasRights(this.client.getHabbo()) || this.client.getHabbo().hasPermission("cmd_mute") || this.client.getHabbo().hasPermission("acc_ambassador"))
             {
                 Habbo habbo = room.getHabbo(userId);
 

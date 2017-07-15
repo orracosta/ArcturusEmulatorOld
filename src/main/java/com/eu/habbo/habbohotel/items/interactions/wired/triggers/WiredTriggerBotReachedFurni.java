@@ -76,7 +76,7 @@ public class WiredTriggerBotReachedFurni extends InteractionWiredTrigger
         }
         message.appendInt(this.getBaseItem().getSpriteId());
         message.appendInt(this.getId());
-        message.appendString("");
+        message.appendString(this.botName);
         message.appendInt(0);
         message.appendInt(0);
         message.appendInt(this.getType().code);

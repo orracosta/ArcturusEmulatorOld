@@ -36,8 +36,12 @@ public class InteractionTeleportTile extends InteractionTeleport
 
         Habbo habbo = room.getHabbo(roomUnit);
 
+
         if (habbo != null && roomUnit.getGoal().x == this.getX() && roomUnit.getGoal().y == this.getY() && canUseTeleport(habbo.getClient(), room))
         {
+            if (roomUnit.getGoal().equals(room.getLayout().getDoorTile()))
+                return;
+
             HabboItem thisthing = this;
             Emulator.getThreading().run(new Runnable()
             {

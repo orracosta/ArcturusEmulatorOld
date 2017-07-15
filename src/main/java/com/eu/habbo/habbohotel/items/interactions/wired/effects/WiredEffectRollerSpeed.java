@@ -1,5 +1,6 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
+import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
@@ -19,7 +20,7 @@ public class WiredEffectRollerSpeed extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.SHOW_MESSAGE;
 
-    private int speed = 0;
+    private int speed = 4;
 
     public WiredEffectRollerSpeed(ResultSet set, Item baseItem) throws SQLException
     {
@@ -73,7 +74,7 @@ public class WiredEffectRollerSpeed extends InteractionWiredEffect
     }
 
     @Override
-    public boolean saveData(ClientMessage packet)
+    public boolean saveData(ClientMessage packet, GameClient gameClient)
     {
         packet.readInt();
 

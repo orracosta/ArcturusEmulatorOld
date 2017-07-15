@@ -9,9 +9,13 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.items.jukebox.JukeBoxPlayListAddSongComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.jukebox.JukeBoxPlayListComposer;
+import com.eu.habbo.messages.outgoing.rooms.items.jukebox.JukeBoxPlayListUpdatedComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.jukebox.JukeBoxTrackDataComposer;
+import gnu.trove.procedure.TIntProcedure;
+import gnu.trove.set.hash.THashSet;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class JukeBoxAddSoundTrackEvent extends MessageHandler
 {
@@ -44,8 +48,39 @@ public class JukeBoxAddSoundTrackEvent extends MessageHandler
                         ArrayList<SoundTrack> soundTracks = new ArrayList<SoundTrack>();
                         soundTracks.add(Emulator.getGameEnvironment().getItemManager().getSoundTrack(((InteractionMusicDisc) item).getSongId()));
 
-                        //room.sendComposer(new JukeBoxPlayListAddSongComposer(Emulator.getGameEnvironment().getItemManager().getSoundTrack(((InteractionMusicDisc) item).getSongId())).compose());
-                        room.sendComposer(new JukeBoxPlayListComposer(((InteractionJukeBox) jukeBox), room).compose());
+                        room.sendComposer(new JukeBoxPlayListAddSongComposer(Emulator.getGameEnvironment().getItemManager().getSoundTrack(((InteractionMusicDisc) item).getSongId())).compose());
+                        //room.sendComposer(new JukeBoxPlayListComposer(((InteractionJukeBox) jukeBox), room).compose());
+                        THashSet<SoundTrack> soundTrackTHashSet = new THashSet<>();
+                        List<Integer> toRemove = new ArrayList<Integer>();
+                        ((InteractionJukeBox) jukeBox).getMusicDisks().forEach(new TIntProcedure()
+                        {
+                            @Override
+                            public boolean execute(int i)
+                            {
+                                HabboItem item = room.getHabboItem(i);
+
+                                if (item != null && item instanceof InteractionMusicDisc)
+                                {
+                                    SoundTrack track = Emulator.getGameEnvironment().getItemManager().getSoundTrack(((InteractionMusicDisc) item).getSongId());
+
+                                    if (track != null)
+                                    {
+                                        soundTrackTHashSet.add(track);
+                                        return true;
+                                    }
+                                }
+                                toRemove.add(i);
+
+                                return true;
+                            }
+                        });
+
+                        for (Integer i : toRemove)
+                        {
+                            ((InteractionJukeBox) jukeBox).removeFromPlayList(i, room);
+                        }
+
+                        room.sendComposer(new JukeBoxPlayListUpdatedComposer(soundTrackTHashSet).compose());
                     }
                     break;
                 }

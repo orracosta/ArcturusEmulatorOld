@@ -2,14 +2,11 @@ package com.eu.habbo.habbohotel.users;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.Achievement;
-import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.achievements.TalentTrackType;
 import com.eu.habbo.habbohotel.catalog.CatalogItem;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
-import gnu.trove.set.hash.TIntHashSet;
 import gnu.trove.stack.array.TIntArrayStack;
 
 import java.sql.Connection;
@@ -76,6 +73,8 @@ public class HabboStats implements Runnable
 
     public long roomEnterTimestamp;
     public long lastChat;
+    public boolean nux = false;
+    public int nuxStep = 1;
 
     private HabboStats(ResultSet set, Habbo habbo) throws SQLException
     {
@@ -118,6 +117,7 @@ public class HabboStats implements Runnable
         this.helpersLevel = set.getInt("talent_track_helpers_level");
         this.ignoreBots = set.getString("ignore_bots").equalsIgnoreCase("1");
         this.ignorePets = set.getString("ignore_pets").equalsIgnoreCase("1");
+        this.nux = set.getString("nux").equals("1");
 
         try (PreparedStatement statement = set.getStatement().getConnection().prepareStatement("SELECT * FROM user_window_settings WHERE user_id = ? LIMIT 1"))
         {
@@ -136,7 +136,19 @@ public class HabboStats implements Runnable
                         stmt.executeUpdate();
                     }
 
-                    this.navigatorWindowSettings = new HabboNavigatorWindowSettings();
+                    this.navigatorWindowSettings = new HabboNavigatorWindowSettings(habbo.getHabboInfo().getId());
+                }
+            }
+        }
+
+        try (PreparedStatement statement = set.getStatement().getConnection().prepareStatement("SELECT * FROM users_navigator_settings WHERE user_id = ?"))
+        {
+            statement.setInt(1, this.habbo.getHabboInfo().getId());
+            try (ResultSet nSet = statement.executeQuery())
+            {
+                while (nSet.next())
+                {
+                    this.navigatorWindowSettings.addDisplayMode(nSet.getString("caption"), new HabboNavigatorPersonalDisplayMode(nSet));
                 }
             }
         }
@@ -172,7 +184,7 @@ public class HabboStats implements Runnable
     {
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
-            try (PreparedStatement statement = connection.prepareStatement("UPDATE users_settings SET achievement_score = ?, respects_received = ?, respects_given = ?, daily_respect_points = ?, block_following = ?, block_friendrequests = ?, online_time = online_time + ?, guild_id = ?, daily_pet_respect_points = ?, club_expire_timestamp = ?, login_streak = ?, rent_space_id = ?, rent_space_endtime = ?, volume_system = ?, volume_furni = ?, volume_trax = ?, block_roominvites = ?, old_chat = ?, block_camera_follow = ?, chat_color = ?, hof_points = ?, block_alerts = ?, talent_track_citizenship_level = ?, talent_track_helpers_level = ?, ignore_bots = ?, ignore_pets = ? WHERE user_id = ? LIMIT 1"))
+            try (PreparedStatement statement = connection.prepareStatement("UPDATE users_settings SET achievement_score = ?, respects_received = ?, respects_given = ?, daily_respect_points = ?, block_following = ?, block_friendrequests = ?, online_time = online_time + ?, guild_id = ?, daily_pet_respect_points = ?, club_expire_timestamp = ?, login_streak = ?, rent_space_id = ?, rent_space_endtime = ?, volume_system = ?, volume_furni = ?, volume_trax = ?, block_roominvites = ?, old_chat = ?, block_camera_follow = ?, chat_color = ?, hof_points = ?, block_alerts = ?, talent_track_citizenship_level = ?, talent_track_helpers_level = ?, ignore_bots = ?, ignore_pets = ?, nux = ? WHERE user_id = ? LIMIT 1"))
             {
                 statement.setInt(1, this.achievementScore);
                 statement.setInt(2, this.respectPointsReceived);
@@ -200,7 +212,8 @@ public class HabboStats implements Runnable
                 statement.setInt(24, this.helpersLevel);
                 statement.setString(25, this.ignoreBots ? "1" : "0");
                 statement.setString(26, this.ignorePets ? "1" : "0");
-                statement.setInt(27, this.habbo.getHabboInfo().getId());
+                statement.setString(27, this.nux ? "1" : "0");
+                statement.setInt(28, this.habbo.getHabboInfo().getId());
                 statement.executeUpdate();
             }
 
@@ -214,6 +227,8 @@ public class HabboStats implements Runnable
                 statement.setInt(6, this.habbo.getHabboInfo().getId());
                 statement.executeUpdate();
             }
+
+            this.navigatorWindowSettings.save(connection);
         }
         catch (SQLException e)
         {

@@ -44,59 +44,57 @@ public class GiveBadge extends RCONMessage<GiveBadge.GiveBadgeJSON>
         {
             username = habbo.getHabboInfo().getUsername();
 
-            if(habbo.getInventory().getBadgesComponent().hasBadge(json.badge))
+            for (String badgeCode : json.badge.split(";"))
             {
-                this.status = RCONMessage.STATUS_ERROR;
-                this.message = Emulator.getTexts().getValue("commands.error.cmd_badge.already_owned").replace("%user%", username).replace("%badge%", json.badge);
-                return;
+                if (habbo.getInventory().getBadgesComponent().hasBadge(badgeCode))
+                {
+                    this.status = RCONMessage.STATUS_ERROR;
+                    this.message += Emulator.getTexts().getValue("commands.error.cmd_badge.already_owned").replace("%user%", username).replace("%badge%", badgeCode) + "\r";
+                    continue;
+                }
+
+                HabboBadge badge = new HabboBadge(0, badgeCode, 0, habbo);
+
+                badge.run();
+
+                habbo.getInventory().getBadgesComponent().addBadge(badge);
+                habbo.getClient().sendResponse(new AddUserBadgeComposer(badge));
+
+                this.message = Emulator.getTexts().getValue("commands.succes.cmd_badge.given").replace("%user%", username).replace("%badge%", badgeCode);
             }
-
-            HabboBadge badge = new HabboBadge(0, json.badge, 0, habbo);
-
-            badge.run();
-
-            habbo.getInventory().getBadgesComponent().addBadge(badge);
-            habbo.getClient().sendResponse(new AddUserBadgeComposer(badge));
-
-            this.message = Emulator.getTexts().getValue("commands.succes.cmd_badge.given").replace("%user%", username).replace("%badge%", json.badge);
-
-            if (habbo.getHabboInfo().getCurrentRoom() != null)
-            {
-                //habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.generic.cmd_badge.received"), habbo, habbo, RoomChatMessageBubbles.ALERT)));
-
-            }
-            return;
         }
         else
         {
             try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
             {
-                boolean found = false;
-                try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(slot_id) FROM users_badges INNER JOIN users ON users.id = user_id WHERE users.id = ? AND badge_code = ? LIMIT 1"))
+                for (String badgeCode : json.badge.split(";"))
                 {
-                    statement.setInt(1, json.user_id);
-                    statement.setString(2, json.badge);
-                    try (ResultSet set = statement.executeQuery())
-                    {
-                        found = set.next();
-                    }
-                }
-
-                if(found)
-                {
-                    this.status = RCONMessage.STATUS_ERROR;
-                    this.message = Emulator.getTexts().getValue("commands.error.cmd_badge.already_owns").replace("%user%", username).replace("%badge%", json.badge);
-                }
-                else
-                {
-                    try (PreparedStatement statement = connection.prepareStatement("INSERT INTO users_badges VALUES (null, (SELECT id FROM users WHERE users.id = ? LIMIT 1), 0, ?)", Statement.RETURN_GENERATED_KEYS))
+                    boolean found = false;
+                    try (PreparedStatement statement = connection.prepareStatement("SELECT COUNT(slot_id) FROM users_badges INNER JOIN users ON users.id = user_id WHERE users.id = ? AND badge_code = ? LIMIT 1"))
                     {
                         statement.setInt(1, json.user_id);
-                        statement.setString(2, json.badge);
-                        statement.execute();
+                        statement.setString(2, badgeCode);
+                        try (ResultSet set = statement.executeQuery())
+                        {
+                            found = set.next();
+                        }
                     }
 
-                    this.message = Emulator.getTexts().getValue("commands.succes.cmd_badge.given").replace("%user%", username).replace("%badge%", json.badge);
+                    if (found)
+                    {
+                        this.status = RCONMessage.STATUS_ERROR;
+                        this.message += Emulator.getTexts().getValue("commands.error.cmd_badge.already_owns").replace("%user%", username).replace("%badge%", badgeCode) + "\r";
+                    } else
+                    {
+                        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO users_badges VALUES (null, (SELECT id FROM users WHERE users.id = ? LIMIT 1), 0, ?)", Statement.RETURN_GENERATED_KEYS))
+                        {
+                            statement.setInt(1, json.user_id);
+                            statement.setString(2, badgeCode);
+                            statement.execute();
+                        }
+
+                        this.message = Emulator.getTexts().getValue("commands.succes.cmd_badge.given").replace("%user%", username).replace("%badge%", badgeCode);
+                    }
                 }
             }
             catch (SQLException e)

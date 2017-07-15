@@ -29,7 +29,15 @@ public class AdvertisingSaveEvent extends MessageHandler
             int count = this.packet.readInt();
             for(int i = 0; i < count / 2; i++)
             {
-                ((InteractionCustomValues) item).values.put(this.packet.readString(), this.packet.readString());
+                String key = this.packet.readString();
+                String value = this.packet.readString();
+
+                if (!Emulator.getConfig().getBoolean("camera.use.https"))
+                {
+                    value = value.replace("https://", "http://");
+                }
+
+                ((InteractionCustomValues) item).values.put(key, value);
             }
 
             item.setExtradata(((InteractionCustomValues) item).toExtraData());

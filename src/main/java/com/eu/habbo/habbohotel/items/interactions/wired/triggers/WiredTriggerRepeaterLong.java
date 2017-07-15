@@ -20,8 +20,8 @@ import java.util.List;
 public class WiredTriggerRepeaterLong extends InteractionWiredTrigger
 {
     private static final WiredTriggerType type = WiredTriggerType.PERIODICALLY_LONG;
-
-    private int repeatTime = 20 * 5000;
+    public static final int DEFAULT_DELAY = 20 * 5000;
+    private int repeatTime = DEFAULT_DELAY;
     private WiredRepeatTask task;
 
     public WiredTriggerRepeaterLong(ResultSet set, Item baseItem) throws SQLException
@@ -85,7 +85,7 @@ public class WiredTriggerRepeaterLong extends InteractionWiredTrigger
     @Override
     public void onPickUp()
     {
-        this.repeatTime = 20 * 5000;
+        this.repeatTime = DEFAULT_DELAY;
         this.task = null;
     }
 

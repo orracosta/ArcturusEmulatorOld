@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.bots.Bot;
+import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.rooms.Room;
@@ -69,7 +70,7 @@ public class WiredEffectBotTeleport extends InteractionWiredEffect
     }
 
     @Override
-    public boolean saveData(ClientMessage packet)
+    public boolean saveData(ClientMessage packet, GameClient gameClient)
     {
         packet.readInt();
         this.botName = packet.readString();
@@ -134,7 +135,7 @@ public class WiredEffectBotTeleport extends InteractionWiredEffect
     @Override
     protected String getWiredData()
     {
-        String wiredData = this.getDelay() + "\t" + this.botName + "" + ((char) 9);
+        String wiredData = this.getDelay() + "\t" + this.botName + ";";
 
         if(items != null && !items.isEmpty())
         {
@@ -142,7 +143,7 @@ public class WiredEffectBotTeleport extends InteractionWiredEffect
             {
                 if(item.getRoomId() != 0)
                 {
-                    wiredData += item.getId() + "" + ((char) 9);
+                    wiredData += item.getId() + ";";
                 }
             }
         }
@@ -159,7 +160,7 @@ public class WiredEffectBotTeleport extends InteractionWiredEffect
         if (wiredData.length >= 2)
         {
             this.setDelay(Integer.valueOf(wiredData[0]));
-            String[] data = wiredData[1].split(((char) 9) + "");
+            String[] data = wiredData[1].split(";");
 
             if (data.length > 1)
             {

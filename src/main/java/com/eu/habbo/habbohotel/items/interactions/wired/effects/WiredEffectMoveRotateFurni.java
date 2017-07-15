@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.rooms.Room;
@@ -174,9 +175,11 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
         THashSet<HabboItem> items = new THashSet<HabboItem>();
 
         this.items.remove(null);
+        Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
+
         for(HabboItem item : this.items)
         {
-            if(item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
+            if(item.getRoomId() != this.getRoomId() || (room != null && room.getHabboItem(item.getId()) == null))
                 items.add(item);
         }
 
@@ -281,7 +284,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
     }
 
     @Override
-    public boolean saveData(ClientMessage packet)
+    public boolean saveData(ClientMessage packet, GameClient gameClient)
     {
         Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
 

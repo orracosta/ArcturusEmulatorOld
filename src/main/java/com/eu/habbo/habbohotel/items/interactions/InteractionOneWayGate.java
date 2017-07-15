@@ -73,17 +73,25 @@ public class InteractionOneWayGate extends HabboItem
             {
                 if (room.getHabbosAt(this.getX(), this.getY()).isEmpty())
                 {
-                    client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[(this.getRotation() + 4) % 8]);
-                    client.getHabbo().getRoomUnit().getStatus().put("mv", this.getX() + "," + this.getY() + "," + this.getZ());
-                    client.getHabbo().getRoomUnit().animateWalk = false;
-                    room.sendComposer(new RoomUserStatusComposer(client.getHabbo().getRoomUnit()).compose());
-                    client.getHabbo().getRoomUnit().getStatus().remove("mv");
-                    client.getHabbo().getRoomUnit().setLocation(room.getLayout().getTile(this.getX(), this.getY()));
+                    HabboItem item = this;
+                    room.scheduledTasks.add(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            client.getHabbo().getRoomUnit().setRotation(RoomUserRotation.values()[(getRotation() + 4) % 8]);
+                            client.getHabbo().getRoomUnit().getStatus().put("mv", getX() + "," + getY() + "," + getZ());
+                            client.getHabbo().getRoomUnit().animateWalk = false;
+                            room.sendComposer(new RoomUserStatusComposer(client.getHabbo().getRoomUnit()).compose());
+                            client.getHabbo().getRoomUnit().getStatus().remove("mv");
+                            client.getHabbo().getRoomUnit().setLocation(room.getLayout().getTile(getX(), getY()));
 
-                    this.setExtradata("1");
-                    room.updateItem(this);
+                            setExtradata("1");
+                            room.updateItem(item);
+                            room.scheduledTasks.add(new OneWayGateActionOne(client, room, item));
+                        }
+                    });
 
-                    Emulator.getThreading().run(new OneWayGateActionOne(client, room, this), 500);
                 }
             }
         }

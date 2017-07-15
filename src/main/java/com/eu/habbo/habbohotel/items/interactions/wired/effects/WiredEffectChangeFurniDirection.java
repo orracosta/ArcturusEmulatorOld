@@ -1,20 +1,26 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
+import gnu.trove.map.hash.THashMap;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 
 public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.MOVE_DIRECTION;
+
+    private final THashMap<HabboItem, Integer> items = new THashMap<HabboItem, Integer>();
 
     public WiredEffectChangeFurniDirection(ResultSet set, Item baseItem) throws SQLException
     {
@@ -48,6 +54,7 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
     public void onPickUp()
     {
         this.setDelay(0);
+        this.items.clear();
     }
 
     @Override
@@ -61,7 +68,11 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
     {
         message.appendBoolean(false);
         message.appendInt(Emulator.getConfig().getInt("hotel.wired.furni.selection.count"));
-        message.appendInt(0);
+        message.appendInt(this.items.size());
+        for (Map.Entry<HabboItem, Integer> item : this.items.entrySet())
+        {
+            message.appendInt(item.getKey().getId());
+        }
         message.appendInt(this.getBaseItem().getSpriteId());
         message.appendInt(this.getId());
         message.appendString("");
@@ -73,7 +84,7 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
     }
 
     @Override
-    public boolean saveData(ClientMessage packet)
+    public boolean saveData(ClientMessage packet, GameClient gameClient)
     {
         return false;
     }

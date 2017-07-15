@@ -1,5 +1,7 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
+import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.habbohotel.games.Game;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
@@ -39,7 +41,12 @@ public class WiredEffectLeaveTeam extends InteractionWiredEffect
         {
             if(habbo.getHabboInfo().getCurrentGame() != null)
             {
-                room.getGame(habbo.getHabboInfo().getCurrentGame()).removeHabbo(habbo);
+                Game game = room.getGame(habbo.getHabboInfo().getCurrentGame());
+
+                if (game != null)
+                {
+                    game.removeHabbo(habbo);
+                }
             }
         }
         return true;
@@ -111,7 +118,7 @@ public class WiredEffectLeaveTeam extends InteractionWiredEffect
     }
 
     @Override
-    public boolean saveData(ClientMessage packet)
+    public boolean saveData(ClientMessage packet, GameClient gameClient)
     {
         packet.readInt();
         packet.readString();

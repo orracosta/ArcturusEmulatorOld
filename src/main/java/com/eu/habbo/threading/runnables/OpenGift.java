@@ -3,6 +3,7 @@ package com.eu.habbo.threading.runnables;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionGift;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
@@ -41,6 +42,11 @@ public class OpenGift implements Runnable
 
             this.habbo.getInventory().getItemsComponent().addItems(((InteractionGift) this.item).items);
 
+            RoomTile tile = this.room.getLayout().getTile(this.item.getX(), this.item.getY());
+            if (tile != null)
+            {
+                this.room.updateTile(tile);
+            }
             this.habbo.getClient().sendResponse(new AddHabboItemComposer(((InteractionGift) this.item).items));
             this.habbo.getClient().sendResponse(new InventoryRefreshComposer());
 

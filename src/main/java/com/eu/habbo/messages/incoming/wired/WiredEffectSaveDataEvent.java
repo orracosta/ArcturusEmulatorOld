@@ -33,10 +33,9 @@ public class WiredEffectSaveDataEvent extends MessageHandler
                         return;
                     }
 
-                    if(effect.saveData(this.packet))
+                    if(effect.saveData(this.packet, this.client))
                     {
                         this.client.sendResponse(new WiredSavedComposer());
-
                         effect.needsUpdate(true);
                         Emulator.getThreading().run(effect);
                     }

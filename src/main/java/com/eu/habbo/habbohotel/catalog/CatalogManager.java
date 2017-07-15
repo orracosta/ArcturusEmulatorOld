@@ -1072,6 +1072,7 @@ public class CatalogManager
                 limitedStack = limitedConfiguration.getTotalSet();
             }
 
+            List<String> badges = new ArrayList<>();
             boolean badgeFound = false;
             for(int i = 0; i < amount; i++)
             {
@@ -1172,15 +1173,10 @@ public class CatalogManager
                                     {
                                         if(!habbo.getInventory().getBadgesComponent().hasBadge(baseItem.getName()))
                                         {
-                                            HabboBadge badge = new HabboBadge(0, baseItem.getName(), 0, habbo);
-                                            Emulator.getThreading().run(badge);
-                                            habbo.getInventory().getBadgesComponent().addBadge(badge);
-                                            habbo.getClient().sendResponse(new AddUserBadgeComposer(badge));
-                                            THashMap<String, String> keys = new THashMap<String, String>();
-                                            keys.put("display", "BUBBLE");
-                                            keys.put("image", "${image.library.url}album1584/" + badge.getCode() + ".gif");
-                                            keys.put("message", Emulator.getTexts().getValue("commands.generic.cmd_badge.received"));
-                                            habbo.getClient().sendResponse(new BubbleAlertComposer(BubbleAlertKeys.RECEIVED_BADGE.key, keys));
+                                            if (!badges.contains(baseItem.getName()))
+                                            {
+                                                badges.add(baseItem.getName());
+                                            }
                                         }
                                         else
                                         {
@@ -1265,7 +1261,7 @@ public class CatalogManager
                 }
             }
 
-            UserCatalogItemPurchasedEvent purchasedEvent = new UserCatalogItemPurchasedEvent(habbo, item, itemsList, totalCredits, totalPoints);
+            UserCatalogItemPurchasedEvent purchasedEvent = new UserCatalogItemPurchasedEvent(habbo, item, itemsList, totalCredits, totalPoints, badges);
             Emulator.getPluginManager().fireEvent(purchasedEvent);
 
             if(!free && !habbo.getClient().getHabbo().hasPermission("acc_infinite_credits"))
@@ -1291,22 +1287,36 @@ public class CatalogManager
                 habbo.getClient().sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.ALREADY_HAVE_BADGE));
             }
 
-
-            habbo.getClient().sendResponse(new AddHabboItemComposer(purchasedEvent.itemsList));
-            habbo.getClient().getHabbo().getInventory().getItemsComponent().addItems(purchasedEvent.itemsList);
-            habbo.getClient().sendResponse(new PurchaseOKComposer(purchasedEvent.catalogItem));
-            habbo.getClient().sendResponse(new InventoryRefreshComposer());
-
-            Emulator.getPluginManager().fireEvent(new UserCatalogFurnitureBoughtEvent(habbo, item, purchasedEvent.itemsList));
-
-            if (limitedConfiguration != null)
+            if (purchasedEvent.itemsList != null)
             {
-                for (HabboItem itm : purchasedEvent.itemsList)
+                habbo.getClient().sendResponse(new AddHabboItemComposer(purchasedEvent.itemsList));
+                habbo.getClient().getHabbo().getInventory().getItemsComponent().addItems(purchasedEvent.itemsList);
+                habbo.getClient().sendResponse(new PurchaseOKComposer(purchasedEvent.catalogItem));
+                habbo.getClient().sendResponse(new InventoryRefreshComposer());
+
+                Emulator.getPluginManager().fireEvent(new UserCatalogFurnitureBoughtEvent(habbo, item, purchasedEvent.itemsList));
+
+                if (limitedConfiguration != null)
                 {
-                    limitedConfiguration.limitedSold(item.getId(), habbo, itm);
+                    for (HabboItem itm : purchasedEvent.itemsList)
+                    {
+                        limitedConfiguration.limitedSold(item.getId(), habbo, itm);
+                    }
                 }
             }
 
+            for (String b : purchasedEvent.badges)
+            {
+                HabboBadge badge = new HabboBadge(0, b, 0, habbo);
+                Emulator.getThreading().run(badge);
+                habbo.getInventory().getBadgesComponent().addBadge(badge);
+                habbo.getClient().sendResponse(new AddUserBadgeComposer(badge));
+                THashMap<String, String> keys = new THashMap<String, String>();
+                keys.put("display", "BUBBLE");
+                keys.put("image", "${image.library.url}album1584/" + badge.getCode() + ".gif");
+                keys.put("message", Emulator.getTexts().getValue("commands.generic.cmd_badge.received"));
+                habbo.getClient().sendResponse(new BubbleAlertComposer(BubbleAlertKeys.RECEIVED_BADGE.key, keys));
+            }
             habbo.getClient().getHabbo().getHabboStats().addPurchase(purchasedEvent.catalogItem);
 
         }

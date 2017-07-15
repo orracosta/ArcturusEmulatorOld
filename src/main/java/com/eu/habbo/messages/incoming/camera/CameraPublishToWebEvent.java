@@ -3,6 +3,7 @@ package com.eu.habbo.messages.incoming.camera;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.camera.CameraPublishWaitMessageComposer;
+import com.eu.habbo.messages.outgoing.camera.CameraPurchaseSuccesfullComposer;
 import com.eu.habbo.plugin.events.users.UserPublishPictureEvent;
 
 import java.sql.Connection;
@@ -55,7 +56,7 @@ public class CameraPublishToWebEvent extends MessageHandler
                         }
                     }
 
-                    this.client.sendResponse(new CameraPublishWaitMessageComposer(published, wait, this.client.getHabbo().getHabboInfo().getPhotoURL()));
+                    this.client.sendResponse(new CameraPublishWaitMessageComposer(published, wait, published ? this.client.getHabbo().getHabboInfo().getPhotoURL() : ""));
                 }
             }
         }

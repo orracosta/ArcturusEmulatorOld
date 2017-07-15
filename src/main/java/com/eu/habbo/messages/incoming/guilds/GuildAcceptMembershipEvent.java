@@ -71,5 +71,9 @@ public class GuildAcceptMembershipEvent extends MessageHandler
                 }
             }
         }
+        else
+        {
+            Emulator.getGameEnvironment().getGuildManager().joinGuild(guild, this.client, userId, true);
+        }
     }
 }

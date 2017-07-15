@@ -49,7 +49,7 @@ public class InteractionTeleport extends HabboItem
     @Override
     public boolean isWalkable()
     {
-        return true;
+        return false;
     }
 
     @Override
@@ -61,6 +61,9 @@ public class InteractionTeleport extends HabboItem
         {
             client.getHabbo().getRoomUnit().cmdTeleport = false;
             RoomTile loc = room.getLayout().getTile(this.getX(), this.getY());
+            if (loc.equals(room.getLayout().getDoorTile()))
+                return;
+
             if (!this.getBaseItem().allowWalk())
             {
                 loc = HabboItem.getSquareInFront(room.getLayout(), this);

@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
@@ -43,7 +44,7 @@ public class WiredEffectResetTimers extends InteractionWiredEffect
         message.appendInt(this.getId());
         message.appendString("");
         message.appendInt(1);
-        message.appendInt(0);
+        message.appendInt(this.getDelay());
         message.appendInt(0);
         message.appendInt(this.getType().code);
         message.appendInt(this.getDelay());
@@ -76,12 +77,13 @@ public class WiredEffectResetTimers extends InteractionWiredEffect
     }
 
     @Override
-    public boolean saveData(ClientMessage packet)
+    public boolean saveData(ClientMessage packet, GameClient gameClient)
     {
         packet.readInt();
         packet.readString();
         packet.readInt();
         this.delay = packet.readInt();
+        this.setDelay(this.delay);
 
         return true;
     }
@@ -112,8 +114,9 @@ public class WiredEffectResetTimers extends InteractionWiredEffect
         }
         catch (Exception e)
         {
-            Emulator.getLogging().logErrorLine(e);
         }
+
+        this.setDelay(this.delay);
     }
 
     @Override

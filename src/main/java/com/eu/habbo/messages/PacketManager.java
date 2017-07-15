@@ -262,6 +262,7 @@ public class PacketManager
         this.registerHandler(Incoming.ActivateEffectEvent,                      ActivateEffectEvent.class);
         this.registerHandler(Incoming.EnableEffectEvent,                        EnableEffectEvent.class);
         this.registerHandler(Incoming.UserActivityEvent,                        UserActivityEvent.class);
+        this.registerHandler(Incoming.UserNuxEvent,                             UserNuxEvent.class);
     }
 
     private void registerNavigator() throws Exception
@@ -288,6 +289,9 @@ public class PacketManager
         this.registerHandler(Incoming.RequestNavigatorSettingsEvent,            RequestNavigatorSettingsEvent.class);
         this.registerHandler(Incoming.SaveWindowSettingsEvent,                  SaveWindowSettingsEvent.class);
         this.registerHandler(Incoming.RequestDeleteRoomEvent,                   RequestDeleteRoomEvent.class);
+        this.registerHandler(Incoming.NavigatorCategoryListModeEvent,           NavigatorCategoryListModeEvent.class);
+        this.registerHandler(Incoming.NavigatorCollapseCategoryEvent,           NavigatorCollapseCategoryEvent.class);
+        this.registerHandler(Incoming.NavigatorUncollapseCategoryEvent,         NavigatorUncollapseCategoryEvent.class);
     }
 
     private void registerHotelview() throws Exception

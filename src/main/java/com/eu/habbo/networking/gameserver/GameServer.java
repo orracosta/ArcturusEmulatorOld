@@ -61,14 +61,6 @@ public class GameServer
                 ch.pipeline().addLast("logger", new LoggingHandler());
                 ch.pipeline().addLast("bytesDecoder", new GameByteDecoder());
                 ch.pipeline().addLast(gameMessageHandler);
-                ch.pipeline().addLast("idlehandler", new IdleStateHandler(0, 0, 60)
-                {
-                    @Override
-                    protected void channelIdle(ChannelHandlerContext ctx, IdleStateEvent evt) throws Exception
-                    {
-                        ctx.channel().close();
-                    }
-                });
             }
         });
         this.serverBootstrap.childOption(ChannelOption.TCP_NODELAY, true);

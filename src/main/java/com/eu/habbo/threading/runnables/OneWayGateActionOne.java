@@ -45,7 +45,7 @@ public class OneWayGateActionOne implements Runnable
             }
             else if (this.client.getHabbo().getRoomUnit().getX() == this.oneWayGate.getX() && this.client.getHabbo().getRoomUnit().getY() == this.oneWayGate.getY())
             {
-                Emulator.getThreading().run(this, 500);
+                room.scheduledTasks.add(this);
             }
             else
             {

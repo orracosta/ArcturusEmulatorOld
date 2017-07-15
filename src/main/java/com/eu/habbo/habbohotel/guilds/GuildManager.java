@@ -637,7 +637,7 @@ public class GuildManager
     {
         List<Guild> guilds = new ArrayList<Guild>();
 
-        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT guild_id FROM guilds_members WHERE user_id = ? ORDER BY member_since ASC"))
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT guild_id FROM guilds_members WHERE user_id = ? AND level_id <= 2 ORDER BY member_since ASC"))
         {
             statement.setInt(1, userId);
             try (ResultSet set = statement.executeQuery())

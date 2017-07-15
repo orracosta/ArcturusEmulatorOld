@@ -129,12 +129,13 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     private volatile int tradeMode;
     private volatile boolean moveDiagonally;
 
-    private final TIntObjectMap<Habbo> currentHabbos;
-    private final TIntObjectMap<Habbo> habboQueue;
-    private final TIntObjectMap<Bot> currentBots;
-    private final TIntObjectMap<AbstractPet> currentPets;
+    private final TIntObjectMap<Habbo> currentHabbos = TCollections.synchronizedMap(new TIntObjectHashMap<Habbo>());
+    private final TIntObjectMap<Habbo>  habboQueue = TCollections.synchronizedMap(new TIntObjectHashMap<Habbo>());
+    private final TIntObjectMap<Bot>  currentBots = TCollections.synchronizedMap(new TIntObjectHashMap<Bot>());
+    private final TIntObjectMap<AbstractPet>  currentPets = TCollections.synchronizedMap(new TIntObjectHashMap<AbstractPet>());
     private final THashSet<RoomTrade> activeTrades;
     private final TIntArrayList rights;
+    private final TIntArrayList traxItems;
     private final TIntIntHashMap mutedHabbos;
     private final TIntObjectHashMap<RoomBan> bannedHabbos;
     private final ConcurrentSet<Game> games;
@@ -159,7 +160,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     private RoomSpecialTypes roomSpecialTypes;
 
     private final Object loadLock = new Object();
-    private final Object roomUnitLock = new Object();
+    public final Object roomUnitLock = new Object();
 
     //Use appropriately. Could potentially cause memory leaks when used incorrectly.
     public volatile boolean preventUnloading = false;
@@ -167,6 +168,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public THashMap<Integer, TIntArrayList> waterTiles;
     public final ConcurrentHashMap<RoomTile, THashSet<HabboItem>> tileCache = new ConcurrentHashMap<RoomTile, THashSet<HabboItem>>();
     public final ConcurrentSet<ServerMessage> scheduledComposers = new ConcurrentSet<ServerMessage>();
+    public final ConcurrentSet<Runnable> scheduledTasks = new ConcurrentSet<Runnable>();
     public String wordQuiz = "";
     public int noVotes = 0;
     public int yesVotes = 0;
@@ -214,6 +216,19 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.promoted = set.getString("promoted").equals("1");
 
         this.bannedHabbos = new TIntObjectHashMap<RoomBan>();
+        this.traxItems = new TIntArrayList();
+
+//        for (String itemString : set.getString("trax").split(";"))
+//        {
+//            try
+//            {
+//                this.traxItems.add(Integer.valueOf(itemString));
+//            }
+//            catch (Exception e)
+//            {
+//                Emulator.getLogging().logErrorLine(e);
+//            }
+//        }
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM room_promotions WHERE room_id = ? AND end_timestamp > ? LIMIT 1"))
         {
             if(this.promoted)
@@ -240,10 +255,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.preLoaded = true;
         this.allowBotsWalk = true;
         this.allowEffects = true;
-        this.currentHabbos = TCollections.synchronizedMap(new TIntObjectHashMap<Habbo>());
-        this.habboQueue = TCollections.synchronizedMap(new TIntObjectHashMap<Habbo>());
-        this.currentBots = TCollections.synchronizedMap(new TIntObjectHashMap<Bot>());
-        this.currentPets = TCollections.synchronizedMap(new TIntObjectHashMap<AbstractPet>());
         this.furniOwnerNames = TCollections.synchronizedMap(new TIntObjectHashMap<String>());
         this.furniOwnerCount = TCollections.synchronizedMap(new TIntIntHashMap());
         this.roomItems = TCollections.synchronizedMap(new TIntObjectHashMap<HabboItem>());
@@ -274,10 +285,13 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
             try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
             {
-                this.unitCounter = 0;
-                this.currentHabbos.clear();
-                this.currentPets.clear();
-                this.currentBots.clear();
+                synchronized ( this.roomUnitLock)
+                {
+                    this.unitCounter = 0;
+                    this.currentHabbos.clear();
+                    this.currentPets.clear();
+                    this.currentBots.clear();
+                }
 
                 this.roomSpecialTypes = new RoomSpecialTypes();
 
@@ -575,9 +589,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             for (RoomTile tile : tiles)
             {
                 this.tileCache.remove(tile);
-                tile.setStackHeight(this.getStackHeight(tile.x, tile.y, false));
-                tile.setWalkable(this.canWalkAt(tile));
             }
+        }
+        for (RoomTile tile : tiles)
+        {
+            tile.setStackHeight(this.getStackHeight(tile.x, tile.y, false));
+            tile.setWalkable(this.canWalkAt(tile));
         }
 
         this.sendComposer(new UpdateStackHeightComposer(tiles).compose());
@@ -777,7 +794,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void pickupPetsForHabbo(Habbo habbo)
     {
-        THashSet<Pet> pets = new THashSet<Pet>();
+        THashSet<AbstractPet> pets = new THashSet<AbstractPet>();
 
         synchronized (this.currentPets)
         {
@@ -785,36 +802,36 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             {
                 if(pet.getUserId() == habbo.getHabboInfo().getId())
                 {
-                    if(pet instanceof Pet)
-                    {
-                        pet.setRoom(null);
-                        pet.needsUpdate = true;
-                        pets.add((Pet) pet);
-
-                        habbo.
-                                getInventory().
-                                getPetsComponent().
-                                addPet((Pet) pet);
-
-                        this.sendComposer(new RoomUserRemoveComposer(pet.getRoomUnit()).compose());
-                        habbo.getClient().sendResponse(new AddPetComposer(pet));
-                    }
+                    pets.add((Pet) pet);
                 }
             }
         }
 
-        for(Pet p : pets)
+        for(AbstractPet pet : pets)
         {
-            this.currentPets.remove(p.getId());
+            if(pet instanceof Pet)
+            {
+                pet.setRoom(null);
+                pet.needsUpdate = true;
+
+                habbo.
+                        getInventory().
+                        getPetsComponent().
+                        addPet((Pet) pet);
+
+                this.sendComposer(new RoomUserRemoveComposer(pet.getRoomUnit()).compose());
+                habbo.getClient().sendResponse(new AddPetComposer(pet));
+            }
+            this.currentPets.remove(pet.getId());
         }
 
     }
 
     public void startTrade(Habbo userOne, Habbo userTwo)
     {
+        RoomTrade trade = new RoomTrade(userOne, userTwo, this);
         synchronized (this.activeTrades)
         {
-            RoomTrade trade = new RoomTrade(userOne, userTwo, this);
             this.activeTrades.add(trade);
         }
     }
@@ -845,70 +862,70 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public synchronized void dispose()
     {
-        if(this.preventUnloading)
-            return;
-
-        if (Emulator.getPluginManager().fireEvent(new RoomUnloadingEvent(this)).isCancelled())
-            return;
-
-        try
+        synchronized (this.loadLock)
         {
-            this.loaded = false;
+            if (this.preventUnloading)
+                return;
 
-            this.tileCache.clear();
+            if (Emulator.getPluginManager().fireEvent(new RoomUnloadingEvent(this)).isCancelled())
+                return;
 
-            synchronized (this.mutedHabbos)
+            try
             {
-                this.mutedHabbos.clear();
-            }
+                this.loaded = false;
 
-            for (Game game : this.games)
-            {
-                game.stop();
-            }
-            this.games.clear();
+                this.tileCache.clear();
 
-            synchronized (this.roomItems)
-            {
-                TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
-
-                for (int i = this.roomItems.size(); i-- > 0; )
+                synchronized (this.mutedHabbos)
                 {
-                    try
-                    {
-                        iterator.advance();
+                    this.mutedHabbos.clear();
+                }
 
-                        if (iterator.value().needsUpdate())
-                            Emulator.getThreading().run(iterator.value());
-                    }
-                    catch (NoSuchElementException e)
+                for (Game game : this.games)
+                {
+                    game.stop();
+                }
+                this.games.clear();
+
+                synchronized (this.roomItems)
+                {
+                    TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
+
+                    for (int i = this.roomItems.size(); i-- > 0; )
                     {
-                        Emulator.getLogging().logErrorLine(e);
-                        break;
+                        try
+                        {
+                            iterator.advance();
+
+                            if (iterator.value().needsUpdate())
+                                Emulator.getThreading().run(iterator.value());
+                        }
+                        catch (NoSuchElementException e)
+                        {
+                            break;
+                        }
                     }
                 }
-            }
 
-            if (this.roomSpecialTypes != null)
-            {
-                this.roomSpecialTypes.dispose();
-            }
+                if (this.roomSpecialTypes != null)
+                {
+                    this.roomSpecialTypes.dispose();
+                }
 
-            synchronized (this.roomItems)
-            {
-                this.roomItems.clear();
-            }
+                synchronized (this.roomItems)
+                {
+                    this.roomItems.clear();
+                }
 
-            synchronized (this.habboQueue)
-            {
-                this.habboQueue.clear();
-            }
+                synchronized (this.habboQueue)
+                {
+                    this.habboQueue.clear();
+                }
 
-            //   SAFE
+                //   SAFE
 
-            Object[] habbosToDispose = this.currentHabbos.valueCollection().toArray();
-            synchronized (this.currentHabbos)
-            {
+
+                Object[] habbosToDispose = this.currentHabbos.valueCollection().toArray();
                 for (Object h : habbosToDispose)
                 {
                     Emulator.getGameEnvironment().getRoomManager().leaveRoom((Habbo) h, this);
@@ -917,59 +934,59 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 this.sendComposer(new HotelViewComposer().compose());
 
                 this.currentHabbos.clear();
-            }
 
 
-            TIntObjectIterator<Bot> botIterator = this.currentBots.iterator();
+                TIntObjectIterator<Bot> botIterator = this.currentBots.iterator();
 
-            for (int i = this.currentBots.size(); i-- > 0; )
-            {
-                try
+                for (int i = this.currentBots.size(); i-- > 0; )
                 {
-                    botIterator.advance();
-                    botIterator.value().needsUpdate(true);
-                    Emulator.getThreading().run(botIterator.value());
-                }
-                catch (NoSuchElementException e)
-                {
-                    Emulator.getLogging().logErrorLine(e);
-                    break;
-                }
-            }
-
-            TIntObjectIterator<AbstractPet> petIterator = this.currentPets.iterator();
-            for (int i = this.currentPets.size(); i-- > 0; )
-            {
-                try
-                {
-                    petIterator.advance();
-                    if (petIterator.value() instanceof Pet)
+                    try
                     {
-                        petIterator.value().needsUpdate = true;
-                        Emulator.getThreading().run(petIterator.value());
+                        botIterator.advance();
+                        botIterator.value().needsUpdate(true);
+                        Emulator.getThreading().run(botIterator.value());
+                    }
+                    catch (NoSuchElementException e)
+                    {
+                        Emulator.getLogging().logErrorLine(e);
+                        break;
                     }
                 }
-                catch (NoSuchElementException e)
+
+                TIntObjectIterator<AbstractPet> petIterator = this.currentPets.iterator();
+                for (int i = this.currentPets.size(); i-- > 0; )
                 {
-                    Emulator.getLogging().logErrorLine(e);
-                    break;
+                    try
+                    {
+                        petIterator.advance();
+                        if (petIterator.value() instanceof Pet)
+                        {
+                            petIterator.value().needsUpdate = true;
+                            Emulator.getThreading().run(petIterator.value());
+                        }
+                    }
+                    catch (NoSuchElementException e)
+                    {
+                        Emulator.getLogging().logErrorLine(e);
+                        break;
+                    }
                 }
+
+                this.currentBots.clear();
+                this.currentPets.clear();
+            }
+            catch (Exception e)
+            {
+                Emulator.getLogging().logErrorLine(e);
             }
 
-            this.currentBots.clear();
-            this.currentPets.clear();
+            this.wordQuiz = "";
+            this.yesVotes = 0;
+            this.noVotes = 0;
+            this.updateDatabaseUserCount();
+            this.preLoaded = true;
+            this.layout = null;
         }
-        catch (Exception e)
-        {
-            Emulator.getLogging().logErrorLine(e);
-        }
-
-        this.wordQuiz = "";
-        this.yesVotes = 0;
-        this.noVotes = 0;
-        this.updateDatabaseUserCount();
-        this.preLoaded = true;
-        this.layout = null;
 
         Emulator.getPluginManager().fireEvent(new RoomUnloadedEvent(this));
     }
@@ -1112,8 +1129,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 }
                 catch (Exception e)
                 {
-                    sendComposer(new GenericAlertComposer("Room Crashed.").compose());
-                    dispose();
+//                    sendComposer(new GenericAlertComposer("Room Crashed.").compose());
+//                    dispose();
                     Emulator.getLogging().logErrorLine(e);
                 }
             }
@@ -1190,10 +1207,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE rooms SET users = ? WHERE id = ? LIMIT 1"))
         {
-            synchronized (this.currentHabbos)
-            {
-                statement.setInt(1, this.currentHabbos.size());
-            }
+            statement.setInt(1, this.currentHabbos.size());
             statement.setInt(2, this.id);
             statement.executeUpdate();
         }
@@ -1203,13 +1217,18 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
     }
 
-    private synchronized void cycle()
+    private void cycle()
     {
-        boolean foundRightHolder = false;
+        final boolean[] foundRightHolder = {false};
 
         this.tileCache.clear();
 
-        if(this.loaded)
+        boolean loaded = false;
+        synchronized (this.loadLock)
+        {
+            loaded = this.loaded;
+        }
+        if(loaded)
         {
             if (!this.currentHabbos.isEmpty())
             {
@@ -1217,169 +1236,184 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                 THashSet<RoomUnit> updatedUnit = new THashSet<RoomUnit>();
                 ArrayList<Habbo> toKick = new ArrayList<Habbo>();
-                synchronized (this.currentHabbos)
+
+                TIntObjectIterator<Habbo> habboIterator = this.currentHabbos.iterator();
+                final Room room = this;
+
+                final long millis = System.currentTimeMillis();
+                int handItemTime = Emulator.getConfig().getInt("hotel.rooms.handitem.time");
+                for (int i = this.currentHabbos.size(); i-- > 0; )
                 {
-                    for (TIntObjectIterator<Habbo> iter = this.currentHabbos.iterator(); iter.hasNext();)
-                    //for (Habbo habbo : this.currentHabbos.valueCollection())
+                    final Habbo habbo;
+                    try
                     {
-                        iter.advance();
-                        Habbo habbo = iter.value();
-                        if (!foundRightHolder)
-                        {
-                            foundRightHolder = hasRights(habbo) || guildRightLevel(habbo) > 2;
-                        }
+                        habboIterator.advance();
+                        habbo = habboIterator.value();
+                    }
+                    catch (Exception e)
+                    {
+                        break;
+                    }
 
-                        if (habbo.getRoomUnit().getHandItem() > 0 && System.currentTimeMillis() - habbo.getRoomUnit().getHandItemTimestamp() > (Emulator.getConfig().getInt("hotel.rooms.handitem.time") * 1000))
-                        {
-                            this.giveHandItem(habbo, 0);
-                        }
+                    if (!foundRightHolder[0])
+                    {
+                        foundRightHolder[0] = habbo.getRoomUnit().getRightsLevel() != RoomRightLevels.NONE;
+                    }
 
-                        if (Emulator.getConfig().getBoolean("hotel.rooms.auto.idle"))
+                    if (habbo.getRoomUnit().getHandItem() > 0 && millis - habbo.getRoomUnit().getHandItemTimestamp() > (handItemTime * 1000))
+                    {
+                        giveHandItem(habbo, 0);
+                    }
+
+                    if (Emulator.getConfig().getBoolean("hotel.rooms.auto.idle"))
+                    {
+                        if (!habbo.getRoomUnit().isIdle())
                         {
-                            if (!habbo.getRoomUnit().isIdle())
+                            habbo.getRoomUnit().increaseIdleTimer();
+
+                            if (habbo.getRoomUnit().isIdle())
                             {
-                                habbo.getRoomUnit().increaseIdleTimer();
+                                sendComposer(new RoomUnitIdleComposer(habbo.getRoomUnit()).compose());
+                            }
+                        }
+                        else
+                        {
+                            habbo.getRoomUnit().increaseIdleTimer();
 
-                                if (habbo.getRoomUnit().isIdle())
+                            if (!isOwner(habbo) && habbo.getRoomUnit().getIdleTimer() >= Emulator.getConfig().getInt("hotel.roomuser.idle.cycles.kick", 480))
+                            {
+                                UserExitRoomEvent event = new UserExitRoomEvent(habbo, UserExitRoomEvent.UserExitRoomReason.KICKED_IDLE);
+                                Emulator.getPluginManager().fireEvent(event);
+
+                                if (!event.isCancelled())
                                 {
-                                    this.sendComposer(new RoomUnitIdleComposer(habbo.getRoomUnit()).compose());
+                                    toKick.add(habbo);
+                                }
+                            }
+                        }
+                    }
+
+                    if (!habbo.hasPermission("acc_chat_no_flood") && habbo.getRoomUnit().talkCounter > 0)
+                    {
+                        //if (habbo.getRoomUnit().talkTimeOut == 0 || currentTimestamp - habbo.getRoomUnit().talkTimeOut < 0)
+                        {
+                            habbo.getRoomUnit().talkCounter--;
+
+                            if (habbo.getRoomUnit().talkCounter > 3)
+                            {
+                                if (chatProtection == 0)
+                                {
+                                    floodMuteHabbo(habbo, 30);
+                                }
+                                else if (chatProtection == 1 && habbo.getRoomUnit().talkCounter > 4)
+                                {
+                                    floodMuteHabbo(habbo, 30);
+                                }
+                                else if (chatProtection == 2 && habbo.getRoomUnit().talkCounter > 5)
+                                {
+                                    floodMuteHabbo(habbo, 30);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        habbo.getRoomUnit().talkCounter = 0;
+                    }
+
+                    if (habbo.getRoomUnit().getStatus().containsKey("sign"))
+                    {
+                        sendComposer(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
+                        habbo.getRoomUnit().getStatus().remove("sign");
+                    }
+
+                    if (habbo.getRoomUnit().isWalking() && habbo.getRoomUnit().getPath() != null && !habbo.getRoomUnit().getPath().isEmpty())
+                    {
+                        if (!habbo.getRoomUnit().cycle(room))
+                        {
+                            updatedUnit.add(habbo.getRoomUnit());
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        if (habbo.getRoomUnit().getStatus().containsKey("mv") && !habbo.getRoomUnit().animateWalk)
+                        {
+                            habbo.getRoomUnit().getStatus().remove("mv");
+
+                            updatedUnit.add(habbo.getRoomUnit());
+                        }
+
+                        if (!habbo.getRoomUnit().isWalking() && !habbo.getRoomUnit().cmdSit)
+                        {
+                            HabboItem topItem = getLowestChair(habbo.getRoomUnit().getX(), habbo.getRoomUnit().getY());
+
+                            if (topItem == null || !topItem.getBaseItem().allowSit())
+                            {
+                                if (habbo.getRoomUnit().getStatus().containsKey("sit"))
+                                {
+                                    habbo.getRoomUnit().getStatus().remove("sit");
+                                    updatedUnit.add(habbo.getRoomUnit());
                                 }
                             }
                             else
                             {
-                                habbo.getRoomUnit().increaseIdleTimer();
-
-                                if (!this.isOwner(habbo) && habbo.getRoomUnit().getIdleTimer() >= Emulator.getConfig().getInt("hotel.roomuser.idle.cycles.kick", 480))
-                                {
-                                    UserExitRoomEvent event = new UserExitRoomEvent(habbo, UserExitRoomEvent.UserExitRoomReason.KICKED_IDLE);
-                                    Emulator.getPluginManager().fireEvent(event);
-
-                                    if (!event.isCancelled())
-                                    {
-                                        toKick.add(habbo);
-                                    }
-                                }
-                            }
-                        }
-
-                        if (!habbo.hasPermission("acc_chat_no_flood") && habbo.getRoomUnit().talkCounter > 0)
-                        {
-                            //if (habbo.getRoomUnit().talkTimeOut == 0 || currentTimestamp - habbo.getRoomUnit().talkTimeOut < 0)
-                            {
-                                habbo.getRoomUnit().talkCounter--;
-
-                                if (habbo.getRoomUnit().talkCounter > 3)
-                                {
-                                    if (this.chatProtection == 0)
-                                    {
-                                        this.floodMuteHabbo(habbo, 30);
-                                    }
-                                    else if (this.chatProtection == 1 && habbo.getRoomUnit().talkCounter > 4)
-                                    {
-                                        this.floodMuteHabbo(habbo, 30);
-                                    }
-                                    else if (this.chatProtection == 2 && habbo.getRoomUnit().talkCounter > 5)
-                                    {
-                                        this.floodMuteHabbo(habbo, 30);
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            habbo.getRoomUnit().talkCounter = 0;
-                        }
-
-                        if (habbo.getRoomUnit().getStatus().containsKey("sign"))
-                        {
-                            this.sendComposer(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
-                            habbo.getRoomUnit().getStatus().remove("sign");
-                        }
-
-                        if (habbo.getRoomUnit().isWalking() && habbo.getRoomUnit().getPath() != null && !habbo.getRoomUnit().getPath().isEmpty())
-                        {
-                            if (!habbo.getRoomUnit().cycle(this))
-                            {
-                                updatedUnit.add(habbo.getRoomUnit());
-                                continue;
-                            }
-                        }
-                        else
-                        {
-                            if (habbo.getRoomUnit().getStatus().containsKey("mv") && !habbo.getRoomUnit().animateWalk)
-                            {
-                                habbo.getRoomUnit().getStatus().remove("mv");
-
-                                updatedUnit.add(habbo.getRoomUnit());
-                            }
-
-                            if (!habbo.getRoomUnit().isWalking() && !habbo.getRoomUnit().cmdSit)
-                            {
-                                HabboItem topItem = this.getLowestChair(habbo.getRoomUnit().getX(), habbo.getRoomUnit().getY());
-
-                                if (topItem == null || !topItem.getBaseItem().allowSit())
-                                {
-                                    if (habbo.getRoomUnit().getStatus().containsKey("sit"))
-                                    {
-                                        habbo.getRoomUnit().getStatus().remove("sit");
-                                        updatedUnit.add(habbo.getRoomUnit());
-                                    }
-                                } else
-                                {
-                                    if (!habbo.getRoomUnit().getStatus().containsKey("sit") || habbo.getRoomUnit().sitUpdate)
-                                    {
-                                        if (topItem instanceof InteractionMultiHeight)
-                                        {
-                                            habbo.getRoomUnit().getStatus().put("sit", Item.getCurrentHeight(topItem) * 1.0D + "");
-                                        } else
-                                        {
-                                            habbo.getRoomUnit().getStatus().put("sit", topItem.getBaseItem().getHeight() * 1.0D + "");
-                                        }
-                                        habbo.getRoomUnit().setZ(topItem.getZ());
-                                        habbo.getRoomUnit().setRotation(RoomUserRotation.values()[topItem.getRotation()]);
-                                        updatedUnit.add(habbo.getRoomUnit());
-                                        habbo.getRoomUnit().sitUpdate = false;
-                                    }
-                                }
-                            }
-                        }
-
-                        if (!habbo.getRoomUnit().isWalking() && !habbo.getRoomUnit().cmdLay)
-                        {
-                            HabboItem topItem = this.getTopItemAt(habbo.getRoomUnit().getX(), habbo.getRoomUnit().getY());
-
-                            if (topItem == null || !topItem.getBaseItem().allowLay())
-                            {
-                                if (habbo.getRoomUnit().getStatus().containsKey("lay"))
-                                {
-                                    habbo.getRoomUnit().getStatus().remove("lay");
-                                    updatedUnit.add(habbo.getRoomUnit());
-                                }
-                            } else
-                            {
-                                if (!habbo.getRoomUnit().getStatus().containsKey("lay"))
+                                if (!habbo.getRoomUnit().getStatus().containsKey("sit") || habbo.getRoomUnit().sitUpdate)
                                 {
                                     if (topItem instanceof InteractionMultiHeight)
                                     {
-                                        habbo.getRoomUnit().getStatus().put("lay", Item.getCurrentHeight(topItem) * 1.0D + "");
-                                    } else
-                                    {
-                                        habbo.getRoomUnit().getStatus().put("lay", topItem.getBaseItem().getHeight() * 1.0D + "");
-                                    }
-                                    habbo.getRoomUnit().setRotation(RoomUserRotation.values()[topItem.getRotation()]);
-
-                                    if (topItem.getRotation() == 0 || topItem.getRotation() == 4)
-                                    {
-                                        habbo.getRoomUnit().setLocation(this.layout.getTile(habbo.getRoomUnit().getX(), topItem.getY()));
-                                        //habbo.getRoomUnit().setOldY(topItem.getY());
+                                        habbo.getRoomUnit().getStatus().put("sit", Item.getCurrentHeight(topItem) * 1.0D + "");
                                     }
                                     else
                                     {
-                                        habbo.getRoomUnit().setLocation(this.layout.getTile(topItem.getX(), habbo.getRoomUnit().getY()));
-                                        //habbo.getRoomUnit().setOldX(topItem.getX());
+                                        habbo.getRoomUnit().getStatus().put("sit", topItem.getBaseItem().getHeight() * 1.0D + "");
                                     }
+                                    habbo.getRoomUnit().setZ(topItem.getZ());
+                                    habbo.getRoomUnit().setRotation(RoomUserRotation.values()[topItem.getRotation()]);
                                     updatedUnit.add(habbo.getRoomUnit());
+                                    habbo.getRoomUnit().sitUpdate = false;
                                 }
+                            }
+                        }
+                    }
+
+                    if (!habbo.getRoomUnit().isWalking() && !habbo.getRoomUnit().cmdLay)
+                    {
+                        HabboItem topItem = getTopItemAt(habbo.getRoomUnit().getX(), habbo.getRoomUnit().getY());
+
+                        if (topItem == null || !topItem.getBaseItem().allowLay())
+                        {
+                            if (habbo.getRoomUnit().getStatus().containsKey("lay"))
+                            {
+                                habbo.getRoomUnit().getStatus().remove("lay");
+                                updatedUnit.add(habbo.getRoomUnit());
+                            }
+                        }
+                        else
+                        {
+                            if (!habbo.getRoomUnit().getStatus().containsKey("lay"))
+                            {
+                                if (topItem instanceof InteractionMultiHeight)
+                                {
+                                    habbo.getRoomUnit().getStatus().put("lay", Item.getCurrentHeight(topItem) * 1.0D + "");
+                                }
+                                else
+                                {
+                                    habbo.getRoomUnit().getStatus().put("lay", topItem.getBaseItem().getHeight() * 1.0D + "");
+                                }
+                                habbo.getRoomUnit().setRotation(RoomUserRotation.values()[topItem.getRotation()]);
+
+                                if (topItem.getRotation() == 0 || topItem.getRotation() == 4)
+                                {
+                                    habbo.getRoomUnit().setLocation(layout.getTile(habbo.getRoomUnit().getX(), topItem.getY()));
+                                    //habbo.getRoomUnit().setOldY(topItem.getY());
+                                }
+                                else
+                                {
+                                    habbo.getRoomUnit().setLocation(layout.getTile(topItem.getX(), habbo.getRoomUnit().getY()));
+                                    //habbo.getRoomUnit().setOldX(topItem.getX());
+                                }
+                                updatedUnit.add(habbo.getRoomUnit());
                             }
                         }
                     }
@@ -1393,128 +1427,132 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     }
                 }
 
-                synchronized (this.currentBots)
+                if (!this.currentBots.isEmpty())
                 {
-                    if (!this.currentBots.isEmpty())
+                    TIntObjectIterator<Bot> botIterator = this.currentBots.iterator();
+                    for (int i = this.currentBots.size(); i-- > 0; )
                     {
-                        TIntObjectIterator<Bot> botIterator = this.currentBots.iterator();
-                        for (int i = this.currentBots.size(); i-- > 0; )
+                        try
                         {
+                            final Bot bot;
                             try
                             {
                                 botIterator.advance();
-                                Bot bot = botIterator.value();
-                                if (!this.allowBotsWalk && bot.getRoomUnit().isWalking())
+                                bot = botIterator.value();
+                            }
+                            catch (Exception e)
+                            {
+                                break;
+                            }
+
+                            if (!this.allowBotsWalk && bot.getRoomUnit().isWalking())
+                            {
+                                bot.getRoomUnit().stopWalking();
+                                updatedUnit.add(bot.getRoomUnit());
+                                continue;
+                            }
+
+                            botIterator.value().cycle(this.allowBotsWalk);
+
+                            if (!bot.getRoomUnit().isWalking())
+                            {
+                                if (bot.getRoomUnit().getStatus().containsKey("mv"))
                                 {
-                                    bot.getRoomUnit().stopWalking();
+                                    bot.getRoomUnit().getStatus().remove("mv");
+
                                     updatedUnit.add(bot.getRoomUnit());
-                                    continue;
                                 }
 
-                                botIterator.value().cycle(this.allowBotsWalk);
-
-                                if (!bot.getRoomUnit().isWalking())
+                                if (!bot.getRoomUnit().isWalking() && !bot.getRoomUnit().cmdSit)
                                 {
-                                    if (bot.getRoomUnit().getStatus().containsKey("mv"))
+                                    HabboItem topItem = this.getLowestChair(bot.getRoomUnit().getX(), bot.getRoomUnit().getY());
+
+                                    if (topItem == null || !topItem.getBaseItem().allowSit())
                                     {
-                                        bot.getRoomUnit().getStatus().remove("mv");
-
-                                        updatedUnit.add(bot.getRoomUnit());
-                                    }
-
-                                    if (!bot.getRoomUnit().isWalking() && !bot.getRoomUnit().cmdSit)
-                                    {
-                                        HabboItem topItem = this.getLowestChair(bot.getRoomUnit().getX(), bot.getRoomUnit().getY());
-
-                                        if (topItem == null || !topItem.getBaseItem().allowSit())
+                                        if (bot.getRoomUnit().getStatus().containsKey("sit"))
                                         {
-                                            if (bot.getRoomUnit().getStatus().containsKey("sit"))
-                                            {
-                                                bot.getRoomUnit().getStatus().remove("sit");
-                                                updatedUnit.add(bot.getRoomUnit());
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (!bot.getRoomUnit().getStatus().containsKey("sit"))
-                                            {
-                                                if (topItem instanceof InteractionMultiHeight)
-                                                {
-                                                    bot.getRoomUnit().getStatus().put("sit", Item.getCurrentHeight(topItem) * 1.0D + "");
-                                                } else
-                                                {
-                                                    bot.getRoomUnit().getStatus().put("sit", topItem.getBaseItem().getHeight() * 1.0D + "");
-                                                }
-                                                bot.getRoomUnit().setRotation(RoomUserRotation.values()[topItem.getRotation()]);
-                                                updatedUnit.add(bot.getRoomUnit());
-                                            }
-                                        }
-                                    }
-                                }
-
-                                if (!bot.getRoomUnit().isWalking() && !bot.getRoomUnit().cmdLay)
-                                {
-                                    HabboItem topItem = this.getTopItemAt(bot.getRoomUnit().getX(), bot.getRoomUnit().getY());
-
-                                    if (topItem == null || !topItem.getBaseItem().allowLay())
-                                    {
-                                        if (bot.getRoomUnit().getStatus().containsKey("lay"))
-                                        {
-                                            bot.getRoomUnit().getStatus().remove("lay");
+                                            bot.getRoomUnit().getStatus().remove("sit");
                                             updatedUnit.add(bot.getRoomUnit());
                                         }
-                                    } else
+                                    }
+                                    else
                                     {
-                                        if (!bot.getRoomUnit().getStatus().containsKey("lay"))
+                                        if (!bot.getRoomUnit().getStatus().containsKey("sit"))
                                         {
                                             if (topItem instanceof InteractionMultiHeight)
                                             {
-                                                bot.getRoomUnit().getStatus().put("lay", Item.getCurrentHeight(topItem) * 1.0D + "");
+                                                bot.getRoomUnit().getStatus().put("sit", Item.getCurrentHeight(topItem) * 1.0D + "");
                                             } else
                                             {
-                                                bot.getRoomUnit().getStatus().put("lay", topItem.getBaseItem().getHeight() * 1.0D + "");
+                                                bot.getRoomUnit().getStatus().put("sit", topItem.getBaseItem().getHeight() * 1.0D + "");
                                             }
                                             bot.getRoomUnit().setRotation(RoomUserRotation.values()[topItem.getRotation()]);
-                                            bot.getRoomUnit().setLocation(this.layout.getTile(topItem.getX(), topItem.getY()));
                                             updatedUnit.add(bot.getRoomUnit());
                                         }
                                     }
                                 }
+                            }
 
-                                if (!botIterator.value().getRoomUnit().cycle(this))
-                                    updatedUnit.add(botIterator.value().getRoomUnit());
+                            if (!bot.getRoomUnit().isWalking() && !bot.getRoomUnit().cmdLay)
+                            {
+                                HabboItem topItem = this.getTopItemAt(bot.getRoomUnit().getX(), bot.getRoomUnit().getY());
+
+                                if (topItem == null || !topItem.getBaseItem().allowLay())
+                                {
+                                    if (bot.getRoomUnit().getStatus().containsKey("lay"))
+                                    {
+                                        bot.getRoomUnit().getStatus().remove("lay");
+                                        updatedUnit.add(bot.getRoomUnit());
+                                    }
+                                } else
+                                {
+                                    if (!bot.getRoomUnit().getStatus().containsKey("lay"))
+                                    {
+                                        if (topItem instanceof InteractionMultiHeight)
+                                        {
+                                            bot.getRoomUnit().getStatus().put("lay", Item.getCurrentHeight(topItem) * 1.0D + "");
+                                        } else
+                                        {
+                                            bot.getRoomUnit().getStatus().put("lay", topItem.getBaseItem().getHeight() * 1.0D + "");
+                                        }
+                                        bot.getRoomUnit().setRotation(RoomUserRotation.values()[topItem.getRotation()]);
+                                        bot.getRoomUnit().setLocation(this.layout.getTile(topItem.getX(), topItem.getY()));
+                                        updatedUnit.add(bot.getRoomUnit());
+                                    }
+                                }
+                            }
+
+                            if (!botIterator.value().getRoomUnit().cycle(this))
+                                updatedUnit.add(botIterator.value().getRoomUnit());
+                        }
+                        catch (NoSuchElementException e)
+                        {
+                            Emulator.getLogging().logErrorLine(e);
+                            break;
+                        }
+                    }
+                }
+
+                if (!this.currentPets.isEmpty())
+                {
+                    if (this.allowBotsWalk)
+                    {
+                        TIntObjectIterator<AbstractPet> petIterator = this.currentPets.iterator();
+                        for (int i = this.currentPets.size(); i-- > 0; )
+                        {
+                            try
+                            {
+                                petIterator.advance();
                             }
                             catch (NoSuchElementException e)
                             {
                                 Emulator.getLogging().logErrorLine(e);
                                 break;
                             }
-                        }
-                    }
-                }
 
-                synchronized (this.currentPets)
-                {
-                    if (!this.currentPets.isEmpty())
-                    {
-                        if (this.allowBotsWalk)
-                        {
-                            TIntObjectIterator<AbstractPet> petIterator = this.currentPets.iterator();
-                            for (int i = this.currentPets.size(); i-- > 0; )
+                            AbstractPet pet = petIterator.value();
+                            if (pet instanceof Pet)
                             {
-                                try
-                                {
-                                    petIterator.advance();
-                                }
-                                catch (NoSuchElementException e)
-                                {
-                                    Emulator.getLogging().logErrorLine(e);
-                                    break;
-                                }
-
-                                AbstractPet pet = petIterator.value();
-                                if (pet instanceof Pet)
-                                {
 //                                    if (pet.getRoomUnit().getStatus().containsKey("mv") && pet.getRoomUnit().isAtGoal())
 //                                    {
 //                                        System.out.println("Clearing Pet Walking Animation...");
@@ -1522,35 +1560,35 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 //                                        updatedUnit.add(pet.getRoomUnit());
 //                                    }
 
-                                    if (!pet.getRoomUnit().isWalking() && pet.getRoomUnit().getStatus().containsKey("mv"))
-                                    {
-                                        pet.getRoomUnit().getStatus().remove("mv");
-                                        updatedUnit.add(pet.getRoomUnit());
-                                        continue;
-                                    }
+                                if (!pet.getRoomUnit().isWalking() && pet.getRoomUnit().getStatus().containsKey("mv"))
+                                {
+                                    pet.getRoomUnit().getStatus().remove("mv");
+                                    updatedUnit.add(pet.getRoomUnit());
+                                    continue;
+                                }
 
-                                    ((Pet) pet).cycle();
+                                ((Pet) pet).cycle();
 
-                                    if (((Pet) pet).packetUpdate)
-                                    {
-                                        updatedUnit.add(pet.getRoomUnit());
-                                        ((Pet) pet).packetUpdate = false;
-                                    }
+                                if (((Pet) pet).packetUpdate)
+                                {
+                                    updatedUnit.add(pet.getRoomUnit());
+                                    ((Pet) pet).packetUpdate = false;
+                                }
 
-                                    if (((Pet) pet).getTask() == PetTasks.RIDE)
+                                if (((Pet) pet).getTask() == PetTasks.RIDE)
+                                {
+                                    if (pet instanceof HorsePet)
                                     {
-                                        if (pet instanceof HorsePet)
+                                        HorsePet horse = ((HorsePet) pet);
+                                        if (horse.getRider() != null)
                                         {
-                                            HorsePet horse = ((HorsePet) pet);
-                                            if (horse.getRider() != null)
+                                            if (!horse.getRider().getRoomUnit().getCurrentLocation().equals(horse.getRoomUnit().getCurrentLocation()))
                                             {
-                                                if (!horse.getRider().getRoomUnit().getCurrentLocation().equals(horse.getRoomUnit().getCurrentLocation()))
-                                                {
-                                                    horse.getRoomUnit().setGoalLocation(horse.getRider().getRoomUnit().getCurrentLocation());
-                                                }
+                                                horse.getRoomUnit().setGoalLocation(horse.getRider().getRoomUnit().getCurrentLocation());
                                             }
                                         }
                                     }
+                                }
 
 //                                    if (pet.getRoomUnit().isAtGoal())
 //                                    {
@@ -1561,21 +1599,21 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 //                                        }
 //                                    }
 
-                                    if (pet.getRoomUnit().isWalking() && pet.getRoomUnit().getPath().size() == 1 && pet.getRoomUnit().getStatus().containsKey("gst"))
-                                    {
-                                        pet.getRoomUnit().getStatus().remove("gst");
-                                        updatedUnit.add(pet.getRoomUnit());
-                                    }
+                                if (pet.getRoomUnit().isWalking() && pet.getRoomUnit().getPath().size() == 1 && pet.getRoomUnit().getStatus().containsKey("gst"))
+                                {
+                                    pet.getRoomUnit().getStatus().remove("gst");
+                                    updatedUnit.add(pet.getRoomUnit());
+                                }
 
-                                    if (!pet.getRoomUnit().cycle(this))
-                                    {
-                                        updatedUnit.add(pet.getRoomUnit());
-                                    }
+                                if (!pet.getRoomUnit().cycle(this))
+                                {
+                                    updatedUnit.add(pet.getRoomUnit());
                                 }
                             }
                         }
                     }
                 }
+
 
                 if(!updatedUnit.isEmpty())
                 {
@@ -1588,149 +1626,164 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                     THashSet<MessageComposer> messages = new THashSet<MessageComposer>();
 
-                    for (InteractionRoller roller : this.roomSpecialTypes.getRollers())
+                    this.roomSpecialTypes.getRollers().forEachValue(new TObjectProcedure<InteractionRoller>()
                     {
-                        //if(Double.compare(roller.getZ(), this.layout.getHeightAtSquare(roller.getX(), roller.getY())) != 0)
-                       // {
-                        //    continue;
-                        //}
-
-                        HabboItem newRoller = null;
-
-                        THashSet<Habbo> habbosOnRoller = this.getHabbosAt(roller.getX(), roller.getY());
-                        THashSet<HabboItem> itemsOnRoller = this.getItemsAt(roller.getX(), roller.getY(), roller.getZ() + roller.getBaseItem().getHeight());
-
-                        itemsOnRoller.remove(roller);
-
-                        if (habbosOnRoller.isEmpty())
+                        @Override
+                        public boolean execute(InteractionRoller roller)
                         {
-                            if (itemsOnRoller.isEmpty())
-                                continue;
-                        }
+                            //if(Double.compare(roller.getZ(), this.layout.getHeightAtSquare(roller.getX(), roller.getY())) != 0)
+                            // {
+                            //    continue;
+                            //}
 
-                        RoomTile roomTile = this.layout.getTileInFront(this.layout.getTile(roller.getX(), roller.getY()), roller.getRotation());
+                            HabboItem newRoller = null;
 
-                        if (roomTile == null)
-                            continue;
+                            THashSet<Habbo> habbosOnRoller = getHabbosAt(roller.getX(), roller.getY());
+                            THashSet<HabboItem> itemsOnRoller = getItemsAt(roller.getX(), roller.getY(), roller.getZ() + roller.getBaseItem().getHeight());
 
-                        if(!this.layout.tileExists(roomTile.x, roomTile.y))
-                            continue;
+                            itemsOnRoller.remove(roller);
 
-                        if (roomTile.state == RoomTileState.BLOCKED)
-                            continue;
-
-                        if (!this.getHabbosAt(roomTile.x, roomTile.y).isEmpty())
-                            continue;
-
-                        THashSet<HabboItem> itemsNewTile = this.getItemsAt(roomTile.x, roomTile.y);
-
-                        HabboItem topItem = this.getTopItemAt(roomTile.x, roomTile.y);
-
-                        boolean allowUsers = true;
-                        boolean allowFurniture = true;
-                        boolean stackContainsRoller = false;
-
-                        for (HabboItem item : itemsNewTile)
-                        {
-                            if (!(item.getBaseItem().allowWalk() || item.getBaseItem().allowSit()) && !(item instanceof InteractionGate))
+                            if (habbosOnRoller.isEmpty())
                             {
-                                allowUsers = false;
+                                if (itemsOnRoller.isEmpty())
+                                    return true;
                             }
-                            if (item instanceof InteractionRoller)
-                            {
-                                newRoller = item;
-                                stackContainsRoller = true;
 
-                                if (itemsNewTile.size() > 1 && item != topItem)
+                            RoomTile roomTile = layout.getTileInFront(layout.getTile(roller.getX(), roller.getY()), roller.getRotation());
+
+                            if (roomTile == null)
+                                return true;
+
+                            if(!layout.tileExists(roomTile.x, roomTile.y))
+                                return true;
+
+                            if (roomTile.state == RoomTileState.BLOCKED)
+                                return true;
+
+                            if (!getHabbosAt(roomTile.x, roomTile.y).isEmpty())
+                                return true;
+
+                            THashSet<HabboItem> itemsNewTile = getItemsAt(roomTile.x, roomTile.y);
+                            itemsNewTile.removeAll(itemsOnRoller);
+                            List<HabboItem> toRemove = new ArrayList<HabboItem>();
+                            for (HabboItem item : itemsOnRoller)
+                            {
+                                if (item.getX() != roller.getX() || item.getY() != roller.getY())
+                                {
+                                    toRemove.add(item);
+                                }
+                            }
+                            itemsOnRoller.removeAll(toRemove);
+                            HabboItem topItem = getTopItemAt(roomTile.x, roomTile.y);
+
+                            boolean allowUsers = true;
+                            boolean allowFurniture = true;
+                            boolean stackContainsRoller = false;
+
+                            for (HabboItem item : itemsNewTile)
+                            {
+                                if (!(item.getBaseItem().allowWalk() || item.getBaseItem().allowSit()) && !(item instanceof InteractionGate))
                                 {
                                     allowUsers = false;
+                                }
+                                if (item instanceof InteractionRoller)
+                                {
+                                    newRoller = item;
+                                    stackContainsRoller = true;
+
+                                    if (itemsNewTile.size() > 1 && item != topItem)
+                                    {
+                                        allowUsers = false;
+                                        allowFurniture = false;
+                                        continue;
+                                    }
+
+                                    break;
+                                }
+                                else
+                                {
                                     allowFurniture = false;
-                                    continue;
+                                }
+                            }
+
+                            double zOffset = 0;
+                            if(newRoller == null)
+                            {
+                                zOffset = -roller.getBaseItem().getHeight();
+                            }
+
+                            if (allowFurniture || (!allowFurniture && !stackContainsRoller))
+                            {
+                                /**
+                                 * Redneck way to prevent checking ifregistered each time.
+                                 */
+                                Event furnitureRolledEvent = null;
+
+                                if (Emulator.getPluginManager().isRegistered(FurnitureRolledEvent.class, true))
+                                {
+                                    furnitureRolledEvent = new FurnitureRolledEvent(null, null, null);
                                 }
 
-                                break;
-                            }
-                            else
-                            {
-                                allowFurniture = false;
-                            }
-                        }
-
-                        double zOffset = 0;
-                        if(newRoller == null)
-                        {
-                            zOffset = -roller.getBaseItem().getHeight();
-                        }
-
-                        if (allowFurniture || (!allowFurniture && !stackContainsRoller))
-                        {
-                            /**
-                             * Redneck way to prevent checking ifregistered each time.
-                             */
-                            Event furnitureRolledEvent = null;
-
-                            if (Emulator.getPluginManager().isRegistered(FurnitureRolledEvent.class, true))
-                            {
-                                furnitureRolledEvent = new FurnitureRolledEvent(null, null, null);
-                            }
-
-                            if (newRoller == null || topItem == newRoller)
-                            {
-                                for (HabboItem item : itemsOnRoller)
+                                //if (newRoller == null || topItem == newRoller)
                                 {
-                                    if (item.getX() == roller.getX() && item.getY() == roller.getY())
+                                    for (HabboItem item : itemsOnRoller)
                                     {
-                                        if (furnitureRolledEvent != null)
+                                        //if (item.getX() == roller.getX() && item.getY() == roller.getY())
                                         {
-                                            furnitureRolledEvent = new FurnitureRolledEvent(item, roller, roomTile);
-                                            Emulator.getPluginManager().fireEvent(furnitureRolledEvent);
+                                            if (furnitureRolledEvent != null)
+                                            {
+                                                furnitureRolledEvent = new FurnitureRolledEvent(item, roller, roomTile);
+                                                Emulator.getPluginManager().fireEvent(furnitureRolledEvent);
 
-                                            if (furnitureRolledEvent.isCancelled())
+                                                if (furnitureRolledEvent.isCancelled())
+                                                    continue;
+                                            }
+
+                                            if (item != roller)
+                                                messages.add(new FloorItemOnRollerComposer(item, roller, roomTile, zOffset, room));
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (allowUsers)
+                            {
+                                Event roomUserRolledEvent = null;
+
+                                if(Emulator.getPluginManager().isRegistered(UserRolledEvent.class, true))
+                                {
+                                    roomUserRolledEvent = new UserRolledEvent(null, null, null);
+                                }
+
+                                for (Habbo habbo : habbosOnRoller)
+                                {
+                                    if (stackContainsRoller && !allowFurniture && !(topItem != null && topItem.isWalkable()))
+                                        continue;
+
+                                    if (!habbo.getRoomUnit().getStatus().containsKey("mv"))
+                                    {
+                                        RoomTile tile = roomTile.copy();
+                                        tile.setStackHeight(habbo.getRoomUnit().getZ() + zOffset);
+                                        if(roomUserRolledEvent != null)
+                                        {
+                                            roomUserRolledEvent = new UserRolledEvent(habbo, roller, tile);
+                                            Emulator.getPluginManager().fireEvent(roomUserRolledEvent);
+
+                                            if(roomUserRolledEvent.isCancelled())
                                                 continue;
                                         }
 
-                                        if (item != roller)
-                                            messages.add(new FloorItemOnRollerComposer(item, roller, roomTile, zOffset, this));
-                                    }
-                                }
-                            }
-                        }
-
-                        if (allowUsers)
-                        {
-                            Event roomUserRolledEvent = null;
-
-                            if(Emulator.getPluginManager().isRegistered(UserRolledEvent.class, true))
-                            {
-                                roomUserRolledEvent = new UserRolledEvent(null, null, null);
-                            }
-
-                            for (Habbo habbo : habbosOnRoller)
-                            {
-                                if (stackContainsRoller && !allowFurniture && !(topItem != null && topItem.isWalkable()))
-                                    continue;
-
-                                RoomTile tile = roomTile.copy();
-                                tile.setStackHeight(habbo.getRoomUnit().getZ() + zOffset);
-                                if (!habbo.getRoomUnit().getStatus().containsKey("mv"))
-                                {
-                                    if(roomUserRolledEvent != null)
-                                    {
-                                        roomUserRolledEvent = new UserRolledEvent(habbo, roller, tile);
-                                        Emulator.getPluginManager().fireEvent(roomUserRolledEvent);
-
-                                        if(roomUserRolledEvent.isCancelled())
-                                            continue;
+                                        messages.add(new RoomUnitOnRollerComposer(habbo.getRoomUnit(), roller, tile, room));
                                     }
 
-                                    messages.add(new RoomUnitOnRollerComposer(habbo.getRoomUnit(), roller, tile, this));
+                                    if(habbo.getRoomUnit().getStatus().containsKey("sit"))
+                                        habbo.getRoomUnit().sitUpdate = true;
                                 }
-
-                                if(habbo.getRoomUnit().getStatus().containsKey("sit"))
-                                    habbo.getRoomUnit().sitUpdate = true;
                             }
+
+                            return true;
                         }
-                    }
+                    });
 
                     for (MessageComposer message : messages)
                     {
@@ -1763,7 +1816,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         synchronized (this.habboQueue)
         {
-            if (!this.habboQueue.isEmpty() && !foundRightHolder)
+            if (!this.habboQueue.isEmpty() && !foundRightHolder[0])
             {
                 this.habboQueue.forEachEntry(new TIntObjectProcedure<Habbo>()
                 {
@@ -1794,6 +1847,16 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             }
 
             this.scheduledComposers.clear();
+        }
+
+        synchronized (this.scheduledTasks)
+        {
+            for (Runnable runnable : this.scheduledTasks)
+            {
+                Emulator.getThreading().run(runnable);
+            }
+
+            this.scheduledTasks.clear();
         }
     }
 
@@ -2601,6 +2664,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             {
                 this.roomSpecialTypes.addUndefined(item);
             }
+            else if (item instanceof InteractionWiredHighscore)
+            {
+                this.roomSpecialTypes.addUndefined(item);
+            }
         }
     }
 
@@ -2793,6 +2860,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 {
                     this.roomSpecialTypes.removeUndefined(item);
                 }
+                else if (item instanceof InteractionWiredHighscore)
+                {
+                    this.roomSpecialTypes.removeUndefined(item);
+                }
             }
         }
     }
@@ -2800,25 +2871,23 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public THashSet<HabboItem> getFloorItems()
     {
         THashSet<HabboItem> items = new THashSet<HabboItem>();
-        synchronized (this.roomItems)
+        TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
+
+        for (int i = this.roomItems.size(); i-- > 0; )
         {
-            TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
-
-            for (int i = this.roomItems.size(); i-- > 0; )
+            try
             {
-                try
-                {
-                    iterator.advance();
-
-                    if (iterator.value().getBaseItem().getType() == FurnitureType.FLOOR)
-                        items.add(iterator.value());
-                }
-                catch (NoSuchElementException e)
-                {
-                    Emulator.getLogging().logErrorLine(e);
-                    break;
-                }
+                iterator.advance();
             }
+            catch (Exception e)
+            {
+                break;
+            }
+
+            if (iterator.value().getBaseItem().getType() == FurnitureType.FLOOR)
+                items.add(iterator.value());
+
+        }
 
         /*items.addAll(this.roomSpecialTypes.getBanzaiTeleporters());
         items.addAll(this.roomSpecialTypes.getNests());
@@ -2830,34 +2899,31 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         items.addAll(this.roomSpecialTypes.getConditions());*/
 
             return items;
-        }
+
     }
 
     public THashSet<HabboItem> getWallItems()
     {
         THashSet<HabboItem> items = new THashSet<HabboItem>();
-        synchronized (this.roomItems)
+        TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
+
+        for (int i = this.roomItems.size(); i-- > 0; )
         {
-            TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
-
-            for (int i = this.roomItems.size(); i-- > 0; )
+            try
             {
-                try
-                {
-                    iterator.advance();
-
-                    if (iterator.value().getBaseItem().getType() == FurnitureType.WALL)
-                        items.add(iterator.value());
-                }
-                catch (NoSuchElementException e)
-                {
-                    Emulator.getLogging().logErrorLine(e);
-                    break;
-                }
+                iterator.advance();
+            }
+            catch (Exception e)
+            {
+                break;
             }
 
-            return items;
+            if (iterator.value().getBaseItem().getType() == FurnitureType.WALL)
+                items.add(iterator.value());
         }
+
+        return items;
+
     }
 
     public void addHabbo(Habbo habbo)
@@ -2904,7 +2970,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             }
         }
 
-        synchronized (this.currentHabbos)
+        synchronized (this.roomUnitLock)
         {
             this.currentHabbos.remove(habbo.getHabboInfo().getId());
         }
@@ -3094,25 +3160,21 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public boolean hasHabbosAt(int x, int y)
     {
-        synchronized (this.currentHabbos)
+        TIntObjectIterator<Habbo> habboIterator = this.currentHabbos.iterator();
+
+        for (int i = this.currentHabbos.size(); i-- > 0; )
         {
-            TIntObjectIterator<Habbo> habboIterator = this.currentHabbos.iterator();
-
-            for (int i = this.currentHabbos.size(); i-- > 0; )
+            try
             {
-                try
-                {
-                    habboIterator.advance();
-                }
-                catch (NoSuchElementException e)
-                {
-                    Emulator.getLogging().logErrorLine(e);
-                    break;
-                }
-
-                if (habboIterator.value().getRoomUnit().getX() == x && habboIterator.value().getRoomUnit().getY() == y)
-                    return true;
+                habboIterator.advance();
             }
+            catch (NoSuchElementException e)
+            {
+                break;
+            }
+
+            if (habboIterator.value().getRoomUnit().getX() == x && habboIterator.value().getRoomUnit().getY() == y)
+                return true;
         }
         return false;
     }
@@ -3502,95 +3564,70 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
     }
 
-    public boolean hasItemsAt(int x, int y)
-    {
-        synchronized (this.roomItems)
-        {
-            TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
-
-            for (int i = this.roomItems.size(); i-- > 0; )
-            {
-                try
-                {
-                    iterator.advance();
-
-                    if(iterator.value().getX() == x &&
-                       iterator.value().getY() == y)
-                    {
-                        return true;
-                    }
-                }
-                catch (NoSuchElementException e)
-                {
-                    return false;
-                }
-            }
-        }
-
-        return false;
-    }
-
     public THashSet<RoomTile> getLockedTiles()
     {
         THashSet<RoomTile> lockedTiles = new THashSet<RoomTile>();
 
-        synchronized (this.roomItems)
+        TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
+
+        for (int i = this.roomItems.size(); i-- > 0; )
         {
-            TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
-
-            for (int i = this.roomItems.size(); i-- > 0; )
+            HabboItem item;
+            try
             {
-                try
+                iterator.advance();
+                item = iterator.value();
+            }
+            catch (Exception e)
+            {
+                break;
+            }
+
+            if (item.getBaseItem().getType() != FurnitureType.FLOOR)
+                continue;
+
+            boolean found = false;
+            for(RoomTile tile : lockedTiles)
+            {
+                if(tile.x == item.getX() &&
+                   tile.y == item.getY())
                 {
-                    iterator.advance();
+                    found = true;
+                    break;
+                }
+            }
 
-                    boolean found = false;
-                    for(RoomTile tile : lockedTiles)
+            if(!found)
+            {
+                if(item.getRotation() == 0 || item.getRotation() == 4)
+                {
+                    for(short y = 0; y < item.getBaseItem().getLength(); y++)
                     {
-                        if(tile.x == iterator.value().getX() &&
-                           tile.y == iterator.value().getY())
+                        for(short x = 0; x < item.getBaseItem().getWidth(); x++)
                         {
-                            found = true;
-                            break;
-                        }
-                    }
+                            RoomTile tile = this.layout.getTile((short) (item.getX() + x), (short) (item.getY() + y));
 
-                    if(!found)
-                    {
-                        if(iterator.value().getRotation() == 0 || iterator.value().getRotation() == 4)
-                        {
-                            for(short y = 0; y < iterator.value().getBaseItem().getLength(); y++)
+                            if (tile != null)
                             {
-                                for(short x = 0; x < iterator.value().getBaseItem().getWidth(); x++)
-                                {
-                                    RoomTile tile = this.layout.getTile((short) (iterator.value().getX() + x), (short) (iterator.value().getY() + y));
-
-                                    if (tile != null)
-                                    {
-                                        lockedTiles.add(tile);
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            for(short y = 0; y < iterator.value().getBaseItem().getWidth(); y++)
-                            {
-                                for(short x = 0; x < iterator.value().getBaseItem().getLength(); x++)
-                                {
-                                    RoomTile tile = this.layout.getTile((short) (iterator.value().getX() + x), (short) (iterator.value().getY() + y));
-
-                                    if (tile != null)
-                                    {
-                                        lockedTiles.add(tile);
-                                    }
-                                }
+                                lockedTiles.add(tile);
                             }
                         }
                     }
                 }
-                catch (NoSuchElementException e)
+                else
                 {
+                    for(short y = 0; y < item.getBaseItem().getWidth(); y++)
+                    {
+                        for(short x = 0; x < item.getBaseItem().getLength(); x++)
+                        {
+                            RoomTile tile = this.layout.getTile((short) (item.getX() + x), (short) (item.getY() + y));
+
+                            if (tile != null)
+                            {
+                                lockedTiles.add(tile);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -3622,43 +3659,42 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         THashSet<HabboItem> items = new THashSet<HabboItem>();
 
-        synchronized (this.roomItems)
+        TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
+
+        for (int i = this.roomItems.size(); i-- > 0; )
         {
-            TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
-
-            for (int i = this.roomItems.size(); i-- > 0; )
+            HabboItem item;
+            try
             {
-                try
+                iterator.advance();
+                item = iterator.value();
+            }
+            catch (Exception e)
+            {
+                break;
+            }
+
+            if (item.getBaseItem().getType() != FurnitureType.FLOOR)
+                continue;
+
+            if (item.getX() == tile.x && item.getY() == tile.y)
+            {
+                items.add(item);
+            }
+            else
+            {
+                if (item.getBaseItem().getWidth() <= 1 && item.getBaseItem().getLength() <= 1)
                 {
-                    iterator.advance();
+                    continue;
+                }
 
-                    HabboItem item = iterator.value();
-
-                    if (item.getX() == tile.x && item.getY() == tile.y)
+                THashSet<RoomTile> tiles = this.getLayout().getTilesAt(this.layout.getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
+                for (RoomTile t : tiles)
+                {
+                    if ((t.x == tile.x) && (t.y == tile.y) && (!items.contains(item)))
                     {
                         items.add(item);
                     }
-                    else
-                    {
-                        if (item.getBaseItem().getWidth() <= 1 && item.getBaseItem().getLength() <= 1)
-                        {
-                            continue;
-                        }
-
-                        THashSet<RoomTile> tiles = this.getLayout().getTilesAt(this.layout.getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
-                        for (RoomTile t : tiles)
-                        {
-                            if ((t.x == tile.x) && (t.y == tile.y) && (!items.contains(item)))
-                            {
-                                items.add(item);
-                            }
-                        }
-                    }
-                }
-                catch (NoSuchElementException e)
-                {
-                    Emulator.getLogging().logErrorLine(e);
-                    break;
                 }
             }
         }
@@ -3744,60 +3780,56 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         HabboItem item = null;
 
-        synchronized (this.roomItems)
+        TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
+
+        for (int i = this.roomItems.size(); i-- > 0; )
         {
-            TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
-
-            for (int i = this.roomItems.size(); i-- > 0; )
+            HabboItem habboItem;
+            try
             {
-                try
+                iterator.advance();
+                habboItem = iterator.value();
+            }
+            catch (Exception e)
+            {
+                break;
+            }
+
+            if (habboItem.getBaseItem().getType() != FurnitureType.FLOOR)
+                continue;
+
+            if (exclude != null)
+            {
+                if (exclude == habboItem)
+                    continue;
+            }
+
+            if (habboItem.getX() == x && habboItem.getY() == y)
+            {
+                if (item == null || (habboItem.getZ() + Item.getCurrentHeight(habboItem)) > (item.getZ() + Item.getCurrentHeight(item)))
                 {
-                    iterator.advance();
-
-                    HabboItem habboItem = iterator.value();
-
-                    if (habboItem.getBaseItem().getType() != FurnitureType.FLOOR)
-                        continue;
-
-                    if (exclude != null)
-                    {
-                        if (exclude == habboItem)
-                            continue;
-                    }
-
-                    if (habboItem.getX() == x && habboItem.getY() == y)
-                    {
-                        if (item == null || (habboItem.getZ() + Item.getCurrentHeight(habboItem)) > (item.getZ() + Item.getCurrentHeight(item)))
-                        {
-                            item = habboItem;
-                        }
-                    } else
-                    {
-                        if (habboItem.getBaseItem().getWidth() <= 1 && habboItem.getBaseItem().getLength() <= 1)
-                        {
-                            continue;
-                        }
-
-                        THashSet<RoomTile> tiles = this.layout.getTilesAt(
-                                this.layout.getTile(habboItem.getX(), habboItem.getY()),
-                                habboItem.getBaseItem().getWidth(),
-                                habboItem.getBaseItem().getLength(),
-                                habboItem.getRotation());
-
-                        for (RoomTile tile : tiles)
-                        {
-                            if (((tile.x == x) && (tile.y == y)))
-                            {
-                                if (item == null || item.getZ() < habboItem.getZ())
-                                    item = habboItem;
-                            }
-                        }
-                    }
+                    item = habboItem;
                 }
-                catch (NoSuchElementException e)
+            } else
+            {
+                if (habboItem.getBaseItem().getWidth() <= 1 && habboItem.getBaseItem().getLength() <= 1)
                 {
-                    Emulator.getLogging().logErrorLine(e);
-                    break;
+                    continue;
+                }
+
+                THashSet<RoomTile> tiles = this.layout.getTilesAt(
+                        this.layout.getTile(habboItem.getX(), habboItem.getY()),
+                        habboItem.getBaseItem().getWidth(),
+                        habboItem.getBaseItem().getLength(),
+                        habboItem.getRotation());
+
+                for (RoomTile tile : tiles)
+                {
+                    if (((tile.x == x) && (tile.y == y)))
+                    {
+                        if (item == null || item.getZ() < habboItem.getZ())
+                            item = habboItem;
+                    }
                 }
             }
         }
@@ -4118,6 +4150,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     boolean canLayAt(THashSet<HabboItem> items)
     {
+        if (items.isEmpty())
+            return true;
+
         HabboItem topItem = null;
 
         for(HabboItem item : items)
@@ -4332,7 +4367,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public boolean hasRights(Habbo habbo)
     {
-        return isOwner(habbo) || this.rights.contains(habbo.getHabboInfo().getId());
+        return isOwner(habbo) || this.rights.contains(habbo.getHabboInfo().getId()) || habbo.getRoomUnit().getRightsLevel() != RoomRightLevels.NONE;
     }
 
     public void giveRights(Habbo habbo)
@@ -4456,14 +4491,14 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public void refreshRightsForHabbo(Habbo habbo)
     {
         HabboItem item;
+        RoomRightLevels flatCtrl = RoomRightLevels.NONE;
         if (!habbo.getHabboStats().canRentSpace())
         {
             item = this.getHabboItem(habbo.getHabboStats().getRentedItemId());
 
             if (item != null)
             {
-                habbo.getClient().sendResponse(new RoomRightsComposer(RoomRightLevels.GUILD_ADMIN));
-                habbo.getRoomUnit().getStatus().put("flatctrl", RoomRightLevels.GUILD_ADMIN.level + "");
+                flatCtrl = RoomRightLevels.GUILD_ADMIN;
                 return;
             }
         }
@@ -4471,21 +4506,16 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         if (habbo.hasPermission("acc_anyroomowner"))
         {
             habbo.getClient().sendResponse(new RoomOwnerComposer());
-            habbo.getClient().sendResponse(new RoomRightsComposer(RoomRightLevels.MODERATOR));
-            habbo.getRoomUnit().getStatus().put("flatctrl", RoomRightLevels.MODERATOR.level + "");
-            habbo.getClient().sendResponse(new RoomRightsListComposer(this));
+            flatCtrl = RoomRightLevels.MODERATOR;
         }
         else if (this.isOwner(habbo))
         {
             habbo.getClient().sendResponse(new RoomOwnerComposer());
-            habbo.getClient().sendResponse(new RoomRightsComposer(RoomRightLevels.MODERATOR));
-            habbo.getRoomUnit().getStatus().put("flatctrl", RoomRightLevels.MODERATOR.level + "");
-            habbo.getClient().sendResponse(new RoomRightsListComposer(this));
+            flatCtrl = RoomRightLevels.MODERATOR;
         }
         else if (this.hasRights(habbo) && !this.hasGuild())
         {
-            habbo.getClient().sendResponse(new RoomRightsComposer(RoomRightLevels.RIGHTS));
-            habbo.getRoomUnit().getStatus().put("flatctrl", RoomRightLevels.RIGHTS.level + "");
+            flatCtrl = RoomRightLevels.RIGHTS;
         }
         else if (this.hasGuild())
         {
@@ -4493,24 +4523,22 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
             if(level == 3)
             {
-                habbo.getClient().sendResponse(new RoomRightsComposer(RoomRightLevels.GUILD_ADMIN));
-                habbo.getRoomUnit().getStatus().put("flatctrl", RoomRightLevels.GUILD_ADMIN.level + "");
+                flatCtrl = RoomRightLevels.GUILD_ADMIN;
             }
             else if(level == 2)
             {
-                habbo.getClient().sendResponse(new RoomRightsComposer(RoomRightLevels.GUILD_RIGHTS));
-                habbo.getRoomUnit().getStatus().put("flatctrl", RoomRightLevels.GUILD_RIGHTS.level + "");
-            }
-            else
-            {
-                habbo.getClient().sendResponse(new RoomRightsComposer(RoomRightLevels.NONE));
-                habbo.getRoomUnit().getStatus().put("flatctrl", RoomRightLevels.NONE.level + "");
+                flatCtrl = RoomRightLevels.GUILD_RIGHTS;
             }
         }
-        else
+
+
+        habbo.getClient().sendResponse(new RoomRightsComposer(flatCtrl));
+        habbo.getRoomUnit().getStatus().put("flatctrl", flatCtrl.level + "");
+        habbo.getRoomUnit().setRightsLevel(flatCtrl);
+
+        if (flatCtrl.equals(RoomRightLevels.MODERATOR))
         {
-            habbo.getClient().sendResponse(new RoomRightsComposer(RoomRightLevels.NONE));
-            habbo.getRoomUnit().getStatus().put("flatctrl", RoomRightLevels.NONE.level + "");
+            habbo.getClient().sendResponse(new RoomRightsListComposer(this));
         }
     }
 
@@ -4664,27 +4692,23 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         THashSet<HabboItem> items = new THashSet<HabboItem>();
 
-        synchronized (this.roomItems)
+        TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
+
+        for (int i = this.roomItems.size(); i-- > 0; )
         {
-            TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
-
-            for (int i = this.roomItems.size(); i-- > 0; )
+            try
             {
-                try
-                {
-                    iterator.advance();
+                iterator.advance();
+            }
+            catch (Exception e)
+            {
+                break;
+            }
 
-                    if (iterator.value().getUserId() == userId)
-                    {
-                        items.add(iterator.value());
-                        iterator.value().setRoomId(0);
-                    }
-                }
-                catch (NoSuchElementException e)
-                {
-                    Emulator.getLogging().logErrorLine(e);
-                    break;
-                }
+            if (iterator.value().getUserId() == userId)
+            {
+                items.add(iterator.value());
+                iterator.value().setRoomId(0);
             }
         }
 
@@ -4731,25 +4755,24 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 try
                 {
                     iterator.advance();
-
-                    if (iterator.value().getUserId() != this.ownerId)
-                        continue;
-
-                    if (habbo != null && iterator.value().getUserId() == habbo.getHabboInfo().getId())
-                        continue;
-
-                    if (userItemsMap.get(iterator.value().getUserId()) == null)
-                    {
-                        userItemsMap.put(iterator.value().getUserId(), new THashSet<HabboItem>());
-                    }
-
-                    userItemsMap.get(iterator.value().getUserId()).add(iterator.value());
                 }
-                catch (NoSuchElementException e)
+                catch (Exception e)
                 {
-                    Emulator.getLogging().logErrorLine(e);
                     break;
                 }
+
+                if (iterator.value().getUserId() != this.ownerId)
+                    continue;
+
+                if (habbo != null && iterator.value().getUserId() == habbo.getHabboInfo().getId())
+                    continue;
+
+                if (userItemsMap.get(iterator.value().getUserId()) == null)
+                {
+                    userItemsMap.put(iterator.value().getUserId(), new THashSet<HabboItem>());
+                }
+
+                userItemsMap.get(iterator.value().getUserId()).add(iterator.value());
             }
         }
 
@@ -4797,29 +4820,25 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         if(guild.getRoomId() == this.id)
         {
-            synchronized (this.roomItems)
+            TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
+
+            for (int i = this.roomItems.size(); i-- > 0; )
             {
-                TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
-
-                for (int i = this.roomItems.size(); i-- > 0; )
+                try
                 {
-                    try
-                    {
-                        iterator.advance();
+                    iterator.advance();
+                }
+                catch (Exception e)
+                {
+                    break;
+                }
 
-                        HabboItem habboItem = iterator.value();
+                HabboItem habboItem = iterator.value();
 
-                        if (habboItem != null && habboItem instanceof InteractionGuildFurni)
-                        {
-                            if (((InteractionGuildFurni) habboItem).getGuildId() == guild.getId())
-                                this.updateItem(habboItem);
-                        }
-                    }
-                    catch (NoSuchElementException e)
-                    {
-                        Emulator.getLogging().logErrorLine(e);
-                        break;
-                    }
+                if (habboItem != null && habboItem instanceof InteractionGuildFurni)
+                {
+                    if (((InteractionGuildFurni) habboItem).getGuildId() == guild.getId())
+                        this.updateItem(habboItem);
                 }
             }
         }
@@ -4919,8 +4938,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         return this.wiredHighscoreData.get(scoreType).get(clearType);
     }
 
-    private void loadWiredHighscoreData(WiredHighscoreScoreType scoreType, WiredHighscoreClearType clearType)
+    public void loadWiredHighscoreData(WiredHighscoreScoreType scoreType, WiredHighscoreClearType clearType)
     {
+        this.wiredHighscoreData.clear();
         THashSet<WiredHighscoreData> wiredData = new THashSet<WiredHighscoreData>();
 
         try
@@ -5024,6 +5044,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             this.wordQuiz = question;
             this.noVotes = 0;
             this.yesVotes = 0;
+            this.userVotes.clear();
             this.wordQuizEnd = Emulator.getIntUnixTimestamp() + (duration / 1000);
             this.sendComposer(new SimplePollStartComposer(duration, question).compose());
         }

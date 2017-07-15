@@ -226,33 +226,36 @@ public class RoomSpecialTypes
      */
     public InteractionRoller getRoller(int itemId)
     {
-        return this.rollers.get(itemId);
+        synchronized (this.rollers)
+        {
+            return this.rollers.get(itemId);
+        }
     }
 
     public void addRoller(InteractionRoller item)
     {
-        this.rollers.put(item.getId(), item);
+        synchronized (this.rollers)
+        {
+            this.rollers.put(item.getId(), item);
+        }
     }
 
     public void removeRoller(InteractionRoller roller)
     {
-        this.rollers.remove(roller.getId());
-    }
-
-    public THashSet<InteractionRoller> getRollers()
-    {
         synchronized (this.rollers)
         {
-            THashSet<InteractionRoller> rollers = new THashSet<InteractionRoller>();
-            rollers.addAll(this.rollers.values());
-
-            return rollers;
+            this.rollers.remove(roller.getId());
         }
     }
 
+    public THashMap<Integer, InteractionRoller> getRollers()
+    {
+        return rollers;
+    }
+
     /*
-        Wired Triggers
-     */
+            Wired Triggers
+         */
     public InteractionWiredTrigger getTrigger(int itemId)
     {
         synchronized (this.wiredTriggers)

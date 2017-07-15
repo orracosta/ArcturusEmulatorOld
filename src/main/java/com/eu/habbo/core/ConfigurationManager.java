@@ -57,8 +57,6 @@ public class ConfigurationManager
             this.properties.load(input);
 
         } catch (IOException ex) {
-
-            ex.printStackTrace();
             Emulator.getLogging().logErrorLine("[CRITICAL] FAILED TO LOAD CONFIG.INI FILE!");
         } finally {
             if (input != null) {
@@ -111,6 +109,23 @@ public class ConfigurationManager
         }
 
         Emulator.getLogging().logStart("Configuration -> loaded! (" + (System.currentTimeMillis() - millis) + " MS)");
+    }
+
+    public void saveToDatabase()
+    {
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE emulator_settings SET `value` = ? WHERE `key` = ? LIMIT 1"))
+        {
+            for (Map.Entry<Object, Object> entry : this.properties.entrySet())
+            {
+                statement.setString(1, entry.getValue().toString());
+                statement.setString(2, entry.getKey().toString());
+                statement.executeUpdate();
+            }
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
     }
 
     /**

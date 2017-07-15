@@ -15,13 +15,13 @@ public class SearchResultList implements ISerialize, Comparable<SearchResultList
     public final String code;
     public final String query;
     public final SearchAction action;
-    public final SearchMode mode;
-    public final boolean hidden;
+    public final ListMode mode;
+    public final DisplayMode hidden;
     public final List<Room> rooms;
     public final boolean filter;
     public final boolean showInvisible;
 
-    public SearchResultList(int order, String code, String query, SearchAction action, SearchMode mode, boolean hidden, List<Room> rooms, boolean filter, boolean showInvisible)
+    public SearchResultList(int order, String code, String query, SearchAction action, ListMode mode, DisplayMode hidden, List<Room> rooms, boolean filter, boolean showInvisible)
     {
         this.order = order;
         this.code = code;
@@ -40,7 +40,7 @@ public class SearchResultList implements ISerialize, Comparable<SearchResultList
         message.appendString(this.code); //Search Code
         message.appendString(this.query); //Text
         message.appendInt(this.action.type); //Action Allowed (0 (Nothing), 1 (More Results), 2 (Go Back))
-        message.appendBoolean(this.hidden); //Closed
+        message.appendBoolean(this.hidden.equals(DisplayMode.COLLAPSED)); //Closed
         message.appendInt(this.mode.type); //Display Mode (0 (List), 1 (Thumbnails), 2 (Thumbnail no choice))
 
         synchronized (this.rooms)
