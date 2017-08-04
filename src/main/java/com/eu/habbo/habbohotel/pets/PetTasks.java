@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.pets;
 
 public enum PetTasks
 {
+    NONE(""),
     FREE(""),
     SIT("sit"),
     DOWN("lay"),

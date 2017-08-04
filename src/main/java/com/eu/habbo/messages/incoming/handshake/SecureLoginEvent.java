@@ -2,6 +2,7 @@ package com.eu.habbo.messages.incoming.handshake;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.habbohotel.users.HabboManager;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.achievements.AchievementListComposer;
@@ -137,7 +138,7 @@ public class SecureLoginEvent extends MessageHandler
                         @Override
                         public void run()
                         {
-                            client.sendResponse(new GenericAlertComposer(Emulator.getConfig().getValue("hotel.welcome.alert.message").replace("%username%", finalHabbo.getHabboInfo().getUsername()).replace("%user%", finalHabbo.getHabboInfo().getUsername())));
+                            client.sendResponse(new GenericAlertComposer(HabboManager.WELCOME_MESSAGE.replace("%username%", finalHabbo.getHabboInfo().getUsername()).replace("%user%", finalHabbo.getHabboInfo().getUsername())));
                         }
                     }, 5000);
                 }

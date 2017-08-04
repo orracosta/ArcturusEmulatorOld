@@ -2,6 +2,7 @@ package com.eu.habbo.messages.incoming.trading;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomTrade;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.trading.TradeStartFailComposer;
@@ -26,7 +27,7 @@ public class TradeStartEvent extends MessageHandler
                     return;
                 }
 
-                if (!Emulator.getConfig().getBoolean("hotel.trading.enabled"))
+                if (!RoomTrade.TRADING_ENABLED)
                 {
                     this.client.sendResponse(new TradeStartFailComposer(TradeStartFailComposer.HOTEL_TRADING_NOT_ALLOWED));
                     return;

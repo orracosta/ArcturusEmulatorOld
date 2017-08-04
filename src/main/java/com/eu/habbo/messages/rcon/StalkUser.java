@@ -7,9 +7,9 @@ import com.google.gson.Gson;
 
 public class StalkUser extends RCONMessage<StalkUser.StalkUserJSON>
 {
-    public StalkUser(Class<StalkUserJSON> type)
+    public StalkUser()
     {
-        super(type);
+        super(StalkUserJSON.class);
     }
 
     @Override

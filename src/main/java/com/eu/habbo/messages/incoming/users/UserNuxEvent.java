@@ -1,11 +1,15 @@
 package com.eu.habbo.messages.incoming.users;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.items.NewUserGift;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.unknown.UnknownCreateLinkComposer;
+import com.eu.habbo.messages.outgoing.unknown.NewUserGiftComposer;
+import com.eu.habbo.messages.outgoing.unknown.NuxAlertComposer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserNuxEvent extends MessageHandler
@@ -39,7 +43,13 @@ public class UserNuxEvent extends MessageHandler
 
         if (keys.containsKey(step))
         {
-            habbo.getClient().sendResponse(new UnknownCreateLinkComposer("helpBubble/add/" + keys.get(step) + "/" + Emulator.getTexts().getValue("nux.step." + step)));
+            habbo.getClient().sendResponse(new NuxAlertComposer("helpBubble/add/" + keys.get(step) + "/" + Emulator.getTexts().getValue("nux.step." + step)));
+        }
+        else if (!habbo.getHabboStats().nuxReward)
+        {
+//            List<List<NewUserGift>> gifts = new ArrayList<>();
+//            gifts.add(Emulator.getGameEnvironment().getItemManager().getNewUserGifts());
+//            habbo.getClient().sendResponse(new NewUserGiftComposer(gifts));
         }
     }
 }

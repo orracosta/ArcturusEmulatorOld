@@ -22,16 +22,13 @@ public class StaffAlertCommand extends Command
     {
         if(params.length > 1)
         {
-            String message = Emulator.getTexts().getValue("commands.generic.cmd_staffalert.title") + "\r\n";
-
+            String message = "";
             for (int i = 1; i < params.length; i++)
             {
                 message += params[i] + " ";
             }
 
-            ServerMessage msg = new GenericAlertComposer(message + "\r\n-" + gameClient.getHabbo().getHabboInfo().getUsername()).compose();
-
-            Emulator.getGameEnvironment().getHabboManager().sendPacketToHabbosWithPermission(msg, "cmd_staffalert");
+            Emulator.getGameEnvironment().getHabboManager().staffAlert(message + "\r\n-" + gameClient.getHabbo().getHabboInfo().getUsername());
         }
         else
         {

@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.rooms.users;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -13,12 +14,13 @@ public class RoomUserLookAtPoint extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        if(this.client.getHabbo().getHabboInfo().getCurrentRoom() == null)
+        Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
+        if(room == null)
             return;
 
         Habbo habbo = this.client.getHabbo();
 
-        if(this.client.getHabbo().getRoomUnit().getCacheable().get("control") != null)
+        if(habbo.getRoomUnit().getCacheable().get("control") != null)
         {
             habbo = (Habbo)this.client.getHabbo().getRoomUnit().getCacheable().get("control");
 
@@ -53,18 +55,18 @@ public class RoomUserLookAtPoint extends MessageHandler
         {
             roomUnit.lookAtPoint(tile);
 
-            UserIdleEvent event = new UserIdleEvent(this.client.getHabbo(), UserIdleEvent.IdleReason.WALKED, false);
+            UserIdleEvent event = new UserIdleEvent(habbo, UserIdleEvent.IdleReason.WALKED, false);
             Emulator.getPluginManager().fireEvent(event);
 
             if (!event.isCancelled())
             {
                 if (!event.idle)
                 {
-                    this.client.getHabbo().getHabboInfo().getCurrentRoom().unIdle(habbo);
+                    room.unIdle(habbo);
                 }
             }
 
-            this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserStatusComposer(roomUnit).compose());
+            room.sendComposer(new RoomUserStatusComposer(roomUnit).compose());
         }
     }
 }

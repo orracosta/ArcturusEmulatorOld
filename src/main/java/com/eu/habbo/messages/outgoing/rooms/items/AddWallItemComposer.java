@@ -21,7 +21,6 @@ public class AddWallItemComposer extends MessageComposer
     {
         this.response.init(Outgoing.AddWallItemComposer);
         this.item.serializeWallData(this.response);
-        this.response.appendInt(this.item.getUserId());
         this.response.appendString(this.itemOwnerName);
         return this.response;
     }

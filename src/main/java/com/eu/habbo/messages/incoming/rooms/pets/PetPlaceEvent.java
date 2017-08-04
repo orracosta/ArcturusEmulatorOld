@@ -32,7 +32,7 @@ public class PetPlaceEvent extends MessageHandler
         {
             return;
         }
-        if(room.getCurrentPets().size() >= Emulator.getConfig().getInt("hotel.pets.max.room") && !this.client.getHabbo().hasPermission("acc_unlimited_pets"))
+        if(room.getCurrentPets().size() >= Room.MAXIMUM_PETS && !this.client.getHabbo().hasPermission("acc_unlimited_pets"))
         {
             this.client.sendResponse(new PetErrorComposer(PetErrorComposer.ROOM_ERROR_MAX_PETS));
             return;

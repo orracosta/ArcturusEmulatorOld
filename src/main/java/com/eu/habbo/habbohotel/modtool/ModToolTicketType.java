@@ -14,7 +14,7 @@ public enum ModToolTicketType
     AUTOMATIC_HELPER(10),
     DISCUSSION(11),
     SELFIE(12),
-    INSIDE_JOKE_OF_SULAKE(13),
+    POTATO(13),
     PHOTO(14),
     AMBASSADOR(15);
 

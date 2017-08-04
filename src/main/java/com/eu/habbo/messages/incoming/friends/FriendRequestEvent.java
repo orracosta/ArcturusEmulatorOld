@@ -83,7 +83,7 @@ public class FriendRequestEvent extends MessageHandler
                 return;
             }
 
-            if(this.client.getHabbo().getMessenger().getFriends().values().size() >= Emulator.getConfig().getInt("hotel.max.friends"))
+            if(this.client.getHabbo().getMessenger().getFriends().values().size() >= Messenger.MAXIMUM_FRIENDS)
             {
                 this.client.sendResponse(new FriendRequestErrorComposer(FriendRequestErrorComposer.FRIEND_LIST_OWN_FULL));
                 return;

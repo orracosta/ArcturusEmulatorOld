@@ -32,7 +32,7 @@ public class RequestCreateRoomEvent extends MessageHandler {
 
         RoomCategory category = Emulator.getGameEnvironment().getRoomManager().getCategory(categoryId);
 
-        if(category == null || category.getMinRank() > this.client.getHabbo().getHabboInfo().getRank())
+        if(category == null || category.getMinRank() > this.client.getHabbo().getHabboInfo().getRank().getId())
         {
             Emulator.getLogging().logErrorLine("[SCRIPTER] Incorrect rank or non existing category ID: \""+categoryId+"\"." + this.client.getHabbo().getHabboInfo().getUsername());
             return;
@@ -45,7 +45,7 @@ public class RequestCreateRoomEvent extends MessageHandler {
             return;
 
         int count = Emulator.getGameEnvironment().getRoomManager().getRoomsForHabbo(this.client.getHabbo()).size();
-        int max = this.client.getHabbo().getHabboStats().hasActiveClub() ? Emulator.getConfig().getInt("hotel.max.rooms.vip") : Emulator.getConfig().getInt("hotel.max.rooms.user");
+        int max = this.client.getHabbo().getHabboStats().hasActiveClub() ? RoomManager.MAXIMUM_ROOMS_VIP : RoomManager.MAXIMUM_ROOMS_USER;
         
         if(count >= max)
         {

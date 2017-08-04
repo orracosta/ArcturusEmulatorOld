@@ -26,7 +26,7 @@ public class Message implements Runnable
     public void run()
     {
         //TODO Turn into scheduler
-        if(Emulator.getConfig().getBoolean("save.private.chats", false))
+        if(Messenger.SAVE_PRIVATE_CHATS)
         {
             try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO chatlogs_private (user_from_id, user_to_id, message, timestamp) VALUES (?, ?, ?, ?)"))
             {

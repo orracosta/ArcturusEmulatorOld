@@ -210,7 +210,11 @@ public class Logging
         {
             write(debugFileWriter, line.toString());
         }
-        System.out.println("[USER] " + line.toString());
+
+        if (Emulator.getConfig().getBoolean("debug.show.users"))
+        {
+            System.out.println("[USER] " + line.toString());
+        }
     }
     
     public synchronized void logDebugLine(Object line)

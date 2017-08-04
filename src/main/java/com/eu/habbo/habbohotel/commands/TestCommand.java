@@ -18,6 +18,8 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.Incoming;
 import com.eu.habbo.messages.incoming.gamecenter.GameCenterRequestAccountStatusEvent;
 import com.eu.habbo.messages.incoming.rooms.pets.MovePetEvent;
+import com.eu.habbo.messages.outgoing.MessageComposer;
+import com.eu.habbo.messages.outgoing.Outgoing;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.MessagesForYouComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.PetInformationComposer;
@@ -25,6 +27,7 @@ import com.eu.habbo.messages.outgoing.rooms.pets.PetStatusUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDataComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
+import com.eu.habbo.messages.outgoing.users.UserDataComposer;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import gnu.trove.procedure.TObjectProcedure;
@@ -74,6 +77,12 @@ public class TestCommand extends Command
 
             //Emulator.getGameServer().getPacketManager().registerHandler(Incoming.GameCenterRequestGamesEvent, GameCenterRequestGamesEvent.class);
             Emulator.getGameServer().getPacketManager().registerHandler(Incoming.GameCenterRequestAccountStatusEvent, GameCenterRequestAccountStatusEvent.class);
+            return true;
+        }
+
+        if (params[1].equals("namechange"))
+        {
+            gameClient.sendResponse(new UserDataComposer(gameClient.getHabbo()));
             return true;
         }
         //Emulator.getGameEnvironment().getRoomManager().clearInactiveRooms();
@@ -302,6 +311,62 @@ public class TestCommand extends Command
         else if (params[1].equalsIgnoreCase("filt"))
         {
             gameClient.sendResponse(new GenericAlertComposer(Normalizer.normalize(params[2], Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").replaceAll("\\p{M}", "")));
+        }
+        else if (params[1].equalsIgnoreCase("nux"))
+        {
+            gameClient.sendResponse(new MessageComposer()
+            {
+                @Override
+                public ServerMessage compose()
+                {
+                    this.response.init(Outgoing.NewUserGiftComposer);
+
+                    this.response.appendInt(1); //?
+                    this.response.appendInt(1); // element 1
+                    this.response.appendInt(2); // element 2
+                    this.response.appendInt(6); // Totaal cadeaus?
+
+                    String[] gift1 = {"throne.png", "throne"}; //Emulator.getConfig().getValue("nux.gift.1").split(";");
+                    String[] gift2 = {"throne.png", "throne"}; //Emulator.getConfig().getValue("nux.gift.2").split(";");
+                    String[] gift3 = {"throne.png", "throne"}; //Emulator.getConfig().getValue("nux.gift.3").split(";");
+
+                    this.response.appendString(gift1[0]);
+                    this.response.appendInt(2);
+                    this.response.appendString(gift1[1]);
+                    this.response.appendString("");
+                    this.response.appendString("typewriter");
+                    this.response.appendString("");
+
+                    this.response.appendString(gift2[0]);
+                    this.response.appendInt(1);
+                    this.response.appendString(gift2[1]);
+                    this.response.appendString("");
+
+                    this.response.appendString(gift3[0]);
+                    this.response.appendInt(1);
+                    this.response.appendString(gift3[1]);
+                    this.response.appendString("");
+
+                    this.response.appendString(gift1[0]);
+                    this.response.appendInt(2);
+                    this.response.appendString(gift1[1]);
+                    this.response.appendString("");
+                    this.response.appendString("typewriter");
+                    this.response.appendString("");
+
+                    this.response.appendString(gift2[0]);
+                    this.response.appendInt(1);
+                    this.response.appendString(gift2[1]);
+                    this.response.appendString("");
+
+                    this.response.appendString(gift3[0]);
+                    this.response.appendInt(1);
+                    this.response.appendString(gift3[1]);
+                    this.response.appendString("");
+
+                    return this.response;
+                }
+            });
         }
         else if (params[1].equals("datb"))
         {

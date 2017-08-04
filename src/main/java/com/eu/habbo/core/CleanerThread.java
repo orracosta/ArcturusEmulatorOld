@@ -2,6 +2,7 @@ package com.eu.habbo.core;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.messages.incoming.friends.SearchUserEvent;
 import com.eu.habbo.messages.incoming.navigator.SearchRoomsEvent;
 import com.eu.habbo.threading.runnables.AchievementUpdater;
 import com.eu.habbo.util.callback.HTTPPostStatus;
@@ -159,6 +160,7 @@ public class CleanerThread implements Runnable {
         }
 
         SearchRoomsEvent.cachedResults.clear();
+        SearchUserEvent.cachedResults.clear();
     }
 
     /**

@@ -87,32 +87,34 @@ public class InteractionObstacle extends HabboItem
         {
             AbstractPet pet = room.getPet(roomUnit);
 
-            if(pet != null && pet instanceof HorsePet && ((HorsePet) pet).getRider() != null && ((HorsePet) pet).getTask().equals(PetTasks.RIDE))
+            if(pet != null && pet instanceof HorsePet && ((HorsePet) pet).getRider() != null)
             {
-                if(pet.getRoomUnit().getStatus().containsKey("jmp"))
+                if (((HorsePet) pet).getTask() != null && ((HorsePet) pet).getTask().equals(PetTasks.RIDE))
                 {
-                    pet.getRoomUnit().getStatus().remove("jmp");
-                    Emulator.getThreading().run(new HabboItemNewState(this, room, "0"), 2000);
-                }
-                else
-                {
-                    int state = 0;
-                    for(int i = 0; i < 2; i++)
+                    if (pet.getRoomUnit().getStatus().containsKey("jmp"))
                     {
-                        state = Emulator.getRandom().nextInt(4) + 1;
+                        pet.getRoomUnit().getStatus().remove("jmp");
+                        Emulator.getThreading().run(new HabboItemNewState(this, room, "0"), 2000);
+                    } else
+                    {
+                        int state = 0;
+                        for (int i = 0; i < 2; i++)
+                        {
+                            state = Emulator.getRandom().nextInt(4) + 1;
 
-                        if(state == 4)
-                            break;
+                            if (state == 4)
+                                break;
+                        }
+
+                        this.setExtradata(state + "");
+                        pet.getRoomUnit().getStatus().put("jmp", "0");
+
+                        AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("HorseConsecutiveJumpsCount"));
+                        AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("HorseJumping"));
                     }
 
-                    this.setExtradata(state + "");
-                    pet.getRoomUnit().getStatus().put("jmp", "0");
-
-                    AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("HorseConsecutiveJumpsCount"));
-                    AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("HorseJumping"));
+                    room.updateItem(this);
                 }
-
-                room.updateItem(this);
             }
         }
     }

@@ -8,6 +8,7 @@ import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredConditionType;
+import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
 import gnu.trove.set.hash.THashSet;
@@ -115,7 +116,7 @@ public class WiredConditionFurniHaveHabbo extends InteractionWiredCondition
         this.refresh();
 
         message.appendBoolean(false);
-        message.appendInt(Emulator.getConfig().getInt("hotel.wired.furni.selection.count"));
+        message.appendInt(WiredHandler.MAXIMUM_FURNI_SELECTION);
         message.appendInt(this.items.size());
 
         for(HabboItem item : this.items)

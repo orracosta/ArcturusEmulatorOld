@@ -115,7 +115,7 @@ public class ToggleFloorItemEvent extends MessageHandler
                     item.getBaseItem().getName().equalsIgnoreCase("leprechaun_box") ||
                     item.getBaseItem().getName().equalsIgnoreCase("velociraptor_egg") ||
                     item.getBaseItem().getName().equalsIgnoreCase("pterosaur_egg") ||
-                    item.getBaseItem().getName().equalsIgnoreCase("petbox_epic")) && room.getCurrentPets().size() < Emulator.getConfig().getInt("hotel.pets.max.room"))
+                    item.getBaseItem().getName().equalsIgnoreCase("petbox_epic")) && room.getCurrentPets().size() < Room.MAXIMUM_PETS)
             {
                 this.client.sendResponse(new PetPackageComposer(item));
                 return;

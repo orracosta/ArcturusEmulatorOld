@@ -36,7 +36,6 @@ class DatabasePool
             databaseConfiguration.addDataSourceProperty("cachePrepStmts", "true");
             databaseConfiguration.addDataSourceProperty("useServerPrepStmts", "true");
             databaseConfiguration.addDataSourceProperty("rewriteBatchedStatements", "true");
-            databaseConfiguration.addDataSourceProperty("characterEncoding","utf8");
             databaseConfiguration.addDataSourceProperty("useUnicode","true");
             databaseConfiguration.setAutoCommit(true);
             databaseConfiguration.setConnectionTimeout(300000L);

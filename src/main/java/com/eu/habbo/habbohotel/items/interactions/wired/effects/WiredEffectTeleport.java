@@ -10,6 +10,7 @@ import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
+import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.threading.runnables.RoomUnitTeleport;
@@ -55,7 +56,7 @@ public class WiredEffectTeleport extends InteractionWiredEffect
             this.items.remove(item);
         }
         message.appendBoolean(false);
-        message.appendInt(Emulator.getConfig().getInt("hotel.wired.furni.selection.count"));
+        message.appendInt(WiredHandler.MAXIMUM_FURNI_SELECTION);
         message.appendInt(this.items.size());
         for(HabboItem item : this.items)
             message.appendInt(item.getId());
@@ -136,7 +137,7 @@ public class WiredEffectTeleport extends InteractionWiredEffect
                     int currentEffect = habbo.getRoomUnit().getEffectId();
 
                     room.giveEffect(habbo, 4);
-                    Emulator.getThreading().run(new RoomUnitTeleport(habbo.getRoomUnit(), room, item.getX(), item.getY(), item.getZ() + (item.getBaseItem().allowSit() ? item.getBaseItem().getHeight() - 0.50 : 0D), currentEffect), Emulator.getConfig().getInt("wired.effect.teleport.delay", 500));
+                    Emulator.getThreading().run(new RoomUnitTeleport(habbo.getRoomUnit(), room, item.getX(), item.getY(), item.getZ() + (item.getBaseItem().allowSit() ? item.getBaseItem().getHeight() - 0.50 : 0D), currentEffect), WiredHandler.TELEPORT_DELAY);
                     Emulator.getThreading().run(new Runnable()
                     {
                         @Override
@@ -149,7 +150,7 @@ public class WiredEffectTeleport extends InteractionWiredEffect
                             catch (Exception e)
                             {}
                         }
-                    }, Emulator.getConfig().getInt("wired.effect.teleport.delay", 500));
+                    }, WiredHandler.TELEPORT_DELAY);
                     break;
                 } else
                 {

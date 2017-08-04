@@ -36,7 +36,7 @@ public class SummonRankCommand extends Command
 
             for(Map.Entry<Integer, Habbo> set : Emulator.getGameEnvironment().getHabboManager().getOnlineHabbos().entrySet())
             {
-                if(set.getValue().getHabboInfo().getRank() >= minRank)
+                if(set.getValue().getHabboInfo().getRank().getId() >= minRank)
                 {
                     if(set.getValue() == gameClient.getHabbo())
                         continue;

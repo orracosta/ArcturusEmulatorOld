@@ -31,7 +31,7 @@ public class RoomUserWhisperEvent extends MessageHandler
 
         this.client.getHabbo().getHabboInfo().getCurrentRoom().talk(this.client.getHabbo(), chatMessage, RoomChatType.WHISPER, true);
 
-        if(Emulator.getConfig().getBoolean("save.room.chats", false))
+        if(RoomChatMessage.SAVE_ROOM_CHATS)
         {
             Emulator.getThreading().run(chatMessage);
         }

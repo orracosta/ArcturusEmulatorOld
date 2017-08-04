@@ -24,7 +24,7 @@ public class ModToolSanctionAlertEvent extends MessageHandler
             }
             else
             {
-                this.client.sendResponse(new ModToolIssueHandledComposer(Emulator.getTexts().getValue("generic.user.not_found").replace("%user%", Emulator.getTexts().getValue("hotel.player.name"))));
+                this.client.sendResponse(new ModToolIssueHandledComposer(Emulator.getTexts().getValue("generic.user.not_found").replace("%user%", Emulator.getConfig().getValue("hotel.player.name"))));
             }
         }
     }

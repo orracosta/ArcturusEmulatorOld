@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.catalog.CatalogItem;
 import com.eu.habbo.habbohotel.games.Game;
 import com.eu.habbo.habbohotel.games.GamePlayer;
+import com.eu.habbo.habbohotel.permissions.Rank;
 import com.eu.habbo.habbohotel.pets.HorsePet;
 import com.eu.habbo.habbohotel.rooms.Room;
 import gnu.trove.map.hash.TIntIntHashMap;
@@ -29,7 +30,7 @@ public class HabboInfo implements Runnable
     private int id;
     private int accountCreated;
     private int achievementScore;
-    private int rank;
+    private Rank rank;
 
     private int credits;
     private int lastOnline;
@@ -67,7 +68,7 @@ public class HabboInfo implements Runnable
             this.sso = set.getString("auth_ticket");
             this.ipRegister = set.getString("ip_register");
             this.ipLogin = set.getString("ip_current");
-            this.rank = set.getInt("rank");
+            this.rank = Emulator.getGameEnvironment().getPermissionsManager().getRank(set.getInt("rank"));
             this.accountCreated = set.getInt("account_created");
             this.credits = set.getInt("credits");
             this.homeRoom = set.getInt("home_room");
@@ -169,6 +170,11 @@ public class HabboInfo implements Runnable
         return this.username;
     }
 
+    public void setUsername(String username)
+    {
+        this.username = username;
+    }
+
     public String getMotto()
     {
         return this.motto;
@@ -179,12 +185,12 @@ public class HabboInfo implements Runnable
         this.motto = motto;
     }
 
-    public int getRank()
+    public Rank getRank()
     {
         return this.rank;
     }
 
-    public void setRank(int rank)
+    public void setRank(Rank rank)
     {
         this.rank = rank;
     }
@@ -449,7 +455,7 @@ public class HabboInfo implements Runnable
             statement.setInt(6, Emulator.getIntUnixTimestamp());
             statement.setInt(8, this.homeRoom);
             statement.setString(9, this.ipLogin);
-            statement.setInt(10, this.rank);
+            statement.setInt(10, this.rank.getId());
             statement.setInt(11, this.id);
             statement.executeUpdate();
         }

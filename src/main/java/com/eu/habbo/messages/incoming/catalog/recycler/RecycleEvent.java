@@ -2,6 +2,7 @@ package com.eu.habbo.messages.incoming.catalog.recycler;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
+import com.eu.habbo.habbohotel.items.ItemManager;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.AlertPurchaseFailedComposer;
@@ -25,7 +26,7 @@ public class RecycleEvent extends MessageHandler
             return;
         }
 
-        if(Emulator.getGameEnvironment().getCatalogManager().ecotronItem != null && Emulator.getConfig().getBoolean("hotel.catalog.recycler.enabled"))
+        if(Emulator.getGameEnvironment().getCatalogManager().ecotronItem != null && ItemManager.RECYCLER_ENABLED)
         {
             THashSet<HabboItem> items = new THashSet<HabboItem>();
 

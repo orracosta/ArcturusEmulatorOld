@@ -67,7 +67,7 @@ INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.navigator.popula
 ALTER TABLE  `navigator_flatcats` ADD  `caption_save` VARCHAR( 32 ) NOT NULL DEFAULT  'caption_save' AFTER  `min_rank`;
 CREATE TABLE  `users_navigator_settings` (
     `user_id` INT NOT NULL ,
-    `caption` VARCHAR( 16 ) NOT NULL ,
+    `caption` VARCHAR( 128 ) NOT NULL ,
     `list_type` ENUM(  'list',  'thumbnails' ) NOT NULL DEFAULT  'list',
     `display` ENUM(  'visible',  'collapsed' ) NOT NULL DEFAULT  'visible'
 ) ENGINE = MYISAM ;
@@ -96,3 +96,27 @@ INSERT INTO `emulator_texts` (`key`, `value`) VALUES
 ('commands.error.cmd_allow_trading.incorrect_setting', 'Please use %enabled% to enable trading. Use %disabled% to disable trading.');
 
 ALTER TABLE  `rooms` CHANGE  `allow_walkthrough`  `allow_walkthrough` ENUM(  '0',  '1' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  '1';
+
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('debug.show.users', '1');
+
+CREATE TABLE IF NOT EXISTS `nux_gifts` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `type` enum('item','room') NOT NULL DEFAULT 'item',
+  `value` varchar(32) NOT NULL COMMENT 'If type item then items.item_name. If type room then room id to copy.',
+  `image` varchar(256) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
+
+INSERT INTO `nux_gifts` (`id`, `type`, `value`, `image`) VALUES
+(1, 'item', 'rare_daffodil_rug', 'notifications/rare_daffodil_rug.png'),
+(2, 'item', 'rare_moonrug', 'notifications/rare_moonrug.png'),
+(3, 'item', 'sandrug', 'notifications/sandrug.png');
+
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('room.chat.delay', '0');
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('room.chat.prefix.format', '[<font color="%color%">%prefix</font>] ');
+
+ALTER TABLE  `permissions` ADD  `cmd_roommute` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_roomitem`;
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('camera.use.https', '1');
+
+ALTER TABLE  `permissions` ADD  `prefix` VARCHAR( 5 ) NOT NULL AFTER  `log_commands` ,
+                           ADD  `prefix_color` VARCHAR( 7 ) NOT NULL AFTER  `prefix`;

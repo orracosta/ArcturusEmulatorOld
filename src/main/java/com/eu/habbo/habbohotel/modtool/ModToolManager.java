@@ -11,6 +11,7 @@ import com.eu.habbo.messages.outgoing.modtool.*;
 import com.eu.habbo.plugin.events.support.SupportRoomActionEvent;
 import com.eu.habbo.plugin.events.support.SupportUserAlertedEvent;
 import com.eu.habbo.plugin.events.support.SupportUserBannedEvent;
+import com.eu.habbo.threading.runnables.InsertModToolIssue;
 import gnu.trove.TCollections;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.THashMap;
@@ -646,6 +647,11 @@ public class ModToolManager
 
     public void addTicket(ModToolIssue issue)
     {
+        if (issue.id == 0)
+        {
+            new InsertModToolIssue(issue).run();
+        }
+
         synchronized (this.tickets)
         {
             this.tickets.put(issue.id, issue);

@@ -46,7 +46,7 @@ public class SuperbanCommand extends Command
                 return true;
             }
 
-            if (habbo.getRank() >= gameClient.getHabbo().getHabboInfo().getRank())
+            if (habbo.getRank().getId() >= gameClient.getHabbo().getHabboInfo().getRank().getId())
             {
                 gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_ban.target_rank_higher"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
                 return true;

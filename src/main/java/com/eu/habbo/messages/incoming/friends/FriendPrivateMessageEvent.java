@@ -4,6 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.commands.CommandHandler;
 import com.eu.habbo.habbohotel.messenger.Message;
 import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
+import com.eu.habbo.habbohotel.modtool.WordFilter;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.friends.FriendChatMessageComposer;
@@ -53,7 +54,7 @@ public class FriendPrivateMessageEvent extends MessageHandler
         Message chatMessage = new Message(this.client.getHabbo().getHabboInfo().getId(), userId, event.message);
         Emulator.getThreading().run(chatMessage);
 
-        if (Emulator.getConfig().getBoolean("hotel.wordfilter.messenger"))
+        if (WordFilter.ENABLED_FRIENDCHAT)
         {
             chatMessage.setMessage(Emulator.getGameEnvironment().getWordFilter().filter(chatMessage.getMessage(), this.client.getHabbo()));
         }

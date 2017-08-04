@@ -10,6 +10,7 @@ import com.eu.habbo.habbohotel.navigation.NavigatorFilterComparator;
 import com.eu.habbo.habbohotel.navigation.NavigatorFilterField;
 import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.PetData;
+import com.eu.habbo.habbohotel.pets.PetTasks;
 import com.eu.habbo.habbohotel.polls.Poll;
 import com.eu.habbo.habbohotel.polls.PollManager;
 import com.eu.habbo.habbohotel.users.*;
@@ -19,7 +20,6 @@ import com.eu.habbo.messages.incoming.users.UserNuxEvent;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericErrorMessagesComposer;
 import com.eu.habbo.messages.outgoing.hotelview.HotelViewComposer;
 import com.eu.habbo.messages.outgoing.polls.PollStartComposer;
-import com.eu.habbo.messages.outgoing.polls.infobus.SimplePollAnswerComposer;
 import com.eu.habbo.messages.outgoing.polls.infobus.SimplePollAnswersComposer;
 import com.eu.habbo.messages.outgoing.polls.infobus.SimplePollStartComposer;
 import com.eu.habbo.messages.outgoing.rooms.*;
@@ -28,7 +28,6 @@ import com.eu.habbo.messages.outgoing.rooms.items.RoomWallItemsComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetComposer;
 import com.eu.habbo.messages.outgoing.rooms.promotions.RoomPromotionMessageComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.*;
-import com.eu.habbo.messages.outgoing.unknown.UnknownCreateLinkComposer;
 import com.eu.habbo.plugin.events.navigator.NavigatorRoomCreatedEvent;
 import com.eu.habbo.plugin.events.rooms.RoomUncachedEvent;
 import com.eu.habbo.plugin.events.users.UserEnterRoomEvent;
@@ -42,7 +41,12 @@ import java.sql.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class RoomManager {
+public class RoomManager
+{
+    //Configuration. Loaded from database & updated accordingly.
+    public static int MAXIMUM_ROOMS_USER = 25;
+    public static int MAXIMUM_ROOMS_VIP = 35;
+    public static int HOME_ROOM_ID = 0;
 
     private final THashMap<Integer, RoomCategory> roomCategories;
     private final List<String> mapNames;
@@ -125,7 +129,9 @@ public class RoomManager {
             {
                 while (set.next())
                 {
-                    this.activeRooms.put(set.getInt("id"), new Room(set));
+                    Room room = new Room(set);
+                    room.preventUncaching = true;
+                    this.activeRooms.put(set.getInt("id"), room);
                 }
             }
         }
@@ -214,7 +220,7 @@ public class RoomManager {
         List<RoomCategory> categories = new ArrayList<RoomCategory>();
         for(RoomCategory category : this.roomCategories.values())
         {
-            if(category.getMinRank() <= habbo.getHabboInfo().getRank())
+            if(category.getMinRank() <= habbo.getHabboInfo().getRank().getId())
                 categories.add(category);
         }
 
@@ -229,7 +235,7 @@ public class RoomManager {
         {
             if(category.getId() == categoryId)
             {
-                if(category.getMinRank() <= habbo.getHabboInfo().getRank())
+                if(category.getMinRank() <= habbo.getHabboInfo().getRank().getId())
                 {
                     return true;
                 }
@@ -830,7 +836,7 @@ public class RoomManager {
 
             if (effect == 0)
             {
-                effect = Emulator.getGameEnvironment().getPermissionsManager().getEffect(habbo.getHabboInfo().getRank());
+                effect = habbo.getHabboInfo().getRank().getRoomEffect();
             }
 
             if (effect > 0)
@@ -1056,8 +1062,11 @@ public class RoomManager {
             habbo.getRoomUnit().setPathFinderRoom(null);
             if (habbo.getHabboInfo().getRiding() != null)
             {
-                habbo.getHabboInfo().getRiding().getRoomUnit().setGoalLocation(habbo.getHabboInfo().getRiding().getRoomUnit().getCurrentLocation());
-                habbo.getHabboInfo().getRiding().setTask(null);
+                if (habbo.getHabboInfo().getRiding().getRoomUnit() != null)
+                {
+                    habbo.getHabboInfo().getRiding().getRoomUnit().setGoalLocation(habbo.getHabboInfo().getRiding().getRoomUnit().getCurrentLocation());
+                }
+                habbo.getHabboInfo().getRiding().setTask(PetTasks.FREE);
                 habbo.getHabboInfo().getRiding().setRider(null);
                 habbo.getHabboInfo().setRiding(null);
             }

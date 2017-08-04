@@ -330,7 +330,12 @@ public class RoomUnit
             {
                 if (habbo.getHabboInfo().getRiding() != null)
                 {
-                    habbo.getHabboInfo().getRiding().getRoomUnit().getStatus().put("mv", next.x + "," + next.y + "," + (zHeight - 1.0));
+                    RoomUnit ridingUnit = habbo.getHabboInfo().getRiding().getRoomUnit();
+
+                    if (ridingUnit != null)
+                    {
+                        ridingUnit.getStatus().put("mv", next.x + "," + next.y + "," + (zHeight - 1.0));
+                    }
                 }
             }
             //room.sendComposer(new RoomUserStatusComposer(this).compose());
@@ -631,7 +636,7 @@ public class RoomUnit
 
     public boolean isIdle()
     {
-        return this.idleTimer > Emulator.getConfig().getInt("hotel.roomuser.idle.cycles", 240); //Amount of room cycles / 2 = seconds.
+        return this.idleTimer > Room.IDLE_CYCLES; //Amount of room cycles / 2 = seconds.
     }
 
     public int getIdleTimer()
@@ -646,7 +651,7 @@ public class RoomUnit
 
     public void setIdle()
     {
-        this.idleTimer = Emulator.getConfig().getInt("hotel.roomuser.idle.cycles", 240) + 1;
+        this.idleTimer = Room.IDLE_CYCLES + 1;
     }
 
     public void lookAtPoint(RoomTile location)
@@ -672,7 +677,7 @@ public class RoomUnit
 
         RoomUserRotation rotation = (RoomUserRotation.values()[Rotation.Calculate(this.getX(), this.getY(), location.x, location.y)]);
 
-        if (Math.abs(rotation.getValue() - this.bodyRotation.getValue()) <= 2)
+        if (Math.abs(rotation.getValue() - this.bodyRotation.getValue()) <= 1)
         {
             this.headRotation = rotation;
         }

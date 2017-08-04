@@ -120,14 +120,14 @@ public class HabboNavigatorWindowSettings
 
     public void save(Connection connection)
     {
-        try (PreparedStatement statement = connection.prepareStatement("UPDATE users_navigator_settings SET list_type = ?, display = ? WHERE user_id AND caption = ? LIMIT 1"))
+        try (PreparedStatement statement = connection.prepareStatement("UPDATE users_navigator_settings SET list_type = ?, display = ? WHERE user_id = ? AND caption = ? LIMIT 1"))
         {
             for (Map.Entry<String, HabboNavigatorPersonalDisplayMode> set : this.displayModes.entrySet())
             {
                 statement.setString(1, set.getValue().listMode.name().toLowerCase());
                 statement.setString(2, set.getValue().displayMode.name().toLowerCase());
-                statement.setString(3, set.getKey());
-                statement.setInt(4, this.userId);
+                statement.setInt(3, this.userId);
+                statement.setString(4, set.getKey());
                 statement.execute();
             }
         }

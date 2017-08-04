@@ -47,7 +47,7 @@ public class RoomUserWalkEvent extends MessageHandler
                 {
                     if (!roomUnit.cmdTeleport)
                     {
-                        if (habbo.getHabboInfo().getRiding() != null && habbo.getHabboInfo().getRiding().getTask().equals(PetTasks.JUMP))
+                        if (habbo.getHabboInfo().getRiding() != null && habbo.getHabboInfo().getRiding().getTask() != null && habbo.getHabboInfo().getRiding().getTask().equals(PetTasks.JUMP))
                             return;
 
                         if (x == roomUnit.getX() && y == roomUnit.getY())

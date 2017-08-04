@@ -468,13 +468,6 @@ public class RoomLayout
         this.CANMOVEDIAGONALY = value;
     }
 
-    @EventHandler
-    public static void configurationUpdated(EmulatorConfigUpdatedEvent event)
-    {
-        MAXIMUM_STEP_HEIGHT = Emulator.getConfig().getDouble("pathfinder.step.maximum.height", 1.1);
-        ALLOW_FALLING = Emulator.getConfig().getBoolean("pathfinder.step.allow.falling", true);
-    }
-
     public static boolean squareInSquare(Rectangle outerSquare, Rectangle innerSquare)
     {
         if(outerSquare.x > innerSquare.x)
@@ -538,7 +531,7 @@ public class RoomLayout
 
     public List<RoomTile> getTilesInFront(RoomTile tile, int rotation, int amount)
     {
-        List<RoomTile> tiles = new ArrayList<>();
+        List<RoomTile> tiles = new ArrayList<>(amount);
         RoomTile previous = tile;
         for (int i = 0; i < amount; i++)
         {
@@ -560,7 +553,7 @@ public class RoomLayout
 
     public List<RoomTile> getTilesAround(RoomTile tile)
     {
-        List<RoomTile> tiles = new ArrayList<RoomTile>();
+        List<RoomTile> tiles = new ArrayList<RoomTile>(8);
 
         if (tile != null)
         {
@@ -591,7 +584,7 @@ public class RoomLayout
 
     public THashSet<RoomTile> getTilesAt(RoomTile tile, int width, int length, int rotation)
     {
-        THashSet<RoomTile> pointList = new THashSet<RoomTile>();
+        THashSet<RoomTile> pointList = new THashSet<RoomTile>(width * length, 0.1f);
 
         if (tile != null)
         {

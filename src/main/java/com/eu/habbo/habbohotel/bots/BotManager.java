@@ -19,6 +19,9 @@ import java.util.Map;
 
 public class BotManager
 {
+    //Configuration. Loaded from database & updated accordingly.
+    public static int MINIMUM_CHAT_SPEED = 7;
+
     final private static THashMap<String, Class<? extends Bot>> botDefenitions = new THashMap<String, Class<? extends Bot>>();
 
     /**
@@ -134,7 +137,7 @@ public class BotManager
         {
             if (room.getOwnerId() == habbo.getHabboInfo().getId() || habbo.hasPermission("acc_anyroomowner") || habbo.hasPermission("acc_placefurni"))
             {
-                if (room.getCurrentBots().size() >= Emulator.getConfig().getInt("hotel.max.bots.room") && !habbo.hasPermission("acc_unlimited_bots"))
+                if (room.getCurrentBots().size() >= Room.MAXIMUM_BOTS && !habbo.hasPermission("acc_unlimited_bots"))
                 {
                     habbo.getClient().sendResponse(new BotErrorComposer(BotErrorComposer.ROOM_ERROR_MAX_BOTS));
                     return;

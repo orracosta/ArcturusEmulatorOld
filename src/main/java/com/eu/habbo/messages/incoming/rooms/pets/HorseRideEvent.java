@@ -35,7 +35,7 @@ public class HorseRideEvent extends MessageHandler
                         this.client.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(((HorsePet) pet).getRider(), 0);
                         ((HorsePet) pet).getRider().getHabboInfo().setRiding(null);
                         ((HorsePet) pet).setRider(null);
-                        ((HorsePet) pet).setTask(null);
+                        ((HorsePet) pet).setTask(PetTasks.FREE);
                     } else
                     {
                         //TODO: Say somebody else is already riding.
@@ -67,7 +67,7 @@ public class HorseRideEvent extends MessageHandler
         {
             this.client.getHabbo().getHabboInfo().getCurrentRoom().giveEffect(this.client.getHabbo(), 0);
             ((HorsePet) pet).setRider(null);
-            ((HorsePet) pet).setTask(null);
+            ((HorsePet) pet).setTask(PetTasks.FREE);
             this.client.getHabbo().getHabboInfo().setRiding(null);
         }
     }

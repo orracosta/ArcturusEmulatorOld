@@ -11,6 +11,9 @@ public class RoomUserDanceEvent extends MessageHandler {
     @Override
     public void handle() throws Exception
     {
+        if (this.client.getHabbo().getHabboInfo().getCurrentRoom() == null)
+            return;
+
         int danceId = this.packet.readInt();
         if(danceId >= 0 && danceId <= 5)
         {

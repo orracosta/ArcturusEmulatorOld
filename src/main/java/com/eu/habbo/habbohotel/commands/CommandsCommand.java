@@ -18,7 +18,7 @@ public class CommandsCommand extends Command
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
         String message = "Your Commands";
-        List<Command> commands = Emulator.getGameEnvironment().getCommandHandler().getCommandsForRank(gameClient.getHabbo().getHabboInfo().getRank());
+        List<Command> commands = Emulator.getGameEnvironment().getCommandHandler().getCommandsForRank(gameClient.getHabbo().getHabboInfo().getRank().getId());
         message += "(" + commands.size() + "):\r\n";
 
         for(Command c : commands)

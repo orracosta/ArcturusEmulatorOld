@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.messenger;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.habbohotel.users.HabboGender;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,10 +13,10 @@ public class MessengerBuddy implements Runnable {
 
     private int id;
     private String username;
-    private String gender;
-    private int online;
-    private String look;
-    private String motto;
+    private HabboGender gender = HabboGender.M;
+    private int online = 0;
+    private String look = "";
+    private String motto = "";
     private short relation;
     private boolean inRoom;
     private int userOne = 0;
@@ -26,7 +27,7 @@ public class MessengerBuddy implements Runnable {
         {
             this.id = set.getInt("id");
             this.username = set.getString("username");
-            this.gender = set.getString("gender");
+            this.gender = HabboGender.valueOf(set.getString("gender"));
             this.online = Integer.valueOf(set.getString("online"));
             this.motto = set.getString("motto");
             this.look = set.getString("look");
@@ -55,10 +56,6 @@ public class MessengerBuddy implements Runnable {
         {
             this.id = set.getInt("id");
             this.username = set.getString("username");
-            this.gender = set.getString("gender");
-            this.online = Integer.valueOf(set.getString("online"));
-            this.motto = set.getString("motto");
-            this.look = set.getString("look");
             this.relation = 0;
             this.userOne = 0;
         }
@@ -72,7 +69,7 @@ public class MessengerBuddy implements Runnable {
     {
         this.id = id;
         this.username = username;
-        this.gender = "M";
+        this.gender = HabboGender.M;
         this.online = 0;
         this.motto = "";
         this.look = look;
@@ -84,7 +81,7 @@ public class MessengerBuddy implements Runnable {
     {
         this.id = habbo.getHabboInfo().getId();
         this.username = habbo.getHabboInfo().getUsername();
-        this.gender = habbo.getHabboInfo().getGender().name().toUpperCase();
+        this.gender = habbo.getHabboInfo().getGender();
         this.online = habbo.getHabboInfo().isOnline() ? 1 : 0;
         this.motto = habbo.getHabboInfo().getMotto();
         this.look = habbo.getHabboInfo().getLook();
@@ -109,9 +106,19 @@ public class MessengerBuddy implements Runnable {
         return this.username;
     }
 
-    public String getGender()
+    public void setUsername(String username)
+    {
+        this.username = username;
+    }
+
+    public HabboGender getGender()
     {
         return this.gender;
+    }
+
+    public void setGender(HabboGender gender)
+    {
+        this.gender = gender;
     }
 
     public int getOnline()
@@ -122,6 +129,11 @@ public class MessengerBuddy implements Runnable {
     public String getLook()
     {
         return this.look;
+    }
+
+    public void setLook(String look)
+    {
+        this.look = look;
     }
 
     public String getMotto()

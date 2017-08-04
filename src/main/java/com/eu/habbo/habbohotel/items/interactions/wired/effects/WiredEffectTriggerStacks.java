@@ -55,7 +55,7 @@ public class WiredEffectTriggerStacks extends InteractionWiredEffect
             this.items.remove(item);
         }
         message.appendBoolean(false);
-        message.appendInt(Emulator.getConfig().getInt("hotel.wired.furni.selection.count"));
+        message.appendInt(WiredHandler.MAXIMUM_FURNI_SELECTION);
         message.appendInt(this.items.size());
         for(HabboItem item : this.items)
         {

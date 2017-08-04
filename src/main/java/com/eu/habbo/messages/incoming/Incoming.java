@@ -2,12 +2,15 @@ package com.eu.habbo.messages.incoming;
 
 public class Incoming
 {
+    public static final int ChangeNameCheckUsernameEvent = 3950;
+    public static final int ConfirmChangeNameEvent = 2977;
     public static final int ActivateEffectEvent = 2959;
     public static final int EnableEffectEvent = 1752;
     public static final int UserActivityEvent = 3457;
     public static final int NavigatorCategoryListModeEvent = 1202;
     public static final int NavigatorCollapseCategoryEvent = 1834;
     public static final int NavigatorUncollapseCategoryEvent = 637;
+    public static final int PickNewUserGiftEvent = 1822;
     public static final int FootballGateSaveLookEvent = 924; // PRODUCTION-201611291003-338511768
     public static final int MannequinSaveLookEvent = 2209; // PRODUCTION-201611291003-338511768
     public static final int RequestCatalogPageEvent = 412; //PRODUCTION-201611291003-338511768

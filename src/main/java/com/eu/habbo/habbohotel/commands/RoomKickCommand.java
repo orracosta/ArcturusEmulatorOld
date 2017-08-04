@@ -31,19 +31,18 @@ public class RoomKickCommand extends Command
                 room.sendComposer(new GenericAlertComposer(message  + "\r\n-" + gameClient.getHabbo().getHabboInfo().getUsername()).compose());
             }
 
-            room.getCurrentHabbos().forEachValue(new TObjectProcedure<Habbo>()
-            {
-                @Override
-                public boolean execute(Habbo object)
-                {
-                    if (!(object.hasPermission("acc_unkickable") || object.hasPermission("acc_supporttool") || room.isOwner(object)))
-                    {
-                        room.kickHabbo(object, true);
-                    }
+            TIntObjectIterator<Habbo> habboIterator = room.getCurrentHabbos().iterator();
 
-                    return true;
+            for (Object o :
+                    room.getCurrentHabbos().values())
+            {
+
+                Habbo habbo = (Habbo)o;
+                if (!(habbo.hasPermission("acc_unkickable") || habbo.hasPermission("acc_supporttool") || room.isOwner(habbo)))
+                {
+                    room.kickHabbo(habbo, true);
                 }
-            });
+            }
         }
         return true;
     }

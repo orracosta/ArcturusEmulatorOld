@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.users;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.rooms.RoomManager;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
@@ -93,8 +94,8 @@ public class RequestUserDataEvent extends MessageHandler
 
             if(this.client.getHabbo().getHabboInfo().getHomeRoom() != 0)
                 messages.add(new ForwardToRoomComposer(this.client.getHabbo().getHabboInfo().getHomeRoom()).compose());
-            else if (Emulator.getConfig().getInt("hotel.home.room") > 0)
-                messages.add(new ForwardToRoomComposer(Emulator.getConfig().getInt("hotel.home.room")).compose());
+            else if (RoomManager.HOME_ROOM_ID > 0)
+                messages.add(new ForwardToRoomComposer(RoomManager.HOME_ROOM_ID).compose());
 
             messages.add(new MeMenuSettingsComposer(this.client.getHabbo()).compose());
 

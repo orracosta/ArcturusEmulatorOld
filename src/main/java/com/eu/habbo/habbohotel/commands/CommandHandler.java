@@ -12,13 +12,14 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserTypingComposer;
 import com.eu.habbo.plugin.events.users.UserCommandEvent;
 import com.eu.habbo.plugin.events.users.UserExecuteCommandEvent;
 import gnu.trove.iterator.TIntObjectIterator;
+import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
 import java.util.*;
 
 public class CommandHandler
 {
-    private final static THashSet<Command> commands = new THashSet<Command>();
+    private final static THashMap<String, Command> commands = new THashMap<String, Command>(5);
 
     public CommandHandler()
     {
@@ -27,7 +28,7 @@ public class CommandHandler
         Emulator.getLogging().logStart("Command Handler -> Loaded! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
 
-    void reloadCommands()
+    public void reloadCommands()
     {
         addCommand(new AboutCommand());
         addCommand(new AlertCommand());
@@ -147,7 +148,7 @@ public class CommandHandler
         if(command == null)
             return;
 
-        commands.add(command);
+        commands.put(command.getClass().getName(), command);
     }
 
     /**
@@ -187,7 +188,7 @@ public class CommandHandler
 
                 if (parts.length >= 1)
                 {
-                    for (Command command : commands)
+                    for (Command command : commands.values())
                     {
                         for (String s : command.keys)
                         {
@@ -289,23 +290,26 @@ public class CommandHandler
     }
 
     /**
-     * Returns an arraylist of all commands that the given rank has access too based on the permissions that have been set.
+     * Returns an arraylist of all commands that the given rank has access to based on the permissions that have been set.
      * @param rankId The rank ID to search commands for.
      * @return ArrayList of commands.
      */
     public List<Command> getCommandsForRank(int rankId)
     {
-        Collection<String> permissions = Emulator.getGameEnvironment().getPermissionsManager().getPermissionsForRank(rankId);
         List<Command> allowedCommands = new ArrayList<Command>();
-
-        for(Command command : commands)
+        if (Emulator.getGameEnvironment().getPermissionsManager().rankExists(rankId))
         {
-            if(allowedCommands.contains(command))
-                continue;
+            Collection<String> permissions = Emulator.getGameEnvironment().getPermissionsManager().getRank(rankId).getPermissions().keySet();
 
-            if(permissions.contains(command.permission))
+            for (Command command : commands.values())
             {
-                allowedCommands.add(command);
+                if (allowedCommands.contains(command))
+                    continue;
+
+                if (permissions.contains(command.permission))
+                {
+                    allowedCommands.add(command);
+                }
             }
         }
 
@@ -316,7 +320,7 @@ public class CommandHandler
 
     public static Command getCommand(String key)
     {
-        for (Command command : commands)
+        for (Command command : commands.values())
         {
             for (String k : command.keys)
             {

@@ -73,7 +73,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Room implements Comparable<Room>, ISerialize, Runnable
 {
+    //Configuration. Loaded from database & updated accordingly.
+    public static boolean HABBO_CHAT_DELAY = false;
+    public static int MAXIMUM_BOTS = 10;
+    public static int MAXIMUM_PETS = 10;
+    public static int HAND_ITEM_TIME = 10;
+    public static int IDLE_CYCLES = 240;
+    public static int IDLE_CYCLES_KICK = 480;
+    public static String PREFIX_FORMAT = "[<font color=\"%color%\">%prefix</font>] ";
+
     private static final TIntObjectHashMap<RoomMoodlightData> defaultMoodData = new TIntObjectHashMap<RoomMoodlightData>();
+
     static
     {
         for(int i = 1; i <= 3; i++)
@@ -1241,7 +1251,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 final Room room = this;
 
                 final long millis = System.currentTimeMillis();
-                int handItemTime = Emulator.getConfig().getInt("hotel.rooms.handitem.time");
                 for (int i = this.currentHabbos.size(); i-- > 0; )
                 {
                     final Habbo habbo;
@@ -1260,7 +1269,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         foundRightHolder[0] = habbo.getRoomUnit().getRightsLevel() != RoomRightLevels.NONE;
                     }
 
-                    if (habbo.getRoomUnit().getHandItem() > 0 && millis - habbo.getRoomUnit().getHandItemTimestamp() > (handItemTime * 1000))
+                    if (habbo.getRoomUnit().getHandItem() > 0 && millis - habbo.getRoomUnit().getHandItemTimestamp() > (Room.HAND_ITEM_TIME * 1000))
                     {
                         giveHandItem(habbo, 0);
                     }
@@ -1280,7 +1289,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         {
                             habbo.getRoomUnit().increaseIdleTimer();
 
-                            if (!isOwner(habbo) && habbo.getRoomUnit().getIdleTimer() >= Emulator.getConfig().getInt("hotel.roomuser.idle.cycles.kick", 480))
+                            if (!isOwner(habbo) && habbo.getRoomUnit().getIdleTimer() >= Room.IDLE_CYCLES_KICK)
                             {
                                 UserExitRoomEvent event = new UserExitRoomEvent(habbo, UserExitRoomEvent.UserExitRoomReason.KICKED_IDLE);
                                 Emulator.getPluginManager().fireEvent(event);
@@ -2079,33 +2088,35 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public Color getBackgroundTonerColor()
     {
-        final Color[] color = {new Color(0, 0, 0)};
-        synchronized (this.roomItems)
-        {
-            this.roomItems.forEachValue(new TObjectProcedure<HabboItem>()
-            {
-                @Override
-                public boolean execute(HabboItem object)
-                {
-                    if (object instanceof InteractionBackgroundToner)
-                    {
-                        String[] extraData = object.getExtradata().split(":");
+        Color color = new Color(0, 0, 0);
+        TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
 
-                        if (extraData.length == 4)
+        for (int i = this.roomItems.size(); i > 0; i--)
+        {
+            try
+            {
+                iterator.advance();
+                HabboItem object = iterator.value();
+
+                if (object instanceof InteractionBackgroundToner)
+                {
+                    String[] extraData = object.getExtradata().split(":");
+
+                    if (extraData.length == 4)
+                    {
+                        if (extraData[0].equalsIgnoreCase("1"))
                         {
-                            if (extraData[0].equalsIgnoreCase("1"))
-                            {
-                                color[0] = Color.getHSBColor(Integer.valueOf(extraData[1]), Integer.valueOf(extraData[2]), Integer.valueOf(extraData[3]));
-                                return false;
-                            }
+                            return Color.getHSBColor(Integer.valueOf(extraData[1]), Integer.valueOf(extraData[2]), Integer.valueOf(extraData[3]));
                         }
                     }
-
-                    return true;
                 }
-            });
+            }
+            catch (Exception e)
+            {
+            }
         }
-        return color[0];
+
+        return color;
     }
 
     public int getChatMode()
@@ -2554,9 +2565,13 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         if(item == null)
             return;
 
-        synchronized (this.roomItems)
+        try
         {
             this.roomItems.put(item.getId(), item);
+        }
+        catch (Exception e)
+        {
+
         }
 
         synchronized (this.furniOwnerCount)
@@ -3168,7 +3183,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             {
                 habboIterator.advance();
             }
-            catch (NoSuchElementException e)
+            catch (Exception e)
             {
                 break;
             }
@@ -3347,6 +3362,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void talk(final Habbo habbo, final RoomChatMessage roomChatMessage, RoomChatType chatType, boolean ignoreWired)
     {
+        if (habbo.getHabboInfo().getCurrentRoom() != this)
+            return;
+
         long millis = System.currentTimeMillis();
         if (millis - habbo.getHabboStats().lastChat < 750)
         {
@@ -3432,6 +3450,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         habbo.getRoomUnit().talkCounter += 2;
 
+        ServerMessage prefixMessage = roomChatMessage.getHabbo().getHabboInfo().getRank().hasPrefix() ? new RoomUserNameChangedComposer(habbo, true).compose() : null;
+        ServerMessage clearPrefixMessage = prefixMessage != null ? new RoomUserNameChangedComposer(habbo).compose() : null;
+
         if(chatType == RoomChatType.WHISPER)
         {
             if (roomChatMessage.getTargetHabbo() == null)
@@ -3454,7 +3475,18 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         if (h == roomChatMessage.getTargetHabbo() || h == habbo)
                         {
                             if (!h.getHabboStats().ignoredUsers.contains(habbo.getHabboInfo().getId()))
+                            {
+                                if (prefixMessage != null)
+                                {
+                                    h.getClient().sendResponse(prefixMessage);
+                                }
                                 h.getClient().sendResponse(message);
+
+                                if (clearPrefixMessage != null)
+                                {
+                                    h.getClient().sendResponse(clearPrefixMessage);
+                                }
+                            }
 
                             return true;
                         }
@@ -3485,7 +3517,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         noChatLimit)
                     {
                         if (!h.getHabboStats().ignoredUsers.contains(habbo.getHabboInfo().getId()))
+                        {
+                            if (prefixMessage != null){ h.getClient().sendResponse(prefixMessage); }
                             h.getClient().sendResponse(message);
+                            if (clearPrefixMessage != null){ h.getClient().sendResponse(clearPrefixMessage); }
+                        }
                     }
                 }
             }
@@ -3499,7 +3535,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 for (Habbo h : this.getCurrentHabbos().valueCollection())
                 {
                     if (!h.getHabboStats().ignoredUsers.contains(habbo.getHabboInfo().getId()))
+                    {
+                        if (prefixMessage != null){ h.getClient().sendResponse(prefixMessage); }
                         h.getClient().sendResponse(message);
+                        if (clearPrefixMessage != null){ h.getClient().sendResponse(clearPrefixMessage); }
+                    }
                 }
             }
         }
@@ -3645,7 +3685,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             return this.getItemsAt(tile);
         }
 
-        return new THashSet<HabboItem>();
+        return new THashSet<HabboItem>(0);
     }
     public THashSet<HabboItem> getItemsAt(RoomTile tile)
     {
@@ -3657,7 +3697,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             }
         }
 
-        THashSet<HabboItem> items = new THashSet<HabboItem>();
+        THashSet<HabboItem> items = new THashSet<HabboItem>(0);
 
         TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
 
@@ -4150,7 +4190,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     boolean canLayAt(THashSet<HabboItem> items)
     {
-        if (items.isEmpty())
+        if (items == null || items.isEmpty())
             return true;
 
         HabboItem topItem = null;
@@ -5069,4 +5109,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         return this.roomItems.size();
     }
+
+
 }

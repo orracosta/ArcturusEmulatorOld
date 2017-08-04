@@ -130,7 +130,7 @@ public class CatalogBuyItemAsGiftEvent extends MessageHandler
                 return;
             }
 
-            if(page.getRank() > this.client.getHabbo().getHabboInfo().getRank() || !page.isEnabled() || !page.isVisible())
+            if(page.getRank() > this.client.getHabbo().getHabboInfo().getRank().getId() || !page.isEnabled() || !page.isVisible())
             {
                 this.client.sendResponse(new AlertPurchaseUnavailableComposer(AlertPurchaseUnavailableComposer.ILLEGAL));
                 return;

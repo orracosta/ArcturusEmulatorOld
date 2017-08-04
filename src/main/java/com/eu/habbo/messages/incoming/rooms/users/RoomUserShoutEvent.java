@@ -29,7 +29,7 @@ public class RoomUserShoutEvent extends MessageHandler
 
         if (!message.isCommand)
         {
-            if(Emulator.getConfig().getBoolean("save.room.chats", false))
+            if(RoomChatMessage.SAVE_ROOM_CHATS)
             {
                 Emulator.getThreading().run(message);
             }

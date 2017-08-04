@@ -26,6 +26,9 @@ import java.sql.SQLException;
  */
 public class MarketPlace
 {
+    //Configuration. Loaded from database & updated accordingly.
+    public static boolean MARKETPLACE_ENABLED = true;
+
     /**
      * @param habbo The Habbo to lookup items for.
      * @return The items that are put on marketplace by the given Habbo.

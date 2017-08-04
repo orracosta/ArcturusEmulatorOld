@@ -395,8 +395,8 @@ public class Bot implements Runnable
         this.name        = name;
         this.needsUpdate = true;
 
-        if(this.room != null)
-            this.room.sendComposer(new RoomUserUpdateNameComposer(this.getRoomUnit(), this.getName()).compose());
+        //if(this.room != null)
+            //this.room.sendComposer(new ChangeNameUpdatedComposer(this.getRoomUnit(), this.getName()).compose());
     }
 
     /**

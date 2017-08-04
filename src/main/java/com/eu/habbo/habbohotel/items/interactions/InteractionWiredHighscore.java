@@ -187,7 +187,10 @@ public class InteractionWiredHighscore extends HabboItem
     @Override
     public void onPickUp(Room room)
     {
-        this.data.clear();
+        if (this.data != null)
+        {
+            this.data.clear();
+        }
         this.lastUpdate = 0;
     }
 

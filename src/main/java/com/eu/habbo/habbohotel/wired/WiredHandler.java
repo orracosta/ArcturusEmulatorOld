@@ -38,6 +38,10 @@ import java.util.List;
 
 public class WiredHandler
 {
+    //Configuration. Loaded from database & updated accordingly.
+    public static int MAXIMUM_FURNI_SELECTION = 5;
+    public static int TELEPORT_DELAY = 500;
+
     public static boolean handle(WiredTriggerType triggerType, RoomUnit roomUnit, Room room, Object[] stuff)
     {
         boolean talked = false;

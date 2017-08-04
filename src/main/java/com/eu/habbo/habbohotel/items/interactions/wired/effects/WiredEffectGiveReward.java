@@ -15,6 +15,7 @@ import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericErrorMessagesComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.UpdateFailedComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.WiredRewardAlertComposer;
 import com.eu.habbo.messages.outgoing.unknown.UnknownMessengerErrorComposer;
 import gnu.trove.procedure.TObjectProcedure;
@@ -214,7 +215,7 @@ public class WiredEffectGiveReward extends InteractionWiredEffect
                 }
             }
 
-            gameClient.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("alert.superwired.invalid")));
+            gameClient.sendResponse(new UpdateFailedComposer(Emulator.getTexts().getValue("alert.superwired.invalid")));
             return false;
         }
 

@@ -42,17 +42,19 @@ import gnu.trove.set.hash.THashSet;
 
 import java.lang.reflect.Constructor;
 import java.sql.*;
-import java.util.Calendar;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
-public class ItemManager {
+public class ItemManager
+{
+    //Configuration. Loaded from database & updated accordingly.
+    public static boolean RECYCLER_ENABLED = true;
 
     private final TIntObjectMap<Item> items;
     private final TIntObjectHashMap<CrackableReward> crackableRewards;
     private final THashSet<ItemInteraction> interactionsList;
     private final THashMap<String, SoundTrack> soundTracks;
     private final YoutubeManager youtubeManager;
+    private final TreeMap<Integer, NewUserGift> newuserGifts;
 
     public ItemManager()
     {
@@ -61,6 +63,7 @@ public class ItemManager {
         this.interactionsList   = new THashSet<>();
         this.soundTracks        = new THashMap<>();
         this.youtubeManager     = new YoutubeManager();
+        this.newuserGifts       = new TreeMap<>();
     }
 
     public void load()
@@ -74,6 +77,7 @@ public class ItemManager {
         this.loadCrackable();
         this.loadSoundTracks();
         this.youtubeManager.load();
+        this.loadNewUserGifts();
 
         Emulator.getLogging().logStart("Item Manager -> Loaded! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
@@ -562,6 +566,46 @@ public class ItemManager {
             Emulator.getLogging().logErrorLine(e);
         }
         return null;
+    }
+
+    public void loadNewUserGifts()
+    {
+        this.newuserGifts.clear();
+
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM nux_gifts"))
+        {
+            try (ResultSet set = statement.executeQuery())
+            {
+                while (set.next())
+                {
+                    this.newuserGifts.put(set.getInt("id"), new NewUserGift(set));
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+    }
+
+    public void addNewUserGift(NewUserGift gift)
+    {
+        this.newuserGifts.put(gift.getId(), gift);
+    }
+
+    public void removeNewUserGift(NewUserGift gift)
+    {
+        this.newuserGifts.remove(gift.getId());
+    }
+
+    public NewUserGift getNewUserGift(int id)
+    {
+        return this.newuserGifts.get(id);
+    }
+
+    public List<NewUserGift> getNewUserGifts()
+    {
+        return new ArrayList<>(this.newuserGifts.values());
     }
 
     public void deleteItem(HabboItem item)

@@ -2,6 +2,7 @@ package com.eu.habbo.messages.incoming.rooms.users;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.commands.CommandHandler;
+import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatType;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
@@ -15,7 +16,8 @@ public class RoomUserTalkEvent extends MessageHandler {
     @Override
     public void handle() throws Exception
     {
-        if(this.client.getHabbo().getHabboInfo().getCurrentRoom() == null)
+        Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
+        if(room == null)
             return;
 
         if(!this.client.getHabbo().getRoomUnit().canTalk())
@@ -28,11 +30,11 @@ public class RoomUserTalkEvent extends MessageHandler {
             return;
         }
 
-        this.client.getHabbo().getHabboInfo().getCurrentRoom().talk(this.client.getHabbo(), message, RoomChatType.TALK);
+        room.talk(this.client.getHabbo(), message, RoomChatType.TALK);
 
         if (!message.isCommand)
         {
-            if(Emulator.getConfig().getBoolean("save.room.chats", false))
+            if(RoomChatMessage.SAVE_ROOM_CHATS)
             {
                 Emulator.getThreading().run(message);
             }

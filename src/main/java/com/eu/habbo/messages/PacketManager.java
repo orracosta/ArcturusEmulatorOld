@@ -125,7 +125,7 @@ public class PacketManager
         {
             if(this.isRegistered(packet.getMessageId()))
             {
-                if(Emulator.getConfig().getBoolean("debug.show.packets"))
+                if(PacketManager.DEBUG_SHOW_PACKETS)
                     Emulator.getLogging().logPacketLine("[" + Logging.ANSI_CYAN + "CLIENT" + Logging.ANSI_RESET + "][" + packet.getMessageId() + "] => " + packet.getMessageBody());
 
                 if (logList.contains(packet.getMessageId()) && client.getHabbo() != null)
@@ -155,7 +155,7 @@ public class PacketManager
             }
             else
             {
-                if(Emulator.getConfig().getBoolean("debug.show.packets"))
+                if(PacketManager.DEBUG_SHOW_PACKETS)
                     Emulator.getLogging().logPacketLine("[" + Logging.ANSI_CYAN + "CLIENT" + Logging.ANSI_RESET + "][" + Logging.ANSI_RED + "UNDEFINED" + Logging.ANSI_RESET + "][" + packet.getMessageId() + "] => " + packet.getMessageBody());
             }
         }
@@ -263,6 +263,9 @@ public class PacketManager
         this.registerHandler(Incoming.EnableEffectEvent,                        EnableEffectEvent.class);
         this.registerHandler(Incoming.UserActivityEvent,                        UserActivityEvent.class);
         this.registerHandler(Incoming.UserNuxEvent,                             UserNuxEvent.class);
+        this.registerHandler(Incoming.PickNewUserGiftEvent,                     PickNewUserGiftEvent.class);
+        this.registerHandler(Incoming.ChangeNameCheckUsernameEvent,             ChangeNameCheckUsernameEvent.class);
+        this.registerHandler(Incoming.ConfirmChangeNameEvent,                   ConfirmChangeNameEvent.class);
     }
 
     private void registerNavigator() throws Exception
@@ -584,4 +587,6 @@ public class PacketManager
             }
         }
     }
+
+    public static boolean DEBUG_SHOW_PACKETS = false;
 }

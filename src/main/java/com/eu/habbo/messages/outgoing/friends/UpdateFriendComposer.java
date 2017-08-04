@@ -2,6 +2,7 @@ package com.eu.habbo.messages.outgoing.friends;
 
 import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.habbohotel.users.HabboGender;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
@@ -38,7 +39,7 @@ public class UpdateFriendComposer extends MessageComposer
             this.response.appendInt(0);
             this.response.appendInt(this.buddy.getId());
             this.response.appendString(this.buddy.getUsername());
-            this.response.appendInt(this.buddy.getGender().equals("M") ? 0 : 1);
+            this.response.appendInt(this.buddy.getGender().equals(HabboGender.M) ? 0 : 1);
             this.response.appendBoolean(this.buddy.getOnline() == 1);
             this.response.appendBoolean(this.buddy.inRoom()); //In room
             this.response.appendString(this.buddy.getLook());

@@ -5,8 +5,10 @@ import com.eu.habbo.habbohotel.achievements.Achievement;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.modtool.ModToolBan;
+import com.eu.habbo.habbohotel.permissions.Rank;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
+import com.eu.habbo.messages.outgoing.users.UserPerksComposer;
 import com.eu.habbo.messages.outgoing.users.UserPermissionsComposer;
 import com.eu.habbo.messages.rcon.RCONMessage;
 import com.eu.habbo.plugin.events.users.UserRegisteredEvent;
@@ -24,6 +26,10 @@ import java.util.concurrent.ScheduledFuture;
 
 public class HabboManager
 {
+    //Configuration. Loaded from database & updated accordingly.
+    public static String WELCOME_MESSAGE = "";
+    public static boolean NAMECHANGE_ENABLED = false;
+
     private final ConcurrentHashMap<Integer, Habbo> onlineHabbos;
 
     public HabboManager()
@@ -298,15 +304,18 @@ public class HabboManager
     {
         Habbo habbo = this.getHabbo(userId);
 
-        if (Emulator.getGameEnvironment().getPermissionsManager().getPermissionsForRank(userId) == null)
+        if (!Emulator.getGameEnvironment().getPermissionsManager().rankExists(rankId))
         {
             throw new Exception("Rank ID (" + rankId + ") does not exist");
         }
 
+        Rank rank = Emulator.getGameEnvironment().getPermissionsManager().getRank(rankId);
+
         if(habbo != null)
         {
-            habbo.getHabboInfo().setRank(rankId);
+            habbo.getHabboInfo().setRank(rank);
             habbo.getClient().sendResponse(new UserPermissionsComposer(habbo));
+            habbo.getClient().sendResponse(new UserPerksComposer(habbo));
         }
         else
         {
@@ -321,5 +330,12 @@ public class HabboManager
                 Emulator.getLogging().logSQLException(e);
             }
         }
+    }
+
+    public void staffAlert(String message)
+    {
+        message = Emulator.getTexts().getValue("commands.generic.cmd_staffalert.title") + "\r\n" + message;
+        ServerMessage msg = new GenericAlertComposer(message).compose();
+        Emulator.getGameEnvironment().getHabboManager().sendPacketToHabbosWithPermission(msg, "cmd_staffalert");
     }
 }

@@ -19,6 +19,7 @@ public class UpdateTextsCommand extends Command
         try
         {
             Emulator.getTexts().reload();
+            Emulator.getGameEnvironment().getCommandHandler().reloadCommands();
             gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_update_texts"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
         }
         catch (Exception e)

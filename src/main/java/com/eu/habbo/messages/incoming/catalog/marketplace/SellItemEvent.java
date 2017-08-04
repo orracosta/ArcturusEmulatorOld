@@ -14,7 +14,7 @@ public class SellItemEvent extends MessageHandler
     public void handle() throws Exception
     {
 
-        if(!Emulator.getConfig().getBoolean("hotel.marketplace.enabled"))
+        if(!MarketPlace.MARKETPLACE_ENABLED)
         {
             this.client.sendResponse(new MarketplaceSellItemComposer(3, 0, 0));
             return;

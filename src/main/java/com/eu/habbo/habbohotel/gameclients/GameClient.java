@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.gameclients;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.core.Logging;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.messages.PacketManager;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 
@@ -71,7 +72,7 @@ public class GameClient
                 return;
             }
 
-            if (Emulator.getConfig().getBoolean("debug.show.packets"))
+            if (PacketManager.DEBUG_SHOW_PACKETS)
                 Emulator.getLogging().logPacketLine("[" + Logging.ANSI_PURPLE + "SERVER" + Logging.ANSI_RESET + "] => [" + response.getHeader() + "] -> " + response.getBodyString());
 
             this.channel.write(response.get(), this.channel.voidPromise());
@@ -96,7 +97,7 @@ public class GameClient
                     return;
                 }
 
-                if (Emulator.getConfig().getBoolean("debug.show.packets"))
+                if (PacketManager.DEBUG_SHOW_PACKETS)
                     Emulator.getLogging().logPacketLine("[" + Logging.ANSI_PURPLE + "SERVER" + Logging.ANSI_RESET + "] => [" + response.getHeader() + "] -> " + response.getBodyString());
 
                 buffer.writeBytes(response.get());

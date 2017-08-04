@@ -21,7 +21,7 @@ public class RequestCatalogPageEvent extends MessageHandler
 
         if (catalogPageId > 0 && page != null)
         {
-            if (page.getRank() <= this.client.getHabbo().getHabboInfo().getRank() && page.isEnabled())
+            if (page.getRank() <= this.client.getHabbo().getHabboInfo().getRank().getId() && page.isEnabled())
             {
                 this.client.sendResponse(new CatalogPageComposer(page, this.client.getHabbo(), mode));
             }

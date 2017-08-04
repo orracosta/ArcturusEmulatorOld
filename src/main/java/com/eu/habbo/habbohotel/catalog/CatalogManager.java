@@ -729,7 +729,7 @@ public class CatalogManager
             @Override
             public boolean execute(CatalogPage object)
             {
-                if (object.getRank() <= habbo.getHabboInfo().getRank() && object.visible)
+                if (object.getRank() <= habbo.getHabboInfo().getRank().getId() && object.visible)
                 {
                     pages.add(object);
                 }
@@ -1264,6 +1264,16 @@ public class CatalogManager
             UserCatalogItemPurchasedEvent purchasedEvent = new UserCatalogItemPurchasedEvent(habbo, item, itemsList, totalCredits, totalPoints, badges);
             Emulator.getPluginManager().fireEvent(purchasedEvent);
 
+            if (badgeFound)
+            {
+                habbo.getClient().sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.ALREADY_HAVE_BADGE));
+
+                if (item.getBaseItems().size() == 1)
+                {
+                    return;
+                }
+            }
+
             if(!free && !habbo.getClient().getHabbo().hasPermission("acc_infinite_credits"))
             {
                 if (purchasedEvent.totalCredits > 0)
@@ -1280,11 +1290,6 @@ public class CatalogManager
                     habbo.getClient().getHabbo().getHabboInfo().addCurrencyAmount(item.getPointsType(), -purchasedEvent.totalPoints);
                     habbo.getClient().sendResponse(new UserPointsComposer(habbo.getClient().getHabbo().getHabboInfo().getCurrencyAmount(item.getPointsType()), -purchasedEvent.totalPoints, item.getPointsType()));
                 }
-            }
-
-            if (badgeFound)
-            {
-                habbo.getClient().sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.ALREADY_HAVE_BADGE));
             }
 
             if (purchasedEvent.itemsList != null)

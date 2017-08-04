@@ -15,6 +15,10 @@ import java.util.List;
 
 public class RoomChatMessage implements Runnable, ISerialize
 {
+    //Configuration. Loaded from database & updated accordingly.
+    public static boolean SAVE_ROOM_CHATS = false;
+    public static int[] BANNED_BUBBLES = {};
+
     private String message;
     private String unfilteredMessage;
     private RoomChatMessageBubbles bubble;
@@ -49,9 +53,9 @@ public class RoomChatMessage implements Runnable, ISerialize
         
         if(message.client != null && message.client.getHabbo() != null && !message.client.getHabbo().hasPermission("acc_anychatcolor"))
         {
-            for(String s : Emulator.getConfig().getValue("commands.cmd_chatcolor.banned_numbers").split(";"))
+            for(Integer i : RoomChatMessage.BANNED_BUBBLES)
             {
-                if(Integer.valueOf(s) == this.bubble.getType())
+                if(i == this.bubble.getType())
                 {
                     this.bubble = RoomChatMessageBubbles.NORMAL;
                 }
@@ -142,7 +146,7 @@ public class RoomChatMessage implements Runnable, ISerialize
         if(habbo == null)
             return;
 
-        if(Emulator.getConfig().getBoolean("save.room.chats", false))
+        if(SAVE_ROOM_CHATS)
         {
             if(this.message.length() > 255)
             {
@@ -227,9 +231,9 @@ public class RoomChatMessage implements Runnable, ISerialize
         {
             if (!this.habbo.hasPermission("acc_anychatcolor"))
             {
-                for (String s : Emulator.getConfig().getValue("commands.cmd_chatcolor.banned_numbers").split(";"))
+                for (Integer i : RoomChatMessage.BANNED_BUBBLES)
                 {
-                    if (Integer.valueOf(s) == this.bubble.getType())
+                    if (i == this.bubble.getType())
                     {
                         this.bubble = RoomChatMessageBubbles.NORMAL;
                         break;

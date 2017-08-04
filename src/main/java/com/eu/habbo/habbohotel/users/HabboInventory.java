@@ -9,6 +9,9 @@ import gnu.trove.set.hash.THashSet;
 
 public class HabboInventory
 {
+    //Configuration. Loaded from database & updated accordingly.
+    public static int MAXIMUM_ITEMS = 10000;
+
     private WardrobeComponent wardrobeComponent;
     private BadgesComponent badgesComponent;
     private BotsComponent botsComponent;

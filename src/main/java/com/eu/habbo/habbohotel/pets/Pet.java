@@ -33,7 +33,7 @@ public class Pet extends AbstractPet
     private int idleCommandTicks = 0;
     private int freeCommandTicks = -1;
 
-    private PetTasks task;
+    private PetTasks task = PetTasks.FREE;
 
     private boolean muted = false;
 

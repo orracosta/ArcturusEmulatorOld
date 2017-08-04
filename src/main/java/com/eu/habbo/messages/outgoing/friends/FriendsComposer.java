@@ -35,7 +35,7 @@ public class FriendsComposer extends MessageComposer
             for (Map.Entry<Integer, MessengerBuddy> row : this.habbo.getMessenger().getFriends().entrySet()) {
                 this.response.appendInt(row.getKey());
                 this.response.appendString(row.getValue().getUsername());
-                this.response.appendInt(row.getValue().getGender().equals("M") ? 0 : 1);
+                this.response.appendInt(row.getValue().getGender().equals(HabboGender.M) ? 0 : 1);
                 this.response.appendBoolean(row.getValue().getOnline() == 1);
                 this.response.appendBoolean(row.getValue().inRoom()); //IN ROOM
                 this.response.appendString(row.getValue().getLook());

@@ -215,7 +215,7 @@ public class Outgoing_1006
     public static final int RoomUserRemoveRightsComposer = 1496;
     public static final int RoomRightsListComposer = 1891;
     public static final int RoomAddRightsListComposer = 3611;
-    public static final int RoomUserUpdateNameComposer = 542;
+    public static final int ChangeNameUpdatedComposer = 542;
     public static final int BotSettingsComposer = 1522;
     public static final int RoomSettingsUpdatedComposer = 543;
     public static final int RoomChatSettingsComposer = 3710;
@@ -368,7 +368,7 @@ public class Outgoing_1006
     public final static int WiredRewardAlertComposer = 1603;//723
     public final static int CatalogPageComposer = 2551;//3518
     public final static int CatalogModeComposer = 1942;//3442
-    public final static int RoomUserUpdateNameComposer = 311;//542
+    public final static int ChangeNameUpdatedComposer = 311;//542
     public final static int AddFloorItemComposer = 1880;//1590
     public final static int DebugConsoleComposer = 2718;//336
     public final static int HallOfFameComposer = 92;//670

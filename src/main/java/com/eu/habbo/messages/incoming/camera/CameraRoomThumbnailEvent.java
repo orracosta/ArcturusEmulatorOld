@@ -19,6 +19,9 @@ public class CameraRoomThumbnailEvent extends MessageHandler
             return;
         }
 
+        if (!this.client.getHabbo().getHabboInfo().getCurrentRoom().isOwner(this.client.getHabbo()))
+            return;
+
         if (CameraClient.isLoggedIn)
         {
             this.packet.getBuffer().readFloat();

@@ -23,35 +23,24 @@ public class SetRank extends RCONMessage<SetRank.JSONSetRank>
     @Override
     public void handle(Gson gson, JSONSetRank object)
     {
-        Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.user_id);
-
-        if(Emulator.getGameEnvironment().getPermissionsManager().getPermissionsForRank(object.rank) == null)
+        try
         {
-            this.status = RCONMessage.SYSTEM_ERROR;
-            this.message = "invalid rank";
-        }
-
-        if(habbo != null)
-        {
-            habbo.getHabboInfo().setRank(object.rank);
-            habbo.getClient().sendResponse(new UserPermissionsComposer(habbo));
-            habbo.getClient().sendResponse(new UserPerksComposer(habbo));
-            this.message = "updated online user";
-        }
-        else
-        {
-            this.message = "updated offline user";
-        }
-
-        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET rank = ? WHERE id = ? LIMIT 1"))
-        {
-            statement.setInt(1, object.rank);
-            statement.setInt(2, object.user_id);
-            statement.execute();
+            Emulator.getGameEnvironment().getHabboManager().setRank(object.user_id, object.rank);
         }
         catch (Exception e)
         {
             this.status = RCONMessage.SYSTEM_ERROR;
+            this.message = "invalid rank";
+            return;
+        }
+
+        this.message = "updated offline user";
+
+        Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(object.user_id);
+
+        if(habbo != null)
+        {
+            this.message = "updated online user";
         }
     }
 

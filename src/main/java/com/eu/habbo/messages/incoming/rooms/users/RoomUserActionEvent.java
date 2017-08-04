@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.rooms.users;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUserAction;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -12,7 +13,8 @@ public class RoomUserActionEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        if(this.client.getHabbo().getHabboInfo().getCurrentRoom() != null)
+        Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
+        if(room != null)
         {
             Habbo habbo = this.client.getHabbo();
 
@@ -20,7 +22,7 @@ public class RoomUserActionEvent extends MessageHandler
             {
                 habbo = (Habbo)this.client.getHabbo().getRoomUnit().getCacheable().get("control");
 
-                if(habbo.getHabboInfo().getCurrentRoom() != this.client.getHabbo().getHabboInfo().getCurrentRoom())
+                if(habbo.getHabboInfo().getCurrentRoom() != room)
                 {
                     habbo.getRoomUnit().getCacheable().remove("controller");
                     this.client.getHabbo().getRoomUnit().getCacheable().remove("control");
@@ -39,11 +41,11 @@ public class RoomUserActionEvent extends MessageHandler
                 {
                     if (event.idle)
                     {
-                        this.client.getHabbo().getHabboInfo().getCurrentRoom().idle(habbo);
+                        room.idle(habbo);
                     }
                     else
                     {
-                        this.client.getHabbo().getHabboInfo().getCurrentRoom().unIdle(habbo);
+                        room.unIdle(habbo);
                     }
                 }
             }
@@ -56,13 +58,13 @@ public class RoomUserActionEvent extends MessageHandler
                 {
                     if (!event.idle)
                     {
-                        this.client.getHabbo().getHabboInfo().getCurrentRoom().unIdle(habbo);
+                        room.unIdle(habbo);
                     }
                 }
 
             }
 
-            this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserActionComposer(habbo.getRoomUnit(), RoomUserAction.fromValue(action)).compose());
+            room.sendComposer(new RoomUserActionComposer(habbo.getRoomUnit(), RoomUserAction.fromValue(action)).compose());
         }
     }
 }

@@ -18,6 +18,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Messenger
 {
+    //Configuration. Loaded from database & updated accordingly.
+    public static boolean SAVE_PRIVATE_CHATS = false;
+    public static int MAXIMUM_FRIENDS = 200;
+
     private final ConcurrentHashMap<Integer, MessengerBuddy> friends;
     private final THashSet<FriendRequest> friendRequests;
 
@@ -151,7 +155,7 @@ public class Messenger
         THashSet<MessengerBuddy> users = new THashSet<MessengerBuddy>();
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE username LIKE ? ORDER BY username DESC LIMIT 50"))
         {
-            statement.setString(1, "%" + username + "%");
+            statement.setString(1, username + "%");
             try (ResultSet set = statement.executeQuery())
             {
                 while (set.next())
@@ -188,6 +192,9 @@ public class Messenger
                         {
                             buddy.setOnline(online);
                             buddy.inRoom(inRoom);
+                            buddy.setLook(owner.getHabboInfo().getLook());
+                            buddy.setGender(owner.getHabboInfo().getGender());
+                            buddy.setUsername(owner.getHabboInfo().getUsername());
                             Emulator.getGameServer().getGameClientManager().getClient(habbo).sendResponse(new UpdateFriendComposer(buddy));
                         }
                     }

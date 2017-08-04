@@ -2,11 +2,21 @@ package com.eu.habbo.plugin;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.core.Easter;
+import com.eu.habbo.habbohotel.bots.BotManager;
+import com.eu.habbo.habbohotel.catalog.marketplace.MarketPlace;
+import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.games.battlebanzai.BattleBanzaiGame;
 import com.eu.habbo.habbohotel.games.freeze.FreezeGame;
 import com.eu.habbo.habbohotel.games.tag.TagGame;
+import com.eu.habbo.habbohotel.items.ItemManager;
 import com.eu.habbo.habbohotel.items.interactions.games.football.InteractionFootballGate;
-import com.eu.habbo.habbohotel.rooms.RoomLayout;
+import com.eu.habbo.habbohotel.messenger.Message;
+import com.eu.habbo.habbohotel.messenger.Messenger;
+import com.eu.habbo.habbohotel.modtool.WordFilter;
+import com.eu.habbo.habbohotel.rooms.*;
+import com.eu.habbo.habbohotel.users.HabboInventory;
+import com.eu.habbo.habbohotel.users.HabboManager;
+import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.messages.PacketManager;
 import com.eu.habbo.messages.incoming.users.UserSaveLookEvent;
 import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
@@ -291,12 +301,12 @@ public class PluginManager
             this.methods.add(Easter.class.getMethod("onUserChangeMotto", UserSavedMottoEvent.class));
             this.methods.add(TagGame.class.getMethod("onUserLookAtPoint", RoomUnitLookAtPointEvent.class));
             this.methods.add(TagGame.class.getMethod("onUserWalkEvent", UserTakeStepEvent.class));
-            this.methods.add(RoomLayout.class.getMethod("configurationUpdated", EmulatorConfigUpdatedEvent.class));
             this.methods.add(FreezeGame.class.getMethod("onConfigurationUpdated", EmulatorConfigUpdatedEvent.class));
             this.methods.add(PacketManager.class.getMethod("onConfigurationUpdated", EmulatorConfigUpdatedEvent.class));
             this.methods.add(InteractionFootballGate.class.getMethod("onUserDisconnectEvent", UserDisconnectEvent.class));
             this.methods.add(InteractionFootballGate.class.getMethod("onUserExitRoomEvent", UserExitRoomEvent.class));
             this.methods.add(InteractionFootballGate.class.getMethod("onUserSavedLookEvent", UserSavedLookEvent.class));
+            this.methods.add(PluginManager.class.getMethod("globalOnConfigurationUpdated", EmulatorConfigUpdatedEvent.class));
         }
         catch (NoSuchMethodException e)
         {
@@ -308,5 +318,49 @@ public class PluginManager
     public THashSet<HabboPlugin> getPlugins()
     {
         return this.plugins;
+    }
+
+    @EventHandler
+    public static void globalOnConfigurationUpdated(EmulatorConfigUpdatedEvent event)
+    {
+        ItemManager.RECYCLER_ENABLED = Emulator.getConfig().getBoolean("hotel.catalog.recycler.enabled");
+        MarketPlace.MARKETPLACE_ENABLED = Emulator.getConfig().getBoolean("hotel.marketplace.enabled");
+        Messenger.SAVE_PRIVATE_CHATS = Emulator.getConfig().getBoolean("save.private.chats", false);
+        PacketManager.DEBUG_SHOW_PACKETS = Emulator.getConfig().getBoolean("debug.show.packets");
+        Room.HABBO_CHAT_DELAY = Emulator.getConfig().getBoolean("room.chat.delay", false);
+        RoomChatMessage.SAVE_ROOM_CHATS = Emulator.getConfig().getBoolean("save.room.chats", false);
+        RoomLayout.MAXIMUM_STEP_HEIGHT = Emulator.getConfig().getDouble("pathfinder.step.maximum.height", 1.1);
+        RoomLayout.ALLOW_FALLING = Emulator.getConfig().getBoolean("pathfinder.step.allow.falling", true);
+        RoomTrade.TRADING_ENABLED = Emulator.getConfig().getBoolean("hotel.trading.enabled");
+        WordFilter.ENABLED_FRIENDCHAT = Emulator.getConfig().getBoolean("hotel.wordfilter.messenger");
+
+        BotManager.MINIMUM_CHAT_SPEED = Emulator.getConfig().getInt("hotel.bot.chat.minimum.interval");
+        HabboInventory.MAXIMUM_ITEMS = Emulator.getConfig().getInt("inventory.max.items");
+        Messenger.MAXIMUM_FRIENDS = Emulator.getConfig().getInt("hotel.max.friends");
+        Room.MAXIMUM_BOTS = Emulator.getConfig().getInt("hotel.max.bots.room");
+        Room.MAXIMUM_PETS = Emulator.getConfig().getInt("hotel.pets.max.room");
+        Room.HAND_ITEM_TIME = Emulator.getConfig().getInt("hotel.rooms.handitem.time");
+        Room.IDLE_CYCLES = Emulator.getConfig().getInt("hotel.roomuser.idle.cycles", 240);
+        Room.IDLE_CYCLES_KICK = Emulator.getConfig().getInt("hotel.roomuser.idle.cycles.kick", 480);
+        RoomManager.MAXIMUM_ROOMS_VIP = Emulator.getConfig().getInt("hotel.max.rooms.vip");
+        RoomManager.MAXIMUM_ROOMS_USER = Emulator.getConfig().getInt("hotel.max.rooms.user");
+        RoomManager.HOME_ROOM_ID = Emulator.getConfig().getInt("hotel.home.room");
+        WiredHandler.MAXIMUM_FURNI_SELECTION = Emulator.getConfig().getInt("hotel.wired.furni.selection.count");
+        WiredHandler.TELEPORT_DELAY = Emulator.getConfig().getInt("wired.effect.teleport.delay", 500);
+
+        String[] bannedBubbles = Emulator.getConfig().getValue("commands.cmd_chatcolor.banned_numbers").split(";");
+        RoomChatMessage.BANNED_BUBBLES = new int[bannedBubbles.length];
+        for (int i = 0; i < RoomChatMessage.BANNED_BUBBLES.length; i++)
+        {
+            try
+            {
+                RoomChatMessage.BANNED_BUBBLES[i] = Integer.valueOf(bannedBubbles[i]);
+            }
+            catch (Exception e)
+            {}
+        }
+
+        HabboManager.WELCOME_MESSAGE = Emulator.getConfig().getValue("hotel.welcome.alert.message");
+        Room.PREFIX_FORMAT = Emulator.getConfig().getValue("room.chat.prefix.format");
     }
 }

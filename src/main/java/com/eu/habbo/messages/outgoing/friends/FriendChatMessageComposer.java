@@ -35,7 +35,7 @@ public class FriendChatMessageComposer extends MessageComposer
         if (message.getToId() == 0) //TO Staff Chat
         {
             String name = "AUTO_MODERATOR";
-            String look = "";
+            String look = "lg-5635282-1193.hd-3091-1.sh-3089-73.cc-156282-64.hr-831-34.ha-1012-1186.ch-3050-62-62";
             if (message.getFromId() != -1)
             {
                 Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(message.getFromId());

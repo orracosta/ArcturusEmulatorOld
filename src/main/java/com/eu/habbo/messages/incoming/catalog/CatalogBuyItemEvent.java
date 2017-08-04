@@ -10,6 +10,7 @@ import com.eu.habbo.habbohotel.catalog.layouts.RoomBundleLayout;
 import com.eu.habbo.habbohotel.catalog.layouts.VipBuyLayout;
 import com.eu.habbo.habbohotel.items.FurnitureType;
 import com.eu.habbo.habbohotel.users.HabboBadge;
+import com.eu.habbo.habbohotel.users.HabboInventory;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.*;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
@@ -40,7 +41,7 @@ public class CatalogBuyItemEvent extends MessageHandler
 
         try
         {
-            if (this.client.getHabbo().getInventory().getItemsComponent().itemCount() > Emulator.getConfig().getInt("inventory.max.items"))
+            if (this.client.getHabbo().getInventory().getItemsComponent().itemCount() > HabboInventory.MAXIMUM_ITEMS)
             {
                 this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR).compose());
                 this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("inventory.full")));
@@ -148,7 +149,7 @@ public class CatalogBuyItemEvent extends MessageHandler
             return;
         }
 
-        if(page.getRank() > this.client.getHabbo().getHabboInfo().getRank())
+        if(page.getRank() > this.client.getHabbo().getHabboInfo().getRank().getId())
         {
             this.client.sendResponse(new AlertPurchaseUnavailableComposer(AlertPurchaseUnavailableComposer.ILLEGAL));
             return;

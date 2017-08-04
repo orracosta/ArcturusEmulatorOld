@@ -16,6 +16,9 @@ import java.text.Normalizer;
 
 public class WordFilter
 {
+    //Configuration. Loaded from database & updated accordingly.
+    public static boolean ENABLED_FRIENDCHAT = true;
+
     THashSet<WordFilterWord> autoReportWords = new THashSet<WordFilterWord>();
     THashSet<WordFilterWord> hideMessageWords = new THashSet<WordFilterWord>();
     THashSet<WordFilterWord> words = new THashSet<WordFilterWord>();
@@ -100,7 +103,7 @@ public class WordFilter
 
                 if(Emulator.getConfig().getBoolean("notify.staff.chat.auto.report"))
                 {
-                    Emulator.getGameEnvironment().getHabboManager().sendPacketToHabbosWithPermission(new FriendChatMessageComposer(new Message(-1, 0, Emulator.getTexts().getValue("warning.auto.report").replace("%user%", roomChatMessage.getHabbo().getHabboInfo().getUsername()).replace("%word%", word.key))).compose(), "acc_staff_chat");
+                    Emulator.getGameEnvironment().getHabboManager().sendPacketToHabbosWithPermission(new FriendChatMessageComposer(new Message(roomChatMessage.getHabbo().getHabboInfo().getId(), 0, Emulator.getTexts().getValue("warning.auto.report").replace("%user%", roomChatMessage.getHabbo().getHabboInfo().getUsername()).replace("%word%", word.key))).compose(), "acc_staff_chat");
                 }
                 return true;
             }

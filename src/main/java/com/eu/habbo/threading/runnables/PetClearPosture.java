@@ -31,7 +31,7 @@ public class PetClearPosture implements Runnable
 
                     if(this.pet instanceof Pet)
                         if(this.clearTask)
-                            pet.setTask(null);
+                            pet.setTask(PetTasks.FREE);
                         else
                             if(this.newTask != null)
                                 this.pet.setTask(this.newTask);

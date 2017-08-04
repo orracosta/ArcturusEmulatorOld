@@ -16,6 +16,9 @@ import java.util.List;
 
 public class RoomTrade
 {
+    //Configuration. Loaded from database & updated accordingly.
+    public static boolean TRADING_ENABLED = true;
+
     private final List<RoomTradeUser> users;
     private boolean tradeCompleted;
     private final Room room;

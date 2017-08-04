@@ -55,7 +55,7 @@ public class InventoryUpdateItemComposer extends MessageComposer
         this.response.appendInt(-1);
 
         if (this.habboItem.getBaseItem().getType() != FurnitureType.WALL) {
-            this.response.appendString("");
+            this.response.appendString(""); //slotId
             this.response.appendInt(0);
         }
         this.response.appendInt(100);

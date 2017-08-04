@@ -25,32 +25,32 @@ class FreezeHandleSnowballExplosion implements Runnable
     {
         try
         {
-            if (this.thrownData.habbo.getHabboInfo().getGamePlayer() == null)
-            {
-                return;
-            }
-
-            ((FreezeGamePlayer)this.thrownData.habbo.getHabboInfo().getGamePlayer()).addSnowball();
-
-            THashSet<RoomTile> tiles = new THashSet<RoomTile>();
-
             if(this.thrownData == null || this.thrownData.habbo.getHabboInfo().getGamePlayer() == null)
                 return;
+            
+            FreezeGamePlayer player = (FreezeGamePlayer)this.thrownData.habbo.getHabboInfo().getGamePlayer();
+
+            if (player == null)
+                return;
+
+            player.addSnowball();
+
+            THashSet<RoomTile> tiles = new THashSet<RoomTile>();
 
             FreezeGame game = ((FreezeGame)this.thrownData.room.getGame(FreezeGame.class));
 
             if(game == null)
                 return;
 
-            if (((FreezeGamePlayer)this.thrownData.habbo.getHabboInfo().getGamePlayer()).nextHorizontal)
+            if (player.nextHorizontal)
             {
                 tiles.addAll(game.affectedTilesByExplosion(this.thrownData.targetTile.getX(), this.thrownData.targetTile.getY(), this.thrownData.radius + 1));
             }
 
-            if (((FreezeGamePlayer)this.thrownData.habbo.getHabboInfo().getGamePlayer()).nextDiagonal)
+            if (player.nextDiagonal)
             {
                 tiles.addAll(game.affectedTilesByExplosionDiagonal(this.thrownData.targetTile.getX(), this.thrownData.targetTile.getY(), this.thrownData.radius + 1));
-                ((FreezeGamePlayer)this.thrownData.habbo.getHabboInfo().getGamePlayer()).nextDiagonal = false;
+                player.nextDiagonal = false;
             }
 
             THashSet<InteractionFreezeTile> freezeTiles = new THashSet<InteractionFreezeTile>();
@@ -75,13 +75,14 @@ class FreezeHandleSnowballExplosion implements Runnable
                         {
                             if (habbo.getHabboInfo().getGamePlayer() != null && habbo.getHabboInfo().getGamePlayer() instanceof FreezeGamePlayer)
                             {
-                                if(!((FreezeGamePlayer)habbo.getHabboInfo().getGamePlayer()).canGetFrozen())
+                                FreezeGamePlayer hPlayer = (FreezeGamePlayer) habbo.getHabboInfo().getGamePlayer();
+                                if(!hPlayer.canGetFrozen())
                                     continue;
 
-                                if (habbo.getHabboInfo().getGamePlayer().getTeamColor().equals(this.thrownData.habbo.getHabboInfo().getGamePlayer().getTeamColor()))
-                                    this.thrownData.habbo.getHabboInfo().getGamePlayer().addScore(-FreezeGame.FREEZE_LOOSE_POINTS);
+                                if (hPlayer.getTeamColor().equals(player.getTeamColor()))
+                                    player.addScore(-FreezeGame.FREEZE_LOOSE_POINTS);
                                 else
-                                    this.thrownData.habbo.getHabboInfo().getGamePlayer().addScore(FreezeGame.FREEZE_LOOSE_POINTS);
+                                    player.addScore(FreezeGame.FREEZE_LOOSE_POINTS);
 
                                 ((FreezeGamePlayer)habbo.getHabboInfo().getGamePlayer()).freeze();
 
@@ -93,7 +94,7 @@ class FreezeHandleSnowballExplosion implements Runnable
                         if (i.getExtradata().equalsIgnoreCase("0"))
                         {
                             game.explodeBox((InteractionFreezeBlock) i);
-                            this.thrownData.habbo.getHabboInfo().getGamePlayer().addScore(FreezeGame.DESTROY_BLOCK_POINTS);
+                            player.addScore(FreezeGame.DESTROY_BLOCK_POINTS);
                         }
                     }
                 }

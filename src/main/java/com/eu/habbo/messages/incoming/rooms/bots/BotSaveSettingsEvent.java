@@ -2,6 +2,7 @@ package com.eu.habbo.messages.incoming.rooms.bots;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.bots.Bot;
+import com.eu.habbo.habbohotel.bots.BotManager;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.DanceType;
 import com.eu.habbo.habbohotel.users.HabboGender;
@@ -72,9 +73,9 @@ public class BotSaveSettingsEvent extends MessageHandler
                     }
 
                     int chatSpeed = Integer.valueOf(data[data.length -2]);
-                    if (chatSpeed < Emulator.getConfig().getInt("hotel.bot.chat.minimum.interval"))
+                    if (chatSpeed < BotManager.MINIMUM_CHAT_SPEED)
                     {
-                        chatSpeed = Emulator.getConfig().getInt("hotel.bot.chat.minimum.interval");
+                        chatSpeed = BotManager.MINIMUM_CHAT_SPEED;
                     }
 
                     BotSavedChatEvent chatEvent = new BotSavedChatEvent(bot, Boolean.valueOf(data[data.length - 3]), Boolean.valueOf(data[data.length - 1]), chatSpeed, chat);

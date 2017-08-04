@@ -73,8 +73,12 @@ public class HabboStats implements Runnable
 
     public long roomEnterTimestamp;
     public long lastChat;
+    public long lastUsersSearched;
     public boolean nux = false;
+    public boolean nuxReward = false;
     public int nuxStep = 1;
+
+    public String changeNameChecked = "";
 
     private HabboStats(ResultSet set, Habbo habbo) throws SQLException
     {
@@ -118,6 +122,7 @@ public class HabboStats implements Runnable
         this.ignoreBots = set.getString("ignore_bots").equalsIgnoreCase("1");
         this.ignorePets = set.getString("ignore_pets").equalsIgnoreCase("1");
         this.nux = set.getString("nux").equals("1");
+        this.nuxReward = nux;
 
         try (PreparedStatement statement = set.getStatement().getConnection().prepareStatement("SELECT * FROM user_window_settings WHERE user_id = ? LIMIT 1"))
         {

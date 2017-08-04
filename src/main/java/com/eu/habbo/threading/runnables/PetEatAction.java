@@ -63,7 +63,7 @@ public class PetEatAction implements Runnable
                     }
                 }
 
-                this.pet.setTask(null);
+                this.pet.setTask(PetTasks.FREE);
                 this.pet.getRoomUnit().getStatus().remove("eat");
                 this.pet.getRoomUnit().setCanWalk(true);
                 this.pet.getRoom().sendComposer(new RoomUserStatusComposer(this.pet.getRoomUnit()).compose());

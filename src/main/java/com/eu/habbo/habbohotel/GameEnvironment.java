@@ -52,6 +52,7 @@ public class GameEnvironment
     {
         Emulator.getLogging().logStart("GameEnvironment -> Loading...");
 
+        this.permissionsManager = new PermissionsManager();
         this.habboManager       = new HabboManager();
         this.hotelViewManager   = new HotelViewManager();
         this.itemManager        = new ItemManager();
@@ -64,7 +65,6 @@ public class GameEnvironment
         this.roomManager        = new RoomManager();
         this.navigatorManager   = new NavigatorManager();
         this.commandHandler     = new CommandHandler();
-        this.permissionsManager = new PermissionsManager();
         this.modToolManager     = new ModToolManager();
         this.achievementManager = new AchievementManager();
         this.achievementManager.reload();

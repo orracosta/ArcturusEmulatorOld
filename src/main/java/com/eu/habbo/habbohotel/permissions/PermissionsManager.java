@@ -5,6 +5,8 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.plugin.HabboPlugin;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TIntIntHashMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
+import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.*;
@@ -14,18 +16,14 @@ import java.util.Map;
 
 public class PermissionsManager
 {
-    private final THashMap<Integer, THashMap<String, Integer>> permissions;
-    private final THashMap<Integer, String> rankNames;
+    private final TIntObjectHashMap<Rank> ranks;
     private final TIntIntHashMap enables;
-    private final TIntIntHashMap roomEffect;
 
     public PermissionsManager()
     {
-        long millis      = System.currentTimeMillis();
-        this.permissions = new THashMap<Integer, THashMap<String, Integer>>();
-        this.rankNames   = new THashMap<Integer, String>();
-        this.enables     = new TIntIntHashMap();
-        this.roomEffect  = new TIntIntHashMap();
+        long millis  = System.currentTimeMillis();
+        this.ranks   = new TIntObjectHashMap<Rank>();
+        this.enables = new TIntIntHashMap();
 
         this.reload();
 
@@ -40,51 +38,25 @@ public class PermissionsManager
 
     private void loadPermissions()
     {
-        synchronized (this.permissions)
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM permissions ORDER BY id ASC"))
         {
-            this.permissions.clear();
-
-            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM permissions ORDER BY id ASC"))
+            try (ResultSet set = statement.executeQuery())
             {
-                try (ResultSet set = statement.executeQuery())
+                while (set.next())
                 {
-                    ResultSetMetaData meta = set.getMetaData();
-
-                    while (set.next())
+                    if (!this.ranks.containsKey(set.getInt("id")))
                     {
-                        THashMap<String, Integer> names = new THashMap<String, Integer>();
-
-                        for (int i = 1; i < meta.getColumnCount() + 1; i++)
-                        {
-                            if (meta.getColumnName(i).startsWith("cmd_") || meta.getColumnName(i).startsWith("acc_"))
-                            {
-                                if (set.getString(i).equals("1") || set.getString(i).equals("2"))
-                                {
-                                    names.put(meta.getColumnName(i), Integer.valueOf(set.getString(i)));
-                                }
-                            }
-                            else if (meta.getColumnName(i).equalsIgnoreCase("rank_name"))
-                            {
-                                this.rankNames.put(set.getInt("id"), set.getString(i));
-                            }
-                            else if (meta.getColumnName(i).equalsIgnoreCase("room_effect"))
-                            {
-                                this.roomEffect.put(set.getInt("id"), set.getInt(i));
-                            }
-                            else if (meta.getColumnName(i).equalsIgnoreCase("log_commands"))
-                            {
-                                names.put(meta.getColumnName(i), Integer.valueOf(set.getString(i)));
-                            }
-                        }
-
-                        this.permissions.put(set.getInt("id"), names);
+                        this.ranks.put(set.getInt("id"), new Rank(set));
+                    } else
+                    {
+                        this.ranks.get(set.getInt("id")).load(set);
                     }
                 }
             }
-            catch (SQLException e)
-            {
-                Emulator.getLogging().logSQLException(e);
-            }
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
         }
     }
 
@@ -108,35 +80,31 @@ public class PermissionsManager
         }
     }
 
+    public boolean rankExists(int rankId)
+    {
+        return this.ranks.containsKey(rankId);
+    }
+
+    public Rank getRank(int rankId)
+    {
+        return this.ranks.get(rankId);
+    }
+
+    public Rank getRank(String rankName)
+    {
+        for (Rank rank : this.ranks.valueCollection())
+        {
+            if (rank.getName().equalsIgnoreCase(rankName))
+                return rank;
+        }
+
+        return null;
+    }
+
+    @Deprecated
     public Collection<String> getPermissionsForRank(int rankId)
     {
-        if(this.permissions.containsKey(rankId))
-        {
-            return this.permissions.get(rankId).keySet();
-        }
-
-        return new THashSet<String>();
-    }
-
-    public String getRankName(int rankId)
-    {
-        return this.rankNames.get(rankId);
-    }
-
-    public int getRankId(String name)
-    {
-        for(Map.Entry<Integer, String> map : this.rankNames.entrySet())
-        {
-            if(map.getValue().equalsIgnoreCase(name))
-                return map.getKey();
-        }
-
-        return -1;
-    }
-
-    public int getEffect(int rankId)
-    {
-        return this.roomEffect.get(rankId);
+        throw new RuntimeException("Please use getRank()");
     }
 
     public boolean isEffectBlocked(int effectId, int rank)
@@ -169,22 +137,8 @@ public class PermissionsManager
         return result;
     }
 
-    public boolean hasPermission(int rankId, String permission, boolean withRoomRights)
+    public boolean hasPermission(Rank rank, String permission, boolean withRoomRights)
     {
-        if (this.permissions.containsKey(rankId))
-        {
-            if (this.permissions.get(rankId).containsKey(permission))
-            {
-                int rightsLevel = this.permissions.get(rankId).get(permission);
-
-                if (rightsLevel == 1)
-                    return true;
-
-                else if (rightsLevel == 2 && withRoomRights)
-                    return true;
-            }
-        }
-
-        return false;
+        return rank.hasPermission(permission, withRoomRights);
     }
 }
