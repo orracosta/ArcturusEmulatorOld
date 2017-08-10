@@ -46,6 +46,7 @@ public class Habbo implements Runnable
     {
         this.client = null;
         this.habboInfo = new HabboInfo(set);
+        this.habboInfo.setMachineID(this.client.getMachineId());
         this.habboStats = HabboStats.load(this);
         this.habboInventory = new HabboInventory(this);
 

@@ -54,6 +54,7 @@ public class HabboInfo implements Runnable
     private String photoURL;
     private String photoJSON;
     private int webPublishTimestamp;
+    private String machineID;
 
     public HabboInfo(ResultSet set)
     {
@@ -73,6 +74,7 @@ public class HabboInfo implements Runnable
             this.credits = set.getInt("credits");
             this.homeRoom = set.getInt("home_room");
             this.lastOnline = set.getInt("last_online");
+            this.machineID = set.getString("machine_id");
             this.lastLogin = Emulator.getIntUnixTimestamp();
             this.online = false;
             this.currentRoom = null;
@@ -439,12 +441,22 @@ public class HabboInfo implements Runnable
         this.webPublishTimestamp = webPublishTimestamp;
     }
 
+    public String getMachineID()
+    {
+        return this.machineID;
+    }
+
+    public void setMachineID(String machineID)
+    {
+        this.machineID = machineID;
+    }
+
     @Override
     public void run()
     {
         this.saveCurrencies();
 
-        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET motto = ?, online = ?, look = ?, gender = ?, credits = ?, last_login = ?, last_online = ?, home_room = ?, ip_current = ?, rank = ? WHERE id = ?"))
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET motto = ?, online = ?, look = ?, gender = ?, credits = ?, last_login = ?, last_online = ?, home_room = ?, ip_current = ?, rank = ?, machine_id = ? WHERE id = ?"))
         {
             statement.setString(1, this.motto);
             statement.setString(2, this.online ? "1" : "0");
@@ -456,7 +468,8 @@ public class HabboInfo implements Runnable
             statement.setInt(8, this.homeRoom);
             statement.setString(9, this.ipLogin);
             statement.setInt(10, this.rank.getId());
-            statement.setInt(11, this.id);
+            statement.setString(11, this.machineID);
+            statement.setInt(12, this.id);
             statement.executeUpdate();
         }
         catch(SQLException e)
