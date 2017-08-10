@@ -34,21 +34,10 @@ public class RoomEffectCommand extends Command
 
             if(effectId >= 0)
             {
-                TIntObjectMap<Habbo> habboList = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentHabbos();
-                TIntObjectIterator<Habbo> habboIterator = habboList.iterator();
-
-                for (int i = habboList.size(); i-- > 0; )
+                for (Habbo habbo : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getHabbos())
                 {
-                    try
-                    {
-                        habboIterator.advance();
-                    } catch (NoSuchElementException e)
-                    {
-                        return true;
-                    }
-
-                    habboIterator.value().getRoomUnit().setEffectId(effectId);
-                    habboIterator.value().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserEffectComposer(habboIterator.value().getRoomUnit()).compose());
+                    habbo.getRoomUnit().setEffectId(effectId);
+                    habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserEffectComposer(habbo.getRoomUnit()).compose());
                 }
 
                 return true;

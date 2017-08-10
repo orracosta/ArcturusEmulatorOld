@@ -120,3 +120,5 @@ INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('camera.use.https', '1'
 
 ALTER TABLE  `permissions` ADD  `prefix` VARCHAR( 5 ) NOT NULL AFTER  `log_commands` ,
                            ADD  `prefix_color` VARCHAR( 7 ) NOT NULL AFTER  `prefix`;
+
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.error.cmd_give_rank.higher.other', '%username% has an higher rank than you and thus cannot change it!');

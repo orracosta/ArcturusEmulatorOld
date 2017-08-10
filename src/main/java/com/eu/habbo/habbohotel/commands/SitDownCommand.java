@@ -17,28 +17,18 @@ public class SitDownCommand extends Command
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
-        TIntObjectMap<Habbo> habboList = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentHabbos();
-        TIntObjectIterator<Habbo> habboIterator = habboList.iterator();
-
-        for (int i = habboList.size(); i-- > 0; )
+        for (Habbo habbo : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getHabbos())
         {
-            try
+            if(habbo.getRoomUnit().isWalking())
             {
-                habboIterator.advance();
-            } catch (NoSuchElementException e)
-            {
-                break;
+                habbo.getRoomUnit().stopWalking();
             }
-            if(habboIterator.value().getRoomUnit().isWalking())
-            {
-                habboIterator.value().getRoomUnit().stopWalking();
-            }
-            else if(habboIterator.value().getRoomUnit().getStatus().containsKey("sit"))
+            else if(habbo.getRoomUnit().getStatus().containsKey("sit"))
             {
                 continue;
             }
 
-            gameClient.getHabbo().getHabboInfo().getCurrentRoom().makeSit(habboIterator.value());
+            gameClient.getHabbo().getHabboInfo().getCurrentRoom().makeSit(habbo);
         }
         
         return true;

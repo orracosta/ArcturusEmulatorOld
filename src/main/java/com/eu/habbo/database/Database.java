@@ -40,15 +40,15 @@ public class Database
         }
         catch (Exception e)
         {
-            e.printStackTrace();
             SQLException = true;
+            e.printStackTrace();
+            Emulator.getLogging().logErrorLine("Failed to connect to your database.");
+            Emulator.getLogging().logErrorLine(e.getMessage());
         }
         finally
         {
-            if(SQLException)
-            {
+            if (SQLException)
                 Emulator.prepareShutdown();
-            }
         }
 
         Emulator.getLogging().logStart("Database -> Connected! (" + (System.currentTimeMillis() - millis) + " MS)");

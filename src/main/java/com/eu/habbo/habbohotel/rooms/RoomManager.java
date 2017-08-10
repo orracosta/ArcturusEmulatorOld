@@ -516,7 +516,7 @@ public class RoomManager
             room.setScore(room.getScore() + 1);
             room.setNeedsUpdate(true);
             habbo.getHabboStats().votedRooms.push(room.getId());
-            for(Habbo h : room.getCurrentHabbos().valueCollection())
+            for(Habbo h : room.getHabbos())
             {
                 h.getClient().sendResponse(new RoomScoreComposer(room.getScore(), !this.hasVotedForRoom(h, room)));
             }
@@ -631,11 +631,8 @@ public class RoomManager
 
             synchronized (room.roomUnitLock)
             {
-                TIntObjectIterator<Habbo> iterator = room.getCurrentHabbos().iterator();
-                while (iterator.hasNext())
+                for (Habbo current : room.getHabbos())
                 {
-                    iterator.advance();
-                    Habbo current = iterator.value();
                     if (room.hasRights(current) || current.getHabboInfo().getId() == room.getOwnerId() || (room.hasGuild() && room.guildRightLevel(current) >= 2))
                     {
                         current.getClient().sendResponse(new DoorbellAddUserComposer(habbo.getHabboInfo().getUsername()));
@@ -818,8 +815,8 @@ public class RoomManager
 
             synchronized (room.roomUnitLock)
             {
-                habbo.getClient().sendResponse(new RoomUsersComposer(room.getCurrentHabbos()));
-                habbo.getClient().sendResponse(new RoomUserStatusComposer(room.getCurrentHabbos()));
+                habbo.getClient().sendResponse(new RoomUsersComposer(room.getHabbos()));
+                habbo.getClient().sendResponse(new RoomUserStatusComposer(room.getHabbos()));
             }
 
             if (habbo.getHabboStats().guild != 0)
@@ -918,20 +915,8 @@ public class RoomManager
         }
 
         THashMap<Integer, String> guildBadges = new THashMap<Integer, String>();
-        TIntObjectIterator<Habbo> iterator = room.getCurrentHabbos().iterator();
-        while(iterator.hasNext())
+        for (Habbo roomHabbo : room.getHabbos())
         {
-            try
-            {
-                iterator.advance();
-            }
-            catch (Exception e)
-            {
-                break;
-            }
-
-            Habbo roomHabbo = iterator.value();
-
             {
                 if (roomHabbo.getRoomUnit().getDanceType().getType() > 0)
                 {

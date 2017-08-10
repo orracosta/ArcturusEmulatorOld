@@ -20,7 +20,7 @@ public class UnknownGuildComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.UnknownGuildComposer);
-        this.response.appendInt32(this.guildId);
+        this.response.appendInt(this.guildId);
         this.response.appendInt(this.requester);
         return this.response;
     }

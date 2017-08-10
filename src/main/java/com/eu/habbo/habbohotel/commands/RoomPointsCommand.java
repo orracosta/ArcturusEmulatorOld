@@ -77,16 +77,11 @@ public class RoomPointsCommand extends Command
 
             final int finalType = type;
             final int finalAmount = amount;
-            gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentHabbos().forEachValue(new TObjectProcedure<Habbo>()
+            for (Habbo habbo : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getHabbos())
             {
-                @Override
-                public boolean execute(Habbo object)
-                {
-                    object.givePoints(finalType, finalAmount);
-                    object.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(message, object, object, RoomChatMessageBubbles.ALERT)));
-                    return true;
-                }
-            });
+                habbo.givePoints(finalType, finalAmount);
+                habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(message, habbo, habbo, RoomChatMessageBubbles.ALERT)));
+            }
         }
         return true;
     }

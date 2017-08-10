@@ -87,31 +87,16 @@ public class FreezeGame extends Game
 
         if (this.room.getRoomSpecialTypes().hasFreezeExitTile())
         {
-            synchronized (this.room.getCurrentHabbos())
+            for (Habbo habbo : this.room.getHabbos())
             {
-                TIntObjectIterator<Habbo> iterator = this.room.getCurrentHabbos().iterator();
-
-                for (int i = this.room.getCurrentHabbos().size(); i-- > 0; )
+                if (this.getTeamForHabbo(habbo) == null)
                 {
-                    try
+                    for (HabboItem item : room.getItemsAt(habbo.getRoomUnit().getCurrentLocation()))
                     {
-                        iterator.advance();
-
-                        if (this.getTeamForHabbo(iterator.value()) == null)
+                        if (item instanceof InteractionFreezeTile)
                         {
-                            for (HabboItem item : room.getItemsAt(iterator.value().getRoomUnit().getCurrentLocation()))
-                            {
-                                if (item instanceof InteractionFreezeTile)
-                                {
-                                    this.room.teleportHabboToItem(iterator.value(), this.room.getRoomSpecialTypes().getRandomFreezeExitTile());
-                                }
-                            }
+                            this.room.teleportHabboToItem(habbo, this.room.getRoomSpecialTypes().getRandomFreezeExitTile());
                         }
-                    }
-                    catch (NoSuchElementException e)
-                    {
-                        Emulator.getLogging().logErrorLine(e);
-                        break;
                     }
                 }
             }

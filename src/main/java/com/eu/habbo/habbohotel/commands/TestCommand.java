@@ -97,7 +97,7 @@ public class TestCommand extends Command
         {
             String s = "";
 
-            for(Habbo habbo : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentHabbos().valueCollection())
+            for(Habbo habbo : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getHabbos())
             {
                 s += "Habbo ID: " + habbo.getHabboInfo().getId() + ", RoomUnit ID: " + habbo.getRoomUnit().getId() + "\r";
             }

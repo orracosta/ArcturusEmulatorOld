@@ -37,19 +37,9 @@ public class SayAllCommand extends Command
             }
         }
 
-        TIntObjectMap<Habbo> habboList = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentHabbos();
-        TIntObjectIterator<Habbo> habboIterator = habboList.iterator();
-
-        for (int i = habboList.size(); i-- > 0; )
+        for (Habbo habbo : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getHabbos())
         {
-            try
-            {
-                habboIterator.advance();
-            } catch (NoSuchElementException e)
-            {
-                break;
-            }
-            gameClient.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserTalkComposer(new RoomChatMessage(message, habboIterator.value(), habboIterator.value(), RoomChatMessageBubbles.NORMAL)).compose());
+            habbo.talk(message);
         }
 
         return true;

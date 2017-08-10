@@ -111,7 +111,7 @@ public abstract class InteractionWiredEffect extends InteractionWired
      */
     protected long requiredCooldown()
     {
-        return 500l;
+        return 500;
     }
 
     /**

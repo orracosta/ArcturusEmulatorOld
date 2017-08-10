@@ -37,6 +37,15 @@ public class SuperbanCommand extends Command
             }
         }
 
+        if (params.length > 2)
+        {
+            for (int i = 2; i < params.length; i++)
+            {
+                reason += params[i];
+                reason += " ";
+            }
+        }
+        
         int count = 0;
         if (habbo != null)
         {

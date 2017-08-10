@@ -98,8 +98,6 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
 
             if(layout != null)
             {
-                final THashSet<Habbo> habbos = new THashSet<Habbo>(room.getCurrentHabbos().valueCollection());
-
                 room.setHasCustomLayout(true);
                 room.setNeedsUpdate(true);
                 room.setLayout(layout);
@@ -110,10 +108,7 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
                 Emulator.getGameEnvironment().getRoomManager().unloadRoom(room);
                 room = Emulator.getGameEnvironment().getRoomManager().loadRoom(room.getId());
                 ServerMessage message = new ForwardToRoomComposer(room.getId()).compose();
-                for(Habbo habbo : habbos)
-                {
-                    habbo.getClient().sendResponse(message);
-                }
+                room.sendComposer(message);
             }
         }
     }

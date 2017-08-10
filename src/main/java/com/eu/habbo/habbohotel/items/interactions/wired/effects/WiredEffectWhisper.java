@@ -103,7 +103,7 @@ public class WiredEffectWhisper extends InteractionWiredEffect
             }
             else
             {
-                for(Habbo h : room.getCurrentHabbos().valueCollection())
+                for(Habbo h : room.getHabbos())
                 {
                     h.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(message.replace("%user%", h.getHabboInfo().getUsername()).replace("%online_count%", Emulator.getGameEnvironment().getHabboManager().getOnlineCount() + "").replace("%room_count%", Emulator.getGameEnvironment().getRoomManager().getActiveRooms().size() + ""), h, h, RoomChatMessageBubbles.WIRED)));
                 }

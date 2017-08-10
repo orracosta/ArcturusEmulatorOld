@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RoomUsersComposer extends MessageComposer
 {
     private Habbo habbo;
-    private TIntObjectMap<Habbo> habbos;
+    private Collection<Habbo> habbos;
     private Bot bot;
     private Collection<Bot> bots;
 
@@ -25,7 +25,7 @@ public class RoomUsersComposer extends MessageComposer
         this.habbo = habbo;
     }
 
-    public RoomUsersComposer(TIntObjectMap<Habbo> habbos)
+    public RoomUsersComposer(Collection<Habbo> habbos)
     {
         this.habbos = habbos;
     }
@@ -76,15 +76,9 @@ public class RoomUsersComposer extends MessageComposer
         }
         else if(this.habbos != null)
         {
-            TIntObjectIterator<Habbo> iterator = this.habbos.iterator();
             this.response.appendInt(this.habbos.size());
-            int count = 0;
-            while (iterator.hasNext())
+            for (Habbo habbo : this.habbos)
             {
-                iterator.advance();
-
-                Habbo habbo = iterator.value();
-
                 if (habbo != null)
                 {
                     this.response.appendInt(habbo.getHabboInfo().getId());
@@ -112,7 +106,6 @@ public class RoomUsersComposer extends MessageComposer
                     this.response.appendString("");
                     this.response.appendInt(habbo.getHabboStats().getAchievementScore());
                     this.response.appendBoolean(true);
-                    count++;
                 }
             }
         }

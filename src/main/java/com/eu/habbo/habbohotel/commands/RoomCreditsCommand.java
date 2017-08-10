@@ -36,16 +36,11 @@ public class RoomCreditsCommand extends Command
             {
                 final String message = Emulator.getTexts().getValue("commands.generic.cmd_credits.received").replace("%amount%", amount + "");
                 final int finalAmount = amount;
-                gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentHabbos().forEachValue(new TObjectProcedure<Habbo>()
+                for (Habbo habbo : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getHabbos())
                 {
-                    @Override
-                    public boolean execute(Habbo object)
-                    {
-                        object.giveCredits(finalAmount);
-                        object.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(message, object, object, RoomChatMessageBubbles.ALERT)));
-                        return true;
-                    }
-                });
+                    habbo.giveCredits(finalAmount);
+                    habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(message, habbo, habbo, RoomChatMessageBubbles.ALERT)));
+                }
             }
             return true;
         }

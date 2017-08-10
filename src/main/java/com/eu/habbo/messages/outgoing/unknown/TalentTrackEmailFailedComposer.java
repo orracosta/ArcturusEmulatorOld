@@ -17,7 +17,7 @@ public class TalentTrackEmailFailedComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.TalentTrackEmailFailedComposer);
-        this.response.appendInt32(this.result);
+        this.response.appendInt(this.result);
         return this.response;
     }
 }

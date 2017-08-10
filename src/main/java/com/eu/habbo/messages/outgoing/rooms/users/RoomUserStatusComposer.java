@@ -9,9 +9,11 @@ import gnu.trove.map.TIntObjectMap;
 import gnu.trove.procedure.TObjectObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
+import java.util.Collection;
+
 public class RoomUserStatusComposer extends MessageComposer
 {
-    private TIntObjectMap<Habbo> habbos;
+    private Collection<Habbo> habbos;
     private THashSet<RoomUnit> roomUnits;
 
     public RoomUserStatusComposer(RoomUnit roomUnit)
@@ -25,7 +27,7 @@ public class RoomUserStatusComposer extends MessageComposer
         this.roomUnits = roomUnits;
     }
 
-    public RoomUserStatusComposer(TIntObjectMap<Habbo> habbos)
+    public RoomUserStatusComposer(Collection<Habbo> habbos)
     {
         this.habbos = habbos;
     }
@@ -69,7 +71,7 @@ public class RoomUserStatusComposer extends MessageComposer
             synchronized (this.habbos)
             {
                 this.response.appendInt(this.habbos.size());
-                for (Habbo habbo : this.habbos.valueCollection())
+                for (Habbo habbo : this.habbos)
                 {
                     this.response.appendInt(habbo.getRoomUnit().getId());
                     this.response.appendInt32(habbo.getRoomUnit().getPreviousLocation().x);

@@ -44,21 +44,10 @@ public class RoomItemCommand extends Command
             }
         }
 
-        TIntObjectMap<Habbo> habboList = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentHabbos();
-        TIntObjectIterator<Habbo> habboIterator = habboList.iterator();
-
-        for (int i = habboList.size(); i-- > 0; )
+        for (Habbo habbo : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getHabbos())
         {
-            try
-            {
-                habboIterator.advance();
-            } catch (NoSuchElementException e)
-            {
-                break;
-            }
-
-            habboIterator.value().getRoomUnit().setHandItem(itemId);
-            habboIterator.value().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserHandItemComposer(habboIterator.value().getRoomUnit()).compose());
+            habbo.getRoomUnit().setHandItem(itemId);
+            habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserHandItemComposer(habbo.getRoomUnit()).compose());
         }
 
         if(itemId > 0)

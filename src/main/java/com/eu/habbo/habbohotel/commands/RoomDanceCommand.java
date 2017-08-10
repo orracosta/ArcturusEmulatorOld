@@ -43,21 +43,10 @@ public class RoomDanceCommand extends Command
                 return true;
             }
 
-            TIntObjectMap<Habbo> habboList = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentHabbos();
-            TIntObjectIterator<Habbo> habboIterator = habboList.iterator();
-
-            for (int i = habboList.size(); i-- > 0; )
+            for (Habbo habbo : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getHabbos())
             {
-                try
-                {
-                    habboIterator.advance();
-                } catch (NoSuchElementException e)
-                {
-                    return true;
-                }
-
-                habboIterator.value().getRoomUnit().setDanceType(DanceType.values()[danceId]);
-                habboIterator.value().getHabboInfo().getCurrentRoom().sendComposer(new RoomUserDanceComposer(habboIterator.value().getRoomUnit()).compose());
+                habbo.getRoomUnit().setDanceType(DanceType.values()[danceId]);
+                habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserDanceComposer(habbo.getRoomUnit()).compose());
             }
         }
         else

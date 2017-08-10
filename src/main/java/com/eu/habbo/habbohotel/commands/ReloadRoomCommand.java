@@ -26,11 +26,10 @@ public class ReloadRoomCommand extends Command
                 Room room = gameClient.getHabbo().getHabboInfo().getCurrentRoom();
                 if (room != null)
                 {
-                    final THashSet<Habbo> habbos = new THashSet<Habbo>(room.getCurrentHabbos().valueCollection());
                     Emulator.getGameEnvironment().getRoomManager().unloadRoom(room);
                     room = Emulator.getGameEnvironment().getRoomManager().loadRoom(room.getId());
                     ServerMessage message = new ForwardToRoomComposer(room.getId()).compose();
-                    for(Habbo habbo : habbos)
+                    for(Habbo habbo : room.getHabbos())
                     {
                         habbo.getClient().sendResponse(message);
                     }

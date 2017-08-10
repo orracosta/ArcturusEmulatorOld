@@ -45,29 +45,26 @@ public class ModToolManager
         Emulator.getLogging().logStart("ModTool Manager -> Loaded! (" + (System.currentTimeMillis() - millis) + " MS)");
     }
 
-    public void loadModTool()
+    public synchronized void loadModTool()
     {
-        synchronized (this)
-        {
-            this.category.clear();
-            this.presets.clear();
-            this.cfhCategories.clear();
+		this.category.clear();
+		this.presets.clear();
+		this.cfhCategories.clear();
 
-            this.presets.put("user", new THashSet<>());
-            this.presets.put("room", new THashSet<>());
+		this.presets.put("user", new THashSet<>());
+		this.presets.put("room", new THashSet<>());
 
-            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
-            {
-                this.loadCategory(connection);
-                this.loadPresets(connection);
-                this.loadTickets(connection);
-                this.loadCfhCategories(connection);
-            }
-            catch (SQLException e)
-            {
-                Emulator.getLogging().logSQLException(e);
-            }
-        }
+		try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
+		{
+			this.loadCategory(connection);
+			this.loadPresets(connection);
+			this.loadTickets(connection);
+			this.loadCfhCategories(connection);
+		}
+		catch (SQLException e)
+		{
+			Emulator.getLogging().logSQLException(e);
+		}
     }
 
     private void loadCategory(Connection connection) throws SQLException
@@ -511,19 +508,13 @@ public class ModToolManager
 
         if (roomActionEvent.kickUsers)
         {
-            room.getCurrentHabbos().forEachValue(new TObjectProcedure<Habbo>()
+            for (Habbo habbo : room.getHabbos())
             {
-                @Override
-                public boolean execute(Habbo object)
+                if (!(habbo.hasPermission("acc_unkickable") || habbo.hasPermission("acc_supporttool") || room.isOwner(habbo)))
                 {
-                    if (!(object.hasPermission("acc_unkickable") || object.hasPermission("acc_supporttool") || room.isOwner(object)))
-                    {
-                        room.kickHabbo(object, false);
-                    }
-
-                    return true;
+                    room.kickHabbo(habbo, false);
                 }
-            });
+            }
         }
     }
 

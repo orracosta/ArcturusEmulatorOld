@@ -56,26 +56,21 @@ public class RoomGiftCommand extends Command
 
                 final String finalMessage = message;
 
-                gameClient.getHabbo().getHabboInfo().getCurrentRoom().getCurrentHabbos().forEachValue(new TObjectProcedure<Habbo>()
+                for (Habbo habbo : gameClient.getHabbo().getHabboInfo().getCurrentRoom().getHabbos())
                 {
-                    @Override
-                    public boolean execute(Habbo habbo)
-                    {
-                        HabboItem item = Emulator.getGameEnvironment().getItemManager().createItem(0, baseItem, 0, 0, "");
+                    HabboItem item = Emulator.getGameEnvironment().getItemManager().createItem(0, baseItem, 0, 0, "");
 
-                        Item giftItem = Emulator.getGameEnvironment().getItemManager().getItem((Integer) Emulator.getGameEnvironment().getCatalogManager().giftFurnis.values().toArray()[Emulator.getRandom().nextInt(Emulator.getGameEnvironment().getCatalogManager().giftFurnis.size())]);
+                    Item giftItem = Emulator.getGameEnvironment().getItemManager().getItem((Integer) Emulator.getGameEnvironment().getCatalogManager().giftFurnis.values().toArray()[Emulator.getRandom().nextInt(Emulator.getGameEnvironment().getCatalogManager().giftFurnis.size())]);
 
-                        String extraData = "1\t" + item.getId();
-                        extraData += "\t0\t0\t0\t"+ finalMessage +"\t0\t0";
+                    String extraData = "1\t" + item.getId();
+                    extraData += "\t0\t0\t0\t"+ finalMessage +"\t0\t0";
 
-                        Emulator.getGameEnvironment().getItemManager().createGift(habbo.getHabboInfo().getUsername(), giftItem, extraData, 0, 0);
+                    Emulator.getGameEnvironment().getItemManager().createGift(habbo.getHabboInfo().getUsername(), giftItem, extraData, 0, 0);
 
-                        habbo.getClient().sendResponse(new InventoryRefreshComposer());
+                    habbo.getClient().sendResponse(new InventoryRefreshComposer());
 
-                        habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_RECEIVED_ITEM));
-                        return true;
-                    }
-                });
+                    habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_RECEIVED_ITEM));
+                }
 
                 return true;
             }

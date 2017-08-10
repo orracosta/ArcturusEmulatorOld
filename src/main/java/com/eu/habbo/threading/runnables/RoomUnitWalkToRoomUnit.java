@@ -34,7 +34,6 @@ public class RoomUnitWalkToRoomUnit implements Runnable
         if(this.goalTile == null)
         {
             this.findNewLocation();
-
             Emulator.getThreading().run(this, 500);
         }
         else if(this.walker.getGoal().equals(this.goalTile)) //Check if the goal is still the same. Chances are something is running the same task. If so we dump this task.

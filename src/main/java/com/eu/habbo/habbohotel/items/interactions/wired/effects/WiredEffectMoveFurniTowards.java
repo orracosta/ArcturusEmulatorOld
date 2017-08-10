@@ -56,7 +56,7 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
 
             Habbo target = null;
 
-            for(Habbo habbo : room.getCurrentHabbos().valueCollection())
+            for(Habbo habbo : room.getHabbos())
             {
                 RoomTile h = habbo.getRoomUnit().getCurrentLocation();
 

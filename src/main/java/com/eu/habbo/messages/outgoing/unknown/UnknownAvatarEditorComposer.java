@@ -17,7 +17,7 @@ public class UnknownAvatarEditorComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.UnknownAvatarEditorComposer);
-        this.response.appendInt32(this.type);
+        this.response.appendInt(this.type);
         return this.response;
     }
 }

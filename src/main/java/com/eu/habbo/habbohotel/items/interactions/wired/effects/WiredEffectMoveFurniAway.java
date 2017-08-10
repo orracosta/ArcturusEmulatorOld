@@ -54,7 +54,7 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
 
             Habbo target = null;
 
-            for(Habbo habbo : room.getCurrentHabbos().valueCollection())
+            for(Habbo habbo : room.getHabbos())
             {
                 if(habbo.getRoomUnit().getCurrentLocation().distance(t) <= shortest)
                 {

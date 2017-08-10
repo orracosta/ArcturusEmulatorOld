@@ -60,6 +60,12 @@ public class GiveRankCommand extends Command
 
                 if (habbo != null)
                 {
+                    if (habbo.getHabboInfo().getRank().getId() > gameClient.getHabbo().getHabboInfo().getId())
+                    {
+                        gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_give_rank.higher.other").replace("%username%", params[1]).replace("%id%", rank.getName()), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                        return true;
+                    }
+
                     habbo.getHabboInfo().setRank(rank);
                     habbo.getHabboInfo().run();
                     habbo.getClient().sendResponse(new UserPerksComposer(habbo));

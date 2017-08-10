@@ -39,8 +39,6 @@ public class WordFilter
         this.hideMessageWords.clear();
         this.words.clear();
 
-        this.words.add(new WordFilterWord("azure ", "poop "));
-
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement();)
         {
             try (ResultSet set = statement.executeQuery("SELECT * FROM wordfilter"))
