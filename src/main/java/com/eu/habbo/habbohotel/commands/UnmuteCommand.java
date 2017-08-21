@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.messages.outgoing.rooms.users.RoomUserIgnoredComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
 public class UnmuteCommand extends Command
@@ -32,10 +33,30 @@ public class UnmuteCommand extends Command
         }
         else
         {
-            habbo.getRoomUnit().modMuted = false;
-            habbo.getRoomUnit().modMuteTime = 0;
+            if (!habbo.getHabboStats().allowTalk() || habbo.getHabboInfo().getCurrentRoom().isMuted(habbo))
+            {
+                if (!habbo.getHabboStats().allowTalk())
+                {
+                    habbo.unMute();
+                }
 
-            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_unmute").replace("%user%", params[1]), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                if (habbo.getHabboInfo().getCurrentRoom().isMuted(habbo))
+                {
+                    habbo.getHabboInfo().getCurrentRoom().muteHabbo(habbo, 0);
+                }
+
+                if (habbo.getHabboInfo().getCurrentRoom() != null)
+                {
+                    habbo.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserIgnoredComposer(habbo, RoomUserIgnoredComposer.UNIGNORED).compose());
+                }
+
+                gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_unmute").replace("%user%", params[1]), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            }
+            else
+            {
+                gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_unmute.not_muted").replace("%user%", params[1]), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                return true;
+            }
         }
 
         return true;

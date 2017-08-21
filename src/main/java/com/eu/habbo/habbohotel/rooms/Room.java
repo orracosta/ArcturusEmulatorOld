@@ -1289,23 +1289,28 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         }
                     }
 
-                    if (!habbo.hasPermission("acc_chat_no_flood") && habbo.getRoomUnit().talkCounter > 0)
+                    if (habbo.getHabboStats().mutedBubbleTracker && habbo.getHabboStats().allowTalk())
+                    {
+                        habbo.getHabboStats().mutedBubbleTracker = false;
+                        this.sendComposer(new RoomUserIgnoredComposer(habbo, RoomUserIgnoredComposer.UNIGNORED).compose());
+                    }
+                    if (!habbo.hasPermission("acc_chat_no_flood") && habbo.getHabboStats().chatCounter > 0)
                     {
                         //if (habbo.getRoomUnit().talkTimeOut == 0 || currentTimestamp - habbo.getRoomUnit().talkTimeOut < 0)
                         {
-                            habbo.getRoomUnit().talkCounter--;
+                            habbo.getHabboStats().chatCounter--;
 
-                            if (habbo.getRoomUnit().talkCounter > 3)
+                            if (habbo.getHabboStats().chatCounter > 3 && !this.hasRights(habbo))
                             {
                                 if (chatProtection == 0)
                                 {
                                     floodMuteHabbo(habbo, 30);
                                 }
-                                else if (chatProtection == 1 && habbo.getRoomUnit().talkCounter > 4)
+                                else if (chatProtection == 1 && habbo.getHabboStats().chatCounter > 4)
                                 {
                                     floodMuteHabbo(habbo, 30);
                                 }
-                                else if (chatProtection == 2 && habbo.getRoomUnit().talkCounter > 5)
+                                else if (chatProtection == 2 && habbo.getHabboStats().chatCounter > 5)
                                 {
                                     floodMuteHabbo(habbo, 30);
                                 }
@@ -1314,7 +1319,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     }
                     else
                     {
-                        habbo.getRoomUnit().talkCounter = 0;
+                        habbo.getHabboStats().chatCounter = 0;
                     }
 
                     if (habbo.getRoomUnit().getStatus().containsKey("sign"))
@@ -3310,12 +3315,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void floodMuteHabbo(Habbo habbo, int timeOut)
     {
-        habbo.getRoomUnit().mutedCount++;
-        timeOut += (timeOut * (int)Math.ceil(Math.pow(habbo.getRoomUnit().mutedCount, 2)));
-        habbo.getRoomUnit().talkCounter = 0;
-        habbo.getRoomUnit().talkTimeOut = Emulator.getIntUnixTimestamp() + timeOut;
-        habbo.getClient().sendResponse(new FloodCounterComposer(timeOut));
-        habbo.getClient().sendResponse(new MutedWhisperComposer(timeOut));
+        habbo.getHabboStats().mutedCount++;
+        timeOut += (timeOut * (int)Math.ceil(Math.pow(habbo.getHabboStats().mutedCount, 2)));
+        habbo.getHabboStats().chatCounter = 0;
+        habbo.mute(timeOut);
     }
 
     public void talk(Habbo habbo, RoomChatMessage roomChatMessage, RoomChatType chatType)
@@ -3325,13 +3328,21 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void talk(final Habbo habbo, final RoomChatMessage roomChatMessage, RoomChatType chatType, boolean ignoreWired)
     {
+        if (!habbo.getHabboStats().allowTalk())
+            return;
+
+        habbo.getHabboStats().chatCounter += 2;
+
         if (habbo.getHabboInfo().getCurrentRoom() != this)
             return;
 
         long millis = System.currentTimeMillis();
-        if (millis - habbo.getHabboStats().lastChat < 750)
+        if (HABBO_CHAT_DELAY)
         {
-            return;
+            if (millis - habbo.getHabboStats().lastChat < 750)
+            {
+                return;
+            }
         }
         habbo.getHabboStats().lastChat = millis;
         if(roomChatMessage != null && roomChatMessage.getMessage().equalsIgnoreCase("i am a pirate"))
@@ -3407,11 +3418,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 }
             }
         }
-
-        if (habbo.getRoomUnit().talkTimeOut > 0 && (Emulator.getIntUnixTimestamp() - habbo.getRoomUnit().talkTimeOut < 0))
-            return;
-
-        habbo.getRoomUnit().talkCounter += 2;
 
         ServerMessage prefixMessage = roomChatMessage.getHabbo().getHabboInfo().getRank().hasPrefix() ? new RoomUserNameChangedComposer(habbo, true).compose() : null;
         ServerMessage clearPrefixMessage = prefixMessage != null ? new RoomUserNameChangedComposer(habbo).compose() : null;

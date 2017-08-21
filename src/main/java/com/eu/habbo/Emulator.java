@@ -175,6 +175,11 @@ public final class Emulator
                 Emulator.getLogging().logStart("Emulator settings runtime.threads (" + Emulator.getConfig().getInt("runtime.threads") + ") can be increased to " + (Runtime.getRuntime().availableProcessors() * 2) + " to possibly increase performance.");
             }
 
+            if (Emulator.getConfig().getValue("username").isEmpty())
+            {
+                Emulator.getLogging().logErrorLine("No account has been found in config.ini Please create an account on Arcturus.wf and edit the config.ini in order to maximize usage of Arcturus! http://arcturus.wf");
+            }
+
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
             while (true)

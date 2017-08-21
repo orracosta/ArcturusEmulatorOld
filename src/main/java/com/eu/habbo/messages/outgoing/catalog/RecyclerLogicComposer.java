@@ -25,7 +25,7 @@ public class RecyclerLogicComposer extends MessageComposer
             {
                 this.response.appendString(item.getName());
                 this.response.appendInt(1);
-                this.response.appendString(item.getType().code);
+                this.response.appendString(item.getType().code.toLowerCase());
                 this.response.appendInt(item.getSpriteId());
             }
         }

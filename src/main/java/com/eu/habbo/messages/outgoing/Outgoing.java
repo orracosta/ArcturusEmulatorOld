@@ -548,6 +548,8 @@ public class Outgoing
     public final static int UnknownRoomDesktopComposer = 69;
     public final static int UnknownGuildComposer3 = 876;
 
+    public final static int GameCenterGameComposer = 3805;
+
     /*
     0x0909 //unused
 1347 //Unused cry[to

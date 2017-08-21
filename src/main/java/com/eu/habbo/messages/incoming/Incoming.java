@@ -316,7 +316,8 @@ public class Incoming
     public static final int PetPackageNameEvent = 3698;
 
     public static final int GameCenterRequestGamesEvent = 741;
-    public static final int GameCenterRequestAccountStatusEvent = 2399;
+    public static final int GameCenterRequestAccountStatusEvent = 3171;
+    public static final int GameCenterRequestGameStatusEvent = 11;
     public static final int CameraPublishToWebEvent = 2068;
 
     public static final int GameCenterJoinGameEvent = 1458;

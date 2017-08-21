@@ -20,9 +20,8 @@ public class RoomUserWhisperEvent extends MessageHandler
 
         RoomChatMessage chatMessage = new RoomChatMessage(this);
 
-        if(!this.client.getHabbo().getRoomUnit().canTalk() && chatMessage.getTargetHabbo() != null)
+        if(!this.client.getHabbo().getHabboStats().allowTalk() || chatMessage.getTargetHabbo() == null)
             return;
-
 
         if (Emulator.getPluginManager().fireEvent(new UserTalkEvent(this.client.getHabbo(), chatMessage, RoomChatType.WHISPER)).isCancelled())
         {

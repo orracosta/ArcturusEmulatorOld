@@ -18,12 +18,12 @@ public class RecyclerPrizesLayout extends CatalogPage
     {
         message.appendString("recycler_prizes");
         message.appendInt(3);
-        message.appendString("");
-        message.appendString("");
-        message.appendString("");
+        message.appendString(super.getHeaderImage());
+        message.appendString(super.getTeaserImage());
+        message.appendString(super.getSpecialImage());
         message.appendInt(3);
-        message.appendString("");
-        message.appendString("");
-        message.appendString("");
+        message.appendString(super.getTextOne());
+        message.appendString(super.getTextDetails());
+        message.appendString(super.getTextTeaser());
     }
 }

@@ -7,11 +7,14 @@ import gnu.trove.map.hash.THashMap;
 import java.lang.reflect.Method;
 import java.sql.*;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class NavigatorManager
 {
+    public static int MAXIMUM_RESULTS_PER_PAGE = 10;
+
     public final THashMap<Integer, NavigatorPublicCategory> publicCategories = new THashMap<Integer, NavigatorPublicCategory>();
-    public final THashMap<String, NavigatorFilterField> filterSettings = new THashMap<String, NavigatorFilterField>();
+    public final ConcurrentHashMap<String, NavigatorFilterField> filterSettings = new ConcurrentHashMap<String, NavigatorFilterField>();
     public final THashMap<String, NavigatorFilter> filters = new THashMap<String, NavigatorFilter>();
 
     public NavigatorManager()
@@ -123,14 +126,11 @@ public class NavigatorManager
 
     public NavigatorFilterComparator comperatorForField(Method field)
     {
-        synchronized (this.filterSettings)
+        for (Map.Entry<String, NavigatorFilterField> set : this.filterSettings.entrySet())
         {
-            for (Map.Entry<String, NavigatorFilterField> set : this.filterSettings.entrySet())
+            if (set.getValue().field == field)
             {
-                if (set.getValue().field == field)
-                {
-                    return set.getValue().comparator;
-                }
+                return set.getValue().comparator;
             }
         }
 

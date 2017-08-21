@@ -165,6 +165,11 @@ public class WordFilter
                 }
                 message = message.replace(word.key, word.replacement);
                 foundShit = true;
+
+                if (word.muteTime > 0)
+                {
+                    habbo.mute(word.muteTime);
+                }
             }
         }
 

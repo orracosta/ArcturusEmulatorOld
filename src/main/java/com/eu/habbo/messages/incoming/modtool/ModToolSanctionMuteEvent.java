@@ -20,9 +20,9 @@ public class ModToolSanctionMuteEvent extends MessageHandler
 
             if (habbo != null)
             {
-                habbo.getRoomUnit().modMuted = true;
-                habbo.getRoomUnit().modMuteTime = 60 * 60;
+                habbo.mute(60 * 60);
                 habbo.alert(message);
+                this.client.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_mute.muted").replace("%user%", habbo.getHabboInfo().getUsername()));
             }
             else
             {

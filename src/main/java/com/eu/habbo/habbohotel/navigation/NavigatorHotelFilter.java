@@ -41,7 +41,7 @@ public class NavigatorHotelFilter extends NavigatorFilter
     }
 
     @Override
-    public List<SearchResultList> getResult(Habbo habbo, NavigatorFilterField filterField, String value)
+    public List<SearchResultList> getResult(Habbo habbo, NavigatorFilterField filterField, String value, int roomCategory)
     {
         boolean showInvisible = habbo.hasPermission("acc_enter_anyroom") || habbo.hasPermission("acc_anyroomowner");
         if (!filterField.databaseQuery.isEmpty())
@@ -49,7 +49,7 @@ public class NavigatorHotelFilter extends NavigatorFilter
             List<SearchResultList> resultLists = new ArrayList<SearchResultList>();
             int i = 0;
 
-            for (Map.Entry<Integer, List<Room>> set : Emulator.getGameEnvironment().getRoomManager().findRooms(filterField, value).entrySet())
+            for (Map.Entry<Integer, List<Room>> set : Emulator.getGameEnvironment().getRoomManager().findRooms(filterField, value, roomCategory).entrySet())
             {
                 if (!set.getValue().isEmpty())
                 {

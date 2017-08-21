@@ -455,6 +455,12 @@ public class ModToolManager
         List<ModToolBan> bans = new ArrayList<>();
         Habbo target = Emulator.getGameEnvironment().getHabboManager().getHabbo(targetUserId);
         HabboInfo offlineInfo = target != null ? target.getHabboInfo() : HabboManager.getOfflineHabboInfo(targetUserId);
+
+        if (moderator.getHabboInfo().getRank().getId() < offlineInfo.getRank().getId())
+        {
+            return bans;
+        }
+
         ModToolBan ban = new ModToolBan(targetUserId, offlineInfo != null ? offlineInfo.getIpLogin() : "offline", offlineInfo != null ? offlineInfo.getMachineID() : "offline", moderator.getHabboInfo().getId(), Emulator.getIntUnixTimestamp() + duration, reason, type, cfhTopic);
         Emulator.getPluginManager().fireEvent(new SupportUserBannedEvent(moderator, target, ban));
         Emulator.getThreading().run(ban);

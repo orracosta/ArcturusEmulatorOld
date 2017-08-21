@@ -11,6 +11,9 @@ import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
 import gnu.trove.set.hash.THashSet;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class FloorPlanEditorSaveEvent extends MessageHandler
 {
     @Override
@@ -106,9 +109,13 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
                 room.setWallHeight(wallHeight);
                 room.save();
                 Emulator.getGameEnvironment().getRoomManager().unloadRoom(room);
+                Collection<Habbo> habbos = new ArrayList<Habbo>(room.getHabbos());
                 room = Emulator.getGameEnvironment().getRoomManager().loadRoom(room.getId());
                 ServerMessage message = new ForwardToRoomComposer(room.getId()).compose();
-                room.sendComposer(message);
+                for (Habbo habbo : habbos)
+                {
+                    habbo.getClient().sendResponse(message);
+                }
             }
         }
     }

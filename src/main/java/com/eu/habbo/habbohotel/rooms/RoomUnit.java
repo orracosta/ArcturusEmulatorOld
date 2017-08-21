@@ -45,8 +45,6 @@ public class RoomUnit
     public boolean sitUpdate = false;
     public boolean isTeleporting = false;
     public boolean isKicked = false;
-    public int talkTimeOut;
-    public volatile short talkCounter;
 
     private final THashMap<String, String> status;
     private final THashMap<String, Object> cacheable;
@@ -60,10 +58,6 @@ public class RoomUnit
     private int walkTimeOut;
     private int effectId;
 
-    public boolean wiredMuted;
-    public boolean modMuted;
-    public int modMuteTime;
-    public int mutedCount;
     private int idleTimer;
     private Room room;
     private RoomRightLevels rightsLevel = RoomRightLevels.NONE;
@@ -83,8 +77,6 @@ public class RoomUnit
         this.handItemTimestamp = 0;
         this.walkTimeOut = Emulator.getIntUnixTimestamp();
         this.effectId = 0;
-        this.wiredMuted = false;
-        this.modMuted = false;
         this.isKicked = false;
     }
 
@@ -606,27 +598,6 @@ public class RoomUnit
     public void setWalkTimeOut(int walkTimeOut)
     {
         this.walkTimeOut = walkTimeOut;
-    }
-
-    public boolean canTalk()
-    {
-        if(this.wiredMuted)
-            return false;
-
-        return !this.isModMuted();
-    }
-
-    public boolean isModMuted()
-    {
-        if(this.modMuted)
-        {
-            if (this.modMuteTime < Emulator.getIntUnixTimestamp())
-            {
-                this.modMuted = false;
-            }
-        }
-
-        return this.modMuted;
     }
 
     public void increaseIdleTimer()

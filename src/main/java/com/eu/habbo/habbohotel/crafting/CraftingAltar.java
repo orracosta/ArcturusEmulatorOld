@@ -48,38 +48,62 @@ public class CraftingAltar
                 continue;
             }
 
-            for (Map.Entry<Item, Integer> entry : set.getValue().getIngredients().entrySet())
+            equals = amountMap.size() == set.getValue().getIngredients().size();
+
+            for (Map.Entry<Item, Integer> entry : amountMap.entrySet())
             {
                 if (contains)
                 {
-                    if (!amountMap.containsKey(entry.getKey()))
+                    if (set.getValue().getIngredients().containsKey(entry.getKey()))
                     {
-                        contains = false;
-                        equals = false;
-                        break;
-                    }
-                    else
-                    {
-                        if (equals)
+                        if (set.getValue().getIngredients().get(entry.getKey()).equals(entry.getValue()))
                         {
-                            if (!entry.getValue().equals(amountMap.get(entry.getKey())))
-                            {
-                                if (entry.getValue() > amountMap.get(entry.getKey()))
-                                {
-                                    contains = true;
-                                }
-                                else
-                                {
-                                    contains = false;
-                                }
+                            continue;
+                        }
 
-                                equals = false;
-                                break;
-                            }
+                        equals = false;
+
+                        if (set.getValue().getIngredients().get(entry.getKey()) > entry.getValue())
+                        {
+                            continue;
                         }
                     }
+
+                    contains = false;
                 }
             }
+
+//            for (Map.Entry<Item, Integer> entry : set.getValue().getIngredients().entrySet())
+//            {
+//                if (contains)
+//                {
+//                    if (!amountMap.containsKey(entry.getKey()))
+//                    {
+//                        equals = false;
+//                        continue;
+//                    }
+//
+//                    {
+//                        if (equals)
+//                        {
+//                            if (!entry.getValue().equals(amountMap.get(entry.getKey())))
+//                            {
+//                                if (entry.getValue() > amountMap.get(entry.getKey()))
+//                                {
+//                                    contains = true;
+//                                }
+//                                else
+//                                {
+//                                    contains = false;
+//                                }
+//
+//                                equals = false;
+//                                break;
+//                            }
+//                        }
+//                    }
+//                }
+//            }
 
             if (contains)
             {

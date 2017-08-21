@@ -286,6 +286,10 @@ public class RoomChatMessage implements Runnable, ISerialize
                         return;
                     }
                 }
+                else
+                {
+                    habbo.mute(Emulator.getConfig().getInt("hotel.wordfilter.automute"));
+                }
 
                 this.message = "";
             }

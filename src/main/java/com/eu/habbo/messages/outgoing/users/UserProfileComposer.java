@@ -85,9 +85,9 @@ public class UserProfileComposer extends MessageComposer
         if(this.habbo != null)
         {
             List<Integer> toRemove = new ArrayList<Integer>();
-            for (int index = this.habbo.getHabboStats().guilds.size(); index >= 0; index--)
+            for (int index = this.habbo.getHabboStats().guilds.size(); index > 0; index--)
             {
-                int i = this.habbo.getHabboStats().guilds.get(index);
+                int i = this.habbo.getHabboStats().guilds.get(index - 1);
                 if (i == 0)
                     continue;
 

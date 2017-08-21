@@ -103,7 +103,8 @@ public class SecureLoginEvent extends MessageHandler
                 messages.add(new CfhTopicsMessageComposer().compose());
                 messages.add(new FavoriteRoomsCountComposer(this.client.getHabbo()).compose());
                 messages.add(new GameCenterGameListComposer().compose());
-                messages.add(new GameCenterAccountInfoComposer().compose());
+                messages.add(new GameCenterAccountInfoComposer(3, 100).compose());
+                messages.add(new GameCenterAccountInfoComposer(0, 100).compose());
 
                 //messages.add(new MessengerInitComposer(this.client.getHabbo()).compose());
                 //messages.add(new FriendsComposer(this.client.getHabbo()).compose());

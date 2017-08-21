@@ -20,7 +20,7 @@ public class RoomUserTalkEvent extends MessageHandler {
         if(room == null)
             return;
 
-        if(!this.client.getHabbo().getRoomUnit().canTalk())
+        if(!this.client.getHabbo().getHabboStats().allowTalk())
             return;
 
         RoomChatMessage message = new RoomChatMessage(this);

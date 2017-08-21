@@ -6,7 +6,9 @@ import com.eu.habbo.habbohotel.crafting.CraftingRecipe;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
+import com.eu.habbo.messages.outgoing.crafting.CraftingRecipeComposer;
 import com.eu.habbo.messages.outgoing.crafting.CraftingRecipesAvailableComposer;
+import com.eu.habbo.messages.outgoing.crafting.CraftingResultComposer;
 import gnu.trove.map.hash.THashMap;
 
 import java.util.Map;
@@ -45,15 +47,22 @@ public class RequestCraftingRecipesAvailableEvent extends MessageHandler
             Map<CraftingRecipe, Boolean> recipes = altar.matchRecipes(items);
 
             boolean found = false;
+            int c = recipes.size();
             for (Map.Entry<CraftingRecipe, Boolean> set : recipes.entrySet())
             {
-                if (set.getValue() && !this.client.getHabbo().getHabboStats().hasRecipe(set.getKey().getId()))
+                if (this.client.getHabbo().getHabboStats().hasRecipe(set.getKey().getId()))
+                {
+                    c--;
+                    continue;
+                }
+
+                if (set.getValue())
                 {
                     found = true;
                     break;
                 }
             }
-            this.client.sendResponse(new CraftingRecipesAvailableComposer(recipes.size(), found));
+            this.client.sendResponse(new CraftingRecipesAvailableComposer(c, found));
         }
     }
 }

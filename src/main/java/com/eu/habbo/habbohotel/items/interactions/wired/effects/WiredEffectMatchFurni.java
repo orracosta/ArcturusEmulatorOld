@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
+import com.eu.habbo.habbohotel.items.interactions.InteractionDice;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
@@ -54,7 +55,10 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
                 {
                     if(!setting.state.equals("\t"))
                     {
-                        item.setExtradata(setting.state);
+                        if (!(item instanceof InteractionDice && !setting.state.equals("0")))
+                        {
+                            item.setExtradata(setting.state);
+                        }
                     }
                 }
 

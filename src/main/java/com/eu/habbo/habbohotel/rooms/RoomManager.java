@@ -8,6 +8,7 @@ import com.eu.habbo.habbohotel.guilds.Guild;
 import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
 import com.eu.habbo.habbohotel.navigation.NavigatorFilterComparator;
 import com.eu.habbo.habbohotel.navigation.NavigatorFilterField;
+import com.eu.habbo.habbohotel.navigation.NavigatorManager;
 import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.PetData;
 import com.eu.habbo.habbohotel.pets.PetTasks;
@@ -28,6 +29,7 @@ import com.eu.habbo.messages.outgoing.rooms.items.RoomWallItemsComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.RoomPetComposer;
 import com.eu.habbo.messages.outgoing.rooms.promotions.RoomPromotionMessageComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.*;
+import com.eu.habbo.messages.outgoing.users.MutedWhisperComposer;
 import com.eu.habbo.plugin.events.navigator.NavigatorRoomCreatedEvent;
 import com.eu.habbo.plugin.events.rooms.RoomUncachedEvent;
 import com.eu.habbo.plugin.events.users.UserEnterRoomEvent;
@@ -141,11 +143,11 @@ public class RoomManager
         }
     }
 
-    public THashMap<Integer, List<Room>> findRooms(NavigatorFilterField filterField, String value)
+    private static final int page = 0;
+    public THashMap<Integer, List<Room>> findRooms(NavigatorFilterField filterField, String value, int category)
     {
         THashMap<Integer, List<Room>> rooms = new THashMap<Integer, List<Room>>();
-        String query = filterField.databaseQuery + " AND rooms.state != 'invisible' ORDER BY rooms.users, rooms.id DESC LIMIT " + Emulator.getConfig().getValue("hotel.navigator.search.maxresults");
-
+        String query = filterField.databaseQuery + " AND rooms.state != 'invisible' " + (category >= 0 ? "AND rooms.category = '" + category + "'" : "") + "  ORDER BY rooms.users, rooms.id DESC LIMIT " + (page * NavigatorManager.MAXIMUM_RESULTS_PER_PAGE)  + "" + ((page * NavigatorManager.MAXIMUM_RESULTS_PER_PAGE) + NavigatorManager.MAXIMUM_RESULTS_PER_PAGE);
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement(query))
         {
             statement.setString(1, (filterField.comparator == NavigatorFilterComparator.EQUALS ? value : "%" + value + "%"));
@@ -909,9 +911,17 @@ public class RoomManager
             }
         }
 
-        if (habbo.getRoomUnit().isModMuted())
+        if (!habbo.getHabboStats().allowTalk())
         {
+            habbo.getHabboStats().mutedBubbleTracker = true;
+            int remainingMuteTime = habbo.getHabboStats().remainingMuteTime();
+            habbo.getClient().sendResponse(new FloodCounterComposer(remainingMuteTime));
+            habbo.getClient().sendResponse(new MutedWhisperComposer(remainingMuteTime));
             room.sendComposer(new RoomUserIgnoredComposer(habbo, RoomUserIgnoredComposer.MUTED).compose());
+        }
+        else if (habbo.getHabboStats().mutedBubbleTracker)
+        {
+            habbo.getHabboStats().mutedBubbleTracker = false;
         }
 
         THashMap<Integer, String> guildBadges = new THashMap<Integer, String>();
@@ -943,7 +953,7 @@ public class RoomManager
                     roomHabbo.getClient().sendResponse(new RoomUserIgnoredComposer(habbo, RoomUserIgnoredComposer.IGNORED));
                 }
 
-                if (roomHabbo.getRoomUnit().isModMuted())
+                if (!roomHabbo.getHabboStats().allowTalk())
                 {
                     habbo.getClient().sendResponse(new RoomUserIgnoredComposer(roomHabbo, RoomUserIgnoredComposer.MUTED));
                 }
@@ -976,7 +986,6 @@ public class RoomManager
                 }
             }
         }
-
 
         habbo.getClient().sendResponse(new RoomUsersGuildBadgesComposer(guildBadges));
 
@@ -1043,7 +1052,6 @@ public class RoomManager
     {
         if(habbo.getHabboInfo().getCurrentRoom() != null && habbo.getHabboInfo().getCurrentRoom() == room)
         {
-            habbo.getRoomUnit().wiredMuted = false;
             habbo.getRoomUnit().setPathFinderRoom(null);
             if (habbo.getHabboInfo().getRiding() != null)
             {

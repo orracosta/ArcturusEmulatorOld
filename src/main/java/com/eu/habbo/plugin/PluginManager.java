@@ -13,6 +13,7 @@ import com.eu.habbo.habbohotel.items.interactions.games.football.InteractionFoot
 import com.eu.habbo.habbohotel.messenger.Message;
 import com.eu.habbo.habbohotel.messenger.Messenger;
 import com.eu.habbo.habbohotel.modtool.WordFilter;
+import com.eu.habbo.habbohotel.navigation.NavigatorManager;
 import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.habbohotel.users.HabboInventory;
 import com.eu.habbo.habbohotel.users.HabboManager;
@@ -347,6 +348,7 @@ public class PluginManager
         RoomManager.HOME_ROOM_ID = Emulator.getConfig().getInt("hotel.home.room");
         WiredHandler.MAXIMUM_FURNI_SELECTION = Emulator.getConfig().getInt("hotel.wired.furni.selection.count");
         WiredHandler.TELEPORT_DELAY = Emulator.getConfig().getInt("wired.effect.teleport.delay", 500);
+        NavigatorManager.MAXIMUM_RESULTS_PER_PAGE = Emulator.getConfig().getInt("hotel.navigator.search.maxresults");
 
         String[] bannedBubbles = Emulator.getConfig().getValue("commands.cmd_chatcolor.banned_numbers").split(";");
         RoomChatMessage.BANNED_BUBBLES = new int[bannedBubbles.length];

@@ -17,6 +17,7 @@ import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.Incoming;
 import com.eu.habbo.messages.incoming.gamecenter.GameCenterRequestAccountStatusEvent;
+import com.eu.habbo.messages.incoming.gamecenter.GameCenterRequestGamesEvent;
 import com.eu.habbo.messages.incoming.rooms.pets.MovePetEvent;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
@@ -75,7 +76,7 @@ public class TestCommand extends Command
         if (params[1].equals("gc"))
         {
 
-            //Emulator.getGameServer().getPacketManager().registerHandler(Incoming.GameCenterRequestGamesEvent, GameCenterRequestGamesEvent.class);
+            Emulator.getGameServer().getPacketManager().registerHandler(Incoming.GameCenterRequestGamesEvent, GameCenterRequestGamesEvent.class);
             Emulator.getGameServer().getPacketManager().registerHandler(Incoming.GameCenterRequestAccountStatusEvent, GameCenterRequestAccountStatusEvent.class);
             return true;
         }

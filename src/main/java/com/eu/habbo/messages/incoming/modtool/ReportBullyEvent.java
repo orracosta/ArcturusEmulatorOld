@@ -16,7 +16,7 @@ public class ReportBullyEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        if(this.client.getHabbo().getRoomUnit().isModMuted())
+        if(this.client.getHabbo().getHabboStats().allowTalk())
         {
             this.client.sendResponse(new HelperRequestDisabledComposer());
             return;

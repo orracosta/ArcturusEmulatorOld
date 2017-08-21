@@ -157,86 +157,98 @@ public class RequestNewNavigatorRoomsEvent extends MessageHandler
         String query = this.packet.readString();
 
         NavigatorFilter filter = Emulator.getGameEnvironment().getNavigatorManager().filters.get(view);
+        RoomCategory category = Emulator.getGameEnvironment().getRoomManager().getCategoryBySafeCaption(view);
 
+        String filterField = "anything";
+        String part = query;
+        NavigatorFilterField field = Emulator.getGameEnvironment().getNavigatorManager().filterSettings.get(filterField);
         if (filter != null)
         {
-            NavigatorFilterField field = null;
-            String part = query;
             if (query.contains(":"))
             {
                 String[] parts = query.split(":");
 
-                String filterField = "";
                 if (parts.length > 1)
                 {
                     filterField = parts[0];
                     part = parts[1];
-                }
-                else
+                } else
                 {
-                    filterField = parts[0].replace(":","");
-                    if (Emulator.getGameEnvironment().getNavigatorManager().filterSettings.containsKey(filterField))
+                    filterField = parts[0].replace(":", "");
+                    if (!Emulator.getGameEnvironment().getNavigatorManager().filterSettings.containsKey(filterField))
                     {
-                        filterField = "";
+                        filterField = "anything";
                     }
                 }
-
-                if (Emulator.getGameEnvironment().getNavigatorManager().filterSettings.get(filterField) != null)
-                {
-                    field = Emulator.getGameEnvironment().getNavigatorManager().filterSettings.get(filterField);
-                }
-
-                if (field == null)
-                {
-                    Emulator.getLogging().logDebugLine("[Navigator] Unknown filter field: " + filterField);
-                }
             }
 
-            List<SearchResultList> resultLists;
-            if (field != null)
+            if (Emulator.getGameEnvironment().getNavigatorManager().filterSettings.get(filterField) != null)
             {
-                resultLists = filter.getResult(this.client.getHabbo(), field, part);
-
-                if (resultLists == null)
-                {
-                    resultLists = new ArrayList<>();
-                }
-                filter.filter(field.field, part, resultLists);
+                field = Emulator.getGameEnvironment().getNavigatorManager().filterSettings.get(filterField);
             }
-            else
+        }
+
+        if (field == null || query.isEmpty())
+        {
+            if (filter == null)
+                return;
+
+            List<SearchResultList> resultLists = filter.getResult(this.client.getHabbo());
+            this.client.sendResponse(new NewNavigatorSearchResultsComposer(view, query, resultLists));
+            return;
+        }
+
+        if (filter == null && category != null)
+        {
+            filter = Emulator.getGameEnvironment().getNavigatorManager().filters.get("hotel_view");
+        }
+
+        if (filter == null)
+            return;
+
+        try
+        {
+            List<SearchResultList> resultLists = new ArrayList<>();
+
+            resultLists.addAll(filter.getResult(this.client.getHabbo(), field, part, category != null ? category.getId() : -1));
+
+            if (resultLists == null)
             {
-                resultLists = filter.getResult(this.client.getHabbo());
-
-                if (resultLists == null)
-                {
-                    resultLists = new ArrayList<>();
-                }
-                if (!part.isEmpty())
-                {
-                    filter(resultLists, filter, part);
-                }
+                resultLists = new ArrayList<>();
             }
+
+//            if (query.isEmpty())
+//            {
+//                resultLists.add(new SearchResultList(1, view, view, SearchAction.BACK, ListMode.LIST, DisplayMode.VISIBLE, Emulator.getGameEnvironment().getRoomManager().getPopularRooms(10), true, false));
+//            }
+            filter.filter(field.field, part, resultLists);
 
             Collections.sort(resultLists);
             this.client.sendResponse(new NewNavigatorSearchResultsComposer(view, query, resultLists));
         }
-        else
+        catch (Exception e)
         {
-            RoomCategory category = Emulator.getGameEnvironment().getRoomManager().getCategory(view);
-
-            List<SearchResultList> resultLists = new ArrayList<SearchResultList>();
-
-            if (category != null)
-            {
-                resultLists.add(new SearchResultList(1, view, view, SearchAction.BACK, ListMode.LIST, DisplayMode.VISIBLE, Emulator.getGameEnvironment().getRoomManager().getPopularRooms(50, category.getId()), true, false));
-            }
-
-            filter = Emulator.getGameEnvironment().getNavigatorManager().filters.get("hotel_view");
-
-            filter(resultLists, filter, query);
-
-            this.client.sendResponse(new NewNavigatorSearchResultsComposer(view, query, resultLists));
+            Emulator.getLogging().logErrorLine(e);
         }
+//        }
+//        else
+//        {
+//            RoomCategory category = Emulator.getGameEnvironment().getRoomManager().getCategoryBySafeCaption(view);
+//
+//            List<SearchResultList> resultLists = new ArrayList<SearchResultList>();
+//            this.client.sendResponse(new NewNavigatorSearchResultsComposer(view, query, resultLists));
+//
+//            if (category != null)
+//            {
+//                resultLists.add(new SearchResultList(1, view, query, SearchAction.BACK, ListMode.LIST, DisplayMode.VISIBLE, Emulator.getGameEnvironment().getRoomManager()., true, false));
+//            }
+//
+//            filter = Emulator.getGameEnvironment().getNavigatorManager().filters.get("hotel_view");
+//
+//            filter(resultLists, filter, query);
+//
+//            this.client.sendResponse(new NewNavigatorSearchResultsComposer(view, query, resultLists));
+//        }
     }
 
     private void filter(List<SearchResultList> resultLists, NavigatorFilter filter, String part)

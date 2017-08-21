@@ -33,7 +33,7 @@ public class ModToolUserInfoComposer extends MessageComposer
             this.response.appendInt(set.getInt("cfh_abusive"));
             this.response.appendInt(set.getInt("cfh_warnings"));
             this.response.appendInt(set.getInt("cfh_bans"));
-            this.response.appendInt(0);
+            this.response.appendInt(Emulator.getIntUnixTimestamp() - set.getInt("account_created"));
             this.response.appendString("");
             this.response.appendString("");
             this.response.appendInt(0);

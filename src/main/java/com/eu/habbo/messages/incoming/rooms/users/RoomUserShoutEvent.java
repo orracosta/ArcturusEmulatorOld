@@ -14,7 +14,7 @@ public class RoomUserShoutEvent extends MessageHandler
         if(this.client.getHabbo().getHabboInfo().getCurrentRoom() == null)
             return;
 
-        if(!this.client.getHabbo().getRoomUnit().canTalk())
+        if(!this.client.getHabbo().getHabboStats().allowTalk())
             return;
 
 

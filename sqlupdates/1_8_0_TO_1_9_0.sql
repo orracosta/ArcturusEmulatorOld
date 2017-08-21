@@ -122,3 +122,12 @@ ALTER TABLE  `permissions` ADD  `prefix` VARCHAR( 5 ) NOT NULL AFTER  `log_comma
                            ADD  `prefix_color` VARCHAR( 7 ) NOT NULL AFTER  `prefix`;
 
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.error.cmd_give_rank.higher.other', '%username% has an higher rank than you and thus cannot change it!');
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.error.cmd_unmute.not_muted', '%user% is not muted.');
+
+ALTER TABLE  `navigator_filter` ADD PRIMARY KEY (  `key` );
+ALTER TABLE  `navigator_filter` CHANGE  `database_query`  `database_query` VARCHAR( 1024 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+UPDATE  `navigator_filter` SET  `compare` =  'contains' WHERE  `navigator_filter`.`key` =  'roomname';
+UPDATE `navigator_filter` SET `database_query` = 'SELECT CONCAT(rooms.owner_name, rooms.name, rooms.description, rooms.tags, guilds.name, guilds.description) as whole FROM rooms INNER JOIN guilds ON rooms.guild_id = guilds.id = WHERE whole LIKE ?' WHERE `navigator_filter`.`key` = 'anything';
+UPDATE `navigator_filter` SET `database_query` = 'SELECT rooms.*, CONCAT_WS(rooms.owner_name, rooms.name, rooms.description, rooms.tags, guilds.name, guilds.description) as whole FROM rooms LEFT JOIN guilds ON rooms.guild_id = guilds.id HAVING whole LIKE ? ' WHERE `navigator_filter`.`key` = 'anything';
+ALTER TABLE  `users_settings` ADD  `mute_end_timestamp` INT( 11 ) NOT NULL DEFAULT  '0' AFTER  `nux`;
+ALTER TABLE  `wordfilter` ADD  `mute` INT( 3 ) NOT NULL DEFAULT  '0' COMMENT  'Time user gets muted for mentioning this word.' AFTER  `report`;

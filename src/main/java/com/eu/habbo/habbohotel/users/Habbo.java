@@ -12,13 +12,12 @@ import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.MessagesForYouComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.StaffAlertWithLinkComposer;
 import com.eu.habbo.messages.outgoing.inventory.*;
+import com.eu.habbo.messages.outgoing.rooms.FloodCounterComposer;
 import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
+import com.eu.habbo.messages.outgoing.rooms.users.RoomUserIgnoredComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserTalkComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
-import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
-import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
-import com.eu.habbo.messages.outgoing.users.UserCurrencyComposer;
-import com.eu.habbo.messages.outgoing.users.UserPointsComposer;
+import com.eu.habbo.messages.outgoing.users.*;
 import com.eu.habbo.plugin.events.users.UserCreditsEvent;
 import com.eu.habbo.plugin.events.users.UserDisconnectEvent;
 import com.eu.habbo.plugin.events.users.UserPointsEvent;
@@ -46,7 +45,6 @@ public class Habbo implements Runnable
     {
         this.client = null;
         this.habboInfo = new HabboInfo(set);
-        this.habboInfo.setMachineID(this.client.getMachineId());
         this.habboStats = HabboStats.load(this);
         this.habboInventory = new HabboInventory(this);
 
@@ -518,5 +516,29 @@ public class Habbo implements Runnable
         this.habboInventory.getBadgesComponent().removeBadge(badge);
         BadgesComponent.deleteBadge(this.getHabboInfo().getUsername(), badge);
         this.client.sendResponse(new InventoryBadgesComposer(this));
+    }
+
+    public void mute(int seconds)
+    {
+        int remaining = this.habboStats.addMuteTime(seconds);
+        this.client.sendResponse(new FloodCounterComposer(remaining));
+        this.client.sendResponse(new MutedWhisperComposer(remaining));
+
+        Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
+        if (room != null)
+        {
+            room.sendComposer(new RoomUserIgnoredComposer(this, RoomUserIgnoredComposer.MUTED).compose());
+        }
+    }
+
+    public void unMute()
+    {
+        this.habboStats.unMute();
+        this.client.sendResponse(new FloodCounterComposer(0));
+        Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
+        if (room != null)
+        {
+            room.sendComposer(new RoomUserIgnoredComposer(this, RoomUserIgnoredComposer.UNIGNORED).compose());
+        }
     }
 }

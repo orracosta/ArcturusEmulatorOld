@@ -415,9 +415,6 @@ public class Bot implements Runnable
     {
         this.motto       = motto;
         this.needsUpdate = true;
-
-        if(this.room != null)
-            this.room.sendComposer(new RoomUsersComposer(this).compose());
     }
 
     /**

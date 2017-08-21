@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.navigation;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -119,7 +120,7 @@ public abstract class NavigatorFilter
 
     public abstract List<SearchResultList> getResult(Habbo habbo);
 
-    public List<SearchResultList> getResult(Habbo habbo, NavigatorFilterField filterField, String value)
+    public List<SearchResultList> getResult(Habbo habbo, NavigatorFilterField filterField, String value, int roomCategory)
     {
         return getResult(habbo);
     }
@@ -129,7 +130,8 @@ public abstract class NavigatorFilter
         switch (comparator)
         {
             case CONTAINS:
-                if (o.contains(value))
+                if (StringUtils.containsIgnoreCase(o,
+                        value))
                 {
                     return true;
                 }

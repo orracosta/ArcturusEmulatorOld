@@ -63,6 +63,8 @@ public class RCONServer
         this.addRCONMessage("stalkuser",            StalkUser.class);
         this.addRCONMessage("staffalert",           StaffAlert.class);
         this.addRCONMessage("modticket",            CreateModToolTicket.class);
+        this.addRCONMessage("talkuser",             TalkUser.class);
+        this.addRCONMessage("changeroomowner",      ChangeRoomOwner.class);
     }
 
     public void initialise()

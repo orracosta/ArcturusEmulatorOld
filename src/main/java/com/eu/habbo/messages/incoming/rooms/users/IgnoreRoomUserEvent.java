@@ -25,7 +25,6 @@ public class IgnoreRoomUserEvent extends MessageHandler
                 if(habbo == this.client.getHabbo())
                     return;
 
-                if(!habbo.getRoomUnit().isModMuted())
                 {
                     this.client.getHabbo().getHabboStats().ignoredUsers.add(habbo.getHabboInfo().getId());
                     this.client.sendResponse(new RoomUserIgnoredComposer(habbo, RoomUserIgnoredComposer.IGNORED));

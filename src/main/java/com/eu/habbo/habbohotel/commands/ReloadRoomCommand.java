@@ -8,6 +8,9 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
 import gnu.trove.set.hash.THashSet;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class ReloadRoomCommand extends Command
 {
     public ReloadRoomCommand()
@@ -26,10 +29,11 @@ public class ReloadRoomCommand extends Command
                 Room room = gameClient.getHabbo().getHabboInfo().getCurrentRoom();
                 if (room != null)
                 {
+                    Collection<Habbo> habbos = new ArrayList<Habbo>(room.getHabbos());
                     Emulator.getGameEnvironment().getRoomManager().unloadRoom(room);
                     room = Emulator.getGameEnvironment().getRoomManager().loadRoom(room.getId());
                     ServerMessage message = new ForwardToRoomComposer(room.getId()).compose();
-                    for(Habbo habbo : room.getHabbos())
+                    for(Habbo habbo : habbos)
                     {
                         habbo.getClient().sendResponse(message);
                     }

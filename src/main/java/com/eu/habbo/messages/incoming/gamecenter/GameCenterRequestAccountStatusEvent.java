@@ -8,6 +8,6 @@ public class GameCenterRequestAccountStatusEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        this.client.sendResponse(new GameCenterAccountInfoComposer());
+        this.client.sendResponse(new GameCenterAccountInfoComposer(this.packet.readInt(), 10));
     }
 }

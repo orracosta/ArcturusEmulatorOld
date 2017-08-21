@@ -10,7 +10,7 @@ public class ModToolAlertEvent extends MessageHandler
     {
         if (this.client.getHabbo().hasPermission("acc_supporttool"))
         {
-            Emulator.getGameEnvironment().getModToolManager().alert(Emulator.getGameEnvironment().getHabboManager().getHabbo(this.packet.readInt()), this.client.getHabbo(), this.packet.readString());
+            Emulator.getGameEnvironment().getModToolManager().alert(this.client.getHabbo(), Emulator.getGameEnvironment().getHabboManager().getHabbo(this.packet.readInt()), this.packet.readString());
         }
         else
         {
