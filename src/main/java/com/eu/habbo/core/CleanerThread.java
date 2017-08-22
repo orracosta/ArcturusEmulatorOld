@@ -217,8 +217,8 @@ public class CleanerThread implements Runnable {
         {
             for (Habbo habbo : Emulator.getGameEnvironment().getHabboManager().getOnlineHabbos().values())
             {
-                habbo.getHabboStats().petRespectPointsToGive = 3;
-                habbo.getHabboStats().respectPointsToGive = 3;
+                habbo.getHabboStats().petRespectPointsToGive = Emulator.getConfig().getInt("hotel.daily.respect");
+                habbo.getHabboStats().respectPointsToGive = Emulator.getConfig().getInt("hotel.daily.respect.pets");
             }
         }
     }
