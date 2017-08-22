@@ -1,4 +1,4 @@
-9# **Arcturus Emulator is released under the [GNU General Public License v3](https://www.gnu.org/licenses/gpl-3.0.txt). Modifications are allowed but must disclosed. Changes in the about menu are forbidden as they are part of the license.** #
+# **Arcturus Emulator is released under the [GNU General Public License v3](https://www.gnu.org/licenses/gpl-3.0.txt). Modifications are allowed but must disclosed. Changes in the about menu are forbidden as they are part of the license.** #
 
 # Arcturus Emulator #
 
