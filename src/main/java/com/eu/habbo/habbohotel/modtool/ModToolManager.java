@@ -11,6 +11,7 @@ import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.modtool.*;
 import com.eu.habbo.plugin.events.support.SupportRoomActionEvent;
+import com.eu.habbo.plugin.events.support.SupportTicketEvent;
 import com.eu.habbo.plugin.events.support.SupportUserAlertedEvent;
 import com.eu.habbo.plugin.events.support.SupportUserBannedEvent;
 import com.eu.habbo.threading.runnables.InsertModToolIssue;
@@ -165,6 +166,9 @@ public class ModToolManager
     public void quickTicket(Habbo reported, String reason, String message)
     {
         ModToolIssue issue = new ModToolIssue(0, reason, reported.getHabboInfo().getId(), reported.getHabboInfo().getUsername(), 0, message, ModToolTicketType.AUTOMATIC);
+        if (Emulator.getPluginManager().fireEvent(new SupportTicketEvent(null, issue)).isCancelled())
+            return;
+
         Emulator.getGameEnvironment().getModToolManager().addTicket(issue);
         Emulator.getGameEnvironment().getModToolManager().updateTicketToMods(issue);
     }
@@ -647,6 +651,9 @@ public class ModToolManager
 
     public void addTicket(ModToolIssue issue)
     {
+        if (Emulator.getPluginManager().fireEvent(new SupportTicketEvent(null, issue)).isCancelled())
+            return;
+
         if (issue.id == 0)
         {
             new InsertModToolIssue(issue).run();
