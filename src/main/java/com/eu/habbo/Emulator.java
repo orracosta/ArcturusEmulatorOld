@@ -148,7 +148,6 @@ public final class Emulator
             Emulator.rconServer.initialise();
             Emulator.rconServer.connect();
             Emulator.badgeImager = new BadgeImager();
-            Emulator.config.update("hotel.home.room", "62");
             if (Emulator.getConfig().getBoolean("camera.enabled"))
             {
                 Emulator.getThreading().run(new CameraClientAutoReconnect());

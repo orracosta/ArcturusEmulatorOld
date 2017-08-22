@@ -28,9 +28,14 @@ public class RequestInventoryItemsEvent extends MessageHandler
             TIntObjectMap<HabboItem> items = new TIntObjectHashMap<HabboItem>();
             TIntObjectIterator<HabboItem> iterator = this.client.getHabbo().getInventory().getItemsComponent().getItems().iterator();
             int count = 0;
-            int page = 1;
+            int page = 0;
             for (int i = this.client.getHabbo().getInventory().getItemsComponent().getItems().size(); i-- > 0; )
             {
+                if (count == 0)
+                {
+                    page++;
+                }
+
                 try
                 {
                     iterator.advance();
@@ -46,7 +51,6 @@ public class RequestInventoryItemsEvent extends MessageHandler
                 if (count == 1000)
                 {
                     this.client.sendResponse(new InventoryItemsComposer(page, pages, items));
-                    page++;
                     count = 0;
                     items.clear();
                 }
