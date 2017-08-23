@@ -89,6 +89,7 @@ UPDATE  `navigator_flatcats` SET  `caption_save` =  'caption_save_trading' WHERE
 ALTER TABLE  `permissions` ADD  `cmd_allow_trading` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_alert`;
 
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES
+('commands.description.cmd_allow_trading', "Enables / Disables the tradelock for a user.")
 ('commands.keys.cmd_allow_trading', 'tradelock;blocktrading;disabletrade'),
 ('commands.error.cmd_allow_trading.forgot_username', 'Please specify the user to enable / disable trading for.'),
 ('commands.error.cmd_allow_trading.forgot_trade', 'Please specify if you want to enable trading for %username%.'),
@@ -116,7 +117,7 @@ INSERT INTO `nux_gifts` (`id`, `type`, `value`, `image`) VALUES
 (3, 'item', 'sandrug', 'notifications/sandrug.png');
 
 INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('room.chat.delay', '0');
-INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('room.chat.prefix.format', '[<font color="%color%">%prefix</font>] ');
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('room.chat.prefix.format', '[<font color="%color%">%prefix%</font>] ');
 
 ALTER TABLE  `permissions` ADD  `cmd_roommute` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_roomitem`;
 INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('camera.use.https', '1');
