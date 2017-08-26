@@ -89,7 +89,7 @@ UPDATE  `navigator_flatcats` SET  `caption_save` =  'caption_save_trading' WHERE
 ALTER TABLE  `permissions` ADD  `cmd_allow_trading` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0' AFTER  `cmd_alert`;
 
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES
-('commands.description.cmd_allow_trading', "Enables / Disables the tradelock for a user.")
+('commands.description.cmd_allow_trading', ":blocktrading - Enables / Disables the tradelock for a user."),
 ('commands.keys.cmd_allow_trading', 'tradelock;blocktrading;disabletrade'),
 ('commands.error.cmd_allow_trading.forgot_username', 'Please specify the user to enable / disable trading for.'),
 ('commands.error.cmd_allow_trading.forgot_trade', 'Please specify if you want to enable trading for %username%.'),
