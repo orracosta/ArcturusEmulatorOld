@@ -30,12 +30,12 @@ public class GivePoints extends RCONMessage<GivePoints.JSONGivePoints>
         }
         else
         {
-            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users_currency SET users_currency.amount = users_currency.amount + ? WHERE users_currency.user_id = ? AND users_currency.type = ?"))
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO users_currency (`user_id`, `type`, `amount`) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE amount = amount + ?"))
             {
-                statement.setInt(1, object.points);
-                statement.setInt(2, object.user_id);
-                statement.setInt(3, object.type);
-                statement.execute();
+                statement.setInt(1, object.user_id);
+                statement.setInt(2, object.type);
+                statement.setInt(3, object.points);
+                statement.setInt(4, object.points);
             }
             catch (SQLException e)
             {
