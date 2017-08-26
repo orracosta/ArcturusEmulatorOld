@@ -4326,7 +4326,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public boolean hasRights(Habbo habbo)
     {
-        return isOwner(habbo) || this.rights.contains(habbo.getHabboInfo().getId()) || habbo.getRoomUnit().getRightsLevel() != RoomRightLevels.NONE;
+        return isOwner(habbo) || this.rights.contains(habbo.getHabboInfo().getId()) || (habbo.getRoomUnit().getRightsLevel() != RoomRightLevels.NONE && this.currentHabbos.containsKey(habbo.getHabboInfo().getId()));
     }
 
     public void giveRights(Habbo habbo)

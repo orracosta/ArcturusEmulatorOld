@@ -508,54 +508,6 @@ public class TestCommand extends Command
                 gameClient.sendResponse(new RoomUserStatusComposer(pet.getRoomUnit()));
             }
         }
-        else
-        {*/
-        /*if(params[1].equalsIgnoreCase("ss"))
-        {
-            gameClient.sendResponse(new SnowWarsQuickJoinComposer());
-            gameClient.sendResponse(new SnowWarsStartLobbyCounter());
-            gameClient.sendResponse(new SnowWarsQuePositionComposer());
-            gameClient.sendResponse(new SnowWarsLevelDataComposer());
-            gameClient.sendResponse(new SnowWarsUserEnteredArenaComposer(1));
-            gameClient.sendResponse(new SnowWarsUserEnteredArenaComposer(2));
-            ServerMessage message = new ServerMessage();
-            message.init(2077);
-            message.appendInt(0);
-            gameClient.sendResponse(message);
-
-            gameClient.sendResponse(new SnowWarsOnStageRunningComposer());
-
-            for(int i = 0; i < 5; i++)
-            {
-                gameClient.sendResponse(new SnowWarsLoadingArenaComposer(0));
-            }
-            for(int i = 0; i < 4; i++)
-                gameClient.sendResponse(new SnowWarsLoadingArenaComposer(11));
-
-            for(int i = 0; i < 2; i++)
-                gameClient.sendResponse(new SnowWarsLoadingArenaComposer(33));
-
-            for(int i = 0; i < 6; i++)
-                gameClient.sendResponse(new SnowWarsLoadingArenaComposer(67));
-
-            ServerMessage ff = new ServerMessage();
-            ff.init(3850);
-            ff.appendInt(100);
-            ff.appendInt(2);
-            ff.appendInt(1);
-            ff.appendInt(2);
-            gameClient.sendResponse(ff);
-
-            gameClient.sendResponse(new SnowWarsCompose1(2823));
-            gameClient.sendResponse(new SnowWarsOnStageStartComposer());
-            gameClient.sendResponse(new SnowWarsOnStageRunningComposer());
-            /*
-            gameClient.sendResponse(new SnowWarsPreviousRoomComposer());
-            gameClient.sendResponse(new SnowWarsResetTimerComposer());
-            gameClient.sendResponse(new SnowWarsOnStageEnding());
-            gameClient.sendResponse(new SnowWarsOnGameEnding());*/
-            /*return true;
-        }
         else if(params[1].equalsIgnoreCase("club"))
         {
             gameClient.sendResponse(new ClubDataComposer(gameClient.getHabbo(), Integer.valueOf(params[2])));

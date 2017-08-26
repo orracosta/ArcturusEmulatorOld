@@ -630,7 +630,6 @@ public class RoomManager
         {
             boolean rightsFound = false;
 
-
             synchronized (room.roomUnitLock)
             {
                 for (Habbo current : room.getHabbos())
