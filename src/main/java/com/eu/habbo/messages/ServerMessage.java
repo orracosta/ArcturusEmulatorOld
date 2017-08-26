@@ -236,7 +236,7 @@ public class ServerMessage
         return this;
     }
 
-    public void appendBody(ISerialize obj)
+    public void append(ISerialize obj)
     {
         obj.serialize(this);
     }

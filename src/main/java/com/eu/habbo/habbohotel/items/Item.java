@@ -56,11 +56,6 @@ public class Item {
         this.width = set.getShort("width");
         this.length = set.getShort("length");
         this.height = set.getDouble("stack_height");
-
-        if (this.height == 0)
-        {
-            this.height = 0.0001;
-        }
         this.allowStack = set.getBoolean("allow_stack");
         this.allowWalk = set.getBoolean("allow_walk");
         this.allowSit = set.getBoolean("allow_sit");

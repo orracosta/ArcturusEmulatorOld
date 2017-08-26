@@ -1,8 +1,7 @@
 package com.eu.habbo.messages.incoming.gamecenter;
 
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.gamcenter.GameCenterAccountInfoComposer;
-import com.eu.habbo.messages.outgoing.gamcenter.GameCenterAchievementsConfigurationComposer;
+import com.eu.habbo.messages.outgoing.gamecenter.GameCenterAchievementsConfigurationComposer;
 
 public class GameCenterRequestGamesEvent extends MessageHandler
 {

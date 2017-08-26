@@ -1,4 +1,4 @@
-package com.eu.habbo.messages.outgoing.gamcenter.basejump;
+package com.eu.habbo.messages.outgoing.gamecenter.basejump;
 
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;

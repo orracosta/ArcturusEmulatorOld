@@ -1,18 +1,17 @@
-package com.eu.habbo.messages.outgoing.gamcenter.basejump;
+package com.eu.habbo.messages.outgoing.gamecenter.basejump;
 
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-public class BaseJumpLoadGameURLComposer extends MessageComposer
+public class BaseJumpUnloadGameComposer extends MessageComposer
 {
     @Override
     public ServerMessage compose()
     {
-        this.response.init(Outgoing.BaseJumpLoadGameURLComposer);
+        this.response.init(Outgoing.BaseJumpUnloadGameComposer);
         this.response.appendInt(3);
-        this.response.appendString("3002");
-        this.response.appendString("127.0.0.1");
+        this.response.appendString("basejump");
         return this.response;
     }
 }

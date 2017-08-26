@@ -1,7 +1,7 @@
 package com.eu.habbo.messages.incoming.gamecenter;
 
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.gamcenter.GameCenterGameComposer;
+import com.eu.habbo.messages.outgoing.gamecenter.GameCenterGameComposer;
 
 public class GameCenterRequestGameStatusEvent extends MessageHandler
 {
