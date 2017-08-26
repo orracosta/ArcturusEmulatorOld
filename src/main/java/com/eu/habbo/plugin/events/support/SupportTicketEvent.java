@@ -5,7 +5,7 @@ import com.eu.habbo.habbohotel.users.Habbo;
 
 public class SupportTicketEvent extends SupportEvent
 {
-    private final ModToolIssue ticket;
+    public final ModToolIssue ticket;
 
     /**
      * @param moderator There is no moderator for this event.
