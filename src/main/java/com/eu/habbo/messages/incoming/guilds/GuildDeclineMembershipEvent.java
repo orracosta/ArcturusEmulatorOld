@@ -23,22 +23,25 @@ public class GuildDeclineMembershipEvent extends MessageHandler
         if(guild == null || guild.getOwnerId() != this.client.getHabbo().getHabboInfo().getId())
             return;
 
-        guild.decreaseRequestCount();
-        Emulator.getGameEnvironment().getGuildManager().removeMember(guild, userId);
-        this.client.sendResponse(new GuildMembersComposer(guild, Emulator.getGameEnvironment().getGuildManager().getGuildMembers(guild, 0, 0, ""), this.client.getHabbo(), 0, 0, ""));
-        this.client.sendResponse(new GuildRefreshMembersListComposer(guild));
-
-        Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(userId);
-        Emulator.getPluginManager().fireEvent(new GuildDeclinedMembershipEvent(guild, userId, habbo, this.client.getHabbo()));
-
-        if(habbo != null)
+        if (Emulator.getGameEnvironment().getGuildManager().getOnlyAdmins(guild).containsKey(this.client.getHabbo().getHabboInfo().getId()))
         {
-            Room room = habbo.getHabboInfo().getCurrentRoom();
-            if(room != null)
+            guild.decreaseRequestCount();
+            Emulator.getGameEnvironment().getGuildManager().removeMember(guild, userId);
+            this.client.sendResponse(new GuildMembersComposer(guild, Emulator.getGameEnvironment().getGuildManager().getGuildMembers(guild, 0, 0, ""), this.client.getHabbo(), 0, 0, "", true));
+            this.client.sendResponse(new GuildRefreshMembersListComposer(guild));
+
+            Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(userId);
+            Emulator.getPluginManager().fireEvent(new GuildDeclinedMembershipEvent(guild, userId, habbo, this.client.getHabbo()));
+
+            if (habbo != null)
             {
-                if(room.getGuildId() == guildId)
+                Room room = habbo.getHabboInfo().getCurrentRoom();
+                if (room != null)
                 {
-                    habbo.getClient().sendResponse(new GuildInfoComposer(guild, habbo.getClient(), false, null));
+                    if (room.getGuildId() == guildId)
+                    {
+                        habbo.getClient().sendResponse(new GuildInfoComposer(guild, habbo.getClient(), false, null));
+                    }
                 }
             }
         }

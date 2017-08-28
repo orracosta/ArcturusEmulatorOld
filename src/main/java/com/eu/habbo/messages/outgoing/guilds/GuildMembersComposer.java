@@ -19,8 +19,9 @@ public class GuildMembersComposer extends MessageComposer
     private final int pageId;
     private final int level;
     private final String searchValue;
+    private final boolean isAdmin;
 
-    public GuildMembersComposer(Guild guild, ArrayList<GuildMember> members, Habbo session, int pageId, int level, String searchValue)
+    public GuildMembersComposer(Guild guild, ArrayList<GuildMember> members, Habbo session, int pageId, int level, String searchValue, boolean isAdmin)
     {
         this.guild = guild;
         this.members = members;
@@ -28,6 +29,7 @@ public class GuildMembersComposer extends MessageComposer
         this.pageId = pageId;
         this.level = level;
         this.searchValue = searchValue;
+        this.isAdmin = isAdmin;
     }
 
     @Override
@@ -52,7 +54,7 @@ public class GuildMembersComposer extends MessageComposer
             this.response.appendString(member.getRank().type < 3 && member.getRank().type > 0 ? cal.get(Calendar.DAY_OF_MONTH) + "/" + (cal.get(Calendar.MONTH) + 1) + "/" + cal.get(Calendar.YEAR) : "");
         }
 
-        this.response.appendBoolean(this.guild.getOwnerId() == this.session.getHabboInfo().getId()); //Is owner
+        this.response.appendBoolean(this.isAdmin); //Is owner
         this.response.appendInt(14);
         this.response.appendInt(this.pageId);
         this.response.appendInt(this.level);
