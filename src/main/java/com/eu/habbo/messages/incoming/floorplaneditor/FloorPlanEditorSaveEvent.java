@@ -108,8 +108,9 @@ public class FloorPlanEditorSaveEvent extends MessageHandler
                 room.setFloorSize(floorSize);
                 room.setWallHeight(wallHeight);
                 room.save();
+                Collection<Habbo> habbos = new ArrayList<Habbo>(room.getUserCount());
+                habbos.addAll(room.getHabbos());
                 Emulator.getGameEnvironment().getRoomManager().unloadRoom(room);
-                Collection<Habbo> habbos = new ArrayList<Habbo>(room.getHabbos());
                 room = Emulator.getGameEnvironment().getRoomManager().loadRoom(room.getId());
                 ServerMessage message = new ForwardToRoomComposer(room.getId()).compose();
                 for (Habbo habbo : habbos)
