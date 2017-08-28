@@ -16,27 +16,30 @@ public class GuildChangeSettingsEvent extends MessageHandler
 
         Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(guildId);
 
-        if(guild == null || guild.getOwnerId() != this.client.getHabbo().getHabboInfo().getId() && !this.client.getHabbo().hasPermission("acc_guild_admin")) //TODO: Allow staff
-            return;
+        if(guild != null)
+        {
+            if (guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || this.client.getHabbo().hasPermission("acc_guild_admin"))
+            {
+                Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(guild.getRoomId());
 
-        Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(guild.getRoomId());
+                if (room == null)
+                    return;
 
-        if(room == null)
-            return;
+                GuildChangedSettingsEvent settingsEvent = new GuildChangedSettingsEvent(guild, this.packet.readInt(), this.packet.readInt());
+                Emulator.getPluginManager().fireEvent(settingsEvent);
 
-        GuildChangedSettingsEvent settingsEvent = new GuildChangedSettingsEvent(guild, this.packet.readInt(), this.packet.readInt());
-        Emulator.getPluginManager().fireEvent(settingsEvent);
+                if (settingsEvent.isCancelled())
+                    return;
 
-        if(settingsEvent.isCancelled())
-            return;
+                guild.setState(GuildState.valueOf(settingsEvent.state));
+                guild.setRights(settingsEvent.rights);
 
-        guild.setState(GuildState.valueOf(settingsEvent.state));
-        guild.setRights(settingsEvent.rights);
+                room.refreshGuild(guild);
 
-        room.refreshGuild(guild);
+                guild.needsUpdate = true;
 
-        guild.needsUpdate = true;
-
-        Emulator.getThreading().run(guild);
+                Emulator.getThreading().run(guild);
+            }
+        }
     }
 }

@@ -2,6 +2,8 @@ package com.eu.habbo.messages.incoming.guilds;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.guilds.Guild;
+import com.eu.habbo.habbohotel.guilds.GuildMember;
+import com.eu.habbo.habbohotel.guilds.GuildRank;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomRightLevels;
 import com.eu.habbo.habbohotel.users.Habbo;
@@ -22,46 +24,48 @@ public class GuildRemoveMemberEvent extends MessageHandler
 
         Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(guildId);
 
-        if (guild == null)
-            return;
 
-        if((guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() && userId != this.client.getHabbo().getHabboInfo().getId()) || userId == this.client.getHabbo().getHabboInfo().getId())
+        if (guild != null)
         {
-            Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(userId);
-            GuildRemovedMemberEvent removedMemberEvent = new GuildRemovedMemberEvent(guild, userId, habbo);
-            Emulator.getPluginManager().fireEvent(removedMemberEvent);
-            if(removedMemberEvent.isCancelled())
-                return;
-
-            Emulator.getGameEnvironment().getGuildManager().removeMember(guild, userId);
-            guild.decreaseMemberCount();
-
-            if (userId != this.client.getHabbo().getHabboInfo().getId())
+            GuildMember member = Emulator.getGameEnvironment().getGuildManager().getGuildMember(guild, this.client.getHabbo());
+            if (userId == this.client.getHabbo().getHabboInfo().getId() || guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || member.getRank().equals(GuildRank.ADMIN) || this.client.getHabbo().hasPermission("acc_guild_admin"))
             {
-                this.client.sendResponse(new GuildRefreshMembersListComposer(guild));
-            }
+                Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(userId);
+                GuildRemovedMemberEvent removedMemberEvent = new GuildRemovedMemberEvent(guild, userId, habbo);
+                Emulator.getPluginManager().fireEvent(removedMemberEvent);
+                if (removedMemberEvent.isCancelled())
+                    return;
 
-            Room room = Emulator.getGameEnvironment().getRoomManager().loadRoom(guild.getRoomId());
+                Emulator.getGameEnvironment().getGuildManager().removeMember(guild, userId);
+                guild.decreaseMemberCount();
 
-            if (habbo != null)
-            {
-                habbo.getHabboStats().removeGuild(guild.getId());
-                if (habbo.getHabboStats().guild == guildId)
-                    habbo.getHabboStats().guild = 0;
-
-                if (room != null && habbo.getHabboInfo().getCurrentRoom() == room)
+                if (userId != this.client.getHabbo().getHabboInfo().getId())
                 {
-                    room.refreshRightsForHabbo(habbo);
+                    this.client.sendResponse(new GuildRefreshMembersListComposer(guild));
                 }
 
-                habbo.getClient().sendResponse(new GuildInfoComposer(guild, habbo.getClient(), false, null));
-            }
+                Room room = Emulator.getGameEnvironment().getRoomManager().loadRoom(guild.getRoomId());
 
-            if (room != null)
-            {
-                if (room.getGuildId() == guildId)
+                if (habbo != null)
                 {
-                    room.ejectUserFurni(userId);
+                    habbo.getHabboStats().removeGuild(guild.getId());
+                    if (habbo.getHabboStats().guild == guildId)
+                        habbo.getHabboStats().guild = 0;
+
+                    if (room != null && habbo.getHabboInfo().getCurrentRoom() == room)
+                    {
+                        room.refreshRightsForHabbo(habbo);
+                    }
+
+                    habbo.getClient().sendResponse(new GuildInfoComposer(guild, habbo.getClient(), false, null));
+                }
+
+                if (room != null)
+                {
+                    if (room.getGuildId() == guildId)
+                    {
+                        room.ejectUserFurni(userId);
+                    }
                 }
             }
         }

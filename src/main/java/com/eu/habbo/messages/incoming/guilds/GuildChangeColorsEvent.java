@@ -22,29 +22,32 @@ public class GuildChangeColorsEvent extends MessageHandler
 
         Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(guildId);
 
-        if(guild != null && guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || this.client.getHabbo().hasPermission("acc_guild_admin"))
+        if(guild != null)
         {
-            GuildChangedColorsEvent colorsEvent = new GuildChangedColorsEvent(guild, this.packet.readInt(), this.packet.readInt());
-            Emulator.getPluginManager().fireEvent(colorsEvent);
-
-            if(colorsEvent.isCancelled())
-                return;
-
-            if(guild.getColorOne() != colorsEvent.colorOne || guild.getColorTwo() != colorsEvent.colorTwo)
+            if (guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || this.client.getHabbo().hasPermission("acc_guild_admin"))
             {
-                guild.setColorOne(colorsEvent.colorOne);
-                guild.setColorTwo(colorsEvent.colorTwo);
+                GuildChangedColorsEvent colorsEvent = new GuildChangedColorsEvent(guild, this.packet.readInt(), this.packet.readInt());
+                Emulator.getPluginManager().fireEvent(colorsEvent);
 
-                Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(guild.getRoomId());
+                if (colorsEvent.isCancelled())
+                    return;
 
-                if(room != null && room.getUserCount() > 0)
+                if (guild.getColorOne() != colorsEvent.colorOne || guild.getColorTwo() != colorsEvent.colorTwo)
                 {
-                    room.refreshGuild(guild);
+                    guild.setColorOne(colorsEvent.colorOne);
+                    guild.setColorTwo(colorsEvent.colorTwo);
 
-                    room.refreshGuildColors(guild);
+                    Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(guild.getRoomId());
+
+                    if (room != null && room.getUserCount() > 0)
+                    {
+                        room.refreshGuild(guild);
+
+                        room.refreshGuildColors(guild);
+                    }
+                    guild.needsUpdate = true;
+                    Emulator.getThreading().run(guild);
                 }
-                guild.needsUpdate = true;
-                Emulator.getThreading().run(guild);
             }
         }
     }

@@ -16,24 +16,21 @@ public class GuildDeleteEvent extends MessageHandler
     {
         int guildId = this.packet.readInt();
 
-        if(this.client.getHabbo().getHabboStats().hasGuild(guildId) || this.client.getHabbo().hasPermission("acc_guild_admin"))
+        Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(guildId);
+
+        if(guild != null)
         {
-            Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(guildId);
-
-            if(guild != null)
+            if (guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || this.client.getHabbo().hasPermission("acc_guild_admin")) //TODO Add staff permission override.
             {
-                if (guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || this.client.getHabbo().hasPermission("acc_guild_admin")) //TODO Add staff permission override.
-                {
-                    Emulator.getGameEnvironment().getGuildManager().deleteGuild(guild);
-                    Emulator.getPluginManager().fireEvent(new GuildDeletedEvent(guild, this.client.getHabbo()));
-                    Emulator.getGameEnvironment().getRoomManager().getRoom(guild.getRoomId()).sendComposer(new RemoveGuildFromRoomComposer(guildId).compose());
+                Emulator.getGameEnvironment().getGuildManager().deleteGuild(guild);
+                Emulator.getPluginManager().fireEvent(new GuildDeletedEvent(guild, this.client.getHabbo()));
+                Emulator.getGameEnvironment().getRoomManager().getRoom(guild.getRoomId()).sendComposer(new RemoveGuildFromRoomComposer(guildId).compose());
 
-                    if (this.client.getHabbo().getHabboInfo().getCurrentRoom() != null)
+                if (this.client.getHabbo().getHabboInfo().getCurrentRoom() != null)
+                {
+                    if (guild.getRoomId() == this.client.getHabbo().getHabboInfo().getCurrentRoom().getId())
                     {
-                        if (guild.getRoomId() == this.client.getHabbo().getHabboInfo().getCurrentRoom().getId())
-                        {
-                            this.client.sendResponse(new RoomDataComposer(this.client.getHabbo().getHabboInfo().getCurrentRoom(), this.client.getHabbo(), false, false));
-                        }
+                        this.client.sendResponse(new RoomDataComposer(this.client.getHabbo().getHabboInfo().getCurrentRoom(), this.client.getHabbo(), false, false));
                     }
                 }
             }
