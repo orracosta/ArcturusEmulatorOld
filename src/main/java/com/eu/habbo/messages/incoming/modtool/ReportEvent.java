@@ -18,8 +18,7 @@ public class ReportEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-
-        if(this.client.getHabbo().getHabboStats().allowTalk())
+        if(!this.client.getHabbo().getHabboStats().allowTalk())
         {
             this.client.sendResponse(new HelperRequestDisabledComposer());
             return;
