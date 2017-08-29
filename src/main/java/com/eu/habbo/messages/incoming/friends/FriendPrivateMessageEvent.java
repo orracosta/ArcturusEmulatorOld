@@ -18,6 +18,11 @@ public class FriendPrivateMessageEvent extends MessageHandler
         int userId = this.packet.readInt();
         String message = this.packet.readString();
 
+        if (!this.client.getHabbo().getHabboStats().allowTalk())
+        {
+            return;
+        }
+
         long millis = System.currentTimeMillis();
         if (millis - this.client.getHabbo().getHabboStats().lastChat < 750)
         {
@@ -32,7 +37,7 @@ public class FriendPrivateMessageEvent extends MessageHandler
                 CommandHandler.handleCommand(this.client, message);
                 return;
             }
-            Emulator.getGameServer().getGameClientManager().sendBroadcastResponse(new FriendChatMessageComposer(new Message(this.client.getHabbo().getHabboInfo().getId(), 0, message)).compose(), "acc_staff_chat", this.client);
+            Emulator.getGameServer().getGameClientManager().sendBroadcastResponse(new FriendChatMessageComposer(new Message(this.client.getHabbo().getHabboInfo().getId(), -1, message)).compose(), "acc_staff_chat", this.client);
             return;
         }
 

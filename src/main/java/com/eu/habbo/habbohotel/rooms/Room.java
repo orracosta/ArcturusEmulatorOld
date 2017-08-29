@@ -711,12 +711,14 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         tile.setStackHeight(stackHeight);
                         updatedTiles.add(tile);
                     }
-
-                    updateHabbosAt(x, y);
                 }
             }
             this.sendComposer(new UpdateStackHeightComposer(updatedTiles).compose());
             this.updateTiles(updatedTiles);
+            for (RoomTile tile : updatedTiles)
+            {
+                this.updateHabbosAt(tile.x, tile.y);
+            }
         }
         else if (item.getBaseItem().getType() == FurnitureType.WALL)
         {
@@ -795,6 +797,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         habbo.getRoomUnit().getStatus().put("lay", (item.getZ() + item.getBaseItem().getHeight()) + "");
                     }
                 }
+            }
+            else
+            {
+                habbo.getRoomUnit().setZ(habbo.getRoomUnit().getCurrentLocation().getStackHeight());
             }
             roomUnits.add(habbo.getRoomUnit());
         }

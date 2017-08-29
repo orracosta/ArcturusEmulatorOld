@@ -57,7 +57,7 @@ public class UpdateFriendComposer extends MessageComposer
             this.response.appendInt(0);
             this.response.appendInt(1);
             this.response.appendInt(0);
-            this.response.appendInt(0);
+            this.response.appendInt(-1);
             this.response.appendString("Staff Chat");
             this.response.appendInt(0);
             this.response.appendBoolean(true);

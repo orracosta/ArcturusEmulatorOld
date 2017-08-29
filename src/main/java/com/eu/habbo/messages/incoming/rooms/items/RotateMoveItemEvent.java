@@ -231,6 +231,7 @@ public class RotateMoveItemEvent extends MessageHandler
             {}
         }
 
+        room.updateTiles(updatedTiles);
 
         for(RoomTile t : updatedTiles)
         {
@@ -243,7 +244,6 @@ public class RotateMoveItemEvent extends MessageHandler
         if(oldX != x || oldY != y)
             room.updateHabbosAt(oldX, oldY);
 
-        room.updateTiles(updatedTiles);
         room.sendComposer(new FloorItemUpdateComposer(item).compose());
         item.needsUpdate(true);
         Emulator.getThreading().run(item);

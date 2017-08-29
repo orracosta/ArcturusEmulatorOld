@@ -21,9 +21,9 @@ public class FriendChatMessageComposer extends MessageComposer
     {
         this.response.init(Outgoing.FriendChatMessageComposer);
 
-        if (message.getToId() == 0)
+        if (message.getToId() == -1)
         {
-            this.response.appendInt(0);
+            this.response.appendInt(-1);
         }
         else
         {
@@ -32,7 +32,7 @@ public class FriendChatMessageComposer extends MessageComposer
         this.response.appendString(message.getMessage());
         this.response.appendInt(Emulator.getIntUnixTimestamp() - message.getTimestamp());
 
-        if (message.getToId() == 0) //TO Staff Chat
+        if (message.getToId() == -1) //TO Staff Chat
         {
             String name = "AUTO_MODERATOR";
             String look = "lg-5635282-1193.hd-3091-1.sh-3089-73.cc-156282-64.hr-831-34.ha-1012-1186.ch-3050-62-62";

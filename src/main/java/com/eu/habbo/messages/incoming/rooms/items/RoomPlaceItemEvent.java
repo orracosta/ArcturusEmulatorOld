@@ -190,7 +190,7 @@ public class RoomPlaceItemEvent extends MessageHandler
                             return;
                         }
 
-                        if (!room.getHabbosAt(i, j).isEmpty() && !(item instanceof InteractionStackHelper))
+                        if (!room.getHabbosAt(i, j).isEmpty() && !(item instanceof InteractionStackHelper || item.getBaseItem().allowSit()))
                         {
                             this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
                             this.client.sendResponse(new FloorItemUpdateComposer(item));
@@ -272,6 +272,11 @@ public class RoomPlaceItemEvent extends MessageHandler
 //            room.sendComposer(new UpdateStackHeightComposer(updatedTiles).compose());
 //        }
         room.updateTiles(updatedTiles);
+        for (RoomTile tile : updatedTiles)
+        {
+            room.updateHabbosAt(tile.x, tile.y);
+        }
+
         Emulator.getThreading().run(item);
         item.onPlace(room);
     }
