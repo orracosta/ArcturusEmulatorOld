@@ -31,6 +31,7 @@ public class SetMaxCommand extends Command
             if (max > 0 && max < 9999)
             {
                 gameClient.getHabbo().getHabboInfo().getCurrentRoom().setUsersMax(max);
+                gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.success.cmd_setmax").replace("%value%", max + ""), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
                 return true;
             }
             else
