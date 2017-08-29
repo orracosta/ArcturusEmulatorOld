@@ -329,4 +329,8 @@ public class Incoming
     public static final int ModToolSanctionBanEvent = 2766;
     public static final int ModToolSanctionTradeLockEvent = 3742;
     public static final int UserNuxEvent = 1299;
+
+    public static final int ReportFriendPrivateChatEvent = 2950;
+    public static final int ModToolIssueChangeTopicEvent = 1392;
+    public static final int ModToolIssueDefaultSanctionEvent = 2717;
 }

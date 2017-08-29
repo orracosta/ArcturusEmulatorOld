@@ -7,6 +7,8 @@ import com.eu.habbo.threading.runnables.UpdateModToolIssue;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModToolIssue implements ISerialize
 {
@@ -24,6 +26,7 @@ public class ModToolIssue implements ISerialize
     public volatile int modId = -1;
     public volatile String modName = "";
     public String message = "Unknown Message";
+    public ArrayList<ModToolChatLog> chatLogs = null;
 
     public ModToolIssue(ResultSet set) throws SQLException
     {
@@ -39,6 +42,7 @@ public class ModToolIssue implements ISerialize
         this.modId = set.getInt("mod_id");
         this.modName = set.getString("mod_username");
         this.type = ModToolTicketType.values()[set.getInt("type") - 1];
+        this.category = set.getInt("category");
 
         if(this.modId <= 0)
         {
@@ -80,7 +84,21 @@ public class ModToolIssue implements ISerialize
         message.appendString(this.modName); //MOD User name?
         message.appendString(this.message);
         message.appendInt(0);
-        message.appendInt(0);
+
+        if (this.chatLogs != null)
+        {
+            message.appendInt(this.chatLogs.size());
+            for (ModToolChatLog chatLog : this.chatLogs)
+            {
+                message.appendString(chatLog.message);
+                message.appendInt(0);
+                message.appendInt(chatLog.message.length());
+            }
+        }
+        else
+        {
+            message.appendInt(0);
+        }
     }
 
     public void updateInDatabase()

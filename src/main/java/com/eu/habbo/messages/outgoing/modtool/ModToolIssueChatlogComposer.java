@@ -3,6 +3,7 @@ package com.eu.habbo.messages.outgoing.modtool;
 import com.eu.habbo.habbohotel.modtool.ModToolChatLog;
 import com.eu.habbo.habbohotel.modtool.ModToolChatRecordDataContext;
 import com.eu.habbo.habbohotel.modtool.ModToolIssue;
+import com.eu.habbo.habbohotel.modtool.ModToolTicketType;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
@@ -44,16 +45,26 @@ public class ModToolIssueChatlogComposer extends MessageComposer
         //{
             this.response.appendByte(1); //Report Type
 
+        if (this.issue.type == ModToolTicketType.IM)
+        {
+            this.response.appendShort(1);
+
+            ModToolChatRecordDataContext.MESSAGE_ID.append(this.response);
+            this.response.appendInt(this.issue.senderId);
+        }
+        else
+        {
             this.response.appendShort(3); //Context Count
 
-        ModToolChatRecordDataContext.ROOM_NAME.append(this.response);
-        this.response.appendString(this.roomName); //Value
+            ModToolChatRecordDataContext.ROOM_NAME.append(this.response);
+            this.response.appendString(this.roomName);
 
-        ModToolChatRecordDataContext.ROOM_ID.append(this.response);
-        this.response.appendInt(this.issue.roomId); //Value
+            ModToolChatRecordDataContext.ROOM_ID.append(this.response);
+            this.response.appendInt(this.issue.roomId);
 
-        ModToolChatRecordDataContext.GROUP_ID.append(this.response);
-        this.response.appendInt(12); //Value
+            ModToolChatRecordDataContext.GROUP_ID.append(this.response);
+            this.response.appendInt(12);
+        }
 
             this.response.appendShort(this.chatlog.size());
             for(ModToolChatLog chatLog : this.chatlog)

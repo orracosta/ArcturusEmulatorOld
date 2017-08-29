@@ -435,11 +435,14 @@ public class PacketManager
         this.registerHandler(Incoming.ModToolSanctionMuteEvent,                 ModToolSanctionMuteEvent.class);
         this.registerHandler(Incoming.ModToolSanctionBanEvent,                  ModToolSanctionBanEvent.class);
         this.registerHandler(Incoming.ModToolSanctionTradeLockEvent,            ModToolSanctionTradeLockEvent.class);
+        this.registerHandler(Incoming.ModToolIssueChangeTopicEvent,             ModToolIssueChangeTopicEvent.class);
+        this.registerHandler(Incoming.ModToolIssueDefaultSanctionEvent,         ModToolIssueDefaultSanctionEvent.class);
 
         this.registerHandler(Incoming.RequestReportRoomEvent,                   RequestReportRoomEvent.class);
         this.registerHandler(Incoming.RequestReportUserBullyingEvent,           RequestReportUserBullyingEvent.class);
         this.registerHandler(Incoming.ReportBullyEvent,                         ReportBullyEvent.class);
         this.registerHandler(Incoming.ReportEvent,                              ReportEvent.class);
+        this.registerHandler(Incoming.ReportFriendPrivateChatEvent,             ReportFriendPrivateChatEvent.class);
     }
 
     void registerTrading() throws Exception

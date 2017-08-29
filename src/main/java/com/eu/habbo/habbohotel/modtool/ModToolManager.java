@@ -131,7 +131,8 @@ public class ModToolManager
                 "support_cfh_topics.auto_reply," +
                 "support_cfh_topics.ignore_target, " +
                 "support_cfh_categories.name_internal AS category_name_internal, " +
-                "support_cfh_categories.id AS support_cfh_category_id " +
+                "support_cfh_categories.id AS support_cfh_category_id, " +
+                "support_cfh_topics.default_sanction AS default_sanction " +
                 "FROM support_cfh_topics " +
                 "LEFT JOIN support_cfh_categories ON support_cfh_categories.id = support_cfh_topics.category_id"))
         {
@@ -142,7 +143,7 @@ public class ModToolManager
                     this.cfhCategories.put(set.getInt("support_cfh_category_id"), new CfhCategory(set.getInt("id"), set.getString("category_name_internal")));
                 }
 
-                this.cfhCategories.get(set.getInt("support_cfh_category_id")).addTopic(new CfhTopic(set));
+                this.cfhCategories.get(set.getInt("support_cfh_category_id")).addTopic(new CfhTopic(set, this.getIssuePreset(set.getInt("default_sanction"))));
             }
         }
     }
@@ -161,6 +162,25 @@ public class ModToolManager
         }
 
         return null;
+    }
+
+    public ModToolPreset getIssuePreset(int id)
+    {
+        if (id == 0)
+            return null;
+
+        final ModToolPreset[] preset = {null};
+        this.category.forEachValue(new TObjectProcedure<ModToolCategory>()
+        {
+            @Override
+            public boolean execute(ModToolCategory object)
+            {
+                preset[0] = object.getPresets().get(id);
+                return preset[0] == null;
+            }
+        });
+
+        return preset[0];
     }
 
     public void quickTicket(Habbo reported, String reason, String message)
@@ -245,6 +265,32 @@ public class ModToolManager
         }
 
         return chatlogs;
+    }
+
+    public ArrayList<ModToolChatLog> getMessengerChatlog(int userOneId, int userTwoId)
+    {
+        ArrayList<ModToolChatLog> chatLogs = new ArrayList<>();
+
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT users.username, chatlogs_private.* FROM chatlogs_private INNER JOIN users ON users.id = user_from_id WHERE (user_from_id = ? AND user_to_id = ?) OR (user_from_id = ? AND user_to_id = ?) ORDER BY timestamp DESC LIMIT 50"))
+        {
+            statement.setInt(1, userOneId);
+            statement.setInt(2, userTwoId);
+            statement.setInt(3, userTwoId);
+            statement.setInt(4, userOneId);
+            try (ResultSet set = statement.executeQuery())
+            {
+                while (set.next())
+                {
+                    chatLogs.add(new ModToolChatLog(set.getInt("timestamp"), set.getInt("chatlogs_private.user_from_id"), set.getString("users.username"), set.getString("message")));
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
+        return chatLogs;
     }
 
     public ArrayList<ModToolRoomVisit> getUserRoomVisitsAndChatlogs(int userId)
@@ -761,6 +807,11 @@ public class ModToolManager
     public TIntObjectMap<ModToolCategory> getCategory()
     {
         return this.category;
+    }
+
+    public ModToolCategory getCategory(int id)
+    {
+        return this.category.get(id);
     }
 
     public THashMap<String, THashSet<String>> getPresets()

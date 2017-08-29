@@ -3,6 +3,7 @@ package com.eu.habbo.messages.incoming.modtool;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.modtool.ModToolChatLog;
 import com.eu.habbo.habbohotel.modtool.ModToolIssue;
+import com.eu.habbo.habbohotel.modtool.ModToolTicketType;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.modtool.ModToolIssueChatlogComposer;
@@ -21,15 +22,22 @@ public class ModToolRequestIssueChatlogEvent extends MessageHandler
             if(issue != null)
             {
                 ArrayList<ModToolChatLog> chatlog;
-                if(issue.roomId > 0)
+
+                if (issue.type == ModToolTicketType.IM)
                 {
-                    chatlog = Emulator.getGameEnvironment().getModToolManager().getRoomChatlog(issue.roomId);
+                    chatlog = Emulator.getGameEnvironment().getModToolManager().getMessengerChatlog(issue.reportedId, issue.senderId);
                 }
                 else
                 {
-                    chatlog = new ArrayList<ModToolChatLog>();
-                    chatlog.addAll(Emulator.getGameEnvironment().getModToolManager().getUserChatlog(issue.reportedId));
-                    chatlog.addAll(Emulator.getGameEnvironment().getModToolManager().getUserChatlog(issue.senderId));
+                    if (issue.roomId > 0)
+                    {
+                        chatlog = Emulator.getGameEnvironment().getModToolManager().getRoomChatlog(issue.roomId);
+                    } else
+                    {
+                        chatlog = new ArrayList<ModToolChatLog>();
+                        chatlog.addAll(Emulator.getGameEnvironment().getModToolManager().getUserChatlog(issue.reportedId));
+                        chatlog.addAll(Emulator.getGameEnvironment().getModToolManager().getUserChatlog(issue.senderId));
+                    }
                 }
 
                 Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(issue.roomId);

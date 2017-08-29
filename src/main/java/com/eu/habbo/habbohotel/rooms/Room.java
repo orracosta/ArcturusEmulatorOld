@@ -80,7 +80,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public static int HAND_ITEM_TIME = 10;
     public static int IDLE_CYCLES = 240;
     public static int IDLE_CYCLES_KICK = 480;
-    public static String PREFIX_FORMAT = "[<font color=\"%color%\">%prefix</font>] ";
+    public static String PREFIX_FORMAT = "[<font color=\"%color%\">%prefix%</font>] ";
 
     private static final TIntObjectHashMap<RoomMoodlightData> defaultMoodData = new TIntObjectHashMap<RoomMoodlightData>();
 
@@ -3247,11 +3247,14 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     void teleportHabboToLocation(Habbo habbo, short x, short y, double z)
     {
-        RoomTile tile = this.layout.getTile(x, y);
-        habbo.getRoomUnit().setLocation(tile);
-        habbo.getRoomUnit().setGoalLocation(tile);
-        habbo.getRoomUnit().setZ(z);
-        this.sendComposer(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
+        if (this.loaded)
+        {
+            RoomTile tile = this.layout.getTile(x, y);
+            habbo.getRoomUnit().setLocation(tile);
+            habbo.getRoomUnit().setGoalLocation(tile);
+            habbo.getRoomUnit().setZ(z);
+            this.sendComposer(new RoomUserStatusComposer(habbo.getRoomUnit()).compose());
+        }
     }
 
     public void muteHabbo(Habbo habbo, int minutes)

@@ -1,6 +1,7 @@
 package com.eu.habbo.messages.incoming.rooms.items;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.items.interactions.InteractionRoller;
 import com.eu.habbo.habbohotel.items.interactions.InteractionStackHelper;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomLayout;
@@ -130,14 +131,11 @@ public class RotateMoveItemEvent extends MessageHandler
                 for (short j = (short) newSquare.y; j < newSquare.y + newSquare.getHeight(); j++)
                 {
                     double testheight = room.getStackHeight(i, j, false, item);
-                    if (checkStackHeight != testheight && !(item instanceof InteractionStackHelper))
-                    {
-                        this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
-                        this.client.sendResponse(new FloorItemUpdateComposer(item));
-                        return;
-                    }
-
-                    if (!room.getHabbosAt(i, j).isEmpty() && !(oldX == x && oldY == y) && !(item instanceof InteractionStackHelper))
+                    if (
+                            (checkStackHeight != testheight && !(item instanceof InteractionStackHelper)) ||
+                            (!room.getHabbosAt(i, j).isEmpty() && !(oldX == x && oldY == y) && !(item instanceof InteractionStackHelper)) ||
+                            (checkStackHeight > 0 && item instanceof InteractionRoller)
+                        )
                     {
                         this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
                         this.client.sendResponse(new FloorItemUpdateComposer(item));
