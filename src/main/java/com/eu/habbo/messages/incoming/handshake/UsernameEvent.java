@@ -50,7 +50,7 @@ public class UsernameEvent extends MessageHandler
         }
         else
         {
-            int daysRegistered = ((this.client.getHabbo().getHabboInfo().getAccountCreated() - Emulator.getIntUnixTimestamp()) / 86400);
+            int daysRegistered = ((Emulator.getIntUnixTimestamp() - this.client.getHabbo().getHabboInfo().getAccountCreated()) / 86400);
 
             int days = this.client.getHabbo().getHabboStats().getAchievementProgress(
                     Emulator.getGameEnvironment().getAchievementManager().getAchievement("RegistrationDuration")
