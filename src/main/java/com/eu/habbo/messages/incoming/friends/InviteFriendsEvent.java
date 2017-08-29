@@ -10,27 +10,30 @@ public class InviteFriendsEvent extends MessageHandler
     @Override
     public void handle() throws Exception
     {
-        int[] userIds = new int[this.packet.readInt()];
-
-        for(int i = 0; i < userIds.length; i++)
+        if (this.client.getHabbo().getHabboStats().allowTalk())
         {
-            userIds[i] = this.packet.readInt();
-        }
+            int[] userIds = new int[this.packet.readInt()];
 
-        String message = this.packet.readString();
-
-        for(int i : userIds)
-        {
-            if(i == 0)
-                continue;
-
-            Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(i);
-
-            if(habbo != null)
+            for (int i = 0; i < userIds.length; i++)
             {
-                if(!habbo.getHabboStats().blockRoomInvites)
+                userIds[i] = this.packet.readInt();
+            }
+
+            String message = this.packet.readString();
+
+            for (int i : userIds)
+            {
+                if (i == 0)
+                    continue;
+
+                Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(i);
+
+                if (habbo != null)
                 {
-                    habbo.getClient().sendResponse(new RoomInviteComposer(this.client.getHabbo().getHabboInfo().getId(), message));
+                    if (!habbo.getHabboStats().blockRoomInvites)
+                    {
+                        habbo.getClient().sendResponse(new RoomInviteComposer(this.client.getHabbo().getHabboInfo().getId(), message));
+                    }
                 }
             }
         }
