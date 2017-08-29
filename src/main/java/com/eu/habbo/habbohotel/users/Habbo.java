@@ -520,14 +520,17 @@ public class Habbo implements Runnable
 
     public void mute(int seconds)
     {
-        int remaining = this.habboStats.addMuteTime(seconds);
-        this.client.sendResponse(new FloodCounterComposer(remaining));
-        this.client.sendResponse(new MutedWhisperComposer(remaining));
-
-        Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
-        if (room != null)
+        if (!this.hasPermission("acc_no_mute"))
         {
-            room.sendComposer(new RoomUserIgnoredComposer(this, RoomUserIgnoredComposer.MUTED).compose());
+            int remaining = this.habboStats.addMuteTime(seconds);
+            this.client.sendResponse(new FloodCounterComposer(remaining));
+            this.client.sendResponse(new MutedWhisperComposer(remaining));
+
+            Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
+            if (room != null)
+            {
+                room.sendComposer(new RoomUserIgnoredComposer(this, RoomUserIgnoredComposer.MUTED).compose());
+            }
         }
     }
 
