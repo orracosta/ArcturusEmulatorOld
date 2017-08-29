@@ -216,34 +216,9 @@ public class RoomUnit
             {
                 if (!room.tileWalkable(next.x, next.y) && !(item instanceof InteractionTeleport))
                 {
-                    Deque<RoomTile> path = new LinkedList<>(this.path);
-                    this.path.clear();
-                    RoomTile newGoal = next;
-                    if (!path.isEmpty())
-                    {
-                        newGoal = path.pop();
-                    }
-                    RoomTile oldGoal = this.goalLocation;
-                    this.setGoalLocation(room.getLayout().getTile(newGoal.x, newGoal.y));
                     this.room = room;
                     this.findPath();
-                    if (this.path.size() > 0)
-                    {
-                        for (int i = 0; i < this.path.size(); i++)
-                        {
-                            path.addFirst(this.path.pollLast());
-                        }
-                    }
-                    this.goalLocation = oldGoal;
-                    this.path.clear();
-                    this.path.addAll(path);
-                    if (this.path.isEmpty())
-                    {
-                        room.sendComposer(new RoomUserStatusComposer(this).compose());
-                        return false;
-                    }
-
-                    next = this.path.poll();
+                    next = this.path.pop();
                 }
             }
 
