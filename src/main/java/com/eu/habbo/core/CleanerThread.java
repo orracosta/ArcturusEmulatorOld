@@ -175,8 +175,8 @@ public class CleanerThread implements Runnable {
         {
             try (Statement statement = connection.createStatement())
             {
-                statement.execute("UPDATE users SET online = '0'");
-                statement.execute("UPDATE rooms SET users = '0'");
+                statement.execute("UPDATE users SET online = '0' WHERE online = '1'");
+                statement.execute("UPDATE rooms SET users = '0' WHERE users > 0");
                 statement.execute("DELETE FROM room_mutes WHERE ends < " + time);
                 statement.execute("DELETE FROM room_bans WHERE ends < " + time);
                 statement.execute("DELETE users_favorite_rooms FROM users_favorite_rooms LEFT JOIN rooms ON room_id = rooms.id WHERE rooms.id IS NULL");

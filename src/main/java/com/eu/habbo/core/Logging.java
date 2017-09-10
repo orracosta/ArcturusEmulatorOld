@@ -367,38 +367,47 @@ public class Logging
     {
         if (Emulator.getDatabase() != null && Emulator.getDatabase().getDataSource() != null)
         {
-            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
+            if (!this.errorLogs.isEmpty() || !this.commandLogs.isEmpty())
             {
-                synchronized (this.errorLogs)
+                try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
                 {
-                    try (PreparedStatement statement = connection.prepareStatement(ErrorLog.insertQuery))
+                    if (!this.errorLogs.isEmpty())
                     {
-                        for (Loggable log : this.errorLogs)
+                        synchronized (this.errorLogs)
                         {
-                            log.log(statement);
+                            try (PreparedStatement statement = connection.prepareStatement(ErrorLog.insertQuery))
+                            {
+                                for (Loggable log : this.errorLogs)
+                                {
+                                    log.log(statement);
+                                }
+                                statement.executeBatch();
+                            }
+                            this.errorLogs.clear();
                         }
-                        statement.executeBatch();
                     }
-                    this.errorLogs.clear();
-                }
 
-                synchronized (this.commandLogs)
+                    if (!this.commandLogs.isEmpty())
+                    {
+                        synchronized (this.commandLogs)
+                        {
+                            try (PreparedStatement statement = connection.prepareStatement(CommandLog.insertQuery))
+                            {
+                                for (Loggable log : this.commandLogs)
+                                {
+                                    log.log(statement);
+                                }
+
+                                statement.executeBatch();
+                            }
+                            this.commandLogs.clear();
+                        }
+                    }
+                }
+                catch (SQLException e)
                 {
-                    try (PreparedStatement statement = connection.prepareStatement(CommandLog.insertQuery))
-                    {
-                        for (Loggable log : this.commandLogs)
-                        {
-                            log.log(statement);
-                        }
-
-                        statement.executeBatch();
-                    }
-                    this.commandLogs.clear();
+                    Emulator.getLogging().logSQLException(e);
                 }
-            }
-            catch (SQLException e)
-            {
-                Emulator.getLogging().logSQLException(e);
             }
         }
     }

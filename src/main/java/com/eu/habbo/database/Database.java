@@ -32,7 +32,7 @@ public class Database
             this.databasePool = new DatabasePool();
             if (!this.databasePool.getStoragePooling(config))
             {
-                Emulator.getLogging().logErrorLine("Failed to connect to the database. Shutting down...");
+                Emulator.getLogging().logStart("Failed to connect to the database. Shutting down...");
                 SQLException = true;
                 return;
             }
@@ -42,8 +42,8 @@ public class Database
         {
             SQLException = true;
             e.printStackTrace();
-            Emulator.getLogging().logErrorLine("Failed to connect to your database.");
-            Emulator.getLogging().logErrorLine(e.getMessage());
+            Emulator.getLogging().logStart("Failed to connect to your database.");
+            Emulator.getLogging().logStart(e.getMessage());
         }
         finally
         {
