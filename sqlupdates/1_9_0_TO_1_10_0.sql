@@ -38,3 +38,6 @@ INSERT INTO `emulator_settings` (`key`, `value`) VALUES
 
 DROP INDEX `user_id` ON users_recipes;
 ALTER TABLE  `users_recipes` ADD UNIQUE KEY (  `user_id`, `recipe` );
+
+DELETE FROM emulator_settings WHERE `key` LIKE 'hotel.max.bots.inventory';
+UPDATE  `emulator_settings` SET  `key` =  'hotel.inventory.max.items' WHERE  `emulator_settings`.`key` =  'inventory.max.items';
