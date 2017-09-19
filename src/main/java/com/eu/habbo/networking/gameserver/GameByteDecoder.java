@@ -48,6 +48,10 @@ public class GameByteDecoder extends ByteToMessageDecoder
 //            }
 
             //in.release();
+            if (Emulator.debugging)
+            {
+                System.out.println("Policy requested!" + f.channel().remoteAddress().toString());
+            }
             f.channel().close();
             ctx.close();
             return;

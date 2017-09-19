@@ -275,7 +275,11 @@ public final class Emulator
         catch (Exception e) {}
 
         Emulator.getLogging().logShutdownLine("Stopped Arcturus Emulator " + version + "...");
-        Emulator.getDatabase().dispose();
+
+        if (Emulator.database != null)
+        {
+            Emulator.getDatabase().dispose();
+        }
         Emulator.stopped = true;
 
         try

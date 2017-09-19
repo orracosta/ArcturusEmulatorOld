@@ -312,6 +312,9 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
 
             for (String itemId : itemIds)
             {
+                if (itemId.isEmpty())
+                    continue;
+
                 if (itemId.contains(":"))
                 {
                     itemId = itemId.split(":")[0];
@@ -374,8 +377,11 @@ public class CatalogItem implements ISerialize, Runnable, Comparable<CatalogItem
                         }
                     } else
                     {
-                        intItemId = (Integer.parseInt(itemId));
-                        this.bundle.put(intItemId, 1);
+                        if (!itemId.isEmpty())
+                        {
+                            intItemId = (Integer.parseInt(itemId));
+                            this.bundle.put(intItemId, 1);
+                        }
                     }
                 }
             } catch (Exception e)

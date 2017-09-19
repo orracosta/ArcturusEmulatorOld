@@ -218,7 +218,16 @@ public class RoomUnit
                 {
                     this.room = room;
                     this.findPath();
-                    next = this.path.pop();
+
+                    if (!this.path.isEmpty())
+                    {
+                        next = this.path.pop();
+                    }
+                    else
+                    {
+                        return true;
+                    }
+
                 }
             }
 

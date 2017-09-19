@@ -97,4 +97,10 @@ public class InteractionPetDrink extends HabboItem
     {
         super.onWalkOff(roomUnit, room, objects);
     }
+
+    @Override
+    public boolean allowWiredResetState()
+    {
+        return false;
+    }
 }

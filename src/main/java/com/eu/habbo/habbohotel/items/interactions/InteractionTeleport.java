@@ -175,4 +175,10 @@ public class InteractionTeleport extends HabboItem
         this.targetRoomId = targetRoomId;
     }
 
+    @Override
+    public boolean allowWiredResetState()
+    {
+        return false;
+    }
+
 }

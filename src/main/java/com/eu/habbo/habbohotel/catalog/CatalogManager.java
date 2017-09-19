@@ -15,6 +15,8 @@ import com.eu.habbo.habbohotel.users.HabboBadge;
 import com.eu.habbo.habbohotel.users.HabboGender;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.catalog.*;
+import com.eu.habbo.messages.outgoing.events.calendar.AdventCalendarDataComposer;
+import com.eu.habbo.messages.outgoing.events.calendar.AdventCalendarProductComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
@@ -22,6 +24,7 @@ import com.eu.habbo.messages.outgoing.inventory.AddBotComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddPetComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
+import com.eu.habbo.messages.outgoing.unknown.NuxAlertComposer;
 import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
 import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
 import com.eu.habbo.messages.outgoing.users.UserPointsComposer;
@@ -107,6 +110,8 @@ public class CatalogManager
      */
     public static int catalogItemAmount;
 
+    public final THashMap<Integer, CalendarRewardObject> calendarRewards;
+
     /**
      * Mapped all page definitions.
      */
@@ -174,6 +179,7 @@ public class CatalogManager
         this.offerDefs              = new TIntIntHashMap();
         this.vouchers               = new ArrayList<Voucher>();
         this.limitedNumbers         = new THashMap<Integer, CatalogLimitedConfiguration>();
+        this.calendarRewards        = new THashMap<>();
 
         this.initialize();
 
@@ -200,6 +206,7 @@ public class CatalogManager
             loadClothing();
             loadRecycler();
             loadGiftWrappers();
+            loadCalendarRewards();
         }
         catch(SQLException e)
         {
@@ -531,6 +538,29 @@ public class CatalogManager
         }
     }
 
+    private void loadCalendarRewards()
+    {
+        synchronized (this.calendarRewards)
+        {
+            this.calendarRewards.clear();
+
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT * FROM calendar_rewards"))
+            {
+                try (ResultSet set = statement.executeQuery())
+                {
+                    while (set.next())
+                    {
+                        this.calendarRewards.put(set.getInt("id"), new CalendarRewardObject(set));
+                    }
+                }
+            }
+            catch (SQLException e)
+            {
+                Emulator.getLogging().logSQLException(e);
+            }
+        }
+    }
+
     /**
      * Loads all clothing.
      */
@@ -616,7 +646,12 @@ public class CatalogManager
 
                 if (voucher.catalogItemId > 0)
                 {
-                    this.getCatalogItem(voucher.catalogItemId);
+                    CatalogItem item = this.getCatalogItem(voucher.catalogItemId);
+
+                    if (item != null)
+                    {
+                        this.purchaseItem(null, item, client.getHabbo(), 1, "", true);
+                    }
                 }
 
                 client.sendResponse(new RedeemVoucherOKComposer());
@@ -1345,5 +1380,35 @@ public class CatalogManager
         }
 
         return offers;
+    }
+
+    public void claimCalendarReward(Habbo habbo, int day)
+    {
+        if (!habbo.getHabboStats().calendarRewardsClaimed.contains(day))
+        {
+            habbo.getHabboStats().calendarRewardsClaimed.add(day);
+            CalendarRewardObject object = this.calendarRewards.get(day);
+
+            if (object != null)
+            {
+                object.give(habbo);
+                habbo.getClient().sendResponse(new InventoryRefreshComposer());
+                habbo.getClient().sendResponse(new AdventCalendarProductComposer(true, object));
+
+                try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO calendar_rewards_claimed (user_id, reward_id, timestamp) VALUES (?, ?, ?)"))
+                {
+                    statement.setInt(1, habbo.getHabboInfo().getId());
+                    statement.setInt(2, day);
+                    statement.setInt(3, Emulator.getIntUnixTimestamp());
+                    statement.execute();
+                }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            }
+
+
+        }
     }
 }

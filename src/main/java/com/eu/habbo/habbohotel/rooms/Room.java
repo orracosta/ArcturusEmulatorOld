@@ -70,6 +70,8 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class Room implements Comparable<Room>, ISerialize, Runnable
 {
@@ -184,6 +186,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public int yesVotes = 0;
     public int wordQuizEnd = 0;
     public final List<Integer> userVotes;
+    public ScheduledFuture roomCycleTask;
 
     public Room(ResultSet set) throws SQLException
     {
@@ -293,6 +296,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             if (!this.preLoaded || this.loaded)
                 return;
 
+            this.preLoaded = false;
+
             try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
             {
                 synchronized ( this.roomUnitLock)
@@ -377,11 +382,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     Emulator.getLogging().logErrorLine(e);
                 }
 
-                this.preLoaded = false;
                 this.idleCycles = 0;
                 this.loaded = true;
 
-                Emulator.getThreading().run(this);
+                this.roomCycleTask = Emulator.getThreading().getService().scheduleAtFixedRate(this, 500, 500, TimeUnit.MILLISECONDS);
             }
             catch (Exception e)
             {
@@ -886,113 +890,115 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             if (Emulator.getPluginManager().fireEvent(new RoomUnloadingEvent(this)).isCancelled())
                 return;
 
-            try
+            if (this.loaded)
             {
-                this.loaded = false;
-
-                this.tileCache.clear();
-
-                synchronized (this.mutedHabbos)
+                try
                 {
-                    this.mutedHabbos.clear();
-                }
+                    this.roomCycleTask.cancel(false);
+                    this.scheduledTasks.clear();
+                    this.scheduledComposers.clear();
+                    this.loaded = false;
 
-                for (Game game : this.games)
-                {
-                    game.stop();
-                }
-                this.games.clear();
+                    this.tileCache.clear();
 
-                synchronized (this.roomItems)
-                {
-                    TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
+                    synchronized (this.mutedHabbos)
+                    {
+                        this.mutedHabbos.clear();
+                    }
 
-                    for (int i = this.roomItems.size(); i-- > 0; )
+                    for (Game game : this.games)
+                    {
+                        game.stop();
+                    }
+                    this.games.clear();
+
+                    synchronized (this.roomItems)
+                    {
+                        TIntObjectIterator<HabboItem> iterator = this.roomItems.iterator();
+
+                        for (int i = this.roomItems.size(); i-- > 0; )
+                        {
+                            try
+                            {
+                                iterator.advance();
+
+                                if (iterator.value().needsUpdate())
+                                    iterator.value().run();
+                            } catch (NoSuchElementException e)
+                            {
+                                break;
+                            }
+                        }
+                    }
+
+                    if (this.roomSpecialTypes != null)
+                    {
+                        this.roomSpecialTypes.dispose();
+                    }
+
+                    synchronized (this.roomItems)
+                    {
+                        this.roomItems.clear();
+                    }
+
+                    synchronized (this.habboQueue)
+                    {
+                        this.habboQueue.clear();
+                    }
+
+                    //   SAFE
+
+
+                    for (Habbo habbo : this.currentHabbos.values())
+                    {
+                        Emulator.getGameEnvironment().getRoomManager().leaveRoom(habbo, this);
+                    }
+
+                    this.sendComposer(new HotelViewComposer().compose());
+
+                    this.currentHabbos.clear();
+
+
+                    TIntObjectIterator<Bot> botIterator = this.currentBots.iterator();
+
+                    for (int i = this.currentBots.size(); i-- > 0; )
                     {
                         try
                         {
-                            iterator.advance();
-
-                            if (iterator.value().needsUpdate())
-                                Emulator.getThreading().run(iterator.value());
-                        }
-                        catch (NoSuchElementException e)
+                            botIterator.advance();
+                            botIterator.value().needsUpdate(true);
+                            Emulator.getThreading().run(botIterator.value());
+                        } catch (NoSuchElementException e)
                         {
+                            Emulator.getLogging().logErrorLine(e);
                             break;
                         }
                     }
-                }
 
-                if (this.roomSpecialTypes != null)
-                {
-                    this.roomSpecialTypes.dispose();
-                }
-
-                synchronized (this.roomItems)
-                {
-                    this.roomItems.clear();
-                }
-
-                synchronized (this.habboQueue)
-                {
-                    this.habboQueue.clear();
-                }
-
-                //   SAFE
-
-
-                for (Habbo habbo : this.currentHabbos.values())
-                {
-                    Emulator.getGameEnvironment().getRoomManager().leaveRoom(habbo, this);
-                }
-
-                this.sendComposer(new HotelViewComposer().compose());
-
-                this.currentHabbos.clear();
-
-
-                TIntObjectIterator<Bot> botIterator = this.currentBots.iterator();
-
-                for (int i = this.currentBots.size(); i-- > 0; )
-                {
-                    try
+                    TIntObjectIterator<AbstractPet> petIterator = this.currentPets.iterator();
+                    for (int i = this.currentPets.size(); i-- > 0; )
                     {
-                        botIterator.advance();
-                        botIterator.value().needsUpdate(true);
-                        Emulator.getThreading().run(botIterator.value());
-                    }
-                    catch (NoSuchElementException e)
-                    {
-                        Emulator.getLogging().logErrorLine(e);
-                        break;
-                    }
-                }
-
-                TIntObjectIterator<AbstractPet> petIterator = this.currentPets.iterator();
-                for (int i = this.currentPets.size(); i-- > 0; )
-                {
-                    try
-                    {
-                        petIterator.advance();
-                        if (petIterator.value() instanceof Pet)
+                        try
                         {
-                            petIterator.value().needsUpdate = true;
-                            Emulator.getThreading().run(petIterator.value());
+                            petIterator.advance();
+                            if (petIterator.value() instanceof Pet)
+                            {
+                                petIterator.value().needsUpdate = true;
+                                Emulator.getThreading().run(petIterator.value());
+                            }
+                        } catch (NoSuchElementException e)
+                        {
+                            Emulator.getLogging().logErrorLine(e);
+                            break;
                         }
                     }
-                    catch (NoSuchElementException e)
-                    {
-                        Emulator.getLogging().logErrorLine(e);
-                        break;
-                    }
-                }
 
-                this.currentBots.clear();
-                this.currentPets.clear();
-            }
-            catch (Exception e)
-            {
-                Emulator.getLogging().logErrorLine(e);
+                    this.currentBots.clear();
+                    this.currentPets.clear();
+                } catch (Exception e)
+                {
+                    Emulator.getLogging().logErrorLine(e);
+                }
             }
 
             this.wordQuiz = "";
@@ -1132,20 +1138,26 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     @Override
     public void run()
     {
+        long millis = System.currentTimeMillis();
+
         synchronized (this.loadLock)
         {
             if (this.loaded)
             {
                 try
                 {
-                    long millis = System.currentTimeMillis();
-                    this.cycle();
-                    Emulator.getThreading().run(this, 500 - (System.currentTimeMillis() - millis));
+                    Emulator.getThreading().run(
+                            new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    cycle();
+                                }
+                            });
                 }
                 catch (Exception e)
                 {
-//                    sendComposer(new GenericAlertComposer("Room Crashed.").compose());
-//                    dispose();
                     Emulator.getLogging().logErrorLine(e);
                 }
             }
@@ -1846,7 +1858,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             }
         }
 
-        synchronized (this.scheduledComposers)
+        if (!this.scheduledComposers.isEmpty())
         {
             for (ServerMessage message : scheduledComposers)
             {
@@ -1856,7 +1868,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             this.scheduledComposers.clear();
         }
 
-        synchronized (this.scheduledTasks)
+        if (!this.scheduledTasks.isEmpty())
         {
             for (Runnable runnable : this.scheduledTasks)
             {
@@ -3991,38 +4003,42 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         double height = this.layout.getHeightAtSquare(x, y);
         boolean canStack = true;
 
-        for(HabboItem item : this.getItemsAt(x, y))
+        THashSet<HabboItem> items = this.getItemsAt(x, y);
+        if (items != null && !items.isEmpty())
         {
-            if(item == exclude)
-                continue;
-
-            if(item.getBaseItem().allowSit())
+            for (HabboItem item : items)
             {
-                canStack = false;
-                height = 0.0D;
-                break;
-            }
+                if (item == exclude)
+                    continue;
 
-            if(!item.getBaseItem().allowStack())
-            {
-                canStack = false;
-                break;
-            }
-
-            double itemHeight = (item.getBaseItem().allowSit() ? 0.0D : item.getBaseItem().getHeight()) + item.getZ();
-
-            if(item instanceof InteractionMultiHeight)
-            {
-                if(item.getExtradata().length() == 0)
+                if (item.getBaseItem().allowSit())
                 {
-                    item.setExtradata("0");
+                    canStack = false;
+                    height = 0.0D;
+                    break;
                 }
-                itemHeight += Item.getCurrentHeight(item);
-            }
 
-            if(itemHeight > height)
-            {
-                height = itemHeight;
+                if (!item.getBaseItem().allowStack())
+                {
+                    canStack = false;
+                    break;
+                }
+
+                double itemHeight = (item.getBaseItem().allowSit() ? 0.0D : item.getBaseItem().getHeight()) + item.getZ();
+
+                if (item instanceof InteractionMultiHeight)
+                {
+                    if (item.getExtradata().length() == 0)
+                    {
+                        item.setExtradata("0");
+                    }
+                    itemHeight += Item.getCurrentHeight(item);
+                }
+
+                if (itemHeight > height)
+                {
+                    height = itemHeight;
+                }
             }
         }
 
@@ -4618,6 +4634,16 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     }
                 }
             }
+        }
+    }
+
+    public void updateItemState(HabboItem item)
+    {
+        this.sendComposer(new ItemStateComposer(item).compose());
+
+        if (item.getBaseItem().getType() == FurnitureType.FLOOR)
+        {
+            this.updateTiles(this.getLayout().getTilesAt(this.layout.getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
         }
     }
 

@@ -570,6 +570,7 @@ public class PacketManager
         this.registerHandler(Incoming.GameCenterRequestAccountStatusEvent,      GameCenterRequestAccountStatusEvent.class);
         this.registerHandler(Incoming.GameCenterJoinGameEvent,                  GameCenterJoinGameEvent.class);
         this.registerHandler(Incoming.GameCenterLoadGameEvent,                  GameCenterLoadGameEvent.class);
+        this.registerHandler(Incoming.GameCenterLeaveGameEvent,                 GameCenterLeaveGameEvent.class);
         this.registerHandler(Incoming.GameCenterEvent,                          GameCenterEvent.class);
         this.registerHandler(Incoming.GameCenterRequestGameStatusEvent,         GameCenterRequestGameStatusEvent.class);
     }

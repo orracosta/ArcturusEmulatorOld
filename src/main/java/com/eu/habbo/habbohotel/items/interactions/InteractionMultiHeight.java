@@ -74,7 +74,7 @@ public class InteractionMultiHeight extends HabboItem
                 {
                     this.setExtradata("" + (Integer.valueOf(this.getExtradata()) + 1) % (this.getBaseItem().getMultiHeights().length));
                     this.needsUpdate(true);
-                    room.updateItem(this);
+                    room.updateItemState(this);
                     room.sendComposer(new UpdateStackHeightComposer(this.getX(), this.getY(), this.getBaseItem().getMultiHeights()[Integer.valueOf(this.getExtradata())] * 256.0D).compose());
                 }
 
@@ -177,5 +177,11 @@ public class InteractionMultiHeight extends HabboItem
                 }
             }
         }
+    }
+
+    @Override
+    public boolean allowWiredResetState()
+    {
+        return true;
     }
 }

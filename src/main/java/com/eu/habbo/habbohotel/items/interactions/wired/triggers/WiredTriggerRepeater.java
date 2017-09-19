@@ -1,15 +1,14 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.triggers;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.threading.runnables.WiredRepeatTask;
 import gnu.trove.procedure.TObjectProcedure;
 
 import java.sql.ResultSet;
@@ -23,17 +22,11 @@ public class WiredTriggerRepeater extends InteractionWiredTrigger
     public static final int DEFAULT_DELAY = 20 * 500;
 
     private int repeatTime = DEFAULT_DELAY;
-    private WiredRepeatTask task;
+    private int counter = 0;
 
     public WiredTriggerRepeater(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
-
-        if(this.getRoomId() != 0)
-        {
-            this.task = new WiredRepeatTask(this, Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()));
-            Emulator.getThreading().run(this.task, this.repeatTime);
-        }
     }
 
     public WiredTriggerRepeater(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
@@ -44,14 +37,18 @@ public class WiredTriggerRepeater extends InteractionWiredTrigger
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
-        if(this.getRoomId() != 0)
+        this.counter += 500;
+        if (this.counter == this.repeatTime)
         {
-            Emulator.getThreading().run(this.task, this.repeatTime);
-
-            if(room.isLoaded())
-                return true;
+            if (this.getRoomId() != 0)
+            {
+                if (room.isLoaded())
+                {
+                    WiredHandler.handle(this, null, room, stuff);
+                }
+            }
+            this.counter = 0;
         }
-
         return false;
     }
 
@@ -73,22 +70,13 @@ public class WiredTriggerRepeater extends InteractionWiredTrigger
         {
             this.repeatTime = 20 * 500;
         }
-
-        if(this.getRoomId() != 0)
-        {
-            if(this.task == null)
-            {
-                this.task = new WiredRepeatTask(this, Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()));
-                Emulator.getThreading().run(this.task, this.repeatTime);
-            }
-        }
     }
 
     @Override
     public void onPickUp()
     {
         this.repeatTime = DEFAULT_DELAY;
-        this.task = null;
+        this.counter = 0;
     }
 
     @Override
@@ -144,28 +132,13 @@ public class WiredTriggerRepeater extends InteractionWiredTrigger
         packet.readInt();
 
         this.repeatTime = packet.readInt() * 500;
+        this.counter = 0;
 
         if (this.repeatTime < 500)
         {
             this.repeatTime = 500;
         }
 
-        if(this.task == null)
-        {
-            this.task = new WiredRepeatTask(this, Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()));
-            Emulator.getThreading().run(this.task, this.repeatTime);
-        }
-
         return true;
-    }
-
-    @Override
-    public void onPlace(Room room)
-    {
-        if(this.task == null)
-        {
-            this.task = new WiredRepeatTask(this, room);
-            Emulator.getThreading().run(this.task, this.repeatTime);
-        }
     }
 }

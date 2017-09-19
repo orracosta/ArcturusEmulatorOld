@@ -1,31 +1,28 @@
 package com.eu.habbo.habbohotel.items.interactions;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.habbohotel.users.HabboItem;
-import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserEffectComposer;
 import gnu.trove.map.hash.THashMap;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class InteractionTileEffect extends InteractionCustomValues
+public class InteractionTileEffectProvider extends InteractionCustomValues
 {
     public static THashMap<String, String> defaultValues = new THashMap<String, String>()
     {
             {put("effectId", "0");}
     };
 
-    public InteractionTileEffect(ResultSet set, Item baseItem) throws SQLException
+    public InteractionTileEffectProvider(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem, defaultValues);
     }
 
-    public InteractionTileEffect(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
+    public InteractionTileEffectProvider(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
     {
         super(id, userId, item, extradata, limitedStack, limitedSells, defaultValues);
     }
@@ -57,7 +54,7 @@ public class InteractionTileEffect extends InteractionCustomValues
         this.values.put("state", "1");
         room.updateItem(this);
 
-        final InteractionTileEffect proxy = this;
+        final InteractionTileEffectProvider proxy = this;
         Emulator.getThreading().run(new Runnable()
         {
             @Override

@@ -44,7 +44,10 @@ public abstract class InteractionPushable extends InteractionDefault
         super.onWalkOff(roomUnit, room, objects);
         
         if(!(currentThread == null || currentThread.dead))
+        {
+            currentThread = null;
             return;
+        }
         
         int velocity = this.getWalkOffVelocity(roomUnit, room);
         RoomUserRotation direction = this.getWalkOffDirection(roomUnit, room);

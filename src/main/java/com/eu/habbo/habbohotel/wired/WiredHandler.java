@@ -21,6 +21,7 @@ import com.eu.habbo.messages.outgoing.catalog.PurchaseOKComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.WiredRewardAlertComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
+import com.eu.habbo.messages.outgoing.rooms.items.ItemStateComposer;
 import com.eu.habbo.messages.outgoing.users.AddUserBadgeComposer;
 import com.eu.habbo.plugin.events.furniture.wired.WiredConditionFailedEvent;
 import com.eu.habbo.plugin.events.furniture.wired.WiredStackExecutedEvent;
@@ -85,7 +86,7 @@ public class WiredHandler
         if(trigger.execute(roomUnit, room, stuff))
         {
             trigger.setExtradata(trigger.getExtradata().equals("1") ? "0" : "1");
-            room.updateItem(trigger);
+            room.sendComposer(new ItemStateComposer(trigger).compose());
 
             THashSet<InteractionWiredCondition> conditions = room.getRoomSpecialTypes().getConditions(trigger.getX(), trigger.getY());
             THashSet<InteractionWiredEffect> effects = room.getRoomSpecialTypes().getEffects(trigger.getX(), trigger.getY());
@@ -98,7 +99,7 @@ public class WiredHandler
                 if(condition.execute(roomUnit, room, stuff))
                 {
                     condition.setExtradata(condition.getExtradata().equals("1") ? "0" : "1");
-                    room.updateItem(condition);
+                    room.sendComposer(new ItemStateComposer(condition).compose());
                 }
                 else
                 {
@@ -115,7 +116,7 @@ public class WiredHandler
             for (InteractionWiredExtra extra : extras)
             {
                 extra.setExtradata(extra.getExtradata().equals("1") ? "0" : "1");
-                room.updateItem(extra);
+                room.sendComposer(new ItemStateComposer(extra).compose());
             }
 
             List<InteractionWiredEffect> effectList = new ArrayList<>(effects);
@@ -183,7 +184,7 @@ public class WiredHandler
                             }
 
                             effect.setExtradata(effect.getExtradata().equals("1") ? "0" : "1");
-                            room.updateItem(effect);
+                            room.sendComposer(new ItemStateComposer(effect).compose());
                         }
                     }
                 }, effect.getDelay() * 500);

@@ -52,7 +52,7 @@ public class InteractionPressurePlate extends InteractionDefault
         super.onWalkOn(roomUnit, room, objects);
 
         this.setExtradata("1");
-        room.updateItem(this);
+        room.updateItemState(this);
     }
 
     @Override
@@ -61,13 +61,19 @@ public class InteractionPressurePlate extends InteractionDefault
         super.onWalkOff(roomUnit, room, objects);
 
         this.setExtradata("0");
-        room.updateItem(this);
+        room.updateItemState(this);
     }
 
     @Override
     public void onMove(Room room, RoomTile oldLocation, RoomTile newLocation)
     {
         this.setExtradata("0");
-        room.updateItem(this);
+        room.updateItemState(this);
+    }
+
+    @Override
+    public boolean allowWiredResetState()
+    {
+        return true;
     }
 }

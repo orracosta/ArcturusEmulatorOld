@@ -12,7 +12,7 @@ public class WiredMatchFurniSetting
     public WiredMatchFurniSetting(int itemId, String state, int rotation, int x, int y, double z)
     {
         this.itemId = itemId;
-        this.state = state.replace("\t\t\t", "");
+        this.state = state.replace("\t\t\t", " ");
         this.rotation = rotation;
         this.x = x;
         this.y = y;
@@ -22,7 +22,12 @@ public class WiredMatchFurniSetting
     @Override
     public String toString()
     {
-        return itemId + "-" + (state.isEmpty() ? "\t\t\t" : state) + "-" + rotation + "-" + x + "-" + y + "-" + z;
+        return this.toString(true);
+    }
+
+    public String toString(boolean includeState)
+    {
+        return itemId + "-" + (state.isEmpty() || !includeState ? " " : state) + "-" + rotation + "-" + x + "-" + y + "-" + z;
     }
 
 }

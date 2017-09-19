@@ -120,7 +120,10 @@ public class GameClient
             if(this.habbo != null)
             {
                 if(this.habbo.isOnline())
+                {
+                    this.habbo.getHabboInfo().setOnline(false);
                     this.habbo.disconnect();
+                }
 
                 this.habbo = null;
             }

@@ -32,7 +32,7 @@ public class UserDataComposer extends MessageComposer
         this.response.appendInt(this.habbo.getHabboStats().petRespectPointsToGive);
         this.response.appendBoolean(false);
         this.response.appendString("01-01-1970 00:00:00");
-        this.response.appendBoolean(false); //can change name.
+        this.response.appendBoolean(this.habbo.getHabboStats().allowNameChange); //can change name.
         this.response.appendBoolean(false); //safatey locked
 
         return this.response;

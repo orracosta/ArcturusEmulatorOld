@@ -73,4 +73,10 @@ public class InteractionWaterItem extends InteractionDefault
         this.setExtradata("0");
         room.updateItem(this);
     }
+
+    @Override
+    public boolean allowWiredResetState()
+    {
+        return false;
+    }
 }

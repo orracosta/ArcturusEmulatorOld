@@ -151,4 +151,10 @@ public class InteractionWater extends InteractionDefault
             ((InteractionWater)item).refreshWaters(room);
         }
     }
+
+    @Override
+    public boolean allowWiredResetState()
+    {
+        return false;
+    }
 }

@@ -38,7 +38,7 @@ public class InteractionPyramid extends InteractionGate
                 state = Math.abs(state - 1);
 
                 this.setExtradata(state + "");
-                room.updateItem(this);
+                room.updateItemState(this);
 
                 this.nextChange = Emulator.getIntUnixTimestamp() + 1 + (Emulator.getRandom().nextInt(Emulator.getConfig().getInt("pyramids.max.delay")));
             }

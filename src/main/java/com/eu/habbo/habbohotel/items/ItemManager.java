@@ -132,7 +132,7 @@ public class ItemManager
         this.interactionsList.add(new ItemInteraction("water_item",             InteractionWaterItem.class));
         this.interactionsList.add(new ItemInteraction("water",                  InteractionWater.class));
         this.interactionsList.add(new ItemInteraction("viking_cotie",           InteractionVikingCotie.class));
-        this.interactionsList.add(new ItemInteraction("tile_fxprovider_nfs",    InteractionTileEffect.class));
+        this.interactionsList.add(new ItemInteraction("tile_fxprovider_nfs",    InteractionTileEffectProvider.class));
         this.interactionsList.add(new ItemInteraction("mutearea",               InteractionMuteArea.class));
         this.interactionsList.add(new ItemInteraction("information_terminal",   InteractionInformationTerminal.class));
         this.interactionsList.add(new ItemInteraction("external_image",         InteractionExternalImage.class));
@@ -143,6 +143,7 @@ public class ItemManager
         this.interactionsList.add(new ItemInteraction("blackhole",              InteractionBlackHole.class));
         this.interactionsList.add(new ItemInteraction("effect_toggle",          InteractionEffectToggle.class));
         this.interactionsList.add(new ItemInteraction("room_o_matic",           InteractionRoomOMatic.class));
+        this.interactionsList.add(new ItemInteraction("effect_tile",            InteractionEffectTile.class));
 
         /*
             Wireds
@@ -337,6 +338,10 @@ public class ItemManager
             this.interactionsList.add(new ItemInteraction("football_goal_green",     InteractionFootballGoalGreen.class));
             this.interactionsList.add(new ItemInteraction("football_goal_red",       InteractionFootballGoalRed.class));
             this.interactionsList.add(new ItemInteraction("football_goal_yellow",    InteractionFootballGoalYellow.class));
+
+        this.interactionsList.add(new ItemInteraction("snowstorm_tree", null));
+        this.interactionsList.add(new ItemInteraction("snowstorm_machine", null));
+        this.interactionsList.add(new ItemInteraction("snowstorm_pile", null));
     }
 
     /**

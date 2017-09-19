@@ -141,7 +141,7 @@ public class SecureLoginEvent extends MessageHandler
                         {
                             client.sendResponse(new GenericAlertComposer(HabboManager.WELCOME_MESSAGE.replace("%username%", finalHabbo.getHabboInfo().getUsername()).replace("%user%", finalHabbo.getHabboInfo().getUsername())));
                         }
-                    }, 5000);
+                    }, Emulator.getConfig().getInt("hotel.welcome.alert.delay", 5000));
                 }
             }
             else

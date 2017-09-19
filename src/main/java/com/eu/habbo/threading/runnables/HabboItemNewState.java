@@ -24,7 +24,7 @@ public class HabboItemNewState implements Runnable
 
         if(this.item.getRoomId() == this.room.getId())
         {
-            this.room.updateItem(this.item);
+            this.room.updateItemState(this.item);
         }
     }
 }

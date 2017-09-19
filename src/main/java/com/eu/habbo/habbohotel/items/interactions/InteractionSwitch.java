@@ -25,4 +25,10 @@ public class InteractionSwitch extends InteractionDefault
     {
         return super.canToggle(habbo, room) || RoomLayout.tilesAdjecent(room.getLayout().getTile(this.getX(), this.getY()), habbo.getRoomUnit().getCurrentLocation());
     }
+
+    @Override
+    public boolean allowWiredResetState()
+    {
+        return true;
+    }
 }

@@ -33,7 +33,7 @@ public class ItemInteraction
      * Use getType() in order to identify the correct interactions!
      * @return The interaction name as defined in the database.
      */
-    String getName()
+    public String getName()
     {
         return this.name;
     }

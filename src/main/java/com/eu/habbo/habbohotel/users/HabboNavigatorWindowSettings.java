@@ -100,22 +100,32 @@ public class HabboNavigatorWindowSettings
 
     public DisplayMode getDisplayModeForCategory(String category)
     {
+        return this.getDisplayModeForCategory(category, DisplayMode.VISIBLE);
+    }
+
+    public DisplayMode getDisplayModeForCategory(String category, DisplayMode standard)
+    {
         if (this.displayModes.containsKey(category))
         {
             return this.displayModes.get(category).displayMode;
         }
 
-        return DisplayMode.VISIBLE;
+        return standard;
     }
 
     public ListMode getListModeForCategory(String category)
+    {
+        return this.getListModeForCategory(category,  ListMode.LIST);
+    }
+
+    public ListMode getListModeForCategory(String category, ListMode standard)
     {
         if (this.displayModes.containsKey(category))
         {
             return this.displayModes.get(category).listMode;
         }
 
-        return ListMode.LIST;
+        return standard;
     }
 
     public void save(Connection connection)

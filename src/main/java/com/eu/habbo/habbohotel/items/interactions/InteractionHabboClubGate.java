@@ -52,7 +52,7 @@ public class InteractionHabboClubGate extends InteractionGate
         if(this.canWalkOn(roomUnit, room, objects))
         {
             this.setExtradata("1");
-            room.updateItem(this);
+            room.updateItemState(this);
         }
         else
         {

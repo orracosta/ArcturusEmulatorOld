@@ -86,7 +86,7 @@ public class InteractionGuildFurni extends HabboItem
                 {
                     this.setExtradata("" + (Integer.valueOf(this.getExtradata()) + 1) % this.getBaseItem().getStateCount());
                     this.needsUpdate(true);
-                    room.updateItem(this);
+                    room.updateItemState(this);
                 }
             }
         }
@@ -117,5 +117,11 @@ public class InteractionGuildFurni extends HabboItem
     public void setGuildId(int guildId)
     {
         this.guildId = guildId;
+    }
+
+    @Override
+    public boolean allowWiredResetState()
+    {
+        return true;
     }
 }

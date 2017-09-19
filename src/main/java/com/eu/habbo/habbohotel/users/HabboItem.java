@@ -412,4 +412,9 @@ public abstract class HabboItem implements Runnable, IEventTriggers
     {
         return "ID: " + this.id + ", BaseID: " + this.getBaseItem().getId() + ", X: " + this.x + ", Y: " + this.y + ", Z: " + this.z + ", Extradata: " + this.extradata;
     }
+
+    public boolean allowWiredResetState()
+    {
+        return false;
+    }
 }

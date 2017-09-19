@@ -104,7 +104,7 @@ public class BattleBanzaiGame extends Game
         for(HabboItem item : this.room.getRoomSpecialTypes().getItemsOfType(InteractionBattleBanzaiSphere.class))
         {
             item.setExtradata("1");
-            this.room.updateItem(item);
+            this.room.updateItemState(item);
         }
 
         this.timeLeft = highestTime;
@@ -151,7 +151,7 @@ public class BattleBanzaiGame extends Game
                     for(HabboItem item : this.room.getRoomSpecialTypes().getItemsOfType(InteractionBattleBanzaiSphere.class))
                     {
                         item.setExtradata("2");
-                        this.room.updateItem(item);
+                        this.room.updateItemState(item);
                     }
                 }
 
@@ -172,7 +172,7 @@ public class BattleBanzaiGame extends Game
                 for (Map.Entry<Integer, InteractionBattleBanzaiTimer> set : this.room.getRoomSpecialTypes().getBattleBanzaiTimers().entrySet())
                 {
                     set.getValue().setExtradata(timeLeft + "");
-                    this.room.updateItem(set.getValue());
+                    this.room.updateItemState(set.getValue());
                 }
 
                 int total = 0;
@@ -202,7 +202,7 @@ public class BattleBanzaiGame extends Game
                     for (HabboItem item : this.room.getRoomSpecialTypes().getItemsOfType(InteractionBattleBanzaiSphere.class))
                     {
                         item.setExtradata((highestScore.teamColor.type + 3) + "");
-                        this.room.updateItem(item);
+                        this.room.updateItemState(item);
                     }
                 }
 
@@ -250,7 +250,7 @@ public class BattleBanzaiGame extends Game
                         for (HabboItem item : this.room.getRoomSpecialTypes().getItemsOfType(InteractionBattleBanzaiSphere.class))
                         {
                             item.setExtradata((7 + winningTeam.teamColor.type) + "");
-                            this.room.updateItem(item);
+                            this.room.updateItemState(item);
                         }
 
                         Emulator.getThreading().run(new BattleBanzaiTilesFlicker(this.lockedTiles.get(winningTeam.teamColor), winningTeam.teamColor, this.room));
@@ -278,7 +278,7 @@ public class BattleBanzaiGame extends Game
             if (item instanceof InteractionBattleBanzaiTile || item instanceof InteractionBattleBanzaiScoreboard)
             {
                 item.setExtradata("0");
-                this.room.updateItem(item);
+                this.room.updateItemState(item);
             }
         }
 
@@ -295,14 +295,14 @@ public class BattleBanzaiGame extends Game
             if (item instanceof InteractionBattleBanzaiTile)
             {
                 item.setExtradata("1");
-                this.room.updateItem(item);
+                this.room.updateItemState(item);
                 this.tileCount++;
             }
 
             if (item instanceof InteractionBattleBanzaiScoreboard)
             {
                 item.setExtradata("0");
-                this.room.updateItem(item);
+                this.room.updateItemState(item);
             }
         }
     }
@@ -318,7 +318,7 @@ public class BattleBanzaiGame extends Game
                 continue;
 
             gate.setExtradata(Integer.valueOf(gate.getExtradata()) - 1 + "");
-            this.room.updateItem(gate);
+            this.room.updateItemState(gate);
             break;
         }
     }
@@ -402,7 +402,7 @@ public class BattleBanzaiGame extends Game
                 continue;
 
             scoreboard.setExtradata(totalScore + "");
-            this.room.updateItem(scoreboard);
+            this.room.updateItemState(scoreboard);
         }
     }
 }

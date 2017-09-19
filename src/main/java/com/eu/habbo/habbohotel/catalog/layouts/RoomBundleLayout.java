@@ -108,6 +108,11 @@ public class RoomBundleLayout extends SingleBundle
                 items.put(i.getBaseItem(), items.get(i.getBaseItem()) + 1);
             }
 
+            if (!item[0].getExtradata().isEmpty())
+            {
+                items.put(Emulator.getGameEnvironment().getItemManager().getItem(Integer.valueOf(item[0].getExtradata())), 1);
+            }
+
             String data = "";
 
             for(Map.Entry<Item, Integer> set : items.entrySet())

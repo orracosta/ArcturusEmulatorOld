@@ -51,4 +51,10 @@ public class InteractionVikingCotie extends InteractionDefault
 
         super.onClick(client, room, objects);
     }
+
+    @Override
+    public boolean allowWiredResetState()
+    {
+        return false;
+    }
 }

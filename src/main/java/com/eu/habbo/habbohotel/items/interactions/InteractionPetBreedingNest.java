@@ -100,4 +100,10 @@ public class InteractionPetBreedingNest extends HabboItem
     {
         return this.petOne != null && this.petTwo != null;
     }
+
+    @Override
+    public boolean allowWiredResetState()
+    {
+        return false;
+    }
 }

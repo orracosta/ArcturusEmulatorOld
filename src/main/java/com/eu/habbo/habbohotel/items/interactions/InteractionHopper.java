@@ -66,7 +66,7 @@ public class InteractionHopper extends HabboItem
                 {
                     client.getHabbo().getRoomUnit().isTeleporting = true;
                     this.setExtradata("1");
-                    room.updateItem(this);
+                    room.updateItemState(this);
 
                     Emulator.getThreading().run(new HopperActionOne(this, room, client), 500);
                 }
@@ -94,7 +94,7 @@ public class InteractionHopper extends HabboItem
             Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
             if(room != null)
             {
-                room.updateItem(this);
+                room.updateItemState(this);
             }
         }
         super.run();

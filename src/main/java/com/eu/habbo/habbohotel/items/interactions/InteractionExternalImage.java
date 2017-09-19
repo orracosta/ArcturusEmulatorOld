@@ -1,5 +1,6 @@
 package com.eu.habbo.habbohotel.items.interactions;
 
+import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
@@ -46,6 +47,11 @@ public class InteractionExternalImage extends HabboItem
         serverMessage.appendString(this.getExtradata());
 
         super.serializeExtradata(serverMessage);
+    }
+
+    @Override
+    public void onClick(GameClient client, Room room, Object[] objects) throws Exception
+    {
     }
 
     //{"t":10000000, "u":"http://arcturus.wf/camera/", "m":"idk", "s":1, "w":"http://arcturus.wf/camera/image.png"}

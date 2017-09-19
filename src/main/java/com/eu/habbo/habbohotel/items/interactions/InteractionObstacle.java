@@ -113,7 +113,7 @@ public class InteractionObstacle extends HabboItem
                         AchievementManager.progressAchievement(habbo, Emulator.getGameEnvironment().getAchievementManager().getAchievement("HorseJumping"));
                     }
 
-                    room.updateItem(this);
+                    room.updateItemState(this);
                 }
             }
         }

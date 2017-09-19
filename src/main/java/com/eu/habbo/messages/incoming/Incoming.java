@@ -323,6 +323,7 @@ public class Incoming
     public static final int GameCenterJoinGameEvent = 1458;
     public static final int GameCenterLoadGameEvent = 1054;
     public static final int GameCenterEvent = 2914;
+    public static final int GameCenterLeaveGameEvent = 3207;
 
     public static final int ModToolSanctionAlertEvent = 229;
     public static final int ModToolSanctionMuteEvent = 1945;
@@ -333,4 +334,33 @@ public class Incoming
     public static final int ReportFriendPrivateChatEvent = 2950;
     public static final int ModToolIssueChangeTopicEvent = 1392;
     public static final int ModToolIssueDefaultSanctionEvent = 2717;
+
+
+    public static final int UNKNOWN_SNOWSTORM_6000 = 6000;
+    public static final int UNKNOWN_SNOWSTORM_6001 = 6001;
+    public static final int UNKNOWN_SNOWSTORM_6002 = 6002;
+    public static final int UNKNOWN_SNOWSTORM_6003 = 6003;
+    public static final int UNKNOWN_SNOWSTORM_6004 = 6004;
+    public static final int UNKNOWN_SNOWSTORM_6005 = 6005;
+    public static final int UNKNOWN_SNOWSTORM_6006 = 6006;
+    public static final int UNKNOWN_SNOWSTORM_6007 = 6007;
+    public static final int UNKNOWN_SNOWSTORM_6008 = 6008;
+    public static final int UNKNOWN_SNOWSTORM_6009 = 6009;
+    public static final int UNKNOWN_SNOWSTORM_6010 = 6010;
+    public static final int UNKNOWN_SNOWSTORM_6011 = 6011;
+    public static final int SnowStormJoinQueueEvent = 6012;
+    public static final int UNKNOWN_SNOWSTORM_6013 = 6013;
+    public static final int UNKNOWN_SNOWSTORM_6014 = 6014;
+    public static final int UNKNOWN_SNOWSTORM_6015 = 6015;
+    public static final int UNKNOWN_SNOWSTORM_6016 = 6016;
+    public static final int UNKNOWN_SNOWSTORM_6017 = 6017;
+    public static final int UNKNOWN_SNOWSTORM_6018 = 6018;
+    public static final int UNKNOWN_SNOWSTORM_6019 = 6019;
+    public static final int UNKNOWN_SNOWSTORM_6020 = 6020;
+    public static final int UNKNOWN_SNOWSTORM_6021 = 6021;
+    public static final int UNKNOWN_SNOWSTORM_6022 = 6022;
+    public static final int UNKNOWN_SNOWSTORM_6023 = 6023;
+    public static final int UNKNOWN_SNOWSTORM_6024 = 6024;
+    public static final int UNKNOWN_SNOWSTORM_6025 = 6025;
+    public static final int SnowStormUserPickSnowballEvent = 6026;
 }

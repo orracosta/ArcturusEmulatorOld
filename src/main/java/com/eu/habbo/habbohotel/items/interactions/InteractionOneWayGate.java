@@ -87,7 +87,7 @@ public class InteractionOneWayGate extends HabboItem
                             client.getHabbo().getRoomUnit().setLocation(room.getLayout().getTile(getX(), getY()));
 
                             setExtradata("1");
-                            room.updateItem(item);
+                            room.updateItemState(item);
                             room.scheduledTasks.add(new OneWayGateActionOne(client, room, item));
                         }
                     });

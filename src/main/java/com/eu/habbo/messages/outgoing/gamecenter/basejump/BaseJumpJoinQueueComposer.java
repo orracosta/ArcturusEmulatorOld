@@ -6,11 +6,18 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 
 public class BaseJumpJoinQueueComposer extends MessageComposer
 {
+    private final int gameId;
+
+    public BaseJumpJoinQueueComposer(int gameId)
+    {
+        this.gameId = gameId;
+    }
+
     @Override
     public ServerMessage compose()
     {
         this.response.init(Outgoing.BaseJumpJoinQueueComposer);
-        this.response.appendInt(3);
+        this.response.appendInt(this.gameId);
         return this.response;
     }
 }

@@ -34,7 +34,6 @@ public class BotsComponent {
                         Bot bot = Emulator.getGameEnvironment().getBotManager().loadBot(set);
                         if (bot != null)
                         {
-                            bot.setOwnerName(habbo.getHabboInfo().getUsername());
                             this.bots.put(set.getInt("id"), bot);
                         }
                     }

@@ -88,7 +88,7 @@ public class InteractionPetToy extends HabboItem
                 }
             }, 2500 + (Emulator.getRandom().nextInt(20) * 500));
             this.setExtradata("1");
-            room.updateItem(this);
+            room.updateItemState(this);
         }
     }
 
@@ -102,7 +102,13 @@ public class InteractionPetToy extends HabboItem
         if (pet != null && pet instanceof Pet)
         {
             this.setExtradata("0");
-            room.updateItem(this);
+            room.updateItemState(this);
         }
+    }
+
+    @Override
+    public boolean allowWiredResetState()
+    {
+        return false;
     }
 }

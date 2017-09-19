@@ -79,7 +79,7 @@ public class InteractionDefault extends HabboItem
                         this.setExtradata("" + (currentState + 1) % this.getBaseItem().getStateCount());
                         this.needsUpdate(true);
 
-                        room.updateItem(this);
+                        room.updateItemState(this);
                     }
                 }
             }
@@ -159,5 +159,11 @@ public class InteractionDefault extends HabboItem
     public boolean canToggle(Habbo habbo, Room room)
     {
         return room.hasRights(habbo);
+    }
+
+    @Override
+    public boolean allowWiredResetState()
+    {
+        return true;
     }
 }

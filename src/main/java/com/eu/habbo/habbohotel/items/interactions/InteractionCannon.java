@@ -15,7 +15,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class InteractionCannon extends HabboItem
-
 {
     public boolean cooldown = false;
     
@@ -67,7 +66,7 @@ public class InteractionCannon extends HabboItem
         {
             this.cooldown = true;
             this.setExtradata(this.getExtradata().equals("1") ? "0" : "1");
-            room.updateItem(this);
+            room.updateItemState(this);
             Emulator.getThreading().run(new CannonKickAction(this, room), 750);
             Emulator.getThreading().run(new CannonResetCooldownAction(this), 2000);
         }

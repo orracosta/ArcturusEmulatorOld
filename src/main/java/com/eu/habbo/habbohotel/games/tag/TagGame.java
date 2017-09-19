@@ -79,7 +79,7 @@ public abstract class TagGame extends Game
         if (pole != null)
         {
             pole.setExtradata("1");
-            room.updateItem(pole);
+            room.updateItemState(pole);
             Emulator.getThreading().run(new HabboItemNewState(pole, room, "0"), 1000);
         }
     }

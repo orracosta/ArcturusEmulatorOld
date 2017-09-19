@@ -64,7 +64,7 @@ public class InteractionDice extends HabboItem
                         return;
 
                     this.setExtradata("-1");
-                    room.updateItem(this);
+                    room.updateItemState(this);
                     Emulator.getThreading().run(this);
 
                     if (event.result > 0)
@@ -90,5 +90,11 @@ public class InteractionDice extends HabboItem
     public void onPickUp(Room room)
     {
         this.setExtradata("0");
+    }
+
+    @Override
+    public boolean allowWiredResetState()
+    {
+        return false;
     }
 }

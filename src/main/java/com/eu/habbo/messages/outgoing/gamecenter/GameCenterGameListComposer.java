@@ -26,6 +26,13 @@ public class GameCenterGameListComposer extends MessageComposer
         this.response.appendString("http://localhost/game/c_images/gamecenter_basejump/");
         this.response.appendString("");
 
+        this.response.appendInt(4);
+        this.response.appendString("slotcar");
+        this.response.appendString("4a95df");
+        this.response.appendString("");
+        this.response.appendString("http://habboo-a.akamaihd.net/gamecenter/Sulake/slotcar/20130214010101/");
+        this.response.appendString("");
+
         return this.response;
     }
 }

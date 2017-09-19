@@ -84,16 +84,20 @@ public class HabboStats implements Runnable
     public boolean mutedBubbleTracker = false;
 
     public String changeNameChecked = "";
+    public TIntArrayList calendarRewardsClaimed;
+
+    public boolean allowNameChange = false;
 
     private HabboStats(ResultSet set, Habbo habbo) throws SQLException
     {
-        this.cache = new THashMap<String, Object>();
-        this.achievementProgress = new THashMap<Achievement, Integer>();
-        this.achievementCache = new THashMap<Achievement, Integer>();
-        this.recentPurchases = new THashMap<Integer, CatalogItem>();
-        this.favoriteRooms = new TIntArrayList();
-        this.ignoredUsers = new TIntArrayList();
-        this.secretRecipes = new TIntArrayList();
+        this.cache = new THashMap<String, Object>(0);
+        this.achievementProgress = new THashMap<Achievement, Integer>(0);
+        this.achievementCache = new THashMap<Achievement, Integer>(0);
+        this.recentPurchases = new THashMap<Integer, CatalogItem>(0);
+        this.favoriteRooms = new TIntArrayList(0);
+        this.ignoredUsers = new TIntArrayList(0);
+        this.secretRecipes = new TIntArrayList(0);
+        this.calendarRewardsClaimed = new TIntArrayList(0);
 
         this.habbo = habbo;
 
@@ -128,6 +132,7 @@ public class HabboStats implements Runnable
         this.ignorePets = set.getString("ignore_pets").equalsIgnoreCase("1");
         this.nux = set.getString("nux").equals("1");
         this.muteEndTime = set.getInt("mute_end_timestamp");
+        this.allowNameChange = set.getString("allow_name_change").equalsIgnoreCase("1");
         this.nuxReward = nux;
 
         try (PreparedStatement statement = set.getStatement().getConnection().prepareStatement("SELECT * FROM user_window_settings WHERE user_id = ? LIMIT 1"))
@@ -188,6 +193,18 @@ public class HabboStats implements Runnable
                 }
             }
         }
+
+        try (PreparedStatement calendarRewardsStatement = set.getStatement().getConnection().prepareStatement("SELECT * FROM calendar_rewards_claimed WHERE user_id = ?"))
+        {
+            calendarRewardsStatement.setInt(1, this.habbo.getHabboInfo().getId());
+            try (ResultSet rewardSet = calendarRewardsStatement.executeQuery())
+            {
+                while (rewardSet.next())
+                {
+                    this.calendarRewardsClaimed.add(rewardSet.getInt("reward_id"));
+                }
+            }
+        }
     }
 
     @Override
@@ -195,7 +212,7 @@ public class HabboStats implements Runnable
     {
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
-            try (PreparedStatement statement = connection.prepareStatement("UPDATE users_settings SET achievement_score = ?, respects_received = ?, respects_given = ?, daily_respect_points = ?, block_following = ?, block_friendrequests = ?, online_time = online_time + ?, guild_id = ?, daily_pet_respect_points = ?, club_expire_timestamp = ?, login_streak = ?, rent_space_id = ?, rent_space_endtime = ?, volume_system = ?, volume_furni = ?, volume_trax = ?, block_roominvites = ?, old_chat = ?, block_camera_follow = ?, chat_color = ?, hof_points = ?, block_alerts = ?, talent_track_citizenship_level = ?, talent_track_helpers_level = ?, ignore_bots = ?, ignore_pets = ?, nux = ?, mute_end_timestamp = ? WHERE user_id = ? LIMIT 1"))
+            try (PreparedStatement statement = connection.prepareStatement("UPDATE users_settings SET achievement_score = ?, respects_received = ?, respects_given = ?, daily_respect_points = ?, block_following = ?, block_friendrequests = ?, online_time = online_time + ?, guild_id = ?, daily_pet_respect_points = ?, club_expire_timestamp = ?, login_streak = ?, rent_space_id = ?, rent_space_endtime = ?, volume_system = ?, volume_furni = ?, volume_trax = ?, block_roominvites = ?, old_chat = ?, block_camera_follow = ?, chat_color = ?, hof_points = ?, block_alerts = ?, talent_track_citizenship_level = ?, talent_track_helpers_level = ?, ignore_bots = ?, ignore_pets = ?, nux = ?, mute_end_timestamp = ?, allow_name_change = ? WHERE user_id = ? LIMIT 1"))
             {
                 statement.setInt(1, this.achievementScore);
                 statement.setInt(2, this.respectPointsReceived);
@@ -225,7 +242,8 @@ public class HabboStats implements Runnable
                 statement.setString(26, this.ignorePets ? "1" : "0");
                 statement.setString(27, this.nux ? "1" : "0");
                 statement.setInt(28, this.muteEndTime);
-                statement.setInt(29, this.habbo.getHabboInfo().getId());
+                statement.setString(29, this.allowNameChange ? "1" : "0");
+                statement.setInt(30, this.habbo.getHabboInfo().getId());
                 statement.executeUpdate();
             }
 

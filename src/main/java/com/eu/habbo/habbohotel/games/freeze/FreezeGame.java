@@ -118,7 +118,7 @@ public class FreezeGame extends Game
             if (item instanceof InteractionFreezeBlock || item instanceof InteractionFreezeScoreboard)
             {
                 item.setExtradata("0");
-                this.room.updateItem(item);
+                this.room.updateItemState(item);
             }
         }
     }
@@ -134,7 +134,7 @@ public class FreezeGame extends Game
                 continue;
 
             gate.setExtradata(Integer.valueOf(gate.getExtradata()) - 1 + "");
-            this.room.updateItem(gate);
+            this.room.updateItemState(gate);
             break;
         }
     }
@@ -213,7 +213,7 @@ public class FreezeGame extends Game
 
         block.setExtradata((powerUp + 1) * 1000 + "");
 
-        this.room.updateItem(block);
+        this.room.updateItemState(block);
     }
 
     public synchronized void givePowerUp(FreezeGamePlayer player, int powerUpId)
@@ -269,7 +269,7 @@ public class FreezeGame extends Game
         {
             InteractionFreezeExitTile tile = this.room.getRoomSpecialTypes().getRandomFreezeExitTile();
             tile.setExtradata("1");
-            this.room.updateItem(tile);
+            this.room.updateItemState(tile);
             this.room.teleportHabboToItem(player.getHabbo(), tile);
         }
         this.removeHabbo(player.getHabbo());
@@ -328,14 +328,14 @@ public class FreezeGame extends Game
                             continue;
 
                         scoreboard.setExtradata(totalScore + "");
-                        this.room.updateItem(scoreboard);
+                        this.room.updateItemState(scoreboard);
                     }
                 }
 
                 for (Map.Entry<Integer, InteractionFreezeTimer> set : this.room.getRoomSpecialTypes().getFreezeTimers().entrySet())
                 {
                     set.getValue().setExtradata(timeLeft + "");
-                    this.room.updateItem(set.getValue());
+                    this.room.updateItemState(set.getValue());
                 }
             } else
             {
@@ -399,7 +399,7 @@ public class FreezeGame extends Game
                 int amount = Math.min(teamMemberCount.get(set.getValue().teamColor), 5);
                 set.getValue().setExtradata(amount + "");
                 teamMemberCount.put(set.getValue().teamColor, teamMemberCount.get(set.getValue().teamColor) - amount);
-                this.room.updateItem(set.getValue());
+                this.room.updateItemState(set.getValue());
             }
         }
 
@@ -414,7 +414,7 @@ public class FreezeGame extends Game
             public boolean execute(InteractionFreezeExitTile object)
             {
                 object.setExtradata(state);
-                room.updateItem(object);
+                room.updateItemState(object);
                 return true;
             }
         });

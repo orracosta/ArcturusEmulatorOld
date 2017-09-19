@@ -48,7 +48,7 @@ public class InteractionGuildGate extends InteractionGuildFurni
         if(this.canWalkOn(roomUnit, room, objects))
         {
             this.setExtradata("1");
-            room.updateItem(this);
+            room.updateItemState(this);
         }
     }
 
@@ -64,6 +64,6 @@ public class InteractionGuildGate extends InteractionGuildFurni
     public void onMove(Room room, RoomTile oldLocation, RoomTile newLocation)
     {
         this.setExtradata("0");
-        room.updateItem(this);
+        room.updateItemState(this);
     }
 }

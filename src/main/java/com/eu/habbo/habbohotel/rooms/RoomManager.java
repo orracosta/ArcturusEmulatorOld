@@ -461,7 +461,7 @@ public class RoomManager
         THashSet<Room> roomsToDispose = new THashSet<Room>();
         for(Room room : this.activeRooms.values())
         {
-            if(!room.isPublicRoom() && !room.isStaffPromotedRoom() && !Emulator.getGameServer().getGameClientManager().containsHabbo(room.getOwnerId()) && !room.isLoaded())
+            if(!room.isPublicRoom() && !room.isStaffPromotedRoom() && !Emulator.getGameServer().getGameClientManager().containsHabbo(room.getOwnerId()) && room.isPreLoaded())
             {
                 roomsToDispose.add(room);
             }
@@ -504,7 +504,6 @@ public class RoomManager
 
     public void unloadRoom(Room room)
     {
-        this.activeRooms.remove(room.getId());
         room.dispose();
     }
 
@@ -685,14 +684,17 @@ public class RoomManager
             {
                 r.removeFromQueue(habbo);
             }
-
-            habbo.getHabboInfo().setRoomQueueId(0);
-            habbo.getClient().sendResponse(new HideDoorbellComposer(""));
         }
+        habbo.getHabboInfo().setRoomQueueId(0);
+        habbo.getClient().sendResponse(new HideDoorbellComposer(""));
 
         if (habbo.getRoomUnit() == null)
             habbo.setRoomUnit(new RoomUnit());
 
+        if (habbo.getRoomUnit().getCurrentLocation() == null)
+        {
+            habbo.getRoomUnit().setLocation(room.getLayout().getDoorTile());
+        }
         habbo.getRoomUnit().setRoomUnitType(RoomUnitType.USER);
         if(room.isBanned(habbo))
         {
@@ -1668,11 +1670,30 @@ public class RoomManager
         Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(userId);
         if (habbo != null)
         {
+            if (habbo.hasPermission("acc_unkickable"))
+            {
+                return;
+            }
+
             name = habbo.getHabboInfo().getUsername();
         }
         else
         {
-            name = HabboManager.getOfflineHabboInfo(userId).getUsername();
+            HabboInfo info = HabboManager.getOfflineHabboInfo(userId);
+
+            if (info != null)
+            {
+                if (info.getRank().hasPermission("acc_unkickable", false))
+                {
+                    return;
+                }
+                name = info.getUsername();
+            }
+        }
+
+        if (name.isEmpty())
+        {
+            return;
         }
 
         RoomBan roomBan = new RoomBan(roomId, userId, name, Emulator.getIntUnixTimestamp() + length.duration);

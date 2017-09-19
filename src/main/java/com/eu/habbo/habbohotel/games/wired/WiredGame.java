@@ -53,7 +53,7 @@ public class WiredGame extends Game
             for (Map.Entry<Integer, InteractionGameTimer> set : this.room.getRoomSpecialTypes().getGameTimers().entrySet())
             {
                 set.getValue().setExtradata(timeLeft + "");
-                this.room.updateItem(set.getValue());
+                this.room.updateItemState(set.getValue());
             }
         }
         else

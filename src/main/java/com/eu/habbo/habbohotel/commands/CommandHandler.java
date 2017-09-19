@@ -38,6 +38,7 @@ public class CommandHandler
         addCommand(new BanCommand());
         addCommand(new BlockAlertCommand());
         addCommand(new BotsCommand());
+        addCommand(new ChangeNameCommand());
         addCommand(new ChatTypeCommand());
         addCommand(new CommandsCommand());
         addCommand(new ConnectCameraCommand());

@@ -60,4 +60,10 @@ public class InteractionFireworks extends HabboItem
             AchievementManager.progressAchievement(client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("FireworksCharger"));
         }
     }
+
+    @Override
+    public boolean allowWiredResetState()
+    {
+        return true;
+    }
 }

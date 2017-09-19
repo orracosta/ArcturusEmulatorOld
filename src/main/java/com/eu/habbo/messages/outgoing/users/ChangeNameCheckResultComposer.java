@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ChangeNameCheckResultComposer extends MessageComposer
 {
-    public static final int AVAILABLE = 1;
+    public static final int AVAILABLE = 0;
     public static final int TOO_SHORT = 2;
     public static final int TOO_LONG = 3;
     public static final int NOT_VALID = 4;

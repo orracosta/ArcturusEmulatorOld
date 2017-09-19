@@ -66,7 +66,6 @@ public class Habbo implements Runnable
     void isOnline(boolean value)
     {
         this.habboInfo.setOnline(value);
-        this.habboInfo.setLastOnline(Emulator.getIntUnixTimestamp());
         this.update();
     }
 
@@ -161,17 +160,24 @@ public class Habbo implements Runnable
             }
             if (this.getHabboInfo().getRoomQueueId() > 0)
             {
-                Room room =  Emulator.getGameEnvironment().getRoomManager().getRoom(this.getHabboInfo().getRoomQueueId());
+                Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getHabboInfo().getRoomQueueId());
 
                 if (room != null)
                 {
                     room.removeFromQueue(this);
                 }
             }
+        }
+        catch (Exception e)
+        {
+            Emulator.getLogging().logErrorLine(e);
+        }
 
+        try
+        {
             Emulator.getGameEnvironment().getGuideManager().userLogsOut(this);
-            this.needsUpdate(true);
             this.isOnline(false);
+            this.needsUpdate(true);
             this.run();
             this.getInventory().dispose();
             this.messenger.connectionChanged(this, false, false);

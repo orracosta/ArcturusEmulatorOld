@@ -59,7 +59,7 @@ public class InteractionGate extends HabboItem
         this.setExtradata((Integer.valueOf(this.getExtradata()) + 1 ) % 2 + "");
         room.updateTile(room.getLayout().getTile(this.getX(), this.getY()));
         this.needsUpdate(true);
-        room.updateItem(this);
+        room.updateItemState(this);
     }
 
     public void onWalk(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
@@ -77,5 +77,11 @@ public class InteractionGate extends HabboItem
     public void onWalkOff(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
         super.onWalkOff(roomUnit, room, objects);
+    }
+
+    @Override
+    public boolean allowWiredResetState()
+    {
+        return true;
     }
 }
