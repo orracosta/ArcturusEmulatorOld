@@ -1,6 +1,6 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.triggers;
 
-import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.items.ICycleable;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
@@ -16,7 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WiredTriggerRepeaterLong extends InteractionWiredTrigger
+public class WiredTriggerRepeaterLong extends InteractionWiredTrigger implements ICycleable
 {
     private static final WiredTriggerType type = WiredTriggerType.PERIODICALLY_LONG;
     public static final int DEFAULT_DELAY = 20 * 5000;
@@ -134,4 +134,9 @@ public class WiredTriggerRepeaterLong extends InteractionWiredTrigger
         return true;
     }
 
+    @Override
+    public void cycle(Room room)
+    {
+        this.execute(null, room, new Object[]{});
+    }
 }

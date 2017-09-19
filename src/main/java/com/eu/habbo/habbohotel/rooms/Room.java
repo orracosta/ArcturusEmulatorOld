@@ -8,6 +8,7 @@ import com.eu.habbo.habbohotel.games.Game;
 import com.eu.habbo.habbohotel.guilds.Guild;
 import com.eu.habbo.habbohotel.guilds.GuildMember;
 import com.eu.habbo.habbohotel.items.FurnitureType;
+import com.eu.habbo.habbohotel.items.ICycleable;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.*;
 import com.eu.habbo.habbohotel.items.interactions.games.InteractionGameGate;
@@ -142,9 +143,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     private volatile boolean moveDiagonally;
 
     private final ConcurrentHashMap<Integer, Habbo> currentHabbos = new ConcurrentHashMap<>(3);
-    private final TIntObjectMap<Habbo>  habboQueue = TCollections.synchronizedMap(new TIntObjectHashMap<Habbo>());
-    private final TIntObjectMap<Bot>  currentBots = TCollections.synchronizedMap(new TIntObjectHashMap<Bot>());
-    private final TIntObjectMap<AbstractPet>  currentPets = TCollections.synchronizedMap(new TIntObjectHashMap<AbstractPet>());
+    private final TIntObjectMap<Habbo>  habboQueue = TCollections.synchronizedMap(new TIntObjectHashMap<Habbo>(0));
+    private final TIntObjectMap<Bot>  currentBots = TCollections.synchronizedMap(new TIntObjectHashMap<Bot>(0));
+    private final TIntObjectMap<AbstractPet>  currentPets = TCollections.synchronizedMap(new TIntObjectHashMap<AbstractPet>(0));
     private final THashSet<RoomTrade> activeTrades;
     private final TIntArrayList rights;
     private final TIntArrayList traxItems;
@@ -268,10 +269,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.preLoaded = true;
         this.allowBotsWalk = true;
         this.allowEffects = true;
-        this.furniOwnerNames = TCollections.synchronizedMap(new TIntObjectHashMap<String>());
-        this.furniOwnerCount = TCollections.synchronizedMap(new TIntIntHashMap());
-        this.roomItems = TCollections.synchronizedMap(new TIntObjectHashMap<HabboItem>());
-        this.wordFilterWords = new THashSet<String>();
+        this.furniOwnerNames = TCollections.synchronizedMap(new TIntObjectHashMap<String>(0));
+        this.furniOwnerCount = TCollections.synchronizedMap(new TIntIntHashMap(0));
+        this.roomItems = TCollections.synchronizedMap(new TIntObjectHashMap<HabboItem>(0));
+        this.wordFilterWords = new THashSet<String>(0);
         this.moodlightData = new TIntObjectHashMap<RoomMoodlightData>(defaultMoodData);
 
         for(String s : set.getString("moodlight_data").split(";"))
@@ -283,7 +284,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.mutedHabbos = new TIntIntHashMap();
         this.games = new ConcurrentSet<Game>();
 
-        this.activeTrades = new THashSet<RoomTrade>();
+        this.activeTrades = new THashSet<RoomTrade>(0);
         this.rights = new TIntArrayList();
         this.wiredHighscoreData = new THashMap<WiredHighscoreScoreType, THashMap<WiredHighscoreClearType, THashSet<WiredHighscoreData>>>();
         this.userVotes = new ArrayList<>();
@@ -1821,6 +1822,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                             }
                         }
                     }
+
+                    for (ICycleable task : this.roomSpecialTypes.getCycleTasks())
+                    {
+                        task.cycle(this);
+                    }
                 }
             }
             else
@@ -2611,6 +2617,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         //TODO: Move this list
         synchronized (this.roomSpecialTypes)
         {
+            if (item instanceof ICycleable)
+            {
+                this.roomSpecialTypes.addCycleTask((ICycleable)item);
+            }
+
             if (item instanceof InteractionWiredTrigger)
             {
                 this.roomSpecialTypes.addTrigger((InteractionWiredTrigger) item);
@@ -2781,6 +2792,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                             this.furniOwnerNames.remove(i.getUserId());
                         }
                     }
+                }
+
+                if (item instanceof ICycleable)
+                {
+                    this.roomSpecialTypes.removeCycleTask((ICycleable) item);
                 }
 
                 if (item instanceof InteractionBattleBanzaiTeleporter)

@@ -2,6 +2,7 @@ package com.eu.habbo.habbohotel.rooms;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.games.GameTeamColors;
+import com.eu.habbo.habbohotel.items.ICycleable;
 import com.eu.habbo.habbohotel.items.interactions.*;
 import com.eu.habbo.habbohotel.items.interactions.games.InteractionGameGate;
 import com.eu.habbo.habbohotel.items.interactions.games.InteractionGameScoreboard;
@@ -45,27 +46,29 @@ public class RoomSpecialTypes
 
     private final THashMap<Integer, InteractionFreezeExitTile> freezeExitTile;
     private final THashMap<Integer, HabboItem> undefined;
+    private final THashSet<ICycleable> cycleTasks;
 
     public RoomSpecialTypes()
     {
-        this.banzaiTeleporters = new THashMap<>();
-        this.nests = new THashMap<>();
-        this.petDrinks = new THashMap<>();
-        this.petFoods = new THashMap<>();
-        this.petToys = new THashMap<>();
-        this.rollers = new THashMap<>();
+        this.banzaiTeleporters = new THashMap<>(0);
+        this.nests = new THashMap<>(0);
+        this.petDrinks = new THashMap<>(0);
+        this.petFoods = new THashMap<>(0);
+        this.petToys = new THashMap<>(0);
+        this.rollers = new THashMap<>(0);
 
-        this.wiredTriggers = new THashMap<>();
-        this.wiredEffects = new THashMap<>();
-        this.wiredConditions = new THashMap<>();
-        this.wiredExtras = new THashMap<>();
+        this.wiredTriggers = new THashMap<>(0);
+        this.wiredEffects = new THashMap<>(0);
+        this.wiredConditions = new THashMap<>(0);
+        this.wiredExtras = new THashMap<>(0);
 
-        this.gameScoreboards = new THashMap<>();
-        this.gameGates = new THashMap<>();
-        this.gameTimers = new THashMap<>();
+        this.gameScoreboards = new THashMap<>(0);
+        this.gameGates = new THashMap<>(0);
+        this.gameTimers = new THashMap<>(0);
 
-        this.freezeExitTile = new THashMap<>();
-        this.undefined = new THashMap<>();
+        this.freezeExitTile = new THashMap<>(0);
+        this.undefined = new THashMap<>(0);
+        this.cycleTasks = new THashSet<>(0);
     }
 
     /*
@@ -892,6 +895,21 @@ public class RoomSpecialTypes
         return i;
     }
 
+    public THashSet<ICycleable> getCycleTasks()
+    {
+        return this.cycleTasks;
+    }
+
+    public void addCycleTask(ICycleable task)
+    {
+        this.cycleTasks.add(task);
+    }
+
+    public void removeCycleTask(ICycleable task)
+    {
+        this.cycleTasks.remove(task);
+    }
+
     public synchronized void dispose()
     {
         this.banzaiTeleporters.clear();
@@ -910,5 +928,6 @@ public class RoomSpecialTypes
 
         this.freezeExitTile.clear();
         this.undefined.clear();
+        this.cycleTasks.clear();
     }
 }
