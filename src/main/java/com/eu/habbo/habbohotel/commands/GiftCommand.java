@@ -90,7 +90,6 @@ public class GiftCommand extends Command
                     keys.put("message", Emulator.getTexts().getValue("generic.gift.received.anonymous"));
                     habbo.getClient().sendResponse(new BubbleAlertComposer(BubbleAlertKeys.RECEIVED_BADGE.key, keys));
                 }
-                
                 return true;
             }
             catch (Exception e)

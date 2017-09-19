@@ -41,3 +41,5 @@ ALTER TABLE  `users_recipes` ADD UNIQUE KEY (  `user_id`, `recipe` );
 
 DELETE FROM emulator_settings WHERE `key` LIKE 'hotel.max.bots.inventory';
 UPDATE  `emulator_settings` SET  `key` =  'hotel.inventory.max.items' WHERE  `emulator_settings`.`key` =  'inventory.max.items';
+INSERT INTO  `emulator_texts` (`key` , `value` ) VALUES
+('commands.error.cmd_credits.user_not_found',  'Could net send %amount% credits to %user%. %user% does not exist.');
