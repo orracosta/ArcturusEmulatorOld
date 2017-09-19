@@ -272,6 +272,11 @@ public class RoomLayout
             long startMillis = System.currentTimeMillis();
             while (true)
             {
+                if (System.currentTimeMillis() - startMillis > 25)
+                {
+                    return new LinkedList<>();
+                }
+
                 RoomTile current = lowestFInOpen(openList);
                 closedList.add(current);
                 openList.remove(current);

@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
@@ -21,14 +22,11 @@ public class WiredTriggerRepeaterLong extends InteractionWiredTrigger implements
     private static final WiredTriggerType type = WiredTriggerType.PERIODICALLY_LONG;
     public static final int DEFAULT_DELAY = 20 * 5000;
     private int repeatTime = DEFAULT_DELAY;
+    private int counter = 0;
 
     public WiredTriggerRepeaterLong(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
-
-        if(this.getRoomId() != 0)
-        {
-        }
     }
 
     public WiredTriggerRepeaterLong(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
@@ -39,13 +37,7 @@ public class WiredTriggerRepeaterLong extends InteractionWiredTrigger implements
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
-        if(this.getRoomId() != 0 && room.isLoaded())
-        {
-
-            if(room.isLoaded())
-                return true;
-        }
-        return false;
+        return true;
     }
 
     @Override
@@ -65,10 +57,6 @@ public class WiredTriggerRepeaterLong extends InteractionWiredTrigger implements
         if(this.repeatTime < 5000)
         {
             this.repeatTime = 20 * 5000;
-        }
-
-        if(this.getRoomId() != 0)
-        {
         }
     }
 
@@ -131,12 +119,25 @@ public class WiredTriggerRepeaterLong extends InteractionWiredTrigger implements
         packet.readInt();
 
         this.repeatTime = packet.readInt() * 5000;
+        this.counter = 0;
         return true;
     }
+
 
     @Override
     public void cycle(Room room)
     {
-        this.execute(null, room, new Object[]{});
+        this.counter += 500;
+        if (this.counter >= this.repeatTime)
+        {
+            this.counter = 0;
+            if (this.getRoomId() != 0)
+            {
+                if (room.isLoaded())
+                {
+                    WiredHandler.handle(this, null, room, new Object[]{this});
+                }
+            }
+        }
     }
 }

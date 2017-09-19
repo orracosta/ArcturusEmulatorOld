@@ -38,19 +38,7 @@ public class WiredTriggerRepeater extends InteractionWiredTrigger implements ICy
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
-        this.counter += 500;
-        if (this.counter == this.repeatTime)
-        {
-            if (this.getRoomId() != 0)
-            {
-                if (room.isLoaded())
-                {
-                    WiredHandler.handle(this, null, room, stuff);
-                }
-            }
-            this.counter = 0;
-        }
-        return false;
+        return true;
     }
 
     @Override
@@ -146,6 +134,17 @@ public class WiredTriggerRepeater extends InteractionWiredTrigger implements ICy
     @Override
     public void cycle(Room room)
     {
-        this.execute(null, room, new Object[]{});
+        this.counter += 500;
+        if (this.counter >= this.repeatTime)
+        {
+            this.counter = 0;
+            if (this.getRoomId() != 0)
+            {
+                if (room.isLoaded())
+                {
+                    WiredHandler.handle(this, null, room, new Object[]{this});
+                }
+            }
+        }
     }
 }

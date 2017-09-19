@@ -3902,21 +3902,25 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         HabboItem lowestChair = null;
 
-        for(HabboItem item : this.getItemsAt(tile))
+        THashSet<HabboItem> items = this.getItemsAt(tile);
+        if (items != null && !items.isEmpty())
         {
-            if(item.getBaseItem().allowSit())
+            for (HabboItem item : items)
             {
-                if(lowestChair == null || item.getZ() < lowestChair.getZ())
+                if (item.getBaseItem().allowSit())
                 {
-                    lowestChair = item;
+                    if (lowestChair == null || item.getZ() < lowestChair.getZ())
+                    {
+                        lowestChair = item;
+                    }
                 }
-            }
 
-            if(lowestChair != null)
-            {
-                if(item.getZ() > lowestChair.getZ() && item.getZ() - lowestChair.getZ() < 1.5)
+                if (lowestChair != null)
                 {
-                    lowestChair = null;
+                    if (item.getZ() > lowestChair.getZ() && item.getZ() - lowestChair.getZ() < 1.5)
+                    {
+                        lowestChair = null;
+                    }
                 }
             }
         }

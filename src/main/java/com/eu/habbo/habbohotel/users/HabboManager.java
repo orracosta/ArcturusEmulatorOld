@@ -332,6 +332,28 @@ public class HabboManager
         }
     }
 
+    public void giveCredits(int userId, int credits)
+    {
+        Habbo habbo = this.getHabbo(userId);
+        if (habbo != null)
+        {
+            habbo.giveCredits(credits);
+        }
+        else
+        {
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement= connection.prepareStatement("UPDATE users SET credits = credits + ? WHERE id = ? LIMIT 1"))
+            {
+                statement.setInt(1, credits);
+                statement.setInt(2, userId);
+                statement.execute();
+            }
+            catch (SQLException e)
+            {
+                Emulator.getLogging().logSQLException(e);
+            }
+        }
+    }
+
     public void staffAlert(String message)
     {
         message = Emulator.getTexts().getValue("commands.generic.cmd_staffalert.title") + "\r\n" + message;
