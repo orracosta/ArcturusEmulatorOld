@@ -6,7 +6,9 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.habbohotel.users.HabboInfo;
 import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.habbohotel.users.HabboManager;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
 import com.eu.habbo.messages.outgoing.generic.alerts.WiredRewardAlertComposer;
@@ -45,9 +47,9 @@ public class GiftCommand extends Command
                     return true;
                 }
 
-                Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(username);
+                HabboInfo habboInfo = HabboManager.getOfflineHabboInfo(username);
 
-                if(habbo == null)
+                if(habboInfo == null)
                 {
                     gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_gift.user_not_found").replace("%username%", username), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
                     return true;
@@ -72,17 +74,23 @@ public class GiftCommand extends Command
                 String extraData = "1\t" + item.getId();
                 extraData += "\t0\t0\t0\t"+ finalMessage +"\t0\t0";
 
-                Emulator.getGameEnvironment().getItemManager().createGift(habbo.getHabboInfo().getUsername(), giftItem, extraData, 0, 0);
+                Emulator.getGameEnvironment().getItemManager().createGift(username, giftItem, extraData, 0, 0);
 
                 gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_gift").replace("%username%", username).replace("%itemname%", item.getBaseItem().getName()), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
-                habbo.getClient().sendResponse(new InventoryRefreshComposer());
 
-                THashMap<String, String> keys = new THashMap<String, String>();
-                keys.put("display", "BUBBLE");
-                keys.put("image", "${image.library.url}notifications/gift.gif");
-                keys.put("message", Emulator.getTexts().getValue("generic.gift.received.anonymous"));
-                habbo.getClient().sendResponse(new BubbleAlertComposer(BubbleAlertKeys.RECEIVED_BADGE.key, keys));
+                Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(habboInfo.getId());
 
+                if (habbo != null)
+                {
+                    habbo.getClient().sendResponse(new InventoryRefreshComposer());
+
+                    THashMap<String, String> keys = new THashMap<String, String>();
+                    keys.put("display", "BUBBLE");
+                    keys.put("image", "${image.library.url}notifications/gift.gif");
+                    keys.put("message", Emulator.getTexts().getValue("generic.gift.received.anonymous"));
+                    habbo.getClient().sendResponse(new BubbleAlertComposer(BubbleAlertKeys.RECEIVED_BADGE.key, keys));
+                }
+                
                 return true;
             }
             catch (Exception e)
