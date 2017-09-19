@@ -29,7 +29,7 @@ public class CameraClient
         bootstrap.group(eventLoopGroup);
         bootstrap.channel(NioSocketChannel.class);
         bootstrap.option(ChannelOption.TCP_NODELAY, true);
-        bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
+        bootstrap.option(ChannelOption.SO_KEEPALIVE, false);
         bootstrap.handler(new ChannelInitializer<SocketChannel>()
         {
             @Override
@@ -87,6 +87,8 @@ public class CameraClient
 
         channel = null;
         isLoggedIn = false;
+
+        System.out.println("[" + Logging.ANSI_GREEN + "CAMERA" + Logging.ANSI_RESET + "] Disconnected from the camera server.");
     }
 
     public void sendMessage(CameraOutgoingMessage outgoingMessage)

@@ -11,7 +11,7 @@ public class CameraClientAutoReconnect implements Runnable
     {
         if (CameraClient.attemptReconnect && !Emulator.isShuttingDown)
         {
-            if (!(CameraClient.channelFuture != null && CameraClient.channelFuture.channel().isActive()))
+            if (!(CameraClient.channelFuture != null && CameraClient.channelFuture.channel().isRegistered()))
             {
                 System.out.println("[" + Logging.ANSI_YELLOW + "CAMERA" + Logging.ANSI_RESET + "] Attempting to connect to the Camera server.");
                 if (Emulator.getCameraClient() != null)
