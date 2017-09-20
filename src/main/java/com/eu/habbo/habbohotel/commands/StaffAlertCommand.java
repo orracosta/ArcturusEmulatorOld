@@ -29,6 +29,7 @@ public class StaffAlertCommand extends Command
             }
 
             Emulator.getGameEnvironment().getHabboManager().staffAlert(message + "\r\n-" + gameClient.getHabbo().getHabboInfo().getUsername());
+            Emulator.getGameServer().getGameClientManager().sendBroadcastResponse(new FriendChatMessageComposer(new Message(gameClient.getHabbo().getHabboInfo().getId(), -1, message)).compose(), "acc_staff_chat", gameClient);
         }
         else
         {

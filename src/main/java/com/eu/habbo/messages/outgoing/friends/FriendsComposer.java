@@ -61,7 +61,7 @@ public class FriendsComposer extends MessageComposer
                 this.response.appendString("");
                 this.response.appendString("");
                 this.response.appendString("");
-                this.response.appendBoolean(false); //Offline messaging.
+                this.response.appendBoolean(true); //Offline messaging.
                 this.response.appendBoolean(false);
                 this.response.appendBoolean(false);
                 this.response.appendShort(0);
