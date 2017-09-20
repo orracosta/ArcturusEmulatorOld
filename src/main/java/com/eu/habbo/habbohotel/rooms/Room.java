@@ -51,7 +51,6 @@ import com.eu.habbo.plugin.events.users.UserRolledEvent;
 import com.eu.habbo.threading.runnables.YouAreAPirate;
 import gnu.trove.TCollections;
 import gnu.trove.iterator.TIntObjectIterator;
-import gnu.trove.iterator.hash.TObjectHashIterator;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.TIntObjectMap;
@@ -166,7 +165,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     private volatile int idleCycles;
     private volatile int unitCounter;
     private volatile int rollerSpeed;
-    private volatile long lastRollerCycle = System.currentTimeMillis();
+    private volatile long rollerCycle = System.currentTimeMillis();
     private volatile int lastTimerReset = Emulator.getIntUnixTimestamp();
     private volatile boolean muted;
 
@@ -599,15 +598,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public void updateTiles(THashSet<RoomTile> tiles)
     {
-        synchronized (this.tileCache)
-        {
-            for (RoomTile tile : tiles)
-            {
-                this.tileCache.remove(tile);
-            }
-        }
         for (RoomTile tile : tiles)
         {
+            this.tileCache.remove(tile);
             tile.setStackHeight(this.getStackHeight(tile.x, tile.y, false));
             tile.setWalkable(this.canWalkAt(tile));
         }
@@ -1268,6 +1261,194 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 final Room room = this;
 
                 final long millis = System.currentTimeMillis();
+                if(this.rollerSpeed != -1 && this.rollerCycle >= this.rollerSpeed)
+                {
+                    this.rollerCycle = 0;
+
+                    THashSet<MessageComposer> messages = new THashSet<MessageComposer>();
+
+                    this.roomSpecialTypes.getRollers().forEachValue(new TObjectProcedure<InteractionRoller>()
+                    {
+                        @Override
+                        public boolean execute(InteractionRoller roller)
+                        {
+                            //if(Double.compare(roller.getZ(), this.layout.getHeightAtSquare(roller.getX(), roller.getY())) != 0)
+                            // {
+                            //    continue;
+                            //}
+
+                            HabboItem newRoller = null;
+
+                            THashSet<Habbo> habbosOnRoller = getHabbosAt(roller.getX(), roller.getY());
+                            THashSet<HabboItem> itemsOnRoller = getItemsAt(roller.getX(), roller.getY(), roller.getZ() + roller.getBaseItem().getHeight());
+
+                            itemsOnRoller.remove(roller);
+
+                            if (habbosOnRoller.isEmpty())
+                            {
+                                if (itemsOnRoller.isEmpty())
+                                    return true;
+                            }
+
+                            RoomTile roomTile = layout.getTileInFront(layout.getTile(roller.getX(), roller.getY()), roller.getRotation());
+
+                            if (roomTile == null)
+                                return true;
+
+                            if(!layout.tileExists(roomTile.x, roomTile.y))
+                                return true;
+
+                            if (roomTile.state == RoomTileState.BLOCKED)
+                                return true;
+
+                            if (!getHabbosAt(roomTile.x, roomTile.y).isEmpty())
+                                return true;
+
+                            THashSet<HabboItem> itemsNewTile = getItemsAt(roomTile.x, roomTile.y);
+                            itemsNewTile.removeAll(itemsOnRoller);
+                            List<HabboItem> toRemove = new ArrayList<HabboItem>();
+                            for (HabboItem item : itemsOnRoller)
+                            {
+                                if (item.getX() != roller.getX() || item.getY() != roller.getY())
+                                {
+                                    toRemove.add(item);
+                                }
+                            }
+                            itemsOnRoller.removeAll(toRemove);
+                            HabboItem topItem = getTopItemAt(roomTile.x, roomTile.y);
+
+                            boolean allowUsers = true;
+                            boolean allowFurniture = true;
+                            boolean stackContainsRoller = false;
+
+                            for (HabboItem item : itemsNewTile)
+                            {
+                                if (!(item.getBaseItem().allowWalk() || item.getBaseItem().allowSit()) && !(item instanceof InteractionGate))
+                                {
+                                    allowUsers = false;
+                                }
+                                if (item instanceof InteractionRoller)
+                                {
+                                    newRoller = item;
+                                    stackContainsRoller = true;
+
+                                    if (itemsNewTile.size() > 1 && item != topItem)
+                                    {
+                                        allowUsers = false;
+                                        allowFurniture = false;
+                                        continue;
+                                    }
+
+                                    break;
+                                }
+                                else
+                                {
+                                    allowFurniture = false;
+                                }
+                            }
+
+                            double zOffset = 0;
+                            if(newRoller == null)
+                            {
+                                zOffset = -roller.getBaseItem().getHeight();
+                            }
+
+                            if (allowFurniture || (!allowFurniture && !stackContainsRoller))
+                            {
+                                /**
+                                 * Redneck way to prevent checking ifregistered each time.
+                                 */
+                                Event furnitureRolledEvent = null;
+
+                                if (Emulator.getPluginManager().isRegistered(FurnitureRolledEvent.class, true))
+                                {
+                                    furnitureRolledEvent = new FurnitureRolledEvent(null, null, null);
+                                }
+
+                                //if (newRoller == null || topItem == newRoller)
+                                {
+                                    for (HabboItem item : itemsOnRoller)
+                                    {
+                                        //if (item.getX() == roller.getX() && item.getY() == roller.getY())
+                                        {
+                                            if (furnitureRolledEvent != null)
+                                            {
+                                                furnitureRolledEvent = new FurnitureRolledEvent(item, roller, roomTile);
+                                                Emulator.getPluginManager().fireEvent(furnitureRolledEvent);
+
+                                                if (furnitureRolledEvent.isCancelled())
+                                                    continue;
+                                            }
+
+                                            if (item != roller)
+                                                messages.add(new FloorItemOnRollerComposer(item, roller, roomTile, zOffset, room));
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (allowUsers)
+                            {
+                                Event roomUserRolledEvent = null;
+
+                                if(Emulator.getPluginManager().isRegistered(UserRolledEvent.class, true))
+                                {
+                                    roomUserRolledEvent = new UserRolledEvent(null, null, null);
+                                }
+
+                                for (Habbo habbo : habbosOnRoller)
+                                {
+                                    if (stackContainsRoller && !allowFurniture && !(topItem != null && topItem.isWalkable()))
+                                        continue;
+
+                                    if (!habbo.getRoomUnit().getStatus().containsKey("mv"))
+                                    {
+                                        RoomTile tile = roomTile.copy();
+                                        tile.setStackHeight(habbo.getRoomUnit().getZ() + zOffset);
+                                        if(roomUserRolledEvent != null)
+                                        {
+                                            roomUserRolledEvent = new UserRolledEvent(habbo, roller, tile);
+                                            Emulator.getPluginManager().fireEvent(roomUserRolledEvent);
+
+                                            if(roomUserRolledEvent.isCancelled())
+                                                continue;
+                                        }
+
+                                        messages.add(new RoomUnitOnRollerComposer(habbo.getRoomUnit(), roller, tile, room));
+                                    }
+
+                                    if(habbo.getRoomUnit().getStatus().containsKey("sit"))
+                                        habbo.getRoomUnit().sitUpdate = true;
+                                }
+                            }
+
+                            return true;
+                        }
+                    });
+
+                    for (MessageComposer message : messages)
+                    {
+                        this.sendComposer(message.compose());
+                    }
+
+                    for(HabboItem pyramid : this.roomSpecialTypes.getItemsOfType(InteractionPyramid.class))
+                    {
+                        if(pyramid instanceof InteractionPyramid)
+                        {
+                            int currentTime = Emulator.getIntUnixTimestamp();
+
+                            if(((InteractionPyramid) pyramid).getNextChange() < currentTime)
+                            {
+                                ((InteractionPyramid) pyramid).change(this);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    this.rollerCycle++;
+                }
+
                 for (Habbo habbo : this.currentHabbos.values())
                 {
                     if (!foundRightHolder[0])
@@ -1640,193 +1821,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     this.sendComposer(new RoomUserStatusComposer(updatedUnit, true).compose());
                 }
 
-                if(this.rollerSpeed != -1 && ((System.currentTimeMillis() - this.lastRollerCycle) / 500)  > this.rollerSpeed)
+                //Schrödingers wireds...?
+                for (ICycleable task : this.roomSpecialTypes.getCycleTasks())
                 {
-                    this.lastRollerCycle = System.currentTimeMillis();
-
-                    THashSet<MessageComposer> messages = new THashSet<MessageComposer>();
-
-                    this.roomSpecialTypes.getRollers().forEachValue(new TObjectProcedure<InteractionRoller>()
-                    {
-                        @Override
-                        public boolean execute(InteractionRoller roller)
-                        {
-                            //if(Double.compare(roller.getZ(), this.layout.getHeightAtSquare(roller.getX(), roller.getY())) != 0)
-                            // {
-                            //    continue;
-                            //}
-
-                            HabboItem newRoller = null;
-
-                            THashSet<Habbo> habbosOnRoller = getHabbosAt(roller.getX(), roller.getY());
-                            THashSet<HabboItem> itemsOnRoller = getItemsAt(roller.getX(), roller.getY(), roller.getZ() + roller.getBaseItem().getHeight());
-
-                            itemsOnRoller.remove(roller);
-
-                            if (habbosOnRoller.isEmpty())
-                            {
-                                if (itemsOnRoller.isEmpty())
-                                    return true;
-                            }
-
-                            RoomTile roomTile = layout.getTileInFront(layout.getTile(roller.getX(), roller.getY()), roller.getRotation());
-
-                            if (roomTile == null)
-                                return true;
-
-                            if(!layout.tileExists(roomTile.x, roomTile.y))
-                                return true;
-
-                            if (roomTile.state == RoomTileState.BLOCKED)
-                                return true;
-
-                            if (!getHabbosAt(roomTile.x, roomTile.y).isEmpty())
-                                return true;
-
-                            THashSet<HabboItem> itemsNewTile = getItemsAt(roomTile.x, roomTile.y);
-                            itemsNewTile.removeAll(itemsOnRoller);
-                            List<HabboItem> toRemove = new ArrayList<HabboItem>();
-                            for (HabboItem item : itemsOnRoller)
-                            {
-                                if (item.getX() != roller.getX() || item.getY() != roller.getY())
-                                {
-                                    toRemove.add(item);
-                                }
-                            }
-                            itemsOnRoller.removeAll(toRemove);
-                            HabboItem topItem = getTopItemAt(roomTile.x, roomTile.y);
-
-                            boolean allowUsers = true;
-                            boolean allowFurniture = true;
-                            boolean stackContainsRoller = false;
-
-                            for (HabboItem item : itemsNewTile)
-                            {
-                                if (!(item.getBaseItem().allowWalk() || item.getBaseItem().allowSit()) && !(item instanceof InteractionGate))
-                                {
-                                    allowUsers = false;
-                                }
-                                if (item instanceof InteractionRoller)
-                                {
-                                    newRoller = item;
-                                    stackContainsRoller = true;
-
-                                    if (itemsNewTile.size() > 1 && item != topItem)
-                                    {
-                                        allowUsers = false;
-                                        allowFurniture = false;
-                                        continue;
-                                    }
-
-                                    break;
-                                }
-                                else
-                                {
-                                    allowFurniture = false;
-                                }
-                            }
-
-                            double zOffset = 0;
-                            if(newRoller == null)
-                            {
-                                zOffset = -roller.getBaseItem().getHeight();
-                            }
-
-                            if (allowFurniture || (!allowFurniture && !stackContainsRoller))
-                            {
-                                /**
-                                 * Redneck way to prevent checking ifregistered each time.
-                                 */
-                                Event furnitureRolledEvent = null;
-
-                                if (Emulator.getPluginManager().isRegistered(FurnitureRolledEvent.class, true))
-                                {
-                                    furnitureRolledEvent = new FurnitureRolledEvent(null, null, null);
-                                }
-
-                                //if (newRoller == null || topItem == newRoller)
-                                {
-                                    for (HabboItem item : itemsOnRoller)
-                                    {
-                                        //if (item.getX() == roller.getX() && item.getY() == roller.getY())
-                                        {
-                                            if (furnitureRolledEvent != null)
-                                            {
-                                                furnitureRolledEvent = new FurnitureRolledEvent(item, roller, roomTile);
-                                                Emulator.getPluginManager().fireEvent(furnitureRolledEvent);
-
-                                                if (furnitureRolledEvent.isCancelled())
-                                                    continue;
-                                            }
-
-                                            if (item != roller)
-                                                messages.add(new FloorItemOnRollerComposer(item, roller, roomTile, zOffset, room));
-                                        }
-                                    }
-                                }
-                            }
-
-                            if (allowUsers)
-                            {
-                                Event roomUserRolledEvent = null;
-
-                                if(Emulator.getPluginManager().isRegistered(UserRolledEvent.class, true))
-                                {
-                                    roomUserRolledEvent = new UserRolledEvent(null, null, null);
-                                }
-
-                                for (Habbo habbo : habbosOnRoller)
-                                {
-                                    if (stackContainsRoller && !allowFurniture && !(topItem != null && topItem.isWalkable()))
-                                        continue;
-
-                                    if (!habbo.getRoomUnit().getStatus().containsKey("mv"))
-                                    {
-                                        RoomTile tile = roomTile.copy();
-                                        tile.setStackHeight(habbo.getRoomUnit().getZ() + zOffset);
-                                        if(roomUserRolledEvent != null)
-                                        {
-                                            roomUserRolledEvent = new UserRolledEvent(habbo, roller, tile);
-                                            Emulator.getPluginManager().fireEvent(roomUserRolledEvent);
-
-                                            if(roomUserRolledEvent.isCancelled())
-                                                continue;
-                                        }
-
-                                        messages.add(new RoomUnitOnRollerComposer(habbo.getRoomUnit(), roller, tile, room));
-                                    }
-
-                                    if(habbo.getRoomUnit().getStatus().containsKey("sit"))
-                                        habbo.getRoomUnit().sitUpdate = true;
-                                }
-                            }
-
-                            return true;
-                        }
-                    });
-
-                    for (MessageComposer message : messages)
-                    {
-                        this.sendComposer(message.compose());
-                    }
-
-                    for(HabboItem pyramid : this.roomSpecialTypes.getItemsOfType(InteractionPyramid.class))
-                    {
-                        if(pyramid instanceof InteractionPyramid)
-                        {
-                            int currentTime = Emulator.getIntUnixTimestamp();
-
-                            if(((InteractionPyramid) pyramid).getNextChange() < currentTime)
-                            {
-                                ((InteractionPyramid) pyramid).change(this);
-                            }
-                        }
-                    }
-
-                    for (ICycleable task : this.roomSpecialTypes.getCycleTasks())
-                    {
-                        task.cycle(this);
-                    }
+                    task.cycle(this);
                 }
             }
             else
@@ -2410,6 +2408,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public void setRollerSpeed(int rollerSpeed)
     {
         this.rollerSpeed = rollerSpeed;
+        this.rollerCycle = 0;
         this.needsUpdate = true;
     }
 

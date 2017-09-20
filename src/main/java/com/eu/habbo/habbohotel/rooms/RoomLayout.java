@@ -281,12 +281,13 @@ public class RoomLayout
                 closedList.add(current);
                 openList.remove(current);
 
+                List<RoomTile> adjacentNodes = getAdjacent(openList, current, newTile.x, newTile.y);
+
                 if ((current.x == newTile.x) && (current.y == newTile.y))
                 {
                     return calcPath(findTile(openList, (short)oldTile.x, (short)oldTile.y), current);
                 }
 
-                List<RoomTile> adjacentNodes = getAdjacent(openList, current, newTile.x, newTile.y);
                 for (RoomTile currentAdj : adjacentNodes)
                 {
                     if (!currentAdj.isWalkable() && !(currentAdj.equals(newTile) && room.canSitOrLayAt(currentAdj.x, currentAdj.y))){ closedList.add(currentAdj); openList.remove(currentAdj); continue;}

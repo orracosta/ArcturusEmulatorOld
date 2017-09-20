@@ -202,15 +202,6 @@ public class RoomUnit
 
             HabboItem item = room.getTopItemAt(next.x, next.y);
 
-            boolean canSitNextTile = room.canSitAt(next.x, next.y);
-
-            if (canSitNextTile)
-            {
-                HabboItem lowestChair = room.getLowestChair(next);
-
-                if (lowestChair != null)
-                    item = lowestChair;
-            }
 
             //if(!(this.path.size() == 0 && canSitNextTile))
             {
@@ -222,13 +213,25 @@ public class RoomUnit
                     if (!this.path.isEmpty())
                     {
                         next = this.path.pop();
+                        item = room.getTopItemAt(next.x, next.y);
                     }
                     else
                     {
-                        return true;
+                        this.status.remove("mv");
+                        return false;
                     }
 
                 }
+            }
+
+            boolean canSitNextTile = room.canSitAt(next.x, next.y);
+
+            if (canSitNextTile)
+            {
+                HabboItem lowestChair = room.getLowestChair(next);
+
+                if (lowestChair != null)
+                    item = lowestChair;
             }
 
             double zHeight = 0.0D;
