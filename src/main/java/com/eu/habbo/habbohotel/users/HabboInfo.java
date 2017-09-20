@@ -70,6 +70,12 @@ public class HabboInfo implements Runnable
             this.ipRegister = set.getString("ip_register");
             this.ipLogin = set.getString("ip_current");
             this.rank = Emulator.getGameEnvironment().getPermissionsManager().getRank(set.getInt("rank"));
+
+            if (this.rank == null)
+            {
+                Emulator.getLogging().logErrorLine("No existing rank found with id " + set.getInt("rank") + ". Make sure an entry in the permissions table exists.");
+            }
+            
             this.accountCreated = set.getInt("account_created");
             this.credits = set.getInt("credits");
             this.homeRoom = set.getInt("home_room");
