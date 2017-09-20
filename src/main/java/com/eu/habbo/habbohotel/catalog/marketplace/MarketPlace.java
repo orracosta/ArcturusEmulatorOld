@@ -11,6 +11,9 @@ import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.inventory.RemoveHabboItemComposer;
 import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
+import com.eu.habbo.plugin.events.marketplace.MarketPlaceItemCancelledEvent;
+import com.eu.habbo.plugin.events.marketplace.MarketPlaceItemOfferedEvent;
+import com.eu.habbo.plugin.events.marketplace.MarketPlaceItemSoldEvent;
 import gnu.trove.set.hash.THashSet;
 
 import java.sql.Connection;
@@ -28,6 +31,9 @@ public class MarketPlace
 {
     //Configuration. Loaded from database & updated accordingly.
     public static boolean MARKETPLACE_ENABLED = true;
+
+    //Currency to use.
+    public static int MARKETPLACE_CURRENCY = 0;
 
     /**
      * @param habbo The Habbo to lookup items for.
@@ -64,7 +70,10 @@ public class MarketPlace
     {
         MarketPlaceOffer offer = habbo.getInventory().getOffer(offerId);
 
-        takeBackItem(habbo, offer);
+        if (!Emulator.getPluginManager().fireEvent(new MarketPlaceItemCancelledEvent(offer)).isCancelled())
+        {
+            takeBackItem(habbo, offer);
+        }
     }
 
     /**
@@ -207,9 +216,9 @@ public class MarketPlace
         {
             statement.setInt(1, itemId);
 
-            message.appendInt(avarageLastXDays(itemId, 7));//idk
-            message.appendInt(itemsOnSale(itemId)); //offcount to do!
-            message.appendInt(30); //days.
+            message.appendInt(avarageLastXDays(itemId, 7));
+            message.appendInt(itemsOnSale(itemId));
+            message.appendInt(30);
 
             try (ResultSet set = statement.executeQuery())
             {
@@ -283,7 +292,7 @@ public class MarketPlace
             Emulator.getLogging().logSQLException(e);
         }
 
-        return avg;
+        return calculateCommision(avg);
     }
 
     /**
@@ -316,7 +325,7 @@ public class MarketPlace
                                     {
                                         sendErrorMessage(client, set.getInt("item_id"), offerId);
                                     }
-                                    else if (price > client.getHabbo().getHabboInfo().getCredits())
+                                    else if ((MARKETPLACE_CURRENCY == 0 && price > client.getHabbo().getHabboInfo().getCredits()) || (MARKETPLACE_CURRENCY > 0 && price > client.getHabbo().getHabboInfo().getCurrencyAmount(MARKETPLACE_CURRENCY)))
                                     {
                                         client.sendResponse(new MarketplaceBuyErrorComposer(MarketplaceBuyErrorComposer.NOT_ENOUGH_CREDITS, 0, offerId, price));
                                     }
@@ -327,20 +336,36 @@ public class MarketPlace
                                             updateOffer.setInt(1, offerId);
                                             updateOffer.execute();
                                         }
-
+                                        Habbo habbo = Emulator.getGameServer().getGameClientManager().getHabbo(set.getInt("user_id"));
                                         HabboItem item = Emulator.getGameEnvironment().getItemManager().loadHabboItem(itemSet);
+
+                                        MarketPlaceItemSoldEvent event = new MarketPlaceItemSoldEvent(habbo, client.getHabbo(), item, set.getInt("price"));
+                                        if (Emulator.getPluginManager().fireEvent(event).isCancelled())
+                                        {
+                                            return;
+                                        }
+                                        event.price = calculateCommision(event.price);
+
                                         item.setUserId(client.getHabbo().getHabboInfo().getId());
                                         item.needsUpdate(true);
                                         Emulator.getThreading().run(item);
 
                                         client.getHabbo().getInventory().getItemsComponent().addItem(item);
-                                        client.getHabbo().getHabboInfo().addCredits(-price);
+
+                                        if (MARKETPLACE_CURRENCY == 0)
+                                        {
+                                            client.getHabbo().getHabboInfo().addCredits(-event.price);
+                                        }
+                                        else
+                                        {
+                                            client.getHabbo().givePoints(MARKETPLACE_CURRENCY, -event.price);
+                                        }
+
                                         client.sendResponse(new UserCreditsComposer(client.getHabbo()));
                                         client.sendResponse(new AddHabboItemComposer(item));
                                         client.sendResponse(new InventoryRefreshComposer());
                                         client.sendResponse(new MarketplaceBuyErrorComposer(MarketplaceBuyErrorComposer.REFRESH, 0, offerId, price));
 
-                                        Habbo habbo = Emulator.getGameServer().getGameClientManager().getHabbo(set.getInt("user_id"));
                                         if (habbo != null)
                                         {
                                             habbo.getInventory().getOffer(offerId).setState(MarketPlaceState.SOLD);
@@ -410,16 +435,22 @@ public class MarketPlace
         if (!item.getBaseItem().allowMarketplace() || price < 0)
             return false;
 
+        MarketPlaceItemOfferedEvent event = new MarketPlaceItemOfferedEvent(client.getHabbo(), item, price);
+        if (Emulator.getPluginManager().fireEvent(event).isCancelled())
+        {
+            return false;
+        }
+
         try
         {
-            MarketPlaceOffer offer = new MarketPlaceOffer(item, price, client.getHabbo());
+            MarketPlaceOffer offer = new MarketPlaceOffer(event.item, event.price, client.getHabbo());
 
             if(offer != null)
             {
                 client.getHabbo().getInventory().addMarketplaceOffer(offer);
 
-                client.getHabbo().getInventory().getItemsComponent().removeHabboItem(item);
-                client.sendResponse(new RemoveHabboItemComposer(item.getId()));
+                client.getHabbo().getInventory().getItemsComponent().removeHabboItem(event.item);
+                client.sendResponse(new RemoveHabboItemComposer(event.item.getId()));
                 client.sendResponse(new InventoryRefreshComposer());
                 item.setUserId(-1);
                 item.needsUpdate(true);
@@ -458,7 +489,15 @@ public class MarketPlace
         }
 
         offers.clear();
-        client.getHabbo().getHabboInfo().addCredits(credits);
+
+        if (MARKETPLACE_CURRENCY == 0)
+        {
+            client.getHabbo().getHabboInfo().addCredits(credits);
+        }
+        else
+        {
+            client.getHabbo().givePoints(MARKETPLACE_CURRENCY, credits);
+        }
         client.sendResponse(new UserCreditsComposer(client.getHabbo()));
     }
 

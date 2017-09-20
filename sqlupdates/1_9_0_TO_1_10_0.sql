@@ -43,3 +43,5 @@ DELETE FROM emulator_settings WHERE `key` LIKE 'hotel.max.bots.inventory';
 UPDATE  `emulator_settings` SET  `key` =  'hotel.inventory.max.items' WHERE  `emulator_settings`.`key` =  'inventory.max.items';
 INSERT INTO  `emulator_texts` (`key` , `value` ) VALUES
 ('commands.error.cmd_credits.user_not_found',  'Could net send %amount% credits to %user%. %user% does not exist.');
+
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.marketplace.currency', '0');

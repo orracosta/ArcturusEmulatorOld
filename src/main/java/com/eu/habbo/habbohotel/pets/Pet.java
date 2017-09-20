@@ -854,7 +854,6 @@ public class Pet extends AbstractPet
 
         switch(this.task)
         {
-            case FREE:
             case DOWN:
             case FLAT:
             case HERE:

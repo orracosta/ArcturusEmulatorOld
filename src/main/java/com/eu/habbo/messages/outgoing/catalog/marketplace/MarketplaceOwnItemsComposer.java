@@ -46,7 +46,12 @@ public class MarketplaceOwnItemsComposer extends MessageComposer
                 {
                     this.response.appendInt(offer.getLimitedNumber());
                     this.response.appendInt(offer.getLimitedStack());
-                } else
+                }
+                else if (offer.getType() == 2)
+                {
+                    this.response.appendString("");
+                }
+                else
                 {
                     this.response.appendInt(0);
                     this.response.appendString("");

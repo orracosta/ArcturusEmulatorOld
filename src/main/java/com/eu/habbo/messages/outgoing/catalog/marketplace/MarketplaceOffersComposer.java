@@ -34,6 +34,10 @@ public class MarketplaceOffersComposer extends MessageComposer
                 this.response.appendInt(offer.getLimitedNumber());
                 this.response.appendInt(offer.getLimitedStack());
             }
+            else if (offer.getType() == 2)
+            {
+                this.response.appendString("");
+            }
             else
             {
                 this.response.appendInt(0);
@@ -41,7 +45,7 @@ public class MarketplaceOffersComposer extends MessageComposer
             }
             this.response.appendInt(MarketPlace.calculateCommision(offer.getPrice()));
             this.response.appendInt(0);
-            this.response.appendInt(offer.avarage);
+            this.response.appendInt(MarketPlace.calculateCommision(offer.avarage));
             this.response.appendInt(offer.count);
 
             total += offer.count;

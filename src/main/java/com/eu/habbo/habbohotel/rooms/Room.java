@@ -1561,6 +1561,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                             {
                                 if (!habbo.getRoomUnit().getStatus().containsKey("sit") || habbo.getRoomUnit().sitUpdate)
                                 {
+                                    dance(habbo, DanceType.NONE);
                                     if (topItem instanceof InteractionMultiHeight)
                                     {
                                         habbo.getRoomUnit().getStatus().put("sit", Item.getCurrentHeight(topItem) * 1.0D + "");
@@ -4605,6 +4606,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             return;
         }
 
+
+        this.dance(habbo, DanceType.NONE);
         habbo.getRoomUnit().cmdSit = true;
         habbo.getRoomUnit().setBodyRotation(RoomUserRotation.values()[habbo.getRoomUnit().getBodyRotation().getValue() - habbo.getRoomUnit().getBodyRotation().getValue() % 2]);
         habbo.getRoomUnit().getStatus().put("sit", 0.5 + "");
