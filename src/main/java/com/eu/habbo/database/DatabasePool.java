@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 
 class DatabasePool
 {
+    private final Logger log = LoggerFactory.getLogger(DatabasePool.class);
     private HikariDataSource database;
 
     public boolean getStoragePooling(ConfigurationManager config)

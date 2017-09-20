@@ -6,6 +6,8 @@ import com.eu.habbo.habbohotel.permissions.Rank;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.habbohotel.users.HabboInfo;
+import com.eu.habbo.habbohotel.users.HabboManager;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.modtool.ModToolComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
@@ -56,29 +58,20 @@ public class GiveRankCommand extends Command
                     return true;
                 }
 
-                Habbo habbo = Emulator.getGameEnvironment().getHabboManager().getHabbo(params[1]);
+                HabboInfo habbo = HabboManager.getOfflineHabboInfo(params[1]);
 
                 if (habbo != null)
                 {
-                    if (habbo.getHabboInfo().getRank().getId() > gameClient.getHabbo().getHabboInfo().getRank().getId())
+                    if (habbo.getRank().getId() > gameClient.getHabbo().getHabboInfo().getRank().getId())
                     {
                         gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_give_rank.higher.other").replace("%username%", params[1]).replace("%id%", rank.getName()), RoomChatMessageBubbles.ALERT);
                         return true;
                     }
 
-                    habbo.getHabboInfo().setRank(rank);
-                    habbo.getHabboInfo().run();
-                    habbo.getClient().sendResponse(new UserPerksComposer(habbo));
+                    Emulator.getGameEnvironment().getHabboManager().setRank(habbo.getId(), rank.getId());
 
-                    if (habbo.hasPermission("acc_supporttool"))
-                    {
-                        habbo.getClient().sendResponse(new ModToolComposer(habbo));
-                    }
-
-                    habbo.getClient().sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("commands.generic.cmd_give_rank.new_rank").replace("id", rank.getName())));
                     gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_give_rank.updated").replace("%id%", rank.getName()).replace("%username%", params[1]), RoomChatMessageBubbles.ALERT);
                     return true;
-
                 }
                 else
                 {
