@@ -145,6 +145,11 @@ public class RoomUnit
             if (this.path.isEmpty())
             {
                 this.sitUpdate = true;
+
+                if (room.hasHabbosAt(next.x, next.y))
+                {
+                    return false;
+                }
             }
 
             Deque<RoomTile> peekPath = room.getLayout().findPath(this.currentLocation, this.path.peek());

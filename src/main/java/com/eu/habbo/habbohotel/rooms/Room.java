@@ -1323,7 +1323,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                             for (HabboItem item : itemsNewTile)
                             {
-                                if (!(item.getBaseItem().allowWalk() || item.getBaseItem().allowSit()) && !(item instanceof InteractionGate))
+                                if (!(item.getBaseItem().allowWalk() || item.getBaseItem().allowSit()) && !(item instanceof InteractionGate && item.getExtradata().equals("1")))
                                 {
                                     allowUsers = false;
                                 }
