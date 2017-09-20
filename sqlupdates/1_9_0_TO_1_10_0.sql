@@ -45,3 +45,5 @@ INSERT INTO  `emulator_texts` (`key` , `value` ) VALUES
 ('commands.error.cmd_credits.user_not_found',  'Could net send %amount% credits to %user%. %user% does not exist.');
 
 INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.marketplace.currency', '0');
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.error.cmd_pull.invalid', 'You cannot pull %username% to there.');
+INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.error.cmd_push.invalid', 'You cannot push %username% to there.');

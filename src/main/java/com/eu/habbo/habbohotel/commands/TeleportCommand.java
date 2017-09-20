@@ -19,13 +19,13 @@ public class TeleportCommand extends Command
         if(gameClient.getHabbo().getRoomUnit().cmdTeleport)
         {
             gameClient.getHabbo().getRoomUnit().cmdTeleport = false;
-            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_teleport.disabled"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_teleport.disabled"), RoomChatMessageBubbles.ALERT);
             return true;
         }
         else
         {
             gameClient.getHabbo().getRoomUnit().cmdTeleport = true;
-            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_teleport.enabled"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_teleport.enabled"), RoomChatMessageBubbles.ALERT);
             return true;
         }
     }

@@ -35,22 +35,22 @@ public class SetPollCommand extends Command
                     if (Emulator.getGameEnvironment().getPollManager().getPoll(pollId) != null)
                     {
                         gameClient.getHabbo().getHabboInfo().getCurrentRoom().setPollId(pollId);
-                        gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_set_poll"), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                        gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_set_poll"), RoomChatMessageBubbles.ALERT);
                     }
                     else
                     {
-                        gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_set_poll.not_found"), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                        gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_set_poll.not_found"), RoomChatMessageBubbles.ALERT);
                     }
                 }
                 else
                 {
-                    gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_set_poll.invalid_number"), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_set_poll.invalid_number"), RoomChatMessageBubbles.ALERT);
                 }
             }
         }
         else
         {
-            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_set_poll.missing_arg"), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_set_poll.missing_arg"), RoomChatMessageBubbles.ALERT);
         }
 
         return true;

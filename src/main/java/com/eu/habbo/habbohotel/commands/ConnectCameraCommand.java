@@ -19,7 +19,7 @@ public class ConnectCameraCommand extends Command
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
         CameraClient.attemptReconnect = true;
-        gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_alert.cmd_connect_camera"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+        gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_alert.cmd_connect_camera"), RoomChatMessageBubbles.ALERT);
         return true;
     }
 }

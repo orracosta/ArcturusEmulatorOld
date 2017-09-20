@@ -25,7 +25,7 @@ public class UpdateCatalogCommand extends Command {
         Emulator.getGameServer().getGameClientManager().sendBroadcastResponse(new GiftConfigurationComposer());
         Emulator.getGameServer().getGameClientManager().sendBroadcastResponse(new RecyclerLogicComposer());
         Emulator.getGameEnvironment().getCraftingManager().reload();
-        gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_update_catalog"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+        gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_update_catalog"), RoomChatMessageBubbles.ALERT);
         return true;
     }
 }

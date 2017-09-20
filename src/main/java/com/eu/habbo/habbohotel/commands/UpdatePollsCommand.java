@@ -17,7 +17,7 @@ public class UpdatePollsCommand extends Command
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
         Emulator.getGameEnvironment().getPollManager().loadPolls();
-        gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_update_polls"), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+        gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_update_polls"), RoomChatMessageBubbles.ALERT);
         return true;
     }
 }

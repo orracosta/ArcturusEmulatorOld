@@ -24,7 +24,7 @@ public class SayAllCommand extends Command
     {
         if(params.length < 2)
         {
-            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_say_all.forgot_message"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_say_all.forgot_message"), RoomChatMessageBubbles.ALERT);
             return true;
         }
 

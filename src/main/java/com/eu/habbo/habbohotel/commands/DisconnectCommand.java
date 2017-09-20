@@ -19,13 +19,13 @@ public class DisconnectCommand extends Command
     {
         if(params.length < 2)
         {
-            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_disconnect.forgot_username"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_disconnect.forgot_username"), RoomChatMessageBubbles.ALERT);
             return true;
         }
 
         if(params[1].toLowerCase().equals(gameClient.getHabbo().getHabboInfo().getUsername().toLowerCase()))
         {
-            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_disconnect.disconnect_self"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_disconnect.disconnect_self"), RoomChatMessageBubbles.ALERT);
             return true;
         }
 
@@ -33,19 +33,19 @@ public class DisconnectCommand extends Command
 
         if(target == null)
         {
-            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_disconnect.user_offline"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_disconnect.user_offline"), RoomChatMessageBubbles.ALERT);
             return true;
         }
 
         if (target.getHabboInfo().getRank().getId() > gameClient.getHabbo().getHabboInfo().getRank().getId())
         {
-            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_disconnect.higher_rank"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_disconnect.higher_rank"), RoomChatMessageBubbles.ALERT);
             return true;
         }
 
         target.getClient().getChannel().close();
 
-        gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_disconnect.disconnected").replace("%user%", params[1]), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+        gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_disconnect.disconnected").replace("%user%", params[1]), RoomChatMessageBubbles.ALERT);
         return true;
     }
 }

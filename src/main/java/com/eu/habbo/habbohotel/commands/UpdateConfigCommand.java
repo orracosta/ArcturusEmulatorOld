@@ -18,7 +18,7 @@ public class UpdateConfigCommand extends Command
     {
         Emulator.getConfig().reload();
 
-        gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_update_config"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+        gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_update_config"), RoomChatMessageBubbles.ALERT);
 
         return true;
     }

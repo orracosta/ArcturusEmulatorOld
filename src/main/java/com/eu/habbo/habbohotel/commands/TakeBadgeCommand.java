@@ -22,12 +22,12 @@ public class TakeBadgeCommand extends Command
     {
         if (params.length == 2)
         {
-            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_take_badge.forgot_badge"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_take_badge.forgot_badge"), RoomChatMessageBubbles.ALERT);
             return true;
         }
         else if ( params.length == 1)
         {
-            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_take_badge.forgot_username"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_take_badge.forgot_username"), RoomChatMessageBubbles.ALERT);
             return true;
         }
 
@@ -44,14 +44,14 @@ public class TakeBadgeCommand extends Command
 
                 if (b == null)
                 {
-                    gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_take_badge.no_badge").replace("%username%", username).replace("%badge%", badge), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_take_badge.no_badge").replace("%username%", username).replace("%badge%", badge), RoomChatMessageBubbles.ALERT);
                     return true;
                 }
 
                 habbo.getClient().sendResponse(new InventoryBadgesComposer(habbo));
             }
 
-            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_take_badge"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_take_badge"), RoomChatMessageBubbles.ALERT);
 
             BadgesComponent.deleteBadge(username, badge);
         }

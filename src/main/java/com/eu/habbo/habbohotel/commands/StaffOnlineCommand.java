@@ -33,7 +33,7 @@ public class StaffOnlineCommand extends Command
 
                 if(i < 1)
                 {
-                    gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_staffonline.positive_only"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_staffonline.positive_only"), RoomChatMessageBubbles.ALERT);
                     return true;
                 }
                 else
@@ -43,7 +43,7 @@ public class StaffOnlineCommand extends Command
             }
             catch (Exception e)
             {
-                gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_staffonline.numbers_only"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_staffonline.numbers_only"), RoomChatMessageBubbles.ALERT);
                 return true;
             }
         }

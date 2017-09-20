@@ -23,7 +23,7 @@ public class FreezeCommand extends Command
 
             if(habbo == null)
             {
-                gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_freeze.not_found").replace("%user%", params[1]), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_freeze.not_found").replace("%user%", params[1]), RoomChatMessageBubbles.ALERT);
                 return true;
             }
             else
@@ -31,22 +31,22 @@ public class FreezeCommand extends Command
                 if(habbo.getRoomUnit().canWalk())
                 {
                     habbo.getRoomUnit().setCanWalk(false);
-                    habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_freeze.frozen"), habbo, habbo, RoomChatMessageBubbles.ALERT)));
-                    gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_freeze.user_frozen").replace("%user%", params[1]), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                    habbo.whisper(Emulator.getTexts().getValue("commands.succes.cmd_freeze.frozen"), RoomChatMessageBubbles.ALERT);
+                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_freeze.user_frozen").replace("%user%", params[1]), RoomChatMessageBubbles.ALERT);
                     return true;
                 }
                 else
                 {
                     habbo.getRoomUnit().setCanWalk(true);
-                    habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_freeze.unfrozen"), habbo, habbo, RoomChatMessageBubbles.ALERT)));
-                    gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_freeze.user_unfrozen").replace("%user%", params[1]), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                    habbo.whisper(Emulator.getTexts().getValue("commands.succes.cmd_freeze.unfrozen"), RoomChatMessageBubbles.ALERT);
+                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_freeze.user_unfrozen").replace("%user%", params[1]), RoomChatMessageBubbles.ALERT);
                     return true;
                 }
             }
         }
         else
         {
-            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_freeze.not_found").replace("%user%", ""), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_freeze.not_found").replace("%user%", ""), RoomChatMessageBubbles.ALERT);
             return true;
         }
     }

@@ -18,7 +18,7 @@ public class UpdatePermissionsCommand extends Command
     {
         Emulator.getGameEnvironment().getPermissionsManager().reload();
 
-        gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_update_permissions"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+        gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_update_permissions"), RoomChatMessageBubbles.ALERT);
 
         return true;
     }

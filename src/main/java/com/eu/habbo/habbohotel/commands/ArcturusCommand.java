@@ -16,13 +16,13 @@ public class ArcturusCommand extends Command
     {
         if(gameClient.getHabbo().getHabboInfo().getCurrentRoom() != null)
         {
-            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage("This hotel is powered by Arcturus Emulator! \r" +
+            gameClient.getHabbo().whisper("This hotel is powered by Arcturus Emulator! \r" +
                     "Cet hôtel est alimenté par Arcturus émulateur! \r" +
                     "Dit hotel draait op Arcturus Emulator! \r" +
                     "Este hotel está propulsado por Arcturus emulador! \r" +
                     "Hotellet drivs av Arcturus Emulator! \r" +
                     "Das Hotel gehört zu Arcturus Emulator betrieben!"
-                    , gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                    , RoomChatMessageBubbles.ALERT);
         }
 
         return true;

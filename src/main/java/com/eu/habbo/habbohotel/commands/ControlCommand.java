@@ -25,13 +25,13 @@ public class ControlCommand extends Command
 
                 if(target == null)
                 {
-                    gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_control.not_found").replace("%user%", params[1]), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_control.not_found").replace("%user%", params[1]), RoomChatMessageBubbles.ALERT);
                     return true;
                 }
 
                 if(target == gameClient.getHabbo())
                 {
-                    gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_control.not_self"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_control.not_self"), RoomChatMessageBubbles.ALERT);
                     return true;
                 }
 
@@ -40,11 +40,11 @@ public class ControlCommand extends Command
                 if(oldHabbo != null)
                 {
                     oldHabbo.getRoomUnit().getCacheable().remove("controller");
-                    gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_control.stopped").replace("%user%", oldHabbo.getHabboInfo().getUsername()), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_control.stopped").replace("%user%", oldHabbo.getHabboInfo().getUsername()), RoomChatMessageBubbles.ALERT);
                 }
                 gameClient.getHabbo().getRoomUnit().getCacheable().put("control", target);
                 target.getRoomUnit().getCacheable().put("controller", gameClient.getHabbo());
-                gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_control.controlling").replace("%user%", params[1]), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_control.controlling").replace("%user%", params[1]), RoomChatMessageBubbles.ALERT);
                 return true;
             }
             else
@@ -55,7 +55,7 @@ public class ControlCommand extends Command
                 {
                     gameClient.getHabbo().getRoomUnit().getCacheable().remove("control");
 
-                    gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_control.stopped").replace("%user%", ((Habbo)habbo).getHabboInfo().getUsername()), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_control.stopped").replace("%user%", ((Habbo)habbo).getHabboInfo().getUsername()), RoomChatMessageBubbles.ALERT);
                 }
                 return true;
             }

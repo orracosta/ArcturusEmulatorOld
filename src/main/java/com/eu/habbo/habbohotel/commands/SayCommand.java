@@ -20,7 +20,7 @@ public class SayCommand extends Command
     {
         if(params.length < 2)
         {
-            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_say.forgot_username"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_say.forgot_username"), RoomChatMessageBubbles.ALERT);
             return true;
         }
 
@@ -28,14 +28,14 @@ public class SayCommand extends Command
 
         if(target == null)
         {
-            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_say.user_not_found"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_say.user_not_found"), RoomChatMessageBubbles.ALERT);
             return true;
         }
         else
         {
             if(target.getHabboInfo().getCurrentRoom() == null)
             {
-                gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_say.hotel_view").replace("%user%", params[1]), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_say.hotel_view").replace("%user%", params[1]), RoomChatMessageBubbles.ALERT);
                 return true;
             }
         }
@@ -50,7 +50,7 @@ public class SayCommand extends Command
         }
 
         target.getHabboInfo().getCurrentRoom().sendComposer(new RoomUserTalkComposer(new RoomChatMessage(message, target, RoomChatMessageBubbles.NORMAL)).compose());
-        gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_say").replace("%user%", params[1]).replace("%message%", message), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+        gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_say").replace("%user%", params[1]).replace("%message%", message), RoomChatMessageBubbles.ALERT);
         return true;
     }
 }

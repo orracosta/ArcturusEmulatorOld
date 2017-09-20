@@ -22,7 +22,7 @@ public class RoomMuteCommand extends Command
         if (room != null)
         {
             room.setMuted(!room.isMuted());
-            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_roommute." + (room.isMuted() ? "muted" : "unmuted")), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_roommute." + (room.isMuted() ? "muted" : "unmuted")), RoomChatMessageBubbles.ALERT);
         }
 
         return true;

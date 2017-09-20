@@ -32,7 +32,7 @@ public class EmptyPetsInventoryCommand extends Command
                 }
                 else
                 {
-                    gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_empty_pets.verify").replace("%generic.yes%", Emulator.getTexts().getValue("generic.yes")), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_empty_pets.verify").replace("%generic.yes%", Emulator.getTexts().getValue("generic.yes")), RoomChatMessageBubbles.ALERT);
                 }
             }
 
@@ -63,7 +63,7 @@ public class EmptyPetsInventoryCommand extends Command
                 });
 
                 habbo.getClient().sendResponse(new InventoryRefreshComposer());
-                gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_empty_pets.cleared"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_empty_pets.cleared"), RoomChatMessageBubbles.ALERT);
             }
         }
 

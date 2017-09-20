@@ -117,7 +117,7 @@ public class RedeemCommand extends Command
             });
         }
 
-        gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(message[0], gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+        gameClient.getHabbo().whisper(message[0], RoomChatMessageBubbles.ALERT);
 
         return true;
     }

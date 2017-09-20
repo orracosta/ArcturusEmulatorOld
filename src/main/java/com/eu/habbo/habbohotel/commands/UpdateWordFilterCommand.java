@@ -18,7 +18,7 @@ public class UpdateWordFilterCommand extends Command
     {
         Emulator.getGameEnvironment().getWordFilter().reload();
 
-        gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_update_wordfilter"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+        gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_update_wordfilter"), RoomChatMessageBubbles.ALERT);
 
         return true;
     }

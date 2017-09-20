@@ -17,7 +17,7 @@ public class MuteBotsCommand extends Command
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
         gameClient.getHabbo().getHabboStats().ignoreBots = !gameClient.getHabbo().getHabboStats().ignoreBots;
-        gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_mute_bots." +(gameClient.getHabbo().getHabboStats().ignoreBots ? "ignored" : "unignored")), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+        gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_mute_bots." +(gameClient.getHabbo().getHabboStats().ignoreBots ? "ignored" : "unignored")), RoomChatMessageBubbles.ALERT);
         return true;
     }
 }

@@ -24,11 +24,11 @@ public class DiagonalCommand extends Command
 
                 if (!gameClient.getHabbo().getHabboInfo().getCurrentRoom().moveDiagonally())
                 {
-                    gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_diagonal.disabled"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_diagonal.disabled"), RoomChatMessageBubbles.ALERT);
                 }
                 else
                 {
-                    gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_diagonal.enabled"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_diagonal.enabled"), RoomChatMessageBubbles.ALERT);
                 }
 
                 return true;

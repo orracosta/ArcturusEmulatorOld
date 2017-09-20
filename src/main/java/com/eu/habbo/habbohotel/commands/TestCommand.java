@@ -166,7 +166,7 @@ public class TestCommand extends Command
 
             for(int i = 0; i < count; i++)
             {
-                gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage("" + i, gameClient.getHabbo(), RoomChatMessageBubbles.getBubble(i))));
+                gameClient.getHabbo().whisper("" + i, RoomChatMessageBubbles.getBubble(i));
             }
 
             return true;

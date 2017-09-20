@@ -18,7 +18,7 @@ public class UpdatePetDataCommand extends Command
     {
         Emulator.getGameEnvironment().getPetManager().reloadPetData();
 
-        gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_update_pet_data"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+        gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_update_pet_data"), RoomChatMessageBubbles.ALERT);
 
         return true;
     }

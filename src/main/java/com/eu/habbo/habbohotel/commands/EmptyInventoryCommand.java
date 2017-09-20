@@ -34,7 +34,7 @@ public class EmptyInventoryCommand extends Command
                }
                else
                {
-                   gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_empty.verify").replace("%generic.yes%", Emulator.getTexts().getValue("generic.yes")), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                   gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_empty.verify").replace("%generic.yes%", Emulator.getTexts().getValue("generic.yes")), RoomChatMessageBubbles.ALERT);
                }
            }
 
@@ -60,7 +60,7 @@ public class EmptyInventoryCommand extends Command
                 habbo.getClient().sendResponse(new InventoryRefreshComposer());
                 habbo.getClient().sendResponse(new InventoryItemsComposer(0, 1, gameClient.getHabbo().getInventory().getItemsComponent().getItems()));
 
-                gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.succes.cmd_empty.cleared"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+                gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_empty.cleared"), RoomChatMessageBubbles.ALERT);
             }
         }
 

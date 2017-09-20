@@ -62,7 +62,7 @@ public class PetInfoCommand extends Command
         }
         else
         {
-            gameClient.sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(Emulator.getTexts().getValue("commands.error.cmd_pet_info.pet_not_found"), gameClient.getHabbo(), gameClient.getHabbo(), RoomChatMessageBubbles.ALERT)));
+            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_pet_info.pet_not_found"), RoomChatMessageBubbles.ALERT);
         }
         return true;
     }
