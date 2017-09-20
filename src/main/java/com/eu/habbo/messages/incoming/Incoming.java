@@ -335,6 +335,8 @@ public class Incoming
     public static final int ModToolIssueChangeTopicEvent = 1392;
     public static final int ModToolIssueDefaultSanctionEvent = 2717;
 
+    public static final int TradeCancelEvent = 2341;
+
 
     public static final int UNKNOWN_SNOWSTORM_6000 = 6000;
     public static final int UNKNOWN_SNOWSTORM_6001 = 6001;

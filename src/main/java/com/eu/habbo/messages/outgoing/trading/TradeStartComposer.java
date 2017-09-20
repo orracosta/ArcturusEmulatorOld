@@ -9,10 +9,17 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 public class TradeStartComposer extends MessageComposer
 {
     private RoomTrade roomTrade;
+    private int state = 1;
 
     public TradeStartComposer(RoomTrade roomTrade)
     {
         this.roomTrade = roomTrade;
+    }
+
+    public TradeStartComposer(RoomTrade roomTrade, int state)
+    {
+        this.roomTrade = roomTrade;
+        this.state = state;
     }
     @Override
     public ServerMessage compose()
@@ -21,7 +28,7 @@ public class TradeStartComposer extends MessageComposer
         for(RoomTradeUser tradeUser : this.roomTrade.getRoomTradeUsers())
         {
             this.response.appendInt(tradeUser.getHabbo().getHabboInfo().getId());
-            this.response.appendInt(1);
+            this.response.appendInt(this.state);
         }
         return this.response;
     }

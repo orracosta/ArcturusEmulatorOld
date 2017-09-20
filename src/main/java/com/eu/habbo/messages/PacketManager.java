@@ -455,6 +455,7 @@ public class PacketManager
         this.registerHandler(Incoming.TradeUnAcceptEvent,                       TradeUnAcceptEvent.class);
         this.registerHandler(Incoming.TradeConfirmEvent,                        TradeConfirmEvent.class);
         this.registerHandler(Incoming.TradeCloseEvent,                          TradeCloseEvent.class);
+        this.registerHandler(Incoming.TradeCancelEvent,                         TradeCancelEvent.class);
     }
 
     void registerGuilds() throws Exception

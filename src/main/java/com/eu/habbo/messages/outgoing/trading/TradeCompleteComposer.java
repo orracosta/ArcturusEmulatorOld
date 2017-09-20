@@ -9,7 +9,7 @@ public class TradeCompleteComposer extends MessageComposer
     @Override
     public ServerMessage compose()
     {
-        this.response.init(Outgoing.TradeCompleteComposer);
+        this.response.init(Outgoing.UnknownTradeComposer);
 
         return this.response;
     }

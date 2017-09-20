@@ -122,14 +122,16 @@ public class RoomTrade
         }
         if(accepted)
         {
-            sendMessageToUsers(new TradeCompleteComposer());
-            tradeItems();
-            closeWindow();
+            if (tradeItems())
+            {
+                closeWindow();
+                sendMessageToUsers(new TradeCompleteComposer());
+            }
             this.room.stopTrade(this);
         }
     }
 
-    void tradeItems()
+    boolean tradeItems()
     {
         for(RoomTradeUser roomTradeUser : this.users)
         {
@@ -138,7 +140,7 @@ public class RoomTrade
                 if(roomTradeUser.getHabbo().getInventory().getItemsComponent().getHabboItem(item.getId()) == null)
                 {
                     sendMessageToUsers(new TradeClosedComposer(roomTradeUser.getHabbo().getRoomUnit().getId(), TradeClosedComposer.ITEMS_NOT_FOUND));
-                    return;
+                    return false;
                 }
             }
         }
@@ -236,6 +238,7 @@ public class RoomTrade
 
         userOne.getHabbo().getClient().sendResponse(new InventoryRefreshComposer());
         userTwo.getHabbo().getClient().sendResponse(new InventoryRefreshComposer());
+        return true;
     }
 
     void clearAccepted()
