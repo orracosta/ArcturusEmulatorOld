@@ -75,7 +75,7 @@ public class HabboInfo implements Runnable
             {
                 Emulator.getLogging().logErrorLine("No existing rank found with id " + set.getInt("rank") + ". Make sure an entry in the permissions table exists.");
             }
-            
+
             this.accountCreated = set.getInt("account_created");
             this.credits = set.getInt("credits");
             this.homeRoom = set.getInt("home_room");

@@ -5,10 +5,12 @@ import com.eu.habbo.habbohotel.guilds.Guild;
 import com.eu.habbo.habbohotel.modtool.ModToolIssue;
 import com.eu.habbo.habbohotel.modtool.ModToolTicketType;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.AlertPurchaseFailedComposer;
 import com.eu.habbo.messages.outgoing.catalog.PurchaseOKComposer;
 import com.eu.habbo.messages.outgoing.guilds.GuildBoughtComposer;
+import com.eu.habbo.messages.outgoing.guilds.GuildInfoComposer;
 import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
 import com.eu.habbo.plugin.events.guilds.GuildPurchasedEvent;
 
@@ -86,6 +88,10 @@ public class RequestGuildBuyEvent extends MessageHandler
                     
                     this.client.sendResponse(new PurchaseOKComposer());
                     this.client.sendResponse(new GuildBoughtComposer(guild));
+                    for (Habbo habbo : r.getHabbos())
+                    {
+                        habbo.getClient().sendResponse(new GuildInfoComposer(guild, habbo.getClient(), false, null));
+                    }
                     r.refreshGuild(guild);
 
                     Emulator.getPluginManager().fireEvent(new GuildPurchasedEvent(guild, this.client.getHabbo()));
