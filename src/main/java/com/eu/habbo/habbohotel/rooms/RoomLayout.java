@@ -537,7 +537,7 @@ public class RoomLayout
         RoomTile previous = tile;
         for (int i = 0; i < amount; i++)
         {
-            RoomTile t = this.getTileInFront(previous, rotation, i);
+            RoomTile t = this.getTileInFront(previous, rotation, 1);
 
             if (t != null)
             {
