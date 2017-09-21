@@ -96,6 +96,11 @@ public abstract class CatalogPage implements Comparable<CatalogPage>, ISerialize
         return this.rank;
     }
 
+    public void setRank(int rank)
+    {
+        this.rank = rank;
+    }
+
     public String getCaption()
     {
         return this.caption;
@@ -214,6 +219,11 @@ public abstract class CatalogPage implements Comparable<CatalogPage>, ISerialize
     public void addChildPage(CatalogPage page)
     {
         this.childPages.put(page.getId(), page);
+
+        if (page.getRank() < this.getRank())
+        {
+            page.setRank(this.getRank());
+        }
     }
 
     @SuppressWarnings("NullableProblems")
