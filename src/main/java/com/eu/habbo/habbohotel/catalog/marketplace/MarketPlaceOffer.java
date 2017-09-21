@@ -14,10 +14,10 @@ public class MarketPlaceOffer implements Runnable
     private Item baseItem;
     private int itemId;
     private int price;
-    private int type;
     private int limitedStack;
     private int limitedNumber;
     private int timestamp = Emulator.getIntUnixTimestamp();
+    private int soldTimestamp = 0;
     private MarketPlaceState state = MarketPlaceState.OPEN;
     private boolean needsUpdate = false;
 
@@ -29,22 +29,13 @@ public class MarketPlaceOffer implements Runnable
         this.offerId = set.getInt("id");
         this.price = set.getInt("price");
         this.timestamp = set.getInt("timestamp");
+        this.soldTimestamp = set.getInt("sold_timestamp");
         this.baseItem = Emulator.getGameEnvironment().getItemManager().getItem(set.getInt("base_item_id"));
         this.state = MarketPlaceState.getType(set.getInt("state"));
         this.itemId = set.getInt("item_id");
-        String type = set.getString("type");
 
-        if(type.equalsIgnoreCase("s"))
-        {
-            this.type = 1;
-        }
-        if(type.equalsIgnoreCase("i"))
-        {
-            this.type = 2;
-        }
         if(!set.getString("ltd_data").split(":")[1].equals("0"))
         {
-            this.type = 3;
             this.limitedStack = Integer.valueOf(set.getString("ltd_data").split(":")[0]);
             this.limitedNumber = Integer.valueOf(set.getString("ltd_data").split(":")[1]);
         }
@@ -62,14 +53,6 @@ public class MarketPlaceOffer implements Runnable
         this.price = price;
         this.baseItem = item.getBaseItem();
         this.itemId = item.getId();
-        if(item.getBaseItem().getType() == FurnitureType.FLOOR)
-        {
-            this.type = 1;
-        }
-        if(item.getBaseItem().getType() == FurnitureType.WALL)
-        {
-            this.type = 2;
-        }
         if(item.getLimitedSells() > 0)
         {
             this.limitedNumber = item.getLimitedSells();
@@ -130,15 +113,21 @@ public class MarketPlaceOffer implements Runnable
         return this.timestamp;
     }
 
-    public int getType()
+    public int getSoldTimestamp()
     {
-        return this.type;
+        return this.soldTimestamp;
+    }
+
+    public void setSoldTimestamp(int soldTimestamp)
+    {
+        this.soldTimestamp = soldTimestamp;
     }
 
     public int getLimitedStack()
     {
         return this.limitedStack;
     }
+
     public int getLimitedNumber()
     {
         return this.limitedNumber;
@@ -154,16 +143,27 @@ public class MarketPlaceOffer implements Runnable
         this.needsUpdate = value;
     }
 
+    public int getType()
+    {
+        if (this.limitedStack > 0)
+        {
+            return 3;
+        }
+
+        return this.baseItem.getType().equals(FurnitureType.WALL) ? 2 : 1;
+    }
+
     @Override
     public void run()
     {
         if(this.needsUpdate)
         {
             this.needsUpdate = false;
-            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE marketplace_items SET state = ? WHERE id = ?"))
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE marketplace_items SET state = ?, sold_timestamp = ? WHERE id = ?"))
             {
                 statement.setInt(1, this.state.getState());
-                statement.setInt(2, this.offerId);
+                statement.setInt(2, this.soldTimestamp);
+                statement.setInt(3, this.offerId);
                 statement.execute();
             }
             catch (SQLException e)
@@ -175,13 +175,14 @@ public class MarketPlaceOffer implements Runnable
 
     public static void insert(MarketPlaceOffer offer, Habbo habbo)
     {
-        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO marketplace_items VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO marketplace_items VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS))
         {
             statement.setInt(1, offer.getItemId());
             statement.setInt(2, habbo.getHabboInfo().getId());
             statement.setInt(3, offer.getPrice());
             statement.setInt(4, offer.getTimestamp());
-            statement.setString(5, offer.getState().getState() + "");
+            statement.setInt(5, offer.getSoldTimestamp());
+            statement.setString(6, offer.getState().getState() + "");
             statement.execute();
 
             try (ResultSet id = statement.getGeneratedKeys())

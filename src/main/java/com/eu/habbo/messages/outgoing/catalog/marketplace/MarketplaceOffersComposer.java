@@ -7,11 +7,13 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.set.hash.THashSet;
 
+import java.util.List;
+
 public class MarketplaceOffersComposer extends MessageComposer
 {
-    private final THashSet<MarketPlaceOffer> offers;
+    private final List<MarketPlaceOffer> offers;
 
-    public MarketplaceOffersComposer(THashSet<MarketPlaceOffer> offers)
+    public MarketplaceOffersComposer(List<MarketPlaceOffer> offers)
     {
         this.offers = offers;
     }
@@ -50,7 +52,7 @@ public class MarketplaceOffersComposer extends MessageComposer
 
             total += offer.count;
         }
-        this.response.appendInt(total);
+        this.response.appendInt(this.offers.size());
         return this.response;
     }
 }

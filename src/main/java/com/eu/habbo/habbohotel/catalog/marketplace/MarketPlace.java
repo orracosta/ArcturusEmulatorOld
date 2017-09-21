@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
+import com.eu.habbo.messages.incoming.catalog.marketplace.RequestOffersEvent;
 import com.eu.habbo.messages.outgoing.catalog.marketplace.MarketplaceBuyErrorComposer;
 import com.eu.habbo.messages.outgoing.catalog.marketplace.MarketplaceCancelSaleComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
@@ -20,6 +21,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Note: A lot of data in here is not cached in the emulator but rather loaded from the database.
@@ -85,6 +88,7 @@ public class MarketPlace
     {
         if(offer != null && habbo.getInventory().getMarketplaceItems().contains(offer))
         {
+            RequestOffersEvent.cachedResults.clear();
             try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
             {
                 try (PreparedStatement ownerCheck = connection.prepareStatement("SELECT user_id FROM marketplace_items WHERE id = ?"))
@@ -148,15 +152,46 @@ public class MarketPlace
      * @param minPrice The minimum price of the offers.
      * @param maxPrice The maximum price of the offers
      * @param search The search criteria for the offers.
-     * @param sort The order the data should be sorted.
+     * @param sort The sort criteria for the offers.
      * @return The result of the search.
      */
-    public static THashSet<MarketPlaceOffer> getOffers(int minPrice, int maxPrice, String search, int sort)
+    public static List<MarketPlaceOffer> getOffers(int minPrice, int maxPrice, String search, int sort)
     {
-        THashSet<MarketPlaceOffer> offers = new THashSet<MarketPlaceOffer>();
+        List<MarketPlaceOffer> offers = new ArrayList<>(10);
 
-        String query = "SELECT items_base.type AS type, items.item_id AS base_item_id, items.limited_data AS ltd_data, marketplace_items.*, COUNT(*) as number, AVG(price) as avg, MIN(price) as minPrice FROM marketplace_items INNER JOIN items ON marketplace_items.item_id = items.id INNER JOIN items_base ON items.item_id = items_base.id WHERE state = ? AND timestamp >= ?";
+        //String query = "SELECT items_base.type AS type, items.item_id AS base_item_id, items.limited_data AS ltd_data, marketplace_items.*, COUNT(*) as number, AVG(price) as avg, MIN(price) as minPrice FROM marketplace_items INNER JOIN items ON marketplace_items.item_id = items.id INNER JOIN items_base ON items.item_id = items_base.id WHERE state = ? AND timestamp >= ?";
+        /*String query = "SELECT " +
+                            "B.* FROM marketplace_items a " +
+                        "INNER JOIN (SELECT " +
+                                "items_base.type AS type, " +
+                                "items.item_id AS base_item_id, " +
+                                "items.limited_data AS ltd_data, " +
+                                "marketplace_items.*, " +
+                                "AVG(price) as avg, " +
+                                "MIN(marketplace_items.price) as minPrice, " +
+                                "MAX(marketplace_items.price) as maxPrice, " +
+                                "COUNT(*) as number " +
+                            "FROM marketplace_items " +
+                            "INNER JOIN items ON marketplace_items.item_id = items.id " +
+                            "INNER JOIN items_base ON items.item_id = items_base.id " +
+                            "WHERE state = 1 AND timestamp > ?";*/
 
+        String query =  "SELECT " +
+                            "B.* FROM marketplace_items a " +
+                        "INNER JOIN (" +
+                                        "SELECT " +
+                                        "items.item_id AS base_item_id, " +
+                                        "items.limited_data AS ltd_data, " +
+                                        "marketplace_items.*, " +
+                                        "AVG(price) as avg, " +
+                                        "MIN(marketplace_items.price) as minPrice, " +
+                                        "MAX(marketplace_items.price) as maxPrice, " +
+                                        "COUNT(*) as number, " +
+                                        //"SUM(DATE(from_unixtime(timestamp)) >= (NOW() - INTERVAL 1 DAY)) as offer_count_today, " +
+                                        "(SELECT COUNT(*) FROM marketplace_items c INNER JOIN items as items_b ON c.item_id = items_b.id WHERE state = 2 AND items_b.item_id = base_item_id AND DATE(from_unixtime(sold_timestamp)) = CURDATE()) as sold_count_today " +
+                                    "FROM marketplace_items " +
+                                    "INNER JOIN items ON marketplace_items.item_id = items.id " +
+                                    "WHERE state = 1 AND timestamp > ?";
         if(minPrice > 0)
         {
             query += " AND CEIL(price + (price / 100)) >= " + minPrice;
@@ -172,20 +207,50 @@ public class MarketPlace
 
         query += " GROUP BY base_item_id, ltd_data";
 
-        switch(sort)
+        switch (sort)
         {
-            case 2: query += " ORDER BY price ASC"; break;
-
+            case 6:
+                query += " ORDER BY number ASC";
+                break;
+            case 5:
+                query += " ORDER BY number DESC";
+                break;
+            case 4:
+                query += " ORDER BY sold_count_today ASC";
+                break;
+            case 3:
+                query += " ORDER BY sold_count_today DESC";
+                break;
+            case 2:
+                query += " ORDER BY minPrice ASC";
+                break;
+            default:
             case 1:
-            default: query += " ORDER BY price DESC"; break;
+                query += " ORDER BY minPrice DESC";
+                break;
+        }
+        if (sort == 3)
+        {
+
+        }
+        if (sort == 2)
+        {
+        }
+        else
+        {
         }
 
-        query += " LIMIT 250";
+        query += ")";
+
+        query += " AS B ON a.id = B.id";
+
+        query += " LIMIT 100";
+
+        System.out.println(query);
 
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement(query))
         {
-            statement.setInt(1, 1);
-            statement.setInt(2, Emulator.getIntUnixTimestamp() - 172800);
+            statement.setInt(1, Emulator.getIntUnixTimestamp() - 172800);
             if(search.length() > 0)
                 statement.setString(3, "%"+search+"%");
 
@@ -302,6 +367,7 @@ public class MarketPlace
      */
     public static void buyItem(int offerId, GameClient client)
     {
+        RequestOffersEvent.cachedResults.clear();
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
         {
             try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM marketplace_items WHERE id = ? LIMIT 1"))
@@ -331,9 +397,10 @@ public class MarketPlace
                                     }
                                     else
                                     {
-                                        try (PreparedStatement updateOffer = connection.prepareStatement("UPDATE marketplace_items SET state = 2 WHERE id = ?"))
+                                        try (PreparedStatement updateOffer = connection.prepareStatement("UPDATE marketplace_items SET state = 2, sold_timestamp = ? WHERE id = ?"))
                                         {
-                                            updateOffer.setInt(1, offerId);
+                                            updateOffer.setInt(1, Emulator.getIntUnixTimestamp());
+                                            updateOffer.setInt(2, offerId);
                                             updateOffer.execute();
                                         }
                                         Habbo habbo = Emulator.getGameServer().getGameClientManager().getHabbo(set.getInt("user_id"));
@@ -441,6 +508,7 @@ public class MarketPlace
             return false;
         }
 
+        RequestOffersEvent.cachedResults.clear();
         try
         {
             MarketPlaceOffer offer = new MarketPlaceOffer(event.item, event.price, client.getHabbo());

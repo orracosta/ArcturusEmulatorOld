@@ -47,3 +47,4 @@ INSERT INTO  `emulator_texts` (`key` , `value` ) VALUES
 INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.marketplace.currency', '0');
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.error.cmd_pull.invalid', 'You cannot pull %username% to there.');
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.error.cmd_push.invalid', 'You cannot push %username% to there.');
+ALTER TABLE  `marketplace_items` ADD  `sold_timestamp` INT( 11 ) NOT NULL DEFAULT  '0' AFTER  `timestamp`;
