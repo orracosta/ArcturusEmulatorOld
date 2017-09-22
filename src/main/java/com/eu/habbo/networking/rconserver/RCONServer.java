@@ -132,8 +132,9 @@ public class RCONServer
 
                 if (Emulator.debugging)
                 {
-                    System.out.println(" [" + Logging.ANSI_BLUE + "DATA" + Logging.ANSI_RESET + "]" + result);
+                    System.out.print(" [" + Logging.ANSI_BLUE + "DATA" + Logging.ANSI_RESET + "]" + body + "[" + Logging.ANSI_BLUE + "RESULT" + Logging.ANSI_RESET + "]" + result);
                 }
+                System.out.println("");
 
                 return result;
             }

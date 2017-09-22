@@ -18,7 +18,11 @@ public class ModToolChangeRoomSettingsEvent extends MessageHandler
 
             if (room != null)
             {
-                Emulator.getGameEnvironment().getModToolManager().roomAction(room, this.client.getHabbo(), this.packet.readInt() == 1, this.packet.readInt() == 1, this.packet.readInt() == 1);
+                boolean lockDoor = this.packet.readInt() == 1;
+                boolean changeTitle = this.packet.readInt() == 1;
+                boolean kickUsers = this.packet.readInt() == 1;
+
+                Emulator.getGameEnvironment().getModToolManager().roomAction(room, this.client.getHabbo(), kickUsers, lockDoor, changeTitle);
             }
         }
         else
