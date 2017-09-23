@@ -726,7 +726,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         Habbo habbo = (picker != null && picker.getHabboInfo().getId() == item.getId() ? picker : Emulator.getGameServer().getGameClientManager().getHabbo(item.getUserId()));
         if (habbo != null) {
             habbo.getInventory().getItemsComponent().addItem(item);
-            habbo.getClient().sendResponse(new InventoryRefreshComposer());
+            habbo.getClient().sendResponse(new AddHabboItemComposer(item));
         }
         Emulator.getThreading().run(item);
     }

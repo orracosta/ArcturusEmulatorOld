@@ -263,8 +263,14 @@ public class RoomTrade
 
     public void stopTrade(Habbo habbo)
     {
-        removeStatusses();
-        sendMessageToUsers(new TradeClosedComposer(habbo.getHabboInfo().getId(), TradeClosedComposer.USER_CANCEL_TRADE));
+        this.removeStatusses();
+        this.clearAccepted();
+        for (RoomTradeUser user : this.users)
+        {
+            user.clearItems();
+        }
+        this.updateWindow();
+        this.sendMessageToUsers(new TradeClosedComposer(habbo.getHabboInfo().getId(), TradeClosedComposer.USER_CANCEL_TRADE));
         this.room.stopTrade(this);
     }
 

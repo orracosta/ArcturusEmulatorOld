@@ -53,5 +53,10 @@ public class RoomTradeUser
     {
         return this.items;
     }
+
+    public void clearItems()
+    {
+        this.items.clear();
+    }
 }
 

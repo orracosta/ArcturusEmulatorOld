@@ -9,6 +9,7 @@ import java.sql.SQLException;
 public class Rank
 {
     private final int id;
+    private final int level;
     private String name;
     private final THashMap<String, Permission> permissions;
     private final THashMap<String, String> variables;
@@ -23,6 +24,7 @@ public class Rank
         this.permissions = new THashMap<>();
         this.variables = new THashMap<>();
         this.id = set.getInt("id");
+        this.level = set.getInt("level");
 
         this.load(set);
     }
@@ -69,6 +71,11 @@ public class Rank
     public int getId()
     {
         return this.id;
+    }
+
+    public int getLevel()
+    {
+        return this.level;
     }
 
     public String getName()

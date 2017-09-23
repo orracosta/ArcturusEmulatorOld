@@ -248,7 +248,6 @@ public class HabboInfo implements Runnable
         return this.ipLogin;
     }
 
-    @Deprecated
     public void setIpLogin(String ipLogin)
     {
         this.ipLogin = ipLogin;

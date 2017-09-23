@@ -137,12 +137,35 @@ public class GameClientManager
 
     public List<Habbo> getHabbosWithIP(String ip)
     {
-        return this.clients.values().stream().filter(client -> client.getHabbo().getHabboInfo().getIpLogin().equalsIgnoreCase(ip)).map(GameClient::getHabbo).collect(Collectors.toList());
+        List<Habbo> habbos = new ArrayList<Habbo>();
+
+        for (GameClient client : this.clients.values())
+        {
+            if (client.getHabbo() != null && client.getHabbo().getHabboInfo() != null)
+            {
+                if (client.getHabbo().getHabboInfo().getIpLogin().equalsIgnoreCase(ip))
+                {
+                    habbos.add(client.getHabbo());
+                }
+            }
+        }
+
+        return habbos;
     }
 
     public List<Habbo> getHabbosWithMachineId(String machineId)
     {
-        return this.clients.values().stream().filter(client -> client.getMachineId().equalsIgnoreCase(machineId)).map(GameClient::getHabbo).collect(Collectors.toList());
+        List<Habbo> habbos = new ArrayList<Habbo>();
+
+        for (GameClient client : this.clients.values())
+        {
+            if (client.getHabbo() != null && client.getHabbo().getHabboInfo() != null && client.getMachineId().equalsIgnoreCase(machineId))
+            {
+                habbos.add(client.getHabbo());
+            }
+        }
+
+        return habbos;
     }
 
     public void sendBroadcastResponse(MessageComposer composer)

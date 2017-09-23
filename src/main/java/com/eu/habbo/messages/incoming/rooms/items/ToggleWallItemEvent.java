@@ -28,6 +28,7 @@ public class ToggleWallItemEvent extends MessageHandler
 
         item.needsUpdate(true);
         item.onClick(this.client, room, new Object[]{state});
+        room.updateItem(item);
         Emulator.getThreading().run(item);
     }
 }

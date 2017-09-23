@@ -23,6 +23,7 @@ import com.eu.habbo.plugin.events.users.UserDisconnectEvent;
 import com.eu.habbo.plugin.events.users.UserPointsEvent;
 import gnu.trove.set.hash.THashSet;
 
+import java.net.InetSocketAddress;
 import java.sql.ResultSet;
 
 public class Habbo implements Runnable
@@ -130,7 +131,11 @@ public class Habbo implements Runnable
      */
     public void connect()
     {
-        //this.habboInfo.setIpLogin(((InetSocketAddress)this.client.getChannel().remoteAddress()).getAddress().getHostAddress());
+        if (!Emulator.getConfig().getBoolean("networking.tcp.proxy"))
+        {
+            this.habboInfo.setIpLogin(((InetSocketAddress) this.client.getChannel().remoteAddress()).getAddress().getHostAddress());
+        }
+
         this.isOnline(true);
 
         this.messenger.connectionChanged(this, true, false);
@@ -543,7 +548,7 @@ public class Habbo implements Runnable
     public void unMute()
     {
         this.habboStats.unMute();
-        this.client.sendResponse(new FloodCounterComposer(0));
+        this.client.sendResponse(new FloodCounterComposer(1));
         Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
         if (room != null)
         {

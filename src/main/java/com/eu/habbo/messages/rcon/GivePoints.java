@@ -36,6 +36,7 @@ public class GivePoints extends RCONMessage<GivePoints.JSONGivePoints>
                 statement.setInt(2, object.type);
                 statement.setInt(3, object.points);
                 statement.setInt(4, object.points);
+                statement.execute();
             }
             catch (SQLException e)
             {

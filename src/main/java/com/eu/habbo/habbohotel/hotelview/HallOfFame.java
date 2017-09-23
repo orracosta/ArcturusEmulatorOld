@@ -29,6 +29,8 @@ public class HallOfFame
      */
     public void reload()
     {
+        this.winners.clear();
+
         synchronized (this.winners)
         {
             try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement(); ResultSet set = statement.executeQuery(Emulator.getConfig().getValue("hotelview.halloffame.query")))

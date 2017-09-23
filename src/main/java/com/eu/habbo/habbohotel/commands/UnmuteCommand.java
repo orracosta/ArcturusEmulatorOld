@@ -42,7 +42,7 @@ public class UnmuteCommand extends Command
 
                 if (habbo.getHabboInfo().getCurrentRoom().isMuted(habbo))
                 {
-                    habbo.getHabboInfo().getCurrentRoom().muteHabbo(habbo, 0);
+                    habbo.getHabboInfo().getCurrentRoom().muteHabbo(habbo, 1);
                 }
 
                 if (habbo.getHabboInfo().getCurrentRoom() != null)

@@ -48,3 +48,8 @@ INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('hotel.marketplace.curr
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.error.cmd_pull.invalid', 'You cannot pull %username% to there.');
 INSERT INTO `emulator_texts` (`key`, `value`) VALUES ('commands.error.cmd_push.invalid', 'You cannot push %username% to there.');
 ALTER TABLE  `marketplace_items` ADD  `sold_timestamp` INT( 11 ) NOT NULL DEFAULT  '0' AFTER  `timestamp`;
+UPDATE permissions SET acc_debug = '0';
+
+ALTER TABLE  `permissions` ADD  `level` INT( 2 ) NOT NULL DEFAULT  '1' AFTER  `rank_name`;
+UPDATE permissions SET `level` = `id`;
+INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('networking.tcp.proxy', '0');
