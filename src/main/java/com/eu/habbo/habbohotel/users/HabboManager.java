@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -294,6 +295,30 @@ public class HabboManager
         }
 
         return habboInfo;
+    }
+
+    public List<Map.Entry<Integer, String>> getNameChanges(int userId, int limit)
+    {
+        List<Map.Entry<Integer, String>> nameChanges = new ArrayList<>();
+
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT timestamp, new_name FROM namechange_log WHERE user_id = ? ORDER by timestamp DESC LIMIT ?"))
+        {
+            statement.setInt(1, userId);
+            statement.setInt(2, limit);
+            try (ResultSet set = statement.executeQuery())
+            {
+                while (set.next())
+                {
+                    nameChanges.add(new AbstractMap.SimpleEntry<Integer, String>(set.getInt("timestamp"), set.getString("new_name")));
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            Emulator.getLogging().logSQLException(e);
+        }
+
+        return nameChanges;
     }
 
     /**

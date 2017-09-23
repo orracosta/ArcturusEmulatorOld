@@ -13,10 +13,7 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import gnu.trove.iterator.TIntIntIterator;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
+import java.util.*;
 
 public class UserInfoCommand extends Command
 {
@@ -96,6 +93,17 @@ public class UserInfoCommand extends Command
                 (onlineHabbo != null ? Emulator.getTexts().getValue("command.cmd_userinfo.allow_follow") + ": " + ((onlineHabbo.getHabboStats().blockFollowing) ? Emulator.getTexts().getValue("generic.no") : Emulator.getTexts().getValue("generic.yes")) + "\r" : "") +
                 (onlineHabbo != null ? Emulator.getTexts().getValue("command.cmd_userinfo.allow_friend_request") + ": " + ((onlineHabbo.getHabboStats().blockFriendRequests) ? Emulator.getTexts().getValue("generic.no") : Emulator.getTexts().getValue("generic.yes")) + "\r" : "");
 
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        List<Map.Entry<Integer, String>> nameChanges = Emulator.getGameEnvironment().getHabboManager().getNameChanges(habbo.getId(), 3);
+        if (!nameChanges.isEmpty())
+        {
+            message += "\r<b>Latest name changes:<b><br/>";
+            for (Map.Entry<Integer, String> entry : nameChanges)
+            {
+                message += format.format(new Date((long)entry.getKey() * 1000L)) + " : " + entry.getValue() + "<br/>";
+            }
+        }
+
         if(onlineHabbo != null)
         {
             message += "\r" +
@@ -116,7 +124,6 @@ public class UserInfoCommand extends Command
 
             message += "<b>Username,\tID,\tDate register,\tDate last online</b>\r";
 
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             for(HabboInfo info : users)
             {
                 message += info.getUsername() + ",\t" + info.getId() + ",\t" + format.format(new Date((long)info.getAccountCreated() * 1000L)) + ",\t" + format.format(new Date((long)info.getLastOnline() * 1000L)) + "\r";
