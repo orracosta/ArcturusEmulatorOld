@@ -349,6 +349,7 @@ public class HabboManager
             {
                 habbo.getClient().sendResponse(new ModToolComposer(habbo));
             }
+            habbo.getHabboInfo().run();
 
             habbo.getClient().sendResponse(new CatalogUpdatedComposer());
             habbo.getClient().sendResponse(new CatalogModeComposer(0));

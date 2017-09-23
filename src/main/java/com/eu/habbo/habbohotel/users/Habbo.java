@@ -548,7 +548,7 @@ public class Habbo implements Runnable
     public void unMute()
     {
         this.habboStats.unMute();
-        this.client.sendResponse(new FloodCounterComposer(1));
+        this.client.sendResponse(new FloodCounterComposer(3));
         Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
         if (room != null)
         {
