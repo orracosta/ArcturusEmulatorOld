@@ -2,6 +2,7 @@ package com.eu.habbo.messages.incoming.rooms.items;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPostIt;
+import com.eu.habbo.habbohotel.items.interactions.InteractionStickyPole;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
@@ -18,22 +19,25 @@ public class PostItPlaceEvent extends MessageHandler
 
         Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
 
-        if(room == null || !room.hasRights(this.client.getHabbo()))
-            return;
-
-        HabboItem item = this.client.getHabbo().getInventory().getItemsComponent().getHabboItem(itemId);
-
-        if(item != null && item instanceof InteractionPostIt)
+        if(room != null)
         {
-            room.addHabboItem(item);
-            item.setExtradata("FFFF33");
-            item.setRoomId(this.client.getHabbo().getHabboInfo().getCurrentRoom().getId());
-            item.setWallPosition(location);
-            item.setUserId(room.getOwnerId());
-            item.needsUpdate(true);
-            room.sendComposer(new AddWallItemComposer(item, this.client.getHabbo().getHabboInfo().getUsername()).compose());
-            this.client.sendResponse(new RemoveHabboItemComposer(item.getId()));
-            Emulator.getThreading().run(item);
+            if (room.hasRights(this.client.getHabbo()) || !room.getRoomSpecialTypes().getItemsOfType(InteractionStickyPole.class).isEmpty())
+            {
+                HabboItem item = this.client.getHabbo().getInventory().getItemsComponent().getHabboItem(itemId);
+
+                if (item != null && item instanceof InteractionPostIt)
+                {
+                    room.addHabboItem(item);
+                    item.setExtradata("FFFF33");
+                    item.setRoomId(this.client.getHabbo().getHabboInfo().getCurrentRoom().getId());
+                    item.setWallPosition(location);
+                    item.setUserId(this.client.getHabbo().getHabboInfo().getId());
+                    item.needsUpdate(true);
+                    room.sendComposer(new AddWallItemComposer(item, this.client.getHabbo().getHabboInfo().getUsername()).compose());
+                    this.client.sendResponse(new RemoveHabboItemComposer(item.getId()));
+                    Emulator.getThreading().run(item);
+                }
+            }
         }
     }
 }

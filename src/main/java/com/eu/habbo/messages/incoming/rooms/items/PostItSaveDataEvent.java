@@ -37,7 +37,7 @@ public class PostItSaveDataEvent extends MessageHandler
         if(item == null || !(item instanceof InteractionPostIt))
             return;
 
-        if(!color.equalsIgnoreCase("FFFF33") && !room.hasRights(this.client.getHabbo()))
+        if(!color.equalsIgnoreCase("FFFF33") && !room.hasRights(this.client.getHabbo())&& item.getUserId() != this.client.getHabbo().getHabboInfo().getId())
         {
             if(!text.startsWith(item.getExtradata().replace(item.getExtradata().split(" ")[0], "")))
             {
@@ -46,7 +46,7 @@ public class PostItSaveDataEvent extends MessageHandler
         }
         else
         {
-            if(!room.hasRights(this.client.getHabbo()))
+            if(!room.hasRights(this.client.getHabbo()) && item.getUserId() != this.client.getHabbo().getHabboInfo().getId())
                 return;
         }
 
