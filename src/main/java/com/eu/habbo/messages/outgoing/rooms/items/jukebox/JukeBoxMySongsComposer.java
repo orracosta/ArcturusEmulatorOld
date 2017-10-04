@@ -7,11 +7,13 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.set.hash.THashSet;
 
+import java.util.List;
+
 public class JukeBoxMySongsComposer extends MessageComposer
 {
-    private final THashSet<HabboItem> items;
+    private final List<InteractionMusicDisc> items;
 
-    public JukeBoxMySongsComposer(THashSet<HabboItem> items)
+    public JukeBoxMySongsComposer(List<InteractionMusicDisc> items)
     {
         this.items = items;
     }

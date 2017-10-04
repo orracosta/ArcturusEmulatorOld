@@ -309,6 +309,7 @@ public class Incoming
     public static final int HotelViewClaimBadgeRewardEvent = -1;
 
     public static final int JukeBoxAddSoundTrackEvent = 753;
+    public static final int JukeBoxRemoveSoundTrackEvent = 3050;
     public static final int ToggleMonsterplantBreedableEvent = 3379;
     public static final int CompostMonsterplantEvent = 3835;
     public static final int BreedPetsEvent = 1638;

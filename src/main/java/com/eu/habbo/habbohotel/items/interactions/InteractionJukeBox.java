@@ -1,5 +1,6 @@
 package com.eu.habbo.habbohotel.items.interactions;
 
+import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
@@ -12,35 +13,9 @@ import java.sql.SQLException;
 
 public class InteractionJukeBox extends HabboItem
 {
-    private int currentItem = 0;
-    private int currentIndex = 0;
-    private long startTime = 0;
-    private TIntArrayList musicDisks = new TIntArrayList();
-
     public InteractionJukeBox(ResultSet set, Item baseItem) throws SQLException
     {
         super(set, baseItem);
-
-        String[] data = set.getString("extra_data").split("\t");
-
-        if (data.length >= 2)
-        {
-            this.currentItem = Integer.valueOf(data[0]);
-            this.startTime = Integer.valueOf(data[1]);
-
-            if (data.length > 2)
-            {
-                int itemsCount = Integer.valueOf(data[2]);
-
-                if (data.length == itemsCount + 3)
-                {
-                    for (int i = 3; i < data.length; i++)
-                    {
-                        this.musicDisks.add(Integer.valueOf(data[i]));
-                    }
-                }
-            }
-        }
     }
 
     public InteractionJukeBox(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
@@ -52,7 +27,7 @@ public class InteractionJukeBox extends HabboItem
     public void serializeExtradata(ServerMessage serverMessage)
     {
         serverMessage.appendInt((this.isLimited() ? 256 : 0));
-        serverMessage.appendString(this.currentItem > 0 ? "1" : "0");
+        serverMessage.appendString(this.getExtradata());
 
         super.serializeExtradata(serverMessage);
     }
@@ -76,110 +51,44 @@ public class InteractionJukeBox extends HabboItem
     }
 
     @Override
-    public void onPickUp(Room room)
+    public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
-        super.onPickUp(room);
+        super.onClick(client, room, objects);
 
-        this.startTime = 0;
-        this.currentItem = 0;
-        this.musicDisks.clear();
+        if (client != null && objects.length == 1)
+        {
+            if ((Integer)objects[0] == 0)
+            {
+                if (room.getTraxManager().isPlaying())
+                {
+                    room.getTraxManager().stop();
+                } else
+                {
+                    room.getTraxManager().play(0);
+                }
+            }
+        }
     }
 
     @Override
-    public String getExtradata()
+    public void onPickUp(Room room)
     {
-        String data = this.currentItem + "\t" + this.startTime + "\t" + this.musicDisks.size();
+        super.onPickUp(room);
+        this.setExtradata("0");
 
-        for (Integer i : this.musicDisks.toArray())
+        if (room.getTraxManager().isPlaying() && room.getRoomSpecialTypes().getItemsOfType(InteractionJukeBox.class).isEmpty())
         {
-            data += "\t" + i;
-        }
-
-        return data;
-    }
-
-    public boolean hasItemInPlaylist(int itemId)
-    {
-        return this.musicDisks.contains(itemId);
-    }
-
-    public void addToPlayList(int itemId, Room room)
-    {
-        this.musicDisks.add(itemId);
-
-        if (this.currentItem == 0)
-        {
-            this.currentItem = itemId;
-            room.updateItem(this);
-            nextSong();
+            room.getTraxManager().clearPlayList();
         }
     }
 
-    public boolean removeFromPlayList(int itemId, Room room)
+    @Override
+    public void onPlace(Room room)
     {
-        this.musicDisks.remove(itemId);
-
-        if (this.currentItem == itemId)
+        super.onPlace(room);
+        if (room.getTraxManager().isPlaying())
         {
-            if (this.currentIndex >= this.musicDisks.size())
-            {
-                this.currentIndex = 0;
-                this.currentIndex = 0;
-            }
-
-
-            if (this.currentIndex < this.musicDisks.size())
-            {
-                this.currentItem = this.musicDisks.get(this.currentIndex);
-            }
-
-            room.updateItem(this);
-
-            return true;
+            this.setExtradata("1");
         }
-
-        return false;
-    }
-
-    public void nextSong()
-    {
-        this.currentIndex++;
-        this.currentIndex = this.currentIndex % this.getMusicDisks().size();
-
-        if (this.currentIndex < this.getMusicDisks().size())
-        {
-            this.currentItem = this.musicDisks.get(this.currentIndex);
-            this.startTime = System.currentTimeMillis();
-        }
-        else
-        {
-            this.currentIndex = 0;
-            this.currentItem = 0;
-
-            if (!this.musicDisks.isEmpty())
-            {
-                this.currentItem = this.musicDisks.get(this.currentIndex);
-            }
-        }
-    }
-
-    public int getCurrentItem()
-    {
-        return currentItem;
-    }
-
-    public int getCurrentIndex()
-    {
-        return currentIndex;
-    }
-
-    public long timePlayed()
-    {
-        return System.currentTimeMillis() - this.startTime;
-    }
-
-    public TIntArrayList getMusicDisks()
-    {
-        return musicDisks;
     }
 }

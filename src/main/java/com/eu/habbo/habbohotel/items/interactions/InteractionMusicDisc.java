@@ -5,6 +5,7 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
+import com.eu.habbo.messages.outgoing.rooms.items.jukebox.JukeBoxMySongsComposer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +13,7 @@ import java.sql.SQLException;
 public class InteractionMusicDisc extends HabboItem
 {
     private int songId;
+    private boolean inQueue;
 
     public InteractionMusicDisc(ResultSet set, Item baseItem) throws SQLException
     {
@@ -19,7 +21,7 @@ public class InteractionMusicDisc extends HabboItem
 
         String[] stuff = this.getExtradata().split("\n");
 
-        if(stuff.length == 7)
+        if(stuff.length >= 7)
         {
             this.songId = Integer.valueOf(stuff[6]);
         }
@@ -31,7 +33,7 @@ public class InteractionMusicDisc extends HabboItem
 
         String[] stuff = this.getExtradata().split("\n");
 
-        if(stuff.length == 7)
+        if(stuff.length >= 7)
         {
             this.songId = Integer.valueOf(stuff[6]);
         }
@@ -67,5 +69,31 @@ public class InteractionMusicDisc extends HabboItem
     public int getSongId()
     {
         return songId;
+    }
+
+    @Override
+    public void onPlace(Room room)
+    {
+        super.onPlace(room);
+
+        room.sendComposer(new JukeBoxMySongsComposer(room.getTraxManager().myList()).compose());
+    }
+
+    @Override
+    public void onPickUp(Room room)
+    {
+        super.onPickUp(room);
+
+        room.getTraxManager().removeSong(this.getId());
+    }
+
+    public boolean inQueue()
+    {
+        return this.inQueue;
+    }
+
+    public void inQueue(boolean inQueue)
+    {
+        this.inQueue = inQueue;
     }
 }

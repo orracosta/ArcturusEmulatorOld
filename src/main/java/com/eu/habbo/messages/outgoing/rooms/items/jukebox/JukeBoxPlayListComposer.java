@@ -11,48 +11,29 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class JukeBoxPlayListComposer extends MessageComposer
 {
-    private final InteractionJukeBox jukeBox;
-    private final Room room;
-
-    public JukeBoxPlayListComposer(InteractionJukeBox jukeBox, Room room)
+    private final List<InteractionMusicDisc> songs;
+    private final int totalLength;
+    public JukeBoxPlayListComposer(List<InteractionMusicDisc> songs, int totalLength)
     {
-        this.jukeBox = jukeBox;
-        this.room = room;
+        this.songs = songs;
+        this.totalLength = totalLength;
     }
 
     @Override
     public ServerMessage compose()
     {
         this.response.init(Outgoing.JukeBoxPlayListComposer);
+        this.response.appendInt(this.totalLength); //Dunno //TODO Total play length?
+        this.response.appendInt(songs.size());
 
-        ArrayList<SoundTrack> soundTracks = new ArrayList<SoundTrack>();
-
-        long totalTime = 0;
-        for (Integer i : this.jukeBox.getMusicDisks().toArray())
-        {
-            HabboItem item = room.getHabboItem(i);
-
-            if (item != null && item instanceof InteractionMusicDisc)
-            {
-                SoundTrack track = Emulator.getGameEnvironment().getItemManager().getSoundTrack(((InteractionMusicDisc) item).getSongId());
-
-                if (track != null)
-                {
-                    soundTracks.add(track);
-                    totalTime += (track.getLength() * 1000);
-                }
-            }
-        }
-        this.response.appendInt((int) totalTime); //Dunno //TODO Total play length?
-        this.response.appendInt(soundTracks.size());
-
-        for (SoundTrack soundTrack : soundTracks)
+        for (InteractionMusicDisc soundTrack : songs)
         {
             this.response.appendInt(soundTrack.getId());
-            this.response.appendInt(soundTrack.getLength() * 1000);
+            this.response.appendInt(soundTrack.getSongId());
         }
 
         return this.response;

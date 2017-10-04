@@ -140,6 +140,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     private volatile boolean promoted;
     private volatile int tradeMode;
     private volatile boolean moveDiagonally;
+    private volatile boolean jukeboxActive;
 
     private final ConcurrentHashMap<Integer, Habbo> currentHabbos = new ConcurrentHashMap<>(3);
     private final TIntObjectMap<Habbo>  habboQueue = TCollections.synchronizedMap(new TIntObjectHashMap<Habbo>(0));
@@ -187,6 +188,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public int wordQuizEnd = 0;
     public final List<Integer> userVotes;
     public ScheduledFuture roomCycleTask;
+    private TraxManager traxManager;
 
     public Room(ResultSet set) throws SQLException
     {
@@ -227,6 +229,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.overrideModel = set.getString("override_model").equals("1");
         this.layoutName = set.getString("model");
         this.promoted = set.getString("promoted").equals("1");
+        this.jukeboxActive = set.getString("jukebox_active").equals("1");
 
         this.bannedHabbos = new TIntObjectHashMap<RoomBan>();
         this.traxItems = new TIntArrayList();
@@ -390,6 +393,18 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             catch (Exception e)
             {
                 Emulator.getLogging().logErrorLine(e);
+            }
+
+            this.traxManager = new TraxManager(this);
+
+            if (this.jukeboxActive)
+            {
+                this.traxManager.play(0);
+                for (HabboItem item : this.roomSpecialTypes.getItemsOfType(InteractionJukeBox.class))
+                {
+                    item.setExtradata("1");
+                    this.updateItem(item);
+                }
             }
         }
 
@@ -727,6 +742,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         if (habbo != null) {
             habbo.getInventory().getItemsComponent().addItem(item);
             habbo.getClient().sendResponse(new AddHabboItemComposer(item));
+            habbo.getClient().sendResponse(new InventoryRefreshComposer());
         }
         Emulator.getThreading().run(item);
     }
@@ -886,6 +902,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
             if (this.loaded)
             {
+                if (!this.traxManager.disposed())
+                {
+                    this.traxManager.dispose();
+                }
                 try
                 {
                     this.roomCycleTask.cancel(false);
@@ -1164,7 +1184,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         if(this.needsUpdate)
         {
-            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE rooms SET name = ?, description = ?, password = ?, state = ?, users_max = ?, category = ?, score = ?, paper_floor = ?, paper_wall = ?, paper_landscape = ?, thickness_wall = ?, wall_height = ?, thickness_floor = ?, moodlight_data = ?, tags = ?, allow_other_pets = ?, allow_other_pets_eat = ?, allow_walkthrough = ?, allow_hidewall = ?, chat_mode = ?, chat_weight = ?, chat_speed = ?, chat_hearing_distance = ?, chat_protection =?, who_can_mute = ?, who_can_kick = ?, who_can_ban = ?, poll_id = ?, guild_id = ?, roller_speed = ?, override_model = ?, is_staff_picked = ?, promoted = ?, trade_mode = ?, move_diagonally = ?, owner_id = ?, owner_name = ? WHERE id = ?"))
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE rooms SET name = ?, description = ?, password = ?, state = ?, users_max = ?, category = ?, score = ?, paper_floor = ?, paper_wall = ?, paper_landscape = ?, thickness_wall = ?, wall_height = ?, thickness_floor = ?, moodlight_data = ?, tags = ?, allow_other_pets = ?, allow_other_pets_eat = ?, allow_walkthrough = ?, allow_hidewall = ?, chat_mode = ?, chat_weight = ?, chat_speed = ?, chat_hearing_distance = ?, chat_protection =?, who_can_mute = ?, who_can_kick = ?, who_can_ban = ?, poll_id = ?, guild_id = ?, roller_speed = ?, override_model = ?, is_staff_picked = ?, promoted = ?, trade_mode = ?, move_diagonally = ?, owner_id = ?, owner_name = ?, jukebox_active = ? WHERE id = ?"))
             {
                 statement.setString(1, this.name);
                 statement.setString(2, this.description);
@@ -1213,7 +1233,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 statement.setString(35, this.moveDiagonally ? "1" : "0");
                 statement.setInt(36, this.ownerId);
                 statement.setString(37, this.ownerName);
-                statement.setInt(38, this.id);
+                statement.setString(38, this.jukeboxActive ? "1" : "0");
+                statement.setInt(39, this.id);
                 statement.executeUpdate();
                 this.needsUpdate = false;
             }
@@ -1822,11 +1843,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     this.sendComposer(new RoomUserStatusComposer(updatedUnit, true).compose());
                 }
 
-                //Schrödingers wireds...?
                 for (ICycleable task : this.roomSpecialTypes.getCycleTasks())
                 {
                     task.cycle(this);
                 }
+
+                this.traxManager.cycle();
             }
             else
             {
@@ -2578,6 +2600,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         this.muted = muted;
     }
 
+    public TraxManager getTraxManager()
+    {
+        return this.traxManager;
+    }
+
     public void addHabboItem(HabboItem item)
     {
         if(item == null)
@@ -2703,6 +2730,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 this.roomSpecialTypes.addUndefined(item);
             }
             else if (item instanceof InteractionWiredHighscore)
+            {
+                this.roomSpecialTypes.addUndefined(item);
+            }
+            else if (item instanceof InteractionStickyPole)
             {
                 this.roomSpecialTypes.addUndefined(item);
             }
@@ -2904,6 +2935,10 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     this.roomSpecialTypes.removeUndefined(item);
                 }
                 else if (item instanceof InteractionWiredHighscore)
+                {
+                    this.roomSpecialTypes.removeUndefined(item);
+                }
+                else if (item instanceof InteractionStickyPole)
                 {
                     this.roomSpecialTypes.removeUndefined(item);
                 }

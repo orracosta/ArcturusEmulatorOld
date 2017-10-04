@@ -3,7 +3,11 @@ package com.eu.habbo.habbohotel.users.inventory;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.habbohotel.users.HabboInventory;
 import com.eu.habbo.habbohotel.users.HabboItem;
+import com.eu.habbo.plugin.events.inventory.InventoryItemAddedEvent;
+import com.eu.habbo.plugin.events.inventory.InventoryItemRemovedEvent;
+import com.eu.habbo.plugin.events.inventory.InventoryItemsAddedEvent;
 import gnu.trove.TCollections;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.TIntObjectMap;
@@ -22,8 +26,11 @@ public class ItemsComponent
 {
     private final TIntObjectMap<HabboItem> items = TCollections.synchronizedMap(new TIntObjectHashMap<HabboItem>());
 
-    public ItemsComponent(Habbo habbo)
+    private final HabboInventory inventory;
+
+    public ItemsComponent(HabboInventory inventory, Habbo habbo)
     {
+        this.inventory = inventory;
         this.items.putAll(loadItems(habbo));
     }
 
@@ -74,17 +81,29 @@ public class ItemsComponent
 			return;
         }
 
+        InventoryItemAddedEvent event = new InventoryItemAddedEvent(inventory, item);
+        if (Emulator.getPluginManager().fireEvent(event).isCancelled())
+        {
+            return;
+        }
+
         synchronized (this.items)
         {
-            this.items.put(item.getId(), item);
+            this.items.put(event.item.getId(), event.item);
         }
     }
 
     public void addItems(THashSet<HabboItem> items)
     {
+        InventoryItemsAddedEvent event = new InventoryItemsAddedEvent(inventory, items);
+        if (Emulator.getPluginManager().fireEvent(event).isCancelled())
+        {
+            return;
+        }
+
         synchronized (this.items)
         {
-            for (HabboItem item : items)
+            for (HabboItem item : event.items)
             {
                 if(item == null)
                 {
@@ -132,9 +151,15 @@ public class ItemsComponent
 
     public void removeHabboItem(HabboItem item)
     {
+        InventoryItemRemovedEvent event = new InventoryItemRemovedEvent(inventory, item);
+        if (Emulator.getPluginManager().fireEvent(event).isCancelled())
+        {
+            return;
+        }
+
         synchronized (this.items)
         {
-            this.items.remove(item.getId());
+            this.items.remove(event.item.getId());
         }
     }
 

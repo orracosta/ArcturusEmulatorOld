@@ -20,12 +20,14 @@ public class HabboInventory
     private PetsComponent petsComponent;
 
     private final THashSet<MarketPlaceOffer> items;
+    private final Habbo habbo;
 
     public HabboInventory(Habbo habbo)
     {
+        this.habbo = habbo;
         try
         {
-            this.badgesComponent = new BadgesComponent(habbo);
+            this.badgesComponent = new BadgesComponent(this.habbo);
         }
         catch (Exception e)
         {
@@ -34,7 +36,7 @@ public class HabboInventory
 
         try
         {
-            this.botsComponent = new BotsComponent(habbo);
+            this.botsComponent = new BotsComponent(this.habbo);
         }
         catch (Exception e)
         {
@@ -43,7 +45,7 @@ public class HabboInventory
 
         try
         {
-            this.effectsComponent = new EffectsComponent(habbo);
+            this.effectsComponent = new EffectsComponent(this.habbo);
         }
         catch (Exception e)
         {
@@ -52,7 +54,7 @@ public class HabboInventory
 
         try
         {
-            this.itemsComponent = new ItemsComponent(habbo);
+            this.itemsComponent = new ItemsComponent(this, this.habbo);
         }
         catch (Exception e)
         {
@@ -61,7 +63,7 @@ public class HabboInventory
 
         try
         {
-            this.petsComponent = new PetsComponent(habbo);
+            this.petsComponent = new PetsComponent(this.habbo);
         }
         catch (Exception e)
         {
@@ -70,14 +72,24 @@ public class HabboInventory
 
         try
         {
-            this.wardrobeComponent = new WardrobeComponent(habbo);
+            this.wardrobeComponent = new WardrobeComponent(this.habbo);
         }
         catch (Exception e)
         {
             Emulator.getLogging().logErrorLine(e);
         }
 
-        this.items = MarketPlace.getOwnOffers(habbo);
+        this.items = MarketPlace.getOwnOffers(this.habbo);
+    }
+
+    public WardrobeComponent getWardrobeComponent()
+    {
+        return this.wardrobeComponent;
+    }
+
+    public void setWardrobeComponent(WardrobeComponent wardrobeComponent)
+    {
+        this.wardrobeComponent = wardrobeComponent;
     }
 
     public BadgesComponent getBadgesComponent()
@@ -85,9 +97,19 @@ public class HabboInventory
         return this.badgesComponent;
     }
 
+    public void setBadgesComponent(BadgesComponent badgesComponent)
+    {
+        this.badgesComponent = badgesComponent;
+    }
+
     public BotsComponent getBotsComponent()
     {
         return this.botsComponent;
+    }
+
+    public void setBotsComponent(BotsComponent botsComponent)
+    {
+        this.botsComponent = botsComponent;
     }
 
     public EffectsComponent getEffectsComponent()
@@ -95,9 +117,19 @@ public class HabboInventory
         return this.effectsComponent;
     }
 
+    public void setEffectsComponent(EffectsComponent effectsComponent)
+    {
+        this.effectsComponent = effectsComponent;
+    }
+
     public ItemsComponent getItemsComponent()
     {
         return this.itemsComponent;
+    }
+
+    public void setItemsComponent(ItemsComponent itemsComponent)
+    {
+        this.itemsComponent = itemsComponent;
     }
 
     public PetsComponent getPetsComponent()
@@ -105,9 +137,9 @@ public class HabboInventory
         return this.petsComponent;
     }
 
-    public WardrobeComponent getWardrobeComponent()
+    public void setPetsComponent(PetsComponent petsComponent)
     {
-        return this.wardrobeComponent;
+        this.petsComponent = petsComponent;
     }
 
     public void dispose()
@@ -164,5 +196,10 @@ public class HabboInventory
         }
 
         return null;
+    }
+
+    public Habbo getHabbo()
+    {
+        return this.habbo;
     }
 }

@@ -53,3 +53,11 @@ UPDATE permissions SET acc_debug = '0';
 ALTER TABLE  `permissions` ADD  `level` INT( 2 ) NOT NULL DEFAULT  '1' AFTER  `rank_name`;
 UPDATE permissions SET `level` = `id`;
 INSERT INTO `emulator_settings` (`key`, `value`) VALUES ('networking.tcp.proxy', '0');
+
+CREATE TABLE `room_trax_playlist` (
+`room_id` INT NOT NULL ,
+`item_id` INT NOT NULL ,
+INDEX (  `room_id` )
+) ENGINE = INNODB ;
+
+ALTER TABLE  `rooms` ADD  `jukebox_active` ENUM(  '0',  '1' ) NOT NULL DEFAULT  '0';
