@@ -94,6 +94,7 @@ public class TraxManager implements Disposable
 
             if (this.currentlyPlaying != null)
             {
+                this.room.setJukeBoxActive(true);
                 this.startedTimestamp = Emulator.getIntUnixTimestamp();
                 this.playingIndex = index;
             }
@@ -108,6 +109,7 @@ public class TraxManager implements Disposable
 
     public void stop()
     {
+        this.room.setJukeBoxActive(false);
         this.currentlyPlaying = null;
         this.startedTimestamp = 0;
         this.playingIndex = 0;

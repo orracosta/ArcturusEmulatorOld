@@ -5095,5 +5095,9 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         return this.roomItems.size();
     }
 
-
+    public void setJukeBoxActive(boolean jukeBoxActive)
+    {
+        this.jukeboxActive = jukeBoxActive;
+        this.needsUpdate = true;
+    }
 }
