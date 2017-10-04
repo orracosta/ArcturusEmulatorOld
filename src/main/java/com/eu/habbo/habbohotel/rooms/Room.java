@@ -180,8 +180,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public volatile boolean preventUncaching = false;
     public THashMap<Integer, TIntArrayList> waterTiles;
     public final ConcurrentHashMap<RoomTile, THashSet<HabboItem>> tileCache = new ConcurrentHashMap<RoomTile, THashSet<HabboItem>>();
-    public final ConcurrentSet<ServerMessage> scheduledComposers = new ConcurrentSet<ServerMessage>();
-    public final ConcurrentSet<Runnable> scheduledTasks = new ConcurrentSet<Runnable>();
+    public ConcurrentSet<ServerMessage> scheduledComposers = new ConcurrentSet<ServerMessage>();
+    public ConcurrentSet<Runnable> scheduledTasks = new ConcurrentSet<Runnable>();
     public String wordQuiz = "";
     public int noVotes = 0;
     public int yesVotes = 0;
@@ -741,7 +741,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         Habbo habbo = (picker != null && picker.getHabboInfo().getId() == item.getId() ? picker : Emulator.getGameServer().getGameClientManager().getHabbo(item.getUserId()));
         if (habbo != null) {
             habbo.getInventory().getItemsComponent().addItem(item);
-            habbo.getClient().sendResponse(new AddHabboItemComposer(item));
             habbo.getClient().sendResponse(new InventoryRefreshComposer());
         }
         Emulator.getThreading().run(item);
@@ -1272,6 +1271,17 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
         if(loaded)
         {
+            if (!this.scheduledTasks.isEmpty())
+            {
+                ConcurrentSet<Runnable> tasks = this.scheduledTasks;
+                this.scheduledTasks = new ConcurrentSet<>();
+
+                for (Runnable runnable : tasks)
+                {
+                    Emulator.getThreading().run(runnable);
+                }
+            }
+
             if (!this.currentHabbos.isEmpty())
             {
                 this.idleCycles = 0;
@@ -1893,16 +1903,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             }
 
             this.scheduledComposers.clear();
-        }
-
-        if (!this.scheduledTasks.isEmpty())
-        {
-            for (Runnable runnable : this.scheduledTasks)
-            {
-                Emulator.getThreading().run(runnable);
-            }
-
-            this.scheduledTasks.clear();
         }
     }
 

@@ -65,6 +65,7 @@ public class RCONServer
         this.addRCONMessage("modticket",            CreateModToolTicket.class);
         this.addRCONMessage("talkuser",             TalkUser.class);
         this.addRCONMessage("changeroomowner",      ChangeRoomOwner.class);
+        this.addRCONMessage("muteuser",             MuteUser.class);
     }
 
     public void initialise()

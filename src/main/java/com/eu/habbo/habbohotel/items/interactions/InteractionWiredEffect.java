@@ -44,7 +44,10 @@ public abstract class InteractionWiredEffect extends InteractionWired
         if (client != null)
         {
             if (room.hasRights(client.getHabbo()))
+            {
                 client.sendResponse(new WiredEffectDataComposer(this, room));
+                this.activateBox(room);
+            }
         }
     }
 

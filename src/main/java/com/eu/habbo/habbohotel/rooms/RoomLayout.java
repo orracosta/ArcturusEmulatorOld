@@ -507,6 +507,7 @@ public class RoomLayout
         int offsetX = 0;
         int offsetY = 0;
 
+        rotation = rotation % 8;
         switch (rotation)
         {
             case 0: offsetY--; break;

@@ -43,10 +43,10 @@ public class OneWayGateActionOne implements Runnable
                     Emulator.getThreading().run(new HabboItemNewState(this.oneWayGate, this.room, "0"), 1000);
                 }
             }
-            else if (this.client.getHabbo().getRoomUnit().getX() == this.oneWayGate.getX() && this.client.getHabbo().getRoomUnit().getY() == this.oneWayGate.getY())
-            {
-                room.scheduledTasks.add(this);
-            }
+            //else if (this.client.getHabbo().getRoomUnit().getX() == this.oneWayGate.getX() && this.client.getHabbo().getRoomUnit().getY() == this.oneWayGate.getY())
+            //{
+            //    room.scheduledTasks.add(this);
+            //}
             else
             {
                 if (!this.oneWayGate.getExtradata().equals("0"))

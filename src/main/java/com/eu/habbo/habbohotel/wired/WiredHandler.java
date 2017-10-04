@@ -85,8 +85,7 @@ public class WiredHandler
     {
         if(trigger.execute(roomUnit, room, stuff))
         {
-            trigger.setExtradata(trigger.getExtradata().equals("1") ? "0" : "1");
-            room.sendComposer(new ItemStateComposer(trigger).compose());
+            trigger.activateBox(room);
 
             THashSet<InteractionWiredCondition> conditions = room.getRoomSpecialTypes().getConditions(trigger.getX(), trigger.getY());
             THashSet<InteractionWiredEffect> effects = room.getRoomSpecialTypes().getEffects(trigger.getX(), trigger.getY());
@@ -98,8 +97,7 @@ public class WiredHandler
             {
                 if(condition.execute(roomUnit, room, stuff))
                 {
-                    condition.setExtradata(condition.getExtradata().equals("1") ? "0" : "1");
-                    room.sendComposer(new ItemStateComposer(condition).compose());
+                    condition.activateBox(room);
                 }
                 else
                 {
@@ -115,8 +113,7 @@ public class WiredHandler
 
             for (InteractionWiredExtra extra : extras)
             {
-                extra.setExtradata(extra.getExtradata().equals("1") ? "0" : "1");
-                room.sendComposer(new ItemStateComposer(extra).compose());
+                extra.activateBox(room);
             }
 
             List<InteractionWiredEffect> effectList = new ArrayList<>(effects);
@@ -183,8 +180,7 @@ public class WiredHandler
                                 Emulator.getLogging().logErrorLine(e);
                             }
 
-                            effect.setExtradata(effect.getExtradata().equals("1") ? "0" : "1");
-                            room.sendComposer(new ItemStateComposer(effect).compose());
+                            effect.activateBox(room);
                         }
                     }
                 }, effect.getDelay() * 500);

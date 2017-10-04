@@ -3,6 +3,8 @@ package com.eu.habbo.habbohotel.items.interactions;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.users.Habbo;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,8 +22,15 @@ public class InteractionHabboClubTeleportTile extends InteractionTeleportTile
     }
 
     @Override
-    protected boolean canUseTeleport(GameClient client, Room room)
+    public boolean canWalkOn(RoomUnit roomUnit, Room room, Object[] objects)
     {
-        return super.canUseTeleport(client, room) && client.getHabbo().getHabboStats().hasActiveClub();
+        Habbo habbo = room.getHabbo(roomUnit);
+
+        if (habbo != null)
+        {
+            return habbo.getHabboStats().hasActiveClub();
+        }
+
+        return false;
     }
 }

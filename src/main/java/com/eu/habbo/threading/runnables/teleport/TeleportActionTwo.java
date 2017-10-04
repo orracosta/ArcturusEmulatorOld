@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
+import com.eu.habbo.threading.runnables.HabboItemNewState;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -34,8 +35,6 @@ class TeleportActionTwo implements Runnable
 
         this.client.getHabbo().getRoomUnit().getStatus().remove("mv");
         this.room.sendComposer(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()).compose());
-        this.currentTeleport.setExtradata("2");
-        this.room.updateItem(this.currentTeleport);
 
         if(((InteractionTeleport)this.currentTeleport).getTargetRoomId() > 0 && ((InteractionTeleport) this.currentTeleport).getTargetId() > 0)
         {
@@ -90,10 +89,16 @@ class TeleportActionTwo implements Runnable
 
         if(((InteractionTeleport) this.currentTeleport).getTargetRoomId() == 0)
         {
-            Emulator.getThreading().run(new TeleportActionFour(this.currentTeleport, this.room, this.client), 500);
+            //Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "1"), 0);
+            Emulator.getThreading().run(new TeleportActionFive(this.currentTeleport, this.room, this.client), 0);
             return;
         }
 
-        Emulator.getThreading().run(new TeleportActionThree(this.currentTeleport, this.room, this.client), 500);
+        this.currentTeleport.setExtradata("0");
+        this.room.updateItem(this.currentTeleport);
+
+        Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "2"), 500);
+        Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "0"), 1500);
+        Emulator.getThreading().run(new TeleportActionThree(this.currentTeleport, this.room, this.client), 1000);
     }
 }

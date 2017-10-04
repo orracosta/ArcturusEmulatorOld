@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
+import com.eu.habbo.messages.outgoing.rooms.items.ItemStateComposer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -94,4 +95,10 @@ public abstract class InteractionWired extends HabboItem
     }
 
     public abstract void onPickUp();
+
+    public void activateBox(Room room)
+    {
+        this.setExtradata(this.getExtradata().equals("1") ? "0" : "1");
+        room.sendComposer(new ItemStateComposer(this).compose());
+    }
 }

@@ -275,6 +275,10 @@ public class TraxManager implements Disposable
         {
             habbo.getClient().sendResponse(new JukeBoxNowPlayingMessageComposer(Emulator.getGameEnvironment().getItemManager().getSoundTrack(this.currentlyPlaying.getSongId()), this.playingIndex, 1000 * (Emulator.getIntUnixTimestamp() - this.startedTimestamp)));
         }
+        else
+        {
+            habbo.getClient().sendResponse(new JukeBoxNowPlayingMessageComposer(null, -1, 0));
+        }
     }
 
     @Override

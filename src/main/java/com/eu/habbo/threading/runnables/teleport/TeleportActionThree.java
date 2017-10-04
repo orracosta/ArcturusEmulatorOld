@@ -62,8 +62,8 @@ class TeleportActionThree implements Runnable
         targetRoom.sendComposer(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()).compose());
 
         this.client.getHabbo().getHabboInfo().setCurrentRoom(targetRoom);
-        Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, this.room, "0"), 500);
-        Emulator.getThreading().run(new TeleportActionFour(targetTeleport, targetRoom, this.client), 500);
+        //Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, this.room, "0"), 500);
+        Emulator.getThreading().run(new TeleportActionFour(targetTeleport, targetRoom, this.client), 1000);
 
     }
 }

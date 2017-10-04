@@ -31,7 +31,7 @@ class TeleportActionFour implements Runnable
             return;
         }
 
-        this.currentTeleport.setExtradata("1");
+        this.currentTeleport.setExtradata("0");
         this.room.updateItem(this.currentTeleport);
 
         Emulator.getThreading().run(new TeleportActionFive(this.currentTeleport, this.room, this.client), 500);

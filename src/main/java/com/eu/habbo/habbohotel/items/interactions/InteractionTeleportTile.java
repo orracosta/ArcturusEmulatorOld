@@ -14,9 +14,6 @@ import com.eu.habbo.threading.runnables.teleport.TeleportActionOne;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created by Murdock on 14/11/2016.
- */
 public class InteractionTeleportTile extends InteractionTeleport
 {
     public InteractionTeleportTile(ResultSet set, Item baseItem) throws SQLException
@@ -30,52 +27,8 @@ public class InteractionTeleportTile extends InteractionTeleport
     }
 
     @Override
-    public void onWalkOn(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
+    public boolean canWalkOn(RoomUnit roomUnit, Room room, Object[] objects)
     {
-        super.onWalkOn(roomUnit, room, objects);
-
-        Habbo habbo = room.getHabbo(roomUnit);
-
-
-        if (habbo != null && roomUnit.getGoal().x == this.getX() && roomUnit.getGoal().y == this.getY() && canUseTeleport(habbo.getClient(), room))
-        {
-            if (roomUnit.getGoal().equals(room.getLayout().getDoorTile()))
-                return;
-
-            HabboItem thisthing = this;
-            Emulator.getThreading().run(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    setExtradata("1");
-                    room.updateItem(thisthing);
-                    roomUnit.getStatus().remove("mv");
-                    room.sendComposer(new RoomUserStatusComposer(roomUnit).compose());
-                    Emulator.getThreading().run(new TeleportActionOne(thisthing, room, habbo.getClient()), 0);
-                    roomUnit.isTeleporting = true;
-                }
-            }, 500);
-        }
-    }
-
-    @Override
-    public void onClick(GameClient client, Room room, Object[] objects) throws Exception
-    {
-        client.getHabbo().getRoomUnit().setGoalLocation(room.getLayout().getTile(this.getX(), this.getY()));
-    }
-
-    protected boolean canUseTeleport(GameClient client, Room room)
-    {
-        if(client.getHabbo().getRoomUnit().isTeleporting)
-            return false;
-
-        if(!room.getHabbosAt(getX(), getY()).isEmpty())
-            return false;
-
-        if(!this.getExtradata().equals("0"))
-            return false;
-
         return true;
     }
 }

@@ -40,6 +40,9 @@ class TeleportActionFive implements Runnable
             }
         }
 
-        Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "0"), 1000);
+        this.currentTeleport.setExtradata("1");
+        room.updateItem(this.currentTeleport);
+
+        Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "0"), 1500);
     }
 }
