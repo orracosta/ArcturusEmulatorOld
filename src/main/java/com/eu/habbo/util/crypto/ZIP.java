@@ -5,7 +5,7 @@ import java.util.zip.Inflater;
 
 public class ZIP
 {
-    public final static byte[] inflate(byte[] data)
+    public static byte[] inflate(byte[] data)
     {
         try
         {
