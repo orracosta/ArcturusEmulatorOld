@@ -9,7 +9,7 @@ import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
 import com.eu.habbo.messages.outgoing.inventory.AddBotComposer;
 import com.eu.habbo.messages.outgoing.inventory.RemoveBotComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUsersComposer;
-import com.eu.habbo.plugin.events.bots.BotPickedUpEvent;
+import com.eu.habbo.plugin.events.bots.BotPickUpEvent;
 import com.eu.habbo.plugin.events.bots.BotPlacedEvent;
 import gnu.trove.map.hash.THashMap;
 
@@ -195,7 +195,7 @@ public class BotManager
     {
         if(bot != null && habbo != null)
         {
-            BotPickedUpEvent pickedUpEvent = new BotPickedUpEvent(bot, habbo);
+            BotPickUpEvent pickedUpEvent = new BotPickUpEvent(bot, habbo);
             Emulator.getPluginManager().fireEvent(pickedUpEvent);
 
             if(pickedUpEvent.isCancelled())

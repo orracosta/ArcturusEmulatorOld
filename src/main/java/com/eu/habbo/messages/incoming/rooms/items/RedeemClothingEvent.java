@@ -38,6 +38,7 @@ public class RedeemClothingEvent extends MessageHandler
                         {
                             item.setRoomId(0);
                             this.client.getHabbo().getHabboInfo().getCurrentRoom().removeHabboItem(item);
+                            this.client.getHabbo().getHabboInfo().getCurrentRoom().updateTile(this.client.getHabbo().getHabboInfo().getCurrentRoom().getLayout().getTile(item.getX(), item.getY()));
                             this.client.getHabbo().getHabboInfo().getCurrentRoom().sendComposer(new RemoveFloorItemComposer(item, true).compose());
                             Emulator.getThreading().run(new QueryDeleteHabboItem(item));
 
