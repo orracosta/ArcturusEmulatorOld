@@ -23,8 +23,8 @@ import java.util.concurrent.TimeUnit;
 
 public class GameCycle implements CometThread, Initializable {
     private static final int interval = 1;
-    private static final int PLAYER_REWARD_INTERVAL = 15; // minutes
-    private static final int PLAYER_REWARD_INTERVAL_DIAMONDS = 60; // minutes
+    private static final int PLAYER_REWARD_INTERVAL = CometSettings.onlineRewardInterval; // minutes
+    private static final int PLAYER_REWARD_INTERVAL_DIAMONDS = CometSettings.onlineRewardDiamondsInterval; // minutes
 
     private static GameCycle gameThreadInstance;
 
