@@ -138,4 +138,8 @@ public interface BasePlayer {
     long getLastReward();
 
     void setLastReward(long lastReward);
+
+    long getLastRewardDiamond();
+
+    void setLastRewardDiamond(long lastReward);
 }

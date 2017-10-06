@@ -807,4 +807,40 @@ public class PlayerDao {
             SqlHelper.closeSilently(sqlConnection);
         }
     }
+    public static void updatePromoPoints(String username) {
+        Connection sqlConnection = null;
+        PreparedStatement preparedStatement = null;
+
+        String query = "UPDATE players SET ";
+
+        if (CometSettings.defaultPromoPointsColumn.contains(";")) {
+            int length = CometSettings.defaultPromoPointsColumn.split("[;]").length;
+            int currentIndex = 0;
+
+            for (String column : CometSettings.defaultPromoPointsColumn.split("[;]")) {
+                query = query + column + " = " + column + " + " + CometSettings.defaultPromoPointsQuantity;
+                if (++currentIndex != length) {
+                    query = query + ", ";
+                }
+            }
+        } else {
+            query = String.valueOf(query) + CometSettings.defaultPromoPointsColumn + " = " + CometSettings.defaultPromoPointsColumn + " + " + CometSettings.defaultPromoPointsQuantity;
+        }
+
+        query = String.valueOf(query) + " WHERE username = ? LIMIT 1";
+
+        try {
+            sqlConnection = SqlHelper.getConnection();
+
+            preparedStatement = SqlHelper.prepare(query, sqlConnection);
+            preparedStatement.setString(1, username);
+
+            SqlHelper.executeStatementSilently(preparedStatement, false);
+        } catch (SQLException e) {
+            SqlHelper.handleSqlException(e);
+        } finally {
+            SqlHelper.closeSilently(preparedStatement);
+            SqlHelper.closeSilently(sqlConnection);
+        }
+    }
 }

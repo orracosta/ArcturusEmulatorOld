@@ -33,7 +33,7 @@ public class PromoPointsCommand extends ChatCommand {
             for (String nome : username.split("[;]")) {
                 Session session = NetworkManager.getInstance().getSessions().getByPlayerUsername(nome);
                 if (session != null) {
-                    PlayerDao.updateEventPoints(nome);
+                    PlayerDao.updatePromoPoints(nome);
 
                     String notif = "";
                     if (CometSettings.enablePromoWinnerReward) {
@@ -62,7 +62,7 @@ public class PromoPointsCommand extends ChatCommand {
                 } else {
                     PlayerData playerData = PlayerDao.getDataByUsername(nome);
                     if (playerData != null) {
-                        PlayerDao.updateEventPoints(nome);
+                        PlayerDao.updatePromoPoints(nome);
                         if (CometSettings.promoWinnerRewardType.equals("diamonds")) {
                             playerData.increasePoints(CometSettings.promoWinnerRewardQuantity);
                         } else if (CometSettings.promoWinnerRewardType.equals("credits")) {
@@ -90,7 +90,7 @@ public class PromoPointsCommand extends ChatCommand {
         } else {
             Session session = NetworkManager.getInstance().getSessions().getByPlayerUsername(username);
             if (session != null) {
-                PlayerDao.updateEventPoints(username);
+                PlayerDao.updatePromoPoints(username);
 
                 String notif = "";
                 if (CometSettings.enablePromoWinnerReward) {
@@ -129,7 +129,7 @@ public class PromoPointsCommand extends ChatCommand {
             }
             PlayerData playerData = PlayerDao.getDataByUsername(username);
             if (playerData != null) {
-                PlayerDao.updateEventPoints(username);
+                PlayerDao.updatePromoPoints(username);
 
                 if (CometSettings.promoWinnerRewardType.equals("diamonds")) {
                     playerData.increasePoints(CometSettings.promoWinnerRewardQuantity);

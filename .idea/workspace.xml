@@ -17,11 +17,86 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Comet.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Comet.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/boot/Comet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="215">
-              <caret line="115" column="0" lean-forward="true" selection-start-line="115" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
+            <state relative-caret-position="0">
+              <caret line="137" column="39" lean-forward="false" selection-start-line="137" selection-start-column="39" selection-end-line="137" selection-end-column="39" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ConfigDao.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/storage/queries/config/ConfigDao.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="93" column="57" lean-forward="false" selection-start-line="93" selection-start-column="30" selection-end-line="93" selection-end-column="57" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CometSettings.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/config/CometSettings.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="176">
+              <caret line="18" column="26" lean-forward="true" selection-start-line="18" selection-start-column="26" selection-end-line="18" selection-end-column="45" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GameCycle.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/GameCycle.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-97">
+              <caret line="105" column="21" lean-forward="true" selection-start-line="105" selection-start-column="21" selection-end-line="105" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PromoPointsCommand.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/commands/staff/rewards/PromoPointsCommand.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="259">
+              <caret line="97" column="68" lean-forward="false" selection-start-line="97" selection-start-column="54" selection-end-line="97" selection-end-column="68" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Player.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/players/types/Player.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="202">
+              <caret line="143" column="49" lean-forward="true" selection-start-line="143" selection-start-column="49" selection-end-line="143" selection-end-column="49" />
+              <folding>
+                <element signature="e#15860#15861#0" expanded="true" />
+                <element signature="e#15893#15894#0" expanded="true" />
+                <element signature="e#16057#16058#0" expanded="true" />
+                <element signature="e#16097#16098#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BasePlayer.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/api/game/players/BasePlayer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="404">
+              <caret line="136" column="0" lean-forward="true" selection-start-line="136" selection-start-column="0" selection-end-line="136" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PlayerDao.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/storage/queries/player/PlayerDao.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="265">
+              <caret line="813" column="45" lean-forward="true" selection-start-line="813" selection-start-column="45" selection-end-line="813" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -38,17 +113,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>127.0.0.3</find>
-      <find>cannnon</find>
-      <find>cannon</find>
-      <find>birthday</find>
-      <find>getAge</find>
-      <find>age</find>
-      <find>EventPointsCommand</find>
-      <find>defaultEventPointsQuantity</find>
-      <find>enableEventWinnerReward</find>
-      <find>command.name.eventpoint</find>
-      <find>command.name</find>
       <find>ã</find>
       <find>dimmer</find>
       <find>moderation_help_tickets</find>
@@ -56,6 +120,29 @@
       <find>wf_cnd_not_wearing_b</find>
       <find>logg</find>
       <find>Error during WiredTrigger evaluation</find>
+      <find>default_promo</find>
+      <find>promo_pts</find>
+      <find>room_bundle</find>
+      <find>loadActiveBundles</find>
+      <find>default_event</find>
+      <find>defaultPromoPointsColumn</find>
+      <find>defaultEventPointsColumn</find>
+      <find>updateEventPoints</find>
+      <find>updatePromoPoints</find>
+      <find>enableEventWinnerNotification</find>
+      <find>event</find>
+      <find>online_reward_diamonds_enabled</find>
+      <find>onlineRewardDiamondsEnabled</find>
+      <find>onlineRewardInterval</find>
+      <find>getLastReward</find>
+      <find>lastReward</find>
+      <find>onlineRewardEnabled</find>
+      <find>LastReward</find>
+      <find>rewardTimings</find>
+      <find>ManiaEMU</find>
+      <find>increaseCredits</find>
+      <find>onlineRewardCredits</find>
+      <find>PLAYER_REWARD_INTERVAL</find>
     </findStrings>
     <replaceStrings>
       <replace>54.36.146.84</replace>
@@ -63,7 +150,14 @@
       <replace>defaultPromoPointsQuantity</replace>
       <replace>enablePromoWinnerReward</replace>
       <replace>\u00e3</replace>
+      <replace>updatePromoPoints</replace>
     </replaceStrings>
+    <dirStrings>
+      <dir>C:\Users\Administrator\Documents\GitHub\ManiaEMU</dir>
+    </dirStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
@@ -79,7 +173,6 @@
         <option value="$PROJECT_DIR$/src/com/habboproject/server/network/messages/outgoing/room/pets/PetInformationMessageComposer.java" />
         <option value="$PROJECT_DIR$/src/com/habboproject/server/game/commands/staff/rewards/mass/PromoPointsCommand.java" />
         <option value="$PROJECT_DIR$/src/com/habboproject/server/game/commands/CommandManager.java" />
-        <option value="$PROJECT_DIR$/src/com/habboproject/server/game/commands/staff/rewards/PromoPointsCommand.java" />
         <option value="$PROJECT_DIR$/src/com/habboproject/server/game/rooms/models/RoomModel.java" />
         <option value="$PROJECT_DIR$/src/com/habboproject/server/game/rooms/types/components/games/RoomGame.java" />
         <option value="$PROJECT_DIR$/src/com/habboproject/server/game/rooms/types/components/ProcessComponent.java" />
@@ -87,6 +180,12 @@
         <option value="$PROJECT_DIR$/src/com/habboproject/server/game/rooms/objects/items/types/floor/wired/conditions/positive/WiredConditionFurniHasPlayers.java" />
         <option value="$PROJECT_DIR$/src/com/habboproject/server/game/rooms/objects/items/types/floor/wired/base/WiredTriggerItem.java" />
         <option value="$PROJECT_DIR$/src/com/habboproject/server/boot/Comet.java" />
+        <option value="$PROJECT_DIR$/src/com/habboproject/server/storage/queries/player/PlayerDao.java" />
+        <option value="$PROJECT_DIR$/src/com/habboproject/server/game/commands/staff/rewards/PromoPointsCommand.java" />
+        <option value="$PROJECT_DIR$/src/com/habboproject/server/api/game/players/BasePlayer.java" />
+        <option value="$PROJECT_DIR$/src/com/habboproject/server/game/players/types/Player.java" />
+        <option value="$PROJECT_DIR$/src/com/habboproject/server/game/rooms/objects/items/types/floor/wired/actions/WiredActionGiveReward.java" />
+        <option value="$PROJECT_DIR$/src/com/habboproject/server/game/GameCycle.java" />
       </list>
     </option>
   </component>
@@ -117,50 +216,42 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="Habbo Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Habbo Project" type="462c0819:PsiDirectoryNode" />
+              <item name="ManiaEMU" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ManiaEMU" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="Habbo Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Habbo Project" type="462c0819:PsiDirectoryNode" />
+              <item name="ManiaEMU" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ManiaEMU" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="Habbo Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Habbo Project" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Habbo Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Habbo Project" type="462c0819:PsiDirectoryNode" />
+              <item name="ManiaEMU" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ManiaEMU" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="boot" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="Habbo Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Habbo Project" type="462c0819:PsiDirectoryNode" />
+              <item name="ManiaEMU" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ManiaEMU" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="server" type="462c0819:PsiDirectoryNode" />
               <item name="game" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="Habbo Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Habbo Project" type="462c0819:PsiDirectoryNode" />
+              <item name="ManiaEMU" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ManiaEMU" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="server" type="462c0819:PsiDirectoryNode" />
               <item name="game" type="462c0819:PsiDirectoryNode" />
               <item name="commands" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="Habbo Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Habbo Project" type="462c0819:PsiDirectoryNode" />
+              <item name="ManiaEMU" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ManiaEMU" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="server" type="462c0819:PsiDirectoryNode" />
               <item name="game" type="462c0819:PsiDirectoryNode" />
@@ -168,110 +259,29 @@
               <item name="staff" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="Habbo Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Habbo Project" type="462c0819:PsiDirectoryNode" />
+              <item name="ManiaEMU" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ManiaEMU" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="server" type="462c0819:PsiDirectoryNode" />
               <item name="game" type="462c0819:PsiDirectoryNode" />
               <item name="commands" type="462c0819:PsiDirectoryNode" />
               <item name="staff" type="462c0819:PsiDirectoryNode" />
               <item name="rewards" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Habbo Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Habbo Project" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="commands" type="462c0819:PsiDirectoryNode" />
-              <item name="staff" type="462c0819:PsiDirectoryNode" />
-              <item name="rewards" type="462c0819:PsiDirectoryNode" />
-              <item name="mass" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Habbo Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Habbo Project" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="rooms" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Habbo Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Habbo Project" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="rooms" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Habbo Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Habbo Project" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="rooms" type="462c0819:PsiDirectoryNode" />
-              <item name="types" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Habbo Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Habbo Project" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="network" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Habbo Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Habbo Project" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="network" type="462c0819:PsiDirectoryNode" />
-              <item name="messages" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Habbo Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Habbo Project" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="network" type="462c0819:PsiDirectoryNode" />
-              <item name="messages" type="462c0819:PsiDirectoryNode" />
-              <item name="incoming" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Habbo Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Habbo Project" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="network" type="462c0819:PsiDirectoryNode" />
-              <item name="messages" type="462c0819:PsiDirectoryNode" />
-              <item name="incoming" type="462c0819:PsiDirectoryNode" />
-              <item name="room" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Habbo Project" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Habbo Project" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="network" type="462c0819:PsiDirectoryNode" />
-              <item name="messages" type="462c0819:PsiDirectoryNode" />
-              <item name="incoming" type="462c0819:PsiDirectoryNode" />
-              <item name="room" type="462c0819:PsiDirectoryNode" />
-              <item name="floor" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
       <pane id="PackagesPane" />
+      <pane id="AndroidView" />
+      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -411,11 +421,15 @@
       <workItem from="1507178545113" duration="35000" />
       <workItem from="1507179180846" duration="504000" />
       <workItem from="1507180378839" duration="136000" />
+      <workItem from="1507185071592" duration="61000" />
+      <workItem from="1507233649301" duration="617000" />
+      <workItem from="1507240266240" duration="2613000" />
+      <workItem from="1507277618518" duration="3606000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17169000" />
+    <option name="totallyTimeSpent" value="24066000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="2568" height="1044" extended-state="6" />
@@ -423,19 +437,21 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32925472" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32925472" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16521049" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16759333" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -446,9 +462,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32925472" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -462,69 +476,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/rooms/objects/items/types/floor/wired/conditions/positive/WiredConditionTriggererOnFurni.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="496">
-          <caret line="31" column="14" lean-forward="false" selection-start-line="31" selection-start-column="14" selection-end-line="31" selection-end-column="103" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/rooms/types/components/ProcessComponent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5168">
-          <caret line="363" column="44" lean-forward="true" selection-start-line="363" selection-start-column="44" selection-end-line="363" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/src.zip!/java/util/concurrent/CopyOnWriteArrayList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17664">
-          <caret line="1104" column="0" lean-forward="false" selection-start-line="1104" selection-start-column="0" selection-end-line="1104" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/storage/queries/moderation/TicketDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="816">
-          <caret line="66" column="225" lean-forward="false" selection-start-line="66" selection-start-column="225" selection-end-line="66" selection-end-column="225" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/rooms/types/components/games/RoomGame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1696">
-          <caret line="124" column="57" lean-forward="true" selection-start-line="124" selection-start-column="57" selection-end-line="124" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/rooms/types/components/EntityComponent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2496">
-          <caret line="185" column="24" lean-forward="false" selection-start-line="185" selection-start-column="24" selection-end-line="185" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/rooms/objects/items/types/floor/wired/base/WiredTriggerItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1760">
-          <caret line="129" column="33" lean-forward="false" selection-start-line="129" selection-start-column="33" selection-end-line="129" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/boot/Comet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/boot/Comet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/rooms/objects/items/types/floor/pirates/CannonFloorItem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1184">
@@ -557,7 +508,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="192">
           <caret line="20" column="33" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -572,7 +522,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="209">
           <caret line="164" column="21" lean-forward="false" selection-start-line="164" selection-start-column="21" selection-end-line="164" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -580,13 +529,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="151">
           <caret line="86" column="62" lean-forward="true" selection-start-line="86" selection-start-column="62" selection-end-line="86" selection-end-column="62" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <marker date="1507163316835" expanded="false" signature="9426:9437" ph=" { " />
-            <marker date="1507163316835" expanded="false" signature="9469:9475" ph=" }" />
-            <marker date="1507163316835" expanded="false" signature="9525:9536" ph=" { " />
-            <marker date="1507163316835" expanded="false" signature="9592:9598" ph=" }" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -594,7 +536,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="48">
           <caret line="32" column="8" lean-forward="false" selection-start-line="32" selection-start-column="8" selection-end-line="32" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -602,7 +543,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1200">
           <caret line="93" column="55" lean-forward="false" selection-start-line="93" selection-start-column="55" selection-end-line="93" selection-end-column="55" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -695,8 +635,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/boot/Comet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="115" column="0" lean-forward="true" selection-start-line="115" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="137" column="39" lean-forward="false" selection-start-line="137" selection-start-column="39" selection-end-line="137" selection-end-column="39" />
           <folding />
         </state>
       </provider>
@@ -736,31 +676,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/config/CometSettings.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="64" column="25" lean-forward="false" selection-start-line="64" selection-start-column="25" selection-end-line="64" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/commands/CommandManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="209">
           <caret line="164" column="21" lean-forward="false" selection-start-line="164" selection-start-column="21" selection-end-line="164" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/commands/staff/rewards/PromoPointsCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="86" column="62" lean-forward="true" selection-start-line="86" selection-start-column="62" selection-end-line="86" selection-end-column="62" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <marker date="1507163316835" expanded="false" signature="9426:9437" ph=" { " />
-            <marker date="1507163316835" expanded="false" signature="9469:9475" ph=" }" />
-            <marker date="1507163316835" expanded="false" signature="9525:9536" ph=" { " />
-            <marker date="1507163316835" expanded="false" signature="9592:9598" ph=" }" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -838,6 +757,99 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="193">
           <caret line="129" column="33" lean-forward="false" selection-start-line="129" selection-start-column="33" selection-end-line="129" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/update_query.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="33" column="39" lean-forward="false" selection-start-line="33" selection-start-column="39" selection-end-line="33" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/storage/queries/rooms/BundleDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="656">
+          <caret line="56" column="5" lean-forward="false" selection-start-line="56" selection-start-column="5" selection-end-line="56" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/commands/staff/bundles/BundleCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="569">
+          <caret line="76" column="39" lean-forward="false" selection-start-line="76" selection-start-column="39" selection-end-line="76" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/storage/queries/player/PlayerDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="265">
+          <caret line="813" column="45" lean-forward="true" selection-start-line="813" selection-start-column="45" selection-end-line="813" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/storage/queries/config/ConfigDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="93" column="57" lean-forward="false" selection-start-line="93" selection-start-column="30" selection-end-line="93" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/api/game/players/BasePlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="404">
+          <caret line="136" column="0" lean-forward="true" selection-start-line="136" selection-start-column="0" selection-end-line="136" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/players/types/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="143" column="49" lean-forward="true" selection-start-line="143" selection-start-column="49" selection-end-line="143" selection-end-column="49" />
+          <folding>
+            <element signature="e#15860#15861#0" expanded="true" />
+            <element signature="e#15893#15894#0" expanded="true" />
+            <element signature="e#16057#16058#0" expanded="true" />
+            <element signature="e#16097#16098#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/config/CometSettings.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="18" column="26" lean-forward="true" selection-start-line="18" selection-start-column="26" selection-end-line="18" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/rooms/objects/items/types/floor/wired/actions/WiredActionGiveReward.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="257">
+          <caret line="147" column="25" lean-forward="true" selection-start-line="147" selection-start-column="25" selection-end-line="147" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/commands/staff/rewards/PromoPointsCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="259">
+          <caret line="97" column="68" lean-forward="false" selection-start-line="97" selection-start-column="54" selection-end-line="97" selection-end-column="68" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/GameCycle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-97">
+          <caret line="105" column="21" lean-forward="true" selection-start-line="105" selection-start-column="21" selection-end-line="105" selection-end-column="21" />
+          <folding />
         </state>
       </provider>
     </entry>

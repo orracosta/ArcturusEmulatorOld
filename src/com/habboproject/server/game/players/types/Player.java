@@ -97,6 +97,8 @@ public class Player implements BasePlayer {
 
     private long lastReward = 0;
 
+    private long lastRewardDiamond = 0;
+
     private boolean invisible = false;
 
     private int lastTradePlayer = 0;
@@ -139,6 +141,7 @@ public class Player implements BasePlayer {
 
         this.entity = null;
         this.lastReward = Comet.getTime();
+        this.lastRewardDiamond = Comet.getTime();
     }
 
     @Override
@@ -558,6 +561,16 @@ public class Player implements BasePlayer {
     @Override
     public void setLastReward(long lastReward) {
         this.lastReward = lastReward;
+    }
+
+    @Override
+    public long getLastRewardDiamond() {
+        return lastRewardDiamond;
+    }
+
+    @Override
+    public void setLastRewardDiamond(long lastRewardDiamond) {
+        this.lastRewardDiamond = lastRewardDiamond;
     }
 
     public int getLastForumPost() {

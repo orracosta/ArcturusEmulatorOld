@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 public class GameCycle implements CometThread, Initializable {
     private static final int interval = 1;
     private static final int PLAYER_REWARD_INTERVAL = 15; // minutes
+    private static final int PLAYER_REWARD_INTERVAL_DIAMONDS = 60; // minutes
 
     private static GameCycle gameThreadInstance;
 
@@ -100,7 +101,7 @@ public class GameCycle implements CometThread, Initializable {
         final int dailyRespects = 3;
         final int dailyScratches = 3;
 
-        if (CometSettings.onlineRewardEnabled || updateDaily) {
+        if (CometSettings.onlineRewardEnabled || updateDaily || CometSettings.onlineRewardDiamondsEnabled) {
             for (BaseSession client : NetworkManager.getInstance().getSessions().getSessions().values()) {
                 try {
                     if (!(client instanceof Session) || client.getPlayer() == null || client.getPlayer().getData() == null) {
@@ -118,6 +119,7 @@ public class GameCycle implements CometThread, Initializable {
                     ((Session) client).getPlayer().getAchievements().progressAchievement(AchievementType.ONLINE_TIME, 1);
 
                     final boolean needsReward = (Comet.getTime() - client.getPlayer().getLastReward()) >= (60 * PLAYER_REWARD_INTERVAL);
+                    final boolean needsRewardDiamond = (Comet.getTime() - client.getPlayer().getLastRewardDiamond()) >= (60 * PLAYER_REWARD_INTERVAL_DIAMONDS);
 
                     if (needsReward) {
                         if (CometSettings.onlineRewardCredits > 0) {
@@ -132,6 +134,16 @@ public class GameCycle implements CometThread, Initializable {
                         client.getPlayer().getData().save();
 
                         client.getPlayer().setLastReward(Comet.getTime());
+                    }
+                    if (needsRewardDiamond) {
+                        if (CometSettings.onlineRewardDiamondsQuantity > 0) {
+                            client.getPlayer().getData().increasePoints(CometSettings.onlineRewardDiamondsQuantity);
+                        }
+
+                        client.getPlayer().sendBalance();
+                        client.getPlayer().getData().save();
+
+                        client.getPlayer().setLastRewardDiamond(Comet.getTime());
                     }
                 } catch (Exception e) {
                     log.error("Error while cycling rewards", e);
