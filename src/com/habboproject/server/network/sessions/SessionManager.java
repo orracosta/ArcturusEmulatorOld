@@ -149,6 +149,19 @@ public final class SessionManager implements ISessionManager {
         }
     }
 
+    public void broadcastCatalogUpdate() {
+        for (BaseSession session : this.sessions.values()) {
+            if (session.getPlayer() == null || session.getPlayer().getSettings() == null)
+                continue;
+
+            if (!session.getPlayer().getSettings().catalogUpdateMessage()) {
+                session.getPlayer().getSettings().setCatalogUpdateMessage(true);
+                continue;
+            }
+
+        }
+    }
+
     public ChannelGroup getChannelGroup() {
         return channelGroup;
     }

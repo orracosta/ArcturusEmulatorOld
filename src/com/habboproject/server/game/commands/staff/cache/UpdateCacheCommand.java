@@ -71,7 +71,8 @@ public class UpdateCacheCommand extends ChatCommand {
                 CatalogManager.getInstance().loadItemsAndPages();
                 CatalogManager.getInstance().loadGiftBoxes();
 
-                NetworkManager.getInstance().getSessions().broadcast(new CatalogPublishMessageComposer(true));
+                NetworkManager.getInstance().getSessions().broadcast(new CatalogPublishMessageComposer(false));
+               // NetworkManager.getInstance().getSessions().broadcastCatalogUpdate();
                 sendNotif(Locale.get("command.reload.catalog"), client);
                 break;
 

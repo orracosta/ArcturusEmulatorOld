@@ -36,6 +36,8 @@ public class PlayerSettings implements IPlayerSettings {
 
     private boolean enableEventNotif = true;
 
+    private boolean catalogUpdateMessage = false;
+
     public PlayerSettings(ResultSet data, boolean isLogin) throws SQLException {
         if (isLogin) {
             String volumeData = data.getString("playerSettings_volume");
@@ -194,6 +196,14 @@ public class PlayerSettings implements IPlayerSettings {
 
     public void setEnableEventNotif(boolean enableEventNotif) {
         this.enableEventNotif = enableEventNotif;
+    }
+
+    public boolean catalogUpdateMessage() {
+        return this.catalogUpdateMessage;
+    }
+
+    public void setCatalogUpdateMessage(boolean catalogUpdateMessage) {
+        this.catalogUpdateMessage = catalogUpdateMessage;
     }
 
     public boolean cameraFollow() {

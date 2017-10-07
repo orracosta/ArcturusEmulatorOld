@@ -2,6 +2,7 @@ package com.habboproject.server.network.messages.incoming.catalog.root;
 
 import com.habboproject.server.network.messages.incoming.Event;
 import com.habboproject.server.network.messages.outgoing.catalog.CatalogIndexMessageComposer;
+import com.habboproject.server.network.messages.outgoing.catalog.CatalogPublishMessageComposer;
 import com.habboproject.server.network.sessions.Session;
 import com.habboproject.server.protocol.messages.MessageEvent;
 

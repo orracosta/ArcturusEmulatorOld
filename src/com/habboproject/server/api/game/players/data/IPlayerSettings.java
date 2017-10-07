@@ -38,5 +38,9 @@ public interface IPlayerSettings {
 
     boolean enableEventNotif();
 
+    boolean catalogUpdateMessage();
+
     void setIgnoreInvites(boolean ignoreInvites);
+
+    void setCatalogUpdateMessage(boolean catalogUpdateMessage);
 }
