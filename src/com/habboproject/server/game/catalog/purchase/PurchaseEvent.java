@@ -170,7 +170,7 @@ public class PurchaseEvent {
             int totalCostPoints;
             int totalCostActivityPoints;
 
-            if (item.getLimitedSells() >= item.getLimitedTotal() && item.getLimitedTotal() != 0) {
+            if ((item.getLimitedSells() >= item.getLimitedTotal() && item.getLimitedTotal() != 0) && (client.getPlayer().getData().getRank() <= CometSettings.maxrankPurchaseLtd)) {
 //                client.send(new LimitedEditionSoldOutMessageComposer());
                 // TODO: Fix this.
                 return;

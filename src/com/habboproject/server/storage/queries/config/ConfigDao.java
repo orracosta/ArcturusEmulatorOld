@@ -94,6 +94,8 @@ public class ConfigDao {
                 CometSettings.onlineRewardDiamondsEnabled = config.getBoolean("online_reward_diamonds_enabled");
                 CometSettings.onlineRewardDiamondsInterval = config.getInt("online_reward_diamonds_interval");
                 CometSettings.onlineRewardDiamondsQuantity = config.getInt("online_reward_diamonds_quantity");
+                CometSettings.maxrankPurchaseLtd = config.getInt("maxrank_purchase_ltd");
+                CometSettings.maxrankDiamoundTimer = config.getInt("maxrank_diamound_timer");
             }
         } catch (SQLException e) {
             SqlHelper.handleSqlException(e);

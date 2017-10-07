@@ -20,6 +20,8 @@ public class CometSettings {
     public static int onlineRewardCredits = 0;
     public static int onlineRewardDuckets = 0;
     public static int onlineRewardInterval = 15;
+    public static int maxrankPurchaseLtd = 11;
+    public static int maxrankDiamoundTimer = 11;
 
     public static int groupCost = 0;
 

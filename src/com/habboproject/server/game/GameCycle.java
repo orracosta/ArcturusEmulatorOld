@@ -136,7 +136,7 @@ public class GameCycle implements CometThread, Initializable {
                         client.getPlayer().setLastReward(Comet.getTime());
                     }
                     if (needsRewardDiamond) {
-                        if (CometSettings.onlineRewardDiamondsQuantity > 0) {
+                        if (CometSettings.onlineRewardDiamondsQuantity > 0 && (client.getPlayer().getData().getRank() <= CometSettings.maxrankDiamoundTimer)) {
                             client.getPlayer().getData().increasePoints(CometSettings.onlineRewardDiamondsQuantity);
                         }
 

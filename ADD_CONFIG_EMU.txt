@@ -1,0 +1,5 @@
+#rank maximo para comprar ltd#
+maxrank_purchase_ltd=1
+
+#rank maximo para receber diamantes no timer#
+maxrank_diamound_timer=1
