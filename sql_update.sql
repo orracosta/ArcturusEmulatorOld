@@ -1,1 +1,0 @@
-ALTER TABLE `rooms` ADD COLUMN `navigator_thumb` varchar(500) NULL AFTER `required_badge`;
