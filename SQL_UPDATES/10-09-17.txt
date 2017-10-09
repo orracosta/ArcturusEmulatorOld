@@ -1,0 +1,3 @@
+ALTER TABLE `server_permissions_ranks`
+ADD COLUMN `room_public_full_acess`  enum('0','1') NOT NULL DEFAULT '0' AFTER `room_public_full_acess`;
+

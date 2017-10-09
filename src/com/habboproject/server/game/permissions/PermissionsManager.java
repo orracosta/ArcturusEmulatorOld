@@ -212,6 +212,12 @@ public class PermissionsManager implements Initializable {
                     }
                     break;
 
+                case "room_public_full_acess":
+                    if (rank.roomFullAcessPublic()) {
+                        enabledRanks.add(rank.getId());
+                    }
+                    break;
+
                 case "helper_tool":
                     if (rank.isHelper()) {
                         enabledRanks.add(rank.getId());

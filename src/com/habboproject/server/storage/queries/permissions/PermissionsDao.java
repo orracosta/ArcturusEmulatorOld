@@ -78,7 +78,8 @@ public class PermissionsDao {
                         resultSet.getString("about_detailed").equals("1"),
                         resultSet.getString("about_stats").equals("1"),
                         resultSet.getString("ambassador_tool").equals("1"),
-                        resultSet.getString("helper_tool").equals("1")));
+                        resultSet.getString("helper_tool").equals("1"),
+                        resultSet.getString("room_public_full_acess").equals("1")));
             }
 
         } catch (SQLException e) {

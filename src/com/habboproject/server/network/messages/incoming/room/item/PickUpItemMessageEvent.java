@@ -48,7 +48,7 @@ public class PickUpItemMessageEvent implements Event {
                 return;
             }
 
-            if (wItem.getOwner() != client.getPlayer().getId() && !client.getPlayer().getPermissions().getRank().roomFullControl()) {
+            if (wItem.getOwner() != client.getPlayer().getId() && !client.getPlayer().getPermissions().getRank().roomFullControl() && !(client.getPlayer().getPermissions().getRank().roomFullAcessPublic() && room.getData().getOwnerId() == 0)) {
                 if (wItem.getRoom().getData().getOwnerId() != client.getPlayer().getId() && !client.getPlayer().getPermissions().getRank().roomFullControl())
                     return;
 
@@ -66,8 +66,8 @@ public class PickUpItemMessageEvent implements Event {
             return;
         }
 
-        if (item.getOwner() != client.getPlayer().getId() && !client.getPlayer().getPermissions().getRank().roomFullControl()) {
-            if (item.getRoom().getData().getOwnerId() != client.getPlayer().getId() && !client.getPlayer().getPermissions().getRank().roomFullControl())
+        if (item.getOwner() != client.getPlayer().getId() && !client.getPlayer().getPermissions().getRank().roomFullControl() && !(client.getPlayer().getPermissions().getRank().roomFullAcessPublic() && room.getData().getOwnerId() == 0)) {
+            if (item.getRoom().getData().getOwnerId() != client.getPlayer().getId() && !client.getPlayer().getPermissions().getRank().roomFullControl() && !(client.getPlayer().getPermissions().getRank().roomFullAcessPublic() && room.getData().getOwnerId() == 0))
                 return;
 
             eject = true;

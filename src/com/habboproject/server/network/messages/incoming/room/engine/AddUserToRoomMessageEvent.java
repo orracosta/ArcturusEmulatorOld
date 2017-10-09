@@ -77,7 +77,7 @@ public class AddUserToRoomMessageEvent implements Event {
         }
 
         client.sendQueue(new GroupBadgesMessageComposer(groupsInRoom));
-        client.sendQueue(new RoomEntryInfoMessageComposer(room.getId(), room.getData().getOwnerId() == client.getPlayer().getId() || client.getPlayer().getPermissions().getRank().roomFullControl()));
+        client.sendQueue(new RoomEntryInfoMessageComposer(room.getId(), room.getData().getOwnerId() == client.getPlayer().getId() || client.getPlayer().getPermissions().getRank().roomFullControl() || (client.getPlayer().getPermissions().getRank().roomFullAcessPublic() && room.getData().getOwnerId() == 0)));
         client.sendQueue(new AvatarsMessageComposer(room));
 
         if (room.getEntities().getAllEntities().size() > 0)

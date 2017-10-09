@@ -26,8 +26,9 @@ public class Rank implements PlayerRank {
     private boolean aboutStats;
     private boolean ambassador;
     private boolean helper;
+    private boolean roomFullAcessPublic;
 
-    public Rank(int id, String name, boolean floodBypass, int floodTime, boolean disconnectable, boolean modTool, boolean bannable, boolean roomKickable, boolean roomFullControl, boolean roomMuteBypass, boolean roomFilterBypass, boolean roomIgnorable, boolean roomEnterFull, boolean roomEnterLocked, boolean roomStaffPick, boolean roomSeeWhispers, boolean messengerStaffChat, int messengerMaxFriends, boolean aboutDetailed, boolean aboutStats, boolean ambassador, boolean helper) {
+    public Rank(int id, String name, boolean floodBypass, int floodTime, boolean disconnectable, boolean modTool, boolean bannable, boolean roomKickable, boolean roomFullControl, boolean roomMuteBypass, boolean roomFilterBypass, boolean roomIgnorable, boolean roomEnterFull, boolean roomEnterLocked, boolean roomStaffPick, boolean roomSeeWhispers, boolean messengerStaffChat, int messengerMaxFriends, boolean aboutDetailed, boolean aboutStats, boolean ambassador, boolean helper, boolean roomFullAcessPublic) {
         this.id = id;
         this.name = name;
         this.floodBypass = floodBypass;
@@ -50,6 +51,7 @@ public class Rank implements PlayerRank {
         this.aboutStats = aboutStats;
         this.ambassador = ambassador;
         this.helper = helper;
+        this.roomFullAcessPublic = roomFullAcessPublic;
     }
 
     @Override
@@ -160,4 +162,6 @@ public class Rank implements PlayerRank {
     public boolean roomSeeWhispers() {
         return this.roomSeeWhispers;
     }
+
+    public boolean roomFullAcessPublic(){ return this.roomFullAcessPublic; }
 }

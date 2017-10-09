@@ -152,7 +152,7 @@ public class EntityComponent {
                 if (playerEntity.getPlayer() == null)
                     continue;
 
-                if (usersWithRightsOnly && !this.room.getRights().hasRights(playerEntity.getPlayerId()) && !playerEntity.getPlayer().getPermissions().getRank().roomFullControl()) {
+                if (usersWithRightsOnly && !this.room.getRights().hasRights(playerEntity.getPlayerId()) && !playerEntity.getPlayer().getPermissions().getRank().roomFullControl() && !(playerEntity.getPlayer().getPermissions().getRank().roomFullAcessPublic() && room.getData().getOwnerId() == 0)) {
                     continue;
                 }
 

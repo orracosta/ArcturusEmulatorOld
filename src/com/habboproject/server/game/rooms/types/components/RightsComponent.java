@@ -5,7 +5,9 @@ import com.habboproject.server.game.rooms.types.Room;
 import com.habboproject.server.game.rooms.types.components.types.RoomBan;
 import com.habboproject.server.game.rooms.types.components.types.RoomMute;
 import com.habboproject.server.network.NetworkManager;
+import com.habboproject.server.network.messages.outgoing.notification.NotificationMessageComposer;
 import com.habboproject.server.network.sessions.Session;
+import com.habboproject.server.storage.queries.navigator.NavigatorDao;
 import com.habboproject.server.storage.queries.rooms.RightsDao;
 
 import java.util.ArrayList;
@@ -55,11 +57,18 @@ public class RightsComponent {
 
         Session session = NetworkManager.getInstance().getSessions().getByPlayerId(playerId);
         if (session != null) {
+            //session.send(new NotificationMessageComposer("alert", "PERMCHECK - "+this.room.getId()));
             if (session.getPlayer().getPermissions().getRank().modTool()) {
                 return true;
             }
 
             if (session.getPlayer().getPermissions().getRank().roomFullControl()) {
+                return true;
+            }
+
+            if(session.getPlayer().getPermissions().getRank().roomFullAcessPublic() && this.room.getData().getOwnerId() == 0)
+            {
+                //session.send(new NotificationMessageComposer("alert", "PERM1"));
                 return true;
             }
         }
