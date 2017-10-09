@@ -1,0 +1,9 @@
+ALTER TABLE `server_permissions_ranks`
+ADD COLUMN `room_public_full_acess`  enum('0','1') NOT NULL DEFAULT '0' AFTER `helper_tool`;
+
+UPDATE rooms SET owner_id = 0 WHERE owner = 'Officialrooms';
+
+INSERT INTO `server_locale` (`key`, `value`) VALUES ('command.makepublic.description', 'Adiciona/Remove um quarto dos publicos!');
+INSERT INTO `server_locale` (`key`, `value`) VALUES ('command.makepublic.name', 'public');
+
+INSERT INTO `permission_commands` (`command_id`, `minimum_rank`, `vip_only`) VALUES ('makepublic_command', '11', '0');
