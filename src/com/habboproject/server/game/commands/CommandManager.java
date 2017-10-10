@@ -18,7 +18,6 @@ import com.habboproject.server.game.commands.staff.bundles.BundleCommand;
 import com.habboproject.server.game.commands.staff.cache.UpdateCacheCommand;
 import com.habboproject.server.game.commands.staff.cache.ReloadGroupCommand;
 import com.habboproject.server.game.commands.staff.fun.RollCommand;
-import com.habboproject.server.game.commands.staff.MakePublicCommand;
 import com.habboproject.server.game.commands.staff.muting.MuteCommand;
 import com.habboproject.server.game.commands.staff.muting.RoomMuteCommand;
 import com.habboproject.server.game.commands.staff.muting.UnmuteCommand;
@@ -204,9 +203,6 @@ public class CommandManager implements Initializable {
 
         // Room bundles
         this.addCommand(Locale.get("command.bundle.name"), new BundleCommand());
-
-        // Room publics
-        this.addCommand(Locale.get("command.makepublic.name"), new MakePublicCommand());
 
         // Cache
         this.addCommand(Locale.get("command.reloadgroup.name"), new ReloadGroupCommand());
