@@ -14,7 +14,7 @@ public class UseMoodlightMessageEvent implements Event {
 
         Room room = client.getPlayer().getEntity().getRoom();
 
-        if (!room.getRights().hasRights(client.getPlayer().getEntity().getPlayerId()) && !client.getPlayer().getPermissions().getRank().roomFullControl() && !client.getPlayer().getPermissions().getRank().roomFullAcessPublic()) {
+        if (!room.getRights().hasRights(client.getPlayer().getEntity().getPlayerId()) && !client.getPlayer().getPermissions().getRank().roomFullControl() && !(client.getPlayer().getPermissions().getRank().roomFullAcessPublic() && room.getData().getOwnerId() == 0)) {
             return;
         }
 

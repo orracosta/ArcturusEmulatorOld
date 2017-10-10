@@ -30,7 +30,7 @@ public class ModifyBotMessageEvent implements Event {
 
         Room room = client.getPlayer().getEntity().getRoom();
 
-        if (room == null || (!room.getRights().hasRights(client.getPlayer().getId()) && !client.getPlayer().getPermissions().getRank().roomFullControl()) && !client.getPlayer().getPermissions().getRank().roomFullAcessPublic()) {
+        if (room == null || (!room.getRights().hasRights(client.getPlayer().getId()) && !client.getPlayer().getPermissions().getRank().roomFullControl()) || !(client.getPlayer().getPermissions().getRank().roomFullAcessPublic() && room.getData().getOwnerId() == 0)) {
             return;
         }
 
