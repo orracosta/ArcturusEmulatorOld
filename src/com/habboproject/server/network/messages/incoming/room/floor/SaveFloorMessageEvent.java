@@ -38,7 +38,7 @@ public class SaveFloorMessageEvent implements Event {
         }
 
         Room room = client.getPlayer().getEntity().getRoom();
-        if (room.getData().getOwnerId() != client.getPlayer().getId() && !client.getPlayer().getPermissions().getRank().roomFullControl() && !(client.getPlayer().getPermissions().getRank().roomFullAcessPublic() && room.getData().getOwnerId() == 0)) {
+        if (room.getData().getOwnerId() != client.getPlayer().getId() && !client.getPlayer().getPermissions().getRank().roomFullControl() && !client.getPlayer().getPermissions().getRank().roomFullAcessPublic()) {
             return;
         }
 

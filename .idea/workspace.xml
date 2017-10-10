@@ -7,17 +7,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="408c632a-aecf-46c0-b3d5-e69c05b47d1e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Habbo Project/com/habboproject/server/game/commands/staff/cache/UpdateCacheCommand.class" afterPath="$PROJECT_DIR$/out/production/Habbo Project/com/habboproject/server/game/commands/staff/cache/UpdateCacheCommand.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Habbo Project/com/habboproject/server/network/messages/incoming/catalog/root/GetCatalogIndexMessageEvent.class" afterPath="$PROJECT_DIR$/out/production/Habbo Project/com/habboproject/server/network/messages/incoming/catalog/root/GetCatalogIndexMessageEvent.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Habbo Project/com/habboproject/server/network/messages/incoming/room/bots/RemoveBotMessageEvent.class" afterPath="$PROJECT_DIR$/out/production/Habbo Project/com/habboproject/server/network/messages/incoming/room/bots/RemoveBotMessageEvent.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/comet.properties" afterPath="$PROJECT_DIR$/config/comet.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/habboproject/server/api/game/players/data/IPlayerSettings.java" afterPath="$PROJECT_DIR$/src/com/habboproject/server/api/game/players/data/IPlayerSettings.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/habboproject/server/game/commands/staff/cache/UpdateCacheCommand.java" afterPath="$PROJECT_DIR$/src/com/habboproject/server/game/commands/staff/cache/UpdateCacheCommand.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/habboproject/server/game/players/types/PlayerSettings.java" afterPath="$PROJECT_DIR$/src/com/habboproject/server/game/players/types/PlayerSettings.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/catalog/root/GetCatalogIndexMessageEvent.java" afterPath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/catalog/root/GetCatalogIndexMessageEvent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/catalog/root/GetCatalogOfferMessageEvent.java" afterPath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/catalog/root/GetCatalogOfferMessageEvent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/catalog/root/GetCatalogPageMessageEvent.java" afterPath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/catalog/root/GetCatalogPageMessageEvent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/habboproject/server/network/sessions/SessionManager.java" afterPath="$PROJECT_DIR$/src/com/habboproject/server/network/sessions/SessionManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/bots/ModifyBotMessageEvent.java" afterPath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/bots/ModifyBotMessageEvent.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/bots/PlaceBotMessageEvent.java" afterPath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/bots/PlaceBotMessageEvent.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/bots/RemoveBotMessageEvent.java" afterPath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/bots/RemoveBotMessageEvent.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/engine/AddUserToRoomMessageEvent.java" afterPath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/engine/AddUserToRoomMessageEvent.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/floor/SaveFloorMessageEvent.java" afterPath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/floor/SaveFloorMessageEvent.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/item/ChangeWallItemPositionMessageEvent.java" afterPath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/item/ChangeWallItemPositionMessageEvent.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/item/PickUpItemMessageEvent.java" afterPath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/item/PickUpItemMessageEvent.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/item/UseMoodlightMessageEvent.java" afterPath="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/item/UseMoodlightMessageEvent.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -29,117 +29,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="UpdateCacheCommand.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/commands/staff/cache/UpdateCacheCommand.java">
+      <file leaf-file-name="RemoveBotMessageEvent.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/bots/RemoveBotMessageEvent.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="167">
-              <caret line="73" column="16" lean-forward="false" selection-start-line="73" selection-start-column="16" selection-end-line="73" selection-end-column="16" />
+            <state relative-caret-position="112">
+              <caret line="13" column="75" lean-forward="true" selection-start-line="13" selection-start-column="75" selection-end-line="13" selection-end-column="75" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="EventAlertCommand.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/commands/staff/alerts/EventAlertCommand.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="17" column="51" lean-forward="false" selection-start-line="17" selection-start-column="51" selection-end-line="17" selection-end-column="51" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SessionManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/network/sessions/SessionManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="383">
-              <caret line="146" column="0" lean-forward="true" selection-start-line="146" selection-start-column="0" selection-end-line="146" selection-end-column="0" />
-              <folding>
-                <element signature="e#4671#4672#0" expanded="true" />
-                <element signature="e#4728#4729#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CatalogPublishMessageComposer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/network/messages/outgoing/catalog/CatalogPublishMessageComposer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="22" column="46" lean-forward="false" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
-              <folding>
-                <element signature="e#458#459#0" expanded="true" />
-                <element signature="e#514#515#0" expanded="true" />
-                <element signature="e#674#675#0" expanded="true" />
-                <element signature="e#729#730#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GetCatalogPageMessageEvent.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/catalog/root/GetCatalogPageMessageEvent.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="17" column="9" lean-forward="false" selection-start-line="17" selection-start-column="9" selection-end-line="17" selection-end-column="9" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GetCatalogOfferMessageEvent.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/catalog/root/GetCatalogOfferMessageEvent.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="25" column="5" lean-forward="true" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CatalogDao.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/storage/queries/catalog/CatalogDao.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="85" column="23" lean-forward="false" selection-start-line="85" selection-start-column="23" selection-end-line="85" selection-end-column="30" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CatalogPageMessageComposer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/network/messages/outgoing/catalog/CatalogPageMessageComposer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="20" column="26" lean-forward="false" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
-              <folding>
-                <element signature="e#851#852#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GetCatalogIndexMessageEvent.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/catalog/root/GetCatalogIndexMessageEvent.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="10" column="58" lean-forward="false" selection-start-line="10" selection-start-column="58" selection-end-line="10" selection-end-column="58" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlayerSettings.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/players/types/PlayerSettings.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1943">
-              <caret line="38" column="49" lean-forward="true" selection-start-line="38" selection-start-column="49" selection-end-line="38" selection-end-column="49" />
-              <folding>
-                <element signature="e#7409#7410#0" expanded="true" />
-                <element signature="e#7465#7466#0" expanded="true" />
-                <element signature="e#7510#7511#0" expanded="true" />
-                <element signature="e#7558#7559#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -155,9 +50,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>default_event</find>
-      <find>defaultPromoPointsColumn</find>
-      <find>defaultEventPointsColumn</find>
       <find>updateEventPoints</find>
       <find>updatePromoPoints</find>
       <find>enableEventWinnerNotification</find>
@@ -185,14 +77,17 @@
       <find>catalog_front</find>
       <find>getNews</find>
       <find>CatalogPageMessageComposer</find>
+      <find>127.0.0.1</find>
+      <find>!(client.getPlayer().getPermissions().getRank().roomFullAcessPublic() &amp;&amp; client.getPlayer().getEntity().getRoom().getData().getOwnerId() == 0)</find>
+      <find>client.getPlayer().getPermissions().getRank().roomFullAcessPublic()</find>
     </findStrings>
     <replaceStrings>
-      <replace>54.36.146.84</replace>
       <replace>PromoPointsCommand</replace>
       <replace>defaultPromoPointsQuantity</replace>
       <replace>enablePromoWinnerReward</replace>
       <replace>\u00e3</replace>
       <replace>updatePromoPoints</replace>
+      <replace>54.36.146.84</replace>
     </replaceStrings>
     <dirStrings>
       <dir>C:\Users\Administrator\Documents\GitHub\ManiaEMU</dir>
@@ -209,7 +104,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/config/comet.properties" />
         <option value="$PROJECT_DIR$/src/com/habboproject/server/game/rooms/objects/items/types/floor/pirates/CannonFloorItem.java" />
         <option value="$PROJECT_DIR$/src/com/habboproject/server/game/pets/data/PetData.java" />
         <option value="$PROJECT_DIR$/src/com/habboproject/server/network/messages/outgoing/room/pets/PetInformationMessageComposer.java" />
@@ -240,6 +134,9 @@
         <option value="$PROJECT_DIR$/src/com/habboproject/server/network/messages/outgoing/catalog/CatalogPageMessageComposer.java" />
         <option value="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/catalog/root/GetCatalogPageMessageEvent.java" />
         <option value="$PROJECT_DIR$/src/com/habboproject/server/game/commands/staff/cache/UpdateCacheCommand.java" />
+        <option value="$PROJECT_DIR$/config/comet.properties" />
+        <option value="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/item/PickUpItemMessageEvent.java" />
+        <option value="$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/bots/RemoveBotMessageEvent.java" />
       </list>
     </option>
   </component>
@@ -249,7 +146,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="134" />
     <option name="y" value="8" />
     <option name="width" value="1299" />
@@ -271,13 +168,17 @@
     </navigator>
     <panes>
       <pane id="AndroidView" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="ManiaEMU" type="b2602c69:ProjectViewProjectNode" />
               <item name="ManiaEMU" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ManiaEMU" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ManiaEMU" type="462c0819:PsiDirectoryNode" />
+              <item name="config" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ManiaEMU" type="b2602c69:ProjectViewProjectNode" />
@@ -339,17 +240,19 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scratches" />
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/AppData/Local/GitHubDesktop/app-1.0.3/resources/app/git/cmd/git.exe" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -495,30 +398,32 @@
       <workItem from="1507347751607" duration="429000" />
       <workItem from="1507348262218" duration="827000" />
       <workItem from="1507415910253" duration="4264000" />
+      <workItem from="1507622750022" duration="59000" />
+      <workItem from="1507666905167" duration="2052000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31249000" />
+    <option name="totallyTimeSpent" value="33360000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-4" y="-4" width="1448" height="864" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3288889" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32823366" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3288889" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32823366" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23827292" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2453505" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -546,25 +451,10 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/rooms/objects/items/types/floor/wired/conditions/positive/WiredConditionFurniHasPlayers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="448">
-          <caret line="36" column="14" lean-forward="false" selection-start-line="36" selection-start-column="14" selection-end-line="36" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/rooms/objects/items/types/floor/wired/base/WiredTriggerItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="30" column="41" lean-forward="true" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/boot/Comet.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="439">
           <caret line="131" column="83" lean-forward="false" selection-start-line="131" selection-start-column="83" selection-end-line="131" selection-end-column="83" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -572,7 +462,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -580,7 +469,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -602,13 +490,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
           <caret line="206" column="21" lean-forward="false" selection-start-line="206" selection-start-column="15" selection-end-line="206" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/comet.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="29" column="37" lean-forward="true" selection-start-line="29" selection-start-column="37" selection-end-line="29" selection-end-column="37" />
         </state>
       </provider>
     </entry>
@@ -715,7 +596,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="13566">
           <caret line="813" column="45" lean-forward="false" selection-start-line="813" selection-start-column="45" selection-end-line="813" selection-end-column="45" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -723,7 +603,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2142">
           <caret line="136" column="0" lean-forward="false" selection-start-line="136" selection-start-column="0" selection-end-line="136" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -731,12 +610,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1904">
           <caret line="143" column="49" lean-forward="false" selection-start-line="143" selection-start-column="49" selection-end-line="143" selection-end-column="49" />
-          <folding>
-            <element signature="e#15860#15861#0" expanded="false" />
-            <element signature="e#15893#15894#0" expanded="false" />
-            <element signature="e#16057#16058#0" expanded="false" />
-            <element signature="e#16097#16098#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -751,7 +624,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1513">
           <caret line="97" column="68" lean-forward="false" selection-start-line="97" selection-start-column="54" selection-end-line="97" selection-end-column="68" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -759,10 +631,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
           <caret line="32" column="0" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-          <folding>
-            <element signature="e#1692#1693#0" expanded="false" />
-            <element signature="e#1731#1732#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -770,7 +638,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2142">
           <caret line="137" column="39" lean-forward="false" selection-start-line="137" selection-start-column="39" selection-end-line="137" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -778,7 +645,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2074">
           <caret line="140" column="25" lean-forward="false" selection-start-line="140" selection-start-column="25" selection-end-line="140" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -786,7 +652,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2652">
           <caret line="212" column="48" lean-forward="false" selection-start-line="212" selection-start-column="48" selection-end-line="212" selection-end-column="48" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -794,7 +659,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -802,7 +666,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="63" column="12" lean-forward="false" selection-start-line="63" selection-start-column="12" selection-end-line="63" selection-end-column="12" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -826,7 +689,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="175">
           <caret line="210" column="37" lean-forward="false" selection-start-line="210" selection-start-column="30" selection-end-line="210" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -834,10 +696,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="18" column="11" lean-forward="false" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="11" />
-          <folding>
-            <element signature="e#670#671#0" expanded="true" />
-            <element signature="e#714#715#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -845,19 +703,18 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="16" column="67" lean-forward="true" selection-start-line="16" selection-start-column="67" selection-end-line="16" selection-end-column="67" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/players/types/PlayerSettings.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1943">
-          <caret line="38" column="49" lean-forward="true" selection-start-line="38" selection-start-column="49" selection-end-line="38" selection-end-column="49" />
+        <state relative-caret-position="384">
+          <caret line="38" column="49" lean-forward="false" selection-start-line="38" selection-start-column="49" selection-end-line="38" selection-end-column="49" />
           <folding>
-            <element signature="e#7409#7410#0" expanded="true" />
-            <element signature="e#7465#7466#0" expanded="true" />
-            <element signature="e#7510#7511#0" expanded="true" />
-            <element signature="e#7558#7559#0" expanded="true" />
+            <element signature="e#7409#7410#0" expanded="false" />
+            <element signature="e#7465#7466#0" expanded="false" />
+            <element signature="e#7510#7511#0" expanded="false" />
+            <element signature="e#7558#7559#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -866,13 +723,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="417">
           <caret line="44" column="61" lean-forward="false" selection-start-line="44" selection-start-column="61" selection-end-line="44" selection-end-column="61" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/catalog/root/GetCatalogIndexMessageEvent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
+        <state relative-caret-position="96">
           <caret line="10" column="58" lean-forward="false" selection-start-line="10" selection-start-column="58" selection-end-line="10" selection-end-column="58" />
           <folding />
         </state>
@@ -880,17 +736,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/network/messages/outgoing/catalog/CatalogPageMessageComposer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
+        <state relative-caret-position="192">
           <caret line="20" column="26" lean-forward="false" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
           <folding>
-            <element signature="e#851#852#0" expanded="true" />
+            <element signature="e#851#852#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/storage/queries/catalog/CatalogDao.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
+        <state relative-caret-position="1152">
           <caret line="85" column="23" lean-forward="false" selection-start-line="85" selection-start-column="23" selection-end-line="85" selection-end-column="30" />
           <folding />
         </state>
@@ -898,28 +754,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/catalog/root/GetCatalogOfferMessageEvent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="25" column="5" lean-forward="true" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
+        <state relative-caret-position="304">
+          <caret line="25" column="5" lean-forward="false" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/network/messages/outgoing/catalog/CatalogPublishMessageComposer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
+        <state relative-caret-position="240">
           <caret line="22" column="46" lean-forward="false" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
           <folding>
-            <element signature="e#458#459#0" expanded="true" />
-            <element signature="e#514#515#0" expanded="true" />
-            <element signature="e#674#675#0" expanded="true" />
-            <element signature="e#729#730#0" expanded="true" />
+            <element signature="e#458#459#0" expanded="false" />
+            <element signature="e#514#515#0" expanded="false" />
+            <element signature="e#674#675#0" expanded="false" />
+            <element signature="e#729#730#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/catalog/root/GetCatalogPageMessageEvent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
+        <state relative-caret-position="192">
           <caret line="17" column="9" lean-forward="false" selection-start-line="17" selection-start-column="9" selection-end-line="17" selection-end-column="9" />
           <folding />
         </state>
@@ -927,7 +783,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/commands/staff/alerts/EventAlertCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
+        <state relative-caret-position="192">
           <caret line="17" column="51" lean-forward="false" selection-start-line="17" selection-start-column="51" selection-end-line="17" selection-end-column="51" />
           <folding />
         </state>
@@ -935,19 +791,43 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/network/sessions/SessionManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="383">
-          <caret line="146" column="0" lean-forward="true" selection-start-line="146" selection-start-column="0" selection-end-line="146" selection-end-column="0" />
+        <state relative-caret-position="1952">
+          <caret line="146" column="0" lean-forward="false" selection-start-line="146" selection-start-column="0" selection-end-line="146" selection-end-column="0" />
           <folding>
-            <element signature="e#4671#4672#0" expanded="true" />
-            <element signature="e#4728#4729#0" expanded="true" />
+            <element signature="e#4671#4672#0" expanded="false" />
+            <element signature="e#4728#4729#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/comet.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="64">
+          <caret line="4" column="25" lean-forward="false" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/item/PickUpItemMessageEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="50" column="53" lean-forward="true" selection-start-line="50" selection-start-column="53" selection-end-line="50" selection-end-column="53" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/game/commands/staff/cache/UpdateCacheCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="73" column="16" lean-forward="false" selection-start-line="73" selection-start-column="16" selection-end-line="73" selection-end-column="16" />
+        <state relative-caret-position="208">
+          <caret line="97" column="50" lean-forward="false" selection-start-line="97" selection-start-column="50" selection-end-line="97" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/habboproject/server/network/messages/incoming/room/bots/RemoveBotMessageEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="13" column="75" lean-forward="true" selection-start-line="13" selection-start-column="75" selection-end-line="13" selection-end-column="75" />
           <folding />
         </state>
       </provider>
