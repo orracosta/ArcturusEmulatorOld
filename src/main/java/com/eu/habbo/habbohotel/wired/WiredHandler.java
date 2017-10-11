@@ -83,7 +83,8 @@ public class WiredHandler
 
     public static boolean handle(InteractionWiredTrigger trigger, final RoomUnit roomUnit, final Room room, final Object[] stuff)
     {
-        if(trigger.execute(roomUnit, room, stuff))
+        long millis = System.currentTimeMillis();
+        if(trigger.canExecute(millis) && trigger.execute(roomUnit, room, stuff))
         {
             trigger.activateBox(room);
 
@@ -123,7 +124,6 @@ public class WiredHandler
                 Collections.shuffle(effectList);
             }
 
-            long millis = System.currentTimeMillis();
 
             if (hasExtraUnseen)
             {

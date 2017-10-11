@@ -14,7 +14,6 @@ import java.sql.SQLException;
 public abstract class InteractionWiredEffect extends InteractionWired
 {
     private int delay;
-    private long cooldown;
 
     public InteractionWiredEffect(ResultSet set, Item baseItem) throws SQLException
     {
@@ -69,22 +68,6 @@ public abstract class InteractionWiredEffect extends InteractionWired
 
     }
 
-    /**
-     * Checks if the cooldown has passed and updates it to the new cooldown.
-     * @param newMillis The new timestamp the wired was executed.
-     * @return True if the wired can be executed.
-     */
-    public boolean canExecute(long newMillis)
-    {
-        if (newMillis - this.cooldown < this.requiredCooldown())
-        {
-            this.cooldown = newMillis;
-            return false;
-        }
-
-        this.cooldown = newMillis;
-        return true;
-    }
     public abstract boolean saveData(ClientMessage packet, GameClient gameClient);
 
     /**
@@ -108,14 +91,6 @@ public abstract class InteractionWiredEffect extends InteractionWired
      * @return The type of the wired trigger.
      */
     public abstract WiredEffectType getType();
-
-    /**
-     * @return The delay between two activations.
-     */
-    protected long requiredCooldown()
-    {
-        return 500;
-    }
 
     /**
      * @return Returns true if the InteractionWiredEffect can only be executed
