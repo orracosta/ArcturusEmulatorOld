@@ -150,7 +150,7 @@ public class InventoryItem implements PlayerItem {
         msg.writeBoolean(this.getDefinition().canRecycle());
         msg.writeBoolean(!isGift && this.getDefinition().canTrade());
         msg.writeBoolean(!isLimited && !isGift && this.getDefinition().canInventoryStack());
-        msg.writeBoolean(!isGift && this.getDefinition().canMarket());
+        msg.writeBoolean(!isGift && isLimited);
 
         msg.writeInt(-1);
         msg.writeBoolean(true);//??
