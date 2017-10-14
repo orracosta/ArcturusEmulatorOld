@@ -1,5 +1,6 @@
 package com.habboproject.server.network.messages.incoming.room.item.wired;
 
+import com.habboproject.server.config.CometSettings;
 import com.habboproject.server.config.Locale;
 import com.habboproject.server.game.items.ItemManager;
 import com.habboproject.server.game.rooms.RoomManager;
@@ -12,6 +13,7 @@ import com.habboproject.server.game.rooms.objects.items.types.floor.wired.condit
 import com.habboproject.server.game.rooms.types.Room;
 import com.habboproject.server.network.messages.incoming.Event;
 import com.habboproject.server.network.messages.outgoing.notification.AdvancedAlertMessageComposer;
+import com.habboproject.server.network.messages.outgoing.notification.NotificationMessageComposer;
 import com.habboproject.server.network.messages.outgoing.room.items.wired.SaveWiredMessageComposer;
 import com.habboproject.server.network.sessions.Session;
 import com.habboproject.server.protocol.messages.MessageEvent;
@@ -33,9 +35,14 @@ public class SaveWiredDataMessageEvent implements Event {
             return;
         }
 
+
         WiredFloorItem wiredItem = ((WiredFloorItem) room.getItems().getFloorItem(itemId));
 
         if (wiredItem == null) return;
+        if (room.getItems().getFloorItem(itemId).getDefinition().getInteraction().equals("wf_act_give_reward") && CometSettings.roomWiredRewardMinimumRank > client.getPlayer().getData().getRank()){
+            client.send(new NotificationMessageComposer("generic", Locale.get("wired.reward.save.error")));
+            return;
+    }
 
         int paramCount = msg.readInt();
 

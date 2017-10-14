@@ -3,14 +3,19 @@ package com.habboproject.server.network.messages.incoming.marketplace;
 import com.habboproject.server.api.game.players.data.components.inventory.PlayerItem;
 import com.habboproject.server.boot.Comet;
 import com.habboproject.server.config.CometSettings;
+import com.habboproject.server.config.Locale;
 import com.habboproject.server.game.items.rares.LimitedEditionItemData;
 import com.habboproject.server.game.marketplace.MarketplaceManager;
 import com.habboproject.server.game.marketplace.types.MarketplaceOfferItem;
+import com.habboproject.server.network.NetworkManager;
 import com.habboproject.server.network.messages.incoming.Event;
+import com.habboproject.server.network.messages.outgoing.catalog.CatalogPublishMessageComposer;
 import com.habboproject.server.network.messages.outgoing.catalog.UnseenItemsMessageComposer;
 import com.habboproject.server.network.messages.outgoing.marketplace.BuyOfferMessageComposer;
 import com.habboproject.server.network.messages.outgoing.marketplace.CancelOfferMessageComposer;
 import com.habboproject.server.network.messages.outgoing.marketplace.OffersMessageComposer;
+import com.habboproject.server.network.messages.outgoing.marketplace.OwnOffersMessageComposer;
+import com.habboproject.server.network.messages.outgoing.notification.NotificationMessageComposer;
 import com.habboproject.server.network.messages.outgoing.user.inventory.UpdateInventoryMessageComposer;
 import com.habboproject.server.network.messages.outgoing.user.purse.UpdateActivityPointsMessageComposer;
 import com.habboproject.server.network.sessions.Session;
@@ -128,6 +133,11 @@ public class BuyOfferMessageEvent implements Event {
         }
 
         client.send(new BuyOfferMessageComposer(1, offerId, offer.getFinalPrice()));
+        Session user = NetworkManager.getInstance().getSessions().getByPlayerId(offer.getPlayerId());
+        if (user != null) {
+            user.send(new CatalogPublishMessageComposer(false));
+            user.send(new NotificationMessageComposer("furni_placement_error", Locale.get("marketplace.sell.message")));
+        }
     }
 
     private int getCorrectTime(final int time) {

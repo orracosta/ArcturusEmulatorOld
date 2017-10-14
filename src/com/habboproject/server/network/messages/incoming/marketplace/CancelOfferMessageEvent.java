@@ -12,6 +12,7 @@ import com.habboproject.server.network.sessions.Session;
 import com.habboproject.server.protocol.messages.MessageEvent;
 import com.habboproject.server.storage.queries.items.ItemDao;
 import com.habboproject.server.storage.queries.items.LimitedEditionDao;
+import com.habboproject.server.storage.queries.marketplace.MarketplaceDao;
 
 /**
  * Created by brend on 31/01/2017.
@@ -22,7 +23,7 @@ public class CancelOfferMessageEvent implements Event {
         int offerId = msg.readInt();
 
         MarketplaceOfferItem offer = MarketplaceManager.getInstance().getOfferById(offerId);
-        if (offer == null || offer.getPlayerId() != client.getPlayer().getId()) {
+        if (offer == null || offer.getPlayerId() != client.getPlayer().getId() || MarketplaceDao.getItemIdByOffer(offerId) <= 0) {
             client.send(new CancelOfferMessageComposer(offerId, false));
             return;
         }
