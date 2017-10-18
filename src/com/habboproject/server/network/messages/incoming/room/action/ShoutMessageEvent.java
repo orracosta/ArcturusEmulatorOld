@@ -10,6 +10,7 @@ import com.habboproject.server.logging.entries.RoomChatLogEntry;
 import com.habboproject.server.network.messages.incoming.Event;
 import com.habboproject.server.network.messages.outgoing.notification.AdvancedAlertMessageComposer;
 import com.habboproject.server.network.messages.outgoing.room.avatar.ShoutMessageComposer;
+import com.habboproject.server.network.messages.outgoing.room.avatar.UpdateUsernameMessageComposer;
 import com.habboproject.server.network.sessions.Session;
 import com.habboproject.server.protocol.messages.MessageEvent;
 
@@ -30,7 +31,7 @@ public class ShoutMessageEvent implements Event {
         if (client.getPlayer().getEntity() == null || client.getPlayer().getEntity().getRoom() == null)
             return;
 
-        if(!client.getPlayer().getEntity().isVisible()) {
+        if(!client.getPlayer().getEntity().isVisible() && !client.getPlayer().getEntity().getPlayer().isInvisible()) {
             return;
         }
 
@@ -62,7 +63,14 @@ public class ShoutMessageEvent implements Event {
                     ((PrivateChatFloorItem) floorItem).broadcastMessage(new ShoutMessageComposer(client.getPlayer().getEntity().getId(), filteredMessage, RoomManager.getInstance().getEmotions().getEmotion(filteredMessage), colour));
                 }
             } else {
+                boolean tagged = false;
+                //client.getPlayer().getEntity().getRoom().getEntities().broadcastMessage(new UpdateUsernameMessageComposer(client.getPlayer().getEntity().getRoom().getId(), client.getPlayer().getEntity().getId(), "<font color='#ff0000'>[DEV]</font> " + client.getPlayer().getData().getUsername()));
+
                 client.getPlayer().getEntity().getRoom().getEntities().broadcastChatMessage(new ShoutMessageComposer(client.getPlayer().getEntity().getId(), filteredMessage, RoomManager.getInstance().getEmotions().getEmotion(filteredMessage), colour), client.getPlayer().getEntity());
+
+                if(tagged) {
+                    client.getPlayer().getEntity().getRoom().getEntities().broadcastMessage(new UpdateUsernameMessageComposer(client.getPlayer().getEntity().getRoom().getId(), client.getPlayer().getEntity().getId(), client.getPlayer().getData().getUsername()));
+                }
             }
         }
 

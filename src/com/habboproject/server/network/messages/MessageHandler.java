@@ -499,7 +499,14 @@ public final class MessageHandler {
 
     public void handle(MessageEvent message, Session client) {
         final int header = message.getId();
-
+        /*
+        System.out.println("--------------------");
+        System.out.println("--------------------");
+        System.out.println(Integer.toString(header));
+        System.out.println("--------------------");
+        System.out.println(message.toString());
+        System.out.println("--------------------");
+        System.out.println("--------------------");*/
         if (Comet.isDebugging) {
             log.debug(message.toString());
         }

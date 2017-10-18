@@ -8,7 +8,6 @@ import com.habboproject.server.protocol.messages.MessageEvent;
 public class LookToMessageEvent implements Event {
     public void handle(Session client, MessageEvent msg) {
         PlayerEntity avatar = client.getPlayer().getEntity();
-
         if (avatar == null) {
             return;
         }
@@ -16,6 +15,8 @@ public class LookToMessageEvent implements Event {
         if(!client.getPlayer().getEntity().isVisible()) {
             return;
         }
+
+
 
         int x = msg.readInt();
         int y = msg.readInt();

@@ -9,6 +9,7 @@ public class Composers {
     public static final short HeightMapMessageComposer = 1801;
     public static final short CallForHelpPendingCallsMessageComposer = 1114;
     public static final short ChatMessageComposer = 3816;
+    public static final short UpdateUsernameMessageComposer = 1598;
     public static final short GroupMembersMessageComposer = 316;
     public static final short OpenBotActionMessageComposer = 1260;
     public static final short UserObjectMessageComposer = 40;

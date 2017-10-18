@@ -41,6 +41,7 @@ public class Player implements BasePlayer {
     private PlayerStatistics stats;
     private PlayerFreeze freeze;
 
+    private PlayerEntity lookentity;
     private PlayerEntity entity;
     private Session session;
 
@@ -314,6 +315,10 @@ public class Player implements BasePlayer {
     //    @Override
     public PlayerEntity getEntity() {
         return this.entity;
+    }
+
+    public PlayerEntity getLookEntity() {
+        return this.lookentity;
     }
 
     @Override
