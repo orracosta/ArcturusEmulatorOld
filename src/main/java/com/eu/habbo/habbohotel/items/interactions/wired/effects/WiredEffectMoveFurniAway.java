@@ -17,6 +17,8 @@ import gnu.trove.set.hash.THashSet;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Deque;
+import java.util.List;
 
 public class WiredEffectMoveFurniAway extends InteractionWiredEffect
 {
@@ -81,57 +83,39 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
                     continue;
                 }
 
-                int x = 0;
-                int y = 0;
+                RoomTile newTile = room.getLayout().getTile(item.getX(), item.getY());
+                RoomTile nextStep = newTile;
 
-                if(target.getRoomUnit().getX() == item.getX())
-                {
-                    if (item.getY() < target.getRoomUnit().getY())
-                        y--;
-                    else
-                        y++;
-                }
-                else if(target.getRoomUnit().getY() == item.getY())
-                {
-                    if (item.getX() < target.getRoomUnit().getX())
-                        x--;
-                    else
-                        x++;
-                }
-                else if (target.getRoomUnit().getX() - item.getX() > target.getRoomUnit().getY() - item.getY())
-                {
-                    if (target.getRoomUnit().getX() - item.getX() > 0 )
-                        x--;
-                    else
-                        x++;
-                }
-                else
-                {
-                    if (target.getRoomUnit().getY() - item.getY() > 0)
-                        y--;
-                    else
-                        y++;
-                }
+                List<RoomTile> TilesAround = room.getLayout().getTilesAround(room.getLayout().getTile(item.getX(), item.getY()));
+                boolean lastDiag = room.getLayout().CANMOVEDIAGONALY;
 
-                RoomTile newTile = room.getLayout().getTile((short) (item.getX() + x), (short) (item.getY() + y));
-
-                if (newTile != null && newTile.state == RoomTileState.OPEN)
-                {
-                    if (room.getLayout().tileExists(newTile.x, newTile.y))
-                    {
-                        HabboItem topItem = room.getTopItemAt(newTile.x, newTile.y);
-
-                        if (topItem == null || topItem.getBaseItem().allowStack())
+                room.getLayout().moveDiagonally(false);
+                for(int i = 0; i < TilesAround.size(); i++){
+                    RoomTile tt = room.getLayout().getTile(TilesAround.get(i).x, TilesAround.get(i).y);
+                    if(!room.getLayout().findPath(newTile, tt).isEmpty()) {
+                        tt = room.getLayout().findPath(newTile, tt).getFirst();
+                        if (tt != null && tt.state == RoomTileState.OPEN)
                         {
-                            double offsetZ = 0;
+                            if (room.getLayout().tileExists(tt.x, tt.y))
+                            {
+                                HabboItem topItem = room.getTopItemAt(tt.x, tt.y);
 
-                            if (topItem != null)
-                                offsetZ = topItem.getZ() + topItem.getBaseItem().getHeight() - item.getZ();
-
-                            room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, offsetZ, room).compose());
+                                if (topItem == null || topItem.getBaseItem().allowWalk())
+                                {
+                                    if(target.getRoomUnit().getCurrentLocation().distance(tt) > target.getRoomUnit().getCurrentLocation().distance(nextStep))
+                                    {
+                                        nextStep = tt;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
+                if(lastDiag){
+                    room.getLayout().moveDiagonally(true);
+                }
+
+                room.sendComposer(new FloorItemOnRollerComposer(item, null, nextStep, nextStep.getStackHeight() - item.getZ(), room).compose());
             }
         }
         return true;

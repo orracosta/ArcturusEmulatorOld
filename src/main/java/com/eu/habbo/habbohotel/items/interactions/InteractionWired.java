@@ -109,7 +109,7 @@ public abstract class InteractionWired extends HabboItem
      */
     protected long requiredCooldown()
     {
-        return 500;
+        return 100;
     }
 
 

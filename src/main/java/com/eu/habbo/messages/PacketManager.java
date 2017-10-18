@@ -122,13 +122,15 @@ public class PacketManager
         {
             if(this.isRegistered(packet.getMessageId()))
             {
-                if(PacketManager.DEBUG_SHOW_PACKETS)
+                //if(PacketManager.DEBUG_SHOW_PACKETS)
                     Emulator.getLogging().logPacketLine("[" + Logging.ANSI_CYAN + "CLIENT" + Logging.ANSI_RESET + "][" + packet.getMessageId() + "] => " + packet.getMessageBody());
 
                 if (logList.contains(packet.getMessageId()) && client.getHabbo() != null)
                 {
                     System.out.println(("[" + Logging.ANSI_CYAN + "CLIENT" + Logging.ANSI_RESET + "][" + client.getHabbo().getHabboInfo().getUsername() + "][" + packet.getMessageId() + "] => " + packet.getMessageBody()));
                 }
+
+                //System.out.println(("[" + Logging.ANSI_CYAN + "CLIENT" + Logging.ANSI_RESET + "][" + client.getHabbo().getHabboInfo().getUsername() + "][" + packet.getMessageId() + "] => " + packet.getMessageBody()));
 
                 final MessageHandler handler = this.incoming.get(packet.getMessageId()).newInstance();
 

@@ -81,6 +81,10 @@ public class RequestDeleteRoomEvent extends MessageHandler
                         filter.setInt(1, roomId);
                         filter.execute();
                     }
+
+                    //Guerejo FIX
+                    Emulator.getGameEnvironment().getRoomManager().unloadRoomsForHabbo(this.client.getHabbo());
+                    Emulator.getGameEnvironment().getRoomManager().loadRoomsForHabbo(this.client.getHabbo());
                 }
                 catch (SQLException e)
                 {

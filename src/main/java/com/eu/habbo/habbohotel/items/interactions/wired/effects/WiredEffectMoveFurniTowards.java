@@ -55,22 +55,30 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
             double shortest = 1000.0D;
 
             Habbo target = null;
+            RoomTile nextStep = t;
 
             for(Habbo habbo : room.getHabbos())
             {
                 RoomTile h = habbo.getRoomUnit().getCurrentLocation();
+                boolean lastDiag = room.getLayout().CANMOVEDIAGONALY;
+
+                room.getLayout().moveDiagonally(false);
 
                 double distance = t.distance(h);
-                if(distance <= shortest)
+                if(distance <= shortest && !room.getLayout().findPath(t, h).isEmpty())
                 {
                     target = habbo;
                     shortest = distance;
+                    nextStep = room.getLayout().findPath(t, h).getFirst();
+                }
+                if(lastDiag){
+                    room.getLayout().moveDiagonally(true);
                 }
             }
 
             if(target != null)
             {
-                if(RoomLayout.tilesAdjecent(target.getRoomUnit().getCurrentLocation(), room.getLayout().getTile(this.getX(), this.getY())) && (target.getRoomUnit().getX() == item.getX() || target.getRoomUnit().getY() == item.getY()))
+                if(RoomLayout.tilesAdjecent(target.getRoomUnit().getCurrentLocation(), room.getLayout().getTile(item.getX(), item.getY())) && (target.getRoomUnit().getX() == item.getX() || target.getRoomUnit().getY() == item.getY()) && target.getRoomUnit().getZ() == item.getZ())
                 {
                     final Habbo finalTarget = target;
                     Emulator.getThreading().run(new Runnable()
@@ -85,39 +93,7 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
                     continue;
                 }
 
-                int x = 0;
-                int y = 0;
-
-                if(target.getRoomUnit().getX() == item.getX())
-                {
-                    if (item.getY() < target.getRoomUnit().getY())
-                        y++;
-                    else
-                        y--;
-                }
-                else if(target.getRoomUnit().getY() == item.getY())
-                {
-                    if (item.getX() < target.getRoomUnit().getX())
-                        x++;
-                    else
-                        x--;
-                }
-                else if (target.getRoomUnit().getX() - item.getX() > target.getRoomUnit().getY() - item.getY())
-                {
-                    if (target.getRoomUnit().getX() - item.getX() > 0 )
-                        x++;
-                    else
-                        x--;
-                }
-                else
-                {
-                    if (target.getRoomUnit().getY() - item.getY() > 0)
-                        y++;
-                    else
-                        y--;
-                }
-
-                RoomTile newTile = room.getLayout().getTile((short) (item.getX() + x), (short) (item.getY() + y));
+                RoomTile newTile = room.getLayout().getTile(nextStep.x, nextStep.y);
 
                 if (newTile != null && newTile.state == RoomTileState.OPEN)
                 {
@@ -125,14 +101,9 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
                     {
                         HabboItem topItem = room.getTopItemAt(newTile.x, newTile.y);
 
-                        if (topItem == null || topItem.getBaseItem().allowStack())
+                        if (topItem == null || topItem.getBaseItem().allowWalk())
                         {
-                            double offsetZ = 0;
-
-                            if (topItem != null)
-                                offsetZ = topItem.getZ() + topItem.getBaseItem().getHeight() - item.getZ();
-
-                            room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, offsetZ, room).compose());
+                            room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, newTile.getStackHeight() - item.getZ(), room).compose());
                         }
                     }
                 }
