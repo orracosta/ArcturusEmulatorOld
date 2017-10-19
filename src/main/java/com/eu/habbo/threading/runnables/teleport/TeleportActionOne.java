@@ -2,6 +2,7 @@ package com.eu.habbo.threading.runnables.teleport;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.habbohotel.items.interactions.InteractionTeleportDoor;
 import com.eu.habbo.habbohotel.items.interactions.InteractionTeleportTile;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
@@ -37,6 +38,11 @@ public class TeleportActionOne implements Runnable
             this.room.scheduledComposers.add(new RoomUserStatusComposer(this.client.getHabbo().getRoomUnit()).compose());
             this.client.getHabbo().getRoomUnit().setLocation(this.room.getLayout().getTile(this.currentTeleport.getX(), this.currentTeleport.getY()));
         }
+
+        if ((this.currentTeleport instanceof InteractionTeleportDoor))
+            delay = 0;
+        else
+            delay = 1000;
 
         Emulator.getThreading().run(new TeleportActionTwo(currentTeleport, room, client), delay);
     }

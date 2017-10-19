@@ -102,6 +102,7 @@ public class ItemManager
         this.interactionsList.add(new ItemInteraction("cannon",                 InteractionCannon.class));
         this.interactionsList.add(new ItemInteraction("teleport",               InteractionTeleport.class));
         this.interactionsList.add(new ItemInteraction("teleporttile",           InteractionTeleportTile.class));
+        this.interactionsList.add(new ItemInteraction("teleportdoor",           InteractionTeleportDoor.class));
         this.interactionsList.add(new ItemInteraction("crackable",              InteractionCrackable.class));
         this.interactionsList.add(new ItemInteraction("nest",                   InteractionNest.class));
         this.interactionsList.add(new ItemInteraction("pet_drink",              InteractionPetDrink.class));

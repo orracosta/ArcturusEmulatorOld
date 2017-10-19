@@ -2,6 +2,7 @@ package com.eu.habbo.threading.runnables.teleport;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.habbohotel.items.interactions.InteractionTeleportDoor;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
@@ -34,6 +35,9 @@ class TeleportActionFour implements Runnable
         this.currentTeleport.setExtradata("0");
         this.room.updateItem(this.currentTeleport);
 
-        Emulator.getThreading().run(new TeleportActionFive(this.currentTeleport, this.room, this.client), 500);
+        if ((this.currentTeleport instanceof InteractionTeleportDoor))
+            Emulator.getThreading().run(new TeleportActionFive(this.currentTeleport, this.room, this.client), 0);
+        else
+            Emulator.getThreading().run(new TeleportActionFive(this.currentTeleport, this.room, this.client), 500);
     }
 }

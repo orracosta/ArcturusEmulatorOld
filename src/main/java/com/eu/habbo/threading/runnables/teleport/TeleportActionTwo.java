@@ -3,6 +3,7 @@ package com.eu.habbo.threading.runnables.teleport;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.interactions.InteractionTeleport;
+import com.eu.habbo.habbohotel.items.interactions.InteractionTeleportDoor;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
@@ -97,8 +98,15 @@ class TeleportActionTwo implements Runnable
         this.currentTeleport.setExtradata("0");
         this.room.updateItem(this.currentTeleport);
 
-        Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "2"), 500);
-        Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "0"), 1500);
-        Emulator.getThreading().run(new TeleportActionThree(this.currentTeleport, this.room, this.client), 1000);
+        if ((this.currentTeleport instanceof InteractionTeleportDoor)){
+            Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "2"), 0);
+            Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "0"), 600);
+            Emulator.getThreading().run(new TeleportActionThree(this.currentTeleport, this.room, this.client), 500);
+        }
+        else {
+            Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "2"), 500);
+            Emulator.getThreading().run(new HabboItemNewState(this.currentTeleport, room, "0"), 1500);
+            Emulator.getThreading().run(new TeleportActionThree(this.currentTeleport, this.room, this.client), 1000);
+        }
     }
 }
