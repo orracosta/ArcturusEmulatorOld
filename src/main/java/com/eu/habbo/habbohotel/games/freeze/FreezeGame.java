@@ -167,7 +167,7 @@ public class FreezeGame extends Game
         {
             for(int j = 0; j < radius; j++)
             {
-                t = this.room.getLayout().getTileInFront(this.room.getLayout().getTile(x, y), i * 2, (short) radius);
+                t = this.room.getLayout().getTileInFront(this.room.getLayout().getTile(x, y), i*2, 0);
 
                 if(t == null || t.x < 0 || t.y < 0 || t.x >= this.room.getLayout().getMapSizeX() || t.y >= this.room.getLayout().getMapSizeY())
                     continue;
@@ -188,7 +188,7 @@ public class FreezeGame extends Game
 
             for(int j = 0; j < radius; j++)
             {
-                t = this.room.getLayout().getTileInFront(this.room.getLayout().getTile(x, y), (i * 2) + 1, (short) radius);
+                t = this.room.getLayout().getTileInFront(this.room.getLayout().getTile(x, y), (i * 2) + 1, 0);
 
                 if (t != null)
                 {

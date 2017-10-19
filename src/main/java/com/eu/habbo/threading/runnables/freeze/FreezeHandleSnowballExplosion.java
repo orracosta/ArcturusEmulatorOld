@@ -44,7 +44,7 @@ class FreezeHandleSnowballExplosion implements Runnable
 
             if (player.nextHorizontal)
             {
-                tiles.addAll(game.affectedTilesByExplosion(this.thrownData.targetTile.getX(), this.thrownData.targetTile.getY(), this.thrownData.radius + 1));
+                tiles.addAll(game.affectedTilesByExplosion(this.thrownData.targetTile.getX(), this.thrownData.targetTile.getY(), this.thrownData.radius +1));
             }
 
             if (player.nextDiagonal)
@@ -79,10 +79,10 @@ class FreezeHandleSnowballExplosion implements Runnable
                                 if(!hPlayer.canGetFrozen())
                                     continue;
 
-                                if (hPlayer.getTeamColor().equals(player.getTeamColor()))
-                                    player.addScore(-FreezeGame.FREEZE_LOOSE_POINTS);
-                                else
+                                if (!hPlayer.getTeamColor().equals(player.getTeamColor()))
                                     player.addScore(FreezeGame.FREEZE_LOOSE_POINTS);
+                                //else
+                                    //player.addScore(FreezeGame.FREEZE_LOOSE_POINTS);
 
                                 ((FreezeGamePlayer)habbo.getHabboInfo().getGamePlayer()).freeze();
 
