@@ -60,7 +60,7 @@ public class InteractionCrackable extends HabboItem
     @Override
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
-        if (client == null)
+        /*if (client == null)
         {
             return;
         }
@@ -112,7 +112,7 @@ public class InteractionCrackable extends HabboItem
                     AchievementManager.progressAchievement(client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement(rewardData.achievementCracked));
                 }
             }
-        }
+        }*/
     }
 
     @Override
