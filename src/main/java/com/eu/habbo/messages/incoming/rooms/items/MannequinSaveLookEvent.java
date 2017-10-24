@@ -13,7 +13,7 @@ public class MannequinSaveLookEvent extends MessageHandler
     {
         Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
 
-        if(room == null || this.client.getHabbo().getHabboInfo().getId() != room.getOwnerId())
+        if(room == null || this.client.getHabbo().getHabboInfo().getId() != room.getOwnerId() || room.hasRights(this.client.getHabbo()))
             return;
 
         HabboItem item = room.getHabboItem(this.packet.readInt());
@@ -27,7 +27,7 @@ public class MannequinSaveLookEvent extends MessageHandler
 
         for (String s : this.client.getHabbo().getHabboInfo().getLook().split("\\."))
         {
-            if (!s.contains("hr") && !s.contains("hd") && !s.contains("he") && !s.contains("ea") && !s.contains("ha") && !s.contains("fa"))
+            if (!s.contains("hr") && !s.contains("hd") && !s.contains("he") && !s.contains("fa"))
             {
                 look += s + ".";
             }
