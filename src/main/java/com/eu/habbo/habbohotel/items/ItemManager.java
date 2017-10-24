@@ -86,6 +86,7 @@ public class ItemManager
     {
         this.interactionsList.add(new ItemInteraction("default",                InteractionDefault.class));
         this.interactionsList.add(new ItemInteraction("gate",                   InteractionGate.class));
+        this.interactionsList.add(new ItemInteraction("gateinverse",            InteractionGateInverse.class));
         this.interactionsList.add(new ItemInteraction("guild_furni",            InteractionGuildFurni.class));
         this.interactionsList.add(new ItemInteraction("guild_gate",             InteractionGuildGate.class));
         this.interactionsList.add(new ItemInteraction("background_toner",       InteractionBackgroundToner.class));
