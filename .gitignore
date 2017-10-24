@@ -12,3 +12,4 @@ config.ini
 *.txt
 logging/**
 logging/
+Emulador.bat
