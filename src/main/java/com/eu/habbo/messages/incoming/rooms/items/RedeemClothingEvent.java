@@ -26,7 +26,7 @@ public class RedeemClothingEvent extends MessageHandler
         {
             HabboItem item = this.client.getHabbo().getHabboInfo().getCurrentRoom().getHabboItem(itemId);
 
-            /*if(item.getUserId() == this.client.getHabbo().getHabboInfo().getId())
+            if(item.getUserId() == this.client.getHabbo().getHabboInfo().getId())
             {
                 if(item instanceof InteractionClothing)
                 {
@@ -66,7 +66,7 @@ public class RedeemClothingEvent extends MessageHandler
                         Emulator.getLogging().logErrorLine("[Catalog] No definition in catalog_clothing found for clothing name " + item.getBaseItem().getName() + ". Could not redeem clothing!");
                     }
                 }
-            }*/
+            }
         }
     }
 }
