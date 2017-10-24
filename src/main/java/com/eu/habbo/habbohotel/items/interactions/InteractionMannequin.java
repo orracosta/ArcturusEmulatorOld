@@ -71,9 +71,11 @@ public class InteractionMannequin extends HabboItem
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
         String[] lookCode = this.getExtradata().split(":")[1].split("\\.");
+        String[] getLook = client.getHabbo().getHabboInfo().getLook().split("\\.");
 
         String look = "";
-        for (String part : client.getHabbo().getHabboInfo().getLook().split("\\."))
+
+        for (String part : getLook)
         {
             String type = part.split("-")[0];
 
@@ -84,6 +86,25 @@ public class InteractionMannequin extends HabboItem
                 {
                     found = true;
                     look += s + ".";
+                }
+            }
+
+            if (!found)
+            {
+                look += part + ".";
+            }
+        }
+
+        for (String part : lookCode)
+        {
+            String type = part.split("-")[0];
+
+            boolean found = false;
+            for (String s : getLook)
+            {
+                if (s.contains(type))
+                {
+                    found = true;
                 }
             }
 
