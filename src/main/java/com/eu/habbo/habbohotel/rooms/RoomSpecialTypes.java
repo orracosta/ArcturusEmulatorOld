@@ -14,8 +14,10 @@ import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.scoreboards
 import com.eu.habbo.habbohotel.items.interactions.games.football.scoreboards.InteractionFootballScoreboard;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeExitTile;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeTimer;
+import com.eu.habbo.habbohotel.items.interactions.games.wired.InteractionWiredTimer;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.gates.InteractionFreezeGate;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.scoreboards.InteractionFreezeScoreboard;
+import com.eu.habbo.habbohotel.items.interactions.games.wired.InteractionWiredTimer;
 import com.eu.habbo.habbohotel.items.interactions.wired.extra.WiredExtraRandom;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredConditionType;
@@ -778,6 +780,23 @@ public class RoomSpecialTypes
                 if (set.getValue() instanceof InteractionFreezeTimer)
                 {
                     timers.put(set.getValue().getId(), (InteractionFreezeTimer) set.getValue());
+                }
+            }
+
+            return timers;
+        }
+    }
+    public THashMap<Integer, InteractionWiredTimer> getWiredTimer()
+    {
+        synchronized (this.gameTimers)
+        {
+            THashMap<Integer, InteractionWiredTimer> timers = new THashMap<Integer, InteractionWiredTimer>();
+
+            for (Map.Entry<Integer, InteractionGameTimer> set : this.gameTimers.entrySet())
+            {
+                if (set.getValue() instanceof InteractionWiredTimer)
+                {
+                    timers.put(set.getValue().getId(), (InteractionWiredTimer) set.getValue());
                 }
             }
 

@@ -23,6 +23,7 @@ import com.eu.habbo.habbohotel.items.interactions.games.tag.bunnyrun.Interaction
 import com.eu.habbo.habbohotel.items.interactions.games.tag.icetag.InteractionIceTagField;
 import com.eu.habbo.habbohotel.items.interactions.games.tag.icetag.InteractionIceTagPole;
 import com.eu.habbo.habbohotel.items.interactions.games.tag.rollerskate.InteractionRollerskateField;
+import com.eu.habbo.habbohotel.items.interactions.games.wired.InteractionWiredTimer;
 import com.eu.habbo.habbohotel.items.interactions.wired.conditions.*;
 import com.eu.habbo.habbohotel.items.interactions.wired.effects.*;
 import com.eu.habbo.habbohotel.items.interactions.wired.extra.WiredExtraRandom;
@@ -284,6 +285,10 @@ public class ItemManager
             this.interactionsList.add(new ItemInteraction("battlebanzai_counter_red",       InteractionBattleBanzaiScoreboardRed.class));
             this.interactionsList.add(new ItemInteraction("battlebanzai_counter_yellow",    InteractionBattleBanzaiScoreboardYellow.class));
 
+        /*
+            Wired Game
+        */
+            this.interactionsList.add(new ItemInteraction("wired_timer",   InteractionWiredTimer.class));
         /*
             Freeze
         */
