@@ -27,8 +27,12 @@ public class SaveScoreForTeam implements Runnable
         {
             for(GamePlayer player : this.team.getMembers())
             {
+                int starttime = this.game.getStartTime();
+                if(starttime == 0)
+                    starttime = Emulator.getIntUnixTimestamp();
+
                 statement.setInt(1, this.game.getRoom().getId());
-                statement.setInt(2, this.game.getStartTime());
+                statement.setInt(2, starttime);
                 statement.setString(3, this.game.getClass().getName());
                 statement.setInt(4, player.getHabbo().getHabboInfo().getId());
                 statement.setInt(5, player.getTeamColor().type);
