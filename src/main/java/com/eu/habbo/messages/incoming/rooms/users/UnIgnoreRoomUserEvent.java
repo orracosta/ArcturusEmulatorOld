@@ -18,9 +18,12 @@ public class UnIgnoreRoomUserEvent extends MessageHandler
 
             Habbo habbo = room.getHabbo(username);
 
+            System.out.println(habbo);
             if(habbo != null)
             {
-                if(!habbo.getHabboStats().allowTalk())
+                if(habbo == this.client.getHabbo())
+                    return;
+
                 {
                     this.client.getHabbo().getHabboStats().ignoredUsers.remove(habbo.getHabboInfo().getId());
                     this.client.sendResponse(new RoomUserIgnoredComposer(habbo, RoomUserIgnoredComposer.UNIGNORED));
