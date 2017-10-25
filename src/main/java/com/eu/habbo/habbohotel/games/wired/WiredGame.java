@@ -181,9 +181,6 @@ public class WiredGame extends Game
     @Override
     public boolean addHabbo(Habbo habbo, GameTeamColors teamColor)
     {
-        this.removeHabbo(habbo);
-        this.room.giveEffect(habbo, 0);
-
         this.room.giveEffect(habbo, FreezeGame.effectId + teamColor.type);
         return super.addHabbo(habbo, teamColor);
     }
