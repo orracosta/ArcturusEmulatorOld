@@ -39,14 +39,11 @@ public class WiredEffectLeaveTeam extends InteractionWiredEffect
 
         if(habbo != null)
         {
-            if(habbo.getHabboInfo().getCurrentGame() != null)
-            {
-                Game game = room.getGame(habbo.getHabboInfo().getCurrentGame());
+            Game game = room.getGame(habbo.getHabboInfo().getCurrentGame());
 
-                if (game != null)
-                {
-                    game.removeHabbo(habbo);
-                }
+            if (game != null)
+            {
+                game.removeHabbo(habbo);
             }
         }
         return true;
