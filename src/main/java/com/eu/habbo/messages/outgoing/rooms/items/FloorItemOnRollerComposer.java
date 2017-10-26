@@ -55,7 +55,9 @@ public class FloorItemOnRollerComposer extends MessageComposer
 
         this.room.sendComposer(new UpdateStackHeightComposer(oldX, oldY, this.room.getStackHeight(oldX, oldY, true)).compose());
 
-        this.room.updateHabbosAt(RoomLayout.getRectangle(this.item.getX(), this.item.getY(), this.item.getBaseItem().getWidth(), this.item.getBaseItem().getLength(), this.item.getRotation()));
+        if(this.roller == null){
+            this.room.updateHabbosAt(RoomLayout.getRectangle(this.item.getX(), this.item.getY(), this.item.getBaseItem().getWidth(), this.item.getBaseItem().getLength(), this.item.getRotation()));
+        }
 
         return this.response;
     }
