@@ -54,7 +54,9 @@ public class GamePlayer
     public synchronized void addScore(int amount)
     {
         this.score += amount;
-        WiredHandler.handle(WiredTriggerType.SCORE_ACHIEVED, null, this.habbo.getHabboInfo().getCurrentRoom(), new Object[]{this.habbo.getHabboInfo().getCurrentRoom().getGame(this.habbo.getHabboInfo().getCurrentGame()).getTeamForHabbo(this.habbo).getTotalScore(), amount});
+        if(this.habbo.getHabboInfo() != null){
+            WiredHandler.handle(WiredTriggerType.SCORE_ACHIEVED, null, this.habbo.getHabboInfo().getCurrentRoom(), new Object[]{this.habbo.getHabboInfo().getCurrentRoom().getGame(this.habbo.getHabboInfo().getCurrentGame()).getTeamForHabbo(this.habbo).getTotalScore(), amount});
+        }
     }
 
     /**
