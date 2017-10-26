@@ -50,6 +50,14 @@ public class WiredEffectJoinTeam extends InteractionWiredEffect
                 room.addGame(game);
             }
 
+            if(habbo.getHabboInfo().getCurrentGame() != null)
+            {
+                if (room.getGame(habbo.getHabboInfo().getCurrentGame()) != null)
+                {
+                    room.getGame(habbo.getHabboInfo().getCurrentGame()).removeHabbo(habbo);
+                }
+            }
+
             return game.addHabbo(habbo, this.teamColor);
         }
 
