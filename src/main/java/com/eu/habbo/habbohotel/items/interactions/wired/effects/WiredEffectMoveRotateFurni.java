@@ -3,7 +3,10 @@ package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
+import com.eu.habbo.habbohotel.items.interactions.InteractionRoller;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
+import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.InteractionBattleBanzaiTile;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeTile;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
@@ -48,14 +51,11 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
         {
             for (HabboItem item : this.items)
             {
-                if (Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
+                if (item.getRoomId() == 0 || item instanceof InteractionRoller || item instanceof InteractionFreezeTile || item instanceof InteractionBattleBanzaiTile)
                     items.add(item);
             }
 
-            for (HabboItem item : items)
-            {
-                this.items.remove(item);
-            }
+            this.items.removeAll(items);
 
             for (HabboItem item : this.items)
             {
@@ -180,8 +180,11 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
 
         for(HabboItem item : this.items)
         {
-            if(item.getRoomId() != this.getRoomId() || (room != null && room.getHabboItem(item.getId()) == null))
+            if(item.getRoomId() != this.getRoomId() || (room != null && room.getHabboItem(item.getId()) == null)
+               || item instanceof InteractionRoller || item instanceof InteractionFreezeTile || item instanceof InteractionBattleBanzaiTile)
+            {
                 items.add(item);
+            }
         }
 
         for(HabboItem item : items)
@@ -257,8 +260,11 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
         {
             for (HabboItem item : this.items)
             {
-                if (item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
+                if (item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null
+                    || item instanceof InteractionRoller || item instanceof InteractionFreezeTile || item instanceof InteractionBattleBanzaiTile)
+                {
                     items.add(item);
+                }
             }
 
             for (HabboItem item : items)

@@ -3,6 +3,8 @@ package com.eu.habbo.messages.incoming.rooms.items;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionRoller;
 import com.eu.habbo.habbohotel.items.interactions.InteractionStackHelper;
+import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.InteractionBattleBanzaiTile;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeTile;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
@@ -134,7 +136,9 @@ public class RotateMoveItemEvent extends MessageHandler
                     if (
                             (checkStackHeight != testheight && !(item instanceof InteractionStackHelper)) ||
                             (!room.getHabbosAt(i, j).isEmpty() && !(oldX == x && oldY == y) && !(item instanceof InteractionStackHelper)) ||
-                            (checkStackHeight > 0 && item instanceof InteractionRoller)
+                            (checkStackHeight > 0 && item instanceof InteractionRoller) ||
+                            (checkStackHeight > 0 && item instanceof InteractionBattleBanzaiTile) ||
+                            (checkStackHeight > 0 && item instanceof InteractionFreezeTile)
                         )
                     {
                         this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));

@@ -5,6 +5,8 @@ import com.eu.habbo.habbohotel.achievements.Achievement;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.items.FurnitureType;
 import com.eu.habbo.habbohotel.items.interactions.*;
+import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.InteractionBattleBanzaiTile;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeTile;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
@@ -164,7 +166,9 @@ public class RoomPlaceItemEvent extends MessageHandler
 
             double checkStackHeight = room.getStackHeight(x, y, true);
 
-            if (checkStackHeight > 0 && item instanceof InteractionRoller)
+            if ((checkStackHeight > 0 && item instanceof InteractionRoller)||
+            (checkStackHeight > 0 && item instanceof InteractionBattleBanzaiTile) ||
+            (checkStackHeight > 0 && item instanceof InteractionFreezeTile))
             {
                 this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
                 return;
