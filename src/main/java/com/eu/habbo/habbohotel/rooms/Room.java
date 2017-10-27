@@ -1396,7 +1396,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                     furnitureRolledEvent = new FurnitureRolledEvent(null, null, null);
                                 }
 
-                                //if (newRoller == null || topItem == newRoller)
+                                if (roomTile.allowStack() && roomTile.isWalkable())
                                 {
                                     for (HabboItem item : itemsOnRoller)
                                     {
@@ -1432,7 +1432,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                     if (stackContainsRoller && !allowFurniture && !(topItem != null && topItem.isWalkable()))
                                         continue;
 
-                                    if (!habbo.getRoomUnit().getStatus().containsKey("mv"))
+                                    if (!habbo.getRoomUnit().getStatus().containsKey("mv") && habbo.getRoomUnit().getPath().isEmpty())
                                     {
                                         RoomTile tile = roomTile.copy();
                                         tile.setStackHeight(habbo.getRoomUnit().getZ() + zOffset);
@@ -1444,7 +1444,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                             if(roomUserRolledEvent.isCancelled())
                                                 continue;
                                         }
-
                                         messages.add(new RoomUnitOnRollerComposer(habbo.getRoomUnit(), roller, tile, room));
                                     }
 
