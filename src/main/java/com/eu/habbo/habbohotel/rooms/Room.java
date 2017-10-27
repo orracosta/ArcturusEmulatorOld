@@ -3402,7 +3402,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         if (!habbo.getHabboStats().allowTalk())
             return;
 
-        habbo.getHabboStats().chatCounter += 2;
+        habbo.getHabboStats().chatCounter += 1;
 
         if (habbo.getHabboInfo().getCurrentRoom() != this)
             return;
@@ -3477,6 +3477,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             {
                 WiredHandler.handle(WiredTriggerType.SAY_COMMAND, habbo.getRoomUnit(), habbo.getHabboInfo().getCurrentRoom(), new Object[]{roomChatMessage.getMessage()});
                 roomChatMessage.isCommand = true;
+                habbo.getHabboStats().chatCounter = 0;
                 return;
             }
 
@@ -3485,6 +3486,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 if (WiredHandler.handle(WiredTriggerType.SAY_SOMETHING, habbo.getRoomUnit(), habbo.getHabboInfo().getCurrentRoom(), new Object[]{roomChatMessage.getMessage()}))
                 {
                     habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(roomChatMessage.getMessage(), habbo, habbo, roomChatMessage.getBubble())));
+                    habbo.getHabboStats().chatCounter = 0;
                     return;
                 }
             }
