@@ -138,6 +138,7 @@ public class WiredEffectTeleport extends InteractionWiredEffect
 
                     room.giveEffect(habbo, 4);
                     final WiredEffectTeleport teleportWired = this;
+                    WiredHandler.TELEPORT_DELAY = 500 + WiredHandler.TELEPORT_DELAY;
                     Emulator.getThreading().run(new RoomUnitTeleport(habbo.getRoomUnit(), room, item.getX(), item.getY(), item.getZ() + (item.getBaseItem().allowSit() ? item.getBaseItem().getHeight() - 0.50 : 0D), currentEffect), WiredHandler.TELEPORT_DELAY);
                     Emulator.getThreading().run(new Runnable()
                     {
