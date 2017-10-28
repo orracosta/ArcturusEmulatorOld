@@ -1432,7 +1432,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                     if (stackContainsRoller && !allowFurniture && !(topItem != null && topItem.isWalkable()))
                                         continue;
 
-                                    if (!habbo.getRoomUnit().getStatus().containsKey("mv") && habbo.getRoomUnit().getPath().isEmpty())
+                                    if (!habbo.getRoomUnit().getStatus().containsKey("mv") && habbo.getRoomUnit().isAtGoal())
                                     {
                                         RoomTile tile = roomTile.copy();
                                         tile.setStackHeight(habbo.getRoomUnit().getZ() + zOffset);

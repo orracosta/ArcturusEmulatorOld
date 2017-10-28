@@ -27,6 +27,14 @@ public class RoomUserStatusComposer extends MessageComposer
         this.roomUnits = roomUnits;
     }
 
+    public RoomUserStatusComposer(RoomUnit roomUnit, boolean value)
+    {
+        THashSet roomUnits = new THashSet<RoomUnit>();
+        roomUnits.add(roomUnit);
+
+        this.roomUnits = roomUnits;
+    }
+
     public RoomUserStatusComposer(Collection<Habbo> habbos)
     {
         this.habbos = habbos;

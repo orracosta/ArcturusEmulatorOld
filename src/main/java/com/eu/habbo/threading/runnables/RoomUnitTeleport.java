@@ -29,6 +29,9 @@ public class RoomUnitTeleport implements Runnable
     public void run()
     {
         RoomTile t = this.room.getLayout().getTile((short) x, (short) y);
+        if(this.newEffect == 4)
+            this.newEffect = 0;
+
         this.roomUnit.setGoalLocation(t);
         this.roomUnit.getStatus().remove("mv");
         this.room.sendComposer(new RoomUnitOnRollerComposer(this.roomUnit, null, t, this.room).compose());
