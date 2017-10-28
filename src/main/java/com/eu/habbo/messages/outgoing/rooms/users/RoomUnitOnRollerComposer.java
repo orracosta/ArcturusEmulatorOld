@@ -52,15 +52,14 @@ public class RoomUnitOnRollerComposer extends MessageComposer
 
         if(roller != null && this.roomUnit.getPath().isEmpty()){
             this.roomUnit.setCurrentLocation(room.getLayout().getTile(this.newLocation.x, this.newLocation.y));
-            new java.util.Timer().schedule(
-                    new java.util.TimerTask() {
-                        @Override
-                        public void run() {
-                            if(roomUnit.getPath().isEmpty())
-                                roomUnit.setLocation(room.getLayout().getTile(newLocation.x, newLocation.y));
-                        }
-                    }, 380
-            );
+            Emulator.getThreading().run(new Runnable()
+            {
+                @Override
+                public void run() {
+                    if(roomUnit.getPath().isEmpty())
+                        roomUnit.setLocation(room.getLayout().getTile(newLocation.x, newLocation.y));
+                }
+            }, 380);
         }
         else{
             roomUnit.setLocation(room.getLayout().getTile(newLocation.x, newLocation.y));
@@ -72,20 +71,19 @@ public class RoomUnitOnRollerComposer extends MessageComposer
             {
                 this.roller.onWalkOff(this.roomUnit, this.room, new Object[]{this.roller});
 
-                new java.util.Timer().schedule(
-                        new java.util.TimerTask() {
-                            @Override
-                            public void run() {
-                                HabboItem item = room.getTopItemAt(newLocation.x, newLocation.y);
-                                if(item != null)
-                                    try {
-                                        item.onWalkOn(roomUnit, room, new Object[]{roller});
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                            }
-                        }, 380
-                );
+                Emulator.getThreading().run(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        HabboItem item = room.getTopItemAt(newLocation.x, newLocation.y);
+                        if(item != null)
+                            try {
+                                item.onWalkOn(roomUnit, room, new Object[]{roller});
+                            } catch (Exception e)
+                            {}
+                    }
+                }, 380);
             }
         }
         catch (Exception e)
