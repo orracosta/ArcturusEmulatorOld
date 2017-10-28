@@ -59,7 +59,7 @@ public class RoomUnitOnRollerComposer extends MessageComposer
                             if(roomUnit.getPath().isEmpty())
                                 roomUnit.setLocation(room.getLayout().getTile(newLocation.x, newLocation.y));
                         }
-                    }, 400
+                    }, 380
             );
         }
         else{
@@ -72,10 +72,20 @@ public class RoomUnitOnRollerComposer extends MessageComposer
             {
                 this.roller.onWalkOff(this.roomUnit, this.room, new Object[]{this.roller});
 
-                HabboItem item = this.room.getTopItemAt(this.newLocation.x, this.newLocation.y);
-
-                if(item != null)
-                    item.onWalkOn(this.roomUnit, this.room, new Object[]{this.roller});
+                new java.util.Timer().schedule(
+                        new java.util.TimerTask() {
+                            @Override
+                            public void run() {
+                                HabboItem item = room.getTopItemAt(newLocation.x, newLocation.y);
+                                if(item != null)
+                                    try {
+                                        item.onWalkOn(roomUnit, room, new Object[]{roller});
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                            }
+                        }, 380
+                );
             }
         }
         catch (Exception e)
