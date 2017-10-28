@@ -50,15 +50,21 @@ public class RoomUnitOnRollerComposer extends MessageComposer
         this.response.appendString(this.roomUnit.getZ() + "");
         this.response.appendString(this.newLocation.getStackHeight() + "");
 
-        this.roomUnit.setCurrentLocation(room.getLayout().getTile(this.newLocation.x, this.newLocation.y));
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        roomUnit.setLocation(room.getLayout().getTile(newLocation.x, newLocation.y));
-                    }
-                }, 400
-        );
+        if(roller != null && this.roomUnit.getPath().isEmpty()){
+            this.roomUnit.setCurrentLocation(room.getLayout().getTile(this.newLocation.x, this.newLocation.y));
+            new java.util.Timer().schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+                            if(roomUnit.getPath().isEmpty())
+                                roomUnit.setLocation(room.getLayout().getTile(newLocation.x, newLocation.y));
+                        }
+                    }, 400
+            );
+        }
+        else{
+            roomUnit.setLocation(room.getLayout().getTile(newLocation.x, newLocation.y));
+        }
 
         try
         {
