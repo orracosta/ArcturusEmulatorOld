@@ -1578,15 +1578,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         if (!habbo.getRoomUnit().isWalking() && !habbo.getRoomUnit().cmdSit)
                         {
                             HabboItem topItem = getLowestChair(habbo.getRoomUnit().getX(), habbo.getRoomUnit().getY());
-                            THashSet<HabboItem> items = getItemsAt(habbo.getRoomUnit().getX(), habbo.getRoomUnit().getY());
-
-                            boolean isRoller = false;
-
-                            for(HabboItem item : items){
-                                if(item instanceof InteractionRoller){
-                                    isRoller = true;
-                                }
-                            }
 
                             if (topItem == null || !topItem.getBaseItem().allowSit())
                             {
@@ -1598,37 +1589,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                             }
                             else
                             {
-                                if (habbo.getRoomUnit().getStatus().containsKey("sit") && habbo.getRoomUnit().sitUpdate && isRoller)
-                                {
-                                    new java.util.Timer().schedule(
-                                            new java.util.TimerTask() {
-                                                @Override
-                                                public void run() {
-                                                    dance(habbo, DanceType.NONE);
-                                                    THashSet<RoomUnit> sitRoller = new THashSet<RoomUnit>();
-
-                                                    dance(habbo, DanceType.NONE);
-                                                    if (topItem instanceof InteractionMultiHeight)
-                                                    {
-                                                        habbo.getRoomUnit().getStatus().put("sit", Item.getCurrentHeight(topItem) * 1.0D + "");
-                                                    }
-                                                    else
-                                                    {
-                                                        habbo.getRoomUnit().getStatus().put("sit", topItem.getBaseItem().getHeight() * 1.0D + "");
-                                                    }
-                                                    habbo.getRoomUnit().setZ(topItem.getZ());
-                                                    habbo.getRoomUnit().setRotation(RoomUserRotation.values()[topItem.getRotation()]);
-                                                    sitRoller.add(habbo.getRoomUnit());
-
-                                                    sendComposer(new RoomUserStatusComposer(sitRoller, true).compose());
-                                                    sendComposer(new RoomUserStatusComposer(sitRoller, true).compose());
-                                                }
-                                            },
-                                            500
-                                    );
-                                    habbo.getRoomUnit().sitUpdate = false;
-                                }
-                                else if (!habbo.getRoomUnit().getStatus().containsKey("sit") || habbo.getRoomUnit().sitUpdate)
+                                if (!habbo.getRoomUnit().getStatus().containsKey("sit") || habbo.getRoomUnit().sitUpdate)
                                 {
                                     dance(habbo, DanceType.NONE);
                                     if (topItem instanceof InteractionMultiHeight)
@@ -1642,6 +1603,8 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                     habbo.getRoomUnit().setZ(topItem.getZ());
                                     habbo.getRoomUnit().setRotation(RoomUserRotation.values()[topItem.getRotation()]);
                                     updatedUnit.add(habbo.getRoomUnit());
+
+                                    sendComposer(new RoomUserStatusComposer(updatedUnit, true).compose());
                                     habbo.getRoomUnit().sitUpdate = false;
                                 }
                             }
