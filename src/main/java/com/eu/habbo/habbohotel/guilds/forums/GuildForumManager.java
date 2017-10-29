@@ -45,23 +45,17 @@ public class GuildForumManager {
     public void clearInactiveForums() {
         int time = Emulator.getIntUnixTimestamp();
 
-        List<Integer> toRemove = new ArrayList<Integer>();
         TIntObjectIterator<GuildForum> guildForums = this.guildForums.iterator();
         for (int i = this.guildForums.size(); i-- > 0; ) {
             try {
-                guildForums.advance();
+                guildForums.key();
             } catch (NoSuchElementException e) {
                 break;
             }
 
             if (time - guildForums.value().getLastRequestedTime() > 300) {
                 this.guildForums.remove(guildForums.key());
-                toRemove.add(guildForums.key());
             }
-        }
-
-        for (Integer i : toRemove) {
-            this.guildForums.remove(i);
         }
     }
 
