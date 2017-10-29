@@ -240,6 +240,20 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
                                     refreshTiles.addAll(room.getLayout().getTilesAt(room.getLayout().getTile(((HabboItem) targetItem).getX(), ((HabboItem) targetItem).getY()), ((HabboItem) targetItem).getBaseItem().getWidth(), ((HabboItem) targetItem).getBaseItem().getLength(), ((HabboItem) targetItem).getRotation()));
                                     room.updateTiles(refreshTiles);
                                     this.indexOffset.put(targetItem.getId(), indexOffset);
+                                    switch(targetItem.getRotation()) {
+                                        case 1:
+                                            targetItem.setRotation(2);
+                                            break;
+                                        case 3:
+                                            targetItem.setRotation(4);
+                                            break;
+                                        case 5:
+                                            targetItem.setRotation(6);
+                                            break;
+                                        case 7:
+                                            targetItem.setRotation(0);
+                                            break;
+                                    }
                                 }
                             }
                         }
