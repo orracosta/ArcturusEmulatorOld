@@ -271,13 +271,16 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
 
         for(HabboItem item : this.items)
         {
-            if(item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
-                items.add(item);
+            if(item != null) {
+                if(item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
+                    items.add(item);
+            }
         }
 
         for(HabboItem item : items)
         {
-            this.items.remove(item);
+            if(item != null)
+                this.items.remove(item);
         }
 
         String data = this.direction + "\t" + this.spacing + "\t" + this.getDelay() + "\t";
