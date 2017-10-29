@@ -139,12 +139,11 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
                                     if (distance <= shortest && !room.getLayout().findPath(t, h).isEmpty()) {
                                         target = habbo;
                                         shortest = distance;
-                                        nextStep = room.getLayout().findPath(t, h).getFirst();
                                     }
                                 }
 
                                 if(target != null) {
-                                    if (RoomLayout.tilesAdjecent(target.getRoomUnit().getCurrentLocation(), room.getLayout().getTile(item.getX(), item.getY())) && (target.getRoomUnit().getX() == item.getX() || target.getRoomUnit().getY() == item.getY()) && target.getRoomUnit().getZ() == item.getZ()) {
+                                    if (RoomLayout.tilesAdjecent(target.getRoomUnit().getCurrentLocation(), room.getLayout().getTile(item.getX(), item.getY())) && (target.getRoomUnit().getX() == item.getX() || target.getRoomUnit().getY() == item.getY())) {
                                         final Habbo finalTarget = target;
                                         Emulator.getThreading().run(new Runnable() {
                                             @Override

@@ -75,7 +75,7 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
 
             if(target != null)
             {
-                if(RoomLayout.tilesAdjecent(target.getRoomUnit().getCurrentLocation(), room.getLayout().getTile(item.getX(), item.getY())) && (target.getRoomUnit().getX() == item.getX() || target.getRoomUnit().getY() == item.getY()) && target.getRoomUnit().getZ() == item.getZ())
+                if(RoomLayout.tilesAdjecent(target.getRoomUnit().getCurrentLocation(), room.getLayout().getTile(item.getX(), item.getY())) && (target.getRoomUnit().getX() == item.getX() || target.getRoomUnit().getY() == item.getY()))
                 {
                     final Habbo finalTarget = target;
                     Emulator.getThreading().run(new Runnable()
