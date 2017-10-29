@@ -46,6 +46,14 @@ public class InteractionTileEffectProvider extends InteractionCustomValues
 
         int effectId = Integer.valueOf(this.values.get("effectId"));
 
+        if(effectId == 0 && (this.getBaseItem().getEffectM() != 0 || this.getBaseItem().getEffectF() != 0))
+        {
+            if (this.getBaseItem().getEffectM() != 0)
+                effectId = this.getBaseItem().getEffectM();
+            else
+                effectId = this.getBaseItem().getEffectF();
+        }
+
         if(roomUnit.getEffectId() == effectId)
         {
             effectId = 0;
@@ -54,6 +62,13 @@ public class InteractionTileEffectProvider extends InteractionCustomValues
         this.values.put("state", "1");
         room.updateItem(this);
 
+        roomUnit.setEffectId(effectId);
+        room.sendComposer(new RoomUserEffectComposer(roomUnit).compose());
+    }
+
+    @Override
+    public void onWalkOff(RoomUnit roomUnit, final Room room, Object[] objects) throws Exception
+    {
         final InteractionTileEffectProvider proxy = this;
         Emulator.getThreading().run(new Runnable()
         {
@@ -63,9 +78,6 @@ public class InteractionTileEffectProvider extends InteractionCustomValues
                 proxy.values.put("state", "0");
                 room.updateItem(proxy);
             }
-        }, 500);
-
-        roomUnit.setEffectId(effectId);
-        room.sendComposer(new RoomUserEffectComposer(roomUnit).compose());
+        }, 1000);
     }
 }
