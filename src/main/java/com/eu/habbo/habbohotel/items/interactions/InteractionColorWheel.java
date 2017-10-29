@@ -53,8 +53,7 @@ public class InteractionColorWheel extends HabboItem
     {
         super.onClick(client, room, objects);
 
-        if (!room.hasRights(client.getHabbo()))
-            return;
+        if(client.getHabbo() != null && !room.hasRights(client.getHabbo())) return;
 
         if(this.rollTaks == null)
         {
