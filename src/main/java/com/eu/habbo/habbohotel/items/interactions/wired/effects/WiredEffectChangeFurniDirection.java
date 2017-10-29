@@ -4,10 +4,7 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
-import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.rooms.RoomLayout;
-import com.eu.habbo.habbohotel.rooms.RoomTile;
-import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
@@ -169,8 +166,7 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
                                 THashSet<RoomTile> refreshTiles = room.getLayout().getTilesAt(room.getLayout().getTile(((HabboItem) targetItem).getX(), ((HabboItem) targetItem).getY()), ((HabboItem) targetItem).getBaseItem().getWidth(), ((HabboItem) targetItem).getBaseItem().getLength(), ((HabboItem) targetItem).getRotation());
 
                                 RoomTile tile = room.getLayout().getTileInFront(objectTile, targetItem.getRotation(), indexOffset);
-                                RoomTile tilenext = room.getLayout().getTileInFront(objectTile, targetItem.getRotation(), indexOffset+1);
-                                if (tilenext == null || !tile.allowStack())
+                                if (tile == null || !tile.allowStack() || tile.state == RoomTileState.BLOCKED)
                                 {
                                     switch (this.spacing)
                                     {
