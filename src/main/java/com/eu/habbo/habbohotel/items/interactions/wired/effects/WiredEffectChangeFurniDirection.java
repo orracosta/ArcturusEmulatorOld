@@ -5,11 +5,14 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
+import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.rooms.items.FloorItemOnRollerComposer;
@@ -125,6 +128,44 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
 
                             if (objectTile != null)
                             {
+                                // habbo colide
+                                RoomTile t = room.getLayout().getTile(item.getX(), item.getY());
+                                double shortest = 1000.0D;
+
+                                Habbo target = null;
+                                RoomTile nextStep = t;
+
+                                for(Habbo habbo : room.getHabbos()) {
+                                    RoomTile h = habbo.getRoomUnit().getCurrentLocation();
+                                    boolean lastDiag = room.getLayout().CANMOVEDIAGONALY;
+
+                                    room.getLayout().moveDiagonally(false);
+
+                                    double distance = t.distance(h);
+                                    if (distance <= shortest && !room.getLayout().findPath(t, h).isEmpty()) {
+                                        target = habbo;
+                                        shortest = distance;
+                                        nextStep = room.getLayout().findPath(t, h).getFirst();
+                                    }
+                                    if (lastDiag) {
+                                        room.getLayout().moveDiagonally(true);
+                                    }
+                                }
+
+                                if(target != null) {
+                                    if (RoomLayout.tilesAdjecent(target.getRoomUnit().getCurrentLocation(), room.getLayout().getTile(item.getX(), item.getY())) && (target.getRoomUnit().getX() == item.getX() || target.getRoomUnit().getY() == item.getY()) && target.getRoomUnit().getZ() == item.getZ()) {
+                                        final Habbo finalTarget = target;
+                                        Emulator.getThreading().run(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                WiredHandler.handle(WiredTriggerType.COLLISION, finalTarget.getRoomUnit(), room, new Object[]{item});
+                                            }
+                                        }, 500);
+
+                                        continue;
+                                    }
+                                }
+                                // -----------
                                 THashSet<RoomTile> refreshTiles = room.getLayout().getTilesAt(room.getLayout().getTile(((HabboItem) targetItem).getX(), ((HabboItem) targetItem).getY()), ((HabboItem) targetItem).getBaseItem().getWidth(), ((HabboItem) targetItem).getBaseItem().getLength(), ((HabboItem) targetItem).getRotation());
 
                                 RoomTile tile = room.getLayout().getTileInFront(objectTile, targetItem.getRotation(), indexOffset);
