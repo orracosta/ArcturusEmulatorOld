@@ -249,8 +249,8 @@ public class Outgoing
     public final static int GuildForumAddCommentComposer = 2049; // PRODUCTION-201611291003-338511768
     public final static int GuildForumDataComposer = 3011; // PRODUCTION-201611291003-338511768
     public final static int GuildForumCommentsComposer = 509; // PRODUCTION-201611291003-338511768
-    public final static int UnknownGuildForumComposer6 = 324; // PRODUCTION-201611291003-338511768
-    public final static int UnknownGuildForumComposer7 = 2528; // PRODUCTION-201611291003-338511768
+    public final static int PostUpdateMessageComposer = 324; // PRODUCTION-201611291003-338511768
+    public final static int ThreadUpdateMessageComposer = 2528; // PRODUCTION-201611291003-338511768
     public final static int GuildForumThreadsComposer = 1073; // PRODUCTION-201611291003-338511768
     public final static int GuildForumListComposer = 3001; // PRODUCTION-201611291003-338511768
 

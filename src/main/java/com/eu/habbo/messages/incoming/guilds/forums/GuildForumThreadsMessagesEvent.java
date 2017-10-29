@@ -20,12 +20,12 @@ public class GuildForumThreadsMessagesEvent extends MessageHandler
         int limit = packet.readInt(); //20
 
         Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(guildId);
+
         if(guild == null)
             return;
 
         GuildForum forum = Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(guildId);
         GuildForumThread thread = forum.getThread(threadId);
-
 
         if (thread.getState() == GuildForum.ThreadState.HIDDEN_BY_ADMIN && guild.getOwnerId() != this.client.getHabbo().getHabboInfo().getId())
         {

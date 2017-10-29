@@ -26,10 +26,12 @@ public class GuildForumCommentsComposer extends MessageComposer
     public ServerMessage compose()
     {
         this.response.init(Outgoing.GuildForumCommentsComposer);
+
         this.response.appendInt(this.guildId); //guild_id
         this.response.appendInt(this.threadId); //thread_id
         this.response.appendInt(this.index); //start_index
         this.response.appendInt(this.guildForumCommentList.size());
+
         for (final GuildForumComment comment : this.guildForumCommentList)
         {
             comment.serialize(this.response);

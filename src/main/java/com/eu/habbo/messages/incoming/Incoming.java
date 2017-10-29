@@ -99,6 +99,16 @@ public class Incoming
     public static final int ModToolChangeRoomSettingsEvent = 3260; // PRODUCTION-201611291003-338511768
     public static final int ModToolRequestUserChatlogEvent = 1391;//203
     public static final int GuildChangeSettingsEvent = 3435; // PRODUCTION-201611291003-338511768
+    public static final int GuildForumListEvent = 873; // PRODUCTION-201611291003-338511768
+    public static final int GuildForumThreadsEvent = 436; // PRODUCTION-201611291003-338511768
+    public static final int GuildForumDataEvent = 3149; // PRODUCTION-201611291003-338511768
+    public static final int GuildForumPostThreadEvent = 3529; // PRODUCTION-201611291003-338511768
+    public static final int GuildForumUpdateSettingsEvent = 2214; // PRODUCTION-201611291003-338511768
+    public static final int GuildForumThreadsMessagesEvent = 232; // PRODUCTION-201611291003-338511768
+    public static final int GuildForumModerateMessageEvent = 286; // PRODUCTION-201611291003-338511768
+    public static final int GuildForumModerateThreadEvent = 1397; // PRODUCTION-201611291003-338511768
+    public static final int GuildForumThreadUpdateEvent = 3045; // PRODUCTION-201611291003-338511768
+    public static final int GuildForumMarkAsReadEvent = 1855; // PRODUCTION-201611291003-338511768
     public static final int RoomUserDropHandItemEvent = 2814; // PRODUCTION-201611291003-338511768
     public static final int RequestProfileFriendsEvent = 2138; // TODO!!!
     public static final int TradeCancelOfferItemEvent = 3845; // PRODUCTION-201611291003-338511768

@@ -5,24 +5,22 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.guilds.forums.GuildForumListComposer;
 import gnu.trove.set.hash.THashSet;
 
-public class GuildForumListEvent extends MessageHandler
-{
+public class GuildForumListEvent extends MessageHandler {
     @Override
-    public void handle() throws Exception
-    {
+    public void handle() throws Exception {
         int mode = this.packet.readInt();
         int page = this.packet.readInt();
         int amount = this.packet.readInt();
 
-        switch(page)
-        {
+        switch (mode) {
             case 0:
-                    this.client.sendResponse(new GuildForumListComposer(Emulator.getGameEnvironment().getGuildForumManager().getGuildForums(this.client.getHabbo()), this.client.getHabbo(), mode));
-                break;
             case 1:
+                this.client.sendResponse(new GuildForumListComposer(Emulator.getGameEnvironment().getGuildForumManager().getAllForums(), this.client.getHabbo(), mode, page));
                 break;
             case 2:
+                this.client.sendResponse(new GuildForumListComposer(Emulator.getGameEnvironment().getGuildForumManager().getGuildForums(this.client.getHabbo()), this.client.getHabbo(), mode, page));
                 break;
         }
+        //TODO: fazer sort na lista
     }
 }

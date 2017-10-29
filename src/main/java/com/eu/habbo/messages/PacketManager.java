@@ -20,6 +20,7 @@ import com.eu.habbo.messages.incoming.gamecenter.*;
 import com.eu.habbo.messages.incoming.guardians.*;
 import com.eu.habbo.messages.incoming.guides.*;
 import com.eu.habbo.messages.incoming.guilds.*;
+import com.eu.habbo.messages.incoming.guilds.forums.*;
 import com.eu.habbo.messages.incoming.handshake.*;
 import com.eu.habbo.messages.incoming.helper.*;
 import com.eu.habbo.messages.incoming.hotelview.*;
@@ -482,6 +483,15 @@ public class PacketManager
         this.registerHandler(Incoming.GuildConfirmRemoveMemberEvent,            GuildConfirmRemoveMemberEvent.class);
         this.registerHandler(Incoming.GuildRemoveFavoriteEvent,                 GuildRemoveFavoriteEvent.class);
         this.registerHandler(Incoming.GuildDeleteEvent,                         GuildDeleteEvent.class);
+        this.registerHandler(Incoming.GuildForumListEvent,                      GuildForumListEvent.class);
+        this.registerHandler(Incoming.GuildForumThreadsEvent,                   GuildForumThreadsEvent.class);
+        this.registerHandler(Incoming.GuildForumDataEvent,                      GuildForumDataEvent.class);
+        this.registerHandler(Incoming.GuildForumPostThreadEvent,                GuildForumPostThreadEvent.class);
+        this.registerHandler(Incoming.GuildForumUpdateSettingsEvent,            GuildForumUpdateSettingsEvent.class);
+        this.registerHandler(Incoming.GuildForumThreadsMessagesEvent,           GuildForumThreadsMessagesEvent.class);
+        this.registerHandler(Incoming.GuildForumModerateMessageEvent,           GuildForumModerateMessageEvent.class);
+        this.registerHandler(Incoming.GuildForumModerateThreadEvent,            GuildForumModerateThreadEvent.class);
+        this.registerHandler(Incoming.GuildForumThreadUpdateEvent,              GuildForumThreadUpdateEvent.class);
         //this.registerHandler(Incoming.GetHabboGuildBadgesMessageEvent, GetHabboGuildBadgesMessageEvent.class);
     }
 

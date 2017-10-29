@@ -6,6 +6,8 @@ import com.eu.habbo.habbohotel.guilds.SettingsState;
 import com.eu.habbo.habbohotel.guilds.forums.GuildForum;
 import com.eu.habbo.habbohotel.guilds.forums.GuildForumThread;
 import com.eu.habbo.messages.incoming.MessageHandler;
+import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
 import com.eu.habbo.messages.outgoing.guilds.forums.GuildForumCommentsComposer;
 import com.eu.habbo.messages.outgoing.guilds.forums.GuildForumDataComposer;
 
@@ -25,18 +27,17 @@ public class GuildForumUpdateSettingsEvent extends MessageHandler
         if(guild == null || guild.getOwnerId() != this.client.getHabbo().getHabboInfo().getId())
             return;
 
-        this.client.sendResponse(new GuildForumDataComposer(Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(1), this.client.getHabbo()));
-
         guild.setReadForum(SettingsState.fromValue(canRead));
         guild.setPostMessages(SettingsState.fromValue(postMessages));
         guild.setPostThreads(SettingsState.fromValue(postThreads));
         guild.setModForum(SettingsState.fromValue(modForum));
+
         guild.needsUpdate = true;
+
         Emulator.getThreading().run(guild);
 
+        this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FORUMS_FORUM_SETTINGS_UPDATED.key).compose());
 
-
-
-        //TODO: DATABASE SAVING, PERMISSION CHECK
+        this.client.sendResponse(new GuildForumDataComposer(Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(guildId), this.client.getHabbo()));
     }
 }
