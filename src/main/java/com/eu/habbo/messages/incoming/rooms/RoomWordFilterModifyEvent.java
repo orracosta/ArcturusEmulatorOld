@@ -20,10 +20,11 @@ public class RoomWordFilterModifyEvent extends MessageHandler
 
         Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(roomId);
 
-        if(room != null)
+        if(room != null && !room.getWordFilterWords().contains(word))
         {
             if (add)
             {
+
                 room.addToWordFilter(word);
             }
             else
