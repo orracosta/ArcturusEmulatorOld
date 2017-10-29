@@ -134,18 +134,12 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
 
                                 for(Habbo habbo : room.getHabbos()) {
                                     RoomTile h = habbo.getRoomUnit().getCurrentLocation();
-                                    boolean lastDiag = room.getLayout().CANMOVEDIAGONALY;
-
-                                    room.getLayout().moveDiagonally(false);
 
                                     double distance = t.distance(h);
                                     if (distance <= shortest && !room.getLayout().findPath(t, h).isEmpty()) {
                                         target = habbo;
                                         shortest = distance;
                                         nextStep = room.getLayout().findPath(t, h).getFirst();
-                                    }
-                                    if (lastDiag) {
-                                        room.getLayout().moveDiagonally(true);
                                     }
                                 }
 

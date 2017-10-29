@@ -8,9 +8,7 @@ import gnu.trove.set.hash.THashSet;
 import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
 
 public class RoomLayout
@@ -257,7 +255,7 @@ public class RoomLayout
         return this.heightmap.replace("\r\n", "\r").substring(0, this.heightmap.replace("\r\n", "\r").length());
     }
 
-    public final Deque<RoomTile> findPath(RoomTile oldTile, RoomTile newTile)
+    public final Deque<RoomTile> findPath(RoomTile oldTile, RoomTile newTile, boolean notIsFurni)
     {
         LinkedList<RoomTile> openList = new LinkedList();
         try
@@ -286,7 +284,7 @@ public class RoomLayout
                     return calcPath(findTile(openList, (short)oldTile.x, (short)oldTile.y), current);
                 }
 
-                List<RoomTile> adjacentNodes = getAdjacent(openList, current, newTile.x, newTile.y);
+                List<RoomTile> adjacentNodes = getAdjacent(openList, current, newTile.x, newTile.y, notIsFurni);
 
                 for (RoomTile currentAdj : adjacentNodes)
                 {
@@ -330,6 +328,11 @@ public class RoomLayout
             Emulator.getLogging().logErrorLine(e);
         }
         return new LinkedList<>();
+    }
+
+    public final Deque<RoomTile> findPath(RoomTile oldTile, RoomTile newTile)
+    {
+        return findPath(oldTile, newTile, true);
     }
 
     private RoomTile findTile(List<RoomTile> tiles, short x, short y)
@@ -385,7 +388,7 @@ public class RoomLayout
         return cheapest;
     }
 
-    private List<RoomTile> getAdjacent(List<RoomTile> closedList, RoomTile node, int newX, int newY)
+    private List<RoomTile> getAdjacent(List<RoomTile> closedList, RoomTile node, int newX, int newY, boolean notIsFurni)
     {
         short x = node.x;
         short y = node.y;
@@ -427,7 +430,7 @@ public class RoomLayout
                 adj.add(temp);
             }
         }
-        if (CANMOVEDIAGONALY)
+        if (CANMOVEDIAGONALY && notIsFurni)
         {
             if ((x < this.mapSizeX) && (y < this.mapSizeY))
             {

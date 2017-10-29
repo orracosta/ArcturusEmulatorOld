@@ -90,13 +90,11 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
                 RoomTile nextStep = newTile;
 
                 List<RoomTile> TilesAround = room.getLayout().getTilesAround(room.getLayout().getTile(item.getX(), item.getY()));
-                boolean lastDiag = room.getLayout().CANMOVEDIAGONALY;
 
-                room.getLayout().moveDiagonally(false);
                 for(int i = 0; i < TilesAround.size(); i++){
                     RoomTile tt = room.getLayout().getTile(TilesAround.get(i).x, TilesAround.get(i).y);
-                    if(!room.getLayout().findPath(newTile, tt).isEmpty()) {
-                        tt = room.getLayout().findPath(newTile, tt).getFirst();
+                    if(!room.getLayout().findPath(newTile, tt, false).isEmpty()) {
+                        tt = room.getLayout().findPath(newTile, tt, false).getFirst();
                         if (tt != null && tt.state == RoomTileState.OPEN)
                         {
                             if (room.getLayout().tileExists(tt.x, tt.y))
@@ -113,9 +111,6 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
                             }
                         }
                     }
-                }
-                if(lastDiag){
-                    room.getLayout().moveDiagonally(true);
                 }
 
                 room.sendComposer(new FloorItemOnRollerComposer(item, null, nextStep, nextStep.getStackHeight() - item.getZ(), room).compose());
