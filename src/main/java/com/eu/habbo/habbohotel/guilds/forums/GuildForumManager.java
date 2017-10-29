@@ -33,8 +33,12 @@ public class GuildForumManager {
                 }
             }
 
-            forum.updateLastRequested();
-            return forum;
+            if(forum != null) {
+                forum.updateLastRequested();
+                return forum;
+            }
+
+            return null;
         }
     }
 
