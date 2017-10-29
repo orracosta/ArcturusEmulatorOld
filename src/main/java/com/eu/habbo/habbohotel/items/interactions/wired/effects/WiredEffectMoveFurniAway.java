@@ -94,8 +94,9 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
                 for(int i = 0; i < TilesAround.size(); i++){
                     RoomTile tt = room.getLayout().getTile(TilesAround.get(i).x, TilesAround.get(i).y);
                     if(!room.getLayout().findPath(newTile, tt, false).isEmpty()) {
+                        RoomTile ttLast = tt;
                         tt = room.getLayout().findPath(newTile, tt, false).getFirst();
-                        if (tt != null && tt.state == RoomTileState.OPEN)
+                        if (tt != null && tt.state == RoomTileState.OPEN && ttLast != tt)
                         {
                             if (room.getLayout().tileExists(tt.x, tt.y))
                             {
