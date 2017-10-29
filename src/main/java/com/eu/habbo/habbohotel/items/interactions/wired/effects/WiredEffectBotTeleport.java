@@ -120,7 +120,7 @@ public class WiredEffectBotTeleport extends InteractionWiredEffect
                         int currentEffect = bot.getRoomUnit().getEffectId();
 
                         room.giveEffect(bot.getRoomUnit(), 4);
-                        Emulator.getThreading().run(new RoomUnitTeleport(bot.getRoomUnit(), room, item.getX(), item.getY(), item.getZ() + (item.getBaseItem().allowSit() ? item.getBaseItem().getHeight() - 0.50 : 0D), currentEffect));
+                        Emulator.getThreading().run(new RoomUnitTeleport(bot.getRoomUnit(), room, item.getX(), item.getY(), item.getZ() + (item.getBaseItem().allowSit() ? item.getBaseItem().getHeight() - 0.50 : 0D), currentEffect), WiredHandler.TELEPORT_DELAY);
                         break;
                     } else
                     {
