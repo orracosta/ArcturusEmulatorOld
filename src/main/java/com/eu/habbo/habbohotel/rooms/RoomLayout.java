@@ -304,6 +304,10 @@ public class RoomLayout
 
                     if (!openList.contains(currentAdj) || (currentAdj.x == newTile.x && currentAdj.y == newTile.y && (room.canSitOrLayAt(newTile.x, newTile.y) && !room.hasHabbosAt(newTile.x, newTile.y))))
                     {
+                        height = (room.getLayout().getHeightAtSquare(currentAdj.x, currentAdj.y) - room.getLayout().getHeightAtSquare(current.x, current.y));
+                        if (height > MAXIMUM_STEP_HEIGHT)
+                            continue;
+
                         currentAdj.setPrevious(current);
                         currentAdj.sethCosts(findTile(openList, (short)newTile.x, (short)newTile.y));
                         currentAdj.setgCosts(current);
