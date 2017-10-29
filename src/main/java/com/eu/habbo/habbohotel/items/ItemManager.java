@@ -136,6 +136,7 @@ public class ItemManager
         this.interactionsList.add(new ItemInteraction("water",                  InteractionWater.class));
         this.interactionsList.add(new ItemInteraction("viking_cotie",           InteractionVikingCotie.class));
         this.interactionsList.add(new ItemInteraction("tile_fxprovider_nfs",    InteractionTileEffectProvider.class));
+        this.interactionsList.add(new ItemInteraction("tile_fxremove",          InteractionTileEffectRemove.class));
         this.interactionsList.add(new ItemInteraction("mutearea",               InteractionMuteArea.class));
         this.interactionsList.add(new ItemInteraction("information_terminal",   InteractionInformationTerminal.class));
         this.interactionsList.add(new ItemInteraction("external_image",         InteractionExternalImage.class));
