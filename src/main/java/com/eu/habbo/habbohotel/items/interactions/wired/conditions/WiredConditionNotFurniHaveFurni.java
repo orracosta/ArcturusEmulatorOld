@@ -42,9 +42,17 @@ public class WiredConditionNotFurniHaveFurni extends InteractionWiredCondition
         if(this.items.isEmpty())
             return true;
 
+        boolean nFoundSomething = true;
         for(HabboItem item : this.items)
         {
+            boolean found = false;
             THashSet<HabboItem> things = room.getItemsAt(room.getLayout().getTile(item.getX(), item.getY()));
+
+            if (things == null)
+                continue;
+
+            if(things.isEmpty() && this.all)
+                return true;
 
             for(HabboItem i : things)
             {
@@ -53,17 +61,41 @@ public class WiredConditionNotFurniHaveFurni extends InteractionWiredCondition
 
                 if(i.getZ() >= item.getZ())
                 {
-                    if(this.all)
-                        return true;
-                }
-                else
-                {
-                    if(!this.all)
-                        return true;
+                    found = true;
+                    nFoundSomething = false;
                 }
             }
+
+            if(!this.all)
+            {
+                if(!found)
+                    return true;
+            }
+            else
+            {
+                if(found)
+                    return false;
+            }
+
+
+//            for(HabboItem i : things)
+//            {
+//                if(i == item)
+//                    continue;
+//
+//                if(i.getZ() >= item.getZ())
+//                {
+//                    if(this.all)
+//                        return false;
+//                }
+//                else
+//                {
+//                    if(!this.all)
+//                        return true;
+//                }
+//            }
         }
-        return false;
+        return this.items.isEmpty() || nFoundSomething;
     }
 
     @Override
