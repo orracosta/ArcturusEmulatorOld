@@ -288,6 +288,8 @@ public class RoomLayout
 
                 for (RoomTile currentAdj : adjacentNodes)
                 {
+
+
                     if (!currentAdj.isWalkable() && !(currentAdj.equals(newTile) && room.canSitOrLayAt(currentAdj.x, currentAdj.y))){ closedList.add(currentAdj); openList.remove(currentAdj); continue;}
                     //if (!room.getLayout().tileWalkable((short) currentAdj.x, (short) currentAdj.y)) continue;
 
