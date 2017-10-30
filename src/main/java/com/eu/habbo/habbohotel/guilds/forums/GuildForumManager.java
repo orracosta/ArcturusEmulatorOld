@@ -10,6 +10,7 @@ import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -43,23 +44,22 @@ public class GuildForumManager {
     }
 
     public void clearInactiveForums() {
-        int time = Emulator.getIntUnixTimestamp();
-
+        List<Integer> toRemove = new ArrayList<Integer>();
         TIntObjectIterator<GuildForum> guildForums = this.guildForums.iterator();
         for (int i = this.guildForums.size(); i-- > 0; ) {
             try {
                 guildForums.advance();
             }
-            //TODO: DESABILITADO TEMPORARIO
-            /*catch (NoSuchElementException e) {
-                break;
-            }*/
-            catch (Exception e) {
+            catch (NoSuchElementException | ConcurrentModificationException e) {
                 break;
             }
 
-            if (time - guildForums.value().getLastRequestedTime() > 300) {
-                this.guildForums.remove(guildForums.key());
+            if (guildForums.value().getLastRequestedTime() < Emulator.getIntUnixTimestamp() - 300) {
+                toRemove.add(guildForums.key());
+            }
+
+            for (Integer j : toRemove) {
+                this.guildForums.remove(j);
             }
         }
     }
