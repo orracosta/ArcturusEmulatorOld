@@ -54,7 +54,7 @@ public class WiredConditionNotFurniHaveFurni extends InteractionWiredCondition
                 if(i.getZ() >= item.getZ())
                 {
                     if(this.all)
-                        return false;
+                        return true;
                 }
                 else
                 {
@@ -63,7 +63,6 @@ public class WiredConditionNotFurniHaveFurni extends InteractionWiredCondition
                 }
             }
         }
-
         return false;
     }
 

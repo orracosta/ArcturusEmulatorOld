@@ -64,7 +64,7 @@ public class WiredConditionHabboHasHandItem extends InteractionWiredCondition
     @Override
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
     {
-        if(roomUnit != null)
+        if(roomUnit == null)
             return false;
 
         return roomUnit.getHandItem() == this.handItem;
