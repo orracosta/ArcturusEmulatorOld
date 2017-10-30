@@ -3994,6 +3994,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         double height = this.layout.getHeightAtSquare(x, y);
         boolean canStack = true;
         boolean stackHelper = false;
+        boolean multiheight = false;
         THashSet<HabboItem> items = this.getItemsAt(x, y);
 
         if (items != null)
@@ -4009,6 +4010,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                 if (item instanceof InteractionMultiHeight)
                 {
+                    multiheight = true;
                     height = Item.getCurrentHeight(item);
                 }
             }
@@ -4031,6 +4033,28 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                         break;
                     }
 
+                    double itemHeight = (item.getBaseItem().allowSit() ? 0.0D : item.getBaseItem().getHeight()) + item.getZ();
+
+                    if (item instanceof InteractionMultiHeight)
+                    {
+                        if (item.getExtradata().length() == 0)
+                        {
+                            item.setExtradata("0");
+                        }
+                        itemHeight += Item.getCurrentHeight(item);
+                    }
+
+                    if (itemHeight > height)
+                    {
+                        height = itemHeight;
+                    }
+                }
+            }
+
+            if (multiheight)
+            {
+                for (HabboItem item : items)
+                {
                     double itemHeight = (item.getBaseItem().allowSit() ? 0.0D : item.getBaseItem().getHeight()) + item.getZ();
 
                     if (item instanceof InteractionMultiHeight)
