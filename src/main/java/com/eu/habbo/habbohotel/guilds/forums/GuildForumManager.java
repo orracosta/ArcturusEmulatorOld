@@ -54,7 +54,9 @@ public class GuildForumManager {
             /*catch (NoSuchElementException e) {
                 break;
             }*/
-            catch (Exception e) {}
+            catch (Exception e) {
+                break;
+            }
 
             if (time - guildForums.value().getLastRequestedTime() > 300) {
                 this.guildForums.remove(guildForums.key());
