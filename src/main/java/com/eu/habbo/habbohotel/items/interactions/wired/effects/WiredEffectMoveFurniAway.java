@@ -69,13 +69,17 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
                 }
             }
 
-            if(target != null) {
+            if(target != null)
+            {
 
-                if (RoomLayout.tilesAdjecent(target.getRoomUnit().getCurrentLocation(), room.getLayout().getTile(item.getX(), item.getY())) && (target.getRoomUnit().getX() == item.getX() || target.getRoomUnit().getY() == item.getY())) {
+                if(RoomLayout.tilesAdjecent(target.getRoomUnit().getCurrentLocation(), room.getLayout().getTile(item.getX(), item.getY())) && (target.getRoomUnit().getX() == item.getX() || target.getRoomUnit().getY() == item.getY()))
+                {
                     final Habbo finalTarget = target;
-                    Emulator.getThreading().run(new Runnable() {
+                    Emulator.getThreading().run(new Runnable()
+                    {
                         @Override
-                        public void run() {
+                        public void run()
+                        {
                             WiredHandler.handle(WiredTriggerType.COLLISION, finalTarget.getRoomUnit(), room, new Object[]{item});
                         }
                     }, 500);
@@ -88,30 +92,30 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
 
                 List<RoomTile> TilesAround = room.getLayout().getTilesAround(room.getLayout().getTile(item.getX(), item.getY()));
 
-                if (TilesAround != null) {
-                    for (int i = 0; i < TilesAround.size(); i++) {
-                        RoomTile tt = room.getLayout().getTile(TilesAround.get(i).x, TilesAround.get(i).y);
-                        if (!room.getLayout().findPath(newTile, tt, false).isEmpty()) {
-                            RoomTile ttLast = tt;
-                            if (tt != null) {
-                                tt = room.getLayout().findPath(newTile, tt, false).getFirst();
-                                if (tt != null && tt.state == RoomTileState.OPEN && ttLast != tt) {
-                                    if (room.getLayout().tileExists(tt.x, tt.y)) {
-                                        HabboItem topItem = room.getTopItemAt(tt.x, tt.y);
+                for(int i = 0; i < TilesAround.size(); i++){
+                    RoomTile tt = room.getLayout().getTile(TilesAround.get(i).x, TilesAround.get(i).y);
+                    if(!room.getLayout().findPath(newTile, tt, false).isEmpty()) {
+                        RoomTile ttLast = tt;
+                        tt = room.getLayout().findPath(newTile, tt, false).getFirst();
+                        if (tt != null && tt.state == RoomTileState.OPEN && ttLast != tt)
+                        {
+                            if (room.getLayout().tileExists(tt.x, tt.y))
+                            {
+                                HabboItem topItem = room.getTopItemAt(tt.x, tt.y);
 
-                                        if (topItem == null || topItem.getBaseItem().allowWalk()) {
-                                            if (target.getRoomUnit().getCurrentLocation().distance(tt) > target.getRoomUnit().getCurrentLocation().distance(nextStep)) {
-                                                nextStep = tt;
-                                            }
-                                        }
+                                if (topItem == null || topItem.getBaseItem().allowWalk())
+                                {
+                                    if(target.getRoomUnit().getCurrentLocation().distance(tt) > target.getRoomUnit().getCurrentLocation().distance(nextStep))
+                                    {
+                                        nextStep = tt;
                                     }
                                 }
                             }
                         }
                     }
-
-                    room.sendComposer(new FloorItemOnRollerComposer(item, null, nextStep, nextStep.getStackHeight() - item.getZ(), room).compose());
                 }
+
+                room.sendComposer(new FloorItemOnRollerComposer(item, null, nextStep, nextStep.getStackHeight() - item.getZ(), room).compose());
             }
         }
         return true;
@@ -179,7 +183,7 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
         for(HabboItem item : this.items)
         {
             if(item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null
-               || item instanceof InteractionRoller || item instanceof InteractionFreezeTile || item instanceof InteractionBattleBanzaiTile || item instanceof InteractionStackHelper)
+                    || item instanceof InteractionRoller || item instanceof InteractionFreezeTile || item instanceof InteractionBattleBanzaiTile || item instanceof InteractionStackHelper)
             {
                 items.add(item);
             }
