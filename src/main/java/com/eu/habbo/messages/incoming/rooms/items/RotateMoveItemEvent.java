@@ -123,6 +123,7 @@ public class RotateMoveItemEvent extends MessageHandler
         double checkStackHeight = item.getZ();
 
         Rectangle newSquare = RoomLayout.getRectangle(x, y, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), rotation);
+        THashSet<HabboItem> getItems = room.getItemsAt(x, y);
 
         //if (x != item.getX() || y != item.getY() || item.getRotation() != rotation)
         if (hasStackHelper == null)
@@ -135,15 +136,32 @@ public class RotateMoveItemEvent extends MessageHandler
                     double testheight = room.getStackHeight(i, j, false, item);
                     if (
                             (checkStackHeight != testheight && !(item instanceof InteractionStackHelper)) ||
-                            (!room.getHabbosAt(i, j).isEmpty() && !(oldX == x && oldY == y) && !(item instanceof InteractionStackHelper)) ||
-                            (checkStackHeight > 0 && item instanceof InteractionRoller) ||
-                            (checkStackHeight > 0 && item instanceof InteractionBattleBanzaiTile) ||
-                            (checkStackHeight > 0 && item instanceof InteractionFreezeTile)
+                            (!room.getHabbosAt(i, j).isEmpty() && !(oldX == x && oldY == y) && !(item instanceof InteractionStackHelper))
                         )
                     {
                         this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
                         this.client.sendResponse(new FloorItemUpdateComposer(item));
                         return;
+                    }
+
+                    if(getItems != null){
+                        for(HabboItem getItem : getItems){
+                            if ((getItem instanceof InteractionRoller  || getItem instanceof InteractionStackHelper) == (item instanceof InteractionRoller)){
+                                this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
+                                this.client.sendResponse(new FloorItemUpdateComposer(item));
+                                return;
+                            }
+                            else if ((getItem instanceof InteractionBattleBanzaiTile || getItem instanceof InteractionStackHelper) == (item instanceof InteractionBattleBanzaiTile)){
+                                this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
+                                this.client.sendResponse(new FloorItemUpdateComposer(item));
+                                return;
+                            }
+                            else if ((getItem instanceof InteractionFreezeTile  || getItem instanceof InteractionStackHelper) == (item instanceof InteractionFreezeTile)){
+                                this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
+                                this.client.sendResponse(new FloorItemUpdateComposer(item));
+                                return;
+                            }
+                        }
                     }
 
                     boolean found = false;

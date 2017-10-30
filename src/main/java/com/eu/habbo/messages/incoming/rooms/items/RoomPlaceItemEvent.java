@@ -165,13 +165,23 @@ public class RoomPlaceItemEvent extends MessageHandler
             }
 
             double checkStackHeight = room.getStackHeight(x, y, true);
+            THashSet<HabboItem> getItems = room.getItemsAt(x, y);
 
-            if ((checkStackHeight > 0 && item instanceof InteractionRoller)||
-            (checkStackHeight > 0 && item instanceof InteractionBattleBanzaiTile) ||
-            (checkStackHeight > 0 && item instanceof InteractionFreezeTile))
-            {
-                this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
-                return;
+            if(getItems != null){
+                for(HabboItem getItem : getItems){
+                    if ((getItem instanceof InteractionRoller  || getItem instanceof InteractionStackHelper) == (item instanceof InteractionRoller)){
+                        this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
+                        return;
+                    }
+                    else if ((getItem instanceof InteractionBattleBanzaiTile || getItem instanceof InteractionStackHelper) == (item instanceof InteractionBattleBanzaiTile)){
+                        this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
+                        return;
+                    }
+                    else if ((getItem instanceof InteractionFreezeTile  || getItem instanceof InteractionStackHelper) == (item instanceof InteractionFreezeTile)){
+                        this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
+                        return;
+                    }
+                }
             }
 
             HabboItem stackHelper = room.getStackHelper(x, y);
