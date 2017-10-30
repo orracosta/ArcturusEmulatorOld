@@ -85,8 +85,10 @@ public abstract class InteractionGameTimer extends HabboItem
 
         if ((objects.length >= 2 && objects[1] instanceof WiredEffectType))
         {
-            if (game.isRunning)
-                return;
+            if (game == null || !game.isRunning)
+                startGame(room);
+            else if (game.isRunning)
+                stopGame(room);
         }
 
         if(objects.length >= 1 && objects[0] instanceof Integer && client != null)
@@ -162,6 +164,8 @@ public abstract class InteractionGameTimer extends HabboItem
     {
         this.needsUpdate(true);
         Game game = (this.getGameType().cast(room.getGame(this.getGameType())));
+
+        this.setExtradata(this.baseTime + "");
 
         if(game != null && game.isRunning)
         {
