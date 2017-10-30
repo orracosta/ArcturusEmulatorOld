@@ -96,18 +96,20 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
                     RoomTile tt = room.getLayout().getTile(TilesAround.get(i).x, TilesAround.get(i).y);
                     if(!room.getLayout().findPath(newTile, tt, false).isEmpty()) {
                         RoomTile ttLast = tt;
-                        tt = room.getLayout().findPath(newTile, tt, false).getFirst();
-                        if (tt != null && tt.state == RoomTileState.OPEN && ttLast != tt)
-                        {
-                            if (room.getLayout().tileExists(tt.x, tt.y))
+                        if(tt != null){
+                            tt = room.getLayout().findPath(newTile, tt, false).getFirst();
+                            if (tt != null && tt.state == RoomTileState.OPEN && ttLast != tt)
                             {
-                                HabboItem topItem = room.getTopItemAt(tt.x, tt.y);
-
-                                if (topItem == null || topItem.getBaseItem().allowWalk())
+                                if (room.getLayout().tileExists(tt.x, tt.y))
                                 {
-                                    if(target.getRoomUnit().getCurrentLocation().distance(tt) > target.getRoomUnit().getCurrentLocation().distance(nextStep))
+                                    HabboItem topItem = room.getTopItemAt(tt.x, tt.y);
+
+                                    if (topItem == null || topItem.getBaseItem().allowWalk())
                                     {
-                                        nextStep = tt;
+                                        if(target.getRoomUnit().getCurrentLocation().distance(tt) > target.getRoomUnit().getCurrentLocation().distance(nextStep))
+                                        {
+                                            nextStep = tt;
+                                        }
                                     }
                                 }
                             }
