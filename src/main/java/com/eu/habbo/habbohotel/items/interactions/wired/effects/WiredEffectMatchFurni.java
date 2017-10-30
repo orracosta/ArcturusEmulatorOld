@@ -154,7 +154,6 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
             }
             catch (Exception e)
             {
-                System.out.println(set.getString("wired_data"));
                 e.printStackTrace();
             }
         }
