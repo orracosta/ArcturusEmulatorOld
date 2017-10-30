@@ -49,9 +49,12 @@ public class GuildForumManager {
         for (int i = this.guildForums.size(); i-- > 0; ) {
             try {
                 guildForums.advance();
-            } catch (NoSuchElementException e) {
-                break;
             }
+            //TODO: DESABILITADO TEMPORARIO
+            /*catch (NoSuchElementException e) {
+                break;
+            }*/
+            catch (Exception e) {}
 
             if (time - guildForums.value().getLastRequestedTime() > 300) {
                 this.guildForums.remove(guildForums.key());

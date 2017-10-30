@@ -67,7 +67,8 @@ public class TalentTrackLevel
                 }
                 else
                 {
-                    Emulator.getLogging().logErrorLine("Could not find achievement with ID " + achievements[i] + " for talenttrack level " + this.level + " of type " + this.type);
+                    //TODO: DESABILITADO TEMPORARIO
+                    //Emulator.getLogging().logErrorLine("Could not find achievement with ID " + achievements[i] + " for talenttrack level " + this.level + " of type " + this.type);
                 }
             }
         }
