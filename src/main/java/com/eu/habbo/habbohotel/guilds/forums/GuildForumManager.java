@@ -48,7 +48,7 @@ public class GuildForumManager {
         TIntObjectIterator<GuildForum> guildForums = this.guildForums.iterator();
         for (int i = this.guildForums.size(); i-- > 0; ) {
             try {
-                guildForums.key();
+                guildForums.advance();
             } catch (NoSuchElementException e) {
                 break;
             }
