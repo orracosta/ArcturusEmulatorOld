@@ -164,7 +164,7 @@ public class InteractionFootball extends InteractionPushable
     @Override
     public boolean validMove(Room room, RoomTile from, RoomTile to)
     {
-        if (to == null || from == null)
+        if (to == null || to.state == RoomTileState.BLOCKED)
             return false;
 
         boolean itemnotmove = false;
@@ -174,12 +174,12 @@ public class InteractionFootball extends InteractionPushable
             Item item = Emulator.getGameEnvironment().getItemManager().loadHabboItem(topItem.getId()).getBaseItem();
             if(item != null)
             {
-                if(item.allowSit() || item.allowLay() || to.getStackHeight() > 0 || to.z > 0 || to.z < 0)
-                {
+                if(item.getHeight() > 0.2 || item.allowSit() || item.allowLay() || (topItem instanceof InteractionFootball))
                     itemnotmove = true;
-                }
             }
         }
+        else if(topItem == null && room.getStackHeight(to.x, to.y, false) > 0.2)
+            itemnotmove = true;
 
         return !(!room.getLayout().tileWalkable(to.x, to.y) || itemnotmove);
     }
@@ -221,9 +221,6 @@ public class InteractionFootball extends InteractionPushable
             }
         }
 
-        if(to == null || to.getStackHeight() > 0 || to.state == RoomTileState.BLOCKED)
-            return;
-
         HabboItem currentTopItem = room.getTopItemAt(from.x, from.y, this);
         HabboItem topItem = room.getTopItemAt(to.x, to.y, this);
 
@@ -253,7 +250,7 @@ public class InteractionFootball extends InteractionPushable
     @Override
     public boolean canStillMove(Room room, RoomTile from, RoomTile to, RoomUserRotation direction, RoomUnit kicker, int nextRoll, int currentStep, int totalSteps)
     {
-        if (from == null || to == null || to.getStackHeight() > 0 || to.z > 0 || to.z < 0 || to.state == RoomTileState.BLOCKED)
+        if (from == null || to == null)
             return false;
 
         HabboItem topItem = room.getTopItemAt(from.x, from.y, this);
