@@ -34,7 +34,7 @@ public class RoomUnitTeleport implements Runnable
 
         this.roomUnit.setGoalLocation(t);
         this.roomUnit.getStatus().remove("mv");
-        this.room.sendComposer(new RoomUnitOnRollerComposer(this.roomUnit, null, t, this.room).compose());
+        this.room.sendComposer(new RoomUnitOnRollerComposer(this.roomUnit, this.room.getTopItemAt(t.x, t.y), t, this.room).compose());
         this.room.giveEffect(this.roomUnit, this.newEffect);
         this.room.updateHabbosAt(t.x, t.y);
     }
