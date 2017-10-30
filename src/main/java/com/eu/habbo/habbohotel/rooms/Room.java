@@ -4009,9 +4009,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                 if (item instanceof InteractionMultiHeight)
                 {
-                    stackHelper = true;
                     height = Item.getCurrentHeight(item);
-                    canStack = true;
                 }
             }
 
