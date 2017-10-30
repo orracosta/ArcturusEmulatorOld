@@ -52,14 +52,17 @@ public class RoomUnitOnRollerComposer extends MessageComposer
 
         if(roller != null && this.roomUnit.getPath().isEmpty()){
             this.roomUnit.setCurrentLocation(room.getLayout().getTile(this.newLocation.x, this.newLocation.y));
-            Emulator.getThreading().run(new Runnable()
+            if(roomUnit.getPath().isEmpty() && newLocation != null)
             {
-                @Override
-                public void run() {
-                    if(roomUnit.getPath().isEmpty())
-                        roomUnit.setLocation(room.getLayout().getTile(newLocation.x, newLocation.y));
-                }
-            }, 380);
+                Emulator.getThreading().run(new Runnable()
+                {
+                    @Override
+                    public void run() {
+                        if(roomUnit.getPath().isEmpty())
+                            roomUnit.setLocation(room.getLayout().getTile(newLocation.x, newLocation.y));
+                    }
+                }, 380);
+            }
         }
         else{
             roomUnit.setLocation(room.getLayout().getTile(newLocation.x, newLocation.y));
