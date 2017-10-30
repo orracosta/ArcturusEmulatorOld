@@ -174,7 +174,7 @@ public class InteractionFootball extends InteractionPushable
             Item item = Emulator.getGameEnvironment().getItemManager().loadHabboItem(topItem.getId()).getBaseItem();
             if(item != null)
             {
-                if(item.allowSit() || item.allowLay() || to.getStackHeight() > 0 || to.z < 0)
+                if(item.allowSit() || item.allowLay() || to.getStackHeight() > 0 || to.z > 0 || to.z < 0)
                 {
                     itemnotmove = true;
                 }
@@ -253,7 +253,7 @@ public class InteractionFootball extends InteractionPushable
     @Override
     public boolean canStillMove(Room room, RoomTile from, RoomTile to, RoomUserRotation direction, RoomUnit kicker, int nextRoll, int currentStep, int totalSteps)
     {
-        if (from == null || to == null || to.getStackHeight() > 0 || to.z < 0 || to.state == RoomTileState.BLOCKED)
+        if (from == null || to == null || to.getStackHeight() > 0 || to.z > 0 || to.z < 0 || to.state == RoomTileState.BLOCKED)
             return false;
 
         HabboItem topItem = room.getTopItemAt(from.x, from.y, this);
