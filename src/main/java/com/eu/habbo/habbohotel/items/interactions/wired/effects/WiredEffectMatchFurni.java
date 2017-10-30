@@ -81,8 +81,10 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
 
                     double offsetZ = setting.z - item.getZ();
 
-                    room.sendComposer(new FloorItemOnRollerComposer(item, null, t, offsetZ, room).compose());
-                    tilesToUpdate.addAll(room.getLayout().getTilesAt(room.getLayout().getTile((short) item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), oldRotation));
+                    if(!room.hasHabbosAt(t.x, t.y)) {
+                        room.sendComposer(new FloorItemOnRollerComposer(item, null, t, offsetZ, room).compose());
+                        tilesToUpdate.addAll(room.getLayout().getTilesAt(room.getLayout().getTile((short) item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), oldRotation));
+                    }
                 }
 
                 item.needsUpdate(true);
