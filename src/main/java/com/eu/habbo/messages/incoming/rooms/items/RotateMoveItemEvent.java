@@ -146,17 +146,17 @@ public class RotateMoveItemEvent extends MessageHandler
 
                     if(getItems != null){
                         for(HabboItem getItem : getItems){
-                            if ((getItem instanceof InteractionRoller && item instanceof InteractionRoller)  || (getItem instanceof InteractionStackHelper && item instanceof InteractionRoller)){
+                            if ((getItem instanceof InteractionRoller && item instanceof InteractionRoller && getItem.getId() != item.getId())  || (getItem instanceof InteractionStackHelper && item instanceof InteractionRoller)){
                                 this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
                                 this.client.sendResponse(new FloorItemUpdateComposer(item));
                                 return;
                             }
-                            else if ((item instanceof InteractionBattleBanzaiTile && getItem instanceof InteractionRoller) || (getItem instanceof InteractionStackHelper && item instanceof InteractionBattleBanzaiTile)){
+                            else if ((item instanceof InteractionBattleBanzaiTile && getItem instanceof InteractionRoller && getItem.getId() != item.getId()) || (getItem instanceof InteractionStackHelper && item instanceof InteractionBattleBanzaiTile)){
                                 this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
                                 this.client.sendResponse(new FloorItemUpdateComposer(item));
                                 return;
                             }
-                            else if ((item instanceof InteractionFreezeTile && getItem instanceof InteractionRoller)  || (getItem instanceof InteractionStackHelper && item instanceof InteractionFreezeTile)){
+                            else if ((item instanceof InteractionFreezeTile && getItem instanceof InteractionRoller && getItem.getId() != item.getId())  || (getItem instanceof InteractionStackHelper && item instanceof InteractionFreezeTile)){
                                 this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
                                 this.client.sendResponse(new FloorItemUpdateComposer(item));
                                 return;
