@@ -25,10 +25,16 @@ public class RoomWordFilterModifyEvent extends MessageHandler
         {
             if (add)
             {
-
                 room.addToWordFilter(word);
             }
             else
+            {
+                room.removeFromWordFilter(word);
+            }
+        }
+        if(room != null && room.getWordFilterWords().contains(word))
+        {
+            if (!add)
             {
                 room.removeFromWordFilter(word);
             }
