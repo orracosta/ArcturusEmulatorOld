@@ -3903,8 +3903,16 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 {
                     if (((tile.x == x) && (tile.y == y)))
                     {
-                        if (item == null || item.getZ() < habboItem.getZ())
-                            item = habboItem;
+                        if (item == null || item.getZ() <= habboItem.getZ()) {
+                            if (item == null || item.getZ() < habboItem.getZ())
+                                item = habboItem;
+                            else
+                            {
+                                if(item.getBaseItem().getHeight() < habboItem.getBaseItem().getHeight())
+                                    item = habboItem;
+                            }
+
+                        }
                     }
                 }
             }
@@ -4157,18 +4165,18 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         if(hasHabbosAt(x, y))
             return false;
 
-        THashSet<HabboItem> items = getItemsAt(x, y);
-
-        return canSitAt(items) || canLayAt(items);
+        return canSitAt(x, y) || canLayAt(x, y);
     }
     public boolean canSitAt(int x, int y)
     {
-        if(hasHabbosAt(x, y))
+        HabboItem canSit = this.getTopItemAt(x, y);
+        if(canSit != null)
+            return canSit.getBaseItem().allowSit();
+        else
             return false;
-
-        return this.canSitAt(this.getItemsAt(x, y));
     }
 
+    //TODO: Need rewrite like cansit and canlay
     boolean canWalkAt(RoomTile roomTile)
     {
         if (roomTile == null)
@@ -4209,74 +4217,13 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         return canWalk;
     }
 
-    boolean canSitAt(THashSet<HabboItem> items)
-    {
-        if (items == null)
-            return false;
-
-        HabboItem topItem = null;
-        HabboItem lowestSitItem = null;
-        boolean canSit = false;
-        boolean canSitUnder = false;
-
-        for(HabboItem item : items)
-        {
-            if((lowestSitItem == null || lowestSitItem.getZ() > item.getZ()) && item.getBaseItem().allowSit())
-            {
-                lowestSitItem = item;
-            }
-
-            if(lowestSitItem != null)
-            {
-                if(item.getZ() > lowestSitItem.getZ())
-                {
-                    if(item.getZ() - lowestSitItem.getZ() > 0.8)
-                        canSitUnder = true;
-                    else
-                        canSitUnder = false;
-                }
-            }
-
-            if(topItem == null || item.getZ() > topItem.getZ())
-            {
-                topItem = item;
-                canSit = false;
-            }
-        }
-
-        if(topItem == null)
-            return false;
-
-        if(lowestSitItem == null)
-            return false;
-
-        if(topItem == lowestSitItem)
-            return true;
-
-        return topItem.getZ() <= lowestSitItem.getZ() || (canSitUnder);
-    }
-
     public boolean canLayAt(int x, int y)
     {
-        return this.canLayAt(this.getItemsAt(x, y));
-    }
-
-    boolean canLayAt(THashSet<HabboItem> items)
-    {
-        if (items == null || items.isEmpty())
-            return true;
-
-        HabboItem topItem = null;
-
-        for(HabboItem item : items)
-        {
-            if((topItem == null || item.getZ() > topItem.getZ()))
-            {
-                topItem = item;
-            }
-        }
-
-        return (topItem == null || topItem.getBaseItem().allowLay());
+        HabboItem canLay = this.getTopItemAt(x, y);
+        if(canLay != null)
+            return canLay.getBaseItem().allowLay();
+        else
+            return false;
     }
 
     public RoomTile getRandomWalkableTile()
