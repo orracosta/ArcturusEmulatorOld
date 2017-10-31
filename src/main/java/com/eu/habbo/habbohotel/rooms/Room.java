@@ -596,7 +596,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             {
                 while (set.next())
                 {
-                    this.wordFilterWords.add(set.getString("word"));
+                    this.wordFilterWords.add(set.getString("word").toLowerCase());
                 }
             }
         }
@@ -4951,7 +4951,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             if (this.wordFilterWords.contains(word))
                 return;
 
-            this.wordFilterWords.add(word);
+            this.wordFilterWords.add(word.toLowerCase());
 
             try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("INSERT INTO room_wordfilter VALUES (?, ?)"))
             {
@@ -4970,7 +4970,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     {
         synchronized (this.wordFilterWords)
         {
-            this.wordFilterWords.remove(word);
+            this.wordFilterWords.remove(word.toLowerCase());
 
             try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("DELETE FROM room_wordfilter WHERE room_id = ? AND word = ?"))
             {
