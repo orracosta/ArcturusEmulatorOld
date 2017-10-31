@@ -3,7 +3,9 @@ package com.eu.habbo.habbohotel.items.interactions.games.football;
 import com.eu.habbo.habbohotel.games.GameTeamColors;
 import com.eu.habbo.habbohotel.games.football.FootballGame;
 import com.eu.habbo.habbohotel.items.Item;
+import com.eu.habbo.habbohotel.items.interactions.InteractionMultiHeight;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPushable;
+import com.eu.habbo.habbohotel.items.interactions.InteractionStackHelper;
 import com.eu.habbo.habbohotel.items.interactions.games.InteractionGameTeamItem;
 import com.eu.habbo.habbohotel.items.interactions.games.football.goals.InteractionFootballGoal;
 import com.eu.habbo.habbohotel.rooms.*;
@@ -175,6 +177,8 @@ public class InteractionFootball extends InteractionPushable
             if(item != null)
             {
                 if(item.getHeight() > 0.2 || item.allowSit() || item.allowLay() || (topItem instanceof InteractionFootball))
+                    itemnotmove = true;
+                if(to.relativeHeight() != from.relativeHeight())
                     itemnotmove = true;
             }
         }
