@@ -30,23 +30,6 @@ public class WiredConditionTeamMember extends InteractionWiredCondition
     }
 
     @Override
-    public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
-    {
-        Habbo habbo = room.getHabbo(roomUnit);
-
-        if(habbo != null)
-        {
-            if(habbo.getHabboInfo().getGamePlayer() != null)
-            {
-                if(habbo.getHabboInfo().getGamePlayer().getTeamColor().equals(this.teamColor))
-                    return true;
-            }
-        }
-
-        return false;
-    }
-
-    @Override
     public String getWiredData()
     {
         return this.teamColor.type + "";
@@ -66,6 +49,23 @@ public class WiredConditionTeamMember extends InteractionWiredCondition
         {
             this.teamColor = GameTeamColors.RED;
         }
+    }
+
+    @Override
+    public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
+    {
+        Habbo habbo = room.getHabbo(roomUnit);
+
+        if(habbo != null)
+        {
+            if(habbo.getHabboInfo().getGamePlayer() != null)
+            {
+                if(habbo.getHabboInfo().getGamePlayer().getTeamColor().equals(this.teamColor))
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
@@ -90,7 +90,7 @@ public class WiredConditionTeamMember extends InteractionWiredCondition
         message.appendInt(this.getId());
         message.appendString("");
         message.appendInt(1);
-        message.appendInt(this.teamColor.type);
+        message.appendInt(this.teamColor.type + 1);
         message.appendInt(0);
         message.appendInt(this.getType().code);
         message.appendInt(0);
@@ -102,7 +102,7 @@ public class WiredConditionTeamMember extends InteractionWiredCondition
     {
         packet.readInt();
 
-        this.teamColor = GameTeamColors.values()[packet.readInt()];
+        this.teamColor = GameTeamColors.values()[packet.readInt() - 1];
 
         return true;
     }

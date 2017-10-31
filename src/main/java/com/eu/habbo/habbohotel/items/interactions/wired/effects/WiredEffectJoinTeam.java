@@ -54,7 +54,7 @@ public class WiredEffectJoinTeam extends InteractionWiredEffect
             {
                 if (room.getGame(habbo.getHabboInfo().getCurrentGame()) != null)
                 {
-                    room.getGame(habbo.getHabboInfo().getCurrentGame()).removeHabbo(habbo);
+                    return false;
                 }
             }
 
