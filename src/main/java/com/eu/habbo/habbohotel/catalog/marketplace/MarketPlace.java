@@ -246,8 +246,6 @@ public class MarketPlace
 
         query += " LIMIT 100";
 
-        System.out.println(query);
-
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement(query))
         {
             statement.setInt(1, Emulator.getIntUnixTimestamp() - 172800);
