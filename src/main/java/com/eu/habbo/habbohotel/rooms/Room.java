@@ -3454,7 +3454,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             {
                 for(String string : this.wordFilterWords)
                 {
-                    roomChatMessage.setMessage(roomChatMessage.getMessage().replace(string, "bobba"));
+                    roomChatMessage.setMessage(roomChatMessage.getMessage().toLowerCase().replace(string, "bobba"));
                 }
             }
         }
