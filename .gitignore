@@ -13,3 +13,4 @@ config.ini
 logging/**
 logging/
 Emulador.bat
+.DS_Store

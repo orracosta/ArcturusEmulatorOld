@@ -1,7 +1,6 @@
 *.iml
 .idea/
 target/**
-/TODO.txt
 /packet.pkt
 plugins/**
 src/main/resources/
