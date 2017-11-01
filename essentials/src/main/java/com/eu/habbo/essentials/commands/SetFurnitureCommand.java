@@ -24,6 +24,15 @@ public class SetFurnitureCommand extends Command
     @Override
     public boolean handle(GameClient gameClient, String[] strings) throws Exception
     {
+        Room room = gameClient.getHabbo().getHabboInfo().getCurrentRoom();
+        HabboItem item = room.getTopItemAt(gameClient.getHabbo().getRoomUnit().getX(), gameClient.getHabbo().getRoomUnit().getY());
+
+        if (item == null)
+        {
+            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("essentials.cmd_set.notfound"));
+            return false;
+        }
+
         if (strings.length >= 2)
         {
             if (strings[1].equalsIgnoreCase("info"))
@@ -45,45 +54,30 @@ public class SetFurnitureCommand extends Command
                 message += "get info - Exibe informações do mobi\r";
                 gameClient.getHabbo().alert(new String[]{message});
             }
-        }
-        if (strings.length < 3)
-        {
-            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("essentials.cmd_set.error"));
-            return false;
-        }
 
-        Room room = gameClient.getHabbo().getHabboInfo().getCurrentRoom();
-        HabboItem item = room.getTopItemAt(gameClient.getHabbo().getRoomUnit().getX(), gameClient.getHabbo().getRoomUnit().getY());
-
-        if (item == null)
-        {
-            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("essentials.cmd_set.notfound"));
-            return false;
+            if (strings[1].equalsIgnoreCase("get"))
+            {
+                String message = "item name: "+ item.getBaseItem().getName() +"\n";
+                message += "width: "+ item.getBaseItem().getWidth() +"\r";
+                message += "length: "+ item.getBaseItem().getLength() +"\r";
+                message += "height: "+ item.getBaseItem().getHeight() +"\r";
+                message += "stack: "+ item.getBaseItem().allowStack() +"\r";
+                message += "walk: "+ item.getBaseItem().allowWalk() +"\r";
+                message += "sit: "+ item.getBaseItem().allowSit() +"\r";
+                message += "lay: "+ item.getBaseItem().allowLay() +"\r";
+                message += "states: "+ item.getBaseItem().getStateCount() +"\r";
+                message += "vending: "+ item.getBaseItem().getVendingItems() +"\r";
+                message += "interaction: "+ item.getBaseItem().getInteractionType().getName() +"\r";
+                message += "effect - F: "+ item.getBaseItem().getEffectF() +" - M: "+ item.getBaseItem().getEffectM() +"\r";
+                gameClient.getHabbo().alert(new String[]{message});
+            }
         }
 
         if (strings.length >= 2)
         {
             try
             {
-                if (strings[1].equalsIgnoreCase("get"))
-                {
-                    String message = "item name: "+ item.getBaseItem().getName() +"\n";
-                    message += "width: "+ item.getBaseItem().getWidth() +"\r";
-                    message += "length: "+ item.getBaseItem().getLength() +"\r";
-                    message += "height: "+ item.getBaseItem().getHeight() +"\r";
-                    message += "stack: "+ item.getBaseItem().allowStack() +"\r";
-                    message += "walk: "+ item.getBaseItem().allowWalk() +"\r";
-                    message += "sit: "+ item.getBaseItem().allowSit() +"\r";
-                    message += "lay: "+ item.getBaseItem().allowLay() +"\r";
-                    message += "states: "+ item.getBaseItem().getStateCount() +"\r";
-                    message += "vending: "+ item.getBaseItem().getVendingItems() +"\r";
-                    message += "interaction: "+ item.getBaseItem().getInteractionType().getName() +"\r";
-                    message += "effect - F: "+ item.getBaseItem().getEffectF() +" - M: "+ item.getBaseItem().getEffectM() +"\r";
-                    gameClient.getHabbo().alert(new String[]{message});
-                }
-                else{
-                    handleColumn(item.getBaseItem(), strings[1], strings[2]);
-                }
+                handleColumn(item.getBaseItem(), strings[1], strings[2]);
             }
             catch (Exception e)
             {
