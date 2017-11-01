@@ -4,6 +4,9 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.commands.Command;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
+import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.habbohotel.users.HabboItem;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.sql.Connection;
@@ -43,24 +46,14 @@ public class SetFurnitureCommand extends Command
                 gameClient.getHabbo().alert(new String[]{message});
             }
         }
-        if (strings.length < 4)
+        if (strings.length < 3)
         {
             gameClient.getHabbo().whisper(Emulator.getTexts().getValue("essentials.cmd_set.error"));
             return false;
         }
 
-        int itemId = 0;
-        try
-        {
-            itemId = Integer.valueOf(strings[1]);
-        }
-        catch (Exception e)
-        {
-            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("essentials.cmd_set.invalid").replace("%value%", strings[1]));
-            return false;
-        }
-
-        Item item = Emulator.getGameEnvironment().getItemManager().loadHabboItem(itemId).getBaseItem();
+        Room room = gameClient.getHabbo().getHabboInfo().getCurrentRoom();
+        HabboItem item = room.getTopItemAt(gameClient.getHabbo().getRoomUnit().getX(), gameClient.getHabbo().getRoomUnit().getY());
 
         if (item == null)
         {
@@ -68,37 +61,34 @@ public class SetFurnitureCommand extends Command
             return false;
         }
 
-        for (int i = 2; i < strings.length; i+=2)
+        if (strings.length >= 2)
         {
-            if (i + 1 < strings.length)
+            try
             {
-                try
+                if (strings[1].equalsIgnoreCase("get"))
                 {
-                    if (strings[i].equalsIgnoreCase("get") && strings[i + 1].equalsIgnoreCase("info"))
-                    {
-                        String message = "item name: "+ item.getName() +"\n";
-                        message += "width: "+ item.getWidth() +"\r";
-                        message += "length: "+ item.getLength() +"\r";
-                        message += "height: "+ item.getHeight() +"\r";
-                        message += "stack: "+ item.allowStack() +"\r";
-                        message += "walk: "+ item.allowWalk() +"\r";
-                        message += "sit: "+ item.allowSit() +"\r";
-                        message += "lay: "+ item.allowLay() +"\r";
-                        message += "states: "+ item.getStateCount() +"\r";
-                        message += "vending: "+ item.getVendingItems() +"\r";
-                        message += "interaction: "+ item.getInteractionType().getName() +"\r";
-                        message += "effect - F: "+ item.getEffectF() +" - M: "+ item.getEffectM() +"\r";
-                        gameClient.getHabbo().alert(new String[]{message});
-                    }
-                    else{
-                        handleColumn(item, strings[i], strings[i + 1]);
-                    }
+                    String message = "item name: "+ item.getBaseItem().getName() +"\n";
+                    message += "width: "+ item.getBaseItem().getWidth() +"\r";
+                    message += "length: "+ item.getBaseItem().getLength() +"\r";
+                    message += "height: "+ item.getBaseItem().getHeight() +"\r";
+                    message += "stack: "+ item.getBaseItem().allowStack() +"\r";
+                    message += "walk: "+ item.getBaseItem().allowWalk() +"\r";
+                    message += "sit: "+ item.getBaseItem().allowSit() +"\r";
+                    message += "lay: "+ item.getBaseItem().allowLay() +"\r";
+                    message += "states: "+ item.getBaseItem().getStateCount() +"\r";
+                    message += "vending: "+ item.getBaseItem().getVendingItems() +"\r";
+                    message += "interaction: "+ item.getBaseItem().getInteractionType().getName() +"\r";
+                    message += "effect - F: "+ item.getBaseItem().getEffectF() +" - M: "+ item.getBaseItem().getEffectM() +"\r";
+                    gameClient.getHabbo().alert(new String[]{message});
                 }
-                catch (Exception e)
-                {
-                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("essentials.cmd_set.wrong"));
-                    return true;
+                else{
+                    handleColumn(item.getBaseItem(), strings[1], strings[2]);
                 }
+            }
+            catch (Exception e)
+            {
+                gameClient.getHabbo().whisper(Emulator.getTexts().getValue("essentials.cmd_set.wrong"));
+                return true;
             }
         }
 
