@@ -62,7 +62,7 @@ public class InteractionCannon extends HabboItem
 
         RoomTile tile = room.getLayout().getTile(this.getX(), this.getY());
         
-        if ((client == null || tile.distance(client.getHabbo().getRoomUnit().getCurrentLocation()) <= 3) && !this.cooldown)
+        if ((client == null || tile.distance(client.getHabbo().getRoomUnit().getCurrentLocation()) <= 5) && !this.cooldown)
         {
             this.cooldown = true;
             this.setExtradata(this.getExtradata().equals("1") ? "0" : "1");

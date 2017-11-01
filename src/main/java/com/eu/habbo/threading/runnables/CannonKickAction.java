@@ -32,7 +32,7 @@ public class CannonKickAction implements Runnable
         ServerMessage message = new BubbleAlertComposer("cannon.png", dater).compose();
 
         int rotation = this.cannon.getRotation();
-        List<RoomTile> tiles = this.room.getLayout().getTilesInFront(this.room.getLayout().getTile(this.cannon.getX(), this.cannon.getY()), rotation + 6, 3);
+        List<RoomTile> tiles = this.room.getLayout().getTilesInFront(this.room.getLayout().getTile(this.cannon.getX(), this.cannon.getY()), rotation + 6, 5);
 
         for(RoomTile t : tiles)
         {
