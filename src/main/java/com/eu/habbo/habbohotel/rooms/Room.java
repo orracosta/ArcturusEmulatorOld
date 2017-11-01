@@ -819,51 +819,44 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
 
         this.sendComposer(new RoomUserStatusComposer(roomUnits, true).compose());
-        this.sendComposer(new RoomUserStatusComposer(roomUnits, true).compose());
     }
 
-    public void updateHabbosAt(short x, short y, RoomUnit roomunit)
+    public void updateRoomUnit(short x, short y, RoomUnit roomunit)
     {
         THashSet<Habbo> habbos = this.getHabbosAt(x, y);
 
-        if(habbos == null || habbos.isEmpty())
+        HabboItem item = this.getTopItemAt(x, y);
+
+        THashSet<RoomUnit> roomUnits = new THashSet<RoomUnit>();
+        if ((item == null && !roomunit.cmdSit) || (item != null && !item.getBaseItem().allowSit()))
+            roomunit.getStatus().remove("sit");
+
+        if ((item == null && !roomunit.cmdLay) || (item != null && !item.getBaseItem().allowLay()))
+            roomunit.getStatus().remove("lay");
+
+        if(item != null)
         {
-            HabboItem item = this.getTopItemAt(x, y);
-
-            THashSet<RoomUnit> roomUnits = new THashSet<RoomUnit>();
-            if ((item == null && !roomunit.cmdSit) || (item != null && !item.getBaseItem().allowSit()))
-                roomunit.getStatus().remove("sit");
-
-            if ((item == null && !roomunit.cmdLay) || (item != null && !item.getBaseItem().allowLay()))
-                roomunit.getStatus().remove("lay");
-
-            if(item != null)
+            if(item.getBaseItem().allowSit())
             {
-                if(item.getBaseItem().allowSit())
-                {
-                    roomunit.setZ(item.getZ());
-                }
-                else
-                {
-                    roomunit.setZ(item.getZ() + item.getBaseItem().getHeight());
-
-                    if (item.getBaseItem().allowLay())
-                    {
-                        roomunit.getStatus().put("lay", (item.getZ() + item.getBaseItem().getHeight()) + "");
-                    }
-                }
+                roomunit.setZ(item.getZ());
             }
             else
             {
-                roomunit.setZ(roomunit.getCurrentLocation().getStackHeight());
-            }
+                roomunit.setZ(item.getZ() + item.getBaseItem().getHeight());
 
-            this.sendComposer(new RoomUserStatusComposer(roomunit, true).compose());
-            this.sendComposer(new RoomUserStatusComposer(roomunit, true).compose());
+                if (item.getBaseItem().allowLay())
+                {
+                    roomunit.getStatus().put("lay", (item.getZ() + item.getBaseItem().getHeight()) + "");
+                }
+            }
         }
-        else{
-            updateHabbosAt(x, y);
+        else
+        {
+            roomunit.setZ(roomunit.getCurrentLocation().getStackHeight());
         }
+
+        this.sendComposer(new RoomUserStatusComposer(roomunit, true).compose());
+        this.sendComposer(new RoomUserStatusComposer(roomunit, true).compose());
     }
 
     public void pickupPetsForHabbo(Habbo habbo)
