@@ -53,27 +53,6 @@ public class RoomPlaceItemEvent extends MessageHandler
         if(!this.client.getHabbo().getHabboStats().canRentSpace())
         {
             rentSpace = room.getHabboItem(this.client.getHabbo().getHabboStats().rentedItemId);
-
-//            if(rentSpace == null)
-//            {
-//                this.client.getHabbo().getHabboStats().setRentedTimeEnd(0);
-//                this.client.getHabbo().getHabboStats().setRentedItemId(0);
-//
-//                return;
-//            }
-//            else
-//            {
-//                if(rentSpace instanceof InteractionRentableSpace)
-//                {
-//                    if(!((InteractionRentableSpace) rentSpace).isRented() || ((InteractionRentableSpace) rentSpace).getRenterId() != this.client.getHabbo().getHabboInfo().getId())
-//                    {
-//                        this.client.getHabbo().getHabboStats().setRentedTimeEnd(0);
-//                        this.client.getHabbo().getHabboStats().setRentedItemId(0);
-//
-//                        return;
-//                    }
-//                }
-//            }
         }
         else
         {
@@ -159,8 +138,10 @@ public class RoomPlaceItemEvent extends MessageHandler
             {
                 if(!RoomLayout.squareInSquare(RoomLayout.getRectangle(rentSpace.getX(), rentSpace.getY(), rentSpace.getBaseItem().getWidth(), rentSpace.getBaseItem().getLength(), rentSpace.getRotation()), RoomLayout.getRectangle(x, y, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), rotation)))
                 {
-                    this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "cant_set_not_owner"));
-                    return;
+                    if(!room.hasRights(this.client.getHabbo()) && !this.client.getHabbo().hasPermission("acc_placefurni") && !(room.getGuildId() > 0 && room.guildRightLevel(this.client.getHabbo()) >= 2)) {
+                        this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "cant_set_not_owner"));
+                        return;
+                    }
                 }
             }
 
