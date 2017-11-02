@@ -19,6 +19,7 @@ import com.eu.habbo.threading.runnables.RoomUnitKick;
 import com.eu.habbo.util.pathfinding.Rotation;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -145,11 +146,6 @@ public class RoomUnit
             if (this.path.isEmpty())
             {
                 this.sitUpdate = true;
-
-                if (room.hasHabbosAt(next.x, next.y))
-                {
-                    return false;
-                }
             }
 
             Deque<RoomTile> peekPath = room.getLayout().findPath(this.currentLocation, this.path.peek());
@@ -172,6 +168,14 @@ public class RoomUnit
                 return true;
 
             Habbo habbo = room.getHabbo(this);
+
+            if (this.path.isEmpty())
+            {
+                if ((room.hasHabbosAt(next.x, next.y) || room.hasPetsAt(next.x, next.y) || room.hasPetsAt(next.x, next.y)) && habbo != null && habbo.getHabboInfo().getRiding().getRoomUnit() != this)
+                {
+                    return false;
+                }
+            }
 
             if (this.status.containsKey("ded"))
             {

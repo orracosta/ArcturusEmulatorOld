@@ -1825,14 +1825,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                             AbstractPet pet = petIterator.value();
                             if (pet instanceof Pet)
                             {
-//                                    if (pet.getRoomUnit().getStatus().containsKey("mv") && pet.getRoomUnit().isAtGoal())
-//                                    {
-//                                        System.out.println("Clearing Pet Walking Animation...");
-//                                        pet.getRoomUnit().getStatus().remove("mv");
-//                                        updatedUnit.add(pet.getRoomUnit());
-//                                    }
-
-                                if (!pet.getRoomUnit().isWalking() && pet.getRoomUnit().getStatus().containsKey("mv"))
+                                if (!pet.getRoomUnit().isWalking() && pet.getRoomUnit().getStatus().containsKey("mv") && ((Pet) pet).getTask() != PetTasks.RIDE)
                                 {
                                     pet.getRoomUnit().getStatus().remove("mv");
                                     updatedUnit.add(pet.getRoomUnit());
@@ -1858,18 +1851,17 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                             {
                                                 horse.getRoomUnit().setGoalLocation(horse.getRider().getRoomUnit().getCurrentLocation());
                                             }
+                                            else {
+                                                if (!pet.getRoomUnit().isWalking() && pet.getRoomUnit().getStatus().containsKey("mv"))
+                                                {
+                                                    pet.getRoomUnit().getStatus().remove("mv");
+                                                    updatedUnit.add(pet.getRoomUnit());
+                                                    continue;
+                                                }
+                                            }
                                         }
                                     }
                                 }
-
-//                                    if (pet.getRoomUnit().isAtGoal())
-//                                    {
-//                                        if (!(pet.getRoomUnit().getStatus().isEmpty() || (pet.getRoomUnit().getStatus().size() >= 1 && (pet.getRoomUnit().getStatus().containsKey("lay") || pet.getRoomUnit().getStatus().containsKey("gst")))) || ((Pet) pet).packetUpdate)
-//                                        {
-//                                            updatedUnit.add(pet.getRoomUnit());
-//                                            ((Pet) pet).packetUpdate = false;
-//                                        }
-//                                    }
 
                                 if (pet.getRoomUnit().isWalking() && pet.getRoomUnit().getPath().size() == 1 && pet.getRoomUnit().getStatus().containsKey("gst"))
                                 {
