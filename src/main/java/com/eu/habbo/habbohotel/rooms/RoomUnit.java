@@ -171,8 +171,7 @@ public class RoomUnit
 
             if (this.path.isEmpty())
             {
-                if ((room.hasHabbosAt(next.x, next.y) || room.hasPetsAt(next.x, next.y) || room.hasBotsAt(next.x, next.y)) && habbo != null && habbo.getHabboInfo().getRiding().getRoomUnit() != this)
-                {
+                if(room.hasHabbosAt(next.x, next.y) || room.hasPetsAt(next.x, next.y) || room.hasBotsAt(next.x, next.y)) {
                     return false;
                 }
             }

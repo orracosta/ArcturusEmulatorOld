@@ -94,11 +94,11 @@ public class HorseUseItemEvent extends MessageHandler
                     ((HorsePet) pet).setHairStyle(newHairstyle);
                     ((HorsePet) pet).needsUpdate = true;
                 }
-                else if(item.getBaseItem().getName().toLowerCase().startsWith("horse_saddle"))
-                {
-                    ((HorsePet) pet).hasSaddle(true);
-                    ((HorsePet) pet).needsUpdate = true;
-                }
+//                else if(item.getBaseItem().getName().toLowerCase().startsWith("horse_saddle"))
+//                {
+//                    ((HorsePet) pet).hasSaddle(true);
+//                    ((HorsePet) pet).needsUpdate = true;
+//                }
 
                 if(((HorsePet) pet).needsUpdate)
                 {
