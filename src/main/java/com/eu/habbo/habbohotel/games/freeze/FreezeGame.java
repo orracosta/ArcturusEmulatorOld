@@ -33,6 +33,7 @@ import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -161,17 +162,16 @@ public class FreezeGame extends Game
         THashSet<RoomTile> tiles = new THashSet<RoomTile>();
 
         RoomTile t = this.room.getLayout().getTile(x, y);
-
         tiles.add(t);
+
         for(int i = 0; i < 4; i++)
         {
-            for(int j = 0; j < radius; j++)
+            List<RoomTile> getTiles = this.room.getLayout().getTilesInFront(this.room.getLayout().getTile(x, y), i * 2, (short) radius);
+            for(RoomTile tile : getTiles)
             {
-                t = this.room.getLayout().getTileInFront(this.room.getLayout().getTile(x, y), i*2, 0);
-
-                if(t == null || t.x < 0 || t.y < 0 || t.x >= this.room.getLayout().getMapSizeX() || t.y >= this.room.getLayout().getMapSizeY())
+                if(tile == null || tile.x < 0 || tile.y < 0 || tile.x >= this.room.getLayout().getMapSizeX() || tile.y >= this.room.getLayout().getMapSizeY())
                     continue;
-                tiles.add(t);
+                tiles.add(tile);
             }
         }
 
@@ -182,20 +182,20 @@ public class FreezeGame extends Game
     {
         THashSet<RoomTile> tiles = new THashSet<RoomTile>();
 
+        RoomTile t = this.room.getLayout().getTile(x, y);
+        tiles.add(t);
+
         for(int i = 0; i < 4; i++)
         {
-            RoomTile t = room.getLayout().getTile(x, y);
-
-            for(int j = 0; j < radius; j++)
+            List<RoomTile> getTiles = this.room.getLayout().getTilesInFront(this.room.getLayout().getTile(x, y), (i * 2) + 1, (short) radius);
+            for(RoomTile tile : getTiles)
             {
-                t = this.room.getLayout().getTileInFront(this.room.getLayout().getTile(x, y), (i * 2) + 1, 0);
-
-                if (t != null)
+                if (tile != null)
                 {
-                    if (t.x < 0 || t.y < 0 || t.x >= this.room.getLayout().getMapSizeX() || t.y >= this.room.getLayout().getMapSizeY())
+                    if (tile.x < 0 || tile.y < 0 || tile.x >= this.room.getLayout().getMapSizeX() || tile.y >= this.room.getLayout().getMapSizeY())
                         continue;
 
-                    tiles.add(t);
+                    tiles.add(tile);
                 }
             }
         }

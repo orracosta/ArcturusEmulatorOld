@@ -7,6 +7,7 @@ import com.eu.habbo.habbohotel.games.freeze.FreezeGame;
 import com.eu.habbo.habbohotel.games.freeze.FreezeGamePlayer;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
@@ -54,7 +55,13 @@ public class InteractionFreezeBlock extends HabboItem
             if(game == null)
                 return;
 
-            game.throwBall(client.getHabbo(), (InteractionFreezeTile) item);
+            if (RoomLayout.tilesAdjecent(client.getHabbo().getRoomUnit().getCurrentLocation(), room.getLayout().getTile(item.getX(), item.getY())))
+            {
+                if(((FreezeGamePlayer)client.getHabbo().getHabboInfo().getGamePlayer()).canThrowSnowball())
+                {
+                    game.throwBall(client.getHabbo(), (InteractionFreezeTile) item);
+                }
+            }
         }
     }
 
