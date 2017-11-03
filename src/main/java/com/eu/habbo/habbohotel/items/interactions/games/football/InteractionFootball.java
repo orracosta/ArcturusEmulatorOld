@@ -176,9 +176,7 @@ public class InteractionFootball extends InteractionPushable
             Item item = Emulator.getGameEnvironment().getItemManager().loadHabboItem(topItem.getId()).getBaseItem();
             if(item != null)
             {
-                if(item.getHeight() > 0.2 || item.allowSit() || item.allowLay() || (topItem instanceof InteractionFootball))
-                    itemnotmove = true;
-                if(to.relativeHeight() != from.relativeHeight())
+                if(item.getHeight() > 0.2 || item.allowSit() || item.allowLay() || (topItem instanceof InteractionFootball) || (topItem instanceof InteractionMultiHeight || (topItem instanceof InteractionStackHelper)))
                     itemnotmove = true;
             }
         }
