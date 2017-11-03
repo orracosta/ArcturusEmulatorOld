@@ -34,10 +34,17 @@ public class GuildForumModerateMessageEvent extends MessageHandler {
         GuildForumThread thread = forum.getThread(threadId);
 
         if (thread != null) {
-            GuildForumComment comment = thread.getComment(messageId);
-            comment.setState(GuildForum.ThreadState.fromValue(state));
-            comment.setAdminId(this.client.getHabbo().getHabboInfo().getId());
-            comment.setAdminName(this.client.getHabbo().getHabboInfo().getUsername());
+
+            if(messageId > 0) {
+                GuildForumComment comment = thread.getComment(messageId);
+                comment.setState(GuildForum.ThreadState.fromValue(state));
+                comment.setAdminId(this.client.getHabbo().getHabboInfo().getId());
+                comment.setAdminName(this.client.getHabbo().getHabboInfo().getUsername());
+
+                Emulator.getThreading().run(comment);
+
+                this.client.sendResponse(new PostUpdateMessageComposer(guildId, threadId, comment));
+            }
 
             switch (state) {
                 case 10:
@@ -48,10 +55,6 @@ public class GuildForumModerateMessageEvent extends MessageHandler {
                     this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FORUMS_MESSAGE_RESTORED.key).compose());
                     break;
             }
-
-            Emulator.getThreading().run(comment);
-
-            this.client.sendResponse(new PostUpdateMessageComposer(guildId, threadId, comment));
 
         } else {
             // TODO: throwing an error
