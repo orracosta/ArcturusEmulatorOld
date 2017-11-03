@@ -10,6 +10,7 @@ import com.eu.habbo.messages.outgoing.rooms.users.RoomUserRespectComposer;
 
 public class RoomUserGiveRespectEvent extends MessageHandler
 {
+    boolean canRespectDelay = false;
     @Override
     public void handle() throws Exception
     {
@@ -19,7 +20,7 @@ public class RoomUserGiveRespectEvent extends MessageHandler
         {
             Habbo target = this.client.getHabbo().getHabboInfo().getCurrentRoom().getHabbo(userId);
 
-            if(target != null && target != this.client.getHabbo())
+            if(target != null && target != this.client.getHabbo() && !canRespectDelay)
             {
                 target.getHabboStats().respectPointsReceived++;
                 this.client.getHabbo().getHabboStats().respectPointsGiven++;
@@ -31,6 +32,17 @@ public class RoomUserGiveRespectEvent extends MessageHandler
                 AchievementManager.progressAchievement(target, Emulator.getGameEnvironment().getAchievementManager().getAchievement("RespectEarned"));
 
                 this.client.getHabbo().getHabboInfo().getCurrentRoom().unIdle(this.client.getHabbo());
+                canRespectDelay = true;
+
+                Emulator.getThreading().run(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            canRespectDelay = false;
+                        } catch (Exception e) {
+                        }
+                    }
+                }, 500);
             }
         }
     }
