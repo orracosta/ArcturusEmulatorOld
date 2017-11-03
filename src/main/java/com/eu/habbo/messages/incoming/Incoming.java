@@ -51,7 +51,7 @@ public class Incoming
     public static final int ModToolRequestUserInfoEvent = 1588; // 3295
     public static final int RotateMoveItemEvent = 2955; // 248
     public static final int CancelPollEvent = 525; // 1773
-    public static final int RequestRoomLoadEvent = -1; //! No Matches: 2312
+    public static final int RequestRoomLoadEvent = 2450; //! No Matches: 2312
     public static final int RequestGuildPartsEvent = 2047; // 813
     public static final int RoomPlacePaintEvent = 1388; // 711
     public static final int RequestPopularRoomsEvent = 2961; // 2758
@@ -63,7 +63,7 @@ public class Incoming
     public static final int RoomUserTalkEvent = 1831; // 1314
     public static final int HotelViewDataEvent = 2260; // 2912
     public static final int RoomUserDanceEvent = 1126; // 2080
-    public static final int RequestUserProfileEvent = -1; //! No Matches: 3265
+    public static final int RequestUserProfileEvent = 3455; //! No Matches: 3265
     public static final int SearchRoomsFriendsNowEvent = 1484; // 1786
     public static final int SetStackHelperHeightEvent = 3794; // 3839
     public static final int RedeemVoucherEvent = 1191; // 339
@@ -205,7 +205,7 @@ public class Incoming
     public static final int TradeOfferMultipleItemsEvent = 3395; // 1263
     public static final int TradeConfirmEvent = 561; // 2760
     public static final int RoomUserGiveRightsEvent = 2578; // 808
-    public static final int RequestGuildInfoEvent = -1; //! No Matches: 2991
+    public static final int RequestGuildInfoEvent = 1415; //! No Matches: 2991
     public static final int ReloadRecyclerEvent = 3268; // 1342
     public static final int RoomUserActionEvent = 3017; // 2456
     public static final int RequestGiftConfigurationEvent = 3335; // 418
@@ -311,8 +311,8 @@ public class Incoming
     public static final int YoutubeRequestPlayListEvent = 1183; // 336
     public static final int YoutubeRequestNextVideoEvent = 1294; // 3005
     public static final int YoutubeRequestVideoDataEvent = 1777; // 2069
-    public static final int EditRoomPromotionMessageEvent = -1; //! Message Not Found: 3707
-    public static final int HotelViewRequestBadgeRewardEvent = -1; //! Message Not Found: 2318
+    public static final int EditRoomPromotionMessageEvent = 22; // 3707
+    public static final int HotelViewRequestBadgeRewardEvent = 2507; // 2318
     public static final int HotelViewClaimBadgeRewardEvent = -1; //! Invalid Message ID: -1
     public static final int JukeBoxAddSoundTrackEvent = 52; // 753
     public static final int JukeBoxRemoveSoundTrackEvent = 1562; // 3050
@@ -338,32 +338,4 @@ public class Incoming
     public static final int ModToolIssueChangeTopicEvent = 1977; // 1392
     public static final int ModToolIssueDefaultSanctionEvent = 10; // 2717
     public static final int TradeCancelEvent = 1703; // 2341
-    public static final int UNKNOWN_SNOWSTORM_6000 = -1; //! Message Not Found: 6000
-    public static final int UNKNOWN_SNOWSTORM_6001 = -1; //! Message Not Found: 6001
-    public static final int UNKNOWN_SNOWSTORM_6002 = -1; //! Message Not Found: 6002
-    public static final int UNKNOWN_SNOWSTORM_6003 = -1; //! Message Not Found: 6003
-    public static final int UNKNOWN_SNOWSTORM_6004 = -1; //! Message Not Found: 6004
-    public static final int UNKNOWN_SNOWSTORM_6005 = -1; //! Message Not Found: 6005
-    public static final int UNKNOWN_SNOWSTORM_6006 = -1; //! Message Not Found: 6006
-    public static final int UNKNOWN_SNOWSTORM_6007 = -1; //! Message Not Found: 6007
-    public static final int UNKNOWN_SNOWSTORM_6008 = -1; //! Message Not Found: 6008
-    public static final int UNKNOWN_SNOWSTORM_6009 = -1; //! Message Not Found: 6009
-    public static final int UNKNOWN_SNOWSTORM_6010 = -1; //! Message Not Found: 6010
-    public static final int UNKNOWN_SNOWSTORM_6011 = -1; //! Message Not Found: 6011
-    public static final int SnowStormJoinQueueEvent = -1; //! Message Not Found: 6012
-    public static final int UNKNOWN_SNOWSTORM_6013 = -1; //! Message Not Found: 6013
-    public static final int UNKNOWN_SNOWSTORM_6014 = -1; //! Message Not Found: 6014
-    public static final int UNKNOWN_SNOWSTORM_6015 = -1; //! Message Not Found: 6015
-    public static final int UNKNOWN_SNOWSTORM_6016 = -1; //! Message Not Found: 6016
-    public static final int UNKNOWN_SNOWSTORM_6017 = -1; //! Message Not Found: 6017
-    public static final int UNKNOWN_SNOWSTORM_6018 = -1; //! Message Not Found: 6018
-    public static final int UNKNOWN_SNOWSTORM_6019 = -1; //! Message Not Found: 6019
-    public static final int UNKNOWN_SNOWSTORM_6020 = -1; //! Message Not Found: 6020
-    public static final int UNKNOWN_SNOWSTORM_6021 = -1; //! Message Not Found: 6021
-    public static final int UNKNOWN_SNOWSTORM_6022 = -1; //! Message Not Found: 6022
-    public static final int UNKNOWN_SNOWSTORM_6023 = -1; //! Message Not Found: 6023
-    public static final int UNKNOWN_SNOWSTORM_6024 = -1; //! Message Not Found: 6024
-    public static final int UNKNOWN_SNOWSTORM_6025 = -1; //! Message Not Found: 6025
-    public static final int SnowStormUserPickSnowballEvent = -1; //! Message Not Found: 6026
-
 }
