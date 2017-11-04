@@ -1,7 +1,6 @@
 package com.eu.habbo.core;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.util.callback.HTTPPostError;
 import gnu.trove.set.hash.THashSet;
 import sun.rmi.runtime.Log;
 
@@ -279,7 +278,6 @@ public class Logging
                 this.logSQLException((SQLException) line);
                 return;
             }
-            Emulator.getThreading().run(new HTTPPostError((Throwable) line));
 
             this.errorLogs.add(new ErrorLog("Exception", (Throwable) line));
 
@@ -296,7 +294,6 @@ public class Logging
             e.printStackTrace();
             write(errorsSQLWriter, e);
 
-            Emulator.getThreading().run(new HTTPPostError(e));
         }
     }
 
@@ -319,7 +316,6 @@ public class Logging
                 return;
             }
 
-            Emulator.getThreading().run(new HTTPPostError((Throwable) e));
         }
     }
     
