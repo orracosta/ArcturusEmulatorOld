@@ -1349,14 +1349,25 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                             HabboItem newRoller = null;
 
                             THashSet<Habbo> habbosOnRoller = getHabbosAt(roller.getX(), roller.getY());
+                            THashSet<Bot> botsOnRoller = getBotsAt(roller.getX(), roller.getY());
+                            THashSet<Bot> petsOnRoller = getBotsAt(roller.getX(), roller.getY());
                             THashSet<HabboItem> itemsOnRoller = getItemsAt(roller.getX(), roller.getY(), roller.getZ() + roller.getBaseItem().getHeight());
 
                             itemsOnRoller.remove(roller);
 
+                            //Analisar depois
                             if (habbosOnRoller.isEmpty())
                             {
-                                if (itemsOnRoller.isEmpty())
-                                    return true;
+                                if (botsOnRoller.isEmpty())
+                                {
+                                    if (petsOnRoller.isEmpty())
+                                    {
+                                        if (itemsOnRoller.isEmpty())
+                                        {
+                                            return true;
+                                        }
+                                    }
+                                }
                             }
 
                             RoomTile roomTile = layout.getTileInFront(layout.getTile(roller.getX(), roller.getY()), roller.getRotation());
@@ -1371,6 +1382,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                 return true;
 
                             if (!getHabbosAt(roomTile.x, roomTile.y).isEmpty())
+                                return true;
+
+                            if (!getBotsAt(roomTile.x, roomTile.y).isEmpty())
+                                return true;
+
+                            if (!getPetsAt(roomTile.x, roomTile.y).isEmpty())
                                 return true;
 
                             THashSet<HabboItem> itemsNewTile = getItemsAt(roomTile.x, roomTile.y);
@@ -1487,6 +1504,23 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
                                     if(habbo.getRoomUnit().getStatus().containsKey("sit"))
                                         habbo.getRoomUnit().sitUpdate = true;
+                                }
+
+                                for (Bot bot : botsOnRoller)
+                                {
+                                    if (stackContainsRoller && !allowFurniture && !(topItem != null && topItem.isWalkable()))
+                                        continue;
+
+                                    if (!bot.getRoomUnit().getStatus().containsKey("mv") && bot.getRoomUnit().getPath().isEmpty())
+                                    {
+                                        RoomTile tile = roomTile.copy();
+                                        tile.setStackHeight(bot.getRoomUnit().getZ() + zOffset);
+
+                                        messages.add(new RoomUnitOnRollerComposer(bot.getRoomUnit(), roller, tile, room));
+                                    }
+
+                                    if(bot.getRoomUnit().getStatus().containsKey("sit"))
+                                        bot.getRoomUnit().sitUpdate = true;
                                 }
                             }
 
@@ -3319,6 +3353,42 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
         }
 
         return habbos;
+    }
+
+    public THashSet<Bot> getBotsAt(RoomTile tile)
+    {
+        THashSet<Bot> bots = new THashSet<Bot>();
+
+        for (Bot bot : this.currentBots.valueCollection())
+        {
+            if (bot.getRoomUnit().getCurrentLocation().equals(tile))
+                bots.add(bot);
+        }
+
+        return bots;
+    }
+
+    public THashSet<Pet> getPetsAt(short x, short y)
+    {
+        return getPetsAt(this.layout.getTile(x, y));
+    }
+
+    public THashSet<Pet> getPetsAt(RoomTile tile)
+    {
+        THashSet<Pet> pets = new THashSet<Pet>();
+
+        for (AbstractPet pet : this.currentPets.valueCollection())
+        {
+            if (pet.getRoomUnit().getCurrentLocation().equals(tile))
+                pets.add((Pet) pet);
+        }
+
+        return pets;
+    }
+
+    public THashSet<Bot> getBotsAt(short x, short y)
+    {
+        return getBotsAt(this.layout.getTile(x, y));
     }
 
     public THashSet<Habbo> getHabbosOnItem(HabboItem item)

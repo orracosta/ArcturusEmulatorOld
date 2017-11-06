@@ -48,7 +48,7 @@ public class RoomUnitOnRollerComposer extends MessageComposer
         this.response.appendInt(2);
         this.response.appendInt(this.roomUnit.getId());
         this.response.appendString(this.roomUnit.getZ() + "");
-        this.response.appendString(this.newLocation.getStackHeight() + "");
+        this.response.appendString(Double.toString(room.getLayout().getTile(newLocation.x, newLocation.y).getStackHeight()));
 
         if(roller != null && this.roomUnit.getPath().isEmpty()){
             this.roomUnit.setCurrentLocation(room.getLayout().getTile(this.newLocation.x, this.newLocation.y));
@@ -60,12 +60,14 @@ public class RoomUnitOnRollerComposer extends MessageComposer
                     public void run() {
                         if(roomUnit.getPath().isEmpty())
                             roomUnit.setLocation(room.getLayout().getTile(newLocation.x, newLocation.y));
+                            roomUnit.setZ(room.getLayout().getTile(newLocation.x, newLocation.y).getStackHeight());
                     }
                 }, 380);
             }
         }
         else{
             roomUnit.setLocation(room.getLayout().getTile(newLocation.x, newLocation.y));
+            roomUnit.setZ(room.getLayout().getTile(newLocation.x, newLocation.y).getStackHeight());
         }
 
         try
