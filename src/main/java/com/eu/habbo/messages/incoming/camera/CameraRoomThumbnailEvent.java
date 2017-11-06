@@ -35,6 +35,9 @@ public class CameraRoomThumbnailEvent extends MessageHandler {
 
         ByteBuf image = this.packet.getBuffer().readBytes(count);
 
+        if(image == null)
+            return;
+
         this.packet.readString();
         this.packet.readString();
         this.packet.readInt();
