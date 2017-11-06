@@ -45,7 +45,7 @@ public class CameraRoomThumbnailEvent extends MessageHandler {
 
         BufferedImage theImage = ImageIO.read(new ByteBufInputStream(image));
 
-        ImageIO.write(theImage, "png", new File("Z:\\swf\\assets\\thumbnail\\" + room.getId() + ".png"));
+        ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.thumbnail") + room.getId() + ".png"));
 
         this.client.sendResponse(new CameraRoomThumbnailSavedComposer());
     }

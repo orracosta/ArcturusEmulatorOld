@@ -57,10 +57,7 @@ public class CameraRoomPictureEvent extends MessageHandler {
         int timestamp = Emulator.getIntUnixTimestamp();
 
         String URL = room.getId() + "-" + this.client.getHabbo().getHabboInfo().getId() + "-" + timestamp + ".png";
-
-        String URL_small = room.getId() + "-" + this.client.getHabbo().getHabboInfo().getId() + "-" + timestamp + "_small.png";
-
-        String base = "https://www.mania.gg/swf/assets/camera/";
+        String base = Emulator.getConfig().getValue("camera.url");
 
         String json = "{\"t\":" + timestamp + ",\"u\":\"" +
                 this.client.getHabbo().getHabboInfo().getUsername() +
@@ -72,13 +69,7 @@ public class CameraRoomPictureEvent extends MessageHandler {
         this.client.getHabbo().getHabboInfo().setPhotoJSON(json);
 
         BufferedImage theImage = ImageIO.read(new ByteBufInputStream(image));
-
-        BufferedImage bufferedThumbnail = new BufferedImage(theImage.getWidth(null), theImage.getHeight(null), BufferedImage.TYPE_INT_RGB);
-        bufferedThumbnail.getGraphics().drawImage(theImage, 100, 100, null);
-
-        ImageIO.write(bufferedThumbnail, "png", new File("Z:\\swf\\assets\\camera\\" + URL_small));
-
-        ImageIO.write(theImage, "png", new File("Z:\\swf\\assets\\camera\\" + URL));
+        ImageIO.write(theImage, "png", new File(Emulator.getConfig().getValue("imager.location.output.camera") + URL));
 
         this.client.sendResponse(new CameraURLComposer(URL));
     }
