@@ -1,51 +1,68 @@
 package com.eu.habbo.messages.incoming.camera;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboInfo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.camera.CameraPublishWaitMessageComposer;
+import com.eu.habbo.messages.outgoing.camera.CameraRoomThumbnailSavedComposer;
 import com.eu.habbo.messages.outgoing.camera.CameraURLComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.networking.camera.CameraClient;
 import com.eu.habbo.networking.camera.messages.outgoing.CameraRenderImageComposer;
 import com.eu.habbo.util.crypto.ZIP;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.util.Base64;
 import java.util.zip.Inflater;
 
-public class CameraRoomPictureEvent extends MessageHandler
-{
+public class CameraRoomPictureEvent extends MessageHandler {
     @Override
-    public void handle() throws Exception
-    {
-        if (!this.client.getHabbo().hasPermission("acc_camera"))
-        {
+    public void handle() throws Exception {
+        if (!this.client.getHabbo().hasPermission("acc_camera")) {
             this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("camera.permission")));
             return;
         }
 
-        if (CameraClient.isLoggedIn)
-        {
-            this.packet.getBuffer().readFloat();
+        if (!this.client.getHabbo().getHabboInfo().getCurrentRoom().isOwner(this.client.getHabbo()))
+            return;
 
-            byte[] data = this.packet.getBuffer().readBytes(this.packet.getBuffer().readableBytes()).array();
+        Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
 
-            String content = new String(ZIP.inflate(data));
-            CameraRenderImageComposer composer = new CameraRenderImageComposer(this.client.getHabbo().getHabboInfo().getId(), this.client.getHabbo().getHabboInfo().getCurrentRoom().getBackgroundTonerColor().getRGB(), 320, 320, content);
-            this.client.getHabbo().getHabboInfo().setPhotoJSON(Emulator.getConfig().getValue("camera.extradata").replace("%timestamp%", composer.timestamp + ""));
-            this.client.getHabbo().getHabboInfo().setPhotoTimestamp(composer.timestamp);
+        if (room == null)
+            return;
 
-            if (this.client.getHabbo().getHabboInfo().getCurrentRoom() != null)
-            {
-                this.client.getHabbo().getHabboInfo().setPhotoRoomId(this.client.getHabbo().getHabboInfo().getCurrentRoom().getId());
-            }
+        if (!room.isOwner(this.client.getHabbo()) && !this.client.getHabbo().hasPermission("acc_modtool_ticket_q"))
+            return;
 
-            Emulator.getCameraClient().sendMessage(composer);
-        }
-        else
-        {
-            this.client.sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("camera.disabled")));
-        }
+        final int count = this.packet.readInt();
 
+        ByteBuf image = this.packet.getBuffer().readBytes(count);
+
+        this.packet.readString();
+        this.packet.readString();
+        this.packet.readInt();
+        this.packet.readInt();
+
+        int timestamp = Emulator.getIntUnixTimestamp();
+
+        String URL = room.getId() + "-" + this.client.getHabbo().getHabboInfo().getId() + "-" + timestamp;
+
+        this.client.getHabbo().getHabboInfo().setPhotoTimestamp(timestamp);
+        this.client.getHabbo().getHabboInfo().setPhotoRoomId(room.getId());
+        this.client.getHabbo().getHabboInfo().setPhotoJSON(URL);
+
+        BufferedImage theImage = ImageIO.read(new ByteBufInputStream(image));
+
+        ImageIO.write(theImage, "png", new File("Z:\\swf\\assets\\camera\\" + URL + ".png"));
+
+        this.client.sendResponse(new CameraURLComposer(URL));
     }
 }
