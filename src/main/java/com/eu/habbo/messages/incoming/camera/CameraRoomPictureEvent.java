@@ -2,26 +2,15 @@ package com.eu.habbo.messages.incoming.camera;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.users.HabboInfo;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.camera.CameraPublishWaitMessageComposer;
-import com.eu.habbo.messages.outgoing.camera.CameraRoomThumbnailSavedComposer;
 import com.eu.habbo.messages.outgoing.camera.CameraURLComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
-import com.eu.habbo.networking.camera.CameraClient;
-import com.eu.habbo.networking.camera.messages.outgoing.CameraRenderImageComposer;
-import com.eu.habbo.util.crypto.ZIP;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.InputStream;
-import java.util.Base64;
-import java.util.zip.Inflater;
 
 public class CameraRoomPictureEvent extends MessageHandler {
     @Override
