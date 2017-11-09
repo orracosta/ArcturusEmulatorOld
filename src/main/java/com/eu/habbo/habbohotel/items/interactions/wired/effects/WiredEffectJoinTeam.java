@@ -1,6 +1,7 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 
 import com.eu.habbo.habbohotel.gameclients.GameClient;
+import com.eu.habbo.habbohotel.games.Game;
 import com.eu.habbo.habbohotel.games.GameTeamColors;
 import com.eu.habbo.habbohotel.games.wired.WiredGame;
 import com.eu.habbo.habbohotel.items.Item;
@@ -50,11 +51,9 @@ public class WiredEffectJoinTeam extends InteractionWiredEffect
                 room.addGame(game);
             }
 
-            if(habbo.getHabboInfo().getCurrentGame() != null)
-            {
-                if (room.getGame(habbo.getHabboInfo().getCurrentGame()) != null)
-                {
-                    return false;
+            if(habbo.getHabboInfo().getCurrentGame() != null) {
+                if (game != null) {
+                    game.removeHabbo(habbo);
                 }
             }
 
