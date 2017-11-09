@@ -50,6 +50,9 @@ public class RoomUnitWalkToRoomUnit implements Runnable
             }
             else
             {
+                if(!(this.target != null))
+                    return;
+
                 List<RoomTile> tiles = room.getLayout().getTilesAround(this.target.getCurrentLocation());
 
                 for(RoomTile t : tiles)
