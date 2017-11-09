@@ -11,7 +11,7 @@ public class InteractionInformationTerminal extends InteractionCustomValues
 {
     public static THashMap<String, String> defaultValues = new THashMap<String, String>()
     {
-        {put("internalLink", "http://arcturus.wf");}
+        {put("internalLink", "https://www.mania.gg");}
     };
 
     public InteractionInformationTerminal(ResultSet set, Item baseItem) throws SQLException

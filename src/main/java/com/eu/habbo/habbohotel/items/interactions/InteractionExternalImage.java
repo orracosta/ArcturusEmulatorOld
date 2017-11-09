@@ -53,6 +53,4 @@ public class InteractionExternalImage extends HabboItem
     public void onClick(GameClient client, Room room, Object[] objects) throws Exception
     {
     }
-
-    //{"t":10000000, "u":"http://arcturus.wf/camera/", "m":"idk", "s":1, "w":"http://arcturus.wf/camera/image.png"}
 }

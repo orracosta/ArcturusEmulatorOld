@@ -5,7 +5,6 @@ import com.eu.habbo.core.consolecommands.ConsoleCommand;
 import com.eu.habbo.database.Database;
 import com.eu.habbo.habbohotel.GameEnvironment;
 import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
-import com.eu.habbo.networking.camera.CameraClient;
 import com.eu.habbo.networking.gameserver.GameServer;
 import com.eu.habbo.networking.rconserver.RCONServer;
 import com.eu.habbo.plugin.PluginManager;
@@ -14,10 +13,7 @@ import com.eu.habbo.plugin.events.emulator.EmulatorLoadedEvent;
 import com.eu.habbo.plugin.events.emulator.EmulatorStartShutdownEvent;
 import com.eu.habbo.plugin.events.emulator.EmulatorStoppedEvent;
 import com.eu.habbo.threading.ThreadPooling;
-import com.eu.habbo.threading.runnables.CameraClientAutoReconnect;
 import com.eu.habbo.util.imager.badges.BadgeImager;
-import io.netty.util.internal.logging.InternalLoggerFactory;
-import io.netty.util.internal.logging.Slf4JLoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -25,7 +21,6 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
-import java.util.regex.Pattern;
 
 public final class Emulator
 {
@@ -80,7 +75,6 @@ public final class Emulator
     private static TextsManager             texts;
     private static GameServer               gameServer;
     private static RCONServer               rconServer;
-    private static CameraClient             cameraClient;
     private static Database                 database;
     private static Logging                  logging;
     private static ThreadPooling            threading;
@@ -122,12 +116,6 @@ public final class Emulator
             Emulator.runtime = Runtime.getRuntime();
             Emulator.config = new ConfigurationManager("config.ini");
 
-            if (Emulator.getConfig().getValue("username").isEmpty())
-            {
-                Emulator.getLogging().logErrorLine("Please make sure you enter your forum login details!");
-                Thread.sleep(2000);
-            }
-
             Emulator.database = new Database(Emulator.getConfig());
             Emulator.config.loaded = true;
             Emulator.config.loadFromDatabase();
@@ -148,10 +136,6 @@ public final class Emulator
             Emulator.rconServer.initialise();
             Emulator.rconServer.connect();
             Emulator.badgeImager = new BadgeImager();
-            if (Emulator.getConfig().getBoolean("camera.enabled"))
-            {
-                Emulator.getThreading().run(new CameraClientAutoReconnect());
-            }
 
             Emulator.getLogging().logStart("Habbo Hotel Emulator has succesfully loaded.");
             Emulator.getLogging().logStart("You're running: " + Emulator.version);
@@ -172,11 +156,6 @@ public final class Emulator
             if (Emulator.getConfig().getInt("runtime.threads") < (Runtime.getRuntime().availableProcessors() * 2))
             {
                 Emulator.getLogging().logStart("Emulator settings runtime.threads (" + Emulator.getConfig().getInt("runtime.threads") + ") can be increased to " + (Runtime.getRuntime().availableProcessors() * 2) + " to possibly increase performance.");
-            }
-
-            if (Emulator.getConfig().getValue("username").isEmpty())
-            {
-                Emulator.getLogging().logErrorLine("No account has been found in config.ini Please create an account on Arcturus.wf and edit the config.ini in order to maximize usage of Arcturus! http://arcturus.wf");
             }
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -217,13 +196,6 @@ public final class Emulator
         {
             if (Emulator.getPluginManager() != null)
                 Emulator.getPluginManager().fireEvent(new EmulatorStartShutdownEvent());
-        }
-        catch (Exception e) {}
-
-        try
-        {
-            if (Emulator.cameraClient != null)
-                Emulator.cameraClient.disconnect();
         }
         catch (Exception e) {}
 
@@ -379,16 +351,6 @@ public final class Emulator
     public static BadgeImager getBadgeImager()
     {
         return badgeImager;
-    }
-
-    public static CameraClient getCameraClient()
-    {
-        return cameraClient;
-    }
-
-    public static synchronized void setCameraClient(CameraClient client)
-    {
-        cameraClient = client;
     }
     
     public static int getTimeStarted()

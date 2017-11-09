@@ -48,7 +48,7 @@ public class AboutCommand extends Command
 
                 message += "\r" +
 
-                "<b>Thanks for using Arcturus. Report issues on the forums. http://arcturus.wf \r\r" +
+                "<b>This hotel is using Arcturus. \r\r" +
                 "    - The General";
 
         gameClient.sendResponse(new GenericAlertComposer(message));
