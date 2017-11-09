@@ -76,7 +76,7 @@ public class WiredEffectMuteHabbo extends InteractionWiredEffect
             if (room.hasRights(habbo))
                 return false;
 
-            room.muteHabbo(habbo, 60);
+            room.muteHabbo(habbo, this.length);
 
             habbo.getClient().sendResponse(new RoomUserWhisperComposer(new RoomChatMessage(message.replace("%user%", habbo.getHabboInfo().getUsername()).replace("%online_count%", Emulator.getGameEnvironment().getHabboManager().getOnlineCount() + "").replace("%room_count%", Emulator.getGameEnvironment().getRoomManager().getActiveRooms().size() + ""), habbo, habbo, RoomChatMessageBubbles.WIRED)));
         }
