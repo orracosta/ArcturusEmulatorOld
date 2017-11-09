@@ -24,7 +24,10 @@ public class NewsListComposer extends MessageComposer
             this.response.appendString(widget.getMessage());
             this.response.appendString(widget.getButtonMessage());
             this.response.appendInt(widget.getType());
-            this.response.appendString("event:" + widget.getLink());
+            if(widget.getType() == 0)
+                this.response.appendString(widget.getLink());
+            else
+                this.response.appendString("event:" + widget.getLink());
             this.response.appendString(widget.getImage());
         }
 
