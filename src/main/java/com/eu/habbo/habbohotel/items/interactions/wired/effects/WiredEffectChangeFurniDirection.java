@@ -130,7 +130,6 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
                                 double shortest = 1000.0D;
 
                                 Habbo target = null;
-                                RoomTile nextStep = t;
 
                                 for(Habbo habbo : room.getHabbos()) {
                                     RoomTile h = habbo.getRoomUnit().getCurrentLocation();
@@ -159,7 +158,7 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
                                 THashSet<RoomTile> refreshTiles = room.getLayout().getTilesAt(room.getLayout().getTile(((HabboItem) targetItem).getX(), ((HabboItem) targetItem).getY()), ((HabboItem) targetItem).getBaseItem().getWidth(), ((HabboItem) targetItem).getBaseItem().getLength(), ((HabboItem) targetItem).getRotation());
 
                                 RoomTile tile = room.getLayout().getTileInFront(objectTile, targetItem.getRotation(), indexOffset);
-                                if (tile == null || !tile.allowStack() || tile.state == RoomTileState.BLOCKED)
+                                if (tile == null || !tile.allowStack() || tile.state == RoomTileState.BLOCKED || room.hasHabbosAt(tile.x,tile.y) || room.getLayout().findPath(objectTile, tile).isEmpty())
                                 {
                                     switch (this.spacing)
                                     {
@@ -221,13 +220,13 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
                                     if(targetItem.getRotation() < 0) {
                                         targetItem.setRotation(7);
                                     }
-
                                 }
                                 else
                                 {
                                     room.sendComposer(new FloorItemOnRollerComposer((HabboItem) targetItem, null, tile, tile.getStackHeight() - ((HabboItem) targetItem).getZ(), room).compose());
                                     refreshTiles.addAll(room.getLayout().getTilesAt(room.getLayout().getTile(((HabboItem) targetItem).getX(), ((HabboItem) targetItem).getY()), ((HabboItem) targetItem).getBaseItem().getWidth(), ((HabboItem) targetItem).getBaseItem().getLength(), ((HabboItem) targetItem).getRotation()));
                                     room.updateTiles(refreshTiles);
+                                    room.updateTile(objectTile);
                                     this.indexOffset.put(targetItem.getId(), indexOffset);
                                     switch(targetItem.getRotation()) {
                                         case 1:
