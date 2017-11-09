@@ -58,14 +58,17 @@ public class RoomUnitOnRollerComposer extends MessageComposer
                 {
                     @Override
                     public void run() {
-                        if(roomUnit.getPath().isEmpty())
+                        if(roomUnit.getPath().isEmpty()) {
                             roomUnit.setLocation(room.getLayout().getTile(newLocation.x, newLocation.y));
+                            roomUnit.setZ(newLocation.getStackHeight());
+                        }
                     }
                 }, 380);
             }
         }
         else{
             roomUnit.setLocation(room.getLayout().getTile(newLocation.x, newLocation.y));
+            roomUnit.setZ(newLocation.getStackHeight());
         }
 
         try

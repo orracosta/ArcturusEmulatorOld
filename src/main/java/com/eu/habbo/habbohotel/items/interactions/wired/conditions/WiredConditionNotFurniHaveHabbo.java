@@ -41,14 +41,16 @@ public class WiredConditionNotFurniHaveHabbo extends InteractionWiredCondition
         this.refresh();
 
         if(this.items.isEmpty())
-            return true;
+            return false;
 
         for(HabboItem item : this.items)
         {
             THashSet<Habbo> habbos = room.getHabbosOnItem(item);
 
             if(habbos.isEmpty())
+            {
                 return true;
+            }
         }
 
         return false;
