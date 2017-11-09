@@ -143,7 +143,7 @@ public class BotManager
                     return;
                 }
 
-                if (!room.tileWalkable(location.x, location.y))
+                if (!room.tileWalkable(location.x, location.y) && !room.canSitAt(location.x, location.y))
                     return;
 
                 RoomUnit roomUnit = new RoomUnit();
