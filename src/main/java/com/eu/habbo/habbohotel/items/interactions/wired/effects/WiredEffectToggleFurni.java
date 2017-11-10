@@ -170,12 +170,12 @@ public class WiredEffectToggleFurni extends InteractionWiredEffect
                     {
                         item.onClick(habbo != null ? habbo.getClient() : null, room, new Object[]{item.getExtradata().length() == 0 ? 0 : Integer.valueOf(item.getExtradata()), this.getType()});
                     }
-                    else if (item instanceof InteractionGameTimer)
+                    if (item instanceof InteractionGameTimer)
                     {
-                        item.onClick(habbo != null ? habbo.getClient() : null, room, new Object[]{item.getExtradata().length() == 0 ? 0 : Integer.valueOf(item.getExtradata()), this.getType()});
                         Game game = room.getGame(((InteractionGameTimer)item).getGameType());
-                        if(game == null || !game.isRunning || game.isRunning){
-                            room.updateItem(this);
+                        if (game == null || !game.isRunning)
+                        {
+                            item.onClick(habbo != null ? habbo.getClient() : null, room, new Object[]{item.getExtradata().length() == 0 ? 0 : Integer.valueOf(item.getExtradata()), this.getType()});
                         }
                     }
                 }

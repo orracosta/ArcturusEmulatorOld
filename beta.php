@@ -2,7 +2,7 @@
 error_reporting(0);
 function connect_db() {	
     try{
-        $pdo=new PDO("mysql:host=localhost;dbname=newmania","root","");
+        $pdo=new PDO("mysql:host=localhost;dbname=newmania","root","rafa8808");
     }
     catch(PDOException $e){
         die($e->getCode());
