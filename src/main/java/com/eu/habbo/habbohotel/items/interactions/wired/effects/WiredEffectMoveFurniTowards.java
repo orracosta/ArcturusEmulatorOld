@@ -70,8 +70,8 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
                 {
                     target = habbo;
                     shortest = distance;
-                    if(t != null && h != null)
-                        nextStep = room.getLayout().findPath(t, h, false).getFirst();
+                    nextStep = room.getLayout().findPath(t, h, false).getFirst();
+
                 }
             }
 
