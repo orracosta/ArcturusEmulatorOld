@@ -148,17 +148,8 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
 
                 String[] stuff = items[i].split("-");
 
-                if (stuff.length == 6) {
+                if (stuff.length == 6)
                     this.settings.add(new WiredMatchFurniSetting(Integer.valueOf(stuff[0]), stuff[1], Integer.valueOf(stuff[2]), Integer.valueOf(stuff[3]), Integer.valueOf(stuff[4]), Double.valueOf(stuff[5])));
-                }
-                else
-                {
-                    this.settings.clear();
-                    this.state = false;
-                    this.direction = false;
-                    this.position = false;
-                    this.setDelay(0);
-                }
 
             }
             catch (Exception e)
