@@ -636,12 +636,12 @@ public class RoomUnit
             return;
         }
 
-        if (!this.status.containsKey("sit"))
+        RoomUserRotation rotation = (RoomUserRotation.values()[Rotation.Calculate(this.getX(), this.getY(), location.x, location.y)]);
+
+        if (!this.status.containsKey("sit") && Math.abs(rotation.getValue() - this.bodyRotation.getValue()) > 1)
         {
             this.bodyRotation = (RoomUserRotation.values()[Rotation.Calculate(this.getX(), this.getY(), location.x, location.y)]);
         }
-
-        RoomUserRotation rotation = (RoomUserRotation.values()[Rotation.Calculate(this.getX(), this.getY(), location.x, location.y)]);
 
         if (Math.abs(rotation.getValue() - this.bodyRotation.getValue()) <= 1)
         {
