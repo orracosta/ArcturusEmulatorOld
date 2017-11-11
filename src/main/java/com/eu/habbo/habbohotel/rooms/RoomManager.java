@@ -633,7 +633,6 @@ public class RoomManager
                 {
                     if (room.hasRights(current) || current.getHabboInfo().getId() == room.getOwnerId() || (room.hasGuild() && room.guildRightLevel(current) >= 2))
                     {
-                        current.getClient().sendResponse(new DoorbellAddUserComposer(habbo.getHabboInfo().getUsername()));
                         rightsFound = true;
                     }
                 }
@@ -667,7 +666,6 @@ public class RoomManager
 
             if(!rightsFound)
             {
-                habbo.getClient().sendResponse(new RoomAccessDeniedComposer(""));
                 habbo.getClient().sendResponse(new HotelViewComposer());
                 habbo.getHabboInfo().setLoadingRoom(0);
                 return;
