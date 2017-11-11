@@ -617,12 +617,36 @@ public class RoomManager
         if(overrideChecks ||
            room.isOwner(habbo) ||
            room.getState() == RoomState.OPEN ||
-           room.getState() == RoomState.INVISIBLE ||
            habbo.hasPermission("acc_anyroomowner") ||
            habbo.hasPermission("acc_enteranyroom") ||
            room.hasRights(habbo) ||
            (room.hasGuild() && room.guildRightLevel(habbo) > 2))
         {
+            this.openRoom(habbo, room, doorLocation);
+        }
+        else if(room.getState() == RoomState.INVISIBLE) {
+            boolean rightsFound = false;
+
+            synchronized (room.roomUnitLock)
+            {
+                for (Habbo current : room.getHabbos())
+                {
+                    if (room.hasRights(current) || current.getHabboInfo().getId() == room.getOwnerId() || (room.hasGuild() && room.guildRightLevel(current) >= 2))
+                    {
+                        current.getClient().sendResponse(new DoorbellAddUserComposer(habbo.getHabboInfo().getUsername()));
+                        rightsFound = true;
+                    }
+                }
+            }
+
+            if(!rightsFound)
+            {
+                habbo.getClient().sendResponse(new RoomAccessDeniedComposer(""));
+                habbo.getClient().sendResponse(new HotelViewComposer());
+                habbo.getHabboInfo().setLoadingRoom(0);
+                return;
+            }
+
             this.openRoom(habbo, room, doorLocation);
         }
         else if(room.getState() == RoomState.LOCKED)
