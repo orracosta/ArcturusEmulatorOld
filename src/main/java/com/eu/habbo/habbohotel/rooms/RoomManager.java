@@ -640,13 +640,11 @@ public class RoomManager
 
             if(!rightsFound)
             {
-                habbo.getClient().sendResponse(new RoomAccessDeniedComposer(""));
                 habbo.getClient().sendResponse(new HotelViewComposer());
                 habbo.getHabboInfo().setLoadingRoom(0);
-                return;
+            } else {
+                this.openRoom(habbo, room, doorLocation);
             }
-
-            this.openRoom(habbo, room, doorLocation);
         }
         else if(room.getState() == RoomState.LOCKED)
         {
@@ -666,6 +664,7 @@ public class RoomManager
 
             if(!rightsFound)
             {
+                habbo.getClient().sendResponse(new RoomAccessDeniedComposer(""));
                 habbo.getClient().sendResponse(new HotelViewComposer());
                 habbo.getHabboInfo().setLoadingRoom(0);
                 return;
