@@ -57,6 +57,9 @@ public class InteractionFreezeBlock extends HabboItem
 
             if (RoomLayout.tilesAdjecent(client.getHabbo().getRoomUnit().getCurrentLocation(), room.getLayout().getTile(item.getX(), item.getY())))
             {
+                if(client.getHabbo().getHabboInfo().getGamePlayer() == null)
+                    return;
+
                 if(((FreezeGamePlayer)client.getHabbo().getHabboInfo().getGamePlayer()).canThrowSnowball())
                 {
                     game.throwBall(client.getHabbo(), (InteractionFreezeTile) item);

@@ -2,7 +2,7 @@
 error_reporting(0);
 function connect_db() {	
     try{
-        $pdo=new PDO("mysql:host=localhost;dbname=newmania","root","rafa8808");
+        $pdo=new PDO("mysql:host=127.0.0.1;dbname=mania","root","latitude");
     }
     catch(PDOException $e){
         die($e->getCode());
@@ -189,7 +189,7 @@ $client = $stm->fetch(PDO::FETCH_ASSOC);
             <?php endif; ?>
             "productdata.load.url" : "<?php echo $client['product_data']; ?>",
             "furnidata.load.url" : "<?php echo $client['furni_data']; ?>",
-            "photo.upload.url" : "<?php echo str_replace('{0}', $player, $client['photo_upload']); ?>",
+            "photo.upload.url" : "<?php echo str_replace('{0}', $player['id'], $client['photo_upload']); ?>",
             "avatareditor.promohabbos": "https://www.habbo.com.br/api/public/lists/hotlooks",
             "use.sso.ticket" : "1",
             "sso.ticket" : "<?php echo $ticket; ?>",
@@ -197,6 +197,9 @@ $client = $stm->fetch(PDO::FETCH_ASSOC);
             "client.starting.revolving" : "Quando você menos esperar...terminaremos de carregar.../Carregando mensagem divertida! Por favor espere./Você quer batatas fritas para acompanhar?/Siga o pato amarelo./O tempo é apenas uma ilusão./Já chegamos?!/Eu gosto da sua camiseta./Olhe para um lado. Olhe para o outro. Pisque duas vezes. Pronto!/Não é você, sou eu./Shhh! Estou tentando pensar aqui./Carregando o universo de pixels.",
             "flash.client.url" : "<?php echo $client['flash_client']; ?>",
             "flash.client.origin" : "popup",
+			"account_id": "444866",
+			//"forward.type" : "2",
+			//"forward.id" : "102",
         };
     </script>
 

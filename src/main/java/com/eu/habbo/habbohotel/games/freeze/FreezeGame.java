@@ -32,10 +32,7 @@ import gnu.trove.map.hash.THashMap;
 import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class FreezeGame extends Game
 {
@@ -367,12 +364,16 @@ public class FreezeGame extends Game
 
         for (GameTeam team : this.teams.values())
         {
-            THashSet<GamePlayer> players = new THashSet<GamePlayer>();
+            THashSet<GamePlayer> players = new THashSet<>();
 
             players.addAll(team.getMembers());
 
             for(GamePlayer p : players)
             {
+                FreezeGamePlayer x = (FreezeGamePlayer) p;
+
+                x.unfreeze();
+
                 if (p.getScore() > 0)
                 {
                     if (team.equals(winningTeam))
