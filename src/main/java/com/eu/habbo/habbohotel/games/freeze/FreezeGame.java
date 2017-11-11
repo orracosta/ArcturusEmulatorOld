@@ -370,9 +370,11 @@ public class FreezeGame extends Game
 
             for(GamePlayer p : players)
             {
-                FreezeGamePlayer x = (FreezeGamePlayer) p;
+                if(winningTeam != null && p.getTeamColor() != winningTeam.teamColor) {
+                    FreezeGamePlayer x = (FreezeGamePlayer) p;
 
-                x.unfreeze();
+                    x.unfreeze();
+                }
 
                 if (p.getScore() > 0)
                 {
