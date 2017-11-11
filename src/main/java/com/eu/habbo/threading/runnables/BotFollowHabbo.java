@@ -5,6 +5,8 @@ import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.habbohotel.wired.WiredHandler;
+import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 
 public class BotFollowHabbo implements Runnable
 {
@@ -41,6 +43,11 @@ public class BotFollowHabbo implements Runnable
 
                                 if (target.x >= 0 && target.y >= 0)
                                 {
+                                    if(this.bot.getRoomUnit().getCurrentLocation().equals(target))
+                                    {
+                                        WiredHandler.handle(WiredTriggerType.BOT_REACHED_AVTR, this.habbo.getRoomUnit(), this.room, new Object[]{this.bot.getRoomUnit()});
+                                    }
+
                                     this.bot.getRoomUnit().setGoalLocation(target);
                                     this.bot.getRoomUnit().setCanWalk(true);
                                     Emulator.getThreading().run(this, 500);
