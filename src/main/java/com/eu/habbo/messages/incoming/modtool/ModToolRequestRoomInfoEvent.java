@@ -2,8 +2,16 @@ package com.eu.habbo.messages.incoming.modtool;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
+import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.modtool.ModToolRoomInfoComposer;
+import com.eu.habbo.messages.outgoing.rooms.DoorbellAddUserComposer;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ModToolRequestRoomInfoEvent extends MessageHandler
 {
@@ -12,10 +20,31 @@ public class ModToolRequestRoomInfoEvent extends MessageHandler
     {
         if (this.client.getHabbo().hasPermission("acc_supporttool"))
         {
-            //int roomId = this.packet.readInt();
+            int roomId = this.packet.readInt();
 
-            Room room = this.client.getHabbo().getHabboInfo().getCurrentRoom();
-            //Emulator.getGameEnvironment().getRoomManager().getRoom(roomId);
+            if(roomId < 0)
+                return;
+
+            Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(roomId);
+
+            if(room == null) {
+                try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("SELECT rooms.* FROM room_enter_log INNER JOIN rooms ON room_enter_log.room_id = rooms.id WHERE rooms.id = ? LIMIT 1"))
+                {
+                    statement.setInt(1, roomId);
+
+                    try (ResultSet set = statement.executeQuery())
+                    {
+                        while (set.next())
+                        {
+                            room = new Room(set);
+                        }
+                    }
+                }
+                catch (SQLException e)
+                {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            }
 
             if (room != null)
             {
