@@ -33,7 +33,7 @@ public class GuildForumManager {
                 }
             }
 
-            if(forum != null) {
+            if (forum != null) {
                 forum.updateLastRequested();
                 return forum;
             }
@@ -48,8 +48,7 @@ public class GuildForumManager {
         for (int i = this.guildForums.size(); i-- > 0; ) {
             try {
                 guildForums.advance();
-            }
-            catch (NoSuchElementException | ConcurrentModificationException e) {
+            } catch (NoSuchElementException | ConcurrentModificationException e) {
                 break;
             }
 
@@ -89,14 +88,31 @@ public class GuildForumManager {
         return forums;
     }
 
+    public List<GuildForum> getAllForumsWithPosts() {
+        List<GuildForum> forums = new ArrayList<>();
+
+        for (Guild guild : Emulator.getGameEnvironment().getGuildManager().getAllGuilds()) {
+            if (guild != null && guild.hasForum()) {
+                GuildForum forum = this.getGuildForum(guild.getId());
+
+                if (forum.getLastComment() == null)
+                    continue;
+
+                forums.add(forum);
+            }
+        }
+
+        return forums;
+    }
+
     private static final Comparator<GuildForum> SORT_ACTIVE = new Comparator<GuildForum>() {
         @Override
         public int compare(GuildForum o1, GuildForum o2) {
 
-            if(o2.getLastComment() == null || o2.getLastComment().getTimestamp() <= 0)
+            if (o2.getLastComment() == null || o2.getLastComment().getTimestamp() <= 0)
                 return 0;
 
-            if(o1.getLastComment() == null || o1.getLastComment().getTimestamp() <= 0)
+            if (o1.getLastComment() == null || o1.getLastComment().getTimestamp() <= 0)
                 return 0;
 
             return o2.getLastComment().getTimestamp() - o1.getLastComment().getTimestamp();
@@ -107,7 +123,7 @@ public class GuildForumManager {
         @Override
         public int compare(GuildForum o1, GuildForum o2) {
 
-            if(o2.getLastRequestedTime()  <= 0 || o1.getLastRequestedTime() <= 0)
+            if (o2.getLastRequestedTime() <= 0 || o1.getLastRequestedTime() <= 0)
                 return 0;
 
             return o2.getLastRequestedTime() - o1.getLastRequestedTime();
@@ -115,13 +131,7 @@ public class GuildForumManager {
     };
 
     public List<GuildForum> getAllForumsByActive() {
-        List<GuildForum> forums = new ArrayList<>();
-
-        for (Guild guild : Emulator.getGameEnvironment().getGuildManager().getAllGuilds()) {
-            if (guild != null && guild.hasForum()) {
-                forums.add(this.getGuildForum(guild.getId()));
-            }
-        }
+        List<GuildForum> forums = this.getAllForumsWithPosts();
 
         forums.sort(SORT_ACTIVE);
 
@@ -129,13 +139,7 @@ public class GuildForumManager {
     }
 
     public List<GuildForum> getAllForumsByVisited() {
-        List<GuildForum> forums = new ArrayList<>();
-
-        for (Guild guild : Emulator.getGameEnvironment().getGuildManager().getAllGuilds()) {
-            if (guild != null && guild.hasForum()) {
-                forums.add(this.getGuildForum(guild.getId()));
-            }
-        }
+        List<GuildForum> forums = this.getAllForumsWithPosts();
 
         forums.sort(SORT_VISITED);
 
