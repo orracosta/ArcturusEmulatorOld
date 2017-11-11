@@ -42,6 +42,9 @@ public class InteractionStackHelper extends HabboItem
     @Override
     public void serializeExtradata(ServerMessage serverMessage)
     {
+        if(Integer.parseInt(this.getExtradata()) < 0 || this.getExtradata() == null)
+            this.setExtradata("0");
+
         serverMessage.appendInt((this.isLimited() ? 256 : 0));
         serverMessage.appendString(this.getExtradata());
 
