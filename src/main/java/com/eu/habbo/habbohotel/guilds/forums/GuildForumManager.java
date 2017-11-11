@@ -89,25 +89,28 @@ public class GuildForumManager {
         return forums;
     }
 
-    public static final Comparator SORT_ACTIVE = new Comparator() {
+    private static final Comparator<GuildForum> SORT_ACTIVE = new Comparator<GuildForum>() {
         @Override
-        public int compare(Object o1, Object o2) {
+        public int compare(GuildForum o1, GuildForum o2) {
 
-            if (!(o1 instanceof GuildForum && o2 instanceof GuildForum))
+            if(o2.getLastComment() == null || o2.getLastComment().getTimestamp() <= 0)
                 return 0;
 
-            return ((GuildForum) o2).getLastComment().getTimestamp() - ((GuildForum) o1).getLastComment().getTimestamp();
+            if(o1.getLastComment() == null || o1.getLastComment().getTimestamp() <= 0)
+                return 0;
+
+            return o2.getLastComment().getTimestamp() - o1.getLastComment().getTimestamp();
         }
     };
 
-    public static final Comparator SORT_VISITED = new Comparator() {
+    private static final Comparator<GuildForum> SORT_VISITED = new Comparator<GuildForum>() {
         @Override
-        public int compare(Object o1, Object o2) {
+        public int compare(GuildForum o1, GuildForum o2) {
 
-            if (!(o1 instanceof GuildForum && o2 instanceof GuildForum))
+            if(o2.getLastRequestedTime()  <= 0 || o1.getLastRequestedTime() <= 0)
                 return 0;
 
-            return ((GuildForum) o2).getLastRequestedTime() - ((GuildForum) o1).getLastRequestedTime();
+            return o2.getLastRequestedTime() - o1.getLastRequestedTime();
         }
     };
 
@@ -120,7 +123,7 @@ public class GuildForumManager {
             }
         }
 
-        Collections.sort(forums, this.SORT_ACTIVE);
+        forums.sort(SORT_ACTIVE);
 
         return forums;
     }
@@ -134,7 +137,7 @@ public class GuildForumManager {
             }
         }
 
-        Collections.sort(forums, this.SORT_VISITED);
+        forums.sort(SORT_VISITED);
 
         return forums;
     }
