@@ -19,6 +19,7 @@ public class UsernameEvent extends MessageHandler
     public void handle() throws Exception
     {
         boolean calendar = false;
+
         if (!this.client.getHabbo().getHabboStats().getAchievementProgress().containsKey(Emulator.getGameEnvironment().getAchievementManager().getAchievement("Login")))
         {
             AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("Login"));
@@ -97,11 +98,11 @@ public class UsernameEvent extends MessageHandler
             }
         }
 
-        if (calendar)
-        {
-            this.client.sendResponse(new AdventCalendarDataComposer("xmas11", Emulator.getGameEnvironment().getCatalogManager().calendarRewards.size(), this.client.getHabbo().getHabboStats().loginStreak, this.client.getHabbo().getHabboStats().calendarRewardsClaimed, true));
-            this.client.sendResponse(new NuxAlertComposer("openView/calendar"));
-        }
+//        if (calendar)
+//        {
+//            this.client.sendResponse(new AdventCalendarDataComposer("xmas11", Emulator.getGameEnvironment().getCatalogManager().calendarRewards.size(), this.client.getHabbo().getHabboStats().loginStreak, this.client.getHabbo().getHabboStats().calendarRewardsClaimed, true));
+//            this.client.sendResponse(new NuxAlertComposer("openView/calendar"));
+//        }
 
 
         this.client.getHabbo().getHabboInfo().setLastOnline(Emulator.getIntUnixTimestamp());

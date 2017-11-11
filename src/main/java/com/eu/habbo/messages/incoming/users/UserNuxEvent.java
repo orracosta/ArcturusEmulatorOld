@@ -39,6 +39,7 @@ public class UserNuxEvent extends MessageHandler
     public static void handle(Habbo habbo)
     {
         habbo.getHabboStats().nux = true;
+
         int step = habbo.getHabboStats().nuxStep++;
 
         if (keys.containsKey(step))
@@ -47,9 +48,9 @@ public class UserNuxEvent extends MessageHandler
         }
         else if (!habbo.getHabboStats().nuxReward)
         {
-//            List<List<NewUserGift>> gifts = new ArrayList<>();
-//            gifts.add(Emulator.getGameEnvironment().getItemManager().getNewUserGifts());
-//            habbo.getClient().sendResponse(new NewUserGiftComposer(gifts));
+            List<List<NewUserGift>> gifts = new ArrayList<>();
+            gifts.add(Emulator.getGameEnvironment().getItemManager().getNewUserGifts());
+            habbo.getClient().sendResponse(new NewUserGiftComposer(gifts));
         }
     }
 }
