@@ -113,6 +113,7 @@ public class WiredEffectBotGiveHandItem extends InteractionWiredEffect
                 tasks.add(new RoomUnitGiveHanditem(habbo.getRoomUnit(), room, this.itemId));
                 tasks.add(new RoomUnitGiveHanditem(bot.getRoomUnit(), room, 0));
                 Emulator.getThreading().run(new RoomUnitGiveHanditem(bot.getRoomUnit(), room, this.itemId));
+                bot.getRoomUnit().setCanWalk(true);
                 Emulator.getThreading().run(new RoomUnitWalkToRoomUnit(bot.getRoomUnit(), habbo.getRoomUnit(), room,  tasks, null));
             }
 
