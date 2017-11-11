@@ -14,13 +14,14 @@ public class GuildForumListEvent extends MessageHandler {
 
         switch (mode) {
             case 0:
+                this.client.sendResponse(new GuildForumListComposer(Emulator.getGameEnvironment().getGuildForumManager().getAllForumsByVisited(), this.client.getHabbo(), mode, page));
+                break;
             case 1:
-                this.client.sendResponse(new GuildForumListComposer(Emulator.getGameEnvironment().getGuildForumManager().getAllForums(), this.client.getHabbo(), mode, page));
+                this.client.sendResponse(new GuildForumListComposer(Emulator.getGameEnvironment().getGuildForumManager().getAllForumsByActive(), this.client.getHabbo(), mode, page));
                 break;
             case 2:
                 this.client.sendResponse(new GuildForumListComposer(Emulator.getGameEnvironment().getGuildForumManager().getGuildForums(this.client.getHabbo()), this.client.getHabbo(), mode, page));
                 break;
         }
-        //TODO: fazer sort na lista
     }
 }

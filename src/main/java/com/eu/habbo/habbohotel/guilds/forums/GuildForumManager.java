@@ -1,7 +1,9 @@
 package com.eu.habbo.habbohotel.guilds.forums;
 
 import com.eu.habbo.Emulator;
+import com.eu.habbo.habbohotel.commands.Command;
 import com.eu.habbo.habbohotel.guilds.Guild;
+import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 import gnu.trove.TCollections;
 import gnu.trove.iterator.TIntObjectIterator;
@@ -9,10 +11,7 @@ import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class GuildForumManager {
     private final TIntObjectMap<GuildForum> guildForums;
@@ -86,6 +85,56 @@ public class GuildForumManager {
                 forums.add(this.getGuildForum(guild.getId()));
             }
         }
+
+        return forums;
+    }
+
+    public static final Comparator SORT_ACTIVE = new Comparator() {
+        @Override
+        public int compare(Object o1, Object o2) {
+
+            if (!(o1 instanceof GuildForum && o2 instanceof GuildForum))
+                return 0;
+
+            return ((GuildForum) o2).getLastComment().getTimestamp() - ((GuildForum) o1).getLastComment().getTimestamp();
+        }
+    };
+
+    public static final Comparator SORT_VISITED = new Comparator() {
+        @Override
+        public int compare(Object o1, Object o2) {
+
+            if (!(o1 instanceof GuildForum && o2 instanceof GuildForum))
+                return 0;
+
+            return ((GuildForum) o2).getLastRequestedTime() - ((GuildForum) o1).getLastRequestedTime();
+        }
+    };
+
+    public List<GuildForum> getAllForumsByActive() {
+        List<GuildForum> forums = new ArrayList<>();
+
+        for (Guild guild : Emulator.getGameEnvironment().getGuildManager().getAllGuilds()) {
+            if (guild != null && guild.hasForum()) {
+                forums.add(this.getGuildForum(guild.getId()));
+            }
+        }
+
+        Collections.sort(forums, this.SORT_ACTIVE);
+
+        return forums;
+    }
+
+    public List<GuildForum> getAllForumsByVisited() {
+        List<GuildForum> forums = new ArrayList<>();
+
+        for (Guild guild : Emulator.getGameEnvironment().getGuildManager().getAllGuilds()) {
+            if (guild != null && guild.hasForum()) {
+                forums.add(this.getGuildForum(guild.getId()));
+            }
+        }
+
+        Collections.sort(forums, this.SORT_VISITED);
 
         return forums;
     }
