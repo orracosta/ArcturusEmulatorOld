@@ -36,6 +36,9 @@ public class SetStackHelperHeightEvent extends MessageHandler
                 if(stackerHeight >= 0)
                 {
                     height = stackerHeight / 100.0D;
+
+                    if(height == -1)
+                        height = 0.0D;
                 }
                 else
                 {
