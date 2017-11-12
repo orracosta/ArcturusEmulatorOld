@@ -48,7 +48,7 @@ public class SummonCommand extends Command
 
             gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.generic.cmd_summon.summoning").replace("%user%", params[1]), RoomChatMessageBubbles.ALERT);
 
-            //Emulator.getGameEnvironment().getRoomManager().leaveRoom(habbo, habbo.getHabboInfo().getCurrentRoom());
+            Emulator.getGameEnvironment().getRoomManager().leaveRoom(habbo, habbo.getHabboInfo().getCurrentRoom());
 
             habbo.getClient().sendResponse(new ForwardToRoomComposer(gameClient.getHabbo().getHabboInfo().getCurrentRoom().getId()));
             Emulator.getGameEnvironment().getRoomManager().enterRoom(habbo, gameClient.getHabbo().getHabboInfo().getCurrentRoom().getId(), "", true);
@@ -56,12 +56,12 @@ public class SummonCommand extends Command
 
             gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_summon.summoned").replace("%user%", params[1]), RoomChatMessageBubbles.ALERT);
 
-            RoomTile t = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getLayout().getTileInFront(gameClient.getHabbo().getRoomUnit().getCurrentLocation(), gameClient.getHabbo().getRoomUnit().getBodyRotation().getValue());
-
-            if(t != null && gameClient.getHabbo().getHabboInfo().getCurrentRoom().tileWalkable(t))
-            {
-                habbo.getRoomUnit().setGoalLocation(t);
-            }
+//            RoomTile t = gameClient.getHabbo().getHabboInfo().getCurrentRoom().getLayout().getTileInFront(gameClient.getHabbo().getRoomUnit().getCurrentLocation(), gameClient.getHabbo().getRoomUnit().getBodyRotation().getValue());
+//
+//            if(t != null && gameClient.getHabbo().getHabboInfo().getCurrentRoom().tileWalkable(t))
+//            {
+//                habbo.getRoomUnit().setGoalLocation(t);
+//            }
 
             habbo.getClient().sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("commands.generic.cmd_summon.been_summoned").replace("%user%", gameClient.getHabbo().getHabboInfo().getUsername())));
 
