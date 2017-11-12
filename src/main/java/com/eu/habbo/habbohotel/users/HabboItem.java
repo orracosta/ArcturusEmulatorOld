@@ -6,6 +6,7 @@ import com.eu.habbo.habbohotel.items.FurnitureType;
 import com.eu.habbo.habbohotel.items.IEventTriggers;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.*;
+import com.eu.habbo.habbohotel.items.interactions.games.football.InteractionFootball;
 import com.eu.habbo.habbohotel.rooms.*;
 import com.eu.habbo.habbohotel.wired.WiredEffectType;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
@@ -251,6 +252,15 @@ public abstract class HabboItem implements Runnable, IEventTriggers
             }
             else if (this.needsUpdate)
             {
+                if(this instanceof InteractionFootball)
+                {
+                    if(this.z < 0)
+                        this.z = 0;
+
+                    if(this.z > 20)
+                        this.z = 19;
+                }
+
                 try (PreparedStatement statement = connection.prepareStatement("UPDATE items SET user_id = ?, room_id = ?, wall_pos = ?, x = ?, y = ?, z = ?, rot = ?, extra_data = ?, limited_data = ? WHERE id = ?"))
                 {
                     statement.setInt(1, this.userId);
