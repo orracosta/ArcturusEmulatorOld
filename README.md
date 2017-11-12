@@ -1,22 +1,14 @@
 # Arcturus Emulator #
 
-Targeting PRODUCTION-201611291003-338511768
+**Download SWF:** http://arcturus.wf/mirrors/asmd_PRODUCTION-201611291003-338511768.swf
 
-Download SWF: http://arcturus.wf/mirrors/asmd_PRODUCTION-201611291003-338511768.swf
+**Older Files:** http://arcturus.wf/mirrors/
 
-# **Compiled version (Including Database): http://arcturus.wf/mirrors/ArcturusEmulator_1.10.0.zip** #
+**Icons:** http://arcturus.wf/mirrors/icons.zip
 
-Latest Compiled Version: http://arcturus.wf:8080
+**JavaDoc:** http://arcturus.wf/doc/
 
-Older Files: http://arcturus.wf/mirrors/
-
-Icons: http://arcturus.wf/mirrors/icons.zip
-
-JavaDoc: http://arcturus.wf/doc/
-
-SCRIPTS for developers: http://arcturus.wf/mirrors/PRODUCTION-201611291003-338511768_scripts.txt
 ### Contributing ###
-
 Anyone is allowed to contribute to the project. Reporting bugs and issues goes via the issue tracker.
 
 You can request features in the issue tracker.
