@@ -29,32 +29,34 @@ public class PointsCommand extends Command
                 {
                     int type = Emulator.getConfig().getInt("seasonal.primary.type");
 
-                    if(params.length == 4)
+                    String tipo = params[2];
+                    String alertstr = "evento";
+
+                    int amount = 0;
+
+                    switch (tipo)
                     {
-                        try
-                        {
-                            type = Integer.valueOf(params[3]);
-                        }
-                        catch (Exception e)
-                        {
-                            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_points.invalid_type").replace("%types%", Emulator.getConfig().getValue("seasonal.types").replace(";", ", ")), RoomChatMessageBubbles.ALERT);
-                            return true;
-                        }
+                        case "promo":
+                            amount = Integer.valueOf(Emulator.getConfig().getInt("cmd.points.amount.promo"));
+                            alertstr = "promoção";
+                            break;
+                        default:
+                            amount = Integer.valueOf(Emulator.getConfig().getInt("cmd.points.amount.event"));
+                        break;
                     }
 
-                    int amount = Integer.valueOf(params[2]);
                     if (amount != 0)
                     {
                         habbo.givePoints(type, amount);
 
                         if(habbo.getHabboInfo().getCurrentRoom() != null)
-                            habbo.whisper(Emulator.getTexts().getValue("commands.generic.cmd_points.received").replace("%amount%", amount + "").replace("%type%", Emulator.getTexts().getValue("seasonal.name." + type)), RoomChatMessageBubbles.ALERT);
+                            habbo.whisper(Emulator.getTexts().getValue("commands.generic.cmd_points.received").replace("%amount%", amount + "").replace("%type%", alertstr), RoomChatMessageBubbles.ALERT);
                         else
-                            habbo.getClient().sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("commands.generic.cmd_points.received").replace("%amount%", amount + "").replace("%type%", Emulator.getTexts().getValue("seasonal.name." + type))));
+                            habbo.getClient().sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("commands.generic.cmd_points.received").replace("%amount%", amount + "").replace("%type%", alertstr)));
 
                         habbo.getClient().sendResponse(new UserPointsComposer(habbo.getHabboInfo().getCurrencyAmount(type), amount, type));
 
-                        gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_points.send").replace("%amount%", amount + "").replace("%user%", params[1]).replace("%type%", Emulator.getTexts().getValue("seasonal.name." + type)), RoomChatMessageBubbles.ALERT);
+                        gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_points.send").replace("%amount%", amount + "").replace("%user%", params[1]).replace("%type%", alertstr), RoomChatMessageBubbles.ALERT);
 
                     } else
                     {
