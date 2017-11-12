@@ -803,6 +803,8 @@ public class RoomManager
         habbo.getHabboInfo().setCurrentRoom(room);
         habbo.getRoomUnit().setPathFinderRoom(room);
         habbo.getRoomUnit().setHandItem(0);
+        habbo.getRoomUnit().setEffectId(0);
+        habbo.getRoomUnit().setDanceType(DanceType.NONE);
 
         habbo.getRoomUnit().setRightsLevel(RoomRightLevels.NONE);
         room.refreshRightsForHabbo(habbo);
@@ -853,7 +855,8 @@ public class RoomManager
                 }
             }
 
-            int effect = habbo.getInventory().getEffectsComponent().activatedEffect ;
+            /*
+            int effect = habbo.getInventory().getEffectsComponent().activatedEffect;
 
             if (effect == 0)
             {
@@ -863,7 +866,7 @@ public class RoomManager
             if (effect > 0)
             {
                 habbo.getRoomUnit().setEffectId(effect);
-            }
+            }*/
 
             room.sendComposer(new RoomUserEffectComposer(habbo.getRoomUnit()).compose());
         }
