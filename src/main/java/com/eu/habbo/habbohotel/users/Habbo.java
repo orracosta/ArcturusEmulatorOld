@@ -142,6 +142,10 @@ public class Habbo implements Runnable
 
         Emulator.getGameEnvironment().getRoomManager().loadRoomsForHabbo(this);
         Emulator.getLogging().logUserLine(this.habboInfo.getUsername() + " logged in from IP " + this.habboInfo.getIpLogin());
+        if(this.client.getHabbo().hasPermission("acc_infinite_credits") && this.client.getHabbo().getHabboInfo().getCurrencyAmount(0) == 0)
+        {
+            this.client.getHabbo().givePixels(999999);
+        }
     }
 
 
