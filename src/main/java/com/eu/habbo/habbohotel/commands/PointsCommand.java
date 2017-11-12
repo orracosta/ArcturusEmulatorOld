@@ -27,7 +27,7 @@ public class PointsCommand extends Command
         try
         {
             Habbo habbo = Emulator.getGameServer().getGameClientManager().getHabbo(params[1]);
-            HabboInfo hb = HabboManager.getOfflineHabboInfo(params[1]);
+            HabboInfo hb = (habbo != null ? habbo.getHabboInfo() : null);
 
             if(habbo != null)
             {
@@ -108,7 +108,6 @@ public class PointsCommand extends Command
                             }
                         }
                     }
-                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_points.send_offline").replace("%user%", params[1]), RoomChatMessageBubbles.ALERT);
                 }
                 else
                 {
