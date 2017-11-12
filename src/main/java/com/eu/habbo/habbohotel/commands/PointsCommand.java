@@ -42,7 +42,6 @@ public class PointsCommand extends Command {
                         break;
                 }
 
-                if (amount != 0) {
                     habbo.givePoints(type, amount);
 
                     if (habbo.getHabboInfo().getCurrentRoom() != null)
@@ -62,10 +61,6 @@ public class PointsCommand extends Command {
                                 statement.execute("UPDATE users SET s_points = s_points + 1, g_points = g_points + 1, m_points = m_points + 1 WHERE id = " + habbo.getHabboInfo().getId() + ";");
                             }
                         }
-                    }
-
-                } else {
-                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_points.invalid_amount"), RoomChatMessageBubbles.ALERT);
                 }
         } else {
                 gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_points.user_not_found").replace("%user%", params[1]), RoomChatMessageBubbles.ALERT);
