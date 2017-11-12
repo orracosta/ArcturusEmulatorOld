@@ -5,9 +5,14 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
+import com.eu.habbo.habbohotel.users.HabboManager;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.messages.outgoing.users.UserPointsComposer;
+import com.eu.habbo.habbohotel.users.HabboInfo;
+
+import java.sql.Connection;
+import java.sql.Statement;
 
 public class PointsCommand extends Command
 {
@@ -19,9 +24,10 @@ public class PointsCommand extends Command
     @Override
     public boolean handle(GameClient gameClient, String[] params) throws Exception
     {
-        if(params.length >= 3)
+        try
         {
             Habbo habbo = Emulator.getGameServer().getGameClientManager().getHabbo(params[1]);
+            HabboInfo hb = HabboManager.getOfflineHabboInfo(params[1]);
 
             if(habbo != null)
             {
@@ -42,6 +48,7 @@ public class PointsCommand extends Command
                             break;
                         default:
                             amount = Integer.valueOf(Emulator.getConfig().getInt("cmd.points.amount.event"));
+                            alertstr = "evento";
                         break;
                     }
 
@@ -58,6 +65,20 @@ public class PointsCommand extends Command
 
                         gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_points.send").replace("%amount%", amount + "").replace("%user%", params[1]).replace("%type%", alertstr), RoomChatMessageBubbles.ALERT);
 
+                        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
+                        {
+                            try (Statement statement = connection.createStatement())
+                            {
+                                if(tipo.equals("promo")) {
+                                    statement.execute("UPDATE users SET promo_pts = promo_pts + 1 WHERE id = "+habbo.getHabboInfo().getId()+";");
+                                }
+                                else
+                                {
+                                    statement.execute("UPDATE users SET s_points = s_points + 1, g_points = g_points + 1, m_points = m_points + 1 WHERE id = "+habbo.getHabboInfo().getId()+";");
+                                }
+                            }
+                        }
+
                     } else
                     {
                         gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_points.invalid_amount"), RoomChatMessageBubbles.ALERT);
@@ -70,10 +91,32 @@ public class PointsCommand extends Command
             }
             else
             {
-                gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_points.user_offline").replace("%user%", params[1]), RoomChatMessageBubbles.ALERT);
+                if(hb != null)
+                {
+                    String tipo = params[2];
+
+                    try (Connection connection = Emulator.getDatabase().getDataSource().getConnection())
+                    {
+                        try (Statement statement = connection.createStatement())
+                        {
+                            if(tipo.equals("promo")) {
+                                statement.execute("UPDATE users SET promo_pts = promo_pts + 1 WHERE id = "+hb.getId()+";");
+                            }
+                            else
+                            {
+                                statement.execute("UPDATE users SET s_points = s_points + 1, g_points = g_points + 1, m_points = m_points + 1 WHERE id = "+hb.getId()+";");
+                            }
+                        }
+                    }
+                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_points.send_offline").replace("%user%", params[1]), RoomChatMessageBubbles.ALERT);
+                }
+                else
+                {
+                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_points.user_not_found").replace("%user%", params[1]), RoomChatMessageBubbles.ALERT);
+                }
             }
         }
-        else
+        catch (NumberFormatException e)
         {
             gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_points.invalid_amount"), RoomChatMessageBubbles.ALERT);
         }
