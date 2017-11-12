@@ -24,7 +24,6 @@ public class PointsCommand extends Command {
         Habbo habbo = Emulator.getGameServer().getGameClientManager().getHabbo(params[1]);
 
         if (habbo != null) {
-            try {
                 int type = Emulator.getConfig().getInt("seasonal.primary.type");
 
                 String tipo = params[2];
@@ -68,9 +67,6 @@ public class PointsCommand extends Command {
                 } else {
                     gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_points.invalid_amount"), RoomChatMessageBubbles.ALERT);
                 }
-            } catch (NumberFormatException e) {
-                gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_points.invalid_amount"), RoomChatMessageBubbles.ALERT);
-            }
         } else {
                 gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_points.user_not_found").replace("%user%", params[1]), RoomChatMessageBubbles.ALERT);
 
