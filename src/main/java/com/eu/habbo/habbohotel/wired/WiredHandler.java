@@ -124,7 +124,6 @@ public class WiredHandler
                 Collections.shuffle(effectList);
             }
 
-
             if (hasExtraUnseen)
             {
                 for (InteractionWiredExtra extra : room.getRoomSpecialTypes().getExtras(trigger.getX(), trigger.getY()))
@@ -132,9 +131,13 @@ public class WiredHandler
                     if (extra instanceof WiredExtraUnseen)
                     {
                         extra.setExtradata(extra.getExtradata().equals("1") ? "0" : "1");
+
                         InteractionWiredEffect effect = ((WiredExtraUnseen) extra).getUnseenEffect(effectList);
-                        triggerEffect(effect, roomUnit, room, stuff, millis);
-                        break;
+
+                        if(effect != null) {
+                            triggerEffect(effect, roomUnit, room, stuff, millis);
+                            break;
+                        }
                     }
                 }
             }
