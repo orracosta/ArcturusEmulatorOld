@@ -145,6 +145,11 @@ public class WiredEffectMatchFurni extends InteractionWiredEffect
         {
             try
             {
+                if(items.length <= i || items[i] == null)
+                    continue;
+
+                if(!items[i].contains("-"))
+                    continue;
 
                 String[] stuff = items[i].split("-");
 
