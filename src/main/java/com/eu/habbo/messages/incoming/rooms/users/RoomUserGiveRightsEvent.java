@@ -20,7 +20,7 @@ public class RoomUserGiveRightsEvent extends MessageHandler
         if(room == null)
             return;
 
-        if(room.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || this.client.getHabbo().hasPermission("acc_anyroomowner"))
+        if(room.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || this.client.getHabbo().hasPermission("acc_anyroomowner") || this.client.getHabbo().hasPermission("acc_modtool_ticket_q"))
         {
             Habbo target = room.getHabbo(userId);
 

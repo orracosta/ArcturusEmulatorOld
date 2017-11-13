@@ -4649,7 +4649,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             }
         }
 
-        if (habbo.hasPermission("acc_anyroomowner"))
+        if (habbo.hasPermission("acc_anyroomowner") || habbo.hasPermission("acc_modtool_ticket_q"))
         {
             habbo.getClient().sendResponse(new RoomOwnerComposer());
             flatCtrl = RoomRightLevels.MODERATOR;
@@ -4659,7 +4659,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             habbo.getClient().sendResponse(new RoomOwnerComposer());
             flatCtrl = RoomRightLevels.MODERATOR;
         }
-        else if (this.hasRights(habbo) && !this.hasGuild())
+        else if ((this.hasRights(habbo) && !this.hasGuild()) || habbo.hasPermission("acc_moverotate") || habbo.hasPermission("acc_placefurni"))
         {
             flatCtrl = RoomRightLevels.RIGHTS;
         }
@@ -5003,7 +5003,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             {
                 if (habbo.getHabboInfo().getId() != this.ownerId)
                 {
-                    if (!(habbo.hasPermission("acc_anyroomowner") || habbo.hasPermission("acc_moverotate")))
+                    if (!(habbo.hasPermission("acc_anyroomowner") || habbo.hasPermission("acc_moverotate") || habbo.hasPermission("acc_placefurni")))
                         refreshRightsForHabbo(habbo);
                 }
             }

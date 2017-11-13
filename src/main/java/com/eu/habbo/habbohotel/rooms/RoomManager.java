@@ -620,6 +620,7 @@ public class RoomManager
            habbo.hasPermission("acc_anyroomowner") ||
            habbo.hasPermission("acc_enteranyroom") ||
            room.hasRights(habbo) ||
+           habbo.hasPermission("acc_modtool_ticket_q") ||
            (room.hasGuild() && room.guildRightLevel(habbo) > 2))
         {
             this.openRoom(habbo, room, doorLocation);
