@@ -97,16 +97,13 @@ public class WiredEffectMoveFurniAway extends InteractionWiredEffect
                     RoomTile tt = room.getLayout().getTile(TilesAround.get(i).x, TilesAround.get(i).y);
 
                     if(tt != null && room.getLayout().tileExists(tt.x, tt.y) && tt.state == RoomTileState.OPEN) {
-                        if (!room.getLayout().findPath(oldTile, tt, false).isEmpty()) {
+                        Deque<RoomTile> findpath = room.getLayout().findPath(oldTile, tt, false);
+                        if (!findpath.isEmpty() && findpath != null) {
+                            HabboItem topItem = room.getTopItemAt(tt.x, tt.y);
 
-                            tt = room.getLayout().findPath(oldTile, tt, false).getFirst();
-                            if (tt != null) {
-                                HabboItem topItem = room.getTopItemAt(tt.x, tt.y);
-
-                                if (topItem == null || topItem.getBaseItem().allowWalk()) {
-                                    if (target.getRoomUnit().getCurrentLocation().distance(tt) > target.getRoomUnit().getCurrentLocation().distance(nextStep)) {
-                                        nextStep = tt;
-                                    }
+                            if (topItem == null || topItem.getBaseItem().allowWalk()) {
+                                if (target.getRoomUnit().getCurrentLocation().distance(tt) > target.getRoomUnit().getCurrentLocation().distance(nextStep)) {
+                                    nextStep = tt;
                                 }
                             }
                         }
