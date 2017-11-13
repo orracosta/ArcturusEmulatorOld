@@ -298,7 +298,7 @@ public class RoomLayout
                     if ((!ALLOW_FALLING && height < -MAXIMUM_STEP_HEIGHT) || (height > MAXIMUM_STEP_HEIGHT && !room.canLayAt(currentAdj.x, currentAdj.y)))
                         continue;
 
-                    if (!this.room.isAllowWalkthrough() && room.hasHabbosAt(currentAdj.x, currentAdj.y)) continue;
+                    if (notIsFurni && (!this.room.isAllowWalkthrough() && room.hasHabbosAt(currentAdj.x, currentAdj.y))) continue;
 
                     //if (room.hasPetsAt(currentAdj.x, currentAdj.y)) continue;
 
