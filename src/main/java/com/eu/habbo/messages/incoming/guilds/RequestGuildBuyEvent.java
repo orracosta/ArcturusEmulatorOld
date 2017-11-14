@@ -2,6 +2,7 @@ package com.eu.habbo.messages.incoming.guilds;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.guilds.Guild;
+import com.eu.habbo.habbohotel.guilds.forums.GuildForumManager;
 import com.eu.habbo.habbohotel.modtool.ModToolIssue;
 import com.eu.habbo.habbohotel.modtool.ModToolTicketType;
 import com.eu.habbo.habbohotel.rooms.Room;
@@ -78,8 +79,11 @@ public class RequestGuildBuyEvent extends MessageHandler
                     }
 
                     Guild guild = Emulator.getGameEnvironment().getGuildManager().createGuild(this.client.getHabbo(), roomId, r.getName(), name, description, badge, colorOne, colorTwo);
+
                     r.setGuild(guild.getId());
                     r.setNeedsUpdate(true);
+
+                    Emulator.getGameEnvironment().getGuildForumManager().addGuildForum(guild.getId());
                     
                     if (Emulator.getConfig().getBoolean("imager.internal.enabled")) 
                     {

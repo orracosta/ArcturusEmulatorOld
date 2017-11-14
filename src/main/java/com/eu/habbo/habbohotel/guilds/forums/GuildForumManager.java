@@ -16,6 +16,12 @@ import java.util.*;
 public class GuildForumManager {
     private final TIntObjectMap<GuildForum> guildForums;
 
+    public void addGuildForum(int guildId) {
+        GuildForum forum = new GuildForum(guildId);
+
+        this.guildForums.put(guildId, forum);
+    }
+
     public GuildForumManager() {
         this.guildForums = TCollections.synchronizedMap(new TIntObjectHashMap<GuildForum>());
     }
@@ -70,11 +76,7 @@ public class GuildForumManager {
         List<GuildForum> forums = new ArrayList<>();
 
         for (Integer i : habbo.getHabboStats().guilds) {
-            Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(i);
-
-            if (guild != null && guild.hasForum()) {
-                forums.add(this.getGuildForum(i));
-            }
+            forums.add(this.getGuildForum(i));
         }
 
         return forums;
