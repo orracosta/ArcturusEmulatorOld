@@ -43,10 +43,12 @@ public class RoomUnitTeleport implements Runnable
         this.room.giveEffect(this.roomUnit, this.newEffect);
         this.room.updateRoomUnit(t.x, t.y, this.roomUnit);
 
-        try {
-            topItem.onWalkOn(this.roomUnit, room, new Object[]{oldItem});
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(topItem != null) {
+            try {
+                topItem.onWalkOn(this.roomUnit, room, new Object[]{oldItem});
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         this.roomUnit.getPath().clear();
