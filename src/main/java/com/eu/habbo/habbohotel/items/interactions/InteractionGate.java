@@ -71,12 +71,16 @@ public class InteractionGate extends HabboItem
     public void onWalkOn(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
         super.onWalkOn(roomUnit, room, objects);
+        room.updateTile(room.getLayout().getTile(this.getX(), this.getY()));
+        this.needsUpdate(true);
     }
 
     @Override
     public void onWalkOff(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
         super.onWalkOff(roomUnit, room, objects);
+        room.updateTile(room.getLayout().getTile(this.getX(), this.getY()));
+        this.needsUpdate(true);
     }
 
     @Override
