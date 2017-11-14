@@ -27,6 +27,11 @@ public class GuildForumUpdateSettingsEvent extends MessageHandler
         if(guild == null || guild.getOwnerId() != this.client.getHabbo().getHabboInfo().getId())
             return;
 
+        GuildForum forum = Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(guildId);
+
+        if(forum == null)
+            return;
+
         guild.setReadForum(SettingsState.fromValue(canRead));
         guild.setPostMessages(SettingsState.fromValue(postMessages));
         guild.setPostThreads(SettingsState.fromValue(postThreads));
@@ -38,6 +43,6 @@ public class GuildForumUpdateSettingsEvent extends MessageHandler
 
         this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FORUMS_FORUM_SETTINGS_UPDATED.key).compose());
 
-        this.client.sendResponse(new GuildForumDataComposer(Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(guildId), this.client.getHabbo()));
+        this.client.sendResponse(new GuildForumDataComposer(forum, this.client.getHabbo()));
     }
 }

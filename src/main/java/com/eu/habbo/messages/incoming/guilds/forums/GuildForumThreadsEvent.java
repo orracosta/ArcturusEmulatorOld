@@ -15,8 +15,13 @@ public class GuildForumThreadsEvent extends MessageHandler
         int groupdId = packet.readInt();
         int index = packet.readInt();
 
-        this.client.sendResponse(new GuildForumDataComposer(Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(groupdId), this.client.getHabbo()));
-        this.client.sendResponse(new GuildForumThreadsComposer(Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(groupdId), index));
+        GuildForum forum = Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(groupdId);
+
+        if(forum == null)
+            return;
+
+        this.client.sendResponse(new GuildForumDataComposer(forum, this.client.getHabbo()));
+        this.client.sendResponse(new GuildForumThreadsComposer(forum, index));
 
         //TODO read guild id;
     }

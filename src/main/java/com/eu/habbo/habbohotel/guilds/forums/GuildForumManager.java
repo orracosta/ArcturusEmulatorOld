@@ -29,9 +29,9 @@ public class GuildForumManager {
 
                 if (guild != null && guild.hasForum()) {
 
-                    forum = new GuildForum(guild.getId());
+                    forum = new GuildForum(guildId);
 
-                    this.guildForums.put(guild.getId(), forum);
+                    this.guildForums.put(guildId, forum);
                 }
             }
 

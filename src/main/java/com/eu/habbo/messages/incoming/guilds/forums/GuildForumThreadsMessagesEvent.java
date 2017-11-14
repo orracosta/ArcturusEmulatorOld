@@ -25,6 +25,10 @@ public class GuildForumThreadsMessagesEvent extends MessageHandler
             return;
 
         GuildForum forum = Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(guildId);
+
+        if(forum == null)
+            return;
+
         GuildForumThread thread = forum.getThread(threadId);
 
         if (thread.getState() == GuildForum.ThreadState.HIDDEN_BY_ADMIN && guild.getOwnerId() != this.client.getHabbo().getHabboInfo().getId())
@@ -35,6 +39,6 @@ public class GuildForumThreadsMessagesEvent extends MessageHandler
             this.client.sendResponse(new GuildForumCommentsComposer(guildId, threadId, index, thread.getComments(index, limit)));
         }
 
-        this.client.sendResponse(new GuildForumDataComposer(Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(guildId), this.client.getHabbo()));
+        this.client.sendResponse(new GuildForumDataComposer(forum, this.client.getHabbo()));
     }
 }

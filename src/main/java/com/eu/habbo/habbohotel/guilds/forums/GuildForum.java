@@ -9,6 +9,7 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.procedure.TObjectProcedure;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -43,7 +44,7 @@ public class GuildForum implements ISerialize {
 
     public GuildForumComment getLastComment() {
         if (!this.threads.valueCollection().isEmpty()) {
-            GuildForumThread thread = Collections.max(this.threads.valueCollection(), Comparator.comparing(c -> c.getLastCommentTimestamp()));
+            GuildForumThread thread = Collections.max(this.threads.valueCollection(), Comparator.comparing(GuildForumThread::getLastCommentTimestamp));
 
             if (thread != null && thread.comments.size() > 0) {
                 return thread.comments.get(thread.comments.size() - 1);
@@ -54,7 +55,7 @@ public class GuildForum implements ISerialize {
     }
 
     public List<GuildForumThread> getThreads() {
-        return this.threads.valueCollection().stream().collect(Collectors.toList());
+        return new ArrayList<>(this.threads.valueCollection());
     }
 
     public List<GuildForumThread> getThreadsByAuthor(int userId) {
@@ -108,7 +109,7 @@ public class GuildForum implements ISerialize {
         return this.guild;
     }
 
-    public int getLastRequestedTime() {
+    int getLastRequestedTime() {
         return this.lastRequested;
     }
 
@@ -137,7 +138,7 @@ public class GuildForum implements ISerialize {
         }
     }
 
-    public void updateLastRequested() {
+    void updateLastRequested() {
         this.lastRequested = Emulator.getIntUnixTimestamp();
     }
 
@@ -173,7 +174,7 @@ public class GuildForum implements ISerialize {
         Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(this.guild);
         GuildForum forum = Emulator.getGameEnvironment().getGuildForumManager().getGuildForum(this.guild);
 
-        Integer amountOfComments = forum.getThreads().stream().map(GuildForumThread::getAmountOfComments).collect(Collectors.summingInt(Integer::intValue));
+        Integer amountOfComments = forum.getThreads().stream().map(GuildForumThread::getAmountOfComments).mapToInt(Integer::intValue).sum();
 
         response.appendInt(guild.getId());
 
