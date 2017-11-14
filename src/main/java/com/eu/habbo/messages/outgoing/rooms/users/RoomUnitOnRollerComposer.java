@@ -32,7 +32,7 @@ public class RoomUnitOnRollerComposer extends MessageComposer
 
         if (!this.room.isAllowWalkthrough() && this.roller != null)
         {
-            if (this.room.hasHabbosAt(this.newLocation.x, this.newLocation.y))
+            if (this.room.hasHabbosAt(this.newLocation.x, this.newLocation.y) && !this.roomUnit.isTeleporting)
             {
                 return null;
             }

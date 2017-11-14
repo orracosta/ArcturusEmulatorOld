@@ -50,7 +50,6 @@ public class RoomUnitTeleport implements Runnable
         }
 
         this.roomUnit.getPath().clear();
-        this.roomUnit.isTeleporting = false;
 
         if(this.roomUnit.isTeleporting)
             this.roomUnit.isTeleporting = false;
