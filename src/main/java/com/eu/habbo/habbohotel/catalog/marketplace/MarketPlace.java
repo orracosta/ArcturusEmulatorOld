@@ -196,10 +196,12 @@ public class MarketPlace
         {
             query += " AND CEIL(price + (price / 100)) >= " + minPrice;
         }
+
         if(maxPrice > 0 && maxPrice > minPrice)
         {
             query += " AND CEIL(price + (price / 100)) <= " + maxPrice;
         }
+
         if(search.length() > 0)
         {
             query += " AND items_base.public_name LIKE ?";
@@ -229,16 +231,6 @@ public class MarketPlace
                 query += " ORDER BY minPrice DESC";
                 break;
         }
-        if (sort == 3)
-        {
-
-        }
-        if (sort == 2)
-        {
-        }
-        else
-        {
-        }
 
         query += ")";
 
@@ -249,8 +241,9 @@ public class MarketPlace
         try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement(query))
         {
             statement.setInt(1, Emulator.getIntUnixTimestamp() - 172800);
+
             if(search.length() > 0)
-                statement.setString(3, "%"+search+"%");
+                statement.setString(2, "%"+search+"%");
 
             try (ResultSet set = statement.executeQuery())
             {

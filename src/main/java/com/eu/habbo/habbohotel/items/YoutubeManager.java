@@ -98,6 +98,15 @@ public class YoutubeManager
     {
         if (this.playLists.containsKey(item.getId()))
         {
+            if(this.playLists.get(item.getId()).size() <= index && this.playLists.get(item.getId()).size() > 0 && this.playLists.get(item.getId()).size() > (index - 1))
+                return this.playLists.get(item.getId()).get(index - 1);
+
+            if(this.playLists.get(item.getId()).size() <= index && this.playLists.get(item.getId()).size() > 0)
+                return this.playLists.get(item.getId()).get(this.playLists.get(item.getId()).size() - 1);
+
+            if(this.playLists.get(item.getId()).size() == 0)
+                return null;
+
             return this.playLists.get(item.getId()).get(index);
         }
 

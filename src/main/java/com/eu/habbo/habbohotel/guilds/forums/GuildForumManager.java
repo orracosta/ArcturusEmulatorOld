@@ -28,13 +28,17 @@ public class GuildForumManager {
                 Guild guild = Emulator.getGameEnvironment().getGuildManager().getGuild(guildId);
 
                 if (guild != null && guild.hasForum()) {
+
                     forum = new GuildForum(guild.getId());
+
                     this.guildForums.put(guild.getId(), forum);
                 }
             }
 
             if (forum != null) {
+
                 forum.updateLastRequested();
+
                 return forum;
             }
 
