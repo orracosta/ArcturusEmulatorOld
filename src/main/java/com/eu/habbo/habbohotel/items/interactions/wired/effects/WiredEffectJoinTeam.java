@@ -53,7 +53,7 @@ public class WiredEffectJoinTeam extends InteractionWiredEffect
 
             if(habbo.getHabboInfo().getCurrentGame() != null) {
                 if (game != null) {
-                    game.removeHabbo(habbo);
+                    return false;
                 }
             }
 
