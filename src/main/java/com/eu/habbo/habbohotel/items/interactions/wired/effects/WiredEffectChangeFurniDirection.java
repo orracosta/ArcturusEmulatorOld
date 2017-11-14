@@ -22,30 +22,26 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
-{
+public class WiredEffectChangeFurniDirection extends InteractionWiredEffect {
     public static final WiredEffectType type = WiredEffectType.MOVE_DIRECTION;
     private final List<HabboItem> items = new ArrayList<>();
     private int direction;
     private int spacing = 1;
     private Map<Integer, Integer> indexOffset = new LinkedHashMap<>();
 
-    public WiredEffectChangeFurniDirection(ResultSet set, Item baseItem) throws SQLException
-    {
+    public WiredEffectChangeFurniDirection(ResultSet set, Item baseItem) throws SQLException {
         super(set, baseItem);
     }
 
-    public WiredEffectChangeFurniDirection(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells)
-    {
+    public WiredEffectChangeFurniDirection(int id, int userId, Item item, String extradata, int limitedStack, int limitedSells) {
         super(id, userId, item, extradata, limitedStack, limitedSells);
     }
 
     @Override
-    public boolean saveData(ClientMessage packet, GameClient gameClient)
-    {
+    public boolean saveData(ClientMessage packet, GameClient gameClient) {
         Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
 
-        if(room == null)
+        if (room == null)
             return false;
 
         this.items.clear();
@@ -58,11 +54,9 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
         packet.readString();
 
         int count = packet.readInt();
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             HabboItem item = room.getHabboItem(packet.readInt());
-            if(item != null)
-            {
+            if (item != null) {
                 item.setRotation(this.direction);
             }
             this.items.add(item);
@@ -74,26 +68,21 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
     }
 
     @Override
-    public WiredEffectType getType()
-    {
+    public WiredEffectType getType() {
         return type;
     }
 
     @Override
-    public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
-    {
+    public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff) {
         List<HabboItem> items = new ArrayList<HabboItem>();
 
-        synchronized (this.items)
-        {
-            for (HabboItem item : this.items)
-            {
+        synchronized (this.items) {
+            for (HabboItem item : this.items) {
                 if (Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
                     items.add(item);
             }
 
-            for (HabboItem item : items)
-            {
+            for (HabboItem item : items) {
                 this.items.remove(item);
             }
 
@@ -101,37 +90,32 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
             if (this.items.isEmpty())
                 return false;
 
-            if (stuff != null && stuff.length > 0)
-            {
-                for (HabboItem item : this.items)
-                {
-                    //if (object instanceof HabboItem)
-                    //{
+            if (stuff != null && stuff.length > 0) {
+                synchronized (this.items) {
+                    for (HabboItem item : this.items) {
+                        //if (object instanceof HabboItem)
+                        //{
                         HabboItem targetItem = item;
 
-                        if (targetItem != null)
-                        {
+                        if (targetItem != null) {
                             int indexOffset = 0;
-                            if (!this.indexOffset.containsKey(targetItem.getId()))
-                            {
+                            if (!this.indexOffset.containsKey(targetItem.getId())) {
                                 this.indexOffset.put(targetItem.getId(), indexOffset);
-                            }
-                            else
-                            {
+                            } else {
                                 indexOffset = this.indexOffset.get(targetItem.getId());
                             }
 
                             RoomTile objectTile = room.getLayout().getTile(((HabboItem) targetItem).getX(), ((HabboItem) targetItem).getY());
 
-                            if (objectTile != null)
-                            {
+                            if (objectTile != null) {
                                 // habbo colide
                                 RoomTile t = room.getLayout().getTile(item.getX(), item.getY());
+
                                 double shortest = 1000.0D;
 
                                 Habbo target = null;
 
-                                for(Habbo habbo : room.getHabbos()) {
+                                for (Habbo habbo : room.getHabbos()) {
                                     RoomTile h = habbo.getRoomUnit().getCurrentLocation();
 
                                     double distance = t.distance(h);
@@ -141,7 +125,7 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
                                     }
                                 }
 
-                                if(target != null) {
+                                if (target != null) {
                                     if (RoomLayout.tilesAdjecent(target.getRoomUnit().getCurrentLocation(), room.getLayout().getTile(item.getX(), item.getY())) && (target.getRoomUnit().getX() == item.getX() || target.getRoomUnit().getY() == item.getY())) {
                                         final Habbo finalTarget = target;
                                         Emulator.getThreading().run(new Runnable() {
@@ -158,52 +142,50 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
                                 THashSet<RoomTile> refreshTiles = room.getLayout().getTilesAt(room.getLayout().getTile(((HabboItem) targetItem).getX(), ((HabboItem) targetItem).getY()), ((HabboItem) targetItem).getBaseItem().getWidth(), ((HabboItem) targetItem).getBaseItem().getLength(), ((HabboItem) targetItem).getRotation());
 
                                 RoomTile tile = room.getLayout().getTileInFront(objectTile, targetItem.getRotation(), indexOffset);
-                                if (tile == null || !tile.allowStack() || tile.state == RoomTileState.BLOCKED || room.hasHabbosAt(tile.x,tile.y) || room.getLayout().findPath(objectTile, tile).isEmpty())
-                                {
-                                    switch (this.spacing)
-                                    {
+                                if (tile == null || !tile.allowStack() || tile.state == RoomTileState.BLOCKED || room.hasHabbosAt(tile.x, tile.y) || room.getLayout().findPath(objectTile, tile).isEmpty()) {
+                                    switch (this.spacing) {
                                         case 1:
-                                            targetItem.setRotation(targetItem.getRotation()+1);
+                                            targetItem.setRotation(targetItem.getRotation() + 1);
                                             break;
                                         case 2:
-                                            targetItem.setRotation(targetItem.getRotation()+2);
+                                            targetItem.setRotation(targetItem.getRotation() + 2);
                                             break;
                                         case 3:
-                                            targetItem.setRotation(targetItem.getRotation()-1);
+                                            targetItem.setRotation(targetItem.getRotation() - 1);
                                             break;
                                         case 4:
-                                            targetItem.setRotation(targetItem.getRotation()-2);
+                                            targetItem.setRotation(targetItem.getRotation() - 2);
                                             break;
                                         case 5:
-                                            if(targetItem.getRotation() == 0) {
+                                            if (targetItem.getRotation() == 0) {
                                                 targetItem.setRotation(4);
                                                 continue;
                                             }
-                                            if(targetItem.getRotation() == 1) {
+                                            if (targetItem.getRotation() == 1) {
                                                 targetItem.setRotation(5);
                                                 continue;
                                             }
-                                            if(targetItem.getRotation() == 2) {
+                                            if (targetItem.getRotation() == 2) {
                                                 targetItem.setRotation(6);
                                                 continue;
                                             }
-                                            if(targetItem.getRotation() == 3) {
+                                            if (targetItem.getRotation() == 3) {
                                                 targetItem.setRotation(7);
                                                 continue;
                                             }
-                                            if(targetItem.getRotation() == 4) {
+                                            if (targetItem.getRotation() == 4) {
                                                 targetItem.setRotation(0);
                                                 continue;
                                             }
-                                            if(targetItem.getRotation() == 5) {
+                                            if (targetItem.getRotation() == 5) {
                                                 targetItem.setRotation(1);
                                                 continue;
                                             }
-                                            if(targetItem.getRotation() == 6) {
+                                            if (targetItem.getRotation() == 6) {
                                                 targetItem.setRotation(2);
                                                 continue;
                                             }
-                                            if(targetItem.getRotation() == 7) {
+                                            if (targetItem.getRotation() == 7) {
                                                 targetItem.setRotation(3);
                                                 continue;
                                             }
@@ -213,22 +195,20 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
                                             break;
                                     }
 
-                                    if(targetItem.getRotation() > 7) {
+                                    if (targetItem.getRotation() > 7) {
                                         targetItem.setRotation(0);
                                     }
 
-                                    if(targetItem.getRotation() < 0) {
+                                    if (targetItem.getRotation() < 0) {
                                         targetItem.setRotation(7);
                                     }
-                                }
-                                else
-                                {
+                                } else {
                                     room.sendComposer(new FloorItemOnRollerComposer((HabboItem) targetItem, null, tile, tile.getStackHeight() - ((HabboItem) targetItem).getZ(), room).compose());
                                     refreshTiles.addAll(room.getLayout().getTilesAt(room.getLayout().getTile(((HabboItem) targetItem).getX(), ((HabboItem) targetItem).getY()), ((HabboItem) targetItem).getBaseItem().getWidth(), ((HabboItem) targetItem).getBaseItem().getLength(), ((HabboItem) targetItem).getRotation()));
                                     room.updateTiles(refreshTiles);
                                     room.updateTile(objectTile);
                                     this.indexOffset.put(targetItem.getId(), indexOffset);
-                                    switch(targetItem.getRotation()) {
+                                    switch (targetItem.getRotation()) {
                                         case 1:
                                             targetItem.setRotation(2);
                                             break;
@@ -245,7 +225,8 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
                                 }
                             }
                         }
-                    //}
+                        //}
+                    }
                 }
             }
         }
@@ -253,28 +234,24 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
     }
 
     @Override
-    public String getWiredData()
-    {
+    public String getWiredData() {
         THashSet<HabboItem> items = new THashSet<HabboItem>();
 
-        for(HabboItem item : this.items)
-        {
-            if(item != null) {
-                if(item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
+        for (HabboItem item : this.items) {
+            if (item != null) {
+                if (item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
                     items.add(item);
             }
         }
 
-        for(HabboItem item : items)
-        {
-            if(item != null)
+        for (HabboItem item : items) {
+            if (item != null)
                 this.items.remove(item);
         }
 
         String data = this.direction + "\t" + this.spacing + "\t" + this.getDelay() + "\t";
 
-        for(HabboItem item : this.items)
-        {
+        for (HabboItem item : this.items) {
             data += item.getId() + "\r";
         }
 
@@ -282,20 +259,16 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
     }
 
     @Override
-    public void serializeWiredData(ServerMessage message, Room room)
-    {
+    public void serializeWiredData(ServerMessage message, Room room) {
         THashSet<HabboItem> items = new THashSet<HabboItem>();
 
-        synchronized (this.items)
-        {
-            for (HabboItem item : this.items)
-            {
+        synchronized (this.items) {
+            for (HabboItem item : this.items) {
                 if (item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
                     items.add(item);
             }
 
-            for (HabboItem item : items)
-            {
+            for (HabboItem item : items) {
                 this.items.remove(item);
             }
 
@@ -318,28 +291,21 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
     }
 
     @Override
-    public void loadWiredData(ResultSet set, Room room) throws SQLException
-    {
-        synchronized (this.items)
-        {
+    public void loadWiredData(ResultSet set, Room room) throws SQLException {
+        synchronized (this.items) {
             this.items.clear();
 
             String[] data = set.getString("wired_data").split("\t");
 
-            if (data.length == 4)
-            {
-                try
-                {
+            if (data.length == 4) {
+                try {
                     this.direction = Integer.valueOf(data[0]);
                     this.spacing = Integer.valueOf(data[1]);
                     this.setDelay(Integer.valueOf(data[2]));
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                 }
 
-                for (String s : data[3].split("\r"))
-                {
+                for (String s : data[3].split("\r")) {
                     HabboItem item = room.getHabboItem(Integer.valueOf(s));
 
                     if (item != null)
@@ -350,8 +316,7 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect
     }
 
     @Override
-    public void onPickUp()
-    {
+    public void onPickUp() {
         this.setDelay(0);
         this.items.clear();
         this.direction = 0;
