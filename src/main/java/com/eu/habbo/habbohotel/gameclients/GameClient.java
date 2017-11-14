@@ -18,8 +18,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class GameClient
-{
+public class GameClient {
     /**
      * The Channel this client is using.
      */
@@ -35,25 +34,21 @@ public class GameClient
      */
     private String machineId = "";
 
-    public GameClient(Channel channel)
-    {
+    public GameClient(Channel channel) {
         this.channel = channel;
     }
 
     /**
      * Sends an composer to the client.
+     *
      * @param composer The composer to send.
      */
-    public void sendResponse(MessageComposer composer)
-    {
-        if(this.channel.isOpen())
-        {
-            try
-            {
+    public void sendResponse(MessageComposer composer) {
+        if (this.channel.isOpen()) {
+            try {
                 ServerMessage msg = composer.compose();
                 sendResponse(msg);
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 Emulator.getLogging().logPacketError(e);
             }
         }
@@ -61,14 +56,12 @@ public class GameClient
 
     /**
      * Sends an response to the client.
+     *
      * @param response The response to send.
      */
-    public void sendResponse(ServerMessage response)
-    {
-        if(this.channel.isOpen())
-        {
-            if (response == null || response.getHeader() <= 0)
-            {
+    public void sendResponse(ServerMessage response) {
+        if (this.channel.isOpen()) {
+            if (response == null || response.getHeader() <= 0) {
                 return;
             }
 
@@ -82,18 +75,15 @@ public class GameClient
 
     /**
      * Sends multiple responses to the client.
+     *
      * @param responses The responses to send.
      */
-    public void sendResponses(ArrayList<ServerMessage> responses)
-    {
+    public void sendResponses(ArrayList<ServerMessage> responses) {
         ByteBuf buffer = Unpooled.buffer();
 
-        if(this.channel.isOpen())
-        {
-            for(ServerMessage response : responses)
-            {
-                if (response == null || response.getHeader() <= 0)
-                {
+        if (this.channel.isOpen()) {
+            for (ServerMessage response : responses) {
+                if (response == null || response.getHeader() <= 0) {
                     return;
                 }
 
@@ -111,69 +101,81 @@ public class GameClient
     /**
      * Disposes the client. Disconnection mostly.
      */
-    public void dispose()
-    {
-        try
-        {
+    public void dispose() {
+        try {
             this.channel.close();
 
-            if(this.habbo != null)
-            {
-                if(this.habbo.isOnline())
-                {
+            if (this.habbo != null) {
+                if (this.habbo.isOnline()) {
                     this.habbo.getHabboInfo().setOnline(false);
                     this.habbo.disconnect();
                 }
 
                 this.habbo = null;
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Emulator.getLogging().logErrorLine(e);
         }
     }
 
-    public Channel getChannel()
-    {
+    public Channel getChannel() {
         return this.channel;
     }
 
-    public Habbo getHabbo()
-    {
+    public Habbo getHabbo() {
         return this.habbo;
     }
 
-    public void setHabbo(Habbo habbo)
-    {
+    public void setHabbo(Habbo habbo) {
         this.habbo = habbo;
     }
 
-    public String getMachineId()
-    {
+    public String getMachineId() {
         return this.machineId;
     }
 
-    public void setMachineId(String machineId)
-    {
-        if (machineId == null)
-        {
+    public void setMachineId(String machineId) {
+        if (machineId == null) {
             throw new RuntimeException("Cannot set machineID to NULL");
         }
         this.machineId = machineId;
 
-        if (this.habbo != null)
-        {
-            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET machine_id = ? WHERE id = ? LIMIT 1"))
-            {
+        if (this.habbo != null) {
+            try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET machine_id = ? WHERE id = ? LIMIT 1")) {
                 statement.setString(1, this.machineId);
                 statement.setInt(2, this.habbo.getHabboInfo().getId());
                 statement.execute();
-            }
-            catch (SQLException e)
-            {
+            } catch (SQLException e) {
                 Emulator.getLogging().logSQLException(e);
             }
+        }
+    }
+
+    public void updatePoints(String tipo) {
+
+        if (tipo == null)
+        {
+            throw new RuntimeException("O tipo não pode ser nulo!");
+        }
+
+
+        if (this.habbo != null) {
+            if (tipo.equals("promo")) {
+                try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET promo_pts = promo_pts + 1 WHERE id = ? LIMIT 1")) {
+                    statement.setInt(1, this.habbo.getHabboInfo().getId());
+                    statement.execute();
+                } catch (SQLException e) {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            } else {
+                try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); PreparedStatement statement = connection.prepareStatement("UPDATE users SET s_points = s_points + 1, g_points = g_points + 1, m_points = m_points + 1 WHERE id = ? LIMIT 1")) {
+                    statement.setInt(1, this.habbo.getHabboInfo().getId());
+                    statement.execute();
+                } catch (SQLException e) {
+                    Emulator.getLogging().logSQLException(e);
+                }
+            }
+
         }
     }
 }

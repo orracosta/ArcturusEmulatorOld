@@ -260,7 +260,7 @@ public class RoomLayout
         LinkedList<RoomTile> openList = new LinkedList();
         try
         {
-            if (this.room == null || !this.room.isLoaded() || oldTile == null || newTile == null || oldTile.equals(newTile) || (!newTile.isWalkable() && !this.room.canSitOrLayAt(newTile.x, newTile.y)))
+            if (this.room == null || !this.room.isLoaded() || oldTile == null || newTile == null || oldTile.equals(newTile) || (!newTile.isWalkable() && !this.room.canSitOrLayAt(newTile.x, newTile.y, notIsFurni)))
                 return openList;
 
             List<RoomTile> closedList = new LinkedList();
@@ -290,7 +290,7 @@ public class RoomLayout
                 {
 
 
-                    if (!currentAdj.isWalkable() && !(currentAdj.equals(newTile) && room.canSitOrLayAt(currentAdj.x, currentAdj.y))){ closedList.add(currentAdj); openList.remove(currentAdj); continue;}
+                    if (!currentAdj.isWalkable() && !(currentAdj.equals(newTile) && room.canSitOrLayAt(currentAdj.x, currentAdj.y, notIsFurni))){ closedList.add(currentAdj); openList.remove(currentAdj); continue;}
                     //if (!room.getLayout().tileWalkable((short) currentAdj.x, (short) currentAdj.y)) continue;
 
                     double height = (room.getLayout().getStackHeightAtSquare(currentAdj.x, currentAdj.y) - room.getLayout().getStackHeightAtSquare(current.x, current.y));
@@ -298,11 +298,11 @@ public class RoomLayout
                     if ((!ALLOW_FALLING && height < -MAXIMUM_STEP_HEIGHT) || (height > MAXIMUM_STEP_HEIGHT && !room.canLayAt(currentAdj.x, currentAdj.y)))
                         continue;
 
-                    if (!this.room.isAllowWalkthrough() && room.hasHabbosAt(currentAdj.x, currentAdj.y)) continue;
+                    if (notIsFurni && (!this.room.isAllowWalkthrough() && room.hasHabbosAt(currentAdj.x, currentAdj.y))) continue;
 
                     //if (room.hasPetsAt(currentAdj.x, currentAdj.y)) continue;
 
-                    if (!openList.contains(currentAdj) || (currentAdj.x == newTile.x && currentAdj.y == newTile.y && (room.canSitOrLayAt(newTile.x, newTile.y) && !room.hasHabbosAt(newTile.x, newTile.y))))
+                    if (!openList.contains(currentAdj) || (currentAdj.x == newTile.x && currentAdj.y == newTile.y && (room.canSitOrLayAt(newTile.x, newTile.y, notIsFurni) && !room.hasHabbosAt(newTile.x, newTile.y))))
                     {
                         height = (room.getLayout().getHeightAtSquare(currentAdj.x, currentAdj.y) - room.getLayout().getHeightAtSquare(current.x, current.y));
                         if (height > MAXIMUM_STEP_HEIGHT)
@@ -395,7 +395,7 @@ public class RoomLayout
         short x = node.x;
         short y = node.y;
         List<RoomTile> adj = new LinkedList<RoomTile>();
-        boolean canSitOrLayAt = room.canSitOrLayAt(newX, newY);
+        boolean canSitOrLayAt = room.canSitOrLayAt(newX, newY, notIsFurni);
         if (x > 0)
         {
             RoomTile temp = findTile(adj, (short) (x - 1), y);

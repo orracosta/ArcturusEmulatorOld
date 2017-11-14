@@ -104,7 +104,9 @@ public class InteractionBattleBanzaiTile extends HabboItem
                 habbo.getHabboInfo().getGamePlayer().addScore(BattleBanzaiGame.POINTS_HIJACK_TILE);
             }
 
-            game.refreshCounters(habbo.getHabboInfo().getGamePlayer().getTeamColor());
+            if(game != null && game.isRunning)
+                game.refreshCounters(habbo.getHabboInfo().getGamePlayer().getTeamColor());
+            
             this.setExtradata(state + "");
             room.updateItem(this);
         }

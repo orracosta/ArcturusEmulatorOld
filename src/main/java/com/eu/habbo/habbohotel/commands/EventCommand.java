@@ -23,15 +23,13 @@ public class EventCommand extends Command
     {
         if(gameClient.getHabbo().getHabboInfo().getCurrentRoom() != null)
         {
-            if (params.length >= 2)
+            if (params.length >= 1)
             {
-                String message = "";
-
-                for (int i = 1; i < params.length; i++)
-                {
-                    message += params[i];
-                    message += " ";
-                }
+                String message =
+                        "<br><b>Opaa! Parece que um novo evento está rolando!</b>" +
+                        "<br><br><b>"+ gameClient.getHabbo().getHabboInfo().getUsername() + "</b> está começando um novo evento no quarto "+ gameClient.getHabbo().getHabboInfo().getCurrentRoom().getName() +"!" +
+                        "<br><br>Lembrando que você pode ganhar   <b>diamantes</b> e   <b>pontos de evento</b>, para comprar/craftar  <b>Raros</b> ou ficar famoso(a) em nosso   <b>Hall da Fama</b>!" +
+                        "<br><br><b>Venha se divertir conosco! :)</b><br><br>";
 
                 THashMap<String, String> codes = new THashMap<String, String>();
                 codes.put("ROOMNAME", gameClient.getHabbo().getHabboInfo().getCurrentRoom().getName());

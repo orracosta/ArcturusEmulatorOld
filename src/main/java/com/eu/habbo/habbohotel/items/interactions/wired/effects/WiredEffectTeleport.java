@@ -141,20 +141,6 @@ public class WiredEffectTeleport extends InteractionWiredEffect
                     final WiredEffectTeleport teleportWired = this;
                     habbo.getRoomUnit().isTeleporting = true;
                     Emulator.getThreading().run(new RoomUnitTeleport(habbo.getRoomUnit(), room, item.getX(), item.getY(), item.getZ() + (item.getBaseItem().allowSit() ? item.getBaseItem().getHeight() - 0.50 : 0D), currentEffect), WiredHandler.TELEPORT_DELAY);
-                    Emulator.getThreading().run(new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            try
-                            {
-                                item.onWalkOn(habbo.getRoomUnit(), room, new Object[]{teleportWired});
-                                habbo.getRoomUnit().isTeleporting = false;
-                            }
-                            catch (Exception e)
-                            {}
-                        }
-                    }, WiredHandler.TELEPORT_DELAY);
                     break;
                 } else
                 {

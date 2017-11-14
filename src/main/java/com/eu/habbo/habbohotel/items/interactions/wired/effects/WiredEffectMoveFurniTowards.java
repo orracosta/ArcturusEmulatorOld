@@ -21,6 +21,7 @@ import gnu.trove.set.hash.THashSet;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Deque;
 
 public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
 {
@@ -67,11 +68,18 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
 
                 double distance = t.distance(h);
 
-                if((t != null && h != null) && (distance <= shortest && !room.getLayout().findPath(t, h, false).isEmpty()))
+                RoomTile checkstep = t;
+                Deque<RoomTile> findpath = room.getLayout().findPath(t, h, false);
+
+                if(!findpath.isEmpty() && findpath != null){
+                    checkstep = findpath.getFirst();
+                }
+
+                if(distance <= shortest && checkstep != t)
                 {
                     target = habbo;
                     shortest = distance;
-                    nextStep = room.getLayout().findPath(t, h, false).getFirst();
+                    nextStep = checkstep;
                 }
             }
 

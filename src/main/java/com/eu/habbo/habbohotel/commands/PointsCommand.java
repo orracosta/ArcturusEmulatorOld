@@ -6,10 +6,14 @@ import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboManager;
+import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
+import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import com.eu.habbo.messages.outgoing.users.UserPointsComposer;
 import com.eu.habbo.habbohotel.users.HabboInfo;
+import gnu.trove.impl.hash.THash;
+import gnu.trove.map.hash.THashMap;
 
 import java.sql.Connection;
 import java.sql.Statement;
@@ -24,48 +28,53 @@ public class PointsCommand extends Command {
         Habbo habbo = Emulator.getGameServer().getGameClientManager().getHabbo(params[1]);
 
         if (habbo != null) {
-                int type = Emulator.getConfig().getInt("seasonal.primary.type");
+            int type = Emulator.getConfig().getInt("seasonal.primary.type");
 
-                String tipo = params[2];
-                String alertstr = "evento";
+            String tipo = params[2];
+            String alertstr = "";
 
-                int amount = 0;
+            int amount = 0;
 
-                switch (tipo) {
-                    case "promo":
-                        amount = Integer.valueOf(Emulator.getConfig().getInt("cmd.points.amount.promo"));
-                        alertstr = "promoção";
-                        break;
-                    default:
-                        amount = Integer.valueOf(Emulator.getConfig().getInt("cmd.points.amount.event"));
-                        alertstr = "evento";
-                        break;
-                }
+            switch (tipo) {
+                case "promo":
+                    amount = Integer.valueOf(Emulator.getConfig().getInt("cmd.points.amount.promo"));
+                    alertstr = "promoção";
+                    break;
+                case "evento":
+                    amount = Integer.valueOf(Emulator.getConfig().getInt("cmd.points.amount.event"));
+                    alertstr = "evento";
+                    break;
+                default:
+                    break;
+            }
 
-                    habbo.givePoints(type, amount);
+            habbo.givePoints(type, amount);
 
-                    if (habbo.getHabboInfo().getCurrentRoom() != null)
-                        habbo.whisper(Emulator.getTexts().getValue("commands.generic.cmd_points.received").replace("%amount%", amount + "").replace("%type%", alertstr), RoomChatMessageBubbles.ALERT);
-                    else
-                        habbo.getClient().sendResponse(new GenericAlertComposer(Emulator.getTexts().getValue("commands.generic.cmd_points.received").replace("%amount%", amount + "").replace("%type%", alertstr)));
+            THashMap<String, String> keys = new THashMap<String, String>();
+            keys.put("display", "BUBBLE");
+            keys.put("image", "${image.library.url}notifications/diamonds.png");
+            keys.put("message", Emulator.getTexts().getValue("commands.generic.cmd_points.received").replace("%type%", alertstr));
 
-                    habbo.getClient().sendResponse(new UserPointsComposer(habbo.getHabboInfo().getCurrencyAmount(type), amount, type));
+            habbo.getClient().sendResponse(new BubbleAlertComposer(BubbleAlertKeys.RECEIVED_BADGE.key, keys));
+            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_points.send").replace("%amount%", amount + "").replace("%user%", habbo.getHabboInfo().getUsername()).replace("%type%", alertstr), RoomChatMessageBubbles.ALERT);
 
-                    gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.succes.cmd_points.send").replace("%amount%", amount + "").replace("%user%", params[1]).replace("%type%", alertstr), RoomChatMessageBubbles.ALERT);
+            THashMap<String, String> keysWin = new THashMap<String, String>();
+            keysWin.put("display", "BUBBLE");
+            keysWin.put("image", "https://www.mania.gg/api/head/" + habbo.getHabboInfo().getUsername() + ".png");
+            keysWin.put("message", Emulator.getTexts().getValue("commands.generic.cmd_points.winner").replace("%user%", habbo.getHabboInfo().getUsername()).replace("%type%", alertstr));
 
-                    try (Connection connection = Emulator.getDatabase().getDataSource().getConnection()) {
-                        try (Statement statement = connection.createStatement()) {
-                            if (tipo.equals("promo")) {
-                                statement.execute("UPDATE users SET promo_pts = promo_pts + 1 WHERE id = " + habbo.getHabboInfo().getId() + ";");
-                            } else {
-                                statement.execute("UPDATE users SET s_points = s_points + 1, g_points = g_points + 1, m_points = m_points + 1 WHERE id = " + habbo.getHabboInfo().getId() + ";");
-                            }
-                        }
-                }
+            Emulator.getGameServer().getGameClientManager().sendBroadcastResponse(new BubbleAlertComposer(BubbleAlertKeys.RECEIVED_BADGE.key, keysWin));
+
+            if (tipo.equals("promo")) {
+                habbo.getClient().updatePoints(tipo);
+            } else {
+                habbo.getClient().updatePoints(tipo);
+            }
         } else {
-                gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_points.user_not_found").replace("%user%", params[1]), RoomChatMessageBubbles.ALERT);
+            gameClient.getHabbo().whisper(Emulator.getTexts().getValue("commands.error.cmd_points.user_not_found").replace("%user%", params[1]), RoomChatMessageBubbles.ALERT);
 
         }
+
         return true;
     }
 }

@@ -18,7 +18,7 @@ public class RoomRemoveAllRightsEvent extends MessageHandler
         if(room == null || room.getId() != this.packet.readInt())
             return;
 
-        if(room.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || this.client.getHabbo().hasPermission("acc_anyroomowner"))
+        if(room.getOwnerId() == this.client.getHabbo().getHabboInfo().getId() || this.client.getHabbo().hasPermission("acc_anyroomowner") || this.client.getHabbo().hasPermission("acc_modtool_ticket_q"))
         {
             room.getRights().forEach(new TIntProcedure()
             {

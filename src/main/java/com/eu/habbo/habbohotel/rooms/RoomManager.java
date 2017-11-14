@@ -620,6 +620,7 @@ public class RoomManager
            habbo.hasPermission("acc_anyroomowner") ||
            habbo.hasPermission("acc_enteranyroom") ||
            room.hasRights(habbo) ||
+           habbo.hasPermission("acc_modtool_ticket_q") ||
            (room.hasGuild() && room.guildRightLevel(habbo) > 2))
         {
             this.openRoom(habbo, room, doorLocation);
@@ -855,18 +856,13 @@ public class RoomManager
                 }
             }
 
-            /*
-            int effect = habbo.getInventory().getEffectsComponent().activatedEffect;
 
-            if (effect == 0)
-            {
-                effect = habbo.getHabboInfo().getRank().getRoomEffect();
-            }
+            int effect = habbo.getHabboInfo().getRank().getRoomEffect();
 
             if (effect > 0)
             {
                 habbo.getRoomUnit().setEffectId(effect);
-            }*/
+            }
 
             room.sendComposer(new RoomUserEffectComposer(habbo.getRoomUnit()).compose());
         }

@@ -44,7 +44,7 @@ public class RoomUserKickEvent extends MessageHandler
         if(event.isCancelled())
             return;
 
-        if(room.hasRights(this.client.getHabbo()) || this.client.getHabbo().hasPermission("acc_anyroomowner") || this.client.getHabbo().hasPermission("acc_ambassador"))
+        if(room.hasRights(this.client.getHabbo()) || this.client.getHabbo().hasPermission("acc_anyroomowner") || this.client.getHabbo().hasPermission("acc_ambassador") || this.client.getHabbo().hasPermission("acc_modtool_ticket_q"))
         {
             room.kickHabbo(target, true);
             AchievementManager.progressAchievement(this.client.getHabbo(), Emulator.getGameEnvironment().getAchievementManager().getAchievement("SelfModKickSeen"));

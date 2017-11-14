@@ -73,7 +73,8 @@ public class RoomUnitWalkToRoomUnit implements Runnable
 
     private void findNewLocation()
     {
-        this.goalTile = this.room.getLayout().getTileInFront(this.target.getCurrentLocation(), this.target.getBodyRotation().getValue());
+        if(this.target != null)
+            this.goalTile = this.room.getLayout().getTileInFront(this.target.getCurrentLocation(), this.target.getBodyRotation().getValue());
 
         if (this.goalTile == null)
             return;
