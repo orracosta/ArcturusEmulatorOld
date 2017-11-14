@@ -18,7 +18,6 @@ public class UnIgnoreRoomUserEvent extends MessageHandler
 
             Habbo habbo = room.getHabbo(username);
 
-            System.out.println(habbo);
             if(habbo != null)
             {
                 if(habbo == this.client.getHabbo())

@@ -33,9 +33,13 @@ public class RoomPickupItemEvent extends MessageHandler
         }
         else
         {
-            if (this.client.getHabbo().hasPermission("acc_anyroomowner"))
+            if (room.hasRights(this.client.getHabbo()) || this.client.getHabbo().hasPermission("acc_modtool_ticket_q"))
             {
-                item.setUserId(this.client.getHabbo().getHabboInfo().getId());
+                if (this.client.getHabbo().hasPermission("acc_anyroomowner"))
+                {
+                    item.setUserId(this.client.getHabbo().getHabboInfo().getId());
+                }
+
                 room.ejectUserItem(item);
             }
         }

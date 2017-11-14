@@ -4526,7 +4526,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
     public boolean isOwner(Habbo habbo)
     {
-        return habbo.getHabboInfo().getId() == this.ownerId || habbo.hasPermission("acc_anyroomowner");
+        return habbo.getHabboInfo().getId() == this.ownerId || habbo.hasPermission("acc_anyroomowner") || habbo.hasPermission("acc_modtool_ticket_q");
     }
 
     public boolean hasRights(Habbo habbo)
@@ -4668,7 +4668,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             habbo.getClient().sendResponse(new RoomOwnerComposer());
             flatCtrl = RoomRightLevels.MODERATOR;
         }
-        else if ((this.hasRights(habbo) && !this.hasGuild()) || habbo.hasPermission("acc_moverotate") || habbo.hasPermission("acc_placefurni"))
+        else if ((this.hasRights(habbo) && !this.hasGuild()) || (habbo.hasPermission("acc_moverotate") || habbo.hasPermission("acc_placefurni") && !habbo.hasPermission("acc_anyroomowner")))
         {
             flatCtrl = RoomRightLevels.RIGHTS;
         }
