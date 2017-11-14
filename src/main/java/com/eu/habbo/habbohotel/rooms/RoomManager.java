@@ -856,18 +856,13 @@ public class RoomManager
                 }
             }
 
-            /*
-            int effect = habbo.getInventory().getEffectsComponent().activatedEffect;
 
-            if (effect == 0)
-            {
-                effect = habbo.getHabboInfo().getRank().getRoomEffect();
-            }
+            int effect = habbo.getHabboInfo().getRank().getRoomEffect();
 
             if (effect > 0)
             {
                 habbo.getRoomUnit().setEffectId(effect);
-            }*/
+            }
 
             room.sendComposer(new RoomUserEffectComposer(habbo.getRoomUnit()).compose());
         }
