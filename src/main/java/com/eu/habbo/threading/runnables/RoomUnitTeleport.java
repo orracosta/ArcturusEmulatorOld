@@ -3,6 +3,7 @@ package com.eu.habbo.threading.runnables;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUnitOnRollerComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 
@@ -33,11 +34,23 @@ public class RoomUnitTeleport implements Runnable
         if(this.newEffect == 4)
             this.newEffect = 0;
 
+        HabboItem oldItem = this.room.getTopItemAt(this.roomUnit.getX(), this.roomUnit.getY());
+        HabboItem topItem = this.room.getTopItemAt(t.x, t.y);
+
         this.roomUnit.setGoalLocation(t);
         this.roomUnit.getStatus().remove("mv");
-        this.room.sendComposer(new RoomUnitOnRollerComposer(this.roomUnit, this.room.getTopItemAt(t.x, t.y), t, this.room).compose());
+        this.room.sendComposer(new RoomUnitOnRollerComposer(this.roomUnit, null, t, this.room).compose());
         this.room.giveEffect(this.roomUnit, this.newEffect);
         this.room.updateRoomUnit(t.x, t.y, this.roomUnit);
+
+        try {
+            topItem.onWalkOn(this.roomUnit, room, new Object[]{oldItem});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        this.roomUnit.getPath().clear();
+        this.roomUnit.isTeleporting = false;
 
         if(this.roomUnit.isTeleporting)
             this.roomUnit.isTeleporting = false;
