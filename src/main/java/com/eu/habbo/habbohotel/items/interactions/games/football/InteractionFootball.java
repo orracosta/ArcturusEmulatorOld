@@ -13,7 +13,6 @@ import com.eu.habbo.habbohotel.rooms.RoomTileState;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.items.ItemStateComposer;
 import com.eu.habbo.util.pathfinding.Rotation;
-import com.eu.habbo.Emulator;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -169,21 +168,8 @@ public class InteractionFootball extends InteractionPushable
         if (to == null || to.state == RoomTileState.BLOCKED)
             return false;
 
-        boolean itemnotmove = false;
         HabboItem topItem = room.getTopItemAt(to.x, to.y, this);
-        if(topItem != null)
-        {
-            Item item = Emulator.getGameEnvironment().getItemManager().loadHabboItem(topItem.getId()).getBaseItem();
-            if(item != null)
-            {
-                if(item.getHeight() > 0.2 || item.allowSit() || item.allowLay() || (topItem instanceof InteractionFootball) || (topItem instanceof InteractionMultiHeight || (topItem instanceof InteractionStackHelper)))
-                    itemnotmove = true;
-            }
-        }
-        else if(topItem == null && room.getStackHeight(to.x, to.y, false) > 0.2)
-            itemnotmove = true;
-
-        return !(!room.getLayout().tileWalkable(to.x, to.y) || itemnotmove);
+        return !(!room.getLayout().tileWalkable(to.x, to.y) || (topItem != null && (topItem.getBaseItem().allowStack() || topItem.getBaseItem().allowSit() || topItem.getBaseItem().allowLay() || topItem instanceof InteractionFootball)));
     }
 
     //Events

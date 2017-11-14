@@ -62,13 +62,9 @@ public class KickBallAction implements Runnable
                 {
                     this.ball.onMove(this.room, this.room.getLayout().getTile(this.ball.getX(), this.ball.getY()), next, this.currentDirection, this.kicker, delay, this.currentStep, this.totalSteps);
 
-                    double stack = this.ball.getZ();
-                    if(stack > this.room.getStackHeight(next.x, next.y, false))
-                        stack = this.ball.getZ();
-                    else
-                        stack = this.room.getStackHeight(next.x, next.y, false);
+                    double stack = this.room.getStackHeight(next.x, next.y, false);
 
-                    this.room.sendComposer(new FloorItemOnRollerComposer(this.ball, null, next, stack, this.room).compose());
+                    this.room.sendComposer(new FloorItemOnRollerComposer(this.ball, null, next, stack, this.room, true).compose());
 
                     Emulator.getThreading().run(this, (long)delay);
                 }
