@@ -52,7 +52,7 @@ public class GuildInfoComposer extends MessageComposer
         this.response.appendBoolean(this.newWindow);
         this.response.appendBoolean(this.guild.getRights() == 0); //User can place furni.
         this.response.appendInt((adminPermissions || this.guild.getOwnerId() == this.client.getHabbo().getHabboInfo().getId()) ? this.guild.getRequestCount() : 0); //Guild invites count.
-        this.response.appendBoolean(true); //Unknown
+        this.response.appendBoolean(this.guild.hasForum()); //Unknown
         return this.response;
     }
 }

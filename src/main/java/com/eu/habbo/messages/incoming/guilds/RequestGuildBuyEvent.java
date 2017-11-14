@@ -82,8 +82,6 @@ public class RequestGuildBuyEvent extends MessageHandler
 
                     r.setGuild(guild.getId());
                     r.setNeedsUpdate(true);
-
-                    Emulator.getGameEnvironment().getGuildForumManager().addGuildForum(guild.getId());
                     
                     if (Emulator.getConfig().getBoolean("imager.internal.enabled")) 
                     {

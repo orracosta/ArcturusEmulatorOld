@@ -1266,6 +1266,13 @@ public class CatalogManager
                                             Emulator.getThreading().run(habboItem);
                                             Emulator.getGameEnvironment().getGuildManager().setGuild(habboItem, guildId);
                                             itemsList.add(habboItem);
+
+                                            if(baseItem.getName().equals("guild_forum")) {
+                                                Emulator.getGameEnvironment().getGuildManager().getGuild(guildId).setForum(true);
+                                                Emulator.getGameEnvironment().getGuildManager().getGuild(guildId).needsUpdate = true;
+
+                                                Emulator.getGameEnvironment().getGuildForumManager().addGuildForum(guildId);
+                                            }
                                         }
                                         else if(baseItem.getInteractionType().getType() == InteractionMusicDisc.class)
                                         {
