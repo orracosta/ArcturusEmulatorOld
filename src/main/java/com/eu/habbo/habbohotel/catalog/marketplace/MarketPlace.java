@@ -191,6 +191,7 @@ public class MarketPlace
                                         "(SELECT COUNT(*) FROM marketplace_items c INNER JOIN items as items_b ON c.item_id = items_b.id WHERE state = 2 AND items_b.item_id = base_item_id AND DATE(from_unixtime(sold_timestamp)) = CURDATE()) as sold_count_today " +
                                     "FROM marketplace_items " +
                                     "INNER JOIN items ON marketplace_items.item_id = items.id " +
+                                    "INNER JOIN items_base ON items.item_id = items_base.id " +
                                     "WHERE state = 1 AND timestamp > ?";
         if(minPrice > 0)
         {
