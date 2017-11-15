@@ -3999,10 +3999,14 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 iterator.advance();
                 habboItem = iterator.value();
             }
+
             catch (Exception e)
             {
                 break;
             }
+
+            if(habboItem == null)
+                continue;
 
             if (habboItem.getBaseItem().getType() != FurnitureType.FLOOR)
                 continue;
