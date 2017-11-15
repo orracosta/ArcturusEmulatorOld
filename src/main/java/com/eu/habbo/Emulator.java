@@ -37,7 +37,7 @@ public final class Emulator
     /**
      * Stable build version of the emulator.
      */
-    public final static int BUILD = 0;
+    public final static int BUILD = 1;
 
     /**
      * Version as string.
