@@ -1493,7 +1493,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                     if (!habbo.getRoomUnit().getStatus().containsKey("mv") && habbo.getRoomUnit().getPath().isEmpty())
                                     {
                                         RoomTile tile = roomTile.copy();
-                                        tile.setStackHeight(zOffset);
 
                                         if(roomUserRolledEvent != null)
                                         {
@@ -1522,7 +1521,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                     if (!bot.getRoomUnit().getStatus().containsKey("mv") && bot.getRoomUnit().getPath().isEmpty())
                                     {
                                         RoomTile tile = roomTile.copy();
-                                        tile.setStackHeight(zOffset);
 
                                         messages.add(new RoomUnitOnRollerComposer(bot.getRoomUnit(), roller, tile, room));
                                     }
@@ -1543,7 +1541,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                                     if (!pet.getRoomUnit().getStatus().containsKey("mv") && pet.getRoomUnit().getPath().isEmpty())
                                     {
                                         RoomTile tile = roomTile.copy();
-                                        tile.setStackHeight(zOffset);
 
                                         messages.add(new RoomUnitOnRollerComposer(pet.getRoomUnit(), roller, tile, room));
                                     }
