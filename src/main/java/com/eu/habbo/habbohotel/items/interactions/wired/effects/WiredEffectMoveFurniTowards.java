@@ -56,6 +56,9 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
 
         for(HabboItem item : this.items)
         {
+            if(item == null)
+                continue;
+
             RoomTile t = room.getLayout().getTile(item.getX(), item.getY());
             double shortest = 1000.0D;
 
@@ -66,9 +69,13 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
             {
                 RoomTile h = habbo.getRoomUnit().getCurrentLocation();
 
+                if(t == null || h == null)
+                    continue;
+
                 double distance = t.distance(h);
 
                 RoomTile checkstep = t;
+
                 Deque<RoomTile> findpath = room.getLayout().findPath(t, h, false);
 
                 if(!findpath.isEmpty() && findpath != null){
