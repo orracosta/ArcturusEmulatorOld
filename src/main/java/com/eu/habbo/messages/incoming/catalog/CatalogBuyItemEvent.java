@@ -143,7 +143,7 @@ public class CatalogBuyItemEvent extends MessageHandler
             }
         }
 
-        if(page == null)
+        if(pageId == 0 && page == null)
         {
             this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR).compose());
             return;
