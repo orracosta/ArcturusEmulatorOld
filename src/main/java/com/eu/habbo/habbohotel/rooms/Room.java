@@ -83,7 +83,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
     public static int HAND_ITEM_TIME = 10;
     public static int IDLE_CYCLES = 240;
     public static int IDLE_CYCLES_KICK = 480;
-    public static String PREFIX_FORMAT = "[<font color=\"%color%\">%prefix%</font>] ";
+    public static String PREFIX_FORMAT = "[%prefix%] ";
 
     private static final TIntObjectHashMap<RoomMoodlightData> defaultMoodData = new TIntObjectHashMap<RoomMoodlightData>();
 
