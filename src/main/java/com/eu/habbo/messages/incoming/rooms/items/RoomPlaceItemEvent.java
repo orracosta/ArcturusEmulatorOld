@@ -166,6 +166,9 @@ public class RoomPlaceItemEvent extends MessageHandler
             }
 
             HabboItem stackHelper = room.getStackHelper(x, y);
+            HabboItem topItem = null;
+            if(stackHelper == null)
+                topItem = room.getTopItemAt(x, y);
 
             Rectangle newSquare = RoomLayout.getRectangle(x, y, item.getBaseItem().getWidth(), item.getBaseItem().getLength(), rotation);
 
@@ -179,6 +182,13 @@ public class RoomPlaceItemEvent extends MessageHandler
                     {
                         double testheight = room.getStackHeight(i, j, false, item);
                         if (checkStackHeight != testheight && !(item instanceof InteractionStackHelper))
+                        {
+                            this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
+                            this.client.sendResponse(new FloorItemUpdateComposer(item));
+                            return;
+                        }
+
+                        if (topItem != null && topItem != item && !topItem.getBaseItem().allowStack() && !(item instanceof InteractionStackHelper))
                         {
                             this.client.sendResponse(new BubbleAlertComposer(BubbleAlertKeys.FURNI_PLACE_EMENT_ERROR.key, "${room.error.cant_set_item}"));
                             this.client.sendResponse(new FloorItemUpdateComposer(item));

@@ -4172,14 +4172,12 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     {
                         canStack = false;
                         height = 0.D;
-                        break;
                     }
 
                     if (!item.getBaseItem().allowStack())
                     {
                         canStack = false;
                         height = 0.0D;
-                        break;
                     }
 
                     double itemHeight = (item.getBaseItem().allowSit() ? 0.0D : item.getBaseItem().getHeight()) + item.getZ();
@@ -4251,13 +4249,11 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                 {
                     canStack = false;
                     height = 0.0D;
-                    break;
                 }
 
                 if (!item.getBaseItem().allowStack())
                 {
                     canStack = false;
-                    break;
                 }
 
                 double itemHeight = (item.getBaseItem().allowSit() ? 0.0D : item.getBaseItem().getHeight()) + item.getZ();
