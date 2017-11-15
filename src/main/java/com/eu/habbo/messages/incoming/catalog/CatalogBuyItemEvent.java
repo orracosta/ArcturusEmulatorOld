@@ -73,6 +73,17 @@ public class CatalogBuyItemEvent extends MessageHandler
                             page = p2;
                             break;
                         }
+                        else
+                        {
+                            for(CatalogPage p3 : Emulator.getGameEnvironment().getCatalogManager().getCatalogPages(p2.getId(), this.client.getHabbo()))
+                            {
+                                if(p3.getCatalogItem(itemId) != null)
+                                {
+                                    page = p3;
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -143,7 +154,7 @@ public class CatalogBuyItemEvent extends MessageHandler
             }
         }
 
-        if(pageId == 0 && page == null)
+        if(page == null)
         {
             this.client.sendResponse(new AlertPurchaseFailedComposer(AlertPurchaseFailedComposer.SERVER_ERROR).compose());
             return;
