@@ -78,7 +78,7 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
 
                 Deque<RoomTile> findpath = room.getLayout().findPath(t, h, false);
 
-                if(!findpath.isEmpty() && findpath != null){
+                if(!findpath.isEmpty()){
                     checkstep = findpath.getFirst();
                 }
 

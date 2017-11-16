@@ -202,7 +202,11 @@ public class RoomTile
 
     public void sethCosts(RoomTile parent)
     {
-        this.hCosts = (short)((Math.abs(this.x - parent.x) + Math.abs(this.y - parent.y)) * (parent.diagonally ? RoomLayout.DIAGONALMOVEMENTCOST : RoomLayout.BASICMOVEMENTCOST));
+        if(parent == null) {
+            this.hCosts = Short.MAX_VALUE;
+        } else {
+            this.hCosts = (short)((Math.abs(this.x - parent.x) + Math.abs(this.y - parent.y)) * (parent.diagonally ? RoomLayout.DIAGONALMOVEMENTCOST : RoomLayout.BASICMOVEMENTCOST));
+        }
     }
 
     public String toString()

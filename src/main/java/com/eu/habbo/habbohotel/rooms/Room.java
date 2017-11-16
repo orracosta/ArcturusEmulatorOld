@@ -1942,7 +1942,6 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
                     }
                 }
 
-
                 if(!updatedUnit.isEmpty())
                 {
                     this.sendComposer(new RoomUserStatusComposer(updatedUnit, true).compose());

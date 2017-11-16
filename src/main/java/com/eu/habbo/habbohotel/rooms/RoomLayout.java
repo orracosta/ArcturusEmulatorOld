@@ -212,6 +212,9 @@ public class RoomLayout
                 y >= this.getMapSizeY())
             return 0;
 
+        if(this.roomTiles[x] == null || this.roomTiles[x][y] == null)
+            return 0;
+
         return this.roomTiles[x][y].getStackHeight();
     }
 
@@ -279,8 +282,7 @@ public class RoomLayout
                 closedList.add(current);
                 openList.remove(current);
 
-                if ((current.x == newTile.x) && (current.y == newTile.y))
-                {
+                if ((current.x == newTile.x) && (current.y == newTile.y)) {
                     return calcPath(findTile(openList, (short)oldTile.x, (short)oldTile.y), current);
                 }
 
@@ -288,7 +290,8 @@ public class RoomLayout
 
                 for (RoomTile currentAdj : adjacentNodes)
                 {
-
+                    if(currentAdj == null || room == null || room.getLayout() == null)
+                        continue;
 
                     if (!currentAdj.isWalkable() && !(currentAdj.equals(newTile) && room.canSitOrLayAt(currentAdj.x, currentAdj.y, notIsFurni))){ closedList.add(currentAdj); openList.remove(currentAdj); continue;}
                     //if (!room.getLayout().tileWalkable((short) currentAdj.x, (short) currentAdj.y)) continue;

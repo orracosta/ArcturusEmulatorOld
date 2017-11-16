@@ -1,6 +1,5 @@
 package com.eu.habbo.messages.outgoing.guilds.forums;
 
-import com.eu.habbo.habbohotel.guilds.Guild;
 import com.eu.habbo.habbohotel.guilds.forums.GuildForum;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
@@ -8,6 +7,7 @@ import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class GuildForumListComposer extends MessageComposer {
@@ -25,6 +25,8 @@ public class GuildForumListComposer extends MessageComposer {
 
     @Override
     public ServerMessage compose() {
+        forums.removeIf(Objects::isNull);
+
         List<Integer> guilds = forums.stream().skip(this.startIndex).limit(20).map(GuildForum::getGuild).collect(Collectors.toList());
 
         this.response.init(Outgoing.GuildForumListComposer);

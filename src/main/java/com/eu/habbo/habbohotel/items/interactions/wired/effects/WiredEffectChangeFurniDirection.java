@@ -93,19 +93,16 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect {
             if (stuff != null && stuff.length > 0) {
                 synchronized (this.items) {
                     for (HabboItem item : this.items) {
-                        //if (object instanceof HabboItem)
-                        //{
-                        HabboItem targetItem = item;
-
-                        if (targetItem != null) {
+                        if (item != null && item.getBaseItem() != null) {
                             int indexOffset = 0;
-                            if (!this.indexOffset.containsKey(targetItem.getId())) {
-                                this.indexOffset.put(targetItem.getId(), indexOffset);
+
+                            if (!this.indexOffset.containsKey(item.getId())) {
+                                this.indexOffset.put(item.getId(), indexOffset);
                             } else {
-                                indexOffset = this.indexOffset.get(targetItem.getId());
+                                indexOffset = this.indexOffset.get(item.getId());
                             }
 
-                            RoomTile objectTile = room.getLayout().getTile(((HabboItem) targetItem).getX(), ((HabboItem) targetItem).getY());
+                            RoomTile objectTile = room.getLayout().getTile(item.getX(), item.getY());
 
                             if (objectTile != null) {
                                 // habbo colide
@@ -139,87 +136,92 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect {
                                     }
                                 }
                                 // -----------
-                                THashSet<RoomTile> refreshTiles = room.getLayout().getTilesAt(room.getLayout().getTile(((HabboItem) targetItem).getX(), ((HabboItem) targetItem).getY()), ((HabboItem) targetItem).getBaseItem().getWidth(), ((HabboItem) targetItem).getBaseItem().getLength(), ((HabboItem) targetItem).getRotation());
 
-                                RoomTile tile = room.getLayout().getTileInFront(objectTile, targetItem.getRotation(), indexOffset);
+                                if(room.getLayout().getTile(item.getX(), item.getY()) == null)
+                                    continue;
+
+                                THashSet<RoomTile> refreshTiles = room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
+
+                                RoomTile tile = room.getLayout().getTileInFront(objectTile, item.getRotation(), indexOffset);
+
                                 if (tile == null || !tile.allowStack() || tile.state == RoomTileState.BLOCKED || room.hasHabbosAt(tile.x, tile.y) || room.getLayout().findPath(objectTile, tile).isEmpty()) {
                                     switch (this.spacing) {
                                         case 1:
-                                            targetItem.setRotation(targetItem.getRotation() + 1);
+                                            item.setRotation(item.getRotation() + 1);
                                             break;
                                         case 2:
-                                            targetItem.setRotation(targetItem.getRotation() + 2);
+                                            item.setRotation(item.getRotation() + 2);
                                             break;
                                         case 3:
-                                            targetItem.setRotation(targetItem.getRotation() - 1);
+                                            item.setRotation(item.getRotation() - 1);
                                             break;
                                         case 4:
-                                            targetItem.setRotation(targetItem.getRotation() - 2);
+                                            item.setRotation(item.getRotation() - 2);
                                             break;
                                         case 5:
-                                            if (targetItem.getRotation() == 0) {
-                                                targetItem.setRotation(4);
+                                            if (item.getRotation() == 0) {
+                                                item.setRotation(4);
                                                 continue;
                                             }
-                                            if (targetItem.getRotation() == 1) {
-                                                targetItem.setRotation(5);
+                                            if (item.getRotation() == 1) {
+                                                item.setRotation(5);
                                                 continue;
                                             }
-                                            if (targetItem.getRotation() == 2) {
-                                                targetItem.setRotation(6);
+                                            if (item.getRotation() == 2) {
+                                                item.setRotation(6);
                                                 continue;
                                             }
-                                            if (targetItem.getRotation() == 3) {
-                                                targetItem.setRotation(7);
+                                            if (item.getRotation() == 3) {
+                                                item.setRotation(7);
                                                 continue;
                                             }
-                                            if (targetItem.getRotation() == 4) {
-                                                targetItem.setRotation(0);
+                                            if (item.getRotation() == 4) {
+                                                item.setRotation(0);
                                                 continue;
                                             }
-                                            if (targetItem.getRotation() == 5) {
-                                                targetItem.setRotation(1);
+                                            if (item.getRotation() == 5) {
+                                                item.setRotation(1);
                                                 continue;
                                             }
-                                            if (targetItem.getRotation() == 6) {
-                                                targetItem.setRotation(2);
+                                            if (item.getRotation() == 6) {
+                                                item.setRotation(2);
                                                 continue;
                                             }
-                                            if (targetItem.getRotation() == 7) {
-                                                targetItem.setRotation(3);
+                                            if (item.getRotation() == 7) {
+                                                item.setRotation(3);
                                                 continue;
                                             }
                                             break;
                                         case 6:
-                                            targetItem.setRotation(Emulator.getRandom().nextInt(7));
+                                            item.setRotation(Emulator.getRandom().nextInt(7));
                                             break;
                                     }
 
-                                    if (targetItem.getRotation() > 7) {
-                                        targetItem.setRotation(0);
+                                    if (item.getRotation() > 7) {
+                                        item.setRotation(0);
                                     }
 
-                                    if (targetItem.getRotation() < 0) {
-                                        targetItem.setRotation(7);
+                                    if (item.getRotation() < 0) {
+                                        item.setRotation(7);
                                     }
                                 } else {
-                                    room.sendComposer(new FloorItemOnRollerComposer((HabboItem) targetItem, null, tile, tile.getStackHeight() - ((HabboItem) targetItem).getZ(), room).compose());
-                                    refreshTiles.addAll(room.getLayout().getTilesAt(room.getLayout().getTile(((HabboItem) targetItem).getX(), ((HabboItem) targetItem).getY()), ((HabboItem) targetItem).getBaseItem().getWidth(), ((HabboItem) targetItem).getBaseItem().getLength(), ((HabboItem) targetItem).getRotation()));
+                                    room.sendComposer(new FloorItemOnRollerComposer((HabboItem) item, null, tile, tile.getStackHeight() - ((HabboItem) item).getZ(), room).compose());
+                                    refreshTiles.addAll(room.getLayout().getTilesAt(room.getLayout().getTile(((HabboItem) item).getX(), ((HabboItem) item).getY()), ((HabboItem) item).getBaseItem().getWidth(), ((HabboItem) item).getBaseItem().getLength(), ((HabboItem) item).getRotation()));
                                     room.updateTiles(refreshTiles);
                                     room.updateTile(objectTile);
-                                    this.indexOffset.put(targetItem.getId(), indexOffset);
-                                    switch (targetItem.getRotation()) {
+                                    this.indexOffset.put(item.getId(), indexOffset);
+                                    switch (item.getRotation()) {
                                         case 1:
-                                            targetItem.setRotation(2);
+                                            item.setRotation(2);
                                             break;
                                         case 3:
-                                            targetItem.setRotation(4);
+                                            item.setRotation(4);
                                             break;
                                         case 5:
-                                            targetItem.setRotation(6);
+                                            item.setRotation(6);
                                             break;
                                         case 7:
-                                            targetItem.setRotation(0);
+                                            item.setRotation(0);
                                             break;
                                     }
                                 }

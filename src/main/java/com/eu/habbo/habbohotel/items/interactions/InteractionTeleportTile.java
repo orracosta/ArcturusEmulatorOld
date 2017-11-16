@@ -35,9 +35,15 @@ public class InteractionTeleportTile extends InteractionTeleport
     @Override
     public void onWalkOn(RoomUnit roomUnit, Room room, Object[] objects) throws Exception
     {
+        if(roomUnit == null || room == null)
+            return;
+
         super.onWalkOn(roomUnit, room, objects);
 
         Habbo habbo = room.getHabbo(roomUnit);
+
+        if(habbo == null)
+            return;
 
         if (habbo.getRoomUnit().getGoal().equals(room.getLayout().getTile(this.getX(), this.getY())))
         {
