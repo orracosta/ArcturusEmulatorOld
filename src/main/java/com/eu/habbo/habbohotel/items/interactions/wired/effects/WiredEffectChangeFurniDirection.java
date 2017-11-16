@@ -30,6 +30,7 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect {
     private int direction;
     private int spacing = 1;
     public static double MAXIMUM_STEP_HEIGHT = 1.1;
+    public static boolean ALLOW_FALLING = true;
     private Map<Integer, Integer> indexOffset = new LinkedHashMap<>();
 
     public WiredEffectChangeFurniDirection(ResultSet set, Item baseItem) throws SQLException {
@@ -131,9 +132,14 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect {
                                 THashSet<RoomTile> refreshTiles = room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
 
                                 RoomTile tile = room.getLayout().getTileInFront(objectTile, item.getRotation(), indexOffset);
-                                HabboItem topItem = room.getTopItemAt(tile.x,tile.y);
 
-                                if (target != null) {
+                                double height = item.getZ();
+
+                                if(tile != null) {
+                                    height = (room.getStackHeight(tile.x, tile.y, false) - objectTile.z);
+                                }
+
+                                if (tile != null && target != null) {
                                     if ((target.getRoomUnit().getX() == tile.x && target.getRoomUnit().getY() == tile.y)) {
                                         final Habbo finalTarget = target;
                                         Emulator.getThreading().run(new Runnable() {
@@ -147,8 +153,8 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect {
                                     }
                                 }
 
-                                if (tile == null || !tile.allowStack() || tile.state == RoomTileState.BLOCKED || room.hasHabbosAt(tile.x, tile.y) || room.getLayout().findPath(objectTile, tile).isEmpty()
-                                        || (topItem != null && !topItem.getBaseItem().allowStack())) {
+                                if (tile == null || !tile.isWalkable() || tile.state == RoomTileState.BLOCKED || room.hasHabbosAt(tile.x, tile.y) || room.getLayout().findPath(objectTile, tile).isEmpty()
+                                        || (!ALLOW_FALLING && height < -MAXIMUM_STEP_HEIGHT) || (height > MAXIMUM_STEP_HEIGHT)) {
                                     switch (this.spacing) {
                                         case 1:
                                             item.setRotation(item.getRotation() + 1);
