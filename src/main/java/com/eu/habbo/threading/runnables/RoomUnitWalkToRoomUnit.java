@@ -4,9 +4,11 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
+import com.eu.habbo.habbohotel.rooms.RoomUnitType;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 
+import java.util.Deque;
 import java.util.List;
 
 public class RoomUnitWalkToRoomUnit implements Runnable
@@ -57,7 +59,18 @@ public class RoomUnitWalkToRoomUnit implements Runnable
 
                 for(RoomTile t : tiles)
                 {
-                    if(t.equals(this.goalTile))
+                    Deque<RoomTile> findpath = room.getLayout().findPath(this.walker.getCurrentLocation(), this.goalTile, false);
+
+                    if (findpath.isEmpty()) {
+                        if(this.walker.getRoomUnitType().equals(RoomUnitType.BOT)) {
+                            for(Runnable r : this.targetReached)
+                            {
+                                Emulator.getThreading().run(r);
+                            }
+                            return;
+                        }
+                    }
+                    else if (t.equals(this.goalTile))
                     {
                         Emulator.getThreading().run(this, 500);
                         return;
