@@ -38,6 +38,11 @@ public class RoomUnitOnRollerComposer extends MessageComposer
             }
         }
 
+        if (this.room.hasHabbosAt(this.newLocation.x, this.newLocation.y) && !this.roomUnit.isTeleporting)
+        {
+            return null;
+        }
+
         this.response.init(Outgoing.ObjectOnRollerComposer);
         this.response.appendInt32(this.roomUnit.getX());
         this.response.appendInt32(this.roomUnit.getY());
