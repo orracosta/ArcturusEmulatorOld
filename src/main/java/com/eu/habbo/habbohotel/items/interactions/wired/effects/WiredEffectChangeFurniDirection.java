@@ -29,6 +29,7 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect {
     private final List<HabboItem> items = new ArrayList<>();
     private int direction;
     private int spacing = 1;
+    public static double MAXIMUM_STEP_HEIGHT = 1.1;
     private Map<Integer, Integer> indexOffset = new LinkedHashMap<>();
 
     public WiredEffectChangeFurniDirection(ResultSet set, Item baseItem) throws SQLException {
@@ -124,8 +125,16 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect {
                                     }
                                 }
 
+                                if(room.getLayout().getTile(item.getX(), item.getY()) == null)
+                                    continue;
+
+                                THashSet<RoomTile> refreshTiles = room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
+
+                                RoomTile tile = room.getLayout().getTileInFront(objectTile, item.getRotation(), indexOffset);
+                                HabboItem topItem = room.getTopItemAt(tile.x,tile.y);
+
                                 if (target != null) {
-                                    if (RoomLayout.tilesAdjecent(target.getRoomUnit().getCurrentLocation(), room.getLayout().getTile(item.getX(), item.getY())) && (target.getRoomUnit().getX() == item.getX() || target.getRoomUnit().getY() == item.getY())) {
+                                    if ((target.getRoomUnit().getX() == tile.x && target.getRoomUnit().getY() == tile.y)) {
                                         final Habbo finalTarget = target;
                                         Emulator.getThreading().run(new Runnable() {
                                             @Override
@@ -137,16 +146,9 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect {
                                         continue;
                                     }
                                 }
-                                // -----------
 
-                                if(room.getLayout().getTile(item.getX(), item.getY()) == null)
-                                    continue;
-
-                                THashSet<RoomTile> refreshTiles = room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation());
-
-                                RoomTile tile = room.getLayout().getTileInFront(objectTile, item.getRotation(), indexOffset);
-
-                                if (tile == null || !tile.allowStack() || tile.state == RoomTileState.BLOCKED || room.hasHabbosAt(tile.x, tile.y) || room.getLayout().findPath(objectTile, tile).isEmpty()) {
+                                if (tile == null || !tile.allowStack() || tile.state == RoomTileState.BLOCKED || room.hasHabbosAt(tile.x, tile.y) || room.getLayout().findPath(objectTile, tile).isEmpty()
+                                        || (topItem != null && !topItem.getBaseItem().allowStack())) {
                                     switch (this.spacing) {
                                         case 1:
                                             item.setRotation(item.getRotation() + 1);
