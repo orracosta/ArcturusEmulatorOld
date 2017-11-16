@@ -21,6 +21,11 @@ public class UserWiredRewardReceived extends UserEvent
     public String value;
 
     /**
+     * Message being given.
+     */
+    public String message;
+
+    /**
      * Triggered whenever a Habbo succesfully receives a reward.
      * Change value to set the new reward.
      * Cancel the event to prevent the reward from being given.
@@ -36,5 +41,15 @@ public class UserWiredRewardReceived extends UserEvent
         this.wiredEffectGiveReward = wiredEffectGiveReward;
         this.type = type;
         this.value = value;
+    }
+
+    public UserWiredRewardReceived(Habbo habbo, WiredEffectGiveReward wiredEffectGiveReward, String type, String value, String message)
+    {
+        super(habbo);
+
+        this.wiredEffectGiveReward = wiredEffectGiveReward;
+        this.type = type;
+        this.value = value;
+        this.message = message;
     }
 }
