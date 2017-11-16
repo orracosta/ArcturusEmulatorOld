@@ -234,13 +234,7 @@ public class WiredHandler {
                 if (rewardReceived.value.isEmpty())
                     return;
 
-                if (rewardReceived.type.equalsIgnoreCase("credits")) {
-                    int credits = Integer.valueOf(rewardReceived.value);
-                    habbo.giveCredits(credits);
-                } else if (rewardReceived.type.equalsIgnoreCase("pixels")) {
-                    int pixels = Integer.valueOf(rewardReceived.value);
-                    habbo.givePixels(pixels);
-                } else if (rewardReceived.type.equalsIgnoreCase("furni")) {
+                if (rewardReceived.type.equalsIgnoreCase("furni")) {
                     Item baseItem = Emulator.getGameEnvironment().getItemManager().getItem(Integer.valueOf(rewardReceived.value));
                     if (baseItem != null) {
                         HabboItem item = Emulator.getGameEnvironment().getItemManager().createItem(habbo.getHabboInfo().getId(), baseItem, 0, 0, "");
