@@ -234,7 +234,12 @@ public class WiredHandler {
                 if (rewardReceived.value.isEmpty())
                     return;
 
-                if (rewardReceived.type.equalsIgnoreCase("furni")) {
+                if (rewardReceived.type.equalsIgnoreCase("seasonal")) {
+                    int seasonal = Integer.valueOf(rewardReceived.value);
+                    int type = Emulator.getConfig().getInt("seasonal.primary.type");
+
+                    habbo.givePoints(type, seasonal);
+                } else if (rewardReceived.type.equalsIgnoreCase("furni")) {
                     Item baseItem = Emulator.getGameEnvironment().getItemManager().getItem(Integer.valueOf(rewardReceived.value));
                     if (baseItem != null) {
                         HabboItem item = Emulator.getGameEnvironment().getItemManager().createItem(habbo.getHabboInfo().getId(), baseItem, 0, 0, "");
