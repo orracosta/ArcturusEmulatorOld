@@ -1,5 +1,8 @@
 package com.eu.habbo.messages.outgoing.rooms.items;
 
+import com.eu.habbo.habbohotel.items.interactions.InteractionRoller;
+import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.InteractionBattleBanzaiTile;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeTile;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
@@ -42,6 +45,21 @@ public class FloorItemOnRollerComposer extends MessageComposer
     @Override
     public ServerMessage compose()
     {
+        HabboItem topItemAt = room.getTopItemAt(newLocation.x, newLocation.y);
+
+        if(topItemAt != null)
+        {
+            if(this.item instanceof InteractionRoller && topItemAt instanceof InteractionRoller)
+                return null;
+
+            if(this.item instanceof InteractionBattleBanzaiTile && topItemAt instanceof InteractionBattleBanzaiTile)
+                return null;
+
+            if(this.item instanceof InteractionFreezeTile && topItemAt instanceof InteractionFreezeTile)
+                return null;
+        }
+
+
         short oldX = this.item.getX();
         short oldY = this.item.getY();
 

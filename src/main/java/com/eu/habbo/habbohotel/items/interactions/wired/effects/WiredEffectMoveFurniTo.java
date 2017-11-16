@@ -4,6 +4,8 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
+import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.InteractionBattleBanzaiTile;
+import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeTile;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
@@ -83,7 +85,7 @@ public class WiredEffectMoveFurniTo extends InteractionWiredEffect
         {
             for (HabboItem item : this.items)
             {
-                if (Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
+                if (Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null || item instanceof InteractionFreezeTile || item instanceof InteractionBattleBanzaiTile)
                     items.add(item);
             }
 
@@ -149,7 +151,7 @@ public class WiredEffectMoveFurniTo extends InteractionWiredEffect
 
         for(HabboItem item : this.items)
         {
-            if(item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
+            if(item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null || item instanceof InteractionFreezeTile || item instanceof InteractionBattleBanzaiTile)
                 items.add(item);
         }
 
@@ -177,7 +179,7 @@ public class WiredEffectMoveFurniTo extends InteractionWiredEffect
         {
             for (HabboItem item : this.items)
             {
-                if (item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null)
+                if (item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null || item instanceof InteractionFreezeTile || item instanceof InteractionBattleBanzaiTile)
                     items.add(item);
             }
 
