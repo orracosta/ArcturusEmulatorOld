@@ -52,9 +52,6 @@ public class RoomUnitWalkToRoomUnit implements Runnable
             }
             else
             {
-                if(!(this.target != null))
-                    return;
-
                 List<RoomTile> tiles = room.getLayout().getTilesAround(this.target.getCurrentLocation());
 
                 for(RoomTile t : tiles)
@@ -86,8 +83,7 @@ public class RoomUnitWalkToRoomUnit implements Runnable
 
     private void findNewLocation()
     {
-        if(this.target != null)
-            this.goalTile = this.room.getLayout().getTileInFront(this.target.getCurrentLocation(), this.target.getBodyRotation().getValue());
+        this.goalTile = this.room.getLayout().getTileInFront(this.target.getCurrentLocation(), this.target.getBodyRotation().getValue());
 
         if (this.goalTile == null)
             return;
