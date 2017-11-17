@@ -3,6 +3,7 @@ package com.eu.habbo.habbohotel.items.interactions.wired.effects;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
+import com.eu.habbo.habbohotel.items.interactions.InteractionStackHelper;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredEffect;
 import com.eu.habbo.habbohotel.items.interactions.games.battlebanzai.InteractionBattleBanzaiTile;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeTile;
@@ -81,15 +82,13 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect {
         List<HabboItem> items = new ArrayList<HabboItem>();
 
         synchronized (this.items) {
-            for (HabboItem item : this.items) {
-                if (Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null || item instanceof InteractionFreezeTile || item instanceof InteractionBattleBanzaiTile)
+            for (HabboItem item : this.items)
+            {
+                if (item.getRoomId() == 0 || item instanceof InteractionFreezeTile || item instanceof InteractionBattleBanzaiTile)
                     items.add(item);
             }
 
-            for (HabboItem item : items) {
-                this.items.remove(item);
-            }
-
+            this.items.removeAll(items);
 
             if (this.items.isEmpty())
                 return false;
@@ -249,16 +248,21 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect {
     public String getWiredData() {
         THashSet<HabboItem> items = new THashSet<HabboItem>();
 
-        for (HabboItem item : this.items) {
-            if (item != null) {
-                if (item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null || item instanceof InteractionFreezeTile || item instanceof InteractionBattleBanzaiTile)
-                    items.add(item);
+        this.items.remove(null);
+        Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
+
+        for(HabboItem item : this.items)
+        {
+            if(item.getRoomId() != this.getRoomId() || (room != null && room.getHabboItem(item.getId()) == null)
+                    || item instanceof InteractionFreezeTile || item instanceof InteractionBattleBanzaiTile || item instanceof InteractionStackHelper)
+            {
+                items.add(item);
             }
         }
 
-        for (HabboItem item : items) {
-            if (item != null)
-                this.items.remove(item);
+        for(HabboItem item : items)
+        {
+            this.items.remove(item);
         }
 
         String data = this.direction + "\t" + this.spacing + "\t" + this.getDelay() + "\t";
@@ -275,12 +279,17 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect {
         THashSet<HabboItem> items = new THashSet<HabboItem>();
 
         synchronized (this.items) {
-            for (HabboItem item : this.items) {
-                if (item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null || item instanceof InteractionFreezeTile || item instanceof InteractionBattleBanzaiTile)
+            for (HabboItem item : this.items)
+            {
+                if (item.getRoomId() != this.getRoomId() || Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId()).getHabboItem(item.getId()) == null
+                        || item instanceof InteractionFreezeTile || item instanceof InteractionBattleBanzaiTile || item instanceof InteractionStackHelper)
+                {
                     items.add(item);
+                }
             }
 
-            for (HabboItem item : items) {
+            for (HabboItem item : items)
+            {
                 this.items.remove(item);
             }
 
