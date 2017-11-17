@@ -83,8 +83,7 @@ public class WiredHandler {
     }
 
     public static boolean handle(InteractionWiredTrigger trigger, final RoomUnit roomUnit, final Room room, final Object[] stuff) {
-        long millis = System.currentTimeMillis();
-        if (trigger.canExecute(millis) && trigger.execute(roomUnit, room, stuff)) {
+        if (trigger.execute(roomUnit, room, stuff)) {
             trigger.activateBox(room);
 
             THashSet<InteractionWiredCondition> conditions = room.getRoomSpecialTypes().getConditions(trigger.getX(), trigger.getY());
@@ -117,6 +116,7 @@ public class WiredHandler {
                 Collections.shuffle(effectList);
             }
 
+            long millis = System.currentTimeMillis();
             if (hasExtraUnseen) {
                 for (InteractionWiredExtra extra : room.getRoomSpecialTypes().getExtras(trigger.getX(), trigger.getY())) {
                     if (extra instanceof WiredExtraUnseen) {
