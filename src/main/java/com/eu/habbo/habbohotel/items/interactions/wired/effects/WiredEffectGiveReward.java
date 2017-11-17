@@ -28,7 +28,6 @@ import java.util.List;
 
 public class WiredEffectGiveReward extends InteractionWiredEffect
 {
-    public final static int LIMIT_ONCE = 0;
     public final static int LIMIT_N_DAY = 1;
     public final static int LIMIT_N_HOURS = 2;
     public final static int LIMIT_N_MINUTES = 3;

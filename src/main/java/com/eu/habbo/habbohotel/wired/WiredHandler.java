@@ -40,6 +40,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class WiredHandler {
     //Configuration. Loaded from database & updated accordingly.
@@ -371,7 +372,7 @@ public class WiredHandler {
                             }
                         }
 
-                        if (set.getInt("nrows") >= 1) {
+                        if (set.getInt("nrows") >= wiredBox.limitationInterval) {
                             if (wiredBox.limit == 0) {
                                 habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.REWARD_ALREADY_RECEIVED));
                                 return false;
@@ -395,18 +396,18 @@ public class WiredHandler {
                             }
                         }
                     } else {
-                        int randomNumber = Emulator.getRandom().nextInt(101);
-
-                        int count = 0;
                         for (WiredGiveRewardItem item : wiredBox.rewardItems) {
-                            if (randomNumber >= count && randomNumber <= (count + item.probability)) {
+
+                            float randomValue = (float) (Emulator.getRandom().nextInt(101) * 0.1 / 10);
+
+                            float probability = (float) (item.probability * 0.1 / 10);
+
+                            if (randomValue <= probability) {
                                 giveReward(habbo, wiredBox, item);
                                 return true;
                             }
-
-                            count += item.probability;
-                            habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.UNLUCKY_NO_REWARD));
                         }
+                        habbo.getClient().sendResponse(new WiredRewardAlertComposer(WiredRewardAlertComposer.UNLUCKY_NO_REWARD));
                     }
                 }
             }
