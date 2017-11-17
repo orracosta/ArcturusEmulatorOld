@@ -260,6 +260,11 @@ public class RoomLayout
 
     public final Deque<RoomTile> findPath(RoomTile oldTile, RoomTile newTile, boolean notIsFurni)
     {
+        //TODO: fazer isto no lugar certo
+        if(notIsFurni) {
+            this.CANMOVEDIAGONALY = this.room.moveDiagonally();
+        }
+
         LinkedList<RoomTile> openList = new LinkedList();
         try
         {

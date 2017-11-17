@@ -56,7 +56,7 @@ public class RoomUnitWalkToRoomUnit implements Runnable
 
                 for(RoomTile t : tiles)
                 {
-                    Deque<RoomTile> findpath = room.getLayout().findPath(this.walker.getCurrentLocation(), this.goalTile, false);
+                    Deque<RoomTile> findpath = room.getLayout().findPath(this.walker.getCurrentLocation(), this.goalTile);
 
                     if (findpath.isEmpty()) {
                         if(this.walker.getRoomUnitType().equals(RoomUnitType.BOT)) {
