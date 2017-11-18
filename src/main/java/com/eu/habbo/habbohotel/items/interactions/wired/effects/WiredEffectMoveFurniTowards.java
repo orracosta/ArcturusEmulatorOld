@@ -21,7 +21,6 @@ import gnu.trove.set.hash.THashSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Deque;
-import java.util.LinkedList;
 import java.util.List;
 
 public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
@@ -60,13 +59,9 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
             double shortest = 1000.0D;
 
             Habbo target = null;
-            RoomTile oldTile = room.getLayout().getTile(item.getX(), item.getY());
-            RoomTile nextStep = oldTile;
-            Deque<RoomTile> checkPath = new LinkedList();
 
             for (Habbo habbo : room.getHabbos()) {
-                checkPath = room.getLayout().findPath(room.getLayout().getTile(item.getX(), item.getY()), room.getLayout().getTile(habbo.getRoomUnit().getX(), habbo.getRoomUnit().getY()), true);
-                if (habbo.getRoomUnit().getCurrentLocation().distance(t) <= shortest && !checkPath.isEmpty()) {
+                if (habbo.getRoomUnit().getCurrentLocation().distance(t) <= shortest) {
                     shortest = habbo.getRoomUnit().getCurrentLocation().distance(t);
                     target = habbo;
                 }
@@ -86,8 +81,27 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
                     continue;
                 }
 
-                if(!checkPath.isEmpty()) {
-                    nextStep = checkPath.pop();
+                RoomTile oldTile = room.getLayout().getTile(item.getX(), item.getY());
+                RoomTile nextStep = oldTile;
+
+                List<RoomTile> TilesAround = room.getLayout().getTilesAround(room.getLayout().getTile(item.getX(), item.getY()), false);
+
+                for (int i = 0; i < TilesAround.size(); i++) {
+
+                    RoomTile tt = room.getLayout().getTile(TilesAround.get(i).x, TilesAround.get(i).y);
+                    double height = item.getZ();
+
+                    if (tt != null && room.getLayout().tileExists(tt.x, tt.y) && tt.state == RoomTileState.OPEN && tt.isWalkable() && !room.hasHabbosAt(tt.x, tt.y)
+                            && !((!ALLOW_FALLING && height < -MAXIMUM_STEP_HEIGHT) || (height > MAXIMUM_STEP_HEIGHT)) && !tt.isDiagonally()) {
+
+                        HabboItem topItem = room.getTopItemAt(tt.x, tt.y);
+
+                        if (topItem == null || topItem.getBaseItem().allowWalk()) {
+                            if (target.getRoomUnit().getCurrentLocation().distance(tt) < target.getRoomUnit().getCurrentLocation().distance(nextStep)) {
+                                nextStep = tt;
+                            }
+                        }
+                    }
                 }
 
                 if (oldTile != nextStep)

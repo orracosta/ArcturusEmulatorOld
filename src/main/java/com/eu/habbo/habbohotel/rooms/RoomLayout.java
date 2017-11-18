@@ -215,7 +215,7 @@ public class RoomLayout {
         return this.heightmap.replace("\r\n", "\r").substring(0, this.heightmap.replace("\r\n", "\r").length());
     }
 
-    public final Deque<RoomTile> findPath(RoomTile oldTile, RoomTile newTile, boolean isFurni) {
+    public final Deque<RoomTile> findPath(RoomTile oldTile, RoomTile newTile) {
         LinkedList<RoomTile> openList = new LinkedList();
         try {
             if (this.room == null || !this.room.isLoaded() || oldTile == null || newTile == null || oldTile.equals(newTile) || (!newTile.isWalkable() && !this.room.canSitOrLayAt(newTile.x, newTile.y)))
@@ -239,7 +239,7 @@ public class RoomLayout {
                     return calcPath(findTile(openList, (short) oldTile.x, (short) oldTile.y), current);
                 }
 
-                List<RoomTile> adjacentNodes = getAdjacent(openList, current, newTile.x, newTile.y, isFurni);
+                List<RoomTile> adjacentNodes = getAdjacent(openList, current, newTile.x, newTile.y);
 
                 for (RoomTile currentAdj : adjacentNodes) {
                     if (currentAdj == null || room == null || room.getLayout() == null)
@@ -281,10 +281,6 @@ public class RoomLayout {
             Emulator.getLogging().logErrorLine(e);
         }
         return new LinkedList<>();
-    }
-
-    public final Deque<RoomTile> findPath(RoomTile oldTile, RoomTile newTile) {
-        return findPath(oldTile, newTile, false);
     }
 
     private RoomTile findTile(List<RoomTile> tiles, short x, short y) {
@@ -331,7 +327,7 @@ public class RoomLayout {
         return cheapest;
     }
 
-    private List<RoomTile> getAdjacent(List<RoomTile> closedList, RoomTile node, int newX, int newY, boolean isFurni) {
+    private List<RoomTile> getAdjacent(List<RoomTile> closedList, RoomTile node, int newX, int newY) {
         this.CANMOVEDIAGONALY = this.room.moveDiagonally();
 
         short x = node.x;
@@ -366,7 +362,7 @@ public class RoomLayout {
                 adj.add(temp);
             }
         }
-        if (CANMOVEDIAGONALY && !isFurni) {
+        if (CANMOVEDIAGONALY) {
             if ((x < this.mapSizeX) && (y < this.mapSizeY)) {
                 RoomTile temp = findTile(closedList, (short) (x + 1), (short) (y + 1));
                 if (temp != null && (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.x == newX && temp.y == newY && canSitOrLayAt))) {
