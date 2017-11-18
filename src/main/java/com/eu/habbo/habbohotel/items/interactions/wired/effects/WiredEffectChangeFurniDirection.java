@@ -119,7 +119,7 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect {
                                     RoomTile h = habbo.getRoomUnit().getCurrentLocation();
 
                                     double distance = t.distance(h);
-                                    if (distance <= shortest && !room.getLayout().findPath(t, h).isEmpty()) {
+                                    if (distance <= shortest && !room.getLayout().findPath(t, h, false, true).isEmpty()) {
                                         target = habbo;
                                         shortest = distance;
                                     }
@@ -152,7 +152,7 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect {
                                     }
                                 }
 
-                                if (tile == null || !tile.isWalkable() || tile.state == RoomTileState.BLOCKED || room.hasHabbosAt(tile.x, tile.y) || room.getLayout().findPath(objectTile, tile).isEmpty()
+                                if (tile == null || !tile.isWalkable() || tile.state == RoomTileState.BLOCKED || room.hasHabbosAt(tile.x, tile.y) || room.getLayout().findPath(objectTile, tile, false, true).isEmpty()
                                         || (!ALLOW_FALLING && height < -MAXIMUM_STEP_HEIGHT) || (height > MAXIMUM_STEP_HEIGHT)) {
                                     switch (this.spacing) {
                                         case 1:

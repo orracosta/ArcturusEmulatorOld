@@ -96,7 +96,23 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
 
                     if (this.direction == 1)
                     {
-                        moveDirection = RoomUserRotation.values()[Emulator.getRandom().nextInt(RoomUserRotation.values().length)];
+                        int randomDir = Emulator.getRandom().nextInt(8);
+                        if (randomDir == 0 || randomDir == 4)
+                        {
+                            moveDirection = RoomUserRotation.SOUTH;
+                        }
+                        else if (randomDir == 1 || randomDir == 5)
+                        {
+                            moveDirection = RoomUserRotation.EAST;
+                        }
+                        else if (randomDir == 2 || randomDir == 6)
+                        {
+                            moveDirection = RoomUserRotation.NORTH;
+                        }
+                        else if (randomDir == 3 || randomDir == 7)
+                        {
+                            moveDirection = RoomUserRotation.WEST;
+                        }
                     }
                     else if (this.direction == 2)
                     {
