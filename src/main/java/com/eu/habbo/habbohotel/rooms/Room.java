@@ -4015,7 +4015,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
             if (habboItem.getX() == x && habboItem.getY() == y)
             {
-                if (item == null || (habboItem.getZ() + Item.getCurrentHeight(habboItem)) > (item.getZ() + Item.getCurrentHeight(item)))
+                if (item == null || (habboItem.getZ() > (item.getZ())))
                 {
                     item = habboItem;
                 }
