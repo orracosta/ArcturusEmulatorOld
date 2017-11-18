@@ -41,7 +41,6 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect {
     public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff) {
         THashSet<HabboItem> items = new THashSet<HabboItem>();
 
-        synchronized (this.items) {
             for (HabboItem item : this.items) {
                 if (item.getRoomId() == 0 || item instanceof InteractionFreezeTile || item instanceof InteractionBattleBanzaiTile || item instanceof InteractionStackHelper)
                     items.add(item);
@@ -108,7 +107,6 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect {
                     }
                 }
             }
-        }
         return true;
     }
 
