@@ -215,64 +215,6 @@ public class RoomLayout {
         return this.heightmap.replace("\r\n", "\r").substring(0, this.heightmap.replace("\r\n", "\r").length());
     }
 
-    public final Deque<RoomTile> findPathBlock(RoomTile oldTile, RoomTile newTile) {
-        LinkedList<RoomTile> openList = new LinkedList();
-        try {
-            if (this.room == null || !this.room.isLoaded() || oldTile == null || newTile == null || oldTile.equals(newTile) || (!newTile.isWalkable() && !this.room.canSitOrLayAt(newTile.x, newTile.y, false)))
-                return openList;
-
-            List<RoomTile> closedList = new LinkedList();
-
-            openList.add(oldTile.copy());
-
-            long startMillis = System.currentTimeMillis();
-            while (true) {
-                if (System.currentTimeMillis() - startMillis > 25) {
-                    return new LinkedList<>();
-                }
-
-                RoomTile current = lowestFInOpen(openList);
-                closedList.add(current);
-                openList.remove(current);
-
-                if ((current.x == newTile.x) && (current.y == newTile.y)) {
-                    return calcPath(findTile(openList, (short) oldTile.x, (short) oldTile.y), current);
-                }
-
-                List<RoomTile> adjacentNodes = getAdjacent(openList, current, newTile.x, newTile.y, false, false);
-
-                for (RoomTile currentAdj : adjacentNodes) {
-                    if (currentAdj == null || room == null || room.getLayout() == null)
-                        continue;
-
-                    if (!currentAdj.isWalkable() && !(currentAdj.equals(newTile) && room.canSitOrLayAt(currentAdj.x, currentAdj.y, true))) {
-                        closedList.add(currentAdj);
-                        openList.remove(currentAdj);
-                        continue;
-                    }
-
-                    if (!this.room.isAllowWalkthrough() && room.hasHabbosAt(currentAdj.x, currentAdj.y)) continue;
-
-                    if (!openList.contains(currentAdj) || (currentAdj.x == newTile.x && currentAdj.y == newTile.y && (room.canSitOrLayAt(newTile.x, newTile.y, true) && !room.hasHabbosAt(newTile.x, newTile.y)))) {
-                        currentAdj.setPrevious(current);
-                        currentAdj.sethCosts(findTile(openList, (short) newTile.x, (short) newTile.y));
-                        currentAdj.setgCosts(current);
-                        openList.add(currentAdj);
-                    } else if (currentAdj.getgCosts() > currentAdj.calculategCosts(current)) {
-                        currentAdj.setPrevious(current);
-                        currentAdj.setgCosts(current);
-                    }
-                }
-                if (openList.isEmpty()) {
-                    return new LinkedList();
-                }
-            }
-        } catch (Exception e) {
-            Emulator.getLogging().logErrorLine(e);
-        }
-        return new LinkedList<>();
-    }
-
     public final Deque<RoomTile> findPath(RoomTile oldTile, RoomTile newTile, boolean notIsFurni, boolean canDiagonaly) {
         LinkedList<RoomTile> openList = new LinkedList();
         try {
@@ -342,10 +284,7 @@ public class RoomLayout {
     }
 
     public final Deque<RoomTile> findPath(RoomTile oldTile, RoomTile newTile) {
-        if (findPathBlock(oldTile, newTile).isEmpty())
-            return new LinkedList<>();
-        else
-            return findPath(oldTile, newTile, true, true);
+        return findPath(oldTile, newTile, true, true);
     }
 
     private RoomTile findTile(List<RoomTile> tiles, short x, short y) {
