@@ -4292,7 +4292,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
 
         return false;
     }
-    
+
     public boolean canSitOrLayAt(int x, int y)
     {
         if(hasHabbosAt(x, y))
