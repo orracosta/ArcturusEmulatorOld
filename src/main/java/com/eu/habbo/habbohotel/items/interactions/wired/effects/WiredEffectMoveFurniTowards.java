@@ -21,10 +21,13 @@ import gnu.trove.set.hash.THashSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Deque;
+import java.util.List;
 
 public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
 {
     public static final WiredEffectType type = WiredEffectType.CHASE;
+    public static double MAXIMUM_STEP_HEIGHT = 1.1;
+    public static boolean ALLOW_FALLING = true;
 
     private THashSet<HabboItem> items;
 
@@ -41,78 +44,68 @@ public class WiredEffectMoveFurniTowards extends InteractionWiredEffect
     }
 
     @Override
-    public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff)
-    {
+    public boolean execute(RoomUnit roomUnit, Room room, Object[] stuff) {
         THashSet<HabboItem> items = new THashSet<HabboItem>();
 
-        synchronized (this.items) {
-            for (HabboItem item : this.items) {
-                if (item.getRoomId() == 0 || item instanceof InteractionFreezeTile || item instanceof InteractionBattleBanzaiTile || item instanceof InteractionStackHelper)
-                    items.add(item);
+        for (HabboItem item : this.items) {
+            if (item.getRoomId() == 0 || item instanceof InteractionFreezeTile || item instanceof InteractionBattleBanzaiTile || item instanceof InteractionStackHelper)
+                items.add(item);
+        }
+
+        this.items.removeAll(items);
+
+        for (HabboItem item : this.items) {
+            RoomTile t = room.getLayout().getTile(item.getX(), item.getY());
+            double shortest = 1000.0D;
+
+            Habbo target = null;
+
+            for (Habbo habbo : room.getHabbos()) {
+                if (habbo.getRoomUnit().getCurrentLocation().distance(t) <= shortest) {
+                    shortest = habbo.getRoomUnit().getCurrentLocation().distance(t);
+                    target = habbo;
+                }
             }
 
-            this.items.removeAll(items);
+            if (target != null) {
 
-            synchronized (this.items) {
-                for (HabboItem item : this.items) {
-                    if (item == null)
-                        continue;
-
-                    RoomTile t = room.getLayout().getTile(item.getX(), item.getY());
-                    double shortest = 1000.0D;
-
-                    Habbo target = null;
-                    RoomTile nextStep = t;
-
-                    for (Habbo habbo : room.getHabbos()) {
-                        RoomTile h = habbo.getRoomUnit().getCurrentLocation();
-
-                        if (t == null || h == null)
-                            continue;
-
-                        double distance = t.distance(h);
-
-                        RoomTile checkstep;
-                        Deque<RoomTile> findpath = room.getLayout().findPath(t, h, false, false);
-
-                        if (findpath.isEmpty())
-                            continue;
-                        else
-                            checkstep = findpath.getFirst();
-
-                        if (distance <= shortest && checkstep != t && checkstep != h) {
-                            target = habbo;
-                            shortest = distance;
-                            nextStep = checkstep;
+                if (RoomLayout.tilesAdjecent(target.getRoomUnit().getCurrentLocation(), room.getLayout().getTile(item.getX(), item.getY())) && (target.getRoomUnit().getX() == item.getX() || target.getRoomUnit().getY() == item.getY())) {
+                    final Habbo finalTarget = target;
+                    Emulator.getThreading().run(new Runnable() {
+                        @Override
+                        public void run() {
+                            WiredHandler.handle(WiredTriggerType.COLLISION, finalTarget.getRoomUnit(), room, new Object[]{item});
                         }
-                    }
+                    }, 500);
 
-                    if (target != null) {
-                        if (RoomLayout.tilesAdjecent(target.getRoomUnit().getCurrentLocation(), room.getLayout().getTile(item.getX(), item.getY())) && (target.getRoomUnit().getX() == item.getX() || target.getRoomUnit().getY() == item.getY())) {
-                            final Habbo finalTarget = target;
-                            Emulator.getThreading().run(new Runnable() {
-                                @Override
-                                public void run() {
-                                    WiredHandler.handle(WiredTriggerType.COLLISION, finalTarget.getRoomUnit(), room, new Object[]{item});
-                                }
-                            }, 500);
+                    continue;
+                }
 
-                            continue;
-                        }
+                RoomTile oldTile = room.getLayout().getTile(item.getX(), item.getY());
+                RoomTile nextStep = oldTile;
 
-                        RoomTile newTile = room.getLayout().getTile(nextStep.x, nextStep.y);
+                List<RoomTile> TilesAround = room.getLayout().getTilesAround(room.getLayout().getTile(item.getX(), item.getY()), false);
 
-                        if (newTile != null && newTile.state == RoomTileState.OPEN) {
-                            if (room.getLayout().tileExists(newTile.x, newTile.y)) {
-                                HabboItem topItem = room.getTopItemAt(newTile.x, newTile.y);
+                for (int i = 0; i < TilesAround.size(); i++) {
 
-                                if (topItem == null || topItem.getBaseItem().allowWalk()) {
-                                    room.sendComposer(new FloorItemOnRollerComposer(item, null, newTile, newTile.getStackHeight() - item.getZ(), room).compose());
-                                }
+                    RoomTile tt = room.getLayout().getTile(TilesAround.get(i).x, TilesAround.get(i).y);
+                    double height = item.getZ();
+
+                    if (tt != null && room.getLayout().tileExists(tt.x, tt.y) && tt.state == RoomTileState.OPEN && tt.isWalkable() && !room.hasHabbosAt(tt.x, tt.y)
+                            && !((!ALLOW_FALLING && height < -MAXIMUM_STEP_HEIGHT) || (height > MAXIMUM_STEP_HEIGHT)) && !tt.isDiagonally()) {
+
+                        HabboItem topItem = room.getTopItemAt(tt.x, tt.y);
+
+                        if (topItem == null || topItem.getBaseItem().allowWalk()) {
+                            if (target.getRoomUnit().getCurrentLocation().distance(tt) < target.getRoomUnit().getCurrentLocation().distance(nextStep)) {
+                                nextStep = tt;
                             }
                         }
                     }
                 }
+
+                if (oldTile != nextStep)
+                    room.sendComposer(new FloorItemOnRollerComposer(item, null, nextStep, nextStep.getStackHeight() - item.getZ(), room).compose());
             }
         }
         return true;

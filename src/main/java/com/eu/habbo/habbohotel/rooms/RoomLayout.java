@@ -215,10 +215,10 @@ public class RoomLayout {
         return this.heightmap.replace("\r\n", "\r").substring(0, this.heightmap.replace("\r\n", "\r").length());
     }
 
-    public final Deque<RoomTile> findPath(RoomTile oldTile, RoomTile newTile, boolean notIsFurni, boolean canDiagonaly) {
+    public final Deque<RoomTile> findPath(RoomTile oldTile, RoomTile newTile) {
         LinkedList<RoomTile> openList = new LinkedList();
         try {
-            if (this.room == null || !this.room.isLoaded() || oldTile == null || newTile == null || oldTile.equals(newTile) || (!newTile.isWalkable() && !this.room.canSitOrLayAt(newTile.x, newTile.y, notIsFurni)))
+            if (this.room == null || !this.room.isLoaded() || oldTile == null || newTile == null || oldTile.equals(newTile) || (!newTile.isWalkable() && !this.room.canSitOrLayAt(newTile.x, newTile.y)))
                 return openList;
 
             List<RoomTile> closedList = new LinkedList();
@@ -239,13 +239,13 @@ public class RoomLayout {
                     return calcPath(findTile(openList, (short) oldTile.x, (short) oldTile.y), current);
                 }
 
-                List<RoomTile> adjacentNodes = getAdjacent(openList, current, newTile.x, newTile.y, notIsFurni, canDiagonaly);
+                List<RoomTile> adjacentNodes = getAdjacent(openList, current, newTile.x, newTile.y);
 
                 for (RoomTile currentAdj : adjacentNodes) {
                     if (currentAdj == null || room == null || room.getLayout() == null)
                         continue;
 
-                    if (!currentAdj.isWalkable() && !(currentAdj.equals(newTile) && room.canSitOrLayAt(currentAdj.x, currentAdj.y, notIsFurni))) {
+                    if (!currentAdj.isWalkable() && !(currentAdj.equals(newTile) && room.canSitOrLayAt(currentAdj.x, currentAdj.y))) {
                         closedList.add(currentAdj);
                         openList.remove(currentAdj);
                         continue;
@@ -256,10 +256,10 @@ public class RoomLayout {
                     if ((!ALLOW_FALLING && height < -MAXIMUM_STEP_HEIGHT) || (height > MAXIMUM_STEP_HEIGHT && !room.canLayAt(currentAdj.x, currentAdj.y)))
                         continue;
 
-                    if (notIsFurni && (!this.room.isAllowWalkthrough() && room.hasHabbosAt(currentAdj.x, currentAdj.y)))
+                    if (!this.room.isAllowWalkthrough() && room.hasHabbosAt(currentAdj.x, currentAdj.y))
                         continue;
 
-                    if (!openList.contains(currentAdj) || (currentAdj.x == newTile.x && currentAdj.y == newTile.y && (room.canSitOrLayAt(newTile.x, newTile.y, notIsFurni) && !room.hasHabbosAt(newTile.x, newTile.y)))) {
+                    if (!openList.contains(currentAdj) || (currentAdj.x == newTile.x && currentAdj.y == newTile.y && (room.canSitOrLayAt(newTile.x, newTile.y) && !room.hasHabbosAt(newTile.x, newTile.y)))) {
                         height = (room.getLayout().getHeightAtSquare(currentAdj.x, currentAdj.y) - room.getLayout().getHeightAtSquare(current.x, current.y));
                         if (height > MAXIMUM_STEP_HEIGHT)
                             continue;
@@ -281,10 +281,6 @@ public class RoomLayout {
             Emulator.getLogging().logErrorLine(e);
         }
         return new LinkedList<>();
-    }
-
-    public final Deque<RoomTile> findPath(RoomTile oldTile, RoomTile newTile) {
-        return findPath(oldTile, newTile, true, true);
     }
 
     private RoomTile findTile(List<RoomTile> tiles, short x, short y) {
@@ -331,14 +327,13 @@ public class RoomLayout {
         return cheapest;
     }
 
-    private List<RoomTile> getAdjacent(List<RoomTile> closedList, RoomTile node, int newX, int newY, boolean notIsFurni, boolean canDiagonaly) {
-        if (notIsFurni) {
-            this.CANMOVEDIAGONALY = this.room.moveDiagonally();
-        }
+    private List<RoomTile> getAdjacent(List<RoomTile> closedList, RoomTile node, int newX, int newY) {
+        this.CANMOVEDIAGONALY = this.room.moveDiagonally();
+
         short x = node.x;
         short y = node.y;
         List<RoomTile> adj = new LinkedList<RoomTile>();
-        boolean canSitOrLayAt = room.canSitOrLayAt(newX, newY, notIsFurni);
+        boolean canSitOrLayAt = room.canSitOrLayAt(newX, newY);
         if (x > 0) {
             RoomTile temp = findTile(adj, (short) (x - 1), y);
             if (temp != null && (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.x == newX && temp.y == newY && canSitOrLayAt))) {
@@ -367,7 +362,7 @@ public class RoomLayout {
                 adj.add(temp);
             }
         }
-        if (CANMOVEDIAGONALY && notIsFurni && canDiagonaly) {
+        if (CANMOVEDIAGONALY) {
             if ((x < this.mapSizeX) && (y < this.mapSizeY)) {
                 RoomTile temp = findTile(closedList, (short) (x + 1), (short) (y + 1));
                 if (temp != null && (((temp.isWalkable()) && (!closedList.contains(temp))) || (temp.x == newX && temp.y == newY && canSitOrLayAt))) {
@@ -496,10 +491,10 @@ public class RoomLayout {
         return tiles;
     }
 
-    public List<RoomTile> getTilesAround(RoomTile tile) {
+    public List<RoomTile> getTilesAround(RoomTile tile, boolean getDiagonally) {
         List<RoomTile> tiles = new ArrayList<RoomTile>(8);
 
-        if (tile != null) {
+        if (tile != null && getDiagonally) {
             for (int i = 0; i < 8; i++) {
                 RoomTile t = this.getTileInFront(tile, i);
                 if (t != null) {
@@ -507,8 +502,21 @@ public class RoomLayout {
                 }
             }
         }
+        else if (tile != null && !getDiagonally) {
+            for (int i = 0; i < 8; i++) {
+                RoomTile t = this.getTileInFront(tile, i);
+                if (t != null) {
+                    tiles.add(t);
+                }
+                i++;
+            }
+        }
 
         return tiles;
+    }
+
+    public List<RoomTile> getTilesAround(RoomTile tile) {
+        return getTilesAround(tile, true);
     }
 
     public static Rectangle getRectangle(int x, int y, int width, int length, int rotation) {
