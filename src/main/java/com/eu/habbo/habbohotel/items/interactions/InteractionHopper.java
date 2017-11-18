@@ -114,9 +114,6 @@ public class InteractionHopper extends HabboItem
         if(!room.getHabbosAt(this.getX(), this.getY()).isEmpty())
             return false;
 
-        if(!this.getExtradata().equals("0"))
-            return false;
-
-        return true;
+        return this.getExtradata().equals("0");
     }
 }

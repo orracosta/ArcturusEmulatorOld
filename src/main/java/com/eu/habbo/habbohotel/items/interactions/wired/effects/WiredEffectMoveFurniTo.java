@@ -117,7 +117,7 @@ public class WiredEffectMoveFurniTo extends InteractionWiredEffect
                                 indexOffset = this.indexOffset.get(targetItem.getId()) + spacing;
                             }
 
-                            RoomTile objectTile = room.getLayout().getTile(((HabboItem) targetItem).getX(), ((HabboItem) targetItem).getY());
+                            RoomTile objectTile = room.getLayout().getTile(targetItem.getX(), targetItem.getY());
 
                             if (objectTile != null)
                             {

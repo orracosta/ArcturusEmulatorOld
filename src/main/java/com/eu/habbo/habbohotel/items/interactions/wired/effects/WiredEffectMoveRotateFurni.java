@@ -264,7 +264,7 @@ public class WiredEffectMoveRotateFurni extends InteractionWiredEffect
     @Override
     public WiredEffectType getType()
     {
-        return this.type;
+        return type;
     }
 
     @Override

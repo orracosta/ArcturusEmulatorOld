@@ -1,6 +1,6 @@
 package com.eu.habbo.messages;
 
-public abstract interface ISerialize
+public interface ISerialize
 {
-    public abstract void serialize(ServerMessage message);
+    void serialize(ServerMessage message);
 }

@@ -236,7 +236,7 @@ public class RoomLayout {
                 openList.remove(current);
 
                 if ((current.x == newTile.x) && (current.y == newTile.y)) {
-                    return calcPath(findTile(openList, (short) oldTile.x, (short) oldTile.y), current);
+                    return calcPath(findTile(openList, oldTile.x, oldTile.y), current);
                 }
 
                 List<RoomTile> adjacentNodes = getAdjacent(openList, current, newTile.x, newTile.y);
@@ -265,7 +265,7 @@ public class RoomLayout {
                             continue;
 
                         currentAdj.setPrevious(current);
-                        currentAdj.sethCosts(findTile(openList, (short) newTile.x, (short) newTile.y));
+                        currentAdj.sethCosts(findTile(openList, newTile.x, newTile.y));
                         currentAdj.setgCosts(current);
                         openList.add(currentAdj);
                     } else if (currentAdj.getgCosts() > currentAdj.calculategCosts(current)) {
@@ -409,10 +409,7 @@ public class RoomLayout {
         if (outerSquare.x + outerSquare.width < innerSquare.x + innerSquare.width)
             return false;
 
-        if (outerSquare.y + outerSquare.height < innerSquare.y + innerSquare.height)
-            return false;
-
-        return true;
+        return outerSquare.y + outerSquare.height >= innerSquare.y + innerSquare.height;
     }
 
     public static boolean pointInSquare(int x1, int y1, int x2, int y2, int pointX, int pointY) {

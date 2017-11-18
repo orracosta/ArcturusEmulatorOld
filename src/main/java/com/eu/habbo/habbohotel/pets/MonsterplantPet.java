@@ -349,7 +349,7 @@ public class MonsterplantPet extends Pet implements IPetLook
 
             pet.setCanBreed(false);
             pet.setPubliclyBreedable(false);
-            this.room.sendComposer(new PetStatusUpdateComposer((Pet) pet).compose());
+            this.room.sendComposer(new PetStatusUpdateComposer(pet).compose());
             this.room.sendComposer(new PetStatusUpdateComposer(this).compose());
 
             this.getRoomUnit().getStatus().put("gst", "reb");

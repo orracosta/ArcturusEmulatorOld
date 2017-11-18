@@ -4,5 +4,5 @@ import com.eu.habbo.habbohotel.rooms.Room;
 
 public interface ICycleable
 {
-    public void cycle(Room room);
+    void cycle(Room room);
 }

@@ -36,7 +36,7 @@ public abstract class CatalogPage implements Comparable<CatalogPage>, ISerialize
     protected String textDetails;
     protected String textTeaser;
     protected TIntArrayList offerIds = new TIntArrayList();
-    protected THashMap<Integer, CatalogPage> childPages = new THashMap<Integer, CatalogPage>();;
+    protected THashMap<Integer, CatalogPage> childPages = new THashMap<Integer, CatalogPage>();
     private TIntObjectMap<CatalogItem> catalogItems = TCollections.synchronizedMap(new TIntObjectHashMap<CatalogItem>());
     private ArrayList<Integer> included = new ArrayList<Integer>();
 

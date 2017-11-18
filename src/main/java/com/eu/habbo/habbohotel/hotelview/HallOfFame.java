@@ -55,11 +55,11 @@ public class HallOfFame
 
     public String getCompetitionName()
     {
-        return this.competitionName;
+        return competitionName;
     }
 
     void setCompetitionName(String name)
     {
-        this.competitionName = name;
+        competitionName = name;
     }
 }

@@ -84,7 +84,7 @@ public class InteractionPetToy extends HabboItem
                     pet.addHappyness(25);
                     item.setExtradata("0");
                     room.updateItem(item);
-                    new PetClearPosture((Pet)pet, "pla", null, true).run();;
+                    new PetClearPosture((Pet)pet, "pla", null, true).run();
                 }
             }, 2500 + (Emulator.getRandom().nextInt(20) * 500));
             this.setExtradata("1");

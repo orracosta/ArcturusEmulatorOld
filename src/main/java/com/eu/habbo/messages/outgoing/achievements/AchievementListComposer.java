@@ -58,7 +58,7 @@ public class AchievementListComposer extends MessageComposer
                     this.response.appendInt(nextLevel != null ? nextLevel.progress : 0); //Progress needed
                     this.response.appendInt(nextLevel != null ? nextLevel.rewardAmount : 0); //Reward amount
                     this.response.appendInt(nextLevel != null ? nextLevel.rewardType : 0); //Reward currency ID
-                    this.response.appendInt(achievementProgress == -1 ? -1 : achievementProgress); //Current progress
+                    this.response.appendInt(achievementProgress); //Current progress
                     this.response.appendBoolean(AchievementManager.hasAchieved(habbo, achievement)); //Achieved? (Current Progress == MaxLevel.Progress)
                     this.response.appendString(achievement.category.toString().toLowerCase()); //Category
                     this.response.appendString(""); //Empty, completly unused in client code

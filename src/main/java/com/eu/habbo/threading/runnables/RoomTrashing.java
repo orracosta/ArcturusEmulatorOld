@@ -59,7 +59,7 @@ public class RoomTrashing implements Runnable
                     RoomTile t = null;
                     while(offset > 0)
                     {
-                        t = INSTANCE.room.getLayout().getTileInFront(INSTANCE.room.getLayout().getTile((short) event.toLocation.x, (short) event.toLocation.y), event.habbo.getRoomUnit().getBodyRotation().getValue(), (short) offset);
+                        t = INSTANCE.room.getLayout().getTileInFront(INSTANCE.room.getLayout().getTile(event.toLocation.x, event.toLocation.y), event.habbo.getRoomUnit().getBodyRotation().getValue(), (short) offset);
 
                         if(!INSTANCE.room.getLayout().tileWalkable(t.x, t.y))
                         {
@@ -84,7 +84,7 @@ public class RoomTrashing implements Runnable
                     t = null;
                     while(offset > 0)
                     {
-                        t = INSTANCE.room.getLayout().getTileInFront(INSTANCE.room.getLayout().getTile((short) event.toLocation.x, (short) event.toLocation.y), event.habbo.getRoomUnit().getBodyRotation().getValue() + 7, (short) offset);
+                        t = INSTANCE.room.getLayout().getTileInFront(INSTANCE.room.getLayout().getTile(event.toLocation.x, event.toLocation.y), event.habbo.getRoomUnit().getBodyRotation().getValue() + 7, (short) offset);
 
                         if(!INSTANCE.room.getLayout().tileWalkable(t.x, t.y))
                         {

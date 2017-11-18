@@ -39,7 +39,7 @@ public class WordFilter
         this.hideMessageWords.clear();
         this.words.clear();
 
-        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement();)
+        try (Connection connection = Emulator.getDatabase().getDataSource().getConnection(); Statement statement = connection.createStatement())
         {
             try (ResultSet set = statement.executeQuery("SELECT * FROM wordfilter"))
             {

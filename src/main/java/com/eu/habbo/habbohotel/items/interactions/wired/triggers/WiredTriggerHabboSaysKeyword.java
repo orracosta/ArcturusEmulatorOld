@@ -42,10 +42,7 @@ public class WiredTriggerHabboSaysKeyword extends InteractionWiredTrigger
                 {
                     if (((String) stuff[0]).toLowerCase().contains(this.key.toLowerCase()))
                     {
-                        if (this.ownerOnly && room.getOwnerId() != habbo.getHabboInfo().getId())
-                            return false;
-
-                        return true;
+                        return !this.ownerOnly || room.getOwnerId() == habbo.getHabboInfo().getId();
                     }
                 }
             }

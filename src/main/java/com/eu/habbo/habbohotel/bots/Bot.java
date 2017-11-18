@@ -169,7 +169,7 @@ public class Bot implements Runnable
         this.chatRandom     = false;
         this.chatDelay      = 10;
         this.chatTimeOut    = Emulator.getIntUnixTimestamp() + this.chatDelay;
-        this.chatLines      = new ArrayList<String>(Arrays.asList(new String[] {"Default Message :D"}));
+        this.chatLines      = new ArrayList<String>(Arrays.asList("Default Message :D"));
         this.type           = bot.getType();
         this.effect         = bot.getEffect();
         this.room           = null;

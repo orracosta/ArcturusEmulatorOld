@@ -328,7 +328,7 @@ public class RoomUnit
             //room.sendComposer(new RoomUserStatusComposer(this).compose());
 
             this.setZ(zHeight);
-            this.setCurrentLocation(room.getLayout().getTile((short) next.x, (short) next.y));
+            this.setCurrentLocation(room.getLayout().getTile(next.x, next.y));
             this.resetIdleTimer();
 
             if (habbo != null)

@@ -214,8 +214,8 @@ public class WiredEffectChangeFurniDirection extends InteractionWiredEffect {
                                         item.setRotation(7);
                                     }
                                 } else {
-                                    room.sendComposer(new FloorItemOnRollerComposer((HabboItem) item, null, tile, tile.getStackHeight() - ((HabboItem) item).getZ(), room).compose());
-                                    refreshTiles.addAll(room.getLayout().getTilesAt(room.getLayout().getTile(((HabboItem) item).getX(), ((HabboItem) item).getY()), ((HabboItem) item).getBaseItem().getWidth(), ((HabboItem) item).getBaseItem().getLength(), ((HabboItem) item).getRotation()));
+                                    room.sendComposer(new FloorItemOnRollerComposer(item, null, tile, tile.getStackHeight() - item.getZ(), room).compose());
+                                    refreshTiles.addAll(room.getLayout().getTilesAt(room.getLayout().getTile(item.getX(), item.getY()), item.getBaseItem().getWidth(), item.getBaseItem().getLength(), item.getRotation()));
                                     room.updateTiles(refreshTiles);
                                     room.updateTile(objectTile);
                                     this.indexOffset.put(item.getId(), indexOffset);

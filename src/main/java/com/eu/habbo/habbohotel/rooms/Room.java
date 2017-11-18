@@ -870,7 +870,7 @@ public class Room implements Comparable<Room>, ISerialize, Runnable
             {
                 if(pet.getUserId() == habbo.getHabboInfo().getId())
                 {
-                    pets.add((Pet) pet);
+                    pets.add(pet);
                 }
             }
         }

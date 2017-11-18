@@ -91,7 +91,7 @@ public class NewUserGift implements ISerialize
         return this.items;
     }
 
-    public static enum Type
+    public enum Type
     {
         ITEM,
         ROOM

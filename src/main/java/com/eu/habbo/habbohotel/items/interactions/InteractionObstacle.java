@@ -52,12 +52,8 @@ public class InteractionObstacle extends HabboItem
             {
                 Habbo habbo = room.getHabbo(roomUnit);
 
-                if (habbo != null && habbo.getHabboInfo().getRiding() != null)
-                {
-                    return true;
-                }
+                return habbo != null && habbo.getHabboInfo().getRiding() != null;
 
-                return false;
             }
             else
                 return horsePet.getRider() != null;

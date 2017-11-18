@@ -339,12 +339,8 @@ public class AchievementManager
 
         AchievementLevel nextLevel = achievement.levels.get(level.level + 1);
 
-        if (nextLevel == null && currentProgress >= level.progress)
-        {
-            return true;
-        }
+        return nextLevel == null && currentProgress >= level.progress;
 
-        return false;
     }
 
     /**
