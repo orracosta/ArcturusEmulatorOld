@@ -1,11 +1,9 @@
 package com.eu.habbo.messages.incoming.rooms.users;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.rooms.RoomAddRightsListComposer;
 import com.eu.habbo.plugin.events.users.UserRightsGivenEvent;
 
 public class RoomUserGiveRightsEvent extends MessageHandler

@@ -3,9 +3,6 @@ package com.eu.habbo.messages.incoming.navigator;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.RoomCategory;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.navigator.CanCreateEventComposer;
-import com.eu.habbo.messages.outgoing.navigator.NewNavigatorCategoryUserCountComposer;
-import com.eu.habbo.messages.outgoing.navigator.NewNavigatorEventCategoriesComposer;
 import com.eu.habbo.messages.outgoing.navigator.RoomCategoriesComposer;
 
 import java.util.List;

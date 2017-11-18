@@ -5,7 +5,6 @@ import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUnitOnRollerComposer;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 
 public class RoomUnitTeleport implements Runnable
 {

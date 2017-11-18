@@ -2,7 +2,6 @@ package com.eu.habbo.habbohotel.items;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.interactions.InteractionMultiHeight;
-import com.eu.habbo.habbohotel.items.interactions.InteractionVendingMachine;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import gnu.trove.list.array.TIntArrayList;
 

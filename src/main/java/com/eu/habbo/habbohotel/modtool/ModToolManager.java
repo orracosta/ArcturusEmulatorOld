@@ -8,7 +8,6 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboInfo;
 import com.eu.habbo.habbohotel.users.HabboManager;
 import com.eu.habbo.messages.ClientMessage;
-import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import com.eu.habbo.messages.outgoing.modtool.*;
 import com.eu.habbo.plugin.events.support.SupportRoomActionEvent;
 import com.eu.habbo.plugin.events.support.SupportTicketEvent;
@@ -28,7 +27,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class ModToolManager
 {

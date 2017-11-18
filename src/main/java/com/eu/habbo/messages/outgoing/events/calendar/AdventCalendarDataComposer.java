@@ -6,9 +6,6 @@ import com.eu.habbo.messages.outgoing.Outgoing;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.procedure.TIntProcedure;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class AdventCalendarDataComposer extends MessageComposer
 {
     public final String eventName;

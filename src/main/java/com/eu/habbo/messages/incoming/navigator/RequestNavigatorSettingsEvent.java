@@ -1,7 +1,6 @@
 package com.eu.habbo.messages.incoming.navigator;
 
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.navigator.*;
 
 public class RequestNavigatorSettingsEvent extends MessageHandler

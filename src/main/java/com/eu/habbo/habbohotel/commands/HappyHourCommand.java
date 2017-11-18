@@ -6,7 +6,6 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 
-import java.util.Collection;
 import java.util.Map;
 
 public class HappyHourCommand extends Command

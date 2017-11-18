@@ -8,7 +8,6 @@ import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboGender;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserTalkComposer;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
 public class PullCommand extends Command
 {

@@ -1,10 +1,8 @@
 package com.eu.habbo.habbohotel.guides;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.achievements.Achievement;
 import com.eu.habbo.habbohotel.achievements.AchievementManager;
 import com.eu.habbo.habbohotel.users.Habbo;
-import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
 public class GuideTour

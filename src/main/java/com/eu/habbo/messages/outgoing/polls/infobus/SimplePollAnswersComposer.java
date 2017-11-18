@@ -4,8 +4,6 @@ import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-import java.util.Map;
-
 public class SimplePollAnswersComposer extends MessageComposer
 {
     private final int unknownInt;

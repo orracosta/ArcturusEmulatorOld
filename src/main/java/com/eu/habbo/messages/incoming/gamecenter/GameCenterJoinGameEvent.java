@@ -1,6 +1,5 @@
 package com.eu.habbo.messages.incoming.gamecenter;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.gamecenter.GameCenterAchievementsConfigurationComposer;
 import com.eu.habbo.messages.outgoing.gamecenter.basejump.BaseJumpJoinQueueComposer;

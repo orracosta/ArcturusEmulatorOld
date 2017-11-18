@@ -2,9 +2,7 @@ package com.eu.habbo.habbohotel.achievements;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
-import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.TObjectIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import gnu.trove.set.hash.THashSet;
 

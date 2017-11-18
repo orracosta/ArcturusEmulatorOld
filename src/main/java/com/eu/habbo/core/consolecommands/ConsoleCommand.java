@@ -1,7 +1,6 @@
 package com.eu.habbo.core.consolecommands;
 
 import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
 
 public abstract class ConsoleCommand
 {

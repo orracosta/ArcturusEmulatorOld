@@ -5,8 +5,6 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
-import gnu.trove.iterator.TIntObjectIterator;
-import gnu.trove.procedure.TObjectProcedure;
 
 public class RoomKickCommand extends Command
 {

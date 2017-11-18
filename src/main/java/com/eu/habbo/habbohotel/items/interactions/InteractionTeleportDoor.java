@@ -6,7 +6,6 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
 import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.messages.outgoing.unknown.ItemStateComposer2;
 import com.eu.habbo.threading.runnables.teleport.TeleportActionOne;
 
 import java.sql.ResultSet;

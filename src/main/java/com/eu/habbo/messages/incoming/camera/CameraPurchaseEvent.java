@@ -7,7 +7,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.camera.CameraPurchaseSuccesfullComposer;
 import com.eu.habbo.messages.outgoing.inventory.AddHabboItemComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
-import com.eu.habbo.plugin.events.users.UserPurchasePictureEvent;
 
 public class CameraPurchaseEvent extends MessageHandler {
     @Override

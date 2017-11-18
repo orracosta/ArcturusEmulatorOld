@@ -1,6 +1,5 @@
 package com.eu.habbo.messages.incoming.friends;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
 public class DeclineFriendRequestEvent extends MessageHandler

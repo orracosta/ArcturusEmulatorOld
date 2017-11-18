@@ -3,7 +3,6 @@ package com.eu.habbo.threading.runnables.freeze;
 import com.eu.habbo.habbohotel.items.interactions.games.freeze.InteractionFreezeTile;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import gnu.trove.set.hash.THashSet;
 
 class FreezeResetExplosionTiles implements Runnable

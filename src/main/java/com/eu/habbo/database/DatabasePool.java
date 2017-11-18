@@ -1,14 +1,11 @@
 package com.eu.habbo.database;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.core.ConfigurationManager;
 import com.eu.habbo.core.Logging;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.PrintWriter;
 
 class DatabasePool
 {

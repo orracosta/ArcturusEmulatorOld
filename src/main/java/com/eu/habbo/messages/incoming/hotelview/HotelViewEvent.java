@@ -3,8 +3,6 @@ package com.eu.habbo.messages.incoming.hotelview;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.hotelview.HallOfFameComposer;
-import com.eu.habbo.messages.outgoing.hotelview.HotelViewComposer;
 
 public class HotelViewEvent extends MessageHandler
 {

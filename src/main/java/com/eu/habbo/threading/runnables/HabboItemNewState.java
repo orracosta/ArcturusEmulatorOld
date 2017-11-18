@@ -2,7 +2,6 @@ package com.eu.habbo.threading.runnables;
 
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 
 public class HabboItemNewState implements Runnable
 {

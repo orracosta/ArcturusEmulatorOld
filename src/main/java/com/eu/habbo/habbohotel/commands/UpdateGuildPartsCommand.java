@@ -2,7 +2,6 @@ package com.eu.habbo.habbohotel.commands;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
-import com.eu.habbo.util.imager.badges.BadgeImager;
 
 public class UpdateGuildPartsCommand extends Command
 {

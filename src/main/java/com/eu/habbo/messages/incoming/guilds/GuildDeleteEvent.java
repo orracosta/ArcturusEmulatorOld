@@ -5,8 +5,6 @@ import com.eu.habbo.habbohotel.guilds.Guild;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.guilds.RemoveGuildFromRoomComposer;
 import com.eu.habbo.messages.outgoing.rooms.RoomDataComposer;
-import com.eu.habbo.messages.outgoing.rooms.RoomEntryInfoComposer;
-import com.eu.habbo.messages.outgoing.rooms.RoomSettingsComposer;
 import com.eu.habbo.plugin.events.guilds.GuildDeletedEvent;
 
 public class GuildDeleteEvent extends MessageHandler

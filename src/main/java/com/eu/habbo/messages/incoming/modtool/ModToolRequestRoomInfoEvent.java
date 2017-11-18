@@ -2,16 +2,13 @@ package com.eu.habbo.messages.incoming.modtool;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.modtool.ModToolRoomInfoComposer;
-import com.eu.habbo.messages.outgoing.rooms.DoorbellAddUserComposer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class ModToolRequestRoomInfoEvent extends MessageHandler
 {

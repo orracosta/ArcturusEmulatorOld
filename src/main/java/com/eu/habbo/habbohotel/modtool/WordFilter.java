@@ -1,13 +1,11 @@
 package com.eu.habbo.habbohotel.modtool;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.gameclients.GameClientManager;
 import com.eu.habbo.habbohotel.messenger.Message;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.friends.FriendChatMessageComposer;
 import com.eu.habbo.plugin.events.users.UserTriggerWordFilterEvent;
-import com.eu.habbo.threading.runnables.InsertModToolIssue;
 import gnu.trove.iterator.hash.TObjectHashIterator;
 import gnu.trove.set.hash.THashSet;
 

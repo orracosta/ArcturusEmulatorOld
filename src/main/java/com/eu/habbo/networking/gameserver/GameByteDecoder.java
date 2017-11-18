@@ -1,6 +1,5 @@
 package com.eu.habbo.networking.gameserver;
 
-import com.eu.habbo.Emulator;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;

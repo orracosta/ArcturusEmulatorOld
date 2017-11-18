@@ -4,7 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
-import com.eu.habbo.messages.outgoing.rooms.RoomOpenComposer;
 import com.google.gson.Gson;
 
 public class ForwardUser extends RCONMessage<ForwardUser.ForwardUserJSON>

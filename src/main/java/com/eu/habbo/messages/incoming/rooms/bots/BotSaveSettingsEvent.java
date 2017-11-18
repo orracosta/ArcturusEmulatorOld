@@ -5,7 +5,6 @@ import com.eu.habbo.habbohotel.bots.Bot;
 import com.eu.habbo.habbohotel.bots.BotManager;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.DanceType;
-import com.eu.habbo.habbohotel.users.HabboGender;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUnitUpdateUsernameComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserDanceComposer;

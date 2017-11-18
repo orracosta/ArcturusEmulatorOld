@@ -2,16 +2,9 @@ package com.eu.habbo.messages.incoming.guilds;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.guilds.Guild;
-import com.eu.habbo.habbohotel.guilds.GuildMember;
-import com.eu.habbo.habbohotel.items.interactions.InteractionGuildFurni;
 import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.guilds.GuildInfoComposer;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 import com.eu.habbo.plugin.events.guilds.GuildChangedColorsEvent;
-import gnu.trove.set.hash.THashSet;
 
 public class GuildChangeColorsEvent extends MessageHandler
 {

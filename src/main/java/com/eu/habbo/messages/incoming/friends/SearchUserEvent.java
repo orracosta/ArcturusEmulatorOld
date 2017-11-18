@@ -2,7 +2,6 @@ package com.eu.habbo.messages.incoming.friends;
 
 import com.eu.habbo.habbohotel.messenger.Messenger;
 import com.eu.habbo.habbohotel.messenger.MessengerBuddy;
-import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.friends.UserSearchResultComposer;
 import gnu.trove.set.hash.THashSet;

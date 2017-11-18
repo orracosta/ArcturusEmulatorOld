@@ -5,10 +5,8 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.pets.PetManager;
-import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 import gnu.trove.procedure.TIntObjectProcedure;
 
 public class PetInfoCommand extends Command

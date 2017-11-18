@@ -13,7 +13,6 @@ import com.eu.habbo.plugin.events.users.UserCommandEvent;
 import com.eu.habbo.plugin.events.users.UserExecuteCommandEvent;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
 
 import java.util.*;
 

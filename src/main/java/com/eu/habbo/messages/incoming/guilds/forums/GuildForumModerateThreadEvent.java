@@ -6,7 +6,6 @@ import com.eu.habbo.habbohotel.guilds.GuildMember;
 import com.eu.habbo.habbohotel.guilds.GuildRank;
 import com.eu.habbo.habbohotel.guilds.forums.GuildForum;
 import com.eu.habbo.habbohotel.guilds.forums.GuildForumThread;
-import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;

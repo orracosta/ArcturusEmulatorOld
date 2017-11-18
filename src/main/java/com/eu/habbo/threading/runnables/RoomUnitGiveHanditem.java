@@ -2,7 +2,6 @@ package com.eu.habbo.threading.runnables;
 
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserHandItemComposer;
 
 public class RoomUnitGiveHanditem implements Runnable

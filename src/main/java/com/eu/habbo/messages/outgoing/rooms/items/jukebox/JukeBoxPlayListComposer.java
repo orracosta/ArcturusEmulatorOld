@@ -1,16 +1,10 @@
 package com.eu.habbo.messages.outgoing.rooms.items.jukebox;
 
-import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.items.SoundTrack;
-import com.eu.habbo.habbohotel.items.interactions.InteractionJukeBox;
 import com.eu.habbo.habbohotel.items.interactions.InteractionMusicDisc;
-import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class JukeBoxPlayListComposer extends MessageComposer

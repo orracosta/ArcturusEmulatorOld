@@ -3,9 +3,7 @@ package com.eu.habbo.messages.incoming.rooms.users;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.threading.runnables.HabboGiveHandItemToHabbo;
 import com.eu.habbo.threading.runnables.RoomUnitWalkToRoomUnit;
 

@@ -2,18 +2,14 @@ package com.eu.habbo.messages.incoming.guilds;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.guilds.Guild;
-import com.eu.habbo.habbohotel.guilds.GuildManager;
 import com.eu.habbo.habbohotel.guilds.GuildMember;
 import com.eu.habbo.habbohotel.guilds.GuildRank;
 import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.rooms.RoomRightLevels;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.guilds.GuildAcceptMemberErrorComposer;
 import com.eu.habbo.messages.outgoing.guilds.GuildInfoComposer;
-import com.eu.habbo.messages.outgoing.guilds.GuildMembersComposer;
 import com.eu.habbo.messages.outgoing.guilds.GuildRefreshMembersListComposer;
-import com.eu.habbo.messages.outgoing.rooms.RoomRightsComposer;
 import com.eu.habbo.plugin.events.guilds.GuildAcceptedMembershipEvent;
 
 public class GuildAcceptMembershipEvent extends MessageHandler

@@ -10,9 +10,6 @@ import com.eu.habbo.threading.runnables.GuideFindNewHelper;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Map;
 
 public class GuideManager

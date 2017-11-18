@@ -4,7 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.games.GameTeamColors;
 import com.eu.habbo.habbohotel.items.interactions.games.InteractionGameScoreboard;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;

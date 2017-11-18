@@ -13,7 +13,6 @@ import com.eu.habbo.messages.outgoing.handshake.*;
 import com.eu.habbo.messages.outgoing.inventory.InventoryAchievementsComposer;
 import com.eu.habbo.messages.outgoing.inventory.UserEffectsListComposer;
 import com.eu.habbo.messages.outgoing.modtool.CfhTopicsMessageComposer;
-import com.eu.habbo.messages.outgoing.users.FavoriteRoomsCountComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.modtool.ModToolComposer;
 import com.eu.habbo.messages.outgoing.navigator.*;

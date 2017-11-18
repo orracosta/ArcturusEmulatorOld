@@ -1,9 +1,7 @@
 package com.eu.habbo.habbohotel.items;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.users.HabboItem;
 import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
 
 import java.sql.*;
 import java.util.ArrayList;

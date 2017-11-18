@@ -1,7 +1,6 @@
 package com.eu.habbo.messages.outgoing.unknown;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.catalog.CatalogItem;
 import com.eu.habbo.habbohotel.catalog.ClubOffer;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;

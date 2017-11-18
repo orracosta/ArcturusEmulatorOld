@@ -2,8 +2,6 @@ package com.eu.habbo.messages.incoming.navigator;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.guilds.Guild;
-import com.eu.habbo.habbohotel.modtool.ModToolIssue;
-import com.eu.habbo.habbohotel.modtool.ModToolTicketType;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.plugin.events.navigator.NavigatorRoomDeletedEvent;

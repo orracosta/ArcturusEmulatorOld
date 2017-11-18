@@ -13,11 +13,7 @@ import com.eu.habbo.habbohotel.wired.WiredGiveRewardItem;
 import com.eu.habbo.habbohotel.wired.WiredHandler;
 import com.eu.habbo.messages.ClientMessage;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
-import com.eu.habbo.messages.outgoing.generic.alerts.GenericErrorMessagesComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.UpdateFailedComposer;
-import com.eu.habbo.messages.outgoing.generic.alerts.WiredRewardAlertComposer;
-import com.eu.habbo.messages.outgoing.unknown.UnknownMessengerErrorComposer;
 import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;
 

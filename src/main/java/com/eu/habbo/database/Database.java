@@ -4,10 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.core.ConfigurationManager;
 import com.zaxxer.hikari.HikariDataSource;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 public class Database
 {
     /**

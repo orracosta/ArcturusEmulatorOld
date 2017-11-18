@@ -1,7 +1,6 @@
 package com.eu.habbo.habbohotel.guilds.forums;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.guilds.Guild;
 import com.eu.habbo.messages.ISerialize;
 import com.eu.habbo.messages.ServerMessage;
 
@@ -10,7 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class GuildForumComment implements ISerialize, Runnable {

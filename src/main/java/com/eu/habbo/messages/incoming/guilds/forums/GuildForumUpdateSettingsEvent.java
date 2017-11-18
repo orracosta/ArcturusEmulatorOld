@@ -4,11 +4,9 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.guilds.Guild;
 import com.eu.habbo.habbohotel.guilds.SettingsState;
 import com.eu.habbo.habbohotel.guilds.forums.GuildForum;
-import com.eu.habbo.habbohotel.guilds.forums.GuildForumThread;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertKeys;
-import com.eu.habbo.messages.outgoing.guilds.forums.GuildForumCommentsComposer;
 import com.eu.habbo.messages.outgoing.guilds.forums.GuildForumDataComposer;
 
 public class GuildForumUpdateSettingsEvent extends MessageHandler

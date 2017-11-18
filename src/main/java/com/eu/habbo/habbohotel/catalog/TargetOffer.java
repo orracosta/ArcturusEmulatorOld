@@ -4,8 +4,6 @@ package com.eu.habbo.habbohotel.catalog;
 import com.eu.habbo.messages.ISerialize;
 import com.eu.habbo.messages.ServerMessage;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 public class TargetOffer implements ISerialize

@@ -6,13 +6,9 @@ import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomTile;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.messages.outgoing.unknown.ItemStateComposer2;
-import com.eu.habbo.threading.runnables.HabboItemNewState;
-import com.eu.habbo.threading.runnables.OneWayGateActionOne;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

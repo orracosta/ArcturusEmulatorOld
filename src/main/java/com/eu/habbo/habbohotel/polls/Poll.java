@@ -1,7 +1,5 @@
 package com.eu.habbo.habbohotel.polls;
 
-import gnu.trove.map.hash.THashMap;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

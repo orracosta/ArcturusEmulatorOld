@@ -12,7 +12,6 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public abstract class CatalogPage implements Comparable<CatalogPage>, ISerialize
 {

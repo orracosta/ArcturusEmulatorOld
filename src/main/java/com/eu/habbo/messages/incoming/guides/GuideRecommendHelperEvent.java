@@ -1,10 +1,8 @@
 package com.eu.habbo.messages.incoming.guides;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.guides.GuideRecommendStatus;
 import com.eu.habbo.habbohotel.guides.GuideTour;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.guides.GuideSessionDetachedComposer;
 
 public class GuideRecommendHelperEvent extends MessageHandler
 {

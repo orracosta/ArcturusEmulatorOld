@@ -7,11 +7,8 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
-import gnu.trove.iterator.TIntObjectIterator;
-import gnu.trove.map.TIntObjectMap;
 
 import java.util.Collection;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class RoomUsersComposer extends MessageComposer
 {

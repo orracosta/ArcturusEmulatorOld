@@ -27,7 +27,6 @@ import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
 import com.eu.habbo.plugin.events.users.UserTakeStepEvent;
 import com.eu.habbo.threading.runnables.freeze.FreezeClearEffects;
 import com.eu.habbo.threading.runnables.freeze.FreezeThrowSnowball;
-import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.procedure.TObjectProcedure;
 import gnu.trove.set.hash.THashSet;

@@ -1,17 +1,12 @@
 package com.eu.habbo.habbohotel.items.interactions.games.freeze.gates;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.games.GameTeam;
 import com.eu.habbo.habbohotel.games.GameTeamColors;
 import com.eu.habbo.habbohotel.games.freeze.FreezeGame;
-import com.eu.habbo.habbohotel.games.freeze.FreezeGamePlayer;
-import com.eu.habbo.habbohotel.games.freeze.FreezeGameTeam;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.games.InteractionGameGate;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.messages.ServerMessage;
-import com.eu.habbo.messages.outgoing.rooms.items.FloorItemUpdateComposer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

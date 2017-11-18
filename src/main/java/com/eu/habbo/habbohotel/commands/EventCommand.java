@@ -5,10 +5,8 @@ import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.generic.alerts.BubbleAlertComposer;
-import com.eu.habbo.messages.outgoing.generic.alerts.GenericAlertComposer;
 import gnu.trove.map.hash.THashMap;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class EventCommand extends Command

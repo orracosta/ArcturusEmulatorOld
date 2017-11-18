@@ -2,7 +2,6 @@ package com.eu.habbo.messages.incoming.guilds.forums;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.guilds.forums.GuildForumListComposer;
 import com.eu.habbo.messages.outgoing.guilds.forums.ThreadUpdatedMessageComposer;
 
 public class GuildForumThreadUpdateEvent extends MessageHandler {

@@ -5,7 +5,6 @@ import com.eu.habbo.habbohotel.crafting.CraftingAltar;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.crafting.CraftableProductsComposer;
-import com.eu.habbo.messages.outgoing.crafting.CraftingRecipesAvailableComposer;
 
 public class RequestCraftingRecipesEvent extends MessageHandler
 {

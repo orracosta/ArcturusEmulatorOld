@@ -2,10 +2,8 @@ package com.eu.habbo.core;
 
 import com.eu.habbo.Emulator;
 import gnu.trove.set.hash.THashSet;
-import sun.rmi.runtime.Log;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

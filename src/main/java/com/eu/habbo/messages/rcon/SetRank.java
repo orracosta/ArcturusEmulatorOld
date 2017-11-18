@@ -2,12 +2,7 @@ package com.eu.habbo.messages.rcon;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.messages.outgoing.users.UserPerksComposer;
-import com.eu.habbo.messages.outgoing.users.UserPermissionsComposer;
 import com.google.gson.Gson;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 
 public class SetRank extends RCONMessage<SetRank.JSONSetRank>
 {

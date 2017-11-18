@@ -3,14 +3,10 @@ package com.eu.habbo.messages.incoming.navigator;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomCategory;
-import com.eu.habbo.habbohotel.rooms.RoomLayout;
 import com.eu.habbo.habbohotel.rooms.RoomManager;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.hotelview.HotelViewComposer;
 import com.eu.habbo.messages.outgoing.navigator.CanCreateRoomComposer;
 import com.eu.habbo.messages.outgoing.navigator.RoomCreatedComposer;
-import com.eu.habbo.messages.outgoing.rooms.ForwardToRoomComposer;
-import com.eu.habbo.messages.outgoing.rooms.RoomOpenComposer;
 
 public class RequestCreateRoomEvent extends MessageHandler {
 

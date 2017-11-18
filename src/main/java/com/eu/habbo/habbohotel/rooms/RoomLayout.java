@@ -1,8 +1,6 @@
 package com.eu.habbo.habbohotel.rooms;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.plugin.EventHandler;
-import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
 import gnu.trove.set.hash.THashSet;
 
 import java.awt.*;

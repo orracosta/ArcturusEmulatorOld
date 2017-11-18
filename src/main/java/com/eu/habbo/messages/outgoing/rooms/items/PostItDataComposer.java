@@ -1,6 +1,5 @@
 package com.eu.habbo.messages.outgoing.rooms.items;
 
-import com.eu.habbo.habbohotel.items.PostItColor;
 import com.eu.habbo.habbohotel.items.interactions.InteractionPostIt;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;

@@ -15,15 +15,12 @@ import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUserAction;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
-import com.eu.habbo.habbohotel.wired.WiredHandler;
-import com.eu.habbo.habbohotel.wired.WiredTriggerType;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserActionComposer;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
 import com.eu.habbo.plugin.EventHandler;
 import com.eu.habbo.plugin.EventPriority;
 import com.eu.habbo.plugin.events.users.UserTakeStepEvent;
 import com.eu.habbo.threading.runnables.BattleBanzaiTilesFlicker;
-import com.eu.habbo.threading.runnables.GameStop;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 

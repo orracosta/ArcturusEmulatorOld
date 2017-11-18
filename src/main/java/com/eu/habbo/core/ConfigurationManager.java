@@ -1,7 +1,6 @@
 package com.eu.habbo.core;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.plugin.PluginManager;
 import com.eu.habbo.plugin.events.emulator.EmulatorConfigUpdatedEvent;
 
 import java.io.File;
@@ -9,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 

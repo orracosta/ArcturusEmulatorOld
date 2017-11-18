@@ -2,7 +2,6 @@ package com.eu.habbo.messages.incoming.polls;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.polls.Poll;
-import com.eu.habbo.habbohotel.polls.PollManager;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.polls.PollQuestionsComposer;
 

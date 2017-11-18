@@ -3,7 +3,6 @@ package com.eu.habbo.messages.incoming.guilds.forums;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.guilds.forums.GuildForumListComposer;
-import gnu.trove.set.hash.THashSet;
 
 public class GuildForumListEvent extends MessageHandler {
     @Override

@@ -4,7 +4,6 @@ import com.eu.habbo.habbohotel.games.Game;
 import com.eu.habbo.habbohotel.games.GamePlayer;
 import com.eu.habbo.habbohotel.games.GameTeam;
 import com.eu.habbo.habbohotel.games.GameTeamColors;
-import com.eu.habbo.habbohotel.games.freeze.FreezeGame;
 
 public class BattleBanzaiGameTeam extends GameTeam
 {

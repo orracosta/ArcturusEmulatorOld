@@ -1,13 +1,10 @@
 package com.eu.habbo.messages.incoming.rooms.pets;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.pets.AbstractPet;
 import com.eu.habbo.habbohotel.pets.Pet;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.inventory.AddPetComposer;
-import com.eu.habbo.messages.outgoing.inventory.InventoryRefreshComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
 import com.eu.habbo.messages.outgoing.rooms.pets.PetPackageNameValidationComposer;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;

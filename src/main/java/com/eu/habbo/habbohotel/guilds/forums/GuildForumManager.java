@@ -1,14 +1,11 @@
 package com.eu.habbo.habbohotel.guilds.forums;
 
 import com.eu.habbo.Emulator;
-import com.eu.habbo.habbohotel.commands.Command;
 import com.eu.habbo.habbohotel.guilds.Guild;
-import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.users.Habbo;
 import gnu.trove.TCollections;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.util.*;

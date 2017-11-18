@@ -3,7 +3,6 @@ package com.eu.habbo.messages.incoming.rooms.items.jukebox;
 import com.eu.habbo.habbohotel.rooms.TraxManager;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.items.jukebox.JukeBoxMySongsComposer;
-import com.eu.habbo.messages.outgoing.rooms.items.jukebox.JukeBoxNowPlayingMessageComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.jukebox.JukeBoxPlayListComposer;
 
 public class JukeBoxEventOne extends MessageHandler

@@ -6,7 +6,6 @@ import com.eu.habbo.habbohotel.rooms.RoomChatMessage;
 import com.eu.habbo.habbohotel.rooms.RoomChatMessageBubbles;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserShoutComposer;
-import com.eu.habbo.messages.outgoing.rooms.users.RoomUserWhisperComposer;
 
 public class ShoutCommand extends Command
 {

@@ -3,12 +3,10 @@ package com.eu.habbo.threading.runnables.teleport;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.interactions.InteractionTeleportDoor;
-import com.eu.habbo.habbohotel.items.interactions.InteractionTeleportTile;
 import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.RoomUserRotation;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.outgoing.rooms.users.RoomUserStatusComposer;
-import com.eu.habbo.threading.runnables.HabboItemNewState;
 
 public class TeleportActionOne implements Runnable
 {

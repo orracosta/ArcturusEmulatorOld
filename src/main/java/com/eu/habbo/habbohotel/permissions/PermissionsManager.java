@@ -3,16 +3,11 @@ package com.eu.habbo.habbohotel.permissions;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.plugin.HabboPlugin;
-import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
-import gnu.trove.procedure.TObjectProcedure;
-import gnu.trove.set.hash.THashSet;
 
 import java.sql.*;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
 
 public class PermissionsManager
 {

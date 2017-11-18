@@ -1,13 +1,11 @@
 package com.eu.habbo.messages.outgoing.unknown;
 
 import com.eu.habbo.habbohotel.items.NewUserGift;
-import com.eu.habbo.messages.ISerialize;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.MessageComposer;
 import com.eu.habbo.messages.outgoing.Outgoing;
 
 import java.util.List;
-import java.util.Map;
 
 public class NewUserGiftComposer extends MessageComposer
 {

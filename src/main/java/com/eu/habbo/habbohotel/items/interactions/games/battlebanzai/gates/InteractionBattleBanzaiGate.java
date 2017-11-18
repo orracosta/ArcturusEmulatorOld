@@ -4,8 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.games.GameTeam;
 import com.eu.habbo.habbohotel.games.GameTeamColors;
 import com.eu.habbo.habbohotel.games.battlebanzai.BattleBanzaiGame;
-import com.eu.habbo.habbohotel.games.battlebanzai.BattleBanzaiGamePlayer;
-import com.eu.habbo.habbohotel.games.battlebanzai.BattleBanzaiGameTeam;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.games.InteractionGameGate;
 import com.eu.habbo.habbohotel.rooms.Room;

@@ -19,7 +19,6 @@ import com.eu.habbo.threading.runnables.RoomUnitKick;
 import com.eu.habbo.util.pathfinding.Rotation;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
 
 import java.util.Deque;
 import java.util.LinkedList;

@@ -1,8 +1,6 @@
 package com.eu.habbo.messages.incoming.navigator;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.navigation.DisplayMode;
-import com.eu.habbo.habbohotel.rooms.RoomCategory;
 import com.eu.habbo.messages.incoming.MessageHandler;
 
 public class NavigatorCollapseCategoryEvent extends MessageHandler

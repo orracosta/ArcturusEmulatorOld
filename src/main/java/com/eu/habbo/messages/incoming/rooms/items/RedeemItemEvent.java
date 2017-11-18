@@ -9,7 +9,6 @@ import com.eu.habbo.messages.outgoing.rooms.UpdateStackHeightComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.RemoveFloorItemComposer;
 import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
 import com.eu.habbo.messages.outgoing.users.UserCurrencyComposer;
-import com.eu.habbo.messages.outgoing.users.UserPointsComposer;
 import com.eu.habbo.plugin.Event;
 import com.eu.habbo.plugin.events.furniture.FurnitureRedeemedEvent;
 import com.eu.habbo.threading.runnables.QueryDeleteHabboItem;

@@ -1,7 +1,6 @@
 package com.eu.habbo.messages.incoming.inventory;
 
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.inventory.InventoryAchievementsComposer;
 import com.eu.habbo.messages.outgoing.inventory.InventoryBadgesComposer;
 
 public class RequestInventoryBadgesEvent extends MessageHandler

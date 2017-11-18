@@ -1,14 +1,9 @@
 package com.eu.habbo.messages.incoming.rooms.items.jukebox;
 
-import com.eu.habbo.habbohotel.items.SoundTrack;
-import com.eu.habbo.habbohotel.items.interactions.InteractionJukeBox;
-import com.eu.habbo.habbohotel.rooms.Room;
 import com.eu.habbo.habbohotel.rooms.TraxManager;
-import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.rooms.items.jukebox.JukeBoxMySongsComposer;
 import com.eu.habbo.messages.outgoing.rooms.items.jukebox.JukeBoxPlayListComposer;
-import gnu.trove.set.hash.THashSet;
 
 public class JukeBoxRequestPlayListEvent extends MessageHandler
 {

@@ -10,13 +10,10 @@ import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
 import com.eu.habbo.messages.ServerMessage;
 import com.eu.habbo.messages.outgoing.unknown.ItemStateComposer2;
-import com.eu.habbo.threading.runnables.HabboItemNewState;
-import com.eu.habbo.threading.runnables.RoomUnitTeleportWalkToAction;
 import com.eu.habbo.threading.runnables.teleport.TeleportActionOne;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Set;
 
 public class InteractionTeleport extends HabboItem
 {

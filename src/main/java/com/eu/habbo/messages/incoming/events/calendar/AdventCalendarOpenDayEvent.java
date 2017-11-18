@@ -2,7 +2,6 @@ package com.eu.habbo.messages.incoming.events.calendar;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.incoming.MessageHandler;
-import com.eu.habbo.messages.outgoing.events.calendar.AdventCalendarProductComposer;
 
 public class AdventCalendarOpenDayEvent extends MessageHandler
 {

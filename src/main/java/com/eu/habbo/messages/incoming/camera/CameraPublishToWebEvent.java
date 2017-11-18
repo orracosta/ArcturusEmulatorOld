@@ -3,7 +3,6 @@ package com.eu.habbo.messages.incoming.camera;
 import com.eu.habbo.Emulator;
 import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.camera.CameraPublishWaitMessageComposer;
-import com.eu.habbo.messages.outgoing.camera.CameraPurchaseSuccesfullComposer;
 import com.eu.habbo.plugin.events.users.UserPublishPictureEvent;
 
 import java.sql.Connection;

@@ -8,7 +8,6 @@ import com.eu.habbo.messages.incoming.MessageHandler;
 import com.eu.habbo.messages.outgoing.catalog.AlertPurchaseFailedComposer;
 import com.eu.habbo.messages.outgoing.catalog.PurchaseOKComposer;
 import com.eu.habbo.messages.outgoing.rooms.promotions.RoomPromotionMessageComposer;
-import com.eu.habbo.messages.outgoing.users.UserCreditsComposer;
 
 public class BuyRoomPromotionEvent extends MessageHandler
 {

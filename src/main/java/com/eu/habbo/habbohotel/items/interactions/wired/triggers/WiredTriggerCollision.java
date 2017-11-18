@@ -1,6 +1,5 @@
 package com.eu.habbo.habbohotel.items.interactions.wired.triggers;
 
-import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.items.interactions.InteractionWiredTrigger;
 import com.eu.habbo.habbohotel.rooms.Room;

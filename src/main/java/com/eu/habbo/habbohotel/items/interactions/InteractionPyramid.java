@@ -4,9 +4,6 @@ import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.gameclients.GameClient;
 import com.eu.habbo.habbohotel.items.Item;
 import com.eu.habbo.habbohotel.rooms.Room;
-import com.eu.habbo.habbohotel.rooms.RoomUnit;
-import com.eu.habbo.habbohotel.users.HabboItem;
-import com.eu.habbo.messages.ServerMessage;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

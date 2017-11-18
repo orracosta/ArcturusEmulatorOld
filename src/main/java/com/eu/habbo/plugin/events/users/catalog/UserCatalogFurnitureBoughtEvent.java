@@ -3,7 +3,6 @@ package com.eu.habbo.plugin.events.users.catalog;
 import com.eu.habbo.habbohotel.catalog.CatalogItem;
 import com.eu.habbo.habbohotel.users.Habbo;
 import com.eu.habbo.habbohotel.users.HabboItem;
-import com.eu.habbo.plugin.events.users.UserEvent;
 import gnu.trove.set.hash.THashSet;
 
 public class UserCatalogFurnitureBoughtEvent extends UserCatalogEvent

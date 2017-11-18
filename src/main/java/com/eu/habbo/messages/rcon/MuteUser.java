@@ -2,7 +2,6 @@ package com.eu.habbo.messages.rcon;
 
 import com.eu.habbo.Emulator;
 import com.eu.habbo.habbohotel.users.Habbo;
-import com.eu.habbo.habbohotel.users.HabboInfo;
 import com.google.gson.Gson;
 
 import java.sql.Connection;
