@@ -143,6 +143,7 @@ public class WiredConditionFurniTypeMatch extends InteractionWiredCondition
         THashSet<HabboItem> items = new THashSet<HabboItem>();
 
         Room room = Emulator.getGameEnvironment().getRoomManager().getRoom(this.getRoomId());
+
         if(room == null)
         {
             items.addAll(this.items);
@@ -151,7 +152,7 @@ public class WiredConditionFurniTypeMatch extends InteractionWiredCondition
         {
             for (HabboItem item : this.items)
             {
-                if (room.getHabboItem(item.getId()) == null)
+                if (item != null && room.getHabboItem(item.getId()) == null)
                     items.add(item);
             }
         }
