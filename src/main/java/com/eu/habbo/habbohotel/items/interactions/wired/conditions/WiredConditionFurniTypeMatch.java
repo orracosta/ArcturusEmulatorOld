@@ -52,6 +52,9 @@ public class WiredConditionFurniTypeMatch extends InteractionWiredCondition
 
                     for(HabboItem i : this.items)
                     {
+                        if(i == null || i.getBaseItem() == null)
+                            continue;
+
                         if(i.getBaseItem().getId() == item.getBaseItem().getId())
                             return true;
                     }

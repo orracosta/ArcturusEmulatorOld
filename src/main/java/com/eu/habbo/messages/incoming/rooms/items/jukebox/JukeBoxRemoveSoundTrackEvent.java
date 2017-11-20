@@ -10,6 +10,9 @@ public class JukeBoxRemoveSoundTrackEvent extends MessageHandler
     {
         int index = this.packet.readInt();
 
+        if(this.client.getHabbo().getHabboInfo().getCurrentRoom().getTraxManager().getSongs().size() <= index)
+            return;
+
         InteractionMusicDisc musicDisc = this.client.getHabbo().getHabboInfo().getCurrentRoom().getTraxManager().getSongs().get(index);
 
         if (musicDisc != null)
