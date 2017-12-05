@@ -1,2 +1,0 @@
-INSERT INTO `server_locale` (`key`, `value`) VALUES ('marketplace.sell.message', 'Um item que você anunciou na feira livre foi vendido!');
-INSERT INTO `server_locale` (`key`, `value`) VALUES ('wired.reward.save.error', 'Você não tem permissão para editar esse item!');
