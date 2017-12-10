@@ -6,6 +6,8 @@ This emulator was heavily edited and fixed with a ton of performance improvement
 
 This emulator was based originally on `Arcturus 1.10.0`, the latest 2017 version.
 
+You can use this emulator with the **CMS** (Content Management System) that we created for this purpose. Check our repository by clicking [here](https://github.com/izinezion/ManiaCMS).
+
 **Download SWF:** http://arcturus.wf/mirrors/asmd_PRODUCTION-201611291003-338511768.swf
 
 **Older Files:** http://arcturus.wf/mirrors/
