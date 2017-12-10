@@ -8,13 +8,23 @@ This emulator was based originally on `Arcturus 1.10.0`, the latest 2017 version
 
 You can use this emulator with the **CMS** (Content Management System) that we created for this purpose. Check our repository by clicking [here](https://github.com/izinezion/ManiaCMS).
 
-**Download SWF:** http://arcturus.wf/mirrors/asmd_PRODUCTION-201611291003-338511768.swf
+### Releases ###
 
-**Older Files:** http://arcturus.wf/mirrors/
+Check the Releases section to download the latest version of our emulator. Be sure that you're running the latest version.
 
-**Icons:** http://arcturus.wf/mirrors/icons.zip
+### Downloads ###
 
-**JavaDoc:** http://arcturus.wf/doc/
+**Download SWF:** [PRODUCTION-201611291003-338511768](http://arcturus.wf/mirrors/asmd_PRODUCTION-201611291003-338511768.swf)
+
+**Older Files:** [Older version mirrors](http://arcturus.wf/mirrors/)
+
+**Icons:** [Catalogue Icons](http://arcturus.wf/mirrors/icons.zip)
+
+**JavaDoc:** [Documentation](http://arcturus.wf/doc/)
+
+**Database:** Be Updated
+
+**CMS:** [ManiaCMS](https://github.com/izinezion/ManiaCMS) or [Chocolatey](https://github.com/sant0ro/chocolatey)
 
 ### Contributing ###
 Anyone is allowed to contribute to the project. Reporting bugs and issues goes via the issue tracker.
