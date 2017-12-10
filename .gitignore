@@ -7,7 +7,6 @@ src/main/resources/
 src/test/
 logging/
 target/
-config.ini
 *.txt
 logging/**
 logging/
