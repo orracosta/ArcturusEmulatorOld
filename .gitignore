@@ -12,3 +12,4 @@ logging/**
 logging/
 Emulador.bat
 .DS_Store
+classes/
