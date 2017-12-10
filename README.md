@@ -14,7 +14,7 @@ Check the Releases section to download the latest version of our emulator. Be su
 
 ### Downloads ###
 
-**Download SWF:** [PRODUCTION-201611291003-338511768](http://arcturus.wf/mirrors/asmd_PRODUCTION-201611291003-338511768.swf)
+**Download SWF:** [PRODUCTION-201709192204-203982672](https://mega.nz/#!WV8xXIhY!L5OcyG3aH5qd8jpj5SLbwc_e2B8EhLYwL6U0s0mGtIQ)
 
 **Older Files:** [Older version mirrors](http://arcturus.wf/mirrors/)
 
@@ -22,7 +22,7 @@ Check the Releases section to download the latest version of our emulator. Be su
 
 **JavaDoc:** [Documentation](http://arcturus.wf/doc/)
 
-**Database:** Be Updated
+**Database:** [Click here](https://github.com/izinezion/ArcturusEmulator/raw/master/arcturus.sql)
 
 **CMS:** [ManiaCMS](https://github.com/izinezion/ManiaCMS) or [Chocolatey](https://github.com/sant0ro/chocolatey)
 
