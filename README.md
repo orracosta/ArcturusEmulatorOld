@@ -1,5 +1,8 @@
 # :video_game: Arcturus Emulator #
 
+### WARNING: Do not use this project to production, it's outdated and has security issues. ###
+### Just for educational purposes! ###
+
 Arcturus Emulator it's an open source game emulator for Flash based games. It was made originally by Wesley, and released under the [RaGEZONE Forums](http://forum.ragezone.com). You can get into the original version accessing [this](http://arcturus.wf/) link.
 
 This emulator was heavily edited and fixed with a ton of performance improvements, new features, security improvements, and a ton of other improvements. Including Game Map improvements, Path Finder improvements, Wired improvements, Furniure improvements, and a lot of others.
